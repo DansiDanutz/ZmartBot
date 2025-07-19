@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1"></script>
+    <style>
+      .slide-container {
+        width: 1280px;
+        min-height: 720px;
+        background: #0F172A;
+        color: #E2E8F0;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        padding: 40px;
+        position: relative;
+        overflow: hidden;
+      }
+      .title {
+        color: #F8FAFC;
+        font-size: 36px;
+        font-weight: 700;
+        margin-bottom: 10px;
+      }
+      .content {
+        font-size: 18px;
+        line-height: 1.5;
+      }
+      .accent {
+        color: #3B82F6;
+      }
+      .component-box {
+        background: rgba(30, 41, 59, 0.7);
+        border-radius: 12px;
+        padding: 12px;
+        margin-bottom: 12px;
+        border-left: 4px solid #3B82F6;
+      }
+      .component-title {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 5px;
+        color: #F8FAFC;
+        display: flex;
+        align-items: center;
+      }
+      .component-icon {
+        margin-right: 10px;
+        color: #3B82F6;
+      }
+      .code-block {
+        background: rgba(15, 23, 42, 0.7);
+        border-radius: 8px;
+        padding: 8px;
+        font-family: 'JetBrains Mono', 'Fira Code', monospace;
+        font-size: 14px;
+        color: #E2E8F0;
+        margin: 8px 0;
+        border-left: 3px solid #3B82F6;
+        overflow-x: auto;
+      }
+      .dashboard-image {
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        max-width: 100%;
+        height: auto;
+      }
+      .glow {
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(59, 130, 246, 0.2) 0%, rgba(16, 185, 129, 0.1) 50%, rgba(15, 23, 42, 0) 70%);
+        filter: blur(50px);
+        z-index: 0;
+      }
+      .glow-1 {
+        top: -100px;
+        right: -100px;
+      }
+      .glow-2 {
+        bottom: -100px;
+        left: -100px;
+      }
+      .z-10 {
+        z-index: 10;
+        position: relative;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="slide-container">
+      <!-- Background glows -->
+      <div class="glow glow-1"></div>
+      <div class="glow glow-2"></div>
+      
+      <!-- Content -->
+      <div class="z-10">
+        <h1 class="title">Frontend Implementation Guide</h1>
+        <p class="content mb-3">
+          Key components and implementation approach for the Zmart Trading Bot Platform frontend.
+        </p>
+        
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <div style="max-height: 300px; overflow: hidden;" class="mb-3">
+              <img src="/home/ubuntu/zmart-presentation/images/trading_platform.png" alt="Trading Platform UI" class="dashboard-image">
+            </div>
+            
+            <div class="component-box">
+              <h3 class="component-title">
+                <i class="fas fa-layer-group component-icon"></i>Key Frontend Components
+              </h3>
+              <div class="grid grid-cols-2 gap-2">
+                <div>• <span class="accent">Dashboard Layout</span></div>
+                <div>• <span class="accent">Trading Console</span></div>
+                <div>• <span class="accent">Signal Heatmap</span></div>
+                <div>• <span class="accent">Portfolio Overview</span></div>
+                <div>• <span class="accent">Settings Panel</span></div>
+                <div>• <span class="accent">KingFisher Tab</span></div>
+              </div>
+            </div>
+            
+            <div class="component-box">
+              <h3 class="component-title">
+                <i class="fas fa-code component-icon"></i>Technology Stack
+              </h3>
+              <div class="grid grid-cols-2 gap-2">
+                <div>• React 18</div>
+                <div>• TypeScript</div>
+                <div>• Tailwind CSS</div>
+                <div>• Recharts</div>
+                <div>• React Query</div>
+                <div>• Zustand</div>
+              </div>
+            </div>
+          </div>
+          
+          <div>
+            <div class="component-box">
+              <h3 class="component-title">
+                <i class="fas fa-palette component-icon"></i>Design System Implementation
+              </h3>
+              <p>Create reusable UI components following the design system:</p>
+              <div class="code-block">
+                <span class="text-blue-400">// Button.tsx - Example component</span><br>
+                <span class="text-purple-400">const</span> <span class="text-yellow-400">Button</span> = ({ <span class="text-orange-400">variant</span>=<span class="text-green-400">'primary'</span>, <span class="text-orange-400">children</span> }) => {<br>
+                &nbsp;&nbsp;<span class="text-purple-400">const</span> <span class="text-orange-400">styles</span> = {<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-green-400">'primary'</span>: <span class="text-green-400">'bg-blue-600 text-white'</span>,<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-green-400">'secondary'</span>: <span class="text-green-400">'bg-slate-700 text-white'</span><br>
+                &nbsp;&nbsp;};<br>
+                &nbsp;&nbsp;<span class="text-purple-400">return</span> (<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="text-blue-400">button</span> <span class="text-orange-400">className</span>={`px-4 py-2 rounded-lg ${<span class="text-orange-400">styles</span>[<span class="text-orange-400">variant</span>]}`}&gt;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<span class="text-orange-400">children</span>}<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;/<span class="text-blue-400">button</span>&gt;<br>
+                &nbsp;&nbsp;);<br>
+                };<br>
+              </div>
+            </div>
+            
+            <div class="component-box">
+              <h3 class="component-title">
+                <i class="fas fa-exchange-alt component-icon"></i>API Integration
+              </h3>
+              <p>Set up API services using Axios:</p>
+              <div class="code-block">
+                <span class="text-blue-400">// api.ts - API service setup</span><br>
+                <span class="text-purple-400">const</span> <span class="text-orange-400">API_URL</span> = <span class="text-green-400">process.env.REACT_APP_API_URL</span>;<br>
+                <br>
+                <span class="text-purple-400">const</span> <span class="text-orange-400">api</span> = axios.<span class="text-yellow-400">create</span>({<br>
+                &nbsp;&nbsp;<span class="text-orange-400">baseURL</span>: <span class="text-orange-400">API_URL</span>,<br>
+                &nbsp;&nbsp;<span class="text-orange-400">headers</span>: { <span class="text-green-400">'Content-Type'</span>: <span class="text-green-400">'application/json'</span> }<br>
+                });<br>
+              </div>
+            </div>
+            
+            <div class="component-box">
+              <h3 class="component-title">
+                <i class="fas fa-tasks component-icon"></i>Implementation Steps
+              </h3>
+              <ol class="list-decimal ml-6 mt-2 space-y-1">
+                <li>Set up project structure and design system</li>
+                <li>Implement core UI components and layouts</li>
+                <li>Create API services and state management</li>
+                <li>Build dashboard and trading interface</li>
+                <li>Implement real-time data visualization</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+

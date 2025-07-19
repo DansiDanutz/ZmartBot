@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1"></script>
+    <style>
+      .slide-container {
+        width: 1280px;
+        min-height: 720px;
+        background: #0F172A;
+        color: #E2E8F0;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        padding: 40px;
+        position: relative;
+        overflow: hidden;
+      }
+      .title {
+        color: #F8FAFC;
+        font-size: 36px;
+        font-weight: 700;
+        margin-bottom: 10px;
+      }
+      .content {
+        font-size: 18px;
+        line-height: 1.5;
+      }
+      .accent {
+        color: #3B82F6;
+      }
+      .accent-green {
+        color: #10B981;
+      }
+      .component-box {
+        background: rgba(30, 41, 59, 0.7);
+        border-radius: 12px;
+        padding: 12px;
+        margin-bottom: 12px;
+        border-left: 4px solid #3B82F6;
+      }
+      .component-title {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 5px;
+        color: #F8FAFC;
+        display: flex;
+        align-items: center;
+      }
+      .component-icon {
+        margin-right: 10px;
+        color: #3B82F6;
+      }
+      .code-block {
+        background: rgba(15, 23, 42, 0.7);
+        border-radius: 8px;
+        padding: 8px;
+        font-family: 'JetBrains Mono', 'Fira Code', monospace;
+        font-size: 14px;
+        color: #E2E8F0;
+        margin: 8px 0;
+        border-left: 3px solid #3B82F6;
+        overflow-x: auto;
+      }
+      .glow {
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(59, 130, 246, 0.2) 0%, rgba(16, 185, 129, 0.1) 50%, rgba(15, 23, 42, 0) 70%);
+        filter: blur(50px);
+        z-index: 0;
+      }
+      .glow-1 {
+        top: -100px;
+        right: -100px;
+      }
+      .glow-2 {
+        bottom: -100px;
+        left: -100px;
+      }
+      .z-10 {
+        z-index: 10;
+        position: relative;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="slide-container">
+      <!-- Background glows -->
+      <div class="glow glow-1"></div>
+      <div class="glow glow-2"></div>
+      
+      <!-- Content -->
+      <div class="z-10">
+        <h1 class="title">Backend Implementation Guide</h1>
+        <p class="content mb-3">
+          Key components and implementation approach for the Zmart Trading Bot Platform backend services.
+        </p>
+        
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <div class="component-box">
+              <h3 class="component-title">
+                <i class="fas fa-sitemap component-icon"></i>Orchestration Agent
+              </h3>
+              <p>The central coordinator for all trading activities:</p>
+              <div class="code-block">
+                <span class="text-blue-400"># orchestration_agent.py</span><br>
+                <span class="text-purple-400">class</span> <span class="text-yellow-400">OrchestrationAgent</span>:<br>
+                &nbsp;&nbsp;<span class="text-purple-400">def</span> <span class="text-yellow-400">__init__</span>(<span class="text-orange-400">self</span>, config):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-orange-400">self</span>.config = config<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-orange-400">self</span>.scoring_agent = ScoringAgent(config)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-orange-400">self</span>.risk_guard = RiskGuard(config)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-orange-400">self</span>.trade_executor = TradeExecutor(config)<br>
+                <br>
+                &nbsp;&nbsp;<span class="text-purple-400">def</span> <span class="text-yellow-400">process_signal</span>(<span class="text-orange-400">self</span>, signal):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-green-400"># Validate and process incoming signal</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;score = <span class="text-orange-400">self</span>.scoring_agent.evaluate(signal)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-purple-400">if</span> <span class="text-orange-400">self</span>.risk_guard.check_risk_levels(signal, score):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-purple-400">return</span> <span class="text-orange-400">self</span>.trade_executor.execute(signal, score)<br>
+              </div>
+            </div>
+            
+            <div class="component-box">
+              <h3 class="component-title">
+                <i class="fas fa-shield-alt component-icon"></i>Risk Guard Implementation
+              </h3>
+              <p>Circuit breaker pattern for risk management:</p>
+              <div class="code-block">
+                <span class="text-blue-400"># risk_guard.py</span><br>
+                <span class="text-purple-400">class</span> <span class="text-yellow-400">RiskGuard</span>:<br>
+                &nbsp;&nbsp;<span class="text-purple-400">def</span> <span class="text-yellow-400">check_risk_levels</span>(<span class="text-orange-400">self</span>, signal, score):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-green-400"># Check portfolio exposure</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;exposure = <span class="text-orange-400">self</span>.calculate_exposure(signal.symbol)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-purple-400">if</span> exposure > <span class="text-orange-400">self</span>.config.MAX_POSITION_SIZE_PERCENT:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-purple-400">return</span> <span class="text-purple-400">False</span><br>
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-green-400"># Check daily loss limit</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-purple-400">if</span> <span class="text-orange-400">self</span>.daily_loss > <span class="text-orange-400">self</span>.config.MAX_DAILY_LOSS_PERCENT:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-purple-400">return</span> <span class="text-purple-400">False</span><br>
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-purple-400">return</span> <span class="text-purple-400">True</span><br>
+              </div>
+            </div>
+          </div>
+          
+          <div>
+            <div class="component-box">
+              <h3 class="component-title">
+                <i class="fas fa-chart-bar component-icon"></i>Scoring Agent Implementation
+              </h3>
+              <p>Signal evaluation and confidence scoring:</p>
+              <div class="code-block">
+                <span class="text-blue-400"># scoring_agent.py</span><br>
+                <span class="text-purple-400">class</span> <span class="text-yellow-400">ScoringAgent</span>:<br>
+                &nbsp;&nbsp;<span class="text-purple-400">def</span> <span class="text-yellow-400">evaluate</span>(<span class="text-orange-400">self</span>, signal):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;score = {<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-green-400">'technical'</span>: <span class="text-orange-400">self</span>.evaluate_technical(signal),<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-green-400">'fundamental'</span>: <span class="text-orange-400">self</span>.evaluate_fundamental(signal),<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-green-400">'sentiment'</span>: <span class="text-orange-400">self</span>.evaluate_sentiment(signal),<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-green-400">'kingfisher'</span>: <span class="text-orange-400">self</span>.evaluate_kingfisher(signal)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;total_score = <span class="text-orange-400">self</span>.calculate_weighted_score(score)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-purple-400">return</span> total_score<br>
+              </div>
+            </div>
+            
+            <div class="component-box">
+              <h3 class="component-title">
+                <i class="fas fa-code component-icon"></i>Technology Stack
+              </h3>
+              <div class="grid grid-cols-2 gap-2">
+                <div>• Python 3.11+</div>
+                <div>• FastAPI</div>
+                <div>• PostgreSQL</div>
+                <div>• InfluxDB</div>
+                <div>• Redis</div>
+                <div>• RabbitMQ</div>
+                <div>• Pydantic</div>
+                <div>• SQLAlchemy</div>
+                <div>• Pandas</div>
+                <div>• NumPy</div>
+              </div>
+            </div>
+            
+            <div class="component-box">
+              <h3 class="component-title">
+                <i class="fas fa-tasks component-icon"></i>Implementation Steps
+              </h3>
+              <ol class="list-decimal ml-6 mt-2 space-y-1">
+                <li>Set up project structure and database models</li>
+                <li>Implement core agent classes and interfaces</li>
+                <li>Create API endpoints and WebSocket services</li>
+                <li>Implement exchange connectors and data providers</li>
+                <li>Set up background tasks and scheduled jobs</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+

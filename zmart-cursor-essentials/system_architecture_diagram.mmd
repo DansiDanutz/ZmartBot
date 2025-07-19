@@ -1,0 +1,136 @@
+graph TB
+    subgraph "Frontend Layer"
+        UI[Main Dashboard UI]
+        HM[Signal Heatmap]
+        TT[Trade Tracker]
+        PC[Paper Trading Console]
+        LTC[Live Trading Console]
+        VIS[Share Distribution Visualizer]
+        DBG[Signal Debug Console]
+        SUB[Subscription Controls]
+    end
+    
+    subgraph "API Gateway Layer"
+        GW[API Gateway]
+        AUTH[Authentication Service]
+        RATE[Rate Limiter]
+    end
+    
+    subgraph "Core Trading Engine"
+        ORC[Orchestration Agent]
+        SCORE[Scoring Agent]
+        RISK[Risk Guard Agent]
+        CONF[Conflict Resolver]
+        LOCK[Locking Protocol]
+    end
+    
+    subgraph "Trading Services"
+        PAPER[Paper Trading Service]
+        LIVE[Live Trading Service]
+        SIM[Strategy Simulator]
+        DISP[Dispute Resolution]
+    end
+    
+    subgraph "Signal Processing"
+        SIG[Signal Generator]
+        THROT[Signal Throttle]
+        AI[AI Explainability]
+        REJ[Rejected Signals Handler]
+    end
+    
+    subgraph "Blockchain Layer"
+        VAULT[Smart Contract Vault]
+        TOKEN[Token Branding Engine]
+        WEB3[Web3 Integration]
+    end
+    
+    subgraph "Analytics & Reporting"
+        LIQ[Liquidity Analytics]
+        TRANS[Transparency Index]
+        BLOG[Auto-Publish Blog]
+        GEO[Geo Mapping Service]
+    end
+    
+    subgraph "Data Layer"
+        DB[(Primary Database)]
+        CACHE[(Redis Cache)]
+        QUEUE[(Message Queue)]
+        LOGS[(Audit Logs)]
+    end
+    
+    subgraph "External Services"
+        EXCHANGE[Crypto Exchanges]
+        PRICE[Price Feeds]
+        NEWS[News APIs]
+        SOCIAL[Social Sentiment]
+    end
+    
+    %% Frontend connections
+    UI --> GW
+    HM --> GW
+    TT --> GW
+    PC --> GW
+    LTC --> GW
+    VIS --> GW
+    DBG --> GW
+    SUB --> GW
+    
+    %% API Gateway connections
+    GW --> AUTH
+    GW --> RATE
+    GW --> ORC
+    
+    %% Core engine connections
+    ORC --> SCORE
+    ORC --> RISK
+    ORC --> CONF
+    ORC --> LOCK
+    
+    %% Trading services
+    ORC --> PAPER
+    ORC --> LIVE
+    ORC --> SIM
+    ORC --> DISP
+    
+    %% Signal processing
+    SIG --> THROT
+    THROT --> ORC
+    SIG --> AI
+    SIG --> REJ
+    
+    %% Blockchain connections
+    LIVE --> VAULT
+    VAULT --> TOKEN
+    VAULT --> WEB3
+    
+    %% Analytics connections
+    ORC --> LIQ
+    ORC --> TRANS
+    TRANS --> BLOG
+    TT --> GEO
+    
+    %% Data layer connections
+    ORC --> DB
+    ORC --> CACHE
+    ORC --> QUEUE
+    RISK --> LOGS
+    
+    %% External connections
+    SIG --> EXCHANGE
+    SIG --> PRICE
+    SIG --> NEWS
+    SIG --> SOCIAL
+    
+    %% Styling
+    classDef frontend fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    classDef core fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    classDef data fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px
+    classDef external fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    classDef blockchain fill:#fce4ec,stroke:#880e4f,stroke-width:2px
+    
+    class UI,HM,TT,PC,LTC,VIS,DBG,SUB frontend
+    class ORC,SCORE,RISK,CONF,LOCK core
+    class DB,CACHE,QUEUE,LOGS data
+    class EXCHANGE,PRICE,NEWS,SOCIAL external
+    class VAULT,TOKEN,WEB3 blockchain
+
