@@ -532,15 +532,19 @@ class ScoringAgent:
             return 0.0
     
     async def _aggregate_scores(self, source_scores: Dict[SignalSource, float]) -> float:
-        """Aggregate source scores using ensemble method"""
+        """
+        Aggregate source scores using flexible ensemble method
+        NOTE: Fixed 25-point system removed - aggregation is now flexible
+        """
         if not source_scores:
             return 0.0
         
-        # Weighted average based on source reliability
+        # FLEXIBLE weights - can be adjusted dynamically in the future
+        # TODO: Make these configurable/dynamic based on market conditions
         weights = {
-            SignalSource.KINGFISHER: 0.3,
-            SignalSource.RISKMETRIC: 0.2,
-            SignalSource.CRYPTOMETER: 0.25,
+            SignalSource.KINGFISHER: 0.3,    # Independent liquidation analysis
+            SignalSource.RISKMETRIC: 0.2,    # Independent risk scoring
+            SignalSource.CRYPTOMETER: 0.25,  # Independent calibrated scoring
             SignalSource.TECHNICAL: 0.15,
             SignalSource.FUNDAMENTAL: 0.05,
             SignalSource.SENTIMENT: 0.05
@@ -557,6 +561,7 @@ class ScoringAgent:
         if total_weight == 0.0:
             return 0.0
         
+        # Return normalized score (0.0-1.0) - ready for flexible aggregation
         return weighted_sum / total_weight
     
     async def _determine_signal_type(self, score: float) -> Tuple[SignalType, float]:

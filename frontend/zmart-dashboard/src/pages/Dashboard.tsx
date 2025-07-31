@@ -1,14 +1,26 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
+import { useQuery } from 'react-query'
 import {
   ArrowTrendingUpIcon,
   ArrowTrendingDownIcon,
   CurrencyDollarIcon,
   ChartBarIcon,
 } from '@heroicons/react/24/outline'
+import cryptometerService from '../services/cryptometerService'
 
 const Dashboard: React.FC = () => {
-  // Mock data - in real app this would come from API
+  // Fetch real data from Cryptometer API
+  const { data: dashboardData, isLoading, error } = useQuery(
+    'dashboardData',
+    () => cryptometerService.getDashboardData(),
+    {
+      refetchInterval: 30000, // Refetch every 30 seconds
+      staleTime: 10000, // Consider data stale after 10 seconds
+    }
+  )
+
+  // Mock data for portfolio and trades (will be replaced with real trading data)
   const portfolioData = {
     totalValue: 125000,
     change24h: 2500,
@@ -39,22 +51,14 @@ const Dashboard: React.FC = () => {
     },
   ]
 
-  const recentSignals = [
-    {
-      id: '1',
-      symbol: 'BTCUSDT',
-      type: 'STRONG_BUY',
-      confidence: 0.85,
-      timestamp: '2024-01-15T10:30:00Z',
-    },
-    {
-      id: '2',
-      symbol: 'ETHUSDT',
-      type: 'BUY',
-      confidence: 0.72,
-      timestamp: '2024-01-15T09:15:00Z',
-    },
-  ]
+  // Generate signals from market data
+  const recentSignals = dashboardData?.topGainers?.slice(0, 5).map((crypto: any, index: number) => ({
+    id: String(index + 1),
+    symbol: crypto.symbol || crypto.name,
+    type: crypto.price_change_percentage_24h > 5 ? 'STRONG_BUY' : 'BUY',
+    confidence: Math.min(0.9, 0.5 + (crypto.price_change_percentage_24h / 100)),
+    timestamp: new Date().toISOString(),
+  })) || []
 
   return (
     <>
@@ -68,6 +72,35 @@ const Dashboard: React.FC = () => {
           <h1 className="text-2xl font-bold text-white">Dashboard</h1>
           <p className="text-slate-400">Welcome to your Zmart Trading Bot dashboard</p>
         </div>
+
+        {/* Loading State */}
+        {isLoading && (
+          <div className="bg-slate-800 rounded-lg p-6">
+            <div className="flex items-center justify-center">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+              <span className="ml-3 text-white">Loading market data...</span>
+            </div>
+          </div>
+        )}
+
+        {/* Error State */}
+        {error && (
+          <div className="bg-red-900/20 border border-red-500 rounded-lg p-6">
+            <div className="flex items-center">
+              <div className="flex-shrink-0">
+                <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <div className="ml-3">
+                <h3 className="text-sm font-medium text-red-400">Error loading market data</h3>
+                <p className="text-sm text-red-300 mt-1">
+                  Failed to fetch market data
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Portfolio Overview */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -191,7 +224,7 @@ const Dashboard: React.FC = () => {
           </div>
           <div className="p-6">
             <div className="space-y-4">
-              {recentSignals.map((signal) => (
+              {recentSignals.map((signal: any) => (
                 <div
                   key={signal.id}
                   className="flex items-center justify-between p-4 bg-slate-700 rounded-lg"

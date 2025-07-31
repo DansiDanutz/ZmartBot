@@ -13,6 +13,7 @@ import time
 from src.utils.event_bus import EventBus, EventType, Event
 from src.utils.locking import LockManager, LockType
 from src.utils.metrics import MetricsCollector
+from src.config.settings import settings
 
 logger = logging.getLogger(__name__)
 

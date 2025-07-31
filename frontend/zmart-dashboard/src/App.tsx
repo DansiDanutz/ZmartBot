@@ -6,6 +6,7 @@ import { Toaster } from 'react-hot-toast'
 import { ErrorBoundary } from 'react-error-boundary'
 
 import Layout from './components/Layout'
+import ProtectedRoute from './components/ProtectedRoute'
 import ErrorFallback from './components/ErrorFallback'
 import Dashboard from './pages/Dashboard'
 import Trading from './pages/Trading'
@@ -37,14 +38,32 @@ function App() {
                 }}
               />
               <Routes>
+                {/* Public routes */}
                 <Route path="/login" element={<Login />} />
-                <Route path="/" element={<Layout />}>
+                
+                {/* Protected routes */}
+                <Route path="/" element={
+                  <ProtectedRoute>
+                    <Layout />
+                  </ProtectedRoute>
+                }>
                   <Route index element={<Dashboard />} />
                   <Route path="trading" element={<Trading />} />
                   <Route path="signals" element={<Signals />} />
                   <Route path="analytics" element={<Analytics />} />
                   <Route path="settings" element={<Settings />} />
                 </Route>
+                
+                {/* Admin routes */}
+                <Route path="/admin" element={
+                  <ProtectedRoute requiredRole="admin">
+                    <Layout />
+                  </ProtectedRoute>
+                }>
+                  <Route index element={<div className="p-6"><h1 className="text-2xl font-bold text-white">Admin Panel</h1><p className="text-slate-400 mt-2">Admin features coming soon...</p></div>} />
+                </Route>
+                
+                {/* 404 route */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </div>

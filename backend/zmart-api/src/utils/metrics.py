@@ -1,11 +1,13 @@
 """
 Zmart Trading Bot Platform - Metrics Collection
-Prometheus metrics collection and custom trading metrics
+Metrics collection and aggregation utilities
 """
-import time
+import asyncio
 import logging
-from typing import Dict, Any, Optional
-from datetime import datetime
+import time
+from typing import Dict, Any, Optional, List
+from datetime import datetime, timedelta
+import psutil
 from prometheus_client import Counter, Gauge, Histogram, Summary, generate_latest, CONTENT_TYPE_LATEST
 
 from src.config.settings import settings
@@ -15,7 +17,18 @@ logger = logging.getLogger(__name__)
 class MetricsCollector:
     """Prometheus metrics collector for the Zmart platform"""
     
+    _instance = None
+    _initialized = False
+    
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+        return cls._instance
+    
     def __init__(self):
+        if self._initialized:
+            return
+        self._initialized = True
         # Trading metrics
         self.trades_total = Counter(
             'zmart_trades_total',
@@ -240,8 +253,22 @@ class MetricsCollector:
         """Get the content type for metrics"""
         return CONTENT_TYPE_LATEST
 
-# Global metrics collector instance
-metrics_collector = MetricsCollector()
+# Global metrics collector instance (singleton)
+_metrics_collector = None
+
+def get_metrics_collector() -> MetricsCollector:
+    """Get the global metrics collector instance (singleton)"""
+    global _metrics_collector
+    if _metrics_collector is None:
+        _metrics_collector = MetricsCollector()
+    return _metrics_collector
+
+# For backward compatibility - only create if not already created
+try:
+    metrics_collector = get_metrics_collector()
+except ValueError:
+    # If there's a duplicate error, just get the existing instance
+    metrics_collector = get_metrics_collector()
 
 # Convenience functions for common metric operations
 def record_trade_metrics(symbol: str, side: str, status: str, volume: float = 0):

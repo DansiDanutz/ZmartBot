@@ -211,12 +211,12 @@ async def get_influx_write_api():
         return None
     return influx_write_api
 
-async def write_metric(measurement: str, tags: Dict[str, str], fields: Dict[str, Any], timestamp: Optional[int] = None):
+async def write_metric(measurement: str, tags: Dict[str, str], fields: Dict[str, Any], timestamp: Optional[int] = None) -> None:
     """Write a metric to InfluxDB"""
     write_api = await get_influx_write_api()
     if not write_api:
         logger.warning("InfluxDB write API not available")
-        return
+        return None
     
     from influxdb_client import Point
     
@@ -244,6 +244,7 @@ async def write_metric(measurement: str, tags: Dict[str, str], fields: Dict[str,
         org=settings.INFLUX_ORG,
         record=point
     )
+    return None
 
 async def query_metrics(query: str) -> list:
     """Query metrics from InfluxDB"""

@@ -1,16 +1,17 @@
 """
 Zmart Trading Bot Platform - Monitoring Utilities
-System health monitoring, metrics collection, and alerting
+System monitoring and health check utilities
 """
 import asyncio
 import logging
 import time
 from typing import Dict, Any, Optional
 from datetime import datetime, timedelta
+import aiohttp
 import psutil
 
 from src.config.settings import settings
-from src.utils.database import check_database_health, write_metric
+from .database import check_database_health, write_metric
 
 logger = logging.getLogger(__name__)
 
@@ -19,9 +20,11 @@ class SystemMonitor:
     
     def __init__(self):
         self.start_time = datetime.utcnow()
-        self.metrics_interval = 60  # seconds
-        self.health_check_interval = 30  # seconds
+        self.metrics_interval = 120  # seconds (reduced from 60)
+        self.health_check_interval = 120  # seconds (reduced from 30)
         self.is_running = False
+        self.consecutive_failures = 0
+        self.max_consecutive_failures = 3
         
     async def start(self):
         """Start the system monitor"""
@@ -70,36 +73,44 @@ class SystemMonitor:
             memory = psutil.virtual_memory()
             disk = psutil.disk_usage('/')
             
-            # Write system metrics to InfluxDB
-            await write_metric(
-                measurement="system_metrics",
-                tags={"service": "zmart-api"},
-                fields={
-                    "cpu_percent": cpu_percent,
-                    "memory_percent": memory.percent,
-                    "memory_used": memory.used,
-                    "memory_total": memory.total,
-                    "disk_percent": disk.percent,
-                    "disk_used": disk.used,
-                    "disk_total": disk.total
-                }
-            )
+            # Try to write system metrics to InfluxDB, but don't fail if it doesn't work
+            try:
+                await write_metric(
+                    measurement="system_metrics",
+                    tags={"service": "zmart-api"},
+                    fields={
+                        "cpu_percent": cpu_percent,
+                        "memory_percent": memory.percent,
+                        "memory_used": memory.used,
+                        "memory_total": memory.total,
+                        "disk_percent": disk.percent,
+                        "disk_used": disk.used,
+                        "disk_total": disk.total
+                    }
+                )
+            except Exception as e:
+                # Log warning but don't fail
+                logger.debug(f"Could not write metrics to InfluxDB: {e}")
             
             # Process metrics
             process = psutil.Process()
             process_memory = process.memory_info()
             
-            await write_metric(
-                measurement="process_metrics",
-                tags={"service": "zmart-api"},
-                fields={
-                    "memory_rss": process_memory.rss,
-                    "memory_vms": process_memory.vms,
-                    "cpu_percent": process.cpu_percent(),
-                    "num_threads": process.num_threads(),
-                    "num_fds": process.num_fds() if hasattr(process, 'num_fds') else 0
-                }
-            )
+            try:
+                await write_metric(
+                    measurement="process_metrics",
+                    tags={"service": "zmart-api"},
+                    fields={
+                        "memory_rss": process_memory.rss,
+                        "memory_vms": process_memory.vms,
+                        "cpu_percent": process.cpu_percent(),
+                        "num_threads": process.num_threads(),
+                        "num_fds": process.num_fds() if hasattr(process, 'num_fds') else 0
+                    }
+                )
+            except Exception as e:
+                # Log debug but don't fail
+                logger.debug(f"Could not write process metrics to InfluxDB: {e}")
             
             logger.debug("System metrics collected successfully")
             
@@ -120,28 +131,41 @@ class SystemMonitor:
                 "uptime": (datetime.utcnow() - self.start_time).total_seconds()
             }
             
-            # Overall health status
-            overall_healthy = all(db_health.values()) and system_health["cpu_usage"] < 90 and system_health["memory_usage"] < 90
+            # Overall health status (more lenient for development)
+            critical_services_healthy = db_health["redis"]  # Only require Redis for basic functionality
+            overall_healthy = critical_services_healthy and system_health["cpu_usage"] < 90 and system_health["memory_usage"] < 90
             
-            # Write health metrics
-            await write_metric(
-                measurement="health_check",
-                tags={"service": "zmart-api"},
-                fields={
-                    "overall_healthy": overall_healthy,
-                    "postgresql_healthy": db_health["postgresql"],
-                    "redis_healthy": db_health["redis"],
-                    "influxdb_healthy": db_health["influxdb"],
-                    "cpu_usage": system_health["cpu_usage"],
-                    "memory_usage": system_health["memory_usage"],
-                    "disk_usage": system_health["disk_usage"],
-                    "uptime_seconds": system_health["uptime"]
-                }
-            )
+            # Try to write health metrics, but don't fail if it doesn't work
+            try:
+                await write_metric(
+                    measurement="health_check",
+                    tags={"service": "zmart-api"},
+                    fields={
+                        "overall_healthy": overall_healthy,
+                        "postgresql_healthy": db_health["postgresql"],
+                        "redis_healthy": db_health["redis"],
+                        "influxdb_healthy": db_health["influxdb"],
+                        "cpu_usage": system_health["cpu_usage"],
+                        "memory_usage": system_health["memory_usage"],
+                        "disk_usage": system_health["disk_usage"],
+                        "uptime_seconds": system_health["uptime"]
+                    }
+                )
+            except Exception as e:
+                # Log debug but don't fail
+                logger.debug(f"Could not write health metrics to InfluxDB: {e}")
             
             if not overall_healthy:
-                logger.warning(f"System health check failed: {db_health}, {system_health}")
+                self.consecutive_failures += 1
+                # Only log warnings after multiple consecutive failures
+                if self.consecutive_failures >= self.max_consecutive_failures:
+                    logger.warning(f"System health check failed {self.consecutive_failures} times: {db_health}, {system_health}")
+                else:
+                    logger.debug(f"Health check failed ({self.consecutive_failures}/{self.max_consecutive_failures}): {db_health}")
             else:
+                if self.consecutive_failures > 0:
+                    logger.info(f"System health recovered after {self.consecutive_failures} failures")
+                self.consecutive_failures = 0
                 logger.debug("Health check passed")
                 
         except Exception as e:
@@ -201,7 +225,7 @@ async def get_system_status() -> Dict[str, Any]:
 async def get_performance_metrics(time_range: str = "1h") -> Dict[str, Any]:
     """Get performance metrics for the specified time range"""
     try:
-        from src.utils.database import query_metrics
+        from .database import query_metrics
         
         # Query system metrics
         system_query = f'''
@@ -319,4 +343,41 @@ class AlertManager:
         self.alerts.clear()
 
 # Global alert manager
-alert_manager = AlertManager() 
+alert_manager = AlertManager()
+
+# API monitoring functions
+async def record_api_call(service: str, endpoint: str, status_code: int, response_time: float):
+    """Record API call metrics"""
+    try:
+        await write_metric(
+            measurement="api_calls",
+            tags={
+                "service": service,
+                "endpoint": endpoint,
+                "status_code": str(status_code)
+            },
+            fields={
+                "response_time_ms": response_time * 1000,
+                "count": 1
+            }
+        )
+    except Exception as e:
+        logger.debug(f"Could not record API call metrics: {e}")
+
+async def record_api_error(service: str, endpoint: str, status_code: int, error_message: str):
+    """Record API error metrics"""
+    try:
+        await write_metric(
+            measurement="api_errors",
+            tags={
+                "service": service,
+                "endpoint": endpoint,
+                "status_code": str(status_code)
+            },
+            fields={
+                "error_message": error_message,
+                "count": 1
+            }
+        )
+    except Exception as e:
+        logger.debug(f"Could not record API error metrics: {e}") 

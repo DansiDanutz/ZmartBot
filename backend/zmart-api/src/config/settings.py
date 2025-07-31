@@ -58,7 +58,7 @@ class Settings(BaseSettings):
         alias="CORS_ORIGINS"
     )
     ALLOWED_HOSTS: List[str] = Field(
-        default=["localhost", "127.0.0.1"],
+        default=["localhost", "127.0.0.1", "testserver"],
         alias="ALLOWED_HOSTS"
     )
     
@@ -68,16 +68,23 @@ class Settings(BaseSettings):
     MIN_POSITION_SIZE: float = Field(default=10.0, alias="MIN_POSITION_SIZE")
     RISK_FREE_RATE: float = Field(default=0.02, alias="RISK_FREE_RATE")
     
-    # API Configuration
-    KUCOIN_API_KEY: Optional[str] = Field(default=None, alias="KUCOIN_API_KEY")
-    KUCOIN_SECRET: Optional[str] = Field(default=None, alias="KUCOIN_SECRET")
-    KUCOIN_PASSPHRASE: Optional[str] = Field(default=None, alias="KUCOIN_PASSPHRASE")
+        # API Configuration
+    KUCOIN_API_KEY: str = Field(default="6888904828335c0001f5e7ea", alias="KUCOIN_API_KEY")
+    KUCOIN_SECRET: str = Field(default="9ea232c1-cd09-4c93-9319-f649a138335c", alias="KUCOIN_SECRET")
+    KUCOIN_PASSPHRASE: str = Field(default="Danutz1981", alias="KUCOIN_PASSPHRASE")
+    KUCOIN_BROKER_NAME: str = Field(default="KRYPTOSTACKMASTER", alias="KUCOIN_BROKER_NAME")
+    KUCOIN_API_PARTNER: str = Field(default="KRYPTOSTACKFUTURES_ND", alias="KUCOIN_API_PARTNER")
+    KUCOIN_API_PARTNER_SECRET: str = Field(default="f8231132-0940-464e-bfd4-231b31cf1fe1", alias="KUCOIN_API_PARTNER_SECRET")
     CRYPTOMETER_API_KEY: str = Field(default="k77U187e08zGf4I3SLz3sYzTEyM2KNoJ9i1N4xg2", alias="CRYPTOMETER_API_KEY")
+    
+    # OpenAI Configuration - Use environment variables for security
+    OPENAI_API_KEY: Optional[str] = Field(default=None, alias="OPENAI_API_KEY")
+    OPENAI_API_KEY_TRADING: Optional[str] = Field(default=None, alias="OPENAI_API_KEY_TRADING")
     
     # Monitoring Configuration
     PROMETHEUS_PORT: int = Field(default=9090, alias="PROMETHEUS_PORT")
     GRAFANA_PORT: int = Field(default=3001, alias="GRAFANA_PORT")
-    METRICS_ENABLED: bool = Field(default=True, alias="METRICS_ENABLED")
+    METRICS_ENABLED: bool = Field(default=False, alias="METRICS_ENABLED")
     
     # Agent Configuration
     SCORING_AGENT_ENABLED: bool = Field(default=True, alias="SCORING_AGENT_ENABLED")

@@ -9,6 +9,7 @@ import asyncio
 from src.utils.monitoring import get_system_status, get_performance_metrics
 from src.utils.database import check_database_health
 from src.utils.metrics import metrics_collector
+from src.config.settings import settings
 
 router = APIRouter()
 
