@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Complete Cryptometer AI Trading System - Multi-Timeframe Agent
+Complete Cryptometer AI Trading System - Multi-Timeframe Agent with AI Win Rate Prediction
 Based on Cryptometer_Complete_AI_System from Documentation folder
 
 This system provides:
@@ -9,6 +9,7 @@ This system provides:
 - Realistic win-rate scoring
 - Dynamic pattern recognition
 - Professional-grade trading signals
+- AI-Powered Win Rate Prediction from 17 endpoints
 """
 
 import requests
@@ -23,8 +24,20 @@ except ImportError:
 import os
 import time
 import logging
+import asyncio
 from typing import Dict, List, Any, Tuple
 import statistics
+
+# Import enhanced rate limiter
+from src.utils.enhanced_rate_limiter import global_rate_limiter, rate_limited_request
+
+# Import AI win rate predictor
+from src.agents.scoring.ai_win_rate_predictor import (
+    ai_predictor,
+    AIModel,
+    AIWinRatePrediction,
+    MultiTimeframeAIPrediction
+)
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -631,33 +644,38 @@ class MultiTimeframeCryptometerSystem:
             }
         }
     
-    def _safe_request(self, url: str, params: dict, endpoint_name: str) -> Tuple[dict, bool]:
-        """Make safe API request with rate limiting and error handling"""
+    async def _safe_request(self, url: str, params: dict, endpoint_name: str) -> Tuple[dict, bool]:
+        """Make safe API request with enhanced rate limiting and error handling"""
         try:
-            # Rate limiting
-            current_time = time.time()
-            time_since_last = current_time - self.last_request_time
-            if time_since_last < self.request_delay:
-                time.sleep(self.request_delay - time_since_last)
-            
             # Add API key to params
             params['api_key'] = self.api_key
             
-            # Make request
-            response = self.session.get(url, params=params, timeout=30)
-            self.last_request_time = time.time()
+            # Define the request function
+            def make_request():
+                return self.session.get(url, params=params, timeout=30)
             
-            if response.status_code == 200:
-                return response.json(), True
+            # Execute with enhanced rate limiting
+            response, success = await rate_limited_request('cryptometer', make_request)
+            
+            if success and response and response.status_code == 200:
+                try:
+                    return response.json(), True
+                except json.JSONDecodeError as e:
+                    logger.error(f"JSON decode error for {endpoint_name}: {e}")
+                    return {}, False
+            elif response and response.status_code == 429:
+                logger.warning(f"Rate limited for {endpoint_name} (429), enhanced rate limiter will handle backoff")
+                return {}, False
             else:
-                logger.warning(f"API request failed for {endpoint_name}: {response.status_code}")
+                status = response.status_code if response else 'No response'
+                logger.warning(f"API request failed for {endpoint_name}: {status}")
                 return {}, False
                 
         except Exception as e:
             logger.error(f"Error in API request for {endpoint_name}: {e}")
             return {}, False
     
-    def collect_symbol_data(self, symbol: str) -> Dict[str, Any]:
+    async def collect_symbol_data(self, symbol: str) -> Dict[str, Any]:
         """Collect comprehensive data for a symbol from all endpoints"""
         try:
             symbol_data: Dict[str, Any] = {'symbol': symbol}
@@ -673,7 +691,7 @@ class MultiTimeframeCryptometerSystem:
                         if isinstance(value, str) and '{symbol}' in value:
                             params[key] = value.replace('{symbol}', symbol)
                     
-                    data, success = self._safe_request(url, params, endpoint_name)
+                    data, success = await self._safe_request(url, params, endpoint_name)
                     
                     symbol_data[endpoint_name] = {
                         'success': success,
@@ -698,14 +716,18 @@ class MultiTimeframeCryptometerSystem:
             logger.error(f"Error collecting symbol data for {symbol}: {e}")
             return {'symbol': symbol, 'error': str(e)}
     
-    def analyze_multi_timeframe_symbol(self, symbol: str) -> Dict[str, Any]:
+    async def analyze_multi_timeframe_symbol(self, symbol: str) -> Dict[str, Any]:
         """Analyze a symbol using multi-timeframe AI agent"""
         try:
             # Collect comprehensive data
-            symbol_data = self.collect_symbol_data(symbol)
+            symbol_data = await self.collect_symbol_data(symbol)
             
             # Run multi-timeframe analysis
             analysis_result = self.ai_agent.analyze_multi_timeframe(symbol_data)
+            
+            # Add AI win rate prediction
+            ai_prediction = await self._get_ai_win_rate_prediction(symbol, symbol_data)
+            analysis_result['ai_win_rate_prediction'] = ai_prediction
             
             return analysis_result
             
@@ -716,6 +738,97 @@ class MultiTimeframeCryptometerSystem:
                 'error': str(e),
                 'timestamp': datetime.utcnow().isoformat()
             }
+    
+    async def get_cryptometer_win_rate(self, symbol: str) -> Dict[str, Any]:
+        """Get Cryptometer win rate prediction using AI analysis of 17 endpoints"""
+        try:
+            # Collect comprehensive data from all endpoints
+            symbol_data = await self.collect_symbol_data(symbol)
+            
+            # Get AI win rate prediction
+            ai_prediction = await self._get_ai_win_rate_prediction(symbol, symbol_data)
+            
+            return {
+                'symbol': symbol,
+                'win_rate_prediction': ai_prediction.win_rate_prediction,
+                'confidence': ai_prediction.confidence,
+                'direction': ai_prediction.direction,
+                'reasoning': ai_prediction.reasoning,
+                'ai_analysis': ai_prediction.ai_analysis,
+                'data_summary': ai_prediction.data_summary,
+                'timestamp': datetime.now().isoformat()
+            }
+        except Exception as e:
+            logger.error(f"Error getting Cryptometer win rate for {symbol}: {str(e)}")
+            return {'symbol': symbol, 'win_rate_prediction': 0.0, 'error': str(e)}
+    
+    async def get_multi_timeframe_win_rate(self, symbol: str) -> Dict[str, Any]:
+        """Get multi-timeframe win rate predictions using AI analysis"""
+        try:
+            # Collect comprehensive data
+            symbol_data = await self.collect_symbol_data(symbol)
+            
+            # Get multi-timeframe AI prediction
+            multi_prediction = await self._get_multi_timeframe_ai_prediction(symbol, symbol_data)
+            
+            return {
+                'symbol': symbol,
+                'short_term_24h': {
+                    'win_rate': multi_prediction.short_term_24h.win_rate_prediction,
+                    'confidence': multi_prediction.short_term_24h.confidence,
+                    'direction': multi_prediction.short_term_24h.direction,
+                    'reasoning': multi_prediction.short_term_24h.reasoning
+                },
+                'medium_term_7d': {
+                    'win_rate': multi_prediction.medium_term_7d.win_rate_prediction,
+                    'confidence': multi_prediction.medium_term_7d.confidence,
+                    'direction': multi_prediction.medium_term_7d.direction,
+                    'reasoning': multi_prediction.medium_term_7d.reasoning
+                },
+                'long_term_1m': {
+                    'win_rate': multi_prediction.long_term_1m.win_rate_prediction,
+                    'confidence': multi_prediction.long_term_1m.confidence,
+                    'direction': multi_prediction.long_term_1m.direction,
+                    'reasoning': multi_prediction.long_term_1m.reasoning
+                },
+                'overall_confidence': multi_prediction.overall_confidence,
+                'best_opportunity': {
+                    'timeframe': multi_prediction.best_opportunity.timeframe,
+                    'win_rate': multi_prediction.best_opportunity.win_rate_prediction,
+                    'direction': multi_prediction.best_opportunity.direction
+                },
+                'timestamp': datetime.now().isoformat()
+            }
+        except Exception as e:
+            logger.error(f"Error getting multi-timeframe win rate for {symbol}: {str(e)}")
+            return {'symbol': symbol, 'error': str(e)}
+    
+    async def _get_ai_win_rate_prediction(self, symbol: str, cryptometer_data: Dict[str, Any]) -> AIWinRatePrediction:
+        """Get AI win rate prediction for Cryptometer 17-endpoint analysis"""
+        try:
+            return await ai_predictor.predict_cryptometer_win_rate(
+                symbol=symbol,
+                cryptometer_data=cryptometer_data,
+                model=AIModel.OPENAI_GPT4
+            )
+        except Exception as e:
+            logger.error(f"Error getting AI win rate prediction for {symbol}: {str(e)}")
+            # Return fallback prediction
+            return ai_predictor._create_fallback_prediction(symbol, "cryptometer", f"AI error: {str(e)}")
+    
+    async def _get_multi_timeframe_ai_prediction(self, symbol: str, cryptometer_data: Dict[str, Any]) -> MultiTimeframeAIPrediction:
+        """Get multi-timeframe AI prediction for Cryptometer 17-endpoint analysis"""
+        try:
+            return await ai_predictor.predict_multi_timeframe_win_rate(
+                symbol=symbol,
+                agent_type="cryptometer",
+                agent_data=cryptometer_data,
+                model=AIModel.OPENAI_GPT4
+            )
+        except Exception as e:
+            logger.error(f"Error getting multi-timeframe AI prediction for {symbol}: {str(e)}")
+            # Return fallback prediction
+            return ai_predictor._create_fallback_multi_prediction(symbol, "cryptometer")
 
 # Global instance
 _cryptometer_system = None
@@ -727,14 +840,14 @@ async def get_cryptometer_service() -> MultiTimeframeCryptometerSystem:
         _cryptometer_system = MultiTimeframeCryptometerSystem()
     return _cryptometer_system
 
-def run_multi_timeframe_analysis(symbols: List[str]) -> List[Dict[str, Any]]:
+async def run_multi_timeframe_analysis(symbols: List[str]) -> List[Dict[str, Any]]:
     """Run multi-timeframe analysis for multiple symbols"""
     try:
         system = MultiTimeframeCryptometerSystem()
         results = []
         
         for symbol in symbols:
-            result = system.analyze_multi_timeframe_symbol(symbol)
+            result = await system.analyze_multi_timeframe_symbol(symbol)
             results.append(result)
         
         return results
