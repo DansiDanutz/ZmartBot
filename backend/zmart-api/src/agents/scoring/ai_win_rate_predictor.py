@@ -70,21 +70,26 @@ class AIWinRatePredictor:
         self.default_model = AIModel.OPENAI_GPT4
         self.session = None
         
+        # Get API keys from environment variables
+        import os
+        openai_key = os.environ.get('OPENAI_API_KEY', self.api_keys.get('openai', ''))
+        zmart_key = os.environ.get('ZMART_TRADING_API_KEY', self.api_keys.get('zmart', ''))
+        
         # Model-specific configurations
         self.model_configs = {
             AIModel.OPENAI_GPT4: {
                 "api_url": "https://api.openai.com/v1/chat/completions",
-                "headers": {"Authorization": f"Bearer {self.api_keys.get('openai', '')}"},
+                "headers": {"Authorization": f"Bearer {openai_key}"},
                 "max_tokens": 2000
             },
             AIModel.DEEPSEEK: {
                 "api_url": "https://api.deepseek.com/v1/chat/completions",
-                "headers": {"Authorization": f"Bearer {self.api_keys.get('deepseek', '')}"},
+                "headers": {"Authorization": f"Bearer {zmart_key}"},
                 "max_tokens": 2000
             },
             AIModel.ANTHROPIC_CLAUDE: {
                 "api_url": "https://api.anthropic.com/v1/messages",
-                "headers": {"x-api-key": self.api_keys.get('anthropic', '')},
+                "headers": {"x-api-key": zmart_key},
                 "max_tokens": 2000
             }
         }
