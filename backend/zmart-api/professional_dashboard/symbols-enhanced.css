@@ -1,0 +1,466 @@
+/* Enhanced Symbols Section CSS */
+/* This CSS enhances the exchange cards to be bigger and more functional */
+
+/* Main Exchange Cards Container */
+.exchange-cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 24px;
+    margin: 24px 0;
+    padding: 0 8px;
+}
+
+/* Individual Exchange Card */
+.exchange-card {
+    background: linear-gradient(135deg, #1a1a1aee, #2a2a2acc);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    border-radius: 16px;
+    padding: 24px;
+    min-height: 400px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Add gradient overlay on hover */
+.exchange-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, 
+        rgba(139, 92, 246, 0.1) 0%, 
+        rgba(6, 182, 212, 0.05) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.exchange-card:hover::before {
+    opacity: 1;
+}
+
+.exchange-card:hover {
+    transform: translateY(-4px) scale(1.02);
+    border-color: rgba(139, 92, 246, 0.6);
+    box-shadow: 
+        0 24px 48px rgba(139, 92, 246, 0.15),
+        0 12px 24px rgba(6, 182, 212, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Exchange Card Header */
+.exchange-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.exchange-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.exchange-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #8b5cf620, #06b6d420);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #fff;
+}
+
+/* Specific exchange colors */
+.exchange-card.kucoin .exchange-icon {
+    background: linear-gradient(135deg, #00D16320, #00D16360);
+    color: #00D163;
+}
+
+.exchange-card.binance .exchange-icon {
+    background: linear-gradient(135deg, #F0B90B20, #F0B90B60);
+    color: #F0B90B;
+}
+
+.exchange-card.both .exchange-icon {
+    background: linear-gradient(135deg, #8b5cf620, #06b6d460);
+    color: #06b6d4;
+}
+
+.exchange-card.all-symbols .exchange-icon {
+    background: linear-gradient(135deg, #ef444420, #f59e0b60);
+    color: #f59e0b;
+}
+
+.exchange-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.02em;
+}
+
+.exchange-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #10b981;
+}
+
+.status-dot {
+    width: 6px;
+    height: 6px;
+    background: #10b981;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+/* Symbol Selection Area */
+.symbol-selection-area {
+    margin-top: 20px;
+}
+
+.selection-controls {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.control-group {
+    flex: 1;
+}
+
+.control-label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.875rem;
+    color: #a1a1aa;
+    font-weight: 500;
+}
+
+/* Enhanced Dropdown */
+.enhanced-dropdown {
+    position: relative;
+    width: 100%;
+}
+
+.dropdown-select-enhanced {
+    width: 100%;
+    padding: 12px 16px;
+    background: #0a0a0aee;
+    color: #fff;
+    border: 1px solid rgba(139, 92, 246, 0.2);
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23a1a1aa' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    padding-right: 40px;
+}
+
+.dropdown-select-enhanced:hover {
+    border-color: rgba(139, 92, 246, 0.4);
+    background-color: #0a0a0af2;
+}
+
+.dropdown-select-enhanced:focus {
+    outline: none;
+    border-color: rgba(139, 92, 246, 0.6);
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
+/* Search Input */
+.search-input-enhanced {
+    width: 100%;
+    padding: 12px 16px 12px 40px;
+    background: #0a0a0aee;
+    color: #fff;
+    border: 1px solid rgba(139, 92, 246, 0.2);
+    border-radius: 10px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23a1a1aa' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: left 12px center;
+}
+
+.search-input-enhanced::placeholder {
+    color: #71717a;
+}
+
+.search-input-enhanced:focus {
+    outline: none;
+    border-color: rgba(139, 92, 246, 0.6);
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
+/* Symbols Grid */
+.symbols-grid-enhanced {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 10px;
+    max-height: 240px;
+    overflow-y: auto;
+    padding: 12px;
+    background: #0a0a0a66;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Custom Scrollbar */
+.symbols-grid-enhanced::-webkit-scrollbar {
+    width: 8px;
+}
+
+.symbols-grid-enhanced::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 4px;
+}
+
+.symbols-grid-enhanced::-webkit-scrollbar-thumb {
+    background: rgba(139, 92, 246, 0.3);
+    border-radius: 4px;
+}
+
+.symbols-grid-enhanced::-webkit-scrollbar-thumb:hover {
+    background: rgba(139, 92, 246, 0.5);
+}
+
+/* Individual Symbol Button */
+.symbol-button {
+    padding: 10px 12px;
+    background: linear-gradient(135deg, #1a1a1aee, #2a2a2a99);
+    color: #d1d5db;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.symbol-button:hover {
+    background: linear-gradient(135deg, #8b5cf630, #06b6d420);
+    color: #fff;
+    border-color: rgba(139, 92, 246, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
+}
+
+.symbol-button.selected {
+    background: linear-gradient(135deg, #8b5cf640, #06b6d430);
+    color: #fff;
+    border-color: rgba(139, 92, 246, 0.6);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Action Buttons */
+.exchange-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.action-button {
+    flex: 1;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.action-button.primary {
+    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+    color: #fff;
+}
+
+.action-button.primary:hover {
+    background: linear-gradient(135deg, #9b6ff6, #8c4afd);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(139, 92, 246, 0.3);
+}
+
+.action-button.secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: #d1d5db;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.action-button.secondary:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+/* Statistics Row */
+.exchange-stats {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px;
+    background: rgba(139, 92, 246, 0.05);
+    border-radius: 8px;
+    margin-top: 16px;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-value {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+.stat-label {
+    font-size: 0.75rem;
+    color: #a1a1aa;
+    margin-top: 4px;
+}
+
+/* All Symbols Special Card */
+.exchange-card.all-symbols {
+    background: linear-gradient(135deg, 
+        rgba(239, 68, 68, 0.05), 
+        rgba(245, 158, 11, 0.05));
+    border-color: rgba(245, 158, 11, 0.3);
+}
+
+.exchange-card.all-symbols:hover {
+    border-color: rgba(245, 158, 11, 0.6);
+    box-shadow: 
+        0 24px 48px rgba(245, 158, 11, 0.15),
+        0 12px 24px rgba(239, 68, 68, 0.1);
+}
+
+.all-symbols-info {
+    padding: 16px;
+    background: rgba(245, 158, 11, 0.1);
+    border: 1px solid rgba(245, 158, 11, 0.2);
+    border-radius: 10px;
+    margin-bottom: 16px;
+}
+
+.all-symbols-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #f59e0b;
+    margin-bottom: 8px;
+}
+
+.all-symbols-description {
+    font-size: 0.875rem;
+    color: #d1d5db;
+    line-height: 1.5;
+}
+
+/* Quick Add All Button */
+.quick-add-all {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, #ef4444, #f59e0b);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.quick-add-all:hover {
+    background: linear-gradient(135deg, #ff5555, #ff9e1b);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(245, 158, 11, 0.3);
+}
+
+.quick-add-all-icon {
+    width: 24px;
+    height: 24px;
+}
+
+/* Loading State */
+.symbols-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    color: #a1a1aa;
+}
+
+.loading-spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid rgba(139, 92, 246, 0.2);
+    border-top: 3px solid #8b5cf6;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .exchange-cards-container {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .exchange-cards-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .exchange-card {
+        min-height: 350px;
+    }
+    
+    .selection-controls {
+        flex-direction: column;
+    }
+}

@@ -26,7 +26,7 @@ from typing import Dict, List, Any, Optional, Tuple
 from dataclasses import dataclass
 import json
 
-from src.services.cryptometer_endpoint_analyzer import CryptometerEndpointAnalyzer, CryptometerAnalysis
+from src.services.cryptometer_data_types import CryptometerEndpointAnalyzer, CryptometerAnalysis
 from src.services.multi_model_ai_agent import MultiModelAIAgent
 from src.services.historical_ai_analysis_agent import HistoricalAIAnalysisAgent
 from src.services.calibrated_scoring_service import CalibratedScoringService
@@ -172,7 +172,7 @@ class ProfessionalReportGenerator:
         """Gather current market data"""
         try:
             # Get market data from Cryptometer or fallback sources
-            analysis = await self.cryptometer_analyzer.analyze_symbol_complete(symbol)
+            analysis = await self.cryptometer_analyzer.analyze_symbol(symbol)
             
             # Extract or estimate market metrics
             current_price = 180.94  # Placeholder - would come from real API

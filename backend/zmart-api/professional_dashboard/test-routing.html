@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Routing Test</title>
+</head>
+<body>
+    <h1>Routing Test</h1>
+    <p>Current path: <span id="current-path"></span></p>
+    <p>Expected tab: <span id="expected-tab"></span></p>
+    
+    <script>
+        const path = window.location.pathname;
+        document.getElementById('current-path').textContent = path;
+        
+        let expectedTab = 'unknown';
+        if (path === '/cryptometer') {
+            expectedTab = 'cryptometer';
+        } else if (path === '/kingfisher') {
+            expectedTab = 'kingfisher';
+        } else if (path === '/riskmetric') {
+            expectedTab = 'riskmetric';
+        } else {
+            expectedTab = 'cryptometer (default)';
+        }
+        
+        document.getElementById('expected-tab').textContent = expectedTab;
+        
+        console.log('🔍 Test page - Path:', path, 'Expected tab:', expectedTab);
+    </script>
+</body>
+</html>

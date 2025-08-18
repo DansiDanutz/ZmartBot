@@ -226,7 +226,7 @@ async def get_multi_timeframe_analysis(
     
     try:
         # Get current analysis
-        cryptometer_analysis = await historical_ai_agent.cryptometer_analyzer.analyze_symbol_complete(symbol.upper())
+        cryptometer_analysis = await historical_ai_agent.cryptometer_analyzer.analyze_symbol(symbol.upper())
         
         # Get multi-timeframe analysis
         multi_timeframe = await historical_ai_agent._get_multi_timeframe_analysis(symbol.upper(), cryptometer_analysis)

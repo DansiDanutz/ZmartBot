@@ -13,9 +13,11 @@ import aiohttp
 from aiohttp import ClientTimeout
 from pydantic import BaseModel, Field
 import json
+from urllib.parse import urlencode
 
 from src.config.settings import settings
 from src.utils.monitoring import record_api_call, record_api_error
+from src.utils.enhanced_rate_limiter import global_rate_limiter, rate_limited_request
 
 logger = logging.getLogger(__name__)
 
@@ -46,15 +48,41 @@ class BinanceKline(BaseModel):
 class BinanceService:
     """
     Binance API Service
-    Backup service for historical data and price verification
+    Full trading service with market data and order management
     """
     
     def __init__(self):
+        # API Configuration
+        self.api_key = settings.BINANCE_API_KEY
+        self.api_secret = settings.BINANCE_SECRET
         self.base_url = "https://api.binance.com"
+        self.futures_url = "https://fapi.binance.com"
+        
+        # Session management
         self.session: Optional[aiohttp.ClientSession] = None
         self.rate_limit_calls = []
         self.rate_limit_window = 60  # seconds
         self.max_calls_per_window = 1200  # Binance allows 1200 requests per minute
+        
+        # Trading symbols mapping
+        self.symbols = {
+            "bitcoin": "BTCUSDT",
+            "ethereum": "ETHUSDT", 
+            "avalanche": "AVAXUSDT",
+            "solana": "SOLUSDT",
+            "dogecoin": "DOGEUSDT",
+            "ripple": "XRPUSDT"
+        }
+        
+        # Contract specifications
+        self.multipliers = {
+            "BTCUSDT": 0.001,    # 1 contract = 0.001 BTC
+            "ETHUSDT": 0.01,     # 1 contract = 0.01 ETH
+            "AVAXUSDT": 0.1,     # 1 contract = 0.1 AVAX
+            "SOLUSDT": 0.1,      # 1 contract = 0.1 SOL
+            "DOGEUSDT": 1.0,     # 1 contract = 1 DOGE
+            "XRPUSDT": 1.0       # 1 contract = 1 XRP
+        }
         
     async def __aenter__(self):
         """Async context manager entry"""
@@ -86,12 +114,46 @@ class BinanceService:
         self.rate_limit_calls.append(now)
         return True
     
-    async def _make_request(self, endpoint: str, params: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
-        """Make API request with rate limiting"""
+    def _generate_signature(self, params: Dict[str, Any]) -> str:
+        """Generate HMAC signature for authenticated requests"""
+        query_string = urlencode(params)
+        signature = hmac.new(
+            self.api_secret.encode('utf-8'),
+            query_string.encode('utf-8'),
+            hashlib.sha256
+        ).hexdigest()
+        return signature
+    
+    def _add_auth_headers(self, headers: Dict[str, str]) -> Dict[str, str]:
+        """Add authentication headers"""
+        headers.update({
+            "X-MBX-APIKEY": self.api_key
+        })
+        return headers
+    
+    async def _make_request(self, endpoint: str, params: Optional[Dict[str, Any]] = None, 
+                          signed: bool = False, use_futures: bool = False) -> Dict[str, Any]:
+        """Make API request with rate limiting and optional authentication"""
         if not self._rate_limit_check():
             raise Exception("Rate limit exceeded. Please wait before making more requests.")
         
-        url = f"{self.base_url}{endpoint}"
+        base_url = self.futures_url if use_futures else self.base_url
+        url = f"{base_url}{endpoint}"
+        
+        # Add timestamp for signed requests
+        if signed:
+            if params is None:
+                params = {}
+            params["timestamp"] = int(time.time() * 1000)
+            params["signature"] = self._generate_signature(params)
+        
+        headers = {
+            "Content-Type": "application/json",
+            "User-Agent": "ZmartBot/1.0.0"
+        }
+        
+        if signed:
+            headers = self._add_auth_headers(headers)
         
         try:
             start_time = time.time()
@@ -378,6 +440,130 @@ class BinanceService:
             if len(symbol) >= 6 and symbol.endswith("USDT"):
                 return f"{symbol[:-4]}-USDT"
             return symbol
+    
+    # Trading Methods
+    async def get_account_info(self) -> Dict[str, Any]:
+        """Get account information"""
+        try:
+            return await self._make_request("/fapi/v2/account", signed=True, use_futures=True)
+        except Exception as e:
+            logger.error(f"Error getting account info: {e}")
+            raise
+    
+    async def get_positions(self) -> List[Dict[str, Any]]:
+        """Get current positions"""
+        try:
+            response = await self._make_request("/fapi/v2/positionRisk", signed=True, use_futures=True)
+            if isinstance(response, list):
+                positions = []
+                for pos in response:
+                    if isinstance(pos, dict) and float(pos.get("positionAmt", 0)) != 0:
+                        positions.append(pos)
+                return positions
+            else:
+                return []
+        except Exception as e:
+            logger.error(f"Error getting positions: {e}")
+            raise
+    
+    async def place_order(self, symbol: str, side: str, order_type: str = "MARKET",
+                         quantity: Optional[float] = None, price: Optional[float] = None,
+                         leverage: Optional[int] = None) -> Dict[str, Any]:
+        """Place a futures order"""
+        try:
+            # Set leverage if provided
+            if leverage:
+                await self._make_request("/fapi/v1/leverage", {
+                    "symbol": symbol,
+                    "leverage": leverage
+                }, signed=True, use_futures=True)
+            
+            # Prepare order parameters
+            params = {
+                "symbol": symbol,
+                "side": side.upper(),
+                "type": order_type.upper()
+            }
+            
+            if quantity:
+                params["quantity"] = str(quantity)
+            
+            if price and order_type.upper() == "LIMIT":
+                params["price"] = str(price)
+            
+            return await self._make_request("/fapi/v1/order", params, signed=True, use_futures=True)
+        except Exception as e:
+            logger.error(f"Error placing order: {e}")
+            raise
+    
+    async def cancel_order(self, symbol: str, order_id: str) -> Dict[str, Any]:
+        """Cancel an order"""
+        try:
+            params = {
+                "symbol": symbol,
+                "orderId": order_id
+            }
+            return await self._make_request("/fapi/v1/order", params, signed=True, use_futures=True)
+        except Exception as e:
+            logger.error(f"Error canceling order: {e}")
+            raise
+    
+    async def get_orders(self, symbol: str, status: str = "OPEN") -> List[Dict[str, Any]]:
+        """Get orders for a symbol"""
+        try:
+            params = {
+                "symbol": symbol,
+                "status": status
+            }
+            response = await self._make_request("/fapi/v1/openOrders", params, signed=True, use_futures=True)
+            if isinstance(response, list):
+                return response
+            else:
+                return []
+        except Exception as e:
+            logger.error(f"Error getting orders: {e}")
+            raise
+    
+    async def get_order_history(self, symbol: str, limit: int = 500) -> List[Dict[str, Any]]:
+        """Get order history"""
+        try:
+            params = {
+                "symbol": symbol,
+                "limit": limit
+            }
+            response = await self._make_request("/fapi/v1/allOrders", params, signed=True, use_futures=True)
+            if isinstance(response, list):
+                return response
+            else:
+                return []
+        except Exception as e:
+            logger.error(f"Error getting order history: {e}")
+            raise
+    
+    # Convenience Trading Methods
+    async def buy_bitcoin(self, quantity: float, leverage: int = 20) -> Dict[str, Any]:
+        """Buy Bitcoin futures"""
+        return await self.place_order("BTCUSDT", "BUY", quantity=quantity, leverage=leverage)
+    
+    async def sell_bitcoin(self, quantity: float, leverage: int = 20) -> Dict[str, Any]:
+        """Sell Bitcoin futures"""
+        return await self.place_order("BTCUSDT", "SELL", quantity=quantity, leverage=leverage)
+    
+    async def buy_ethereum(self, quantity: float, leverage: int = 20) -> Dict[str, Any]:
+        """Buy Ethereum futures"""
+        return await self.place_order("ETHUSDT", "BUY", quantity=quantity, leverage=leverage)
+    
+    async def sell_ethereum(self, quantity: float, leverage: int = 20) -> Dict[str, Any]:
+        """Sell Ethereum futures"""
+        return await self.place_order("ETHUSDT", "SELL", quantity=quantity, leverage=leverage)
+    
+    async def buy_avalanche(self, quantity: float, leverage: int = 20) -> Dict[str, Any]:
+        """Buy Avalanche futures"""
+        return await self.place_order("AVAXUSDT", "BUY", quantity=quantity, leverage=leverage)
+    
+    async def sell_avalanche(self, quantity: float, leverage: int = 20) -> Dict[str, Any]:
+        """Sell Avalanche futures"""
+        return await self.place_order("AVAXUSDT", "SELL", quantity=quantity, leverage=leverage)
 
 # Global service instance
 binance_service: Optional[BinanceService] = None

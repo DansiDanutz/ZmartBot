@@ -23,6 +23,7 @@ from dataclasses import dataclass
 
 from ..config.settings import settings
 
+
 # Configure logging
 logger = logging.getLogger(__name__)
 
@@ -43,7 +44,7 @@ class IndependentScores:
     """Collection of independent component scores"""
     kingfisher: Optional[ComponentScore]
     cryptometer: Optional[ComponentScore]
-    riskmetric: Optional[ComponentScore]
+    
     symbol: str
     timestamp: datetime
     
@@ -54,8 +55,7 @@ class IndependentScores:
             scores['kingfisher'] = self.kingfisher
         if self.cryptometer:
             scores['cryptometer'] = self.cryptometer
-        if self.riskmetric:
-            scores['riskmetric'] = self.riskmetric
+
         return scores
 
 class CalibratedCryptometerEngine:
@@ -638,46 +638,7 @@ class KingFisherScoringEngine:
                 timestamp=datetime.now()
             )
 
-class RiskMetricScoringEngine:
-    """
-    RiskMetric independent scoring engine
-    Placeholder for risk-based scoring
-    """
-    
-    def __init__(self):
-        logger.info("RiskMetricScoringEngine initialized")
-    
-    async def get_symbol_score(self, symbol: str) -> ComponentScore:
-        """Get RiskMetric risk-based score for symbol"""
-        try:
-            # TODO: Implement actual RiskMetric analysis
-            # For now, return placeholder score
-            score = ComponentScore(
-                component="riskmetric",
-                score=65.0,  # Placeholder
-                win_rate=0.65,
-                direction="NEUTRAL",
-                confidence=0.4,
-                patterns=[{"type": "placeholder", "description": "RiskMetric analysis pending"}],
-                analysis_details={"status": "pending_implementation"},
-                timestamp=datetime.now()
-            )
-            
-            logger.info(f"RiskMetric score for {symbol}: {score.score:.1f}/100 (placeholder)")
-            return score
-            
-        except Exception as e:
-            logger.error(f"Error getting RiskMetric score for {symbol}: {e}")
-            return ComponentScore(
-                component="riskmetric",
-                score=50.0,
-                win_rate=0.5,
-                direction="NEUTRAL",
-                confidence=0.0,
-                patterns=[],
-                analysis_details={"error": str(e)},
-                timestamp=datetime.now()
-            )
+
 
 class CalibratedScoringService:
     """
@@ -687,7 +648,7 @@ class CalibratedScoringService:
     def __init__(self):
         self.cryptometer_engine = CalibratedCryptometerEngine()
         self.kingfisher_engine = KingFisherScoringEngine()
-        self.riskmetric_engine = RiskMetricScoringEngine()
+
         
         logger.info("CalibratedScoringService initialized with independent scoring engines")
     
@@ -699,16 +660,15 @@ class CalibratedScoringService:
         tasks = [
             self.cryptometer_engine.get_symbol_score(symbol),
             self.kingfisher_engine.get_symbol_score(symbol),
-            self.riskmetric_engine.get_symbol_score(symbol)
+
         ]
         
         try:
-            cryptometer_score, kingfisher_score, riskmetric_score = await asyncio.gather(*tasks, return_exceptions=True)
+            cryptometer_score, kingfisher_score = await asyncio.gather(*tasks, return_exceptions=True)
             
             # Handle exceptions and ensure proper types
             final_cryptometer_score: Optional[ComponentScore] = None
             final_kingfisher_score: Optional[ComponentScore] = None
-            final_riskmetric_score: Optional[ComponentScore] = None
             
             if isinstance(cryptometer_score, Exception):
                 logger.error(f"Cryptometer scoring error: {cryptometer_score}")
@@ -720,15 +680,9 @@ class CalibratedScoringService:
             elif isinstance(kingfisher_score, ComponentScore):
                 final_kingfisher_score = kingfisher_score
             
-            if isinstance(riskmetric_score, Exception):
-                logger.error(f"RiskMetric scoring error: {riskmetric_score}")
-            elif isinstance(riskmetric_score, ComponentScore):
-                final_riskmetric_score = riskmetric_score
-            
             scores = IndependentScores(
                 kingfisher=final_kingfisher_score,
                 cryptometer=final_cryptometer_score,
-                riskmetric=final_riskmetric_score,
                 symbol=symbol,
                 timestamp=datetime.now()
             )
@@ -742,7 +696,6 @@ class CalibratedScoringService:
             return IndependentScores(
                 kingfisher=None,
                 cryptometer=None,
-                riskmetric=None,
                 symbol=symbol,
                 timestamp=datetime.now()
             )

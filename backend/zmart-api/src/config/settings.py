@@ -54,7 +54,11 @@ class Settings(BaseSettings):
     
     # CORS Configuration
     CORS_ORIGINS: List[str] = Field(
-        default=["http://localhost:3000", "http://localhost:5173"],
+        default=[
+            "http://localhost:3000",
+            "http://localhost:5173",
+            "http://localhost:3400",  # Professional Dashboard module
+        ],
         alias="CORS_ORIGINS"
     )
     ALLOWED_HOSTS: List[str] = Field(
@@ -68,14 +72,18 @@ class Settings(BaseSettings):
     MIN_POSITION_SIZE: float = Field(default=10.0, alias="MIN_POSITION_SIZE")
     RISK_FREE_RATE: float = Field(default=0.02, alias="RISK_FREE_RATE")
     
-        # API Configuration
-    KUCOIN_API_KEY: str = Field(default="6888904828335c0001f5e7ea", alias="KUCOIN_API_KEY")
-    KUCOIN_SECRET: str = Field(default="9ea232c1-cd09-4c93-9319-f649a138335c", alias="KUCOIN_SECRET")
-    KUCOIN_PASSPHRASE: str = Field(default="Danutz1981", alias="KUCOIN_PASSPHRASE")
-    KUCOIN_BROKER_NAME: str = Field(default="KRYPTOSTACKMASTER", alias="KUCOIN_BROKER_NAME")
-    KUCOIN_API_PARTNER: str = Field(default="KRYPTOSTACKFUTURES_ND", alias="KUCOIN_API_PARTNER")
-    KUCOIN_API_PARTNER_SECRET: str = Field(default="f8231132-0940-464e-bfd4-231b31cf1fe1", alias="KUCOIN_API_PARTNER_SECRET")
-    CRYPTOMETER_API_KEY: str = Field(default="k77U187e08zGf4I3SLz3sYzTEyM2KNoJ9i1N4xg2", alias="CRYPTOMETER_API_KEY")
+        # API Configuration - MUST be set via environment variables
+    KUCOIN_API_KEY: str = Field(default="", alias="KUCOIN_API_KEY")
+    KUCOIN_SECRET: str = Field(default="", alias="KUCOIN_SECRET")
+    KUCOIN_PASSPHRASE: str = Field(default="", alias="KUCOIN_PASSPHRASE")
+    KUCOIN_BROKER_NAME: str = Field(default="", alias="KUCOIN_BROKER_NAME")
+    KUCOIN_API_PARTNER: str = Field(default="", alias="KUCOIN_API_PARTNER")
+    KUCOIN_API_PARTNER_SECRET: str = Field(default="", alias="KUCOIN_API_PARTNER_SECRET")
+    CRYPTOMETER_API_KEY: str = Field(default="", alias="CRYPTOMETER_API_KEY")
+    
+    # Binance API Configuration - MUST be set via environment variables
+    BINANCE_API_KEY: str = Field(default="", alias="BINANCE_API_KEY")
+    BINANCE_SECRET: str = Field(default="", alias="BINANCE_SECRET")
     
     # OpenAI Configuration - Use environment variables for security
     OPENAI_API_KEY: Optional[str] = Field(default=None, alias="OPENAI_API_KEY")
@@ -108,10 +116,7 @@ class Settings(BaseSettings):
     
     # Google Sheets Configuration
     GOOGLE_SHEETS_CREDENTIALS: Optional[str] = Field(default=None, alias="GOOGLE_SHEETS_CREDENTIALS")
-    RISKMETRIC_SHEET_ID: str = Field(
-        default="1Z9h8bBP13cdcgkcwq32N5Pcx4wiue9iH69uJ0wm9MRY",
-        alias="RISKMETRIC_SHEET_ID"
-    )
+
     HISTORICAL_RISK_SHEET_ID: str = Field(
         default="1fup2CUYxg7Tj3a2BvpoN3OcfGBoSe7EqHIxmp1RRjqg",
         alias="HISTORICAL_RISK_SHEET_ID"
@@ -137,9 +142,58 @@ class Settings(BaseSettings):
     MAX_CONCURRENT_REQUESTS: int = Field(default=1000, alias="MAX_CONCURRENT_REQUESTS")
     REQUEST_TIMEOUT: int = Field(default=30, alias="REQUEST_TIMEOUT")
     
+    # Telegram Configuration
+    TELEGRAM_BOT_TOKEN: Optional[str] = Field(default=None, alias="TELEGRAM_BOT_TOKEN")
+    TELEGRAM_CHAT_ID: Optional[str] = Field(default=None, alias="TELEGRAM_CHAT_ID")
+    TELEGRAM_ENABLED: bool = Field(default=False, alias="TELEGRAM_ENABLED")
+    
+    # X (Twitter) API Configuration
+    X_CLIENT_ID: Optional[str] = Field(default=None, alias="X_CLIENT_ID")
+    X_CLIENT_SECRET: Optional[str] = Field(default=None, alias="X_CLIENT_SECRET")
+    X_API_KEY: Optional[str] = Field(default=None, alias="X_API_KEY")
+    X_API_KEY_SECRET: Optional[str] = Field(default=None, alias="X_API_KEY_SECRET")
+    X_BEARER_TOKEN: Optional[str] = Field(default=None, alias="X_BEARER_TOKEN")
+    X_ACCESS_TOKEN: Optional[str] = Field(default=None, alias="X_ACCESS_TOKEN")
+    X_ACCESS_TOKEN_SECRET: Optional[str] = Field(default=None, alias="X_ACCESS_TOKEN_SECRET")
+    
+    # Grok API Configuration
+    GROK_API_KEY: Optional[str] = Field(default=None, alias="GROK_API_KEY")
+    
+    # Blockchain API Keys
+    ETHERSCAN_API_KEY: Optional[str] = Field(default=None, alias="ETHERSCAN_API_KEY")
+    SOLSCAN_API_KEY: Optional[str] = Field(default=None, alias="SOLSCAN_API_KEY")
+    TRONSCAN_API_KEY: Optional[str] = Field(default=None, alias="TRONSCAN_API_KEY")
+    
+    # Airtable Configuration
+    AIRTABLE_API_KEY: Optional[str] = Field(default=None, alias="AIRTABLE_API_KEY")
+    AIRTABLE_BASE_ID: Optional[str] = Field(default=None, alias="AIRTABLE_BASE_ID")
+    
+    # Additional APIs
+    COINGECKO_API_KEY: Optional[str] = Field(default=None, alias="COINGECKO_API_KEY")
+    ANTHROPIC_API_KEY: Optional[str] = Field(default=None, alias="ANTHROPIC_API_KEY")
+    
+    # Email Configuration
+    MAIL_USERNAME: Optional[str] = Field(default=None, alias="MAIL_USERNAME")
+    MAIL_PASSWORD: Optional[str] = Field(default=None, alias="MAIL_PASSWORD")
+    
+    # Additional Monitoring & Feature Flags (from .env)
+    PROMETHEUS_ENABLED: bool = Field(default=True, alias="PROMETHEUS_ENABLED")
+    METRICS_PORT: int = Field(default=9090, alias="METRICS_PORT")
+    RATE_LIMIT_ENABLED: bool = Field(default=True, alias="RATE_LIMIT_ENABLED")
+    RATE_LIMIT_PER_MINUTE: int = Field(default=60, alias="RATE_LIMIT_PER_MINUTE")
+    RATE_LIMIT_PER_HOUR: int = Field(default=1000, alias="RATE_LIMIT_PER_HOUR")
+    
+    # Feature Flags
+    ENABLE_MOCK_MODE: bool = Field(default=False, alias="ENABLE_MOCK_MODE")
+    ENABLE_PAPER_TRADING: bool = Field(default=True, alias="ENABLE_PAPER_TRADING")
+    ENABLE_LIVE_TRADING: bool = Field(default=False, alias="ENABLE_LIVE_TRADING")
+    ENABLE_AI_PREDICTIONS: bool = Field(default=False, alias="ENABLE_AI_PREDICTIONS")
+    ENABLE_KINGFISHER: bool = Field(default=False, alias="ENABLE_KINGFISHER")
+    
     class Config:
         env_file = ".env"
         case_sensitive = False
+        extra = "ignore"  # Allow extra fields from .env file
 
 # Global settings instance
 settings = Settings()

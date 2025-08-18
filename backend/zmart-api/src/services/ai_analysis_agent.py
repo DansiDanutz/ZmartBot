@@ -12,7 +12,7 @@ from dataclasses import dataclass
 import json
 
 from src.config.settings import settings
-from src.services.cryptometer_endpoint_analyzer import CryptometerEndpointAnalyzer, CryptometerAnalysis
+from src.services.cryptometer_data_types import CryptometerEndpointAnalyzer, CryptometerAnalysis
 
 logger = logging.getLogger(__name__)
 
@@ -56,7 +56,7 @@ class AIAnalysisAgent:
         logger.info(f"Generating comprehensive AI analysis report for {symbol}")
         
         # Step 1: Get Cryptometer endpoint analysis
-        cryptometer_analysis = await self.cryptometer_analyzer.analyze_symbol_complete(symbol)
+        cryptometer_analysis = await self.cryptometer_analyzer.analyze_symbol(symbol)  # Use analyze_symbol instead
         
         # Step 2: Prepare data for AI analysis
         analysis_data = self._prepare_analysis_data(cryptometer_analysis)
@@ -102,14 +102,14 @@ class AIAnalysisAgent:
         
         # Categorize endpoints
         for endpoint_score in analysis.endpoint_scores:
-            endpoint_name = endpoint_score.endpoint
+            endpoint_name = endpoint_score.endpoint_name  # Use endpoint_name
             data = {
                 'name': endpoint_name,
                 'score': endpoint_score.score,
                 'confidence': endpoint_score.confidence,
-                'analysis': endpoint_score.analysis,
-                'patterns': endpoint_score.patterns,
-                'success': endpoint_score.success
+                'weight': endpoint_score.weight,  # Use weight instead of analysis
+                'data': endpoint_score.data,  # Use data instead of patterns
+                'success': endpoint_score.confidence > 0.5  # Calculate success from confidence
             }
             
             # Categorize by endpoint type
@@ -128,12 +128,12 @@ class AIAnalysisAgent:
         
         return {
             'symbol': analysis.symbol,
-            'overall_score': analysis.calibrated_score,
+            'overall_score': analysis.total_score,  # Use total_score instead of calibrated_score
             'confidence': analysis.confidence,
-            'direction': analysis.direction,
-            'summary': analysis.analysis_summary,
+            'direction': analysis.signal,  # Use signal instead of direction
+            'summary': analysis.summary,  # Use summary instead of analysis_summary
             'endpoint_categories': endpoint_data,
-            'successful_endpoints': len([es for es in analysis.endpoint_scores if es.success]),
+            'successful_endpoints': len([es for es in analysis.endpoint_scores if es.confidence > 0.5]),  # Use confidence check
             'total_endpoints': len(analysis.endpoint_scores),
             'timestamp': analysis.timestamp.isoformat()
         }
@@ -291,8 +291,8 @@ The analysis suggests a cautious approach to {symbol}/USDT trading given current
         """Calculate confidence score based on analysis quality"""
         
         # Base confidence from endpoint coverage
-        coverage_confidence = (len([es for es in analysis.endpoint_scores if es.success]) / 
-                             len(analysis.endpoint_scores)) * 100
+        coverage_confidence = (len([es for es in analysis.endpoint_scores if es.confidence > 0.5]) / 
+                             len(analysis.endpoint_scores)) * 100  # Use confidence check instead of success
         
         # Adjust based on overall analysis confidence
         analysis_confidence = analysis.confidence * 100

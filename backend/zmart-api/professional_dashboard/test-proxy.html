@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Proxy Test</title>
+    <style>
+        body { 
+            font-family: monospace; 
+            padding: 20px; 
+            background: #1a1a1a; 
+            color: #0f0;
+        }
+        .test { 
+            margin: 10px 0; 
+            padding: 10px; 
+            border: 1px solid #333;
+        }
+        .success { color: #0f0; }
+        .error { color: #f00; }
+        button { 
+            padding: 10px 20px; 
+            margin: 10px;
+            background: #333;
+            color: #fff;
+            border: 1px solid #666;
+            cursor: pointer;
+        }
+        button:hover { background: #444; }
+        pre { 
+            background: #000; 
+            padding: 10px; 
+            overflow: auto;
+            max-height: 200px;
+        }
+    </style>
+</head>
+<body>
+    <h1>ZmartBot API Proxy Test</h1>
+    
+    <div class="test">
+        <h2>Test 1: Direct Binance API (Should Fail with CORS)</h2>
+        <button onclick="testDirectBinance()">Test Direct Binance</button>
+        <pre id="direct-result"></pre>
+    </div>
+    
+    <div class="test">
+        <h2>Test 2: Proxy API (Should Work)</h2>
+        <button onclick="testProxy()">Test Proxy</button>
+        <pre id="proxy-result"></pre>
+    </div>
+    
+    <div class="test">
+        <h2>Test 3: With Proxy Script (Should Auto-Redirect)</h2>
+        <button onclick="testWithProxyScript()">Test With Proxy Script</button>
+        <pre id="script-result"></pre>
+    </div>
+    
+    <div class="test">
+        <h2>Test 4: Server Health Check</h2>
+        <button onclick="testHealth()">Test Health</button>
+        <pre id="health-result"></pre>
+    </div>
+
+    <!-- Load the proxy script -->
+    <script src="/api-proxy.js"></script>
+    
+    <script>
+        function log(elementId, message, isError = false) {
+            const elem = document.getElementById(elementId);
+            elem.className = isError ? 'error' : 'success';
+            elem.textContent = typeof message === 'object' ? 
+                JSON.stringify(message, null, 2) : message;
+        }
+
+        async function testDirectBinance() {
+            log('direct-result', 'Testing direct Binance API...');
+            try {
+                // Save the original fetch
+                const originalFetch = window.fetch.originalFetch || fetch;
+                const response = await originalFetch('https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT');
+                const data = await response.json();
+                log('direct-result', data);
+            } catch (error) {
+                log('direct-result', `Expected CORS Error: ${error.message}`, true);
+            }
+        }
+
+        async function testProxy() {
+            log('proxy-result', 'Testing proxy endpoint...');
+            try {
+                const response = await fetch('/api/binance/ticker/24hr?symbol=BTCUSDT');
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                const data = await response.json();
+                log('proxy-result', data);
+            } catch (error) {
+                log('proxy-result', `Error: ${error.message}`, true);
+            }
+        }
+
+        async function testWithProxyScript() {
+            log('script-result', 'Testing with proxy script (should auto-redirect)...');
+            try {
+                // This should be intercepted by our proxy script
+                const response = await fetch('https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT');
+                const data = await response.json();
+                log('script-result', data);
+            } catch (error) {
+                log('script-result', `Error: ${error.message}`, true);
+            }
+        }
+
+        async function testHealth() {
+            log('health-result', 'Testing server health...');
+            try {
+                const response = await fetch('/health');
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                const data = await response.json();
+                log('health-result', data);
+            } catch (error) {
+                log('health-result', `Error: ${error.message}`, true);
+            }
+        }
+
+        // Auto-run health check on load
+        window.onload = () => {
+            console.log('API Proxy Test Page Loaded');
+            console.log('Checking if proxy script is loaded:', typeof window.fetch !== 'undefined');
+            testHealth();
+        };
+    </script>
+</body>
+</html>

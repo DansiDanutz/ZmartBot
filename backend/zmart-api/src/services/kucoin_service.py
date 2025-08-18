@@ -66,13 +66,14 @@ class KuCoinService:
     """KuCoin API Service with correct implementation"""
     
     def __init__(self):
-        # Correct credentials from guide
-        self.api_key = "68888bce1cad950001b6966d"
-        self.api_secret = "ba4de6f6-2fb5-4b32-8a4c-12b1f3eb045a"
-        self.passphrase = "Danutz1981"  # CORRECTED - NO PERIOD
-        self.broker_name = "KRYPTOSTACKMASTER"
-        self.partner = "KRYPTOSTACK_ND"
-        self.broker_key = "0c8b0cb9-58f5-4d0d-9c73-b7bde5110cc1"
+        # Load credentials from environment variables for security
+        from src.config.settings import settings
+        self.api_key = settings.KUCOIN_API_KEY
+        self.api_secret = settings.KUCOIN_SECRET
+        self.passphrase = settings.KUCOIN_PASSPHRASE
+        self.broker_name = settings.KUCOIN_BROKER_NAME or "KRYPTOSTACKMASTER"
+        self.partner = settings.KUCOIN_API_PARTNER or "KRYPTOSTACK_ND"
+        self.broker_key = settings.KUCOIN_API_PARTNER_SECRET or ""
         
         # Correct URLs
         self.futures_base_url = "https://api-futures.kucoin.com"
@@ -316,6 +317,68 @@ class KuCoinService:
     async def get_account_overview(self) -> Dict[str, Any]:
         """Get account overview"""
         return await self._make_request("GET", "/api/v1/account-overview", use_futures=True)
+    
+    async def place_futures_order(
+        self,
+        symbol: str,
+        side: str,
+        size: float,
+        leverage: int = 20,
+        order_type: str = "market"
+    ) -> Dict[str, Any]:
+        """Place futures order with proper formatting"""
+        # Convert symbol format (e.g., BTC/USDT -> XBTUSDTM)
+        futures_symbol = self._convert_to_futures_symbol(symbol)
+        
+        order_data = {
+            "clientOid": uuid.uuid4().hex,
+            "side": side,
+            "symbol": futures_symbol,
+            "type": order_type,
+            "size": int(size),
+            "leverage": str(leverage)
+        }
+        
+        return await self._make_request("POST", "/api/v1/orders", data=order_data, use_futures=True)
+    
+    async def close_futures_position(self, symbol: str) -> Dict[str, Any]:
+        """Close futures position for symbol"""
+        # Get current position
+        positions = await self.get_positions()
+        
+        for position in positions:
+            if position.get("symbol") == self._convert_to_futures_symbol(symbol):
+                # Close position by placing opposite order
+                side = "sell" if position.get("side") == "buy" else "buy"
+                size = abs(position.get("currentQty", 0))
+                
+                if size > 0:
+                    return await self.place_futures_order(
+                        symbol=symbol,
+                        side=side,
+                        size=size,
+                        order_type="market"
+                    )
+        
+        return {"error": "No position found to close"}
+    
+    def _convert_to_futures_symbol(self, symbol: str) -> str:
+        """Convert spot symbol to futures symbol"""
+        # Remove slash if present
+        symbol = symbol.replace("/", "")
+        
+        # Map common symbols
+        symbol_map = {
+            "BTCUSDT": "XBTUSDTM",
+            "ETHUSDT": "ETHUSDTM",
+            "SOLUSDT": "SOLUSDTM",
+            "BNBUSDT": "BNBUSDTM",
+            "XRPUSDT": "XRPUSDTM",
+            "AVAXUSDT": "AVAXUSDTM",
+            "DOGEUSDT": "DOGEUSDTM"
+        }
+        
+        return symbol_map.get(symbol.upper(), symbol + "M")
 
     # ========== CONVENIENCE METHODS WITH CORRECT SYMBOLS ==========
     

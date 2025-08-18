@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Backend Proxy Test</title>
+    <style>
+        body { 
+            font-family: monospace; 
+            padding: 20px; 
+            background: #1a1a1a; 
+            color: #0f0;
+        }
+        .test { 
+            margin: 10px 0; 
+            padding: 10px; 
+            border: 1px solid #333;
+        }
+        .success { color: #0f0; }
+        .error { color: #f00; }
+        button { 
+            padding: 10px 20px; 
+            margin: 10px;
+            background: #333;
+            color: #fff;
+            border: 1px solid #666;
+            cursor: pointer;
+        }
+        button:hover { background: #444; }
+        pre { 
+            background: #000; 
+            padding: 10px; 
+            overflow: auto;
+            max-height: 400px;
+        }
+    </style>
+</head>
+<body>
+    <h1>ZmartBot Backend Proxy Test</h1>
+    
+    <div class="test">
+        <h2>Test Backend API Health</h2>
+        <button onclick="testBackendHealth()">Test Backend Health</button>
+        <pre id="backend-health"></pre>
+    </div>
+    
+    <div class="test">
+        <h2>Test Binance Ticker via Backend</h2>
+        <button onclick="testBackendTicker()">Test Ticker</button>
+        <pre id="backend-ticker"></pre>
+    </div>
+    
+    <div class="test">
+        <h2>Test Binance Klines via Backend</h2>
+        <button onclick="testBackendKlines()">Test Klines</button>
+        <pre id="backend-klines"></pre>
+    </div>
+    
+    <script>
+        function log(elementId, message, isError = false) {
+            const elem = document.getElementById(elementId);
+            elem.className = isError ? 'error' : 'success';
+            elem.textContent = typeof message === 'object' ? 
+                JSON.stringify(message, null, 2) : message;
+        }
+
+        async function testBackendHealth() {
+            log('backend-health', 'Testing backend health...');
+            try {
+                const response = await fetch('http://localhost:8000/health');
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                const data = await response.json();
+                log('backend-health', data);
+            } catch (error) {
+                log('backend-health', `Error: ${error.message}`, true);
+            }
+        }
+
+        async function testBackendTicker() {
+            log('backend-ticker', 'Testing Binance ticker via backend...');
+            try {
+                const response = await fetch('http://localhost:8000/api/v1/binance/ticker/24hr?symbol=BTCUSDT');
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                const data = await response.json();
+                log('backend-ticker', data);
+            } catch (error) {
+                log('backend-ticker', `Error: ${error.message}`, true);
+            }
+        }
+
+        async function testBackendKlines() {
+            log('backend-klines', 'Testing Binance klines via backend...');
+            try {
+                const response = await fetch('http://localhost:8000/api/v1/binance/klines?symbol=BTCUSDT&interval=1h&limit=5');
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                const data = await response.json();
+                log('backend-klines', data);
+            } catch (error) {
+                log('backend-klines', `Error: ${error.message}`, true);
+            }
+        }
+
+        // Auto-run health check on load
+        window.onload = () => {
+            console.log('Backend Proxy Test Page Loaded');
+            testBackendHealth();
+        };
+    </script>
+</body>
+</html>

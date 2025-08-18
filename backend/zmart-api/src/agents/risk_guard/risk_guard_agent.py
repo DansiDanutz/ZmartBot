@@ -611,9 +611,26 @@ class RiskGuardAgent:
         return min(base_score, 1.0)
     
     async def _get_current_price(self, symbol: str) -> Optional[float]:
-        """Get current price for a symbol"""
-        # Placeholder implementation
-        return 100.0  # Mock price
+        """Get REAL current price for a symbol - NO MOCK DATA"""
+        try:
+            from src.services.real_time_price_service import get_real_time_price_service
+            
+            # Get real-time price service
+            price_service = await get_real_time_price_service()
+            
+            # Get real price from exchanges
+            price_data = await price_service.get_real_time_price(symbol)
+            
+            if price_data:
+                logger.info(f"Got real price for {symbol}: {price_data.price} from {price_data.source}")
+                return price_data.price
+            else:
+                logger.warning(f"Could not get real price for {symbol}")
+                return None
+                
+        except Exception as e:
+            logger.error(f"Error getting real price for {symbol}: {e}")
+            return None
     
     async def _create_risk_alert(self, risk_level: RiskLevel, alert_type: str, 
                                 message: str, symbol: Optional[str], impact: float):

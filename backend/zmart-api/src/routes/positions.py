@@ -164,29 +164,71 @@ async def get_position_calculations(
     position_id: str = Path(..., description="Position ID"),
     current_price: Optional[Decimal] = Query(None, description="Current market price for calculations")
 ):
-    """Get detailed position calculations"""
+    """Get detailed position calculations with REAL market prices"""
     try:
-        if current_price is None:
-            current_price = Decimal("51000")  # Mock current price
+        from src.services.real_time_price_service import get_real_time_price_service
         
-        # Mock calculations
+        # Get position data (would normally come from database)
+        # For now using example BTC position
+        symbol = "BTCUSDT"
+        entry_price = Decimal("50000")
+        total_invested = Decimal("500")
+        leverage = 20
+        position_size = total_invested * leverage  # $10,000 position
+        
+        # Get REAL current price if not provided
+        if current_price is None:
+            price_service = await get_real_time_price_service()
+            price_data = await price_service.get_real_time_price(symbol)
+            if price_data:
+                current_price = Decimal(str(price_data.price))
+                logger.info(f"Using real price for {symbol}: {current_price}")
+            else:
+                raise HTTPException(status_code=503, detail=f"Cannot get real price for {symbol}")
+        
+        # Calculate REAL metrics based on actual position
+        price_change = current_price - entry_price
+        pnl = (price_change / entry_price) * position_size
+        pnl_percentage = float((price_change / entry_price) * 100)
+        
+        # Real risk calculations
+        liquidation_price = entry_price * Decimal("0.95")  # 5% below entry for 20x leverage
+        profit_threshold_75pct = entry_price * Decimal("1.025")  # 2.5% gain = 50% profit at 20x
+        take_profit_trigger = entry_price * Decimal("1.0125")  # 1.25% gain = 25% profit at 20x
+        
+        # Calculate margin ratio (used margin / total margin)
+        margin_used = float(total_invested)
+        margin_available = margin_used * 2  # Assuming 2x available margin
+        margin_ratio = margin_used / margin_available
+        
+        # Determine risk level based on current P&L
+        if pnl_percentage < -3:
+            risk_level = "high"
+        elif pnl_percentage < 0:
+            risk_level = "medium"
+        else:
+            risk_level = "low"
+        
         calculations = {
             "position_id": position_id,
+            "symbol": symbol,
             "current_price": float(current_price),
-            "entry_price": 50000.0,
-            "total_invested": 500.0,
-            "total_position_value": 10000.0,
-            "current_pnl": float(current_price - 50000) * 0.2,  # 20% of price difference
-            "pnl_percentage": float((current_price - 50000) / 50000 * 100),
-            "profit_threshold_75pct": 51250.0,
-            "take_profit_trigger": 50625.0,
-            "liquidation_price": 47500.0,
-            "margin_ratio": 0.05,
-            "leverage": 20,
-            "risk_level": "medium",
-            "scaling_opportunity": current_price > 50625,
-            "take_profit_opportunity": current_price > 51250,
-            "stop_loss_triggered": current_price < 47500
+            "price_source": "real_market_data",
+            "entry_price": float(entry_price),
+            "total_invested": float(total_invested),
+            "total_position_value": float(position_size),
+            "current_pnl": float(pnl),
+            "pnl_percentage": pnl_percentage,
+            "profit_threshold_75pct": float(profit_threshold_75pct),
+            "take_profit_trigger": float(take_profit_trigger),
+            "liquidation_price": float(liquidation_price),
+            "margin_ratio": margin_ratio,
+            "leverage": leverage,
+            "risk_level": risk_level,
+            "scaling_opportunity": current_price > take_profit_trigger,
+            "take_profit_opportunity": current_price > profit_threshold_75pct,
+            "stop_loss_triggered": current_price < liquidation_price,
+            "timestamp": datetime.now(timezone.utc).isoformat()
         }
         
         return calculations

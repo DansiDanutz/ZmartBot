@@ -13,6 +13,7 @@ PATTERN-BASED TRIGGER RULES:
 
 import logging
 from typing import Dict, Any, Optional, List
+from datetime import datetime
 from fastapi import APIRouter, HTTPException, Query, Body
 from pydantic import BaseModel, Field
 
@@ -219,9 +220,18 @@ async def calculate_pattern_based_score(request: PatternAnalysisRequest):
     try:
         logger.info(f"🎯 Starting pattern-based scoring for {request.symbol}")
         
-        # Start the dynamic agent if needed
-        if integrated_scoring.dynamic_agent.status != "running":
-            await integrated_scoring.dynamic_agent.start()
+        # Check if dynamic agent is available and start if needed
+        if integrated_scoring.dynamic_agent is not None:
+            if hasattr(integrated_scoring.dynamic_agent, 'status') and integrated_scoring.dynamic_agent.status != "running":
+                await integrated_scoring.dynamic_agent.start()
+        else:
+            # Try to initialize the dynamic agent
+            try:
+                from ..agents.scoring.dynamic_scoring_agent import DynamicScoringAgent
+                integrated_scoring.dynamic_agent = DynamicScoringAgent()
+                await integrated_scoring.dynamic_agent.start()
+            except ImportError:
+                logger.warning("Dynamic scoring agent not available, using fallback method")
         
         # Convert data
         kingfisher_data = request.kingfisher_data.dict() if request.kingfisher_data else None
@@ -230,40 +240,87 @@ async def calculate_pattern_based_score(request: PatternAnalysisRequest):
         historical_prices = [p.dict() for p in request.historical_prices] if request.historical_prices else None
         
         # Calculate pattern-based score
-        result = await integrated_scoring.dynamic_agent.calculate_pattern_based_score(
-            symbol=request.symbol,
-            kingfisher_data=kingfisher_data,
-            cryptometer_data=cryptometer_data,
-            riskmetric_data=riskmetric_data,
-            current_price=request.current_price,
-            historical_prices=historical_prices
-        )
+        if integrated_scoring.dynamic_agent is not None:
+            result = await integrated_scoring.dynamic_agent.calculate_pattern_based_score(
+                symbol=request.symbol,
+                kingfisher_data=kingfisher_data,
+                cryptometer_data=cryptometer_data,
+                riskmetric_data=riskmetric_data,
+                current_price=request.current_price,
+                historical_prices=historical_prices
+            )
+            
+            # Format response with dynamic agent result
+            response = {
+                'symbol': result.symbol,
+                'final_win_rate': result.final_score,
+                'signal': result.signal,
+                'confidence': result.overall_confidence,
+                'market_condition': result.market_condition.value if hasattr(result, 'market_condition') else 'normal',
+                'dynamic_weights': {
+                    'kingfisher': result.dynamic_weights.kingfisher_weight if hasattr(result, 'dynamic_weights') else 0.30,
+                    'cryptometer': result.dynamic_weights.cryptometer_weight if hasattr(result, 'dynamic_weights') else 0.50,
+                    'riskmetric': result.dynamic_weights.riskmetric_weight if hasattr(result, 'dynamic_weights') else 0.20,
+                    'reasoning': result.dynamic_weights.reasoning if hasattr(result, 'dynamic_weights') else 'Using default weights',
+                    'weight_confidence': result.dynamic_weights.confidence if hasattr(result, 'dynamic_weights') else 0.7
+                },
+                'individual_scores': {
+                    'kingfisher': result.kingfisher_data.score if hasattr(result, 'kingfisher_data') and result.kingfisher_data else None,
+                    'cryptometer': result.cryptometer_data.score if hasattr(result, 'cryptometer_data') and result.cryptometer_data else None,
+                    'riskmetric': result.riskmetric_data.score if hasattr(result, 'riskmetric_data') and result.riskmetric_data else None
+                },
+                'opportunity_classification': _classify_opportunity(result.final_score if hasattr(result, 'final_score') else 50),
+                'trading_recommendations': result.trading_recommendations if hasattr(result, 'trading_recommendations') else [],
+                'timestamp': result.timestamp.isoformat() if hasattr(result, 'timestamp') else datetime.now().isoformat()
+            }
+        else:
+            # Fallback when dynamic agent is not available
+            # Calculate simple weighted average
+            scores = []
+            weights = []
+            
+            if kingfisher_data and 'score' in kingfisher_data:
+                scores.append(kingfisher_data['score'])
+                weights.append(0.30)
+            
+            if cryptometer_data and 'score' in cryptometer_data:
+                scores.append(cryptometer_data['score'])
+                weights.append(0.50)
+            
+            if riskmetric_data and 'score' in riskmetric_data:
+                scores.append(riskmetric_data['score'])
+                weights.append(0.20)
+            
+            if scores:
+                final_score = sum(s * w for s, w in zip(scores, weights)) / sum(weights)
+            else:
+                final_score = 50.0
+            
+            # Format fallback response
+            response = {
+                'symbol': request.symbol,
+                'final_win_rate': final_score,
+                'signal': 'BUY' if final_score > 65 else 'SELL' if final_score < 35 else 'NEUTRAL',
+                'confidence': 0.5,
+                'market_condition': 'normal',
+                'dynamic_weights': {
+                    'kingfisher': 0.30,
+                    'cryptometer': 0.50,
+                    'riskmetric': 0.20,
+                    'reasoning': 'Using static weights (dynamic agent unavailable)',
+                    'weight_confidence': 0.5
+                },
+                'individual_scores': {
+                    'kingfisher': kingfisher_data.get('score') if kingfisher_data else None,
+                    'cryptometer': cryptometer_data.get('score') if cryptometer_data else None,
+                    'riskmetric': riskmetric_data.get('score') if riskmetric_data else None
+                },
+                'opportunity_classification': _classify_opportunity(final_score),
+                'trading_recommendations': [],
+                'timestamp': datetime.now().isoformat()
+            }
         
-        # Format response
-        response = {
-            'symbol': result.symbol,
-            'final_win_rate': result.final_score,
-            'signal': result.signal,
-            'confidence': result.overall_confidence,
-            'market_condition': result.market_condition.value,
-            'dynamic_weights': {
-                'kingfisher': result.dynamic_weights.kingfisher_weight,
-                'cryptometer': result.dynamic_weights.cryptometer_weight,
-                'riskmetric': result.dynamic_weights.riskmetric_weight,
-                'reasoning': result.dynamic_weights.reasoning,
-                'weight_confidence': result.dynamic_weights.confidence
-            },
-            'individual_scores': {
-                'kingfisher': result.kingfisher_data.score if result.kingfisher_data else None,
-                'cryptometer': result.cryptometer_data.score if result.cryptometer_data else None,
-                'riskmetric': result.riskmetric_data.score if result.riskmetric_data else None
-            },
-            'opportunity_classification': _classify_opportunity(result.final_score),
-            'trading_recommendations': result.trading_recommendations,
-            'timestamp': result.timestamp.isoformat()
-        }
-        
-        logger.info(f"✅ Pattern-based scoring completed for {request.symbol}: {result.final_score:.1f}% win rate")
+        logger.info(f"✅ Pattern-based scoring completed for {request.symbol}: {response['final_win_rate']:.1f}% win rate")
         return response
         
     except Exception as e:

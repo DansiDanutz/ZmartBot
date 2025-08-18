@@ -16,7 +16,7 @@ from src.services.historical_pattern_database import (
     HistoricalPatternDatabase, HistoricalPattern, TimeFrame, Direction,
     TopPattern, PatternStatistics
 )
-from src.services.cryptometer_endpoint_analyzer import CryptometerAnalysis, EndpointScore
+from src.services.cryptometer_data_types import CryptometerAnalysis, EndpointScore
 
 logger = logging.getLogger(__name__)
 
@@ -53,11 +53,11 @@ class AdvancedLearningAgent(SelfLearningAgent):
                 id=prediction_id,
                 symbol=analysis.symbol,
                 timestamp=datetime.now(),
-                predicted_direction=analysis.direction,
-                predicted_score=analysis.calibrated_score,
+                predicted_direction=analysis.signal,  # Use signal instead of direction
+                predicted_score=analysis.total_score,  # Use total_score instead of calibrated_score
                 confidence=analysis.confidence,
-                endpoint_scores={es.endpoint: es.score for es in analysis.endpoint_scores if es.success},
-                patterns_identified=[pattern for es in analysis.endpoint_scores for pattern in es.patterns],
+                endpoint_scores={es.endpoint_name: es.score for es in analysis.endpoint_scores if es.confidence > 0.5},  # Use endpoint_name and confidence check
+                patterns_identified=[],  # EndpointScore doesn't have patterns attribute
                 recommendations=["Historical analysis integrated", "Multi-timeframe validation applied"],
                 price_at_prediction=None  # Will be fetched separately
             )
@@ -80,13 +80,13 @@ class AdvancedLearningAgent(SelfLearningAgent):
     async def _store_endpoint_historical_data(self, analysis: CryptometerAnalysis):
         """Store endpoint performance data for historical tracking"""
         for endpoint_score in analysis.endpoint_scores:
-            if endpoint_score.success:
+            if endpoint_score.confidence > 0.5:  # Use confidence check instead of success
                 # Update endpoint historical performance
                 await self._update_endpoint_historical_performance(
-                    endpoint_score.endpoint,
+                    endpoint_score.endpoint_name,  # Use endpoint_name instead of endpoint
                     analysis.symbol,
                     endpoint_score.score,
-                    endpoint_score.patterns
+                    []  # EndpointScore doesn't have patterns attribute
                 )
     
     async def _update_endpoint_historical_performance(self, endpoint_name: str, symbol: str, score: float, patterns: List[str]):
@@ -175,7 +175,7 @@ class AdvancedLearningAgent(SelfLearningAgent):
                 if abs(price_change) < 1:
                     final_outcome = 'BREAKEVEN'
                     win_rate_score = 0.5
-                elif (analysis.direction == 'LONG' and price_change > 0) or (analysis.direction == 'SHORT' and price_change < 0):
+                elif (analysis.signal == 'LONG' and price_change > 0) or (analysis.signal == 'SHORT' and price_change < 0):  # Use signal instead of direction
                     final_outcome = 'WIN'
                     win_rate_score = min(1.0, abs(price_change) / 10.0)  # Scale based on profit
                 else:
@@ -187,20 +187,20 @@ class AdvancedLearningAgent(SelfLearningAgent):
                     id=f"{prediction_id}_{timeframe.value}",
                     symbol=analysis.symbol,
                     timestamp=datetime.now() - timedelta(seconds=delay_seconds),
-                    direction=Direction(analysis.direction),
+                    direction=Direction(analysis.signal),  # Use signal instead of direction
                     timeframe=timeframe,
-                    endpoint_scores={es.endpoint: es.score for es in analysis.endpoint_scores if es.success},
-                    endpoint_patterns={es.endpoint: es.patterns for es in analysis.endpoint_scores if es.success},
+                    endpoint_scores={es.endpoint_name: es.score for es in analysis.endpoint_scores if es.confidence > 0.5},
+                    endpoint_patterns={},  # EndpointScore doesn't have patterns
                     price_at_entry=price_at_prediction,
                     volume_data={},  # Could be enhanced with volume data
                     market_conditions={},  # Could be enhanced with market conditions
                     price_changes={timeframe.value: price_change},
-                    max_profit=max(0, price_change) if analysis.direction == 'LONG' else max(0, -price_change),
-                    max_drawdown=min(0, price_change) if analysis.direction == 'LONG' else min(0, -price_change),
+                    max_profit=max(0, price_change) if analysis.signal == 'LONG' else max(0, -price_change),
+                    max_drawdown=min(0, price_change) if analysis.signal == 'LONG' else min(0, -price_change),
                     final_outcome=final_outcome,
                     win_rate_score=win_rate_score,
                     confidence_at_entry=analysis.confidence,
-                    patterns_identified=[pattern for es in analysis.endpoint_scores for pattern in es.patterns],
+                    patterns_identified=[],  # EndpointScore doesn't have patterns,
                     trigger_conditions=self._extract_trigger_conditions(analysis)
                 )
                 
@@ -215,12 +215,12 @@ class AdvancedLearningAgent(SelfLearningAgent):
     def _extract_trigger_conditions(self, analysis: CryptometerAnalysis) -> Dict[str, Any]:
         """Extract trigger conditions from analysis"""
         return {
-            'calibrated_score': analysis.calibrated_score,
+            'calibrated_score': analysis.total_score,  # Use total_score instead of calibrated_score
             'confidence': analysis.confidence,
-            'successful_endpoints': len([es for es in analysis.endpoint_scores if es.success]),
+            'successful_endpoints': len([es for es in analysis.endpoint_scores if es.confidence > 0.5]),  # Use confidence check
             'total_endpoints': len(analysis.endpoint_scores),
-            'direction': analysis.direction,
-            'endpoint_scores': {es.endpoint: es.score for es in analysis.endpoint_scores if es.success}
+            'direction': analysis.signal,  # Use signal instead of direction
+            'endpoint_scores': {es.endpoint_name: es.score for es in analysis.endpoint_scores if es.confidence > 0.5}  # Use endpoint_name and confidence
         }
     
     async def _get_price_at_time(self, symbol: str, timestamp: datetime) -> Optional[float]:

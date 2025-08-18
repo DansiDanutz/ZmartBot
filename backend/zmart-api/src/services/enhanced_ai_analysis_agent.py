@@ -16,7 +16,7 @@ import asyncio
 from src.config.settings import settings
 from src.services.ai_analysis_agent import AIAnalysisAgent, AnalysisReport
 from src.services.learning_agent import SelfLearningAgent, AnalysisPrediction, MarketOutcome
-from src.services.cryptometer_endpoint_analyzer import CryptometerAnalysis
+from src.services.cryptometer_data_types import CryptometerAnalysis
 
 logger = logging.getLogger(__name__)
 
@@ -45,7 +45,7 @@ class EnhancedAIAnalysisAgent(AIAnalysisAgent):
         logger.info(f"Generating learning-enhanced AI analysis report for {symbol}")
         
         # Step 1: Get base Cryptometer analysis
-        cryptometer_analysis = await self.cryptometer_analyzer.analyze_symbol_complete(symbol)
+        cryptometer_analysis = await self.cryptometer_analyzer.analyze_symbol(symbol)
         
         # Step 2: Apply learning enhancements
         enhanced_analysis = await self._apply_learning_enhancements(cryptometer_analysis)
@@ -83,7 +83,7 @@ class EnhancedAIAnalysisAgent(AIAnalysisAgent):
         """Apply learning enhancements to the analysis"""
         
         # Get endpoint scores
-        endpoint_scores = {es.endpoint: es.score for es in analysis.endpoint_scores if es.success}
+        endpoint_scores = {es.endpoint_name: es.score for es in analysis.endpoint_scores if es.confidence > 0.5}
         
         # Get adaptive weights from learning
         adaptive_weights = self.learning_agent.get_adaptive_weights(analysis.symbol, endpoint_scores)
@@ -100,18 +100,21 @@ class EnhancedAIAnalysisAgent(AIAnalysisAgent):
         if total_weight > 0:
             enhanced_score = enhanced_score / total_weight
         else:
-            enhanced_score = analysis.calibrated_score
+            enhanced_score = analysis.total_score
         
         # Collect patterns for learning enhancement
         all_patterns = []
         for es in analysis.endpoint_scores:
-            all_patterns.extend(es.patterns)
+            if 'patterns' in es.data:
+                all_patterns.extend(es.data['patterns'])
+            elif 'pattern' in es.data:
+                all_patterns.append(es.data['pattern'])
         
         # Get enhanced confidence
         enhanced_confidence = self.learning_agent.get_enhanced_confidence(all_patterns, analysis.confidence)
         
         return {
-            'original_score': analysis.calibrated_score,
+            'original_score': analysis.total_score,
             'enhanced_score': enhanced_score,
             'original_confidence': analysis.confidence,
             'enhanced_confidence': enhanced_confidence,
@@ -315,10 +318,10 @@ This analysis benefits from {experience_level.lower()} level learning experience
             id=str(uuid.uuid4()),
             symbol=report.symbol,
             timestamp=report.timestamp,
-            predicted_direction=original_analysis.direction,
+            predicted_direction=original_analysis.signal,
             predicted_score=enhanced_analysis['enhanced_score'],
             confidence=enhanced_analysis['enhanced_confidence'],
-            endpoint_scores={es.endpoint: es.score for es in original_analysis.endpoint_scores if es.success},
+            endpoint_scores={es.endpoint_name: es.score for es in original_analysis.endpoint_scores if es.confidence > 0.5},
             patterns_identified=enhanced_analysis['patterns'],
             recommendations=report.recommendations,
             price_at_prediction=current_price

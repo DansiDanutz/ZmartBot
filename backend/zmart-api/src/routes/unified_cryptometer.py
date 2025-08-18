@@ -2,14 +2,8 @@
 Unified Cryptometer API Routes
 ==============================
 
-FastAPI routes for the unified Cryptometer system that combines:
-- Symbol-specific learning agents
-- Enhanced endpoint configurations  
-- Multi-timeframe analysis
-- Dynamic pattern weighting
-- Comprehensive outcome tracking
-
-Based on Complete Implementation Guide and Quick-Start Guide
+FastAPI routes for the unified Cryptometer system
+Simplified to work with CryptometerEndpointAnalyzer
 """
 
 from fastapi import APIRouter, HTTPException, BackgroundTasks
@@ -17,38 +11,60 @@ from typing import Dict, List, Any, Optional
 import logging
 from datetime import datetime
 
-from src.services.unified_cryptometer_system import (
-    UnifiedCryptometerSystem,
-    TradingSignal,
-    SignalOutcome,
-    Pattern
-)
+from src.services.cryptometer_data_types import CryptometerEndpointAnalyzer
+from src.agents.self_learning_cryptometer_agent import get_self_learning_agent
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
-# Global system instance
-unified_system = UnifiedCryptometerSystem()
+# Global instance
+unified_system = CryptometerEndpointAnalyzer()
+self_learning_agent = get_self_learning_agent()
+
+@router.get("/unified/health")
+async def health_check() -> Dict[str, Any]:
+    """
+    Health check endpoint for unified Cryptometer system
+    """
+    return {
+        "status": "healthy",
+        "service": "unified_cryptometer",
+        "version": "2.0.0",
+        "timestamp": datetime.now().isoformat(),
+        "analyzer_initialized": unified_system.initialized,
+        "self_learning_enabled": True
+    }
 
 @router.get("/unified/analyze/{symbol}")
 async def analyze_symbol_unified(symbol: str) -> Dict[str, Any]:
     """
-    Complete unified analysis for a symbol
-    
-    Combines all 18 endpoints with symbol-specific learning
-    Returns comprehensive analysis with learning-weighted scoring
+    Complete unified analysis for a symbol using CryptometerEndpointAnalyzer
     """
     try:
         logger.info(f"Starting unified analysis for {symbol}")
         
-        result = await unified_system.analyze_symbol_complete(symbol)
+        # Use the basic analyze_symbol method
+        result = await unified_system.analyze_symbol(symbol)
         
         return {
             "success": True,
             "symbol": symbol,
-            "timestamp": datetime.now().isoformat(),
-            "analysis": result,
+            "timestamp": result.timestamp.isoformat(),
+            "total_score": result.total_score,
+            "signal": result.signal,
+            "confidence": result.confidence,
+            "endpoints_analyzed": result.endpoints_analyzed,
+            "endpoint_scores": [
+                {
+                    "endpoint": score.endpoint_name,
+                    "score": score.score,
+                    "weight": score.weight,
+                    "confidence": score.confidence
+                }
+                for score in result.endpoint_scores
+            ],
+            "summary": result.summary,
             "message": f"Unified analysis completed for {symbol}"
         }
         
@@ -56,386 +72,259 @@ async def analyze_symbol_unified(symbol: str) -> Dict[str, Any]:
         logger.error(f"Error in unified analysis for {symbol}: {e}")
         raise HTTPException(status_code=500, detail=f"Analysis failed: {str(e)}")
 
-@router.get("/unified/learning-agent/{symbol}")
-async def get_learning_agent_summary(symbol: str) -> Dict[str, Any]:
+@router.get("/unified/self-learning/{symbol}")
+async def analyze_with_self_learning(symbol: str) -> Dict[str, Any]:
     """
-    Get learning agent performance summary for a symbol
-    
-    Returns pattern weights, success rates, and learning statistics
+    Analyze symbol using the self-learning agent with 100-point scoring
     """
     try:
-        learning_agent = unified_system.get_learning_agent(symbol)
-        summary = learning_agent.get_performance_summary()
+        logger.info(f"Starting self-learning analysis for {symbol}")
+        
+        # First collect Cryptometer data
+        from src.services.cryptometer_service import MultiTimeframeCryptometerSystem
+        cryptometer = MultiTimeframeCryptometerSystem()
+        cryptometer_data = await cryptometer.collect_symbol_data(symbol)
+        
+        # Then analyze with self-learning agent
+        result = await self_learning_agent.analyze_symbol(symbol, cryptometer_data)
         
         return {
             "success": True,
-            "symbol": symbol,
-            "learning_agent": summary,
-            "timestamp": datetime.now().isoformat()
+            "symbol": result.symbol,
+            "timestamp": result.timestamp.isoformat(),
+            "total_score": result.total_score,
+            "win_rate_prediction": result.win_rate_prediction,
+            "signal": result.signal,
+            "confidence": result.confidence,
+            "best_timeframe": result.best_timeframe,
+            "timeframe_scores": result.timeframe_scores,
+            "trade_recommendation": result.trade_recommendation,
+            "risk_level": result.risk_level,
+            "endpoint_analyses": [
+                {
+                    "endpoint": ea.endpoint_name,
+                    "raw_score": ea.raw_score,
+                    "weight": ea.weight,
+                    "contribution": ea.contribution_score,
+                    "patterns": [
+                        {
+                            "name": p.pattern_name,
+                            "confidence": p.confidence,
+                            "win_rate": p.historical_win_rate
+                        }
+                        for p in ea.patterns_detected
+                    ]
+                }
+                for ea in result.endpoint_analyses[:5]  # Top 5 endpoints
+            ]
         }
         
     except Exception as e:
-        logger.error(f"Error getting learning agent for {symbol}: {e}")
-        raise HTTPException(status_code=500, detail=f"Failed to get learning agent: {str(e)}")
+        logger.error(f"Error in self-learning analysis for {symbol}: {e}")
+        raise HTTPException(status_code=500, detail=f"Self-learning analysis failed: {str(e)}")
 
-@router.post("/unified/track-outcome")
-async def track_signal_outcome(outcome_data: Dict[str, Any]) -> Dict[str, Any]:
+@router.post("/unified/update-learning")
+async def update_learning_history(learning_data: Dict[str, Any]) -> Dict[str, Any]:
     """
-    Track trading signal outcome for learning
+    Update learning history with pattern outcome
     
     Expected payload:
     {
-        "signal_id": "ETH_volume_divergence_1234567890",
-        "outcome_type": "success|failure|incomplete", 
-        "timeframe": "24h|7d|30d",
-        "actual_return": 0.05,
-        "time_to_outcome": 3600,
-        "max_favorable": 0.08,
-        "max_adverse": -0.02,
-        "pattern_attribution": {"volume_divergence": 1.0},
-        "market_conditions": {}
+        "pattern_name": "price_breakout",
+        "was_successful": true
     }
     """
     try:
-        required_fields = ['signal_id', 'outcome_type', 'timeframe', 'actual_return', 'time_to_outcome']
-        for field in required_fields:
-            if field not in outcome_data:
-                raise HTTPException(status_code=400, detail=f"Missing required field: {field}")
+        pattern_name = learning_data.get('pattern_name')
+        was_successful = learning_data.get('was_successful')
         
-        # Extract symbol from signal_id
-        signal_id = outcome_data['signal_id']
-        symbol = signal_id.split('_')[0]
+        if not pattern_name or was_successful is None:
+            raise HTTPException(status_code=400, detail="Missing pattern_name or was_successful")
         
-        # Create mock signal for outcome tracking (in production, this would be retrieved from storage)
-        mock_signal = TradingSignal(
-            signal_id=signal_id,
-            symbol=symbol,
-            timestamp=datetime.now(),
-            pattern=Pattern(
-                pattern_id=f"{symbol}_pattern_{int(datetime.now().timestamp())}",
-                pattern_type=signal_id.split('_')[1],
-                direction='bullish',  # Would be retrieved from storage
-                strength=0.5,
-                confidence=0.7,
-                timeframe=outcome_data['timeframe'],
-                detected_at=datetime.now(),
-                market_conditions={},
-                contributing_endpoints=[]
-            ),
-            direction='bullish',
-            current_price=0.0,
-            targets={},
-            market_data={},
-            expected_outcomes={}
-        )
+        # Update learning history
+        self_learning_agent.update_learning(pattern_name, was_successful)
         
-        # Track the outcome
-        outcome = await unified_system.track_signal_outcome(mock_signal, outcome_data)
+        # Get updated win rate
+        updated_win_rate = self_learning_agent._get_pattern_win_rate(pattern_name)
         
         return {
             "success": True,
-            "message": "Signal outcome tracked successfully",
-            "outcome": {
-                "signal_id": outcome.signal_id,
-                "outcome_type": outcome.outcome_type,
-                "actual_return": outcome.actual_return,
-                "timeframe": outcome.timeframe
-            },
-            "timestamp": datetime.now().isoformat()
-        }
-        
-    except Exception as e:
-        logger.error(f"Error tracking signal outcome: {e}")
-        raise HTTPException(status_code=500, detail=f"Failed to track outcome: {str(e)}")
-
-@router.get("/unified/system-performance")
-async def get_system_performance() -> Dict[str, Any]:
-    """
-    Get comprehensive system performance summary
-    
-    Returns performance across all symbols and learning agents
-    """
-    try:
-        summary = unified_system.get_system_performance_summary()
-        
-        return {
-            "success": True,
-            "system_performance": summary,
+            "pattern_name": pattern_name,
+            "was_successful": was_successful,
+            "updated_win_rate": updated_win_rate,
             "timestamp": datetime.now().isoformat(),
-            "message": "System performance summary retrieved"
+            "message": "Learning history updated successfully"
         }
         
     except Exception as e:
-        logger.error(f"Error getting system performance: {e}")
-        raise HTTPException(status_code=500, detail=f"Failed to get performance: {str(e)}")
+        logger.error(f"Error updating learning history: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to update learning: {str(e)}")
 
-@router.get("/unified/patterns/{symbol}")
-async def get_symbol_patterns(symbol: str, limit: int = 10) -> Dict[str, Any]:
+@router.get("/unified/pattern-stats")
+async def get_pattern_statistics() -> Dict[str, Any]:
     """
-    Get recent patterns detected for a symbol
-    
-    Returns pattern history and performance metrics
+    Get statistics for all patterns in the learning history
     """
     try:
-        learning_agent = unified_system.get_learning_agent(symbol)
+        pattern_stats = {}
         
-        # Get pattern performance data
-        pattern_performance = learning_agent.pattern_performance
-        pattern_weights = learning_agent.pattern_weights
+        # Get stats from learning history
+        for pattern_name, history in self_learning_agent.learning_history.items():
+            # Handle last_updated which could be datetime, timestamp, or string
+            last_updated_value = history.get('last_updated')
+            
+            # Type-safe conversion to ISO format string
+            if last_updated_value is None:
+                last_updated_str = datetime.now().isoformat()
+            elif isinstance(last_updated_value, datetime):
+                last_updated_str = last_updated_value.isoformat()
+            elif isinstance(last_updated_value, (int, float)):
+                # It's a timestamp
+                last_updated_str = datetime.fromtimestamp(last_updated_value).isoformat()
+            elif isinstance(last_updated_value, str):
+                # Already a string
+                last_updated_str = last_updated_value
+            else:
+                # Fallback for any other type
+                last_updated_str = str(last_updated_value)
+            
+            pattern_stats[pattern_name] = {
+                "occurrences": history['occurrences'],
+                "successful": history['successful'],
+                "win_rate": history['win_rate'],
+                "last_updated": last_updated_str
+            }
         
-        patterns_info = []
-        for pattern_type, perf in pattern_performance.items():
-            patterns_info.append({
-                "pattern_type": pattern_type,
-                "success_rate": perf['success_rate'],
-                "avg_return": perf['avg_return'],
-                "total_signals": perf['total_signals'],
-                "current_weight": pattern_weights.get(pattern_type, 1.0),
-                "performance_tier": "HIGH" if perf['success_rate'] > 0.7 else "MEDIUM" if perf['success_rate'] > 0.4 else "LOW"
-            })
-        
-        # Sort by performance
-        patterns_info.sort(key=lambda x: x['success_rate'], reverse=True)
+        # Add base patterns that haven't been learned yet
+        for pattern_name, pattern_info in self_learning_agent.pattern_library.items():
+            if pattern_name not in pattern_stats:
+                pattern_stats[pattern_name] = {
+                    "occurrences": 0,
+                    "successful": 0,
+                    "win_rate": pattern_info['base_win_rate'],
+                    "last_updated": "Never (using base rate)"
+                }
         
         return {
             "success": True,
-            "symbol": symbol,
-            "patterns": patterns_info[:limit],
-            "total_patterns": len(patterns_info),
+            "total_patterns": len(pattern_stats),
+            "patterns": pattern_stats,
             "timestamp": datetime.now().isoformat()
         }
         
     except Exception as e:
-        logger.error(f"Error getting patterns for {symbol}: {e}")
-        raise HTTPException(status_code=500, detail=f"Failed to get patterns: {str(e)}")
+        logger.error(f"Error getting pattern statistics: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to get pattern stats: {str(e)}")
 
-@router.post("/unified/simulate-signal")
-async def simulate_signal_generation(symbol: str, pattern_data: Dict[str, Any]) -> Dict[str, Any]:
+@router.get("/unified/endpoints")
+async def get_endpoint_configs() -> Dict[str, Any]:
     """
-    Simulate signal generation for testing
-    
-    Expected payload:
-    {
-        "pattern_type": "volume_divergence",
-        "direction": "bullish",
-        "strength": 0.7,
-        "confidence": 0.8
+    Get configuration for all Cryptometer endpoints
+    """
+    try:
+        return {
+            "success": True,
+            "total_endpoints": len(self_learning_agent.endpoint_configs),
+            "endpoints": self_learning_agent.endpoint_configs,
+            "weight_sum": sum(config['weight'] for config in self_learning_agent.endpoint_configs.values()),
+            "timestamp": datetime.now().isoformat()
+        }
+        
+    except Exception as e:
+        logger.error(f"Error getting endpoint configs: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to get endpoints: {str(e)}")
+
+@router.get("/unified/scoring-thresholds")
+async def get_scoring_thresholds() -> Dict[str, Any]:
+    """
+    Get scoring thresholds and their meanings
+    """
+    return {
+        "success": True,
+        "thresholds": {
+            "95+": {
+                "meaning": "ALL-IN OPPORTUNITY",
+                "win_rate": "95%+",
+                "position_size": "MAXIMUM",
+                "description": "Exceptional setup with very high win probability"
+            },
+            "90-94": {
+                "meaning": "EXCELLENT OPPORTUNITY",
+                "win_rate": "90-94%",
+                "position_size": "LARGE",
+                "description": "Very strong setup with high win probability"
+            },
+            "85-89": {
+                "meaning": "STRONG OPPORTUNITY",
+                "win_rate": "85-89%",
+                "position_size": "STANDARD",
+                "description": "Solid setup with good win probability"
+            },
+            "80-84": {
+                "meaning": "GOOD OPPORTUNITY",
+                "win_rate": "80-84%",
+                "position_size": "MODERATE",
+                "description": "Minimum threshold for trade entry"
+            },
+            "75-79": {
+                "meaning": "MARGINAL OPPORTUNITY",
+                "win_rate": "75-79%",
+                "position_size": "SMALL or NONE",
+                "description": "Below minimum threshold - consider waiting"
+            },
+            "70-74": {
+                "meaning": "WEAK OPPORTUNITY",
+                "win_rate": "70-74%",
+                "position_size": "NONE",
+                "description": "Poor risk/reward - wait for better setup"
+            },
+            "<70": {
+                "meaning": "NO TRADE",
+                "win_rate": "<70%",
+                "position_size": "NONE",
+                "description": "Insufficient edge - stay out of market"
+            }
+        },
+        "key_principle": "80 points = 80% win rate (minimum for trade entry)",
+        "timestamp": datetime.now().isoformat()
     }
-    """
-    try:
-        # Create mock pattern
-        pattern = Pattern(
-            pattern_id=f"{symbol}_{pattern_data['pattern_type']}_{int(datetime.now().timestamp())}",
-            pattern_type=pattern_data['pattern_type'],
-            direction=pattern_data['direction'],
-            strength=pattern_data['strength'],
-            confidence=pattern_data['confidence'],
-            timeframe='1h',
-            detected_at=datetime.now(),
-            market_conditions={},
-            contributing_endpoints=[]
-        )
-        
-        # Check if learning agent would generate signal
-        learning_agent = unified_system.get_learning_agent(symbol)
-        should_generate = learning_agent.should_generate_signal(pattern)
-        
-        pattern_weight = learning_agent.pattern_weights.get(pattern.pattern_type, 1.0)
-        adjusted_confidence = pattern.confidence * pattern_weight
-        
-        return {
-            "success": True,
-            "symbol": symbol,
-            "pattern": {
-                "type": pattern.pattern_type,
-                "direction": pattern.direction,
-                "strength": pattern.strength,
-                "confidence": pattern.confidence
-            },
-            "learning_analysis": {
-                "should_generate_signal": should_generate,
-                "pattern_weight": pattern_weight,
-                "adjusted_confidence": adjusted_confidence,
-                "historical_performance": learning_agent.pattern_performance.get(pattern.pattern_type, {})
-            },
-            "timestamp": datetime.now().isoformat()
-        }
-        
-    except Exception as e:
-        logger.error(f"Error simulating signal for {symbol}: {e}")
-        raise HTTPException(status_code=500, detail=f"Simulation failed: {str(e)}")
 
-@router.get("/unified/endpoint-status")
-async def get_endpoint_status() -> Dict[str, Any]:
-    """
-    Get status of all Cryptometer endpoints
-    
-    Returns endpoint configuration and priority information
-    """
-    try:
-        endpoints_info = []
-        
-        for endpoint_name, config in unified_system.endpoints.items():
-            endpoints_info.append({
-                "name": endpoint_name,
-                "url": config['url'],
-                "priority": config['priority'],
-                "weight": config['weight'],
-                "signal_value": config['signal_value'],
-                "description": config['description']
-            })
-        
-        # Sort by priority and weight
-        endpoints_info.sort(key=lambda x: (x['priority'], -x['weight']))
-        
-        return {
-            "success": True,
-            "total_endpoints": len(endpoints_info),
-            "endpoints": endpoints_info,
-            "priority_distribution": {
-                "tier_1": len([e for e in endpoints_info if e['priority'] == 1]),
-                "tier_2": len([e for e in endpoints_info if e['priority'] == 2]),
-                "tier_3": len([e for e in endpoints_info if e['priority'] == 3])
-            },
-            "timestamp": datetime.now().isoformat()
-        }
-        
-    except Exception as e:
-        logger.error(f"Error getting endpoint status: {e}")
-        raise HTTPException(status_code=500, detail=f"Failed to get status: {str(e)}")
-
-@router.post("/unified/batch-analyze")
-async def batch_analyze_symbols(symbols: List[str], background_tasks: BackgroundTasks) -> Dict[str, Any]:
+@router.post("/unified/batch-analysis")
+async def batch_analysis(symbols: List[str], background_tasks: BackgroundTasks) -> Dict[str, Any]:
     """
     Analyze multiple symbols in batch
-    
-    Processes symbols in parallel for efficiency
     """
     try:
-        if len(symbols) > 10:
-            raise HTTPException(status_code=400, detail="Maximum 10 symbols per batch")
+        if not symbols or len(symbols) > 10:
+            raise HTTPException(status_code=400, detail="Provide 1-10 symbols")
         
-        results = {}
-        
-        # Process symbols concurrently
-        import asyncio
-        
-        async def analyze_single_symbol(symbol: str):
+        results = []
+        for symbol in symbols:
             try:
-                return await unified_system.analyze_symbol_complete(symbol)
+                # Quick analysis using basic analyzer
+                analysis = await unified_system.analyze_symbol(symbol)
+                results.append({
+                    "symbol": symbol,
+                    "score": analysis.total_score,
+                    "signal": analysis.signal,
+                    "confidence": analysis.confidence,
+                    "success": True
+                })
             except Exception as e:
-                logger.error(f"Error analyzing {symbol} in batch: {e}")
-                return {"error": str(e)}
-        
-        # Run analyses concurrently
-        tasks = [analyze_single_symbol(symbol) for symbol in symbols]
-        analyses = await asyncio.gather(*tasks)
-        
-        # Combine results
-        for symbol, analysis in zip(symbols, analyses):
-            results[symbol] = analysis
+                results.append({
+                    "symbol": symbol,
+                    "error": str(e),
+                    "success": False
+                })
         
         return {
             "success": True,
             "total_symbols": len(symbols),
+            "successful": sum(1 for r in results if r.get('success')),
             "results": results,
-            "timestamp": datetime.now().isoformat(),
-            "message": f"Batch analysis completed for {len(symbols)} symbols"
+            "timestamp": datetime.now().isoformat()
         }
         
     except Exception as e:
         logger.error(f"Error in batch analysis: {e}")
         raise HTTPException(status_code=500, detail=f"Batch analysis failed: {str(e)}")
-
-@router.get("/unified/health")
-async def health_check() -> Dict[str, Any]:
-    """
-    Health check for unified system
-    
-    Returns system status and basic metrics
-    """
-    try:
-        return {
-            "success": True,
-            "status": "healthy",
-            "system": "Unified Cryptometer System",
-            "version": "2.0",
-            "features": [
-                "Symbol-specific learning agents",
-                "18 enhanced endpoints",
-                "Multi-timeframe analysis",
-                "Dynamic pattern weighting",
-                "Comprehensive outcome tracking"
-            ],
-            "total_learning_agents": len(unified_system.learning_agents),
-            "total_endpoints": len(unified_system.endpoints),
-            "timestamp": datetime.now().isoformat()
-        }
-        
-    except Exception as e:
-        logger.error(f"Health check failed: {e}")
-        raise HTTPException(status_code=500, detail=f"Health check failed: {str(e)}")
-
-@router.get("/unified/documentation")
-async def get_api_documentation() -> Dict[str, Any]:
-    """
-    Get API documentation and usage examples
-    """
-    return {
-        "success": True,
-        "documentation": {
-            "title": "Unified Cryptometer System API",
-            "version": "2.0",
-            "description": "Complete implementation combining all best practices from implementation guides",
-            "endpoints": {
-                "/unified/analyze/{symbol}": {
-                    "method": "GET",
-                    "description": "Complete unified analysis for a symbol",
-                    "example": "/unified/analyze/ETH-USDT"
-                },
-                "/unified/learning-agent/{symbol}": {
-                    "method": "GET", 
-                    "description": "Get learning agent performance summary",
-                    "example": "/unified/learning-agent/ETH-USDT"
-                },
-                "/unified/track-outcome": {
-                    "method": "POST",
-                    "description": "Track trading signal outcome for learning",
-                    "payload_example": {
-                        "signal_id": "ETH_volume_divergence_1234567890",
-                        "outcome_type": "success",
-                        "timeframe": "24h",
-                        "actual_return": 0.05,
-                        "time_to_outcome": 3600
-                    }
-                },
-                "/unified/system-performance": {
-                    "method": "GET",
-                    "description": "Get comprehensive system performance summary"
-                },
-                "/unified/batch-analyze": {
-                    "method": "POST",
-                    "description": "Analyze multiple symbols in batch",
-                    "payload_example": ["ETH-USDT", "BTC-USDT", "ADA-USDT"]
-                }
-            },
-            "key_features": [
-                "Symbol-specific learning agents with individual pattern weights",
-                "18 Cryptometer endpoints with enhanced configurations",
-                "Multi-timeframe analysis (24h, 7d, 30d)",
-                "Dynamic pattern weighting based on performance",
-                "Comprehensive outcome tracking and attribution",
-                "Real-time learning and adaptation",
-                "Production-ready monitoring and optimization"
-            ],
-            "implementation_guide_compliance": {
-                "complete_guide": "Full implementation of all recommended features",
-                "quick_start_guide": "All essential components implemented",
-                "rate_limiting": "1-second delays between API calls",
-                "data_storage": "Symbol-specific SQLite databases for learning",
-                "pattern_recognition": "7 enhanced pattern types",
-                "learning_algorithm": "Dynamic weight adjustment based on outcomes"
-            }
-        },
-        "timestamp": datetime.now().isoformat()
-    }

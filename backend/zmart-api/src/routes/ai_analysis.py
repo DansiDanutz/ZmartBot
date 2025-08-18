@@ -164,15 +164,15 @@ async def get_analysis_summary(
         logger.info(f"Generating analysis summary for {symbol}")
         
         # Get Cryptometer analysis only (faster)
-        cryptometer_analysis = await ai_agent.cryptometer_analyzer.analyze_symbol_complete(symbol.upper())
+        cryptometer_analysis = await ai_agent.cryptometer_analyzer.analyze_symbol(symbol.upper())
         
-        # Extract key insights
-        successful_endpoints = len([es for es in cryptometer_analysis.endpoint_scores if es.success])
+        # Extract key insights - EndpointScore has confidence > 0.5 means success
+        successful_endpoints = len([es for es in cryptometer_analysis.endpoint_scores if es.confidence > 0.5])
         total_endpoints = len(cryptometer_analysis.endpoint_scores)
         
         # Get top performing endpoints
         top_endpoints = sorted(
-            [es for es in cryptometer_analysis.endpoint_scores if es.success],
+            [es for es in cryptometer_analysis.endpoint_scores if es.confidence > 0.5],
             key=lambda x: x.score,
             reverse=True
         )[:5]
@@ -181,20 +181,20 @@ async def get_analysis_summary(
             "success": True,
             "symbol": cryptometer_analysis.symbol,
             "summary": {
-                "overall_score": cryptometer_analysis.calibrated_score,
+                "overall_score": cryptometer_analysis.total_score,  # Use total_score instead of calibrated_score
                 "confidence": cryptometer_analysis.confidence,
-                "direction": cryptometer_analysis.direction,
+                "direction": cryptometer_analysis.signal,  # Use signal instead of direction
                 "endpoint_coverage": f"{successful_endpoints}/{total_endpoints}",
-                "coverage_percentage": (successful_endpoints / total_endpoints) * 100,
-                "analysis_summary": cryptometer_analysis.analysis_summary
+                "coverage_percentage": (successful_endpoints / total_endpoints * 100) if total_endpoints > 0 else 0,
+                "analysis_summary": cryptometer_analysis.summary  # Use summary instead of analysis_summary
             },
             "top_performing_endpoints": [
                 {
-                    "name": ep.endpoint,
+                    "name": ep.endpoint_name,  # Use endpoint_name instead of endpoint
                     "score": ep.score,
                     "confidence": ep.confidence,
-                    "analysis": ep.analysis,
-                    "patterns": ep.patterns
+                    "weight": ep.weight,  # Add weight info
+                    "data": ep.data  # Use data instead of analysis/patterns
                 }
                 for ep in top_endpoints
             ],

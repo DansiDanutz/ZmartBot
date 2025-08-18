@@ -4,7 +4,7 @@ API route definitions and handlers
 """
 
 # Import all route modules
-from . import health, auth, trading, signals, agents, monitoring, cryptometer, websocket, charting, explainability, analytics
+from . import health, auth, trading, signals, agents, monitoring, cryptometer, websocket, charting, explainability, analytics, my_symbols, binance
 
 __all__ = [
     'health',
@@ -17,5 +17,7 @@ __all__ = [
     'websocket',
     'charting',
     'explainability',
-    'analytics'
+    'analytics',
+    'my_symbols',
+    'binance'
 ] 

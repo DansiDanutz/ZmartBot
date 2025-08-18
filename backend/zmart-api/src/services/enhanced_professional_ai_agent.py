@@ -28,10 +28,10 @@ import openai
 from src.config.settings import settings
 from src.services.enhanced_professional_report_generator import EnhancedProfessionalReportGenerator
 from src.services.data_driven_report_generator import DataDrivenReportGenerator
-from src.services.comprehensive_cryptometer_analyzer import ComprehensiveCryptometerAnalyzer
+from src.services.cryptometer_data_types import CryptometerEndpointAnalyzer as ComprehensiveCryptometerAnalyzer
 from src.services.multi_model_ai_agent import MultiModelAIAgent
 from src.services.historical_ai_analysis_agent import HistoricalAIAnalysisAgent
-from src.services.cryptometer_endpoint_analyzer import CryptometerEndpointAnalyzer
+from src.services.cryptometer_data_types import CryptometerEndpointAnalyzer
 from src.services.enhanced_learning_agent import EnhancedLearningAgent
 from src.services.enhanced_cache_manager import cache_manager
 
@@ -609,8 +609,7 @@ While external data is limited, our AI system maintains analytical capability. W
             logger.info(f"Cache status for {symbol}: {cache_info}")
             
             # Use comprehensive analyzer
-            async with self.comprehensive_analyzer as analyzer:
-                analysis_result = await analyzer.analyze_symbol_comprehensive(symbol, force_refresh)
+            analysis_result = await self.comprehensive_analyzer.analyze_symbol(symbol)
             
             # Convert to dict for response  
             from dataclasses import asdict

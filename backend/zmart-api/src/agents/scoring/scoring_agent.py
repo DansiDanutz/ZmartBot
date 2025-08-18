@@ -1,658 +1,288 @@
 """
 Zmart Trading Bot Platform - Scoring Agent
-AI-powered signal scoring and confidence assessment system
+Signal aggregation and confidence assessment with dynamic weighting
 """
-import asyncio
-import logging
-from typing import Dict, List, Optional, Any, Tuple
-from datetime import datetime, timedelta
-from dataclasses import dataclass
-from enum import Enum
-import json
 
-from src.config.settings import settings
-from src.utils.event_bus import EventBus, EventType, Event
-from src.utils.metrics import MetricsCollector
+import logging
+from typing import Dict, List, Any, Optional
+from datetime import datetime
+from dataclasses import dataclass, field
 
 logger = logging.getLogger(__name__)
 
-class SignalSource(Enum):
-    """Signal source enumeration"""
-    KINGFISHER = "kingfisher"
-    RISKMETRIC = "riskmetric"
-    CRYPTOMETER = "cryptometer"
-    TECHNICAL = "technical"
-    FUNDAMENTAL = "fundamental"
-    SENTIMENT = "sentiment"
-
-class SignalType(Enum):
-    """Signal type enumeration"""
-    BUY = "buy"
-    SELL = "sell"
-    HOLD = "hold"
-    STRONG_BUY = "strong_buy"
-    STRONG_SELL = "strong_sell"
-
 @dataclass
 class SignalScore:
-    """Signal scoring result"""
-    signal_id: str
-    symbol: str
-    signal_type: SignalType
-    confidence: float
-    score: float
-    sources: List[SignalSource]
-    factors: Dict[str, float]
+    """Individual signal score from a source"""
+    source: str
+    value: float  # 0-100 scale
+    confidence: float  # 0-1 scale
     timestamp: datetime
-    metadata: Dict[str, Any]
+    metadata: Dict[str, Any] = field(default_factory=dict)
+
+@dataclass
+class AggregatedScore:
+    """Aggregated score from all sources"""
+    total_score: float  # 0-100 scale
+    confidence: float  # 0-1 scale
+    signal_count: int
+    sources: List[str]
+    breakdown: Dict[str, float]
+    timestamp: datetime
+    recommendation: str  # BUY/SELL/HOLD
 
 class ScoringAgent:
     """
-    AI-powered scoring agent that processes multiple signal sources
-    and provides confidence metrics and explanations.
-    
-    Responsibilities:
-    - Multi-source signal aggregation
-    - Confidence scoring and validation
-    - Risk assessment integration
-    - Historical performance analysis
-    - Signal quality filtering
+    Scoring Agent for signal aggregation and scoring
+    Combines scores from multiple sources with dynamic weighting
     """
     
     def __init__(self):
         """Initialize the scoring agent"""
-        self.agent_id = "scoring_agent"
-        self.status = "stopped"
-        self.event_bus = EventBus()
-        self.metrics = MetricsCollector()
+        self.logger = logging.getLogger(__name__)
+        self.logger.info("Scoring Agent initialized")
         
-        # Scoring configuration
-        self.confidence_threshold = settings.SIGNAL_CONFIDENCE_THRESHOLD
-        self.min_sources = 2  # Minimum sources required for scoring
-        self.max_signal_age = 300  # 5 minutes in seconds
-        
-        # Signal processing state
-        self.pending_signals: List[Dict] = []
-        self.processed_signals: Dict[str, SignalScore] = {}
-        self.signal_history: List[SignalScore] = []
-        
-        # Performance tracking
-        self.accuracy_metrics = {
-            "total_signals": 0,
-            "correct_predictions": 0,
-            "accuracy_rate": 0.0,
-            "last_updated": datetime.now()
+        # Default weights for different sources
+        self.default_weights = {
+            "cryptometer": 0.5,  # 50% weight
+            "kingfisher": 0.3,   # 30% weight
+            "riskmetric": 0.2    # 20% weight
         }
         
-        # Task management
-        self._running = False
-        self._tasks: List[asyncio.Task] = []
+        # Score history for tracking
+        self.score_history: List[AggregatedScore] = []
+        self.max_history = 100
         
-        logger.info("Scoring agent initialized")
+        # Thresholds for recommendations
+        self.thresholds = {
+            "strong_buy": 80,
+            "buy": 60,
+            "hold_high": 40,
+            "hold_low": -40,
+            "sell": -60,
+            "strong_sell": -80
+        }
+    
+    async def calculate_score(
+        self,
+        symbol: str,
+        signals: List[SignalScore],
+        weights: Optional[Dict[str, float]] = None
+    ) -> AggregatedScore:
+        """
+        Calculate aggregated score from multiple signals
+        
+        Args:
+            symbol: Trading symbol
+            signals: List of signal scores from different sources
+            weights: Optional custom weights for sources
+            
+        Returns:
+            AggregatedScore with final score and recommendation
+        """
+        try:
+            if not signals:
+                self.logger.warning(f"No signals provided for {symbol}")
+                return self._create_neutral_score(symbol)
+            
+            # Use custom weights or defaults
+            active_weights = weights or self.default_weights
+            
+            # Calculate weighted score
+            weighted_sum = 0
+            total_weight = 0
+            confidence_sum = 0
+            breakdown = {}
+            sources = []
+            
+            for signal in signals:
+                source_weight = active_weights.get(signal.source.lower(), 0.1)
+                
+                # Apply confidence adjustment
+                adjusted_weight = source_weight * signal.confidence
+                
+                # Add to weighted sum
+                weighted_sum += signal.value * adjusted_weight
+                total_weight += adjusted_weight
+                confidence_sum += signal.confidence
+                
+                # Track breakdown
+                breakdown[signal.source] = signal.value
+                sources.append(signal.source)
+            
+            # Calculate final score
+            if total_weight > 0:
+                final_score = weighted_sum / total_weight
+                avg_confidence = confidence_sum / len(signals)
+            else:
+                final_score = 50  # Neutral
+                avg_confidence = 0
+            
+            # Determine recommendation
+            recommendation = self._get_recommendation(final_score)
+            
+            # Create aggregated score
+            aggregated = AggregatedScore(
+                total_score=final_score,
+                confidence=avg_confidence,
+                signal_count=len(signals),
+                sources=sources,
+                breakdown=breakdown,
+                timestamp=datetime.now(),
+                recommendation=recommendation
+            )
+            
+            # Store in history
+            self._update_history(aggregated)
+            
+            self.logger.info(
+                f"Score calculated for {symbol}: {final_score:.2f} "
+                f"({recommendation}) with confidence {avg_confidence:.2f}"
+            )
+            
+            return aggregated
+            
+        except Exception as e:
+            self.logger.error(f"Error calculating score for {symbol}: {e}")
+            return self._create_neutral_score(symbol)
+    
+    async def process_signal(
+        self,
+        source: str,
+        symbol: str,
+        value: float,
+        confidence: float = 0.5,
+        metadata: Optional[Dict[str, Any]] = None
+    ) -> SignalScore:
+        """
+        Process individual signal from a source
+        
+        Args:
+            source: Signal source name
+            symbol: Trading symbol
+            value: Signal value (0-100)
+            confidence: Confidence level (0-1)
+            metadata: Additional signal metadata
+            
+        Returns:
+            SignalScore object
+        """
+        try:
+            # Validate inputs
+            value = max(0, min(100, value))  # Clamp to 0-100
+            confidence = max(0, min(1, confidence))  # Clamp to 0-1
+            
+            signal = SignalScore(
+                source=source,
+                value=value,
+                confidence=confidence,
+                timestamp=datetime.now(),
+                metadata=metadata or {}
+            )
+            
+            self.logger.debug(
+                f"Processed signal from {source} for {symbol}: "
+                f"value={value:.2f}, confidence={confidence:.2f}"
+            )
+            
+            return signal
+            
+        except Exception as e:
+            self.logger.error(f"Error processing signal from {source}: {e}")
+            raise
+    
+    def _get_recommendation(self, score: float) -> str:
+        """
+        Get trading recommendation based on score
+        
+        Args:
+            score: Final aggregated score (0-100)
+            
+        Returns:
+            Recommendation string
+        """
+        if score >= self.thresholds["strong_buy"]:
+            return "STRONG_BUY"
+        elif score >= self.thresholds["buy"]:
+            return "BUY"
+        elif score >= 50:
+            return "HOLD_BULLISH"
+        elif score >= 40:
+            return "HOLD_BEARISH"
+        elif score >= 30:
+            return "SELL"
+        else:
+            return "STRONG_SELL"
+    
+    def _create_neutral_score(self, symbol: str) -> AggregatedScore:  # noqa: ARG002
+        """Create a neutral score when no signals available"""
+        return AggregatedScore(
+            total_score=50,
+            confidence=0,
+            signal_count=0,
+            sources=[],
+            breakdown={},
+            timestamp=datetime.now(),
+            recommendation="HOLD_NEUTRAL"
+        )
+    
+    def _update_history(self, score: AggregatedScore):
+        """Update score history with size limit"""
+        self.score_history.append(score)
+        if len(self.score_history) > self.max_history:
+            self.score_history.pop(0)
+    
+    def get_recent_scores(self, count: int = 10) -> List[AggregatedScore]:
+        """Get recent score history"""
+        return self.score_history[-count:] if self.score_history else []
+    
+    def update_weights(self, new_weights: Dict[str, float]):
+        """
+        Update source weights
+        
+        Args:
+            new_weights: Dictionary of source:weight pairs
+        """
+        # Validate weights sum to approximately 1.0
+        total = sum(new_weights.values())
+        if abs(total - 1.0) > 0.01:
+            self.logger.warning(f"Weights sum to {total}, normalizing...")
+            # Normalize weights
+            new_weights = {k: v/total for k, v in new_weights.items()}
+        
+        self.default_weights.update(new_weights)
+        self.logger.info(f"Updated weights: {self.default_weights}")
+    
+    def get_statistics(self) -> Dict[str, Any]:
+        """Get scoring statistics"""
+        if not self.score_history:
+            return {
+                "total_scores": 0,
+                "average_score": 0,
+                "average_confidence": 0,
+                "recommendation_distribution": {}
+            }
+        
+        scores = [s.total_score for s in self.score_history]
+        confidences = [s.confidence for s in self.score_history]
+        recommendations = [s.recommendation for s in self.score_history]
+        
+        # Count recommendations
+        rec_dist = {}
+        for rec in recommendations:
+            rec_dist[rec] = rec_dist.get(rec, 0) + 1
+        
+        return {
+            "total_scores": len(self.score_history),
+            "average_score": sum(scores) / len(scores),
+            "average_confidence": sum(confidences) / len(confidences),
+            "recommendation_distribution": rec_dist,
+            "current_weights": self.default_weights
+        }
     
     async def start(self):
         """Start the scoring agent"""
-        if self.status == "running":
-            logger.warning("Scoring agent already running")
-            return
-        
-        logger.info("Starting scoring agent")
-        self.status = "starting"
-        
-        try:
-            # Start background tasks
-            self._running = True
-            self._tasks = [
-                asyncio.create_task(self._signal_processing_loop()),
-                asyncio.create_task(self._performance_monitoring_loop()),
-                asyncio.create_task(self._cleanup_loop())
-            ]
-            
-            # Register event handlers
-            await self._register_event_handlers()
-            
-            # Update status
-            self.status = "running"
-            logger.info("Scoring agent started successfully")
-            
-            # Emit startup event
-            await self.event_bus.emit(Event(
-                type=EventType.AGENT_STARTED,
-                data={
-                    "agent_id": self.agent_id,
-                    "timestamp": datetime.now().isoformat()
-                }
-            ))
-            
-        except Exception as e:
-            self.status = "error"
-            logger.error(f"Failed to start scoring agent: {e}")
-            raise
+        self.logger.info("Scoring Agent started")
     
     async def stop(self):
         """Stop the scoring agent"""
-        if self.status == "stopped":
-            logger.warning("Scoring agent already stopped")
-            return
-        
-        logger.info("Stopping scoring agent")
-        self.status = "stopping"
-        
-        try:
-            # Stop background tasks
-            self._running = False
-            
-            # Cancel all tasks
-            for task in self._tasks:
-                if not task.done():
-                    task.cancel()
-            
-            # Wait for tasks to complete
-            if self._tasks:
-                await asyncio.gather(*self._tasks, return_exceptions=True)
-            
-            # Update status
-            self.status = "stopped"
-            logger.info("Scoring agent stopped successfully")
-            
-            # Emit shutdown event
-            await self.event_bus.emit(Event(
-                type=EventType.AGENT_STOPPED,
-                data={
-                    "agent_id": self.agent_id,
-                    "timestamp": datetime.now().isoformat()
-                }
-            ))
-            
-        except Exception as e:
-            logger.error(f"Error stopping scoring agent: {e}")
-            raise
-    
-    async def score_signal(self, signal_data: Dict[str, Any]) -> SignalScore:
-        """
-        Score a trading signal using multiple sources and AI models
-        
-        Args:
-            signal_data: Raw signal data from various sources
-            
-        Returns:
-            SignalScore: Scored signal with confidence metrics
-        """
-        signal_id = signal_data.get("signal_id", f"signal_{datetime.now().timestamp()}")
-        symbol = signal_data.get("symbol", "unknown")
-        
-        logger.info(f"Scoring signal {signal_id} for {symbol}")
-        
-        try:
-            # Extract signal sources
-            sources = self._extract_signal_sources(signal_data)
-            
-            # Validate minimum sources
-            if len(sources) < self.min_sources:
-                raise ValueError(f"Insufficient signal sources: {len(sources)} < {self.min_sources}")
-            
-            # Calculate individual source scores
-            source_scores = await self._calculate_source_scores(signal_data, sources)
-            
-            # Aggregate scores using ensemble method
-            aggregated_score = await self._aggregate_scores(source_scores)
-            
-            # Determine signal type and confidence
-            signal_type, confidence = await self._determine_signal_type(aggregated_score)
-            
-            # Calculate contributing factors
-            factors = await self._calculate_contributing_factors(source_scores)
-            
-            # Create signal score
-            signal_score = SignalScore(
-                signal_id=signal_id,
-                symbol=symbol,
-                signal_type=signal_type,
-                confidence=confidence,
-                score=aggregated_score,
-                sources=sources,
-                factors=factors,
-                timestamp=datetime.now(),
-                metadata={
-                    "source_scores": source_scores,
-                    "aggregation_method": "ensemble_weighted",
-                    "processing_time": datetime.now().isoformat()
-                }
-            )
-            
-            # Store processed signal
-            self.processed_signals[signal_id] = signal_score
-            self.signal_history.append(signal_score)
-            
-            # Update metrics
-            await self._update_metrics(signal_score)
-            
-            logger.info(f"Signal {signal_id} scored: {signal_type.value} (confidence: {confidence:.2f})")
-            
-            # Emit scored signal event
-            await self.event_bus.emit(Event(
-                type=EventType.SIGNAL_PROCESSED,
-                data={
-                    "signal_id": signal_id,
-                    "symbol": symbol,
-                    "signal_type": signal_type.value,
-                    "confidence": confidence,
-                    "score": aggregated_score,
-                    "timestamp": datetime.now().isoformat()
-                }
-            ))
-            
-            return signal_score
-            
-        except Exception as e:
-            logger.error(f"Error scoring signal {signal_id}: {e}")
-            raise
-    
-    async def get_signal_score(self, signal_id: str) -> Optional[SignalScore]:
-        """Get a processed signal score by ID"""
-        return self.processed_signals.get(signal_id)
-    
-    async def get_signal_history(self, symbol: Optional[str] = None, limit: int = 100) -> List[SignalScore]:
-        """Get signal history, optionally filtered by symbol"""
-        history = self.signal_history
-        
-        if symbol:
-            history = [s for s in history if s.symbol == symbol]
-        
-        return history[-limit:] if limit else history
-    
-    async def get_performance_metrics(self) -> Dict[str, Any]:
-        """Get scoring agent performance metrics"""
-        return {
-            "agent_id": self.agent_id,
-            "status": self.status,
-            "accuracy_metrics": self.accuracy_metrics,
-            "signal_counts": {
-                "pending": len(self.pending_signals),
-                "processed": len(self.processed_signals),
-                "historical": len(self.signal_history)
-            },
-            "confidence_distribution": await self._calculate_confidence_distribution(),
-            "source_usage": await self._calculate_source_usage(),
-            "timestamp": datetime.now().isoformat()
-        }
-    
-    async def _register_event_handlers(self):
-        """Register event handlers for the scoring agent"""
-        self.event_bus.subscribe(EventType.SIGNAL_GENERATED, self._handle_signal_generated)
-        self.event_bus.subscribe(EventType.MARKET_DATA_UPDATED, self._handle_market_data_updated)
-        self.event_bus.subscribe(EventType.RISK_SCORE_UPDATED, self._handle_risk_score_updated)
-        self.event_bus.subscribe(EventType.SYSTEM_ERROR, self._handle_system_error)
-    
-    async def _signal_processing_loop(self):
-        """Background task for processing pending signals"""
-        while self._running:
-            try:
-                await asyncio.sleep(1.0)  # Process every second
-                
-                if not self.pending_signals:
-                    continue
-                
-                # Process signals in order
-                signal = self.pending_signals.pop(0)
-                await self.score_signal(signal)
-                
-            except asyncio.CancelledError:
-                break
-            except Exception as e:
-                logger.error(f"Error in signal processing loop: {e}")
-    
-    async def _performance_monitoring_loop(self):
-        """Background task for performance monitoring"""
-        while self._running:
-            try:
-                await asyncio.sleep(300.0)  # Check every 5 minutes
-                
-                # Update accuracy metrics
-                await self._update_accuracy_metrics()
-                
-                # Emit performance metrics
-                await self.event_bus.emit(Event(
-                    type=EventType.AGENT_TASK_COMPLETED,
-                    data={
-                        "agent_id": self.agent_id,
-                        "metrics": await self.get_performance_metrics(),
-                        "timestamp": datetime.now().isoformat()
-                    }
-                ))
-                
-            except asyncio.CancelledError:
-                break
-            except Exception as e:
-                logger.error(f"Error in performance monitoring loop: {e}")
-    
-    async def _cleanup_loop(self):
-        """Background task for cleanup operations"""
-        while self._running:
-            try:
-                await asyncio.sleep(3600.0)  # Cleanup every hour
-                
-                # Remove old processed signals
-                cutoff_time = datetime.now() - timedelta(hours=24)
-                old_signals = [
-                    signal_id for signal_id, signal in self.processed_signals.items()
-                    if signal.timestamp < cutoff_time
-                ]
-                
-                for signal_id in old_signals:
-                    del self.processed_signals[signal_id]
-                
-                if old_signals:
-                    logger.info(f"Cleaned up {len(old_signals)} old signals")
-                
-            except asyncio.CancelledError:
-                break
-            except Exception as e:
-                logger.error(f"Error in cleanup loop: {e}")
-    
-    def _extract_signal_sources(self, signal_data: Dict[str, Any]) -> List[SignalSource]:
-        """Extract signal sources from signal data"""
-        sources = []
-        
-        # Check for KingFisher data
-        if "kingfisher" in signal_data:
-            sources.append(SignalSource.KINGFISHER)
-        
-        # Check for RiskMetric data
-        if "riskmetric" in signal_data:
-            sources.append(SignalSource.RISKMETRIC)
-        
-        # Check for Cryptometer data
-        if "cryptometer" in signal_data:
-            sources.append(SignalSource.CRYPTOMETER)
-        
-        # Check for technical analysis data
-        if "technical" in signal_data:
-            sources.append(SignalSource.TECHNICAL)
-        
-        # Check for fundamental analysis data
-        if "fundamental" in signal_data:
-            sources.append(SignalSource.FUNDAMENTAL)
-        
-        # Check for sentiment analysis data
-        if "sentiment" in signal_data:
-            sources.append(SignalSource.SENTIMENT)
-        
-        return sources
-    
-    async def _calculate_source_scores(self, signal_data: Dict[str, Any], sources: List[SignalSource]) -> Dict[SignalSource, float]:
-        """Calculate individual source scores"""
-        source_scores = {}
-        
-        for source in sources:
-            try:
-                if source == SignalSource.KINGFISHER:
-                    score = await self._score_kingfisher(signal_data.get("kingfisher", {}))
-                elif source == SignalSource.RISKMETRIC:
-                    score = await self._score_riskmetric(signal_data.get("riskmetric", {}))
-                elif source == SignalSource.CRYPTOMETER:
-                    score = await self._score_cryptometer(signal_data.get("cryptometer", {}))
-                elif source == SignalSource.TECHNICAL:
-                    score = await self._score_technical(signal_data.get("technical", {}))
-                elif source == SignalSource.FUNDAMENTAL:
-                    score = await self._score_fundamental(signal_data.get("fundamental", {}))
-                elif source == SignalSource.SENTIMENT:
-                    score = await self._score_sentiment(signal_data.get("sentiment", {}))
-                else:
-                    score = 0.0
-                
-                source_scores[source] = score
-                
-            except Exception as e:
-                logger.error(f"Error calculating score for {source.value}: {e}")
-                source_scores[source] = 0.0
-        
-        return source_scores
-    
-    async def _score_kingfisher(self, kingfisher_data: Dict[str, Any]) -> float:
-        """Score KingFisher liquidation data"""
-        try:
-            # Extract liquidation metrics
-            long_liquidation_ratio = kingfisher_data.get("long_liquidation_ratio", 0.0)
-            short_liquidation_ratio = kingfisher_data.get("short_liquidation_ratio", 0.0)
-            
-            # Calculate liquidation pressure score
-            liquidation_pressure = abs(long_liquidation_ratio - short_liquidation_ratio)
-            
-            # Normalize to 0-1 scale
-            score = min(liquidation_pressure / 0.1, 1.0)  # 10% threshold
-            
-            return score
-            
-        except Exception as e:
-            logger.error(f"Error scoring KingFisher data: {e}")
-            return 0.0
-    
-    async def _score_riskmetric(self, riskmetric_data: Dict[str, Any]) -> float:
-        """Score RiskMetric data"""
-        try:
-            # Extract risk metrics
-            volatility_score = riskmetric_data.get("volatility_score", 0.0)
-            correlation_score = riskmetric_data.get("correlation_score", 0.0)
-            drawdown_score = riskmetric_data.get("drawdown_score", 0.0)
-            
-            # Calculate weighted risk score
-            risk_score = (
-                volatility_score * 0.4 +
-                correlation_score * 0.3 +
-                drawdown_score * 0.3
-            )
-            
-            # Invert for scoring (lower risk = higher score)
-            score = 1.0 - risk_score
-            
-            return max(0.0, min(1.0, score))
-            
-        except Exception as e:
-            logger.error(f"Error scoring RiskMetric data: {e}")
-            return 0.0
-    
-    async def _score_cryptometer(self, cryptometer_data: Dict[str, Any]) -> float:
-        """Score Cryptometer data"""
-        try:
-            # Extract Cryptometer metrics
-            fear_greed_index = cryptometer_data.get("fear_greed_index", 50.0)
-            market_sentiment = cryptometer_data.get("market_sentiment", 0.0)
-            volume_analysis = cryptometer_data.get("volume_analysis", 0.0)
-            
-            # Calculate sentiment score
-            sentiment_score = (fear_greed_index / 100.0 + market_sentiment + volume_analysis) / 3.0
-            
-            return max(0.0, min(1.0, sentiment_score))
-            
-        except Exception as e:
-            logger.error(f"Error scoring Cryptometer data: {e}")
-            return 0.0
-    
-    async def _score_technical(self, technical_data: Dict[str, Any]) -> float:
-        """Score technical analysis data"""
-        try:
-            # Extract technical indicators
-            rsi = technical_data.get("rsi", 50.0)
-            macd = technical_data.get("macd", 0.0)
-            bollinger_position = technical_data.get("bollinger_position", 0.5)
-            
-            # Calculate technical score
-            rsi_score = 1.0 - abs(rsi - 50.0) / 50.0  # Closer to 50 = better
-            macd_score = max(0.0, min(1.0, (macd + 1.0) / 2.0))  # Normalize to 0-1
-            bollinger_score = 1.0 - abs(bollinger_position - 0.5)  # Middle = better
-            
-            technical_score = (rsi_score + macd_score + bollinger_score) / 3.0
-            
-            return technical_score
-            
-        except Exception as e:
-            logger.error(f"Error scoring technical data: {e}")
-            return 0.0
-    
-    async def _score_fundamental(self, fundamental_data: Dict[str, Any]) -> float:
-        """Score fundamental analysis data"""
-        try:
-            # Extract fundamental metrics
-            market_cap = fundamental_data.get("market_cap", 0.0)
-            volume_24h = fundamental_data.get("volume_24h", 0.0)
-            price_change_24h = fundamental_data.get("price_change_24h", 0.0)
-            
-            # Calculate fundamental score
-            market_cap_score = min(market_cap / 1e9, 1.0)  # Normalize by 1B
-            volume_score = min(volume_24h / 1e8, 1.0)  # Normalize by 100M
-            price_score = max(0.0, min(1.0, (price_change_24h + 50.0) / 100.0))
-            
-            fundamental_score = (market_cap_score + volume_score + price_score) / 3.0
-            
-            return fundamental_score
-            
-        except Exception as e:
-            logger.error(f"Error scoring fundamental data: {e}")
-            return 0.0
-    
-    async def _score_sentiment(self, sentiment_data: Dict[str, Any]) -> float:
-        """Score sentiment analysis data"""
-        try:
-            # Extract sentiment metrics
-            social_sentiment = sentiment_data.get("social_sentiment", 0.0)
-            news_sentiment = sentiment_data.get("news_sentiment", 0.0)
-            reddit_sentiment = sentiment_data.get("reddit_sentiment", 0.0)
-            
-            # Calculate sentiment score
-            sentiment_score = (social_sentiment + news_sentiment + reddit_sentiment) / 3.0
-            
-            # Normalize to 0-1 scale
-            normalized_score = (sentiment_score + 1.0) / 2.0
-            
-            return max(0.0, min(1.0, normalized_score))
-            
-        except Exception as e:
-            logger.error(f"Error scoring sentiment data: {e}")
-            return 0.0
-    
-    async def _aggregate_scores(self, source_scores: Dict[SignalSource, float]) -> float:
-        """
-        Aggregate source scores using flexible ensemble method
-        NOTE: Fixed 25-point system removed - aggregation is now flexible
-        """
-        if not source_scores:
-            return 0.0
-        
-        # FLEXIBLE weights - can be adjusted dynamically in the future
-        # TODO: Make these configurable/dynamic based on market conditions
-        weights = {
-            SignalSource.KINGFISHER: 0.3,    # Independent liquidation analysis
-            SignalSource.RISKMETRIC: 0.2,    # Independent risk scoring
-            SignalSource.CRYPTOMETER: 0.25,  # Independent calibrated scoring
-            SignalSource.TECHNICAL: 0.15,
-            SignalSource.FUNDAMENTAL: 0.05,
-            SignalSource.SENTIMENT: 0.05
-        }
-        
-        total_weight = 0.0
-        weighted_sum = 0.0
-        
-        for source, score in source_scores.items():
-            weight = weights.get(source, 0.1)
-            weighted_sum += score * weight
-            total_weight += weight
-        
-        if total_weight == 0.0:
-            return 0.0
-        
-        # Return normalized score (0.0-1.0) - ready for flexible aggregation
-        return weighted_sum / total_weight
-    
-    async def _determine_signal_type(self, score: float) -> Tuple[SignalType, float]:
-        """Determine signal type and confidence based on score"""
-        if score >= 0.8:
-            signal_type = SignalType.STRONG_BUY
-            confidence = score
-        elif score >= 0.6:
-            signal_type = SignalType.BUY
-            confidence = score
-        elif score >= 0.4:
-            signal_type = SignalType.HOLD
-            confidence = 0.5
-        elif score >= 0.2:
-            signal_type = SignalType.SELL
-            confidence = 1.0 - score
-        else:
-            signal_type = SignalType.STRONG_SELL
-            confidence = 1.0 - score
-        
-        return signal_type, confidence
-    
-    async def _calculate_contributing_factors(self, source_scores: Dict[SignalSource, float]) -> Dict[str, float]:
-        """Calculate contributing factors for the signal"""
-        factors = {}
-        
-        for source, score in source_scores.items():
-            factors[source.value] = score
-        
-        return factors
-    
-    async def _update_metrics(self, signal_score: SignalScore):
-        """Update performance metrics"""
-        self.accuracy_metrics["total_signals"] += 1
-        # Additional metric updates would go here
-    
-    async def _update_accuracy_metrics(self):
-        """Update accuracy metrics based on historical performance"""
-        # This would implement accuracy tracking logic
-        pass
-    
-    async def _calculate_confidence_distribution(self) -> Dict[str, int]:
-        """Calculate confidence distribution across processed signals"""
-        distribution = {
-            "very_high": 0,
-            "high": 0,
-            "medium": 0,
-            "low": 0,
-            "very_low": 0
-        }
-        
-        for signal in self.signal_history:
-            if signal.confidence >= 0.9:
-                distribution["very_high"] += 1
-            elif signal.confidence >= 0.7:
-                distribution["high"] += 1
-            elif signal.confidence >= 0.5:
-                distribution["medium"] += 1
-            elif signal.confidence >= 0.3:
-                distribution["low"] += 1
-            else:
-                distribution["very_low"] += 1
-        
-        return distribution
-    
-    async def _calculate_source_usage(self) -> Dict[str, int]:
-        """Calculate usage statistics for each signal source"""
-        usage = {}
-        
-        for signal in self.signal_history:
-            for source in signal.sources:
-                source_name = source.value
-                usage[source_name] = usage.get(source_name, 0) + 1
-        
-        return usage
-    
-    async def _handle_signal_generated(self, event_data: Dict[str, Any]):
-        """Handle signal generated events"""
-        signal_data = event_data.get("signal_data", {})
-        self.pending_signals.append(signal_data)
-    
-    async def _handle_market_data_updated(self, event_data: Dict[str, Any]):
-        """Handle market data update events"""
-        # Process market data updates
-        pass
-    
-    async def _handle_risk_score_updated(self, event_data: Dict[str, Any]):
-        """Handle risk score update events"""
-        # Process risk score updates
-        pass
-    
-    async def _handle_system_error(self, event_data: Dict[str, Any]):
-        """Handle system error events"""
-        logger.error(f"System error in scoring agent: {event_data}") 
+        self.logger.info("Scoring Agent stopped")

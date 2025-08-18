@@ -65,8 +65,7 @@ class TradingViewService:
             "LTCUSDT": "BINANCE:LTCUSDT",
             "XRPUSDT": "BINANCE:XRPUSDT",
             "BNBUSDT": "BINANCE:BNBUSDT",
-            "SOLUSDT": "BINANCE:SOLUSDT",
-            "MATICUSDT": "BINANCE:MATICUSDT"
+            "SOLUSDT": "BINANCE:SOLUSDT"
         }
     
     def get_widget_config(self, symbol: str, interval: str = "1h", theme: str = "dark") -> Dict[str, Any]:

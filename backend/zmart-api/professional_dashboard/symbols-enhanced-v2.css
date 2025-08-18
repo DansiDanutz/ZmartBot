@@ -1,0 +1,628 @@
+/* Enhanced Symbols Section CSS V2 - Professional & Spacious */
+/* Bigger cards with perfect spacing for all content */
+
+/* Main Exchange Cards Container */
+.exchange-cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+    gap: 32px;
+    margin: 32px 0;
+    padding: 0 16px;
+}
+
+/* Individual Exchange Card - Much Bigger & Professional */
+.exchange-card {
+    background: linear-gradient(145deg, #1a1a1af5, #252525f5);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border: 1px solid rgba(139, 92, 246, 0.25);
+    border-radius: 24px;
+    padding: 32px;
+    min-height: 580px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 
+        0 10px 40px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* Gradient border effect */
+.exchange-card::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, 
+        transparent 30%,
+        rgba(139, 92, 246, 0.3),
+        rgba(6, 182, 212, 0.3),
+        transparent 70%);
+    border-radius: 24px;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: -1;
+}
+
+.exchange-card:hover::after {
+    opacity: 1;
+    animation: borderRotate 3s linear infinite;
+}
+
+@keyframes borderRotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Hover effect */
+.exchange-card:hover {
+    transform: translateY(-6px) scale(1.01);
+    border-color: rgba(139, 92, 246, 0.5);
+    box-shadow: 
+        0 20px 60px rgba(139, 92, 246, 0.2),
+        0 15px 40px rgba(6, 182, 212, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Exchange Card Header - Bigger & Bolder */
+.exchange-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.08);
+    position: relative;
+}
+
+.exchange-card-header::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--primary), transparent);
+}
+
+.exchange-logo {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.exchange-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    font-weight: bold;
+    color: #fff;
+    position: relative;
+    box-shadow: 
+        0 4px 20px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* KuCoin specific styling */
+.exchange-card.kucoin .exchange-icon {
+    background: linear-gradient(135deg, #00D163, #00A847);
+    box-shadow: 
+        0 4px 20px rgba(0, 209, 99, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.exchange-card.kucoin .exchange-card-header::after {
+    background: linear-gradient(90deg, #00D163, transparent);
+}
+
+.exchange-card.kucoin:hover {
+    border-color: rgba(0, 209, 99, 0.5);
+    box-shadow: 
+        0 20px 60px rgba(0, 209, 99, 0.2),
+        0 15px 40px rgba(0, 168, 71, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Binance specific styling */
+.exchange-card.binance .exchange-icon {
+    background: linear-gradient(135deg, #F0B90B, #F8D12F);
+    box-shadow: 
+        0 4px 20px rgba(240, 185, 11, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.exchange-card.binance .exchange-card-header::after {
+    background: linear-gradient(90deg, #F0B90B, transparent);
+}
+
+/* Exchange Name - Bigger */
+.exchange-name {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.03em;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Status Badge - More Professional */
+.exchange-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: linear-gradient(135deg, 
+        rgba(16, 185, 129, 0.15),
+        rgba(16, 185, 129, 0.05));
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    border-radius: 24px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #10b981;
+    box-shadow: 
+        0 2px 8px rgba(16, 185, 129, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    background: #10b981;
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+    animation: pulse 2s infinite;
+}
+
+/* Symbol Selection Area - More Spacious */
+.symbol-selection-area {
+    margin-top: 24px;
+}
+
+/* Selection Controls - Better Spacing */
+.selection-controls {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.control-label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    color: #94a3b8;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Enhanced Dropdown - Bigger & Professional */
+.enhanced-dropdown {
+    position: relative;
+    width: 100%;
+}
+
+.dropdown-select-enhanced {
+    width: 100%;
+    padding: 14px 20px;
+    background: linear-gradient(135deg, #0f0f0ff5, #1a1a1af5);
+    color: #fff;
+    border: 1px solid rgba(139, 92, 246, 0.2);
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 12 12'%3E%3Cpath fill='%238b5cf6' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 20px center;
+    padding-right: 48px;
+    box-shadow: 
+        0 2px 8px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.dropdown-select-enhanced:hover {
+    border-color: rgba(139, 92, 246, 0.4);
+    background: linear-gradient(135deg, #1a1a1af5, #252525f5);
+    box-shadow: 
+        0 4px 12px rgba(139, 92, 246, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.dropdown-select-enhanced:focus {
+    outline: none;
+    border-color: rgba(139, 92, 246, 0.6);
+    box-shadow: 
+        0 0 0 4px rgba(139, 92, 246, 0.1),
+        0 4px 12px rgba(139, 92, 246, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Search Input - Bigger & Better */
+.search-input-enhanced {
+    width: 100%;
+    padding: 14px 20px 14px 48px;
+    background: linear-gradient(135deg, #0f0f0ff5, #1a1a1af5);
+    color: #fff;
+    border: 1px solid rgba(139, 92, 246, 0.2);
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%238b5cf6' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: left 16px center;
+    box-shadow: 
+        0 2px 8px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.search-input-enhanced::placeholder {
+    color: #64748b;
+}
+
+.search-input-enhanced:focus {
+    outline: none;
+    border-color: rgba(139, 92, 246, 0.6);
+    box-shadow: 
+        0 0 0 4px rgba(139, 92, 246, 0.1),
+        0 4px 12px rgba(139, 92, 246, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Symbols Grid - Bigger with Better Spacing */
+.symbols-grid-enhanced {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 12px;
+    max-height: 280px;
+    overflow-y: auto;
+    padding: 20px;
+    background: linear-gradient(135deg, #0a0a0a99, #0f0f0f99);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 
+        inset 0 2px 8px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.02);
+    margin-bottom: 20px;
+}
+
+/* Custom Scrollbar - Styled */
+.symbols-grid-enhanced::-webkit-scrollbar {
+    width: 10px;
+}
+
+.symbols-grid-enhanced::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 5px;
+    margin: 10px 0;
+}
+
+.symbols-grid-enhanced::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, 
+        rgba(139, 92, 246, 0.4),
+        rgba(6, 182, 212, 0.3));
+    border-radius: 5px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.symbols-grid-enhanced::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, 
+        rgba(139, 92, 246, 0.6),
+        rgba(6, 182, 212, 0.5));
+}
+
+/* Individual Symbol Button - Bigger & More Interactive */
+.symbol-button {
+    padding: 12px 14px;
+    background: linear-gradient(135deg, #1a1a1af5, #252525f5);
+    color: #cbd5e1;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+    box-shadow: 
+        0 2px 4px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.symbol-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, 
+        transparent,
+        rgba(139, 92, 246, 0.1));
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    border-radius: 10px;
+}
+
+.symbol-button:hover {
+    background: linear-gradient(135deg, #8b5cf630, #06b6d420);
+    color: #fff;
+    border-color: rgba(139, 92, 246, 0.4);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 
+        0 6px 16px rgba(139, 92, 246, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.symbol-button:hover::before {
+    opacity: 1;
+}
+
+.symbol-button.selected {
+    background: linear-gradient(135deg, #8b5cf640, #06b6d430);
+    color: #fff;
+    border-color: rgba(139, 92, 246, 0.6);
+    box-shadow: 
+        0 4px 12px rgba(139, 92, 246, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    font-weight: 700;
+}
+
+.symbol-button.selected::after {
+    content: '✓';
+    position: absolute;
+    top: 2px;
+    right: 4px;
+    font-size: 10px;
+    color: #10b981;
+    background: rgba(16, 185, 129, 0.2);
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Statistics Row - More Professional */
+.exchange-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    padding: 20px;
+    background: linear-gradient(135deg, 
+        rgba(139, 92, 246, 0.05),
+        rgba(6, 182, 212, 0.03));
+    border: 1px solid rgba(139, 92, 246, 0.15);
+    border-radius: 12px;
+    margin-bottom: 24px;
+    box-shadow: 
+        0 2px 8px rgba(139, 92, 246, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.stat-item {
+    text-align: center;
+    padding: 8px;
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.stat-item:last-child {
+    border-right: none;
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #fff;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    margin-bottom: 4px;
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+}
+
+/* Action Buttons - Bigger & More Professional */
+.exchange-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 24px;
+}
+
+.action-button {
+    padding: 16px 24px;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    position: relative;
+    overflow: hidden;
+}
+
+.action-button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.action-button:active::before {
+    width: 300px;
+    height: 300px;
+}
+
+.action-button.primary {
+    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+    color: #fff;
+    box-shadow: 
+        0 4px 16px rgba(139, 92, 246, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.action-button.primary:hover {
+    background: linear-gradient(135deg, #9b6ff6, #8c4afd);
+    transform: translateY(-3px);
+    box-shadow: 
+        0 8px 24px rgba(139, 92, 246, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.action-button.secondary {
+    background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.1),
+        rgba(255, 255, 255, 0.05));
+    color: #cbd5e1;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 
+        0 2px 8px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.action-button.secondary:hover {
+    background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.15),
+        rgba(255, 255, 255, 0.08));
+    color: #fff;
+    transform: translateY(-3px);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 
+        0 4px 12px rgba(255, 255, 255, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+/* KuCoin Card Specific Enhancements */
+.exchange-card.kucoin {
+    background: linear-gradient(145deg, 
+        rgba(26, 26, 26, 0.98),
+        rgba(0, 209, 99, 0.02));
+}
+
+.exchange-card.kucoin .exchange-stats {
+    background: linear-gradient(135deg, 
+        rgba(0, 209, 99, 0.08),
+        rgba(0, 168, 71, 0.04));
+    border-color: rgba(0, 209, 99, 0.2);
+}
+
+.exchange-card.kucoin .action-button.primary {
+    background: linear-gradient(135deg, #00D163, #00A847);
+}
+
+.exchange-card.kucoin .action-button.primary:hover {
+    background: linear-gradient(135deg, #00E570, #00B854);
+    box-shadow: 
+        0 8px 24px rgba(0, 209, 99, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* Loading State - Professional */
+.symbols-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px;
+    color: #94a3b8;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(139, 92, 246, 0.2);
+    border-top: 3px solid #8b5cf6;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 16px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+    0%, 100% { 
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% { 
+        opacity: 0.8;
+        transform: scale(1.2);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 1400px) {
+    .exchange-cards-container {
+        grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+    }
+}
+
+@media (max-width: 1024px) {
+    .exchange-cards-container {
+        grid-template-columns: 1fr;
+        max-width: 600px;
+        margin: 32px auto;
+    }
+    
+    .selection-controls {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
+
+@media (max-width: 640px) {
+    .exchange-card {
+        padding: 24px 20px;
+        min-height: 520px;
+    }
+    
+    .exchange-name {
+        font-size: 1.25rem;
+    }
+    
+    .symbols-grid-enhanced {
+        grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+        padding: 16px;
+    }
+    
+    .exchange-actions {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+}

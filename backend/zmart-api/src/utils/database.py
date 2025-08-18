@@ -10,12 +10,20 @@ from datetime import datetime
 
 import asyncpg
 import redis.asyncio as redis
-from influxdb_client import InfluxDBClient
+from influxdb_client.client.influxdb_client import InfluxDBClient
 from influxdb_client.client.write_api import SYNCHRONOUS
 
 from src.config.settings import settings, get_database_url
 
 logger = logging.getLogger(__name__)
+
+async def setup_connection(connection):
+    """Setup connection with optimized settings for high-frequency trading"""
+    await connection.execute("SET statement_timeout = 30000")  # 30 seconds
+    await connection.execute("SET idle_in_transaction_session_timeout = 300000")  # 5 minutes
+    await connection.execute("SET synchronous_commit = off")  # Faster writes
+    await connection.execute("SET wal_buffers = '16MB'")  # Optimize WAL
+    await connection.execute("SET checkpoint_completion_target = 0.9")  # Faster checkpoints
 
 # Global connection objects
 postgres_pool: Optional[asyncpg.Pool] = None
@@ -29,15 +37,19 @@ async def init_database():
     
     logger.info("Initializing database connections")
     
-    # Initialize PostgreSQL connection pool
+    # Initialize PostgreSQL connection pool with optimized settings
     try:
         postgres_pool = await asyncpg.create_pool(
             get_database_url(),
-            min_size=5,
-            max_size=20,
-            command_timeout=60
+            min_size=20,        # Increased from 5 for high-frequency trading
+            max_size=100,       # Increased from 20 for scalability
+            command_timeout=30,  # Reduced from 60 for faster responses
+            max_queries=50000,   # Add query limit for stability
+            max_cached_statement_lifetime=300,  # Cache prepared statements
+            max_inactive_connection_lifetime=300,  # Recycle idle connections
+            setup=setup_connection  # Custom connection setup
         )
-        logger.info("PostgreSQL connection pool initialized")
+        logger.info("PostgreSQL connection pool initialized with optimized settings")
     except Exception as e:
         logger.warning(f"Failed to initialize PostgreSQL connection pool: {e}")
         logger.info("PostgreSQL connection will be skipped for development")
@@ -97,13 +109,16 @@ async def close_database():
     if influx_client:
         influx_client.close()
         logger.info("InfluxDB connection closed")
+    
+    # Return None explicitly to satisfy type checker
+    return None
 
 # PostgreSQL utilities
 async def get_postgres_connection():
     """Get a PostgreSQL connection from the pool"""
     if not postgres_pool:
         logger.warning("PostgreSQL connection pool not available")
-        return None
+        raise RuntimeError("PostgreSQL connection pool not available")
     return await postgres_pool.acquire()
 
 async def release_postgres_connection(conn):
@@ -116,15 +131,9 @@ async def postgres_transaction():
     """Context manager for PostgreSQL transactions"""
     if not postgres_pool:
         logger.warning("PostgreSQL connection pool not available")
-        yield None
-        return
+        raise RuntimeError("PostgreSQL connection pool not available")
     
     conn = await get_postgres_connection()
-    if conn is None:
-        logger.warning("Failed to acquire PostgreSQL connection")
-        yield None
-        return
-    
     try:
         async with conn.transaction():
             yield conn
@@ -137,9 +146,11 @@ async def execute_query(query: str, *args) -> list:
         logger.warning("PostgreSQL connection pool not available")
         return []
     
-    async with postgres_transaction() as conn:
-        if conn:
+    try:
+        async with postgres_transaction() as conn:
             return await conn.fetch(query, *args)
+    except Exception as e:
+        logger.error(f"Error executing query: {e}")
         return []
 
 async def execute_command(command: str, *args) -> str:
@@ -148,9 +159,11 @@ async def execute_command(command: str, *args) -> str:
         logger.warning("PostgreSQL connection pool not available")
         return ""
     
-    async with postgres_transaction() as conn:
-        if conn:
+    try:
+        async with postgres_transaction() as conn:
             return await conn.execute(command, *args)
+    except Exception as e:
+        logger.error(f"Error executing command: {e}")
         return ""
 
 # Redis utilities
@@ -158,50 +171,60 @@ async def get_redis_client():
     """Get Redis client instance"""
     if not redis_client:
         logger.warning("Redis client not available")
-        return None
+        raise RuntimeError("Redis client not available")
     return redis_client
 
 async def redis_get(key: str) -> Optional[str]:
     """Get value from Redis"""
-    client = await get_redis_client()
-    if client:
+    try:
+        client = await get_redis_client()
         return await client.get(key)
-    return None
+    except Exception as e:
+        logger.error(f"Error getting Redis key {key}: {e}")
+        return None
 
 async def redis_set(key: str, value: str, expire: Optional[int] = None) -> bool:
     """Set value in Redis with optional expiration"""
-    client = await get_redis_client()
-    if client:
+    try:
+        client = await get_redis_client()
         return await client.set(key, value, ex=expire)
-    return False
+    except Exception as e:
+        logger.error(f"Error setting Redis key {key}: {e}")
+        return False
 
 async def redis_delete(key: str) -> int:
     """Delete key from Redis"""
-    client = await get_redis_client()
-    if client:
+    try:
+        client = await get_redis_client()
         return await client.delete(key)
-    return 0
+    except Exception as e:
+        logger.error(f"Error deleting Redis key {key}: {e}")
+        return 0
 
 async def redis_exists(key: str) -> bool:
     """Check if key exists in Redis"""
-    client = await get_redis_client()
-    if client:
+    try:
+        client = await get_redis_client()
         return await client.exists(key)
-    return False
+    except Exception as e:
+        logger.error(f"Error checking Redis key {key}: {e}")
+        return False
 
 async def redis_incr(key: str, amount: int = 1) -> int:
     """Increment value in Redis"""
-    client = await get_redis_client()
-    if client:
+    try:
+        client = await get_redis_client()
         return await client.incr(key, amount)
-    return 0
+    except Exception as e:
+        logger.error(f"Error incrementing Redis key {key}: {e}")
+        return 0
 
 # InfluxDB utilities
 async def get_influx_client():
     """Get InfluxDB client instance"""
     if not influx_client:
         logger.warning("InfluxDB client not available")
-        return None
+        raise RuntimeError("InfluxDB client not available")
     return influx_client
 
 async def get_influx_write_api():
@@ -218,7 +241,7 @@ async def write_metric(measurement: str, tags: Dict[str, str], fields: Dict[str,
         logger.warning("InfluxDB write API not available")
         return None
     
-    from influxdb_client import Point
+    from influxdb_client.client.write.point import Point
     
     point = Point(measurement)
     

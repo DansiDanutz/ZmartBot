@@ -16,7 +16,7 @@ from src.config.settings import settings
 from src.services.enhanced_ai_analysis_agent import EnhancedAIAnalysisAgent
 from src.services.advanced_learning_agent import AdvancedLearningAgent
 from src.services.historical_pattern_database import TimeFrame, Direction
-from src.services.cryptometer_endpoint_analyzer import CryptometerAnalysis
+from src.services.cryptometer_data_types import CryptometerAnalysis
 
 logger = logging.getLogger(__name__)
 
@@ -41,7 +41,7 @@ class HistoricalAIAnalysisAgent(EnhancedAIAnalysisAgent):
         logger.info(f"Generating historical-enhanced AI analysis for {symbol}")
         
         # Step 1: Get base Cryptometer analysis
-        cryptometer_analysis = await self.cryptometer_analyzer.analyze_symbol_complete(symbol)
+        cryptometer_analysis = await self.cryptometer_analyzer.analyze_symbol(symbol)
         
         # Step 2: Store analysis with historical context
         prediction_id = await self.advanced_learning_agent.store_analysis_with_historical_context(
@@ -72,10 +72,10 @@ class HistoricalAIAnalysisAgent(EnhancedAIAnalysisAgent):
             'word_count': len(report_content.split()),
             'timestamp': datetime.now().isoformat(),
             'cryptometer_analysis': {
-                'calibrated_score': cryptometer_analysis.calibrated_score,
-                'direction': cryptometer_analysis.direction,
+                'calibrated_score': cryptometer_analysis.total_score,
+                'direction': cryptometer_analysis.signal,
                 'confidence': cryptometer_analysis.confidence,
-                'successful_endpoints': len([es for es in cryptometer_analysis.endpoint_scores if es.success])
+                'successful_endpoints': len(cryptometer_analysis.endpoint_scores)
             },
             'multi_timeframe_analysis': multi_timeframe_analysis,
             'historical_insights': comprehensive_analysis,
@@ -86,18 +86,24 @@ class HistoricalAIAnalysisAgent(EnhancedAIAnalysisAgent):
         """Get analysis for all supported timeframes"""
         multi_timeframe = {}
         
-        patterns = [pattern for es in analysis.endpoint_scores for pattern in es.patterns]
+        # Extract patterns from endpoint data
+        patterns = []
+        for es in analysis.endpoint_scores:
+            if 'patterns' in es.data:
+                patterns.extend(es.data['patterns'])
+            elif 'pattern' in es.data:
+                patterns.append(es.data['pattern'])
         
         for timeframe in TimeFrame:
             for direction in Direction:
-                if direction.value == analysis.direction or direction == Direction.NEUTRAL:
+                if direction.value == analysis.signal or direction == Direction.NEUTRAL:
                     # Get probability analysis for this timeframe/direction
                     prob_analysis = self.advanced_learning_agent.get_pattern_probability_analysis(
                         symbol, patterns, direction.value, timeframe
                     )
                     
                     # Get historical weights
-                    endpoint_scores = {es.endpoint: es.score for es in analysis.endpoint_scores if es.success}
+                    endpoint_scores = {es.endpoint_name: es.score for es in analysis.endpoint_scores if es.confidence > 0.5}
                     historical_weights = self.advanced_learning_agent.get_historical_enhanced_weights(
                         symbol, endpoint_scores, direction.value, timeframe
                     )
@@ -151,10 +157,10 @@ Your reports should be professional, detailed (1200-1800 words), and include:
         user_prompt = f"""Generate a comprehensive historical-enhanced technical analysis report for {symbol}/USDT:
 
 CURRENT CRYPTOMETER ANALYSIS:
-- Calibrated Score: {cryptometer_analysis.calibrated_score:.1f}%
-- Direction: {cryptometer_analysis.direction}
+- Calibrated Score: {cryptometer_analysis.total_score:.1f}%
+- Direction: {cryptometer_analysis.signal}
 - Confidence: {cryptometer_analysis.confidence:.3f}
-- Successful Endpoints: {len([es for es in cryptometer_analysis.endpoint_scores if es.success])}/17
+- Successful Endpoints: {len(cryptometer_analysis.endpoint_scores)}/17
 
 MULTI-TIMEFRAME HISTORICAL ANALYSIS:
 {json.dumps(multi_timeframe_analysis, indent=2)}
@@ -262,7 +268,7 @@ Focus on specific win rate probabilities, historical pattern validation, and mul
         # Multi-timeframe confidence average
         timeframe_confidences = []
         for tf_key, tf_data in multi_timeframe_analysis.items():
-            if tf_data['direction'] == cryptometer_analysis.direction:
+            if tf_data['direction'] == cryptometer_analysis.signal:
                 tf_confidence = tf_data['confidence_level'] * tf_data['win_rate_prediction']
                 timeframe_confidences.append(tf_confidence)
         
@@ -363,8 +369,14 @@ This analysis benefits from {data_maturity.lower()} historical data maturity wit
             )
             
             # Get current patterns from latest analysis
-            current_analysis = await self.cryptometer_analyzer.analyze_symbol_complete(symbol)
-            current_patterns = [pattern for es in current_analysis.endpoint_scores for pattern in es.patterns]
+            current_analysis = await self.cryptometer_analyzer.analyze_symbol(symbol)
+            # Extract patterns from endpoint data
+            current_patterns = []
+            for es in current_analysis.endpoint_scores:
+                if 'patterns' in es.data:
+                    current_patterns.extend(es.data['patterns'])
+                elif 'pattern' in es.data:
+                    current_patterns.append(es.data['pattern'])
             
             # Find matching patterns
             matching_patterns = []

@@ -56,76 +56,62 @@ class MarketDataService:
             self.binance_service = await get_binance_service()
     
     async def get_unified_market_data(self, symbol: str) -> Optional[UnifiedMarketData]:
-        """Get unified market data from both sources"""
+        """Get unified market data - Binance is PRIMARY for price data"""
         try:
             await self._get_services()
             
             # Get data from both sources
-            kucoin_data = None
             binance_data = None
+            kucoin_data = None
             
-            # Try KuCoin first (primary source)
-            try:
-                if self.kucoin_service:
-                    kucoin_data = await self.kucoin_service.get_market_data(symbol)
-            except Exception as e:
-                logger.warning(f"KuCoin data unavailable for {symbol}: {e}")
-            
-            # Try Binance as backup
+            # Try Binance FIRST (PRIMARY source for all price data)
             try:
                 if self.binance_service:
                     binance_data = await self.binance_service.get_market_data(symbol)
             except Exception as e:
                 logger.warning(f"Binance data unavailable for {symbol}: {e}")
             
-            # Determine best price and confidence
-            if kucoin_data and binance_data:
+            # Try KuCoin as backup (but PRIMARY for trading)
+            try:
+                if self.kucoin_service:
+                    kucoin_data = await self.kucoin_service.get_market_data(symbol)
+            except Exception as e:
+                logger.warning(f"KuCoin data unavailable for {symbol}: {e}")
+            
+            # Determine best price and confidence - BINANCE IS PRIMARY
+            if binance_data and kucoin_data:
                 # Both sources available - verify prices
-                price_diff = abs(kucoin_data.price - binance_data.price) / kucoin_data.price
+                price_diff = abs(binance_data.price - kucoin_data.price) / binance_data.price
                 
                 if price_diff <= 0.01:  # 1% tolerance
-                    # Prices are close - use KuCoin as primary
+                    # Prices are close - use Binance as primary for price data
                     return UnifiedMarketData(
                         symbol=symbol,
-                        price=kucoin_data.price,
-                        volume_24h=kucoin_data.volume_24h,
-                        change_24h=kucoin_data.change_24h,
-                        high_24h=kucoin_data.high_24h,
-                        low_24h=kucoin_data.low_24h,
+                        price=binance_data.price,  # BINANCE price is default
+                        volume_24h=binance_data.volume_24h,
+                        change_24h=binance_data.change_24h,
+                        high_24h=binance_data.high_24h,
+                        low_24h=binance_data.low_24h,
                         source="verified",
                         confidence=1.0 - price_diff,
                         timestamp=datetime.utcnow()
                     )
                 else:
-                    # Prices differ significantly - use KuCoin but with lower confidence
+                    # Prices differ significantly - still use Binance as primary
                     return UnifiedMarketData(
                         symbol=symbol,
-                        price=kucoin_data.price,
-                        volume_24h=kucoin_data.volume_24h,
-                        change_24h=kucoin_data.change_24h,
-                        high_24h=kucoin_data.high_24h,
-                        low_24h=kucoin_data.low_24h,
-                        source="kucoin",
-                        confidence=0.7,
+                        price=binance_data.price,  # BINANCE price is default
+                        volume_24h=binance_data.volume_24h,
+                        change_24h=binance_data.change_24h,
+                        high_24h=binance_data.high_24h,
+                        low_24h=binance_data.low_24h,
+                        source="binance",
+                        confidence=0.8,
                         timestamp=datetime.utcnow()
                     )
             
-            elif kucoin_data:
-                # Only KuCoin available
-                return UnifiedMarketData(
-                    symbol=symbol,
-                    price=kucoin_data.price,
-                    volume_24h=kucoin_data.volume_24h,
-                    change_24h=kucoin_data.change_24h,
-                    high_24h=kucoin_data.high_24h,
-                    low_24h=kucoin_data.low_24h,
-                    source="kucoin",
-                    confidence=0.8,
-                    timestamp=datetime.utcnow()
-                )
-            
             elif binance_data:
-                # Only Binance available
+                # Only Binance available - PREFERRED
                 return UnifiedMarketData(
                     symbol=symbol,
                     price=binance_data.price,
@@ -134,7 +120,21 @@ class MarketDataService:
                     high_24h=binance_data.high_24h,
                     low_24h=binance_data.low_24h,
                     source="binance",
-                    confidence=0.6,
+                    confidence=0.9,  # High confidence for Binance
+                    timestamp=datetime.utcnow()
+                )
+            
+            elif kucoin_data:
+                # Only KuCoin available - backup for price
+                return UnifiedMarketData(
+                    symbol=symbol,
+                    price=kucoin_data.price,
+                    volume_24h=kucoin_data.volume_24h,
+                    change_24h=kucoin_data.change_24h,
+                    high_24h=kucoin_data.high_24h,
+                    low_24h=kucoin_data.low_24h,
+                    source="kucoin",
+                    confidence=0.7,  # Lower confidence when only KuCoin
                     timestamp=datetime.utcnow()
                 )
             
@@ -182,18 +182,18 @@ class MarketDataService:
                 
                 if price_difference_percent <= tolerance:
                     is_verified = True
-                    recommended_price = kucoin_price  # Prefer KuCoin for trading
+                    recommended_price = binance_price  # Prefer Binance for price data
                 else:
-                    # Prices differ significantly - use average
-                    recommended_price = (kucoin_price + binance_price) / 2
-            
-            elif kucoin_price:
-                recommended_price = kucoin_price
-                is_verified = True  # Single source but primary
+                    # Prices differ significantly - still use Binance for consistency
+                    recommended_price = binance_price
             
             elif binance_price:
                 recommended_price = binance_price
-                is_verified = False  # Single source but backup
+                is_verified = True  # Binance is primary for price
+            
+            elif kucoin_price:
+                recommended_price = kucoin_price
+                is_verified = False  # KuCoin is backup for price
             
             return PriceVerification(
                 symbol=symbol,

@@ -143,9 +143,19 @@ async def analyze_agent_win_rates(request: AgentWinRateRequest):
     try:
         logger.info(f"🎯 Analyzing agent win rates for {request.symbol}")
         
-        # Start the dynamic agent if needed
-        if integrated_scoring.dynamic_agent.status != "running":
-            await integrated_scoring.dynamic_agent.start()
+        # Check if dynamic agent is available and start if needed
+        if integrated_scoring.dynamic_agent is not None:
+            if hasattr(integrated_scoring.dynamic_agent, 'status') and integrated_scoring.dynamic_agent.status != "running":
+                await integrated_scoring.dynamic_agent.start()
+        else:
+            # Try to initialize the dynamic agent
+            try:
+                from ..agents.scoring.dynamic_scoring_agent import DynamicScoringAgent
+                integrated_scoring.dynamic_agent = DynamicScoringAgent()
+                if hasattr(integrated_scoring.dynamic_agent, 'start'):
+                    await integrated_scoring.dynamic_agent.start()
+            except ImportError:
+                logger.warning("Dynamic scoring agent not available, using fallback method")
         
         # Convert timeframe data to the expected format
         kingfisher_timeframes = None
@@ -167,37 +177,95 @@ async def analyze_agent_win_rates(request: AgentWinRateRequest):
             }
         
         # Calculate dynamic weighted win rate
-        result = await integrated_scoring.dynamic_agent.calculate_multi_timeframe_win_rate(
-            symbol=request.symbol,
-            kingfisher_timeframes=kingfisher_timeframes,
-            cryptometer_timeframes=cryptometer_timeframes,
-            riskmetric_timeframes=riskmetric_timeframes
-        )
+        if integrated_scoring.dynamic_agent is not None and hasattr(integrated_scoring.dynamic_agent, 'calculate_multi_timeframe_win_rate'):
+            result = await integrated_scoring.dynamic_agent.calculate_multi_timeframe_win_rate(
+                symbol=request.symbol,
+                kingfisher_timeframes=kingfisher_timeframes,
+                cryptometer_timeframes=cryptometer_timeframes,
+                riskmetric_timeframes=riskmetric_timeframes
+            )
+            
+            # Format response with dynamic agent result
+            response = {
+                'symbol': result.symbol,
+                'final_win_rate': result.final_score,
+                'signal': result.signal,
+                'confidence': result.overall_confidence,
+                'market_condition': result.market_condition.value,
+                'dynamic_weights': {
+                    'kingfisher': result.dynamic_weights.kingfisher_weight,
+                    'cryptometer': result.dynamic_weights.cryptometer_weight,
+                    'riskmetric': result.dynamic_weights.riskmetric_weight,
+                    'reasoning': result.dynamic_weights.reasoning,
+                    'weight_confidence': result.dynamic_weights.confidence
+                },
+                'opportunity_classification': win_rate_standard.classify_opportunity(result.final_score).value,
+                'multi_timeframe_analysis': {
+                    'analysis': result.multi_timeframe_analysis.__dict__ if result.multi_timeframe_analysis else None,
+                    'report': win_rate_standard.format_analysis_report(result.multi_timeframe_analysis) if result.multi_timeframe_analysis else None
+                },
+                'trading_recommendations': result.trading_recommendations,
+                'timestamp': result.timestamp.isoformat()
+            }
+            final_win_rate = result.final_score
+        else:
+            # Fallback when dynamic agent is not available
+            from datetime import datetime
+            
+            # Calculate simple average of all available win rates
+            all_scores = []
+            
+            # Extract scores from timeframe data
+            for tf_data in [kingfisher_timeframes, cryptometer_timeframes, riskmetric_timeframes]:
+                if tf_data:
+                    for timeframe, data in tf_data.items():
+                        if data and 'win_rate' in data:
+                            all_scores.append(data['win_rate'])
+                        elif data and 'score' in data:
+                            all_scores.append(data['score'])
+            
+            # Calculate average win rate
+            if all_scores:
+                final_win_rate = sum(all_scores) / len(all_scores)
+            else:
+                final_win_rate = 50.0
+            
+            # Determine signal based on win rate
+            if final_win_rate >= 80:
+                signal = 'STRONG_BUY'
+            elif final_win_rate >= 70:
+                signal = 'BUY'
+            elif final_win_rate >= 30:
+                signal = 'NEUTRAL'
+            elif final_win_rate >= 20:
+                signal = 'SELL'
+            else:
+                signal = 'STRONG_SELL'
+            
+            # Format fallback response
+            response = {
+                'symbol': request.symbol,
+                'final_win_rate': final_win_rate,
+                'signal': signal,
+                'confidence': 0.5,
+                'market_condition': 'normal',
+                'dynamic_weights': {
+                    'kingfisher': 0.30,
+                    'cryptometer': 0.50,
+                    'riskmetric': 0.20,
+                    'reasoning': 'Using static weights (dynamic agent unavailable)',
+                    'weight_confidence': 0.5
+                },
+                'opportunity_classification': win_rate_standard.classify_opportunity(final_win_rate).value,
+                'multi_timeframe_analysis': {
+                    'analysis': None,
+                    'report': None
+                },
+                'trading_recommendations': [],
+                'timestamp': datetime.now().isoformat()
+            }
         
-        # Format response
-        response = {
-            'symbol': result.symbol,
-            'final_win_rate': result.final_score,
-            'signal': result.signal,
-            'confidence': result.overall_confidence,
-            'market_condition': result.market_condition.value,
-            'dynamic_weights': {
-                'kingfisher': result.dynamic_weights.kingfisher_weight,
-                'cryptometer': result.dynamic_weights.cryptometer_weight,
-                'riskmetric': result.dynamic_weights.riskmetric_weight,
-                'reasoning': result.dynamic_weights.reasoning,
-                'weight_confidence': result.dynamic_weights.confidence
-            },
-            'opportunity_classification': win_rate_standard.classify_opportunity(result.final_score).value,
-            'multi_timeframe_analysis': {
-                'analysis': result.multi_timeframe_analysis.__dict__ if result.multi_timeframe_analysis else None,
-                'report': win_rate_standard.format_analysis_report(result.multi_timeframe_analysis) if result.multi_timeframe_analysis else None
-            },
-            'trading_recommendations': result.trading_recommendations,
-            'timestamp': result.timestamp.isoformat()
-        }
-        
-        logger.info(f"✅ Agent win rate analysis completed for {request.symbol}: {result.final_score:.1f}%")
+        logger.info(f"✅ Agent win rate analysis completed for {request.symbol}: {response['final_win_rate']:.1f}%")
         return response
         
     except Exception as e:

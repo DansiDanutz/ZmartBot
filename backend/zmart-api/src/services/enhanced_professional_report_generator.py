@@ -9,7 +9,7 @@ from typing import Dict, Any, List, Optional
 from dataclasses import dataclass
 import numpy as np
 
-from src.services.cryptometer_endpoint_analyzer import CryptometerEndpointAnalyzer
+from src.services.cryptometer_data_types import CryptometerEndpointAnalyzer
 from src.services.ai_analysis_agent import AIAnalysisAgent
 from src.services.historical_ai_analysis_agent import HistoricalAIAnalysisAgent
 from src.services.multi_model_ai_agent import MultiModelAIAgent
@@ -133,7 +133,7 @@ class EnhancedProfessionalReportGenerator:
     """Enhanced report generator matching AVAX structure exactly"""
     
     def __init__(self, cryptometer_api_key: Optional[str] = None, openai_api_key: Optional[str] = None):
-        self.cryptometer_analyzer = CryptometerEndpointAnalyzer(api_key=cryptometer_api_key or settings.CRYPTOMETER_API_KEY)
+        self.cryptometer_analyzer = CryptometerEndpointAnalyzer()
         self.ai_agent = AIAnalysisAgent(openai_api_key=openai_api_key or settings.OPENAI_API_KEY)
         self.historical_ai = HistoricalAIAnalysisAgent()
         self.multi_model_ai = MultiModelAIAgent()
@@ -212,7 +212,7 @@ class EnhancedProfessionalReportGenerator:
         """Gather comprehensive market data"""
         try:
             # Get Cryptometer analysis
-            crypto_analysis = await self.cryptometer_analyzer.analyze_symbol_complete(symbol)
+            crypto_analysis = await self.cryptometer_analyzer.analyze_symbol(symbol)
             
             # Get current price (mock data for now - would integrate with real price feeds)
             base_price = 100.0  # Default base price

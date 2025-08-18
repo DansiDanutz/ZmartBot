@@ -301,4 +301,8 @@ def record_agent_task(agent_type: str, status: str, duration: float):
 
 def update_agent_status(agent_type: str, is_active: bool):
     """Update agent status metrics"""
-    metrics_collector.update_agent_status(agent_type, is_active) 
+    metrics_collector.update_agent_status(agent_type, is_active)
+
+def get_metrics_registry():
+    """Get the global metrics registry"""
+    return metrics_collector 

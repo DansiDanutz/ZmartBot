@@ -10,7 +10,55 @@ from typing import Dict, List, Any, Optional
 from datetime import datetime
 from dataclasses import asdict
 
-from src.services.advanced_cryptometer_analyzer import AdvancedCryptometerAnalyzer, ProfessionalAnalysisReport
+from src.services.cryptometer_data_types import CryptometerEndpointAnalyzer, CryptometerAnalysis
+from dataclasses import dataclass, field, field
+
+@dataclass
+class MarketPriceAnalysis:
+    """Market price analysis data"""
+    current_price: float = 0.0
+    price_24h_change: float = 0.0
+    long_win_rate_24h: float = 50.0
+    long_win_rate_7d: float = 50.0
+    long_win_rate_30d: float = 50.0
+    short_win_rate_24h: float = 50.0
+    short_win_rate_7d: float = 50.0
+    short_win_rate_30d: float = 50.0
+    data_quality_score: float = 0.8
+
+@dataclass
+class EndpointAnalysis:
+    """Endpoint analysis data"""
+    endpoint_name: str
+    reliability_score: float
+    data_freshness: str
+    contribution_to_analysis: float
+    processed_metrics: Dict[str, Any]
+    market_signals: List[str] = field(default_factory=list)
+    opportunity_indicators: List[str] = field(default_factory=list)
+    risk_indicators: List[str] = field(default_factory=list)
+
+@dataclass
+class ProfessionalAnalysisReport:
+    """Professional analysis report structure"""
+    symbol: str
+    timestamp: datetime
+    overall_score: float
+    signal: str
+    confidence: float
+    summary: Dict[str, Any]
+    # Additional attributes needed for compatibility
+    market_price_analysis: MarketPriceAnalysis = field(default_factory=MarketPriceAnalysis)
+    data_sources_used: List[str] = field(default_factory=list)
+    analysis_quality_score: float = 0.8
+    confidence_level: float = 0.7
+    overall_direction: str = "NEUTRAL"
+    composite_long_score: float = 50.0
+    composite_short_score: float = 50.0
+    endpoint_analyses: List[EndpointAnalysis] = field(default_factory=list)
+    trading_recommendations: Dict[str, Any] = field(default_factory=dict)
+    risk_factors: List[str] = field(default_factory=list)
+    key_insights: List[str] = field(default_factory=list)
 
 logger = logging.getLogger(__name__)
 
@@ -22,7 +70,16 @@ class DataDrivenReportGenerator:
     
     def __init__(self):
         """Initialize the Data-Driven Report Generator"""
-        self.analyzer = AdvancedCryptometerAnalyzer()
+        self.analyzer = CryptometerEndpointAnalyzer()
+        self.win_rate_params = {
+            'base_long_rate': 50.0,
+            'base_short_rate': 50.0,
+            'trend_multiplier': 1.0,
+            'momentum_multiplier': 1.0,
+            'volume_multiplier': 1.0,
+            'whale_multiplier': 1.0
+        }
+        self.endpoints = []  # Will be populated from cryptometer service
         logger.info("Data-Driven Report Generator initialized")
     
     async def generate_professional_executive_summary(self, symbol: str) -> Dict[str, Any]:
@@ -32,8 +89,9 @@ class DataDrivenReportGenerator:
             logger.info(f"Generating data-driven executive summary for {symbol}")
             
             # Get comprehensive analysis from endpoints
-            async with self.analyzer as analyzer:
-                analysis_report = await analyzer.analyze_symbol_comprehensive(symbol)
+            analysis_result = await self.analyzer.analyze_symbol(symbol)
+            # Convert to ProfessionalAnalysisReport format
+            analysis_report = self._convert_to_professional_report(analysis_result)
             
             # Generate executive summary content
             executive_content = self._create_executive_summary_content(analysis_report)
@@ -62,8 +120,9 @@ class DataDrivenReportGenerator:
             logger.info(f"Generating data-driven comprehensive report for {symbol}")
             
             # Get comprehensive analysis from endpoints
-            async with self.analyzer as analyzer:
-                analysis_report = await analyzer.analyze_symbol_comprehensive(symbol)
+            analysis_result = await self.analyzer.analyze_symbol(symbol)
+            # Convert to ProfessionalAnalysisReport format
+            analysis_report = self._convert_to_professional_report(analysis_result)
             
             # Generate comprehensive report content
             comprehensive_content = self._create_comprehensive_report_content(analysis_report)
@@ -84,6 +143,56 @@ class DataDrivenReportGenerator:
                 "error": str(e),
                 "fallback_content": self._create_fallback_comprehensive_report(symbol)
             }
+    
+    def _convert_to_professional_report(self, analysis: CryptometerAnalysis) -> ProfessionalAnalysisReport:
+        """Convert CryptometerAnalysis to ProfessionalAnalysisReport format"""
+        # Create endpoint analyses from scores
+        endpoint_analyses = []
+        for score in analysis.endpoint_scores:
+            endpoint_analyses.append(EndpointAnalysis(
+                endpoint_name=score.endpoint_name,
+                reliability_score=score.confidence,
+                data_freshness="recent",
+                contribution_to_analysis=score.weight,
+                processed_metrics=score.data
+            ))
+        
+        # Create market price analysis
+        market_price = MarketPriceAnalysis()
+        # Try to extract price data from raw data
+        if 'ticker' in analysis.raw_data:
+            ticker_data = analysis.raw_data.get('ticker', {})
+            if ticker_data.get('success'):
+                data = ticker_data.get('data', {})
+                market_price.current_price = float(data.get('price', 0))
+                market_price.price_24h_change = float(data.get('change_24h', 0))
+        
+        # Create professional report
+        return ProfessionalAnalysisReport(
+            symbol=analysis.symbol,
+            timestamp=analysis.timestamp,
+            overall_score=analysis.total_score,
+            signal=analysis.signal,
+            confidence=analysis.confidence,
+            summary=analysis.summary,
+            market_price_analysis=market_price,
+            data_sources_used=[score.endpoint_name for score in analysis.endpoint_scores],
+            analysis_quality_score=analysis.confidence,
+            confidence_level=analysis.confidence,
+            overall_direction=analysis.signal,
+            composite_long_score=analysis.total_score if analysis.signal == 'LONG' else 100 - analysis.total_score,
+            composite_short_score=analysis.total_score if analysis.signal == 'SHORT' else 100 - analysis.total_score,
+            endpoint_analyses=endpoint_analyses,
+            trading_recommendations={
+                'primary': analysis.signal,
+                'entry_strategy': f'Enter on {analysis.signal} signal',
+                'risk_management': 'Use appropriate stop loss',
+                'timeframe': '24-48 hours',
+                'confidence': 'High' if analysis.confidence > 0.7 else 'Medium' if analysis.confidence > 0.5 else 'Low'
+            },
+            risk_factors=['Market volatility', 'Data quality considerations'],
+            key_insights=[f'{analysis.signal} signal detected', f'Confidence: {analysis.confidence:.1%}']
+        )
     
     def _create_executive_summary_content(self, report: ProfessionalAnalysisReport) -> str:
         """Create executive summary content based on analysis report"""
@@ -300,11 +409,11 @@ class DataDrivenReportGenerator:
 
 Our professional win rate calculations are based on:
 
-1. **Base Rates:** Long {self.analyzer.win_rate_params['base_long_rate']:.1f}%, Short {self.analyzer.win_rate_params['base_short_rate']:.1f}%
-2. **Trend Analysis:** {self.analyzer.win_rate_params['trend_multiplier']:.1%} impact weighting
-3. **Momentum Factors:** {self.analyzer.win_rate_params['momentum_multiplier']:.1%} impact weighting  
-4. **Volume Analysis:** {self.analyzer.win_rate_params['volume_multiplier']:.1%} impact weighting
-5. **Whale Activity:** {self.analyzer.win_rate_params['whale_multiplier']:.1%} impact weighting
+1. **Base Rates:** Long {self.win_rate_params['base_long_rate']:.1f}%, Short {self.win_rate_params['base_short_rate']:.1f}%
+2. **Trend Analysis:** {self.win_rate_params['trend_multiplier']:.1%} impact weighting
+3. **Momentum Factors:** {self.win_rate_params['momentum_multiplier']:.1%} impact weighting  
+4. **Volume Analysis:** {self.win_rate_params['volume_multiplier']:.1%} impact weighting
+5. **Whale Activity:** {self.win_rate_params['whale_multiplier']:.1%} impact weighting
 
 ### Current Market Analysis
 
@@ -313,7 +422,7 @@ Our professional win rate calculations are based on:
 **Confidence Factors:**
 - Data Quality: {report.market_price_analysis.data_quality_score:.1%}
 - Analysis Confidence: {report.confidence_level:.1%}
-- Endpoint Coverage: {len(report.data_sources_used)}/{len(self.analyzer.endpoints)} endpoints
+- Endpoint Coverage: {len(report.data_sources_used)}/{len(self.endpoints) if self.endpoints else 17} endpoints
 
 ---
 

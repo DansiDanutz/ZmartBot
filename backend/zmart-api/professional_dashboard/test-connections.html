@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exchange API Connection Test - ZmartBot</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            padding: 20px;
+        }
+        
+        h1 {
+            color: #FFD700;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .test-card {
+            background: linear-gradient(135deg, #1a1a1a, #151515);
+            border: 1px solid #333;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .test-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .test-title {
+            font-size: 1.2rem;
+            color: #FFD700;
+        }
+        
+        .status {
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+        
+        .status-pending {
+            background: #666;
+            color: #fff;
+        }
+        
+        .status-testing {
+            background: #FFC107;
+            color: #000;
+        }
+        
+        .status-success {
+            background: #4CAF50;
+            color: #fff;
+        }
+        
+        .status-error {
+            background: #FF5722;
+            color: #fff;
+        }
+        
+        .test-details {
+            background: #0a0a0a;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #D4AF37, #FFD700);
+            color: #0a0a0a;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+        }
+        
+        .summary {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(255, 215, 0, 0.1));
+            border: 2px solid #FFD700;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+        
+        .symbol-count {
+            color: #FFD700;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔌 Exchange API Connection Test</h1>
+    
+    <div class="test-container">
+        <div class="test-card">
+            <div class="test-header">
+                <div class="test-title">KuCoin Futures API</div>
+                <span id="kucoinStatus" class="status status-pending">Pending</span>
+            </div>
+            <div class="test-details" id="kucoinDetails">Click "Test All Connections" to begin...</div>
+        </div>
+        
+        <div class="test-card">
+            <div class="test-header">
+                <div class="test-title">Binance Futures API</div>
+                <span id="binanceStatus" class="status status-pending">Pending</span>
+            </div>
+            <div class="test-details" id="binanceDetails">Click "Test All Connections" to begin...</div>
+        </div>
+        
+        <div class="test-card">
+            <div class="test-header">
+                <div class="test-title">Common Symbols (Both Exchanges)</div>
+                <span id="commonStatus" class="status status-pending">Pending</span>
+            </div>
+            <div class="test-details" id="commonDetails">Click "Test All Connections" to begin...</div>
+        </div>
+        
+        <div class="test-card">
+            <div class="test-header">
+                <div class="test-title">My Symbols Portfolio</div>
+                <span id="portfolioStatus" class="status status-pending">Pending</span>
+            </div>
+            <div class="test-details" id="portfolioDetails">Click "Test All Connections" to begin...</div>
+        </div>
+        
+        <div style="text-align: center; margin: 30px 0;">
+            <button class="btn" onclick="testAllConnections()">Test All Connections</button>
+            <button class="btn" onclick="testMySymbolsSave()">Test Save Portfolio</button>
+            <button class="btn" onclick="window.location.href='/my-symbols.html'">Go to My Symbols</button>
+        </div>
+        
+        <div class="summary" id="summary" style="display: none;">
+            <h2>📊 Test Summary</h2>
+            <p>KuCoin Symbols: <span id="kucoinCount" class="symbol-count">0</span></p>
+            <p>Binance Symbols: <span id="binanceCount" class="symbol-count">0</span></p>
+            <p>Common Symbols: <span id="commonCount" class="symbol-count">0</span></p>
+            <p>Portfolio Capacity: <span id="portfolioCapacity" class="symbol-count">0/10</span></p>
+        </div>
+    </div>
+    
+    <script>
+        let testResults = {
+            kucoin: null,
+            binance: null,
+            common: null,
+            portfolio: null
+        };
+        
+        async function testAllConnections() {
+            document.getElementById('summary').style.display = 'none';
+            
+            // Test KuCoin
+            await testKuCoin();
+            
+            // Test Binance
+            await testBinance();
+            
+            // Test Common
+            await testCommon();
+            
+            // Test Portfolio
+            await testPortfolio();
+            
+            // Show summary
+            showSummary();
+        }
+        
+        async function testKuCoin() {
+            const statusEl = document.getElementById('kucoinStatus');
+            const detailsEl = document.getElementById('kucoinDetails');
+            
+            statusEl.className = 'status status-testing';
+            statusEl.textContent = 'Testing...';
+            detailsEl.textContent = 'Connecting to KuCoin Futures API...';
+            
+            try {
+                const response = await fetch('/api/futures-symbols/kucoin/available');
+                const data = await response.json();
+                
+                if (response.ok && data.symbols) {
+                    testResults.kucoin = data;
+                    statusEl.className = 'status status-success';
+                    statusEl.textContent = '✅ Connected';
+                    detailsEl.innerHTML = `
+                        <strong>Success!</strong><br>
+                        Exchange: ${data.exchange || 'KuCoin'}<br>
+                        Type: ${data.type || 'Futures'}<br>
+                        Total Symbols: ${data.symbols.length}<br>
+                        Sample: ${data.symbols.slice(0, 10).join(', ')}...
+                    `;
+                    document.getElementById('kucoinCount').textContent = data.symbols.length;
+                } else {
+                    throw new Error('Invalid response');
+                }
+            } catch (error) {
+                statusEl.className = 'status status-error';
+                statusEl.textContent = '❌ Error';
+                detailsEl.innerHTML = `
+                    <strong>Connection Failed</strong><br>
+                    Error: ${error.message}<br>
+                    Status: Using demo data<br>
+                    Demo symbols available: 105
+                `;
+                document.getElementById('kucoinCount').textContent = '105 (demo)';
+            }
+        }
+        
+        async function testBinance() {
+            const statusEl = document.getElementById('binanceStatus');
+            const detailsEl = document.getElementById('binanceDetails');
+            
+            statusEl.className = 'status status-testing';
+            statusEl.textContent = 'Testing...';
+            detailsEl.textContent = 'Connecting to Binance Futures API...';
+            
+            try {
+                const response = await fetch('/api/futures-symbols/binance/available');
+                const data = await response.json();
+                
+                if (response.ok && data.symbols) {
+                    testResults.binance = data;
+                    statusEl.className = 'status status-success';
+                    statusEl.textContent = '✅ Connected';
+                    detailsEl.innerHTML = `
+                        <strong>Success!</strong><br>
+                        Exchange: ${data.exchange || 'Binance'}<br>
+                        Type: ${data.type || 'Futures'}<br>
+                        Purpose: ${data.purpose || 'Trading'}<br>
+                        Total Symbols: ${data.symbols.length}<br>
+                        Sample: ${data.symbols.slice(0, 10).join(', ')}...
+                    `;
+                    document.getElementById('binanceCount').textContent = data.symbols.length;
+                } else {
+                    throw new Error('Invalid response');
+                }
+            } catch (error) {
+                statusEl.className = 'status status-error';
+                statusEl.textContent = '❌ Error';
+                detailsEl.innerHTML = `
+                    <strong>Connection Failed</strong><br>
+                    Error: ${error.message}<br>
+                    Status: Using demo data<br>
+                    Demo symbols available: 110
+                `;
+                document.getElementById('binanceCount').textContent = '110 (demo)';
+            }
+        }
+        
+        async function testCommon() {
+            const statusEl = document.getElementById('commonStatus');
+            const detailsEl = document.getElementById('commonDetails');
+            
+            statusEl.className = 'status status-testing';
+            statusEl.textContent = 'Calculating...';
+            detailsEl.textContent = 'Finding common symbols between exchanges...';
+            
+            try {
+                const response = await fetch('/api/futures-symbols/common');
+                const data = await response.json();
+                
+                if (response.ok && data.symbols) {
+                    testResults.common = data;
+                    statusEl.className = 'status status-success';
+                    statusEl.textContent = '✅ Calculated';
+                    detailsEl.innerHTML = `
+                        <strong>Common Symbols Found!</strong><br>
+                        Total: ${data.symbols.length}<br>
+                        Description: ${data.description || 'Symbols on both exchanges'}<br>
+                        Sample: ${data.symbols.slice(0, 10).join(', ')}...
+                    `;
+                    document.getElementById('commonCount').textContent = data.symbols.length;
+                } else {
+                    throw new Error('Invalid response');
+                }
+            } catch (error) {
+                // Calculate from demo data
+                const commonDemo = ['BTCUSDT', 'ETHUSDT', 'SOLUSDT', 'BNBUSDT', 'XRPUSDT', 
+                                   'ADAUSDT', 'AVAXUSDT', 'DOTUSDT', 'MATICUSDT', 'LINKUSDT'];
+                statusEl.className = 'status status-error';
+                statusEl.textContent = '⚠️ Demo Mode';
+                detailsEl.innerHTML = `
+                    <strong>Using Demo Data</strong><br>
+                    Common symbols (demo): ${commonDemo.length}<br>
+                    Sample: ${commonDemo.join(', ')}
+                `;
+                document.getElementById('commonCount').textContent = commonDemo.length + ' (demo)';
+            }
+        }
+        
+        async function testPortfolio() {
+            const statusEl = document.getElementById('portfolioStatus');
+            const detailsEl = document.getElementById('portfolioDetails');
+            
+            statusEl.className = 'status status-testing';
+            statusEl.textContent = 'Loading...';
+            detailsEl.textContent = 'Fetching current portfolio...';
+            
+            try {
+                const response = await fetch('/api/my-symbols/portfolio');
+                const data = await response.json();
+                
+                if (response.ok) {
+                    testResults.portfolio = data;
+                    const symbolCount = data.symbols ? data.symbols.length : 0;
+                    statusEl.className = 'status status-success';
+                    statusEl.textContent = '✅ Ready';
+                    detailsEl.innerHTML = `
+                        <strong>Portfolio Status</strong><br>
+                        Current symbols: ${symbolCount}/10<br>
+                        Status: ${symbolCount === 0 ? 'Empty - ready to add symbols' : 'Active'}<br>
+                        ${data.symbols && data.symbols.length > 0 ? 'Symbols: ' + data.symbols.join(', ') : 'No symbols selected yet'}
+                    `;
+                    document.getElementById('portfolioCapacity').textContent = `${symbolCount}/10`;
+                } else {
+                    throw new Error('Portfolio API not available');
+                }
+            } catch (error) {
+                statusEl.className = 'status status-error';
+                statusEl.textContent = '⚠️ Not Connected';
+                detailsEl.innerHTML = `
+                    <strong>Portfolio API Offline</strong><br>
+                    Status: Ready for manual selection<br>
+                    Capacity: 0/10 symbols<br>
+                    Note: You can still select symbols, they will be saved locally
+                `;
+                document.getElementById('portfolioCapacity').textContent = '0/10';
+            }
+        }
+        
+        async function testMySymbolsSave() {
+            // Test saving a portfolio
+            const testSymbols = ['BTCUSDT', 'ETHUSDT', 'SOLUSDT', 'BNBUSDT', 'XRPUSDT'];
+            
+            try {
+                const response = await fetch('/api/my-symbols/update', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ symbols: testSymbols })
+                });
+                
+                if (response.ok) {
+                    alert('✅ Portfolio save test successful!\nSaved: ' + testSymbols.join(', '));
+                } else {
+                    alert('⚠️ Portfolio API not available\nThe interface will work with local storage');
+                }
+            } catch (error) {
+                alert('⚠️ Backend not connected\nUsing demo mode - you can still test the interface');
+            }
+        }
+        
+        function showSummary() {
+            document.getElementById('summary').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

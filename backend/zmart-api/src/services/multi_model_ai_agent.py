@@ -19,7 +19,7 @@ import os
 
 from src.config.settings import settings
 from src.services.historical_ai_analysis_agent import HistoricalAIAnalysisAgent
-from src.services.cryptometer_endpoint_analyzer import CryptometerAnalysis
+from src.services.cryptometer_data_types import CryptometerAnalysis
 
 logger = logging.getLogger(__name__)
 
@@ -137,7 +137,7 @@ class MultiModelAIAgent:
         
         # Get base data
         try:
-            cryptometer_analysis = await self.historical_ai_agent.cryptometer_analyzer.analyze_symbol_complete(symbol)
+            cryptometer_analysis = await self.historical_ai_agent.cryptometer_analyzer.analyze_symbol(symbol)
         except Exception as e:
             logger.warning(f"Cryptometer analysis failed: {e}, using fallback data")
             cryptometer_analysis = self._create_fallback_analysis(symbol)
@@ -387,34 +387,44 @@ Keep response under 500 words, focus on actionable insights."""
             ma_values=ma_values,
             liquidation_levels=liquidation_levels,
             support_resistance=support_resistance,
-            trend_direction=cryptometer_analysis.direction if hasattr(cryptometer_analysis, 'direction') else "NEUTRAL",
+            trend_direction=cryptometer_analysis.signal if hasattr(cryptometer_analysis, 'signal') else "NEUTRAL",
             volatility=float(np.std(price_data[-20:]) / np.mean(price_data[-20:])),
-            momentum_score=cryptometer_analysis.calibrated_score / 100.0 if hasattr(cryptometer_analysis, 'calibrated_score') else 0.5
+            momentum_score=cryptometer_analysis.total_score / 100.0 if hasattr(cryptometer_analysis, 'total_score') else 0.5
         )
     
     def _create_fallback_analysis(self, symbol: str) -> CryptometerAnalysis:
         """Create fallback analysis when Cryptometer fails"""
-        from src.services.cryptometer_endpoint_analyzer import CryptometerAnalysis, EndpointScore
+        from src.services.cryptometer_data_types import CryptometerAnalysis, EndpointScore
         from datetime import datetime
         
         return CryptometerAnalysis(
             symbol=symbol,
+            timestamp=datetime.now(),
+            endpoints_analyzed=1,
+            total_score=50.0,
+            signal="NEUTRAL",
+            confidence=0.5,
             endpoint_scores=[
                 EndpointScore(
-                    endpoint="fallback",
-                    raw_data={"status": "fallback"},
+                    endpoint_name="fallback",
                     score=50.0,
+                    weight=1.0,
                     confidence=0.5,
-                    patterns=["fallback_pattern"],
-                    analysis="Fallback analysis due to API issues",
-                    success=True
+                    data={
+                        "status": "fallback",
+                        "patterns": ["fallback_pattern"],
+                        "analysis": "Fallback analysis due to API issues"
+                    }
                 )
             ],
-            calibrated_score=50.0,
-            confidence=0.5,
-            direction="NEUTRAL",
-            analysis_summary="Fallback analysis due to API issues",
-            timestamp=datetime.now()
+            summary={
+                "total_endpoints": 1,
+                "successful_endpoints": 1,
+                "average_score": 50.0,
+                "recommendation": "NEUTRAL",
+                "analysis_summary": "Fallback analysis due to API issues"
+            },
+            raw_data={"status": "fallback"}
         )
     
     def _aggregate_model_responses(self, symbol: str, model_responses: Dict[str, ModelResponse], 
