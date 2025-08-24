@@ -1,0 +1,57 @@
+@agent: StartGuardAgent
+
+# start_guard usage policy
+Wrap every service's start with the Python launcher:
+- Skips start if port already LISTEN (and /health is 200 when provided).
+- Otherwise starts process and waits until ready (or times out).
+
+## @function: start_guard
+**Input:** name, host, port, cmd, health_url?, max_wait, log_file?  
+**Behavior:**
+1) If (port open AND health=OK) → exit 0 (skip start)
+2) Else → run cmd, wait until port+health OK or max_wait exceeded
+3) Non‑fatal fail (exit 1): let Doctor/Orchestration decide recovery
+
+**Example registry start_cmd:**
+```bash
+python3 start_guard.py --name backend-api --port 8000 --health-url http://127.0.0.1:8000/health --cmd "python3 run_dev.py" --max-wait 20
+```
+
+## @step: idempotent_service_start
+1. Check if service port is already listening
+2. If health_url provided, verify endpoint responds with 200
+3. If both conditions met → skip start (exit 0)
+4. Otherwise → execute start command
+5. Wait for port to become available and health check to pass
+6. Timeout after max_wait seconds if not ready
+7. Return appropriate exit code for orchestration handling
+
+## @function: port_health_check
+**Input:** host, port, health_url, timeout
+**Output:** bool (True if healthy, False otherwise)
+**Behavior:**
+- Check if port is listening using socket connection
+- If health_url provided, make HTTP GET request
+- Return True only if both port is open AND health endpoint returns 200
+- Handle timeouts gracefully
+
+## @function: process_management
+**Input:** cmd, max_wait, log_file
+**Behavior:**
+- Execute command using subprocess.Popen
+- Monitor process startup with periodic health checks
+- Log output to specified file if provided
+- Handle process termination and cleanup
+- Return process status and exit code
+
+## Integration Notes
+- Used by ServiceRegistry for all service starts
+- Called from Makefile targets (start-frontend, start-backend)
+- Integrated with BackendDoctorPack for health monitoring
+- Support state snapshot loading for smooth startup experience
+- Handle cached data transition during service startup
+- Supports both foreground and background execution modes
+description:
+globs:
+alwaysApply: false
+---

@@ -1,0 +1,68 @@
+@agent: ControlUIAgent
+
+# Control UI – SAVE/UNDO
+A tiny FastAPI UI (127.0.0.1:8620) that calls the Service Registry with a UI token.
+
+## Endpoints
+- GET /health
+- GET /                # HTML form with UI token box + SAVE/UNDO buttons
+- POST /control/save   # requires X-Ui-Token; calls /profiles/save with registry token
+- POST /control/undo   # requires X-Ui-Token; calls /profiles/undo with registry token
+
+## Usage
+- Run UI with: REGISTRY_TOKEN=... UI_TOKEN=... uvicorn control_ui_api:app --host 127.0.0.1 --port 8620
+- Open http://127.0.0.1:8620, paste UI token, click SAVE or UNDO.
+
+## State Snapshot Integration
+- SAVE operations include state snapshot creation for smooth startup
+- UNDO operations restore previous state including cached data
+- Snapshot management integrated with profile operations
+
+## @function: control_ui_startup
+**Input:** registry_token, ui_token, host, port
+**Behavior:**
+- Start FastAPI application with token environment variables
+- Bind to specified host and port (default: 127.0.0.1:8620)
+- Serve HTML interface for SAVE/UNDO operations
+- Validate tokens before allowing operations
+
+## @function: save_profile_operation
+**Input:** ui_token, registry_token
+**Behavior:**
+- Validate UI token from request
+- Call Service Registry `/profiles/save` endpoint
+- Use registry token for authentication
+- Return success/failure response to UI
+- Log operation for audit trail
+
+## @function: undo_profile_operation
+**Input:** ui_token, registry_token
+**Behavior:**
+- Validate UI token from request
+- Call Service Registry `/profiles/undo` endpoint
+- Use registry token for authentication
+- Return success/failure response to UI
+- Log operation for audit trail
+
+## @step: ui_authentication
+1. Extract X-Ui-Token header from request
+2. Compare against UI_TOKEN environment variable
+3. Return 401 Unauthorized if token doesn't match
+4. Allow operation to proceed if token is valid
+
+## @step: registry_communication
+1. Forward request to Service Registry API
+2. Include REGISTRY_TOKEN in X-Token header
+3. Handle registry response and errors
+4. Return appropriate HTTP status to UI client
+
+## Integration Notes
+- Used by Makefile `make start-ui` target
+- Integrated with Service Registry for profile management
+- Provides web interface for SAVE/UNDO operations
+- Supports both manual and automated profile control
+- Runs on dedicated port 8620 to avoid conflicts
+description:
+globs:
+alwaysApply: false
+---

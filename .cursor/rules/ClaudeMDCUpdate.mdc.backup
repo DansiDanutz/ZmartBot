@@ -1,0 +1,219 @@
+@agent: ClaudeMDCUpdateAgent
+
+# Claude MDC Update System - Automatic Documentation Synchronization
+
+## Overview
+The **Claude MDC Update System** automatically keeps `CLAUDE.md` synchronized with all MDC files in `.cursor/rules`. This ensures that Claude always has access to the most current and comprehensive documentation of the ZmartBot system.
+
+## 🔄 **Automatic Update Components**
+
+### **Core Update Script**
+- **File**: `zmart-api/update_claude_mdc.py`
+- **Purpose**: Reads all MDC files and updates CLAUDE.md with their content
+- **Features**:
+  - Extracts agent names and descriptions from MDC files
+  - Creates formatted sections for each MDC file
+  - Maintains backup of previous CLAUDE.md version
+  - Provides detailed summary and statistics
+
+### **File Watcher Scripts**
+- **Advanced Watcher**: `zmart-api/watch_mdc_changes.py` (requires watchdog library)
+- **Simple Watcher**: `zmart-api/watch_mdc_changes_simple.py` (no external dependencies)
+- **Purpose**: Monitor MDC files for changes and trigger automatic updates
+- **Features**:
+  - Real-time file change detection
+  - Automatic CLAUDE.md updates on any MDC change
+  - Cooldown system to prevent rapid updates
+  - Comprehensive logging of all changes
+
+## 📋 **Manual Commands**
+
+### **One-Time Update**
+```bash
+# Update CLAUDE.md with current MDC files
+python3 update_claude_mdc.py
+```
+
+### **Start File Watching**
+```bash
+# Start simple file watcher (recommended)
+python3 watch_mdc_changes_simple.py
+
+# Start advanced file watcher (requires: pip install watchdog)
+python3 watch_mdc_changes.py
+```
+
+### **Check Update Status**
+```bash
+# View backup file
+cat CLAUDE_BACKUP.md
+
+# Check file sizes
+ls -la CLAUDE.md CLAUDE_BACKUP.md
+```
+
+## 🔧 **Update Process**
+
+### **Step 1: MDC File Discovery**
+- Scans `.cursor/rules/` directory for all `.mdc` files
+- Extracts agent names using `@agent:` pattern
+- Reads descriptions and full content
+- Calculates file sizes and statistics
+
+### **Step 2: Content Processing**
+- Preserves existing CLAUDE.md header content
+- Creates new MDC section with timestamp
+- Generates summary table of all MDC files
+- Formats detailed content sections for each file
+
+### **Step 3: File Update**
+- Creates backup of current CLAUDE.md
+- Writes new content with all MDC information
+- Provides update statistics and confirmation
+
+### **Step 4: File Watching (Optional)**
+- Monitors MDC directory for file changes
+- Detects new, modified, or deleted files
+- Automatically triggers updates with cooldown
+- Logs all change events
+
+## 📊 **MDC Files Summary**
+
+### **Current MDC Files (30 Total)**
+- **21indicators.mdc** - IndicatorEngine
+- **21indicatorsDatabase.mdc** - UnknownAgent
+- **API-Manager.mdc** - APIHandler
+- **Backend.mdc** - BackendService
+- **BackendDoctorPack.mdc** - BackendDoctorAgent
+- **BackendFrontendProtection.mdc** - BackendFrontendProtectionAgent
+- **ControlUI.mdc** - ControlUIAgent
+- **DoctorKill.mdc** - FailSafeAgent
+- **IndicatorCard.mdc** - IndicatorEngine
+- **LiveAlerts.mdc** - UnknownAgent
+- **Maradona.mdc** - UnknownAgent
+- **MasterOrchestrationAgent.mdc** - UnknownAgent
+- **MessiAlerts.mdc** - UnknownAgent
+- **MySymbols.mdc** - SymbolValidator
+- **MySymbolsDatabase.mdc** - SymbolValidator
+- **OrchestrationStart.mdc** - BackendDoctorAgent
+- **Pele.mdc** - UnknownAgent
+- **PortManager.mdc** - UnknownAgent
+- **PortManagerDatabase.mdc** - UnknownAgent
+- **START_zmartbot.mdc** - UnknownAgent
+- **STOP_zmartbot.mdc** - StopAgent
+- **ServiceRegistry.mdc** - ServiceRegistryAgent
+- **StartGuard.mdc** - StartGuardAgent
+- **WhaleAlerts.mdc** - UnknownAgent
+- **commands-denylist.mdc** - UnknownAgent
+- **diagnostics.mdc** - DiagnosticsAgent
+- **frontend.mdc** - FrontendUI
+- **main.mdc** - UnknownAgent
+- **rules.mdc** - UnknownAgent
+- **zmartbot.test.mdc** - OrchestrationTestAgent
+
+## 🛡️ **Backup and Safety**
+
+### **Automatic Backup**
+- **Backup File**: `CLAUDE_BACKUP.md`
+- **Created**: Before every update
+- **Purpose**: Preserve previous version for recovery
+- **Location**: Project root directory
+
+### **Recovery Procedures**
+```bash
+# Restore from backup
+cp CLAUDE_BACKUP.md CLAUDE.md
+
+# View backup content
+cat CLAUDE_BACKUP.md
+
+# Compare current vs backup
+diff CLAUDE.md CLAUDE_BACKUP.md
+```
+
+## 📈 **Update Statistics**
+
+### **Content Metrics**
+- **Total MDC Files**: 30
+- **Total Content Size**: ~453,000 characters
+- **Update Frequency**: Real-time (with file watcher) or manual
+- **Backup Retention**: Latest version only
+
+### **Performance**
+- **Update Time**: ~2-5 seconds
+- **File Scan Time**: ~1 second
+- **Memory Usage**: Minimal (file-based processing)
+- **CPU Usage**: Low (hash-based change detection)
+
+## 🔍 **Monitoring and Logging**
+
+### **Update Logs**
+- **Console Output**: Real-time update status
+- **File Changes**: Detection and logging
+- **Error Handling**: Comprehensive error reporting
+- **Success Confirmation**: Update completion status
+
+### **File Change Detection**
+- **New Files**: Immediate detection and logging
+- **Modified Files**: Hash-based change detection
+- **Deleted Files**: Removal detection and logging
+- **Moved Files**: Source and destination tracking
+
+## 🚀 **Integration with Development Workflow**
+
+### **Development Process**
+1. **Create/Modify MDC File**: Developer creates or updates MDC file
+2. **Automatic Detection**: File watcher detects change
+3. **Immediate Update**: CLAUDE.md updated automatically
+4. **Claude Access**: Claude immediately has access to new information
+
+### **Continuous Documentation**
+- **Real-time Sync**: MDC changes immediately reflected in CLAUDE.md
+- **No Manual Steps**: Fully automated process
+- **Always Current**: Claude always has latest documentation
+- **Comprehensive Coverage**: All MDC files included
+
+## ⚠️ **Important Notes**
+
+### **Critical Requirements**
+- **MDC Directory**: Must exist at `.cursor/rules/`
+- **Update Script**: Must be executable and accessible
+- **File Permissions**: Read access to MDC files required
+- **Backup Space**: Sufficient disk space for backup files
+
+### **Best Practices**
+- **Regular Updates**: Run manual updates periodically
+- **File Watching**: Use file watcher for active development
+- **Backup Verification**: Check backup files regularly
+- **Error Monitoring**: Monitor update logs for issues
+
+### **Troubleshooting**
+- **Permission Issues**: Ensure scripts are executable
+- **Path Issues**: Verify correct file paths
+- **Dependency Issues**: Install watchdog if using advanced watcher
+- **Space Issues**: Ensure sufficient disk space
+
+## 🎯 **Success Criteria**
+
+### **Update Effectiveness**
+- ✅ **All MDC Files Included**: Every MDC file represented in CLAUDE.md
+- ✅ **Real-time Updates**: Changes reflected immediately
+- ✅ **Backup Safety**: Previous versions preserved
+- ✅ **Error-free Operation**: Reliable update process
+
+### **Claude Integration**
+- ✅ **Immediate Access**: Claude has current documentation
+- ✅ **Comprehensive Coverage**: All system components documented
+- ✅ **Structured Information**: Well-organized content
+- ✅ **Searchable Content**: Easy to find specific information
+
+The Claude MDC Update System ensures that Claude always has access to the most current and comprehensive documentation of the ZmartBot system, enabling better assistance and development support.
+
+description: Automatic MDC to CLAUDE.md synchronization system
+globs: ["zmart-api/update_claude_mdc.py", "zmart-api/watch_mdc_changes*.py", "CLAUDE.md"]
+alwaysApply: true
+---
+description:
+globs:
+alwaysApply: false
+---

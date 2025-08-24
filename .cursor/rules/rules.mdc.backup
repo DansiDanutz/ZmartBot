@@ -1,0 +1,128 @@
+# ZmartBot Governance Rules
+
+## System Governance Summary
+
+### **Unique Ports Policy**
+- Each service gets a unique, permanently assigned port
+- Port ranges: frontend (3400-3499), backend (8000-8099), internal_api (8200-8299), worker (8300-8399)
+- Service Registry enforces UNIQUE(port) constraint at database level
+- Port conflicts automatically resolved by PortManager
+
+### **STOP=SAVE+UNDO Workflow**
+- **STOP Operation**: Triggers SAVE of current service state to profile
+- **SAVE**: Promotes TESTED services to ACTIVE, creates profile snapshot
+- **UNDO**: Reverts to previous profile state, restores previous service configuration
+- **Profile History**: Maintains complete audit trail of service state changes
+- **State Snapshots**: STOP creates cached data snapshot for smooth startup
+- **Smooth Startup**: START serves cached data initially, transitions to live data
+
+### **Profile-Driven Startup**
+- OrchestrationStart loads `/profiles/current` (fallback to `/profiles/default`)
+- Services start in dependency order using `start_cmd` from registry
+- StartGuard ensures idempotent startup (skips if already healthy)
+- Health verification before marking services as ready
+- State snapshot loading for immediate cached data availability
+- Smooth transition from cached data to live data once all services ready
+
+### **Master Orchestration Agent Learning**
+- **Self-Learning**: Continuously learns from system behavior patterns
+- **Profile Awareness**: Caches service information from active profiles
+- **Adaptive Management**: Adjusts strategies based on learned patterns
+- **Intelligent Coordination**: Uses learned patterns for optimal service orchestration
+- **Topology Understanding**: Maps service dependencies and health status
+
+### **BackendDoctor Agent Protection**
+- **Continuous Monitoring**: Real-time health checks of all services
+- **Auto-Recovery**: Automatic problem detection and resolution
+- **Registry Integration**: Reports service status to Service Registry
+- **Health Protection**: Prevents cascading failures through proactive monitoring
+- **Performance Tracking**: Monitors response times and system stability
+
+## Core Components
+
+### **ServiceRegistry** (`ServiceRegistry.mdc`)
+- Central control plane for dynamic service discovery
+- Manages unique port assignments and service dependencies
+- Provides SAVE/UNDO profile management
+- Enforces service status lifecycle (DISCOVERED → TESTED → ACTIVE → DISABLED)
+
+### **StartGuard** (`StartGuard.mdc`)
+- Idempotent service launcher preventing duplicate processes
+- Health verification before skipping startup
+- Configurable timeouts and health URL validation
+- Integration with Service Registry for service management
+
+### **ControlUI** (`ControlUI.mdc`)
+- Web interface for SAVE/UNDO operations
+- Token-protected access to Service Registry
+- Simple HTML form for profile management
+- Real-time status updates and operation feedback
+
+### **Dynamic Testing** (`zmartbot.dynamic.test.mdc`)
+- Comprehensive test plan for all orchestration phases
+- Validates profile management, dependency handling, and service lifecycle
+- Ensures system reliability and proper state management
+
+## Operational Rules
+
+### **Service Lifecycle**
+1. **DISCOVERED**: Service registered but not tested
+2. **TESTED**: Service verified as working correctly
+3. **ACTIVE**: Service included in startup profiles
+4. **DISABLED**: Service excluded from startup (via UNDO or failure)
+
+### **Port Management**
+- Legacy `port_registry.db` for historical tracking
+- Service Registry as canonical source of truth
+- Automatic port conflict resolution
+- Permanent port assignments after STOP_ZMARTBOT cycle
+
+### **Health Monitoring**
+- Continuous health checks with configurable intervals
+- Automatic service restart for critical failures
+- Performance tracking and trend analysis
+- Integration with Service Registry for status reporting
+
+### **Bug Fixing Protocol**
+- **NEVER simplify code just to pass a bug**
+- **ALWAYS find the root cause first**
+- **FIX the actual cause, not symptoms**
+- **RETEST thoroughly after fixing**
+- **Document the root cause and solution**
+- **Ensure the fix prevents future occurrences**
+
+### **Profile Management**
+- Current profile drives system startup
+- SAVE creates new profile snapshots
+- UNDO reverts to previous stable state
+- Complete audit trail of all profile changes
+
+## Success Criteria
+
+### **System Stability**
+- ✅ No port conflicts or duplicate services
+- ✅ Reliable startup/shutdown cycles
+- ✅ Automatic problem resolution
+- ✅ Continuous health monitoring
+
+### **Operational Efficiency**
+- ✅ Idempotent service management
+- ✅ Profile-driven configuration
+- ✅ Intelligent orchestration
+- ✅ Self-healing capabilities
+
+### **Governance Compliance**
+- ✅ Unique port enforcement
+- ✅ Profile state management
+- ✅ Service lifecycle tracking
+- ✅ Health protection protocols
+
+This governance framework ensures ZmartBot operates as a robust, self-managing, and intelligent trading system with comprehensive orchestration capabilities.
+description:
+globs:
+alwaysApply: false
+---
+description:
+globs:
+alwaysApply: false
+---
