@@ -1,0 +1,65 @@
+# 🔌 Cryptometer Service - Market Data API Integration
+
+## Purpose
+Cryptometer API integration service providing real-time market data, technical indicators, and comprehensive market analysis for ZmartBot trading operations.
+
+## Critical Functions
+- **Market Data Retrieval**: Real-time price data and market information
+- **Technical Indicators**: 21+ technical indicators calculation and analysis
+- **Multi-timeframe Analysis**: 15m, 1h, 4h, 1d timeframe support
+- **Rate Limiting**: Intelligent API rate limiting and quota management
+- **Data Caching**: Performance optimization through intelligent caching
+- **Error Handling**: Robust error handling and fallback mechanisms
+
+## API Endpoints
+- **Market Data**: Real-time price and volume data
+- **Technical Indicators**: RSI, MACD, EMA, Bollinger Bands, etc.
+- **Multi-timeframe**: Support for multiple timeframes
+- **Symbol Information**: Comprehensive symbol metadata
+- **Market Analysis**: Advanced market analysis and insights
+
+## Key Features
+- **Real-time Data**: Live market data with minimal latency
+- **Comprehensive Indicators**: 21+ technical indicators
+- **Multi-timeframe Support**: 15m, 1h, 4h, 1d timeframes
+- **Intelligent Caching**: 5-minute cache with smart invalidation
+- **Rate Limiting**: API quota management and optimization
+- **Error Recovery**: Automatic retry and fallback mechanisms
+
+## Data Processing
+- **Price Data**: Real-time price feeds and historical data
+- **Volume Analysis**: Volume-based analysis and insights
+- **Technical Analysis**: Comprehensive technical indicator calculations
+- **Market Sentiment**: Market sentiment analysis and scoring
+- **Pattern Recognition**: Chart pattern identification and analysis
+
+## Performance Optimization
+- **Caching Strategy**: Intelligent data caching for performance
+- **Rate Limiting**: API quota optimization and management
+- **Batch Processing**: Efficient batch data processing
+- **Memory Management**: Optimized memory usage and cleanup
+- **Response Time**: Sub-second response times for critical data
+
+## Error Handling
+- **API Failures**: Graceful handling of API failures
+- **Rate Limit Exceeded**: Intelligent rate limit management
+- **Network Issues**: Network error recovery and retry logic
+- **Data Validation**: Comprehensive data validation and sanitization
+- **Fallback Mechanisms**: Alternative data sources when available
+
+## Integration
+- **Frontend Dashboard**: Real-time data display and visualization
+- **Trading Engine**: Market data for trading decisions
+- **Alert System**: Market condition alerts and notifications
+- **Database**: Historical data storage and retrieval
+- **Analytics**: Market analysis and reporting
+
+## Configuration
+- **API Keys**: Secure API key management
+- **Rate Limits**: Configurable rate limiting settings
+- **Cache Settings**: Cache duration and invalidation rules
+- **Timeout Settings**: Request timeout configurations
+- **Retry Logic**: Retry attempt and backoff settings
+
+## Status
+✅ **ACTIVE** - Core market data service with comprehensive API integration

@@ -1,0 +1,67 @@
+# 📈 Health Check Service - System Health Monitoring
+
+## Purpose
+Comprehensive health monitoring service for ZmartBot system, providing real-time health checks, performance monitoring, and automated alerting.
+
+## Critical Functions
+- **Service Health Monitoring**: Real-time health status of all services
+- **Performance Metrics**: CPU, memory, and resource usage tracking
+- **Error Detection**: Automatic error detection and alerting
+- **Response Time Monitoring**: Service response time tracking
+- **Availability Tracking**: Service availability and uptime monitoring
+- **Automated Recovery**: Automatic service recovery and restart
+
+## Monitoring Components
+- **Backend API**: Port 8000 health monitoring
+- **Frontend Dashboard**: Port 3400 health monitoring
+- **Database Services**: Database connection and performance monitoring
+- **External APIs**: External API health and response monitoring
+- **System Resources**: CPU, memory, and disk usage monitoring
+
+## Key Features
+- **Real-time Monitoring**: Continuous health status monitoring
+- **Performance Tracking**: Comprehensive performance metrics
+- **Error Alerting**: Immediate error notification and alerting
+- **Automated Recovery**: Self-healing capabilities for failed services
+- **Historical Data**: Health and performance historical data
+- **Customizable Alerts**: Configurable alert thresholds and notifications
+
+## Health Checks
+- **Service Availability**: Service up/down status monitoring
+- **Response Time**: Service response time measurement
+- **Error Rate**: Error rate tracking and analysis
+- **Resource Usage**: CPU, memory, and disk usage monitoring
+- **Database Health**: Database connection and performance health
+- **API Health**: External API health and availability
+
+## Performance Metrics
+- **Response Time**: Average, min, max response times
+- **Throughput**: Requests per second and data throughput
+- **Error Rate**: Error percentage and error types
+- **Resource Usage**: CPU, memory, disk usage percentages
+- **Availability**: Service uptime and availability percentages
+- **Latency**: Network and service latency measurements
+
+## Alerting System
+- **Threshold Alerts**: Configurable threshold-based alerting
+- **Error Alerts**: Immediate error notification
+- **Performance Alerts**: Performance degradation alerts
+- **Resource Alerts**: Resource usage alerts
+- **Custom Alerts**: Custom alert conditions and notifications
+
+## Integration
+- **Orchestration Agent**: Health data for orchestration decisions
+- **Alert System**: Health-based alerting and notifications
+- **Dashboard**: Health status display and visualization
+- **Logging System**: Health data logging and analysis
+- **Recovery System**: Automated recovery and restart procedures
+
+## Configuration
+- **Health Check Intervals**: Configurable check frequencies
+- **Alert Thresholds**: Customizable alert thresholds
+- **Recovery Settings**: Recovery procedure configurations
+- **Monitoring Scope**: Configurable monitoring scope
+- **Notification Settings**: Alert notification configurations
+
+## Status
+✅ **ACTIVE** - Core health monitoring service with comprehensive system oversight

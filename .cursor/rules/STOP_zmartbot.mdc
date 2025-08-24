@@ -1,40 +1,58 @@
+# 🛑 STOP_ZMARTBOT.sh - Official System Shutdown Orchestrator
 
-@agent: StopAgent
+## Purpose
+Official ZmartBot system shutdown script with graceful service termination, cleanup, and resource management.
 
-## STOP_zmartbot.mdc – Updated with ProcessReaper fallback
+## Critical Functions
+- **Graceful Shutdown**: Properly terminates all running services
+- **Resource Cleanup**: Removes PID files and temporary resources
+- **Database Protection**: Safely closes database connections
+- **Port Release**: Frees all occupied ports
+- **Orchestration Shutdown**: Stops orchestration agents and managers
+- **Logging**: Records shutdown process and status
 
-@step: signal_services_to_stop
-- Send graceful shutdown signal to:
-  - Dashboard (port 3400)
-  - Backend API (port 8000)
-  - Orchestration agent
+## Usage
+```bash
+# From project root directory
+./STOP_ZMARTBOT.sh
+```
 
-@step: wait_and_verify
-- Wait 3 seconds and check PIDs
-- If any PID is still active, escalate
+## Key Features
+- **Safe Termination**: Graceful shutdown of all services
+- **Resource Management**: Complete cleanup of system resources
+- **Database Safety**: Protected database shutdown procedures
+- **Port Management**: Releases all occupied ports
+- **Process Cleanup**: Removes all PID files and temporary processes
 
-@step: call_ProcessReaper
-- For any services still running, call ProcessReaper agent
-- Log to processreaper.log with PID and port info
+## Dependencies
+- Running ZmartBot services
+- PID files for service management
+- Database connections to close
+- Port registry for cleanup
 
-@step: stop_BackendDoctorAgent
-- Stop monitoring loop and flush logs
-- Terminate BackendDoctorAgent monitoring process
-- Save final health status to doctor_monitor.log
-- Flush any pending health data
+## Security
+- Secure credential cleanup
+- Protected database shutdown
+- Safe file handle closure
+- Process isolation
 
-@step: stop_MDCFileWatcher
-- Stop MDC file watcher process
-- Terminate watch_mdc_changes_simple.py
-- Save final update status to mdc_watcher.log
-- Flush any pending file change notifications
+## Monitoring
+- Shutdown progress tracking
+- Error detection and reporting
+- Resource cleanup verification
+- Status confirmation
 
-@step: create_state_screenshot
-- Capture current system state for next startup
-- Save port assignments and service configurations
-- Create cached data snapshot for smooth startup
-- Log: "✅ State screenshot captured"
+## Integration
+- Orchestration Agent shutdown
+- Database orchestrator cleanup
+- Service registry cleanup
+- Port registry cleanup
 
-@step: confirm_shutdown
-- Print success message if all processes terminated
-- Output summary to zmartbot_shutdown.log
+## Error Handling
+- Force termination if graceful shutdown fails
+- Resource cleanup even on errors
+- Error logging and reporting
+- Fallback shutdown procedures
+
+## Status
+✅ **ACTIVE** - Official shutdown method with orchestration integration
