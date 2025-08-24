@@ -1,0 +1,25 @@
+@agent: OrchestrationTestAgent
+
+## Orchestration Simulation Test Suite
+
+@test: Startup
+- Run OrchestrationStart.mdc
+- Check dashboard/API/orchestration status
+- Report missing/misconfigured ports
+
+@test: Shutdown
+- Trigger STOP_zmartbot.mdc
+- Ensure graceful shutdown
+- Confirm ProcessReaper fallback
+
+@test: Symbol Pipeline
+- Validate ["BTC", "ETH", "SOL"]
+- Report liquidity, availability, volume
+
+@test: Indicator Flow
+- Simulate RSI, MACD, VWAP for BTC
+- Store and retrieve from IndicatorsDatabase
+
+@test: Alerts
+- Simulate RSI<30 for ETH
+- Trigger alert and confirm delivery

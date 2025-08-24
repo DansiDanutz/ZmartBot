@@ -1,0 +1,224 @@
+## Upgraded MDC Content:
+
+```
+@step: orchestration_flow
+
+# START_ZMARTBOT.sh - ZmartBot Startup Process Documentation
+
+## Service Overview
+
+### 1. **Frontend Dashboard Server** (Port 3400)
+- **Service**: Professional Dashboard Server
+- **Port**: 3400
+- **Type**: Web Interface
+- **Description**: Provides the main web interface for trading operations
+- **Criticality Level**: High
+- **Service Classification**: Core
+- **Business Impact**: If this service fails, users will not be able to interact with the trading platform.
+
+### 2. **Backend API Server** (Port 8000)
+- **Service**: FastAPI Backend Server
+- **Port**: 8000
+- **Type**: Backend Service
+- **Description**: Provides all trading APIs and data processing
+- **Criticality Level**: Critical
+- **Service Classification**: Foundation
+- **Business Impact**: If this service fails, all trading operations will be halted.
+
+### 3. **API Keys Manager Service** (Port 8001)
+- **Service**: API Keys Manager Service
+- **Port**: 8001
+- **Type**: Security & Credentials Service
+- **Description**: Centralized management of all external API credentials and authentication
+- **Criticality Level**: Critical
+- **Service Classification**: Foundation
+- **Business Impact**: If this service fails, all external API integrations will be disabled and trading operations will halt.
+
+### 4. **Market Data Aggregator Service** (Port 8156)
+- **Service**: Market Data Aggregator Service
+- **Port**: 8156
+- **Type**: Data Processing Service
+- **Description**: Real-time market data collection and technical indicators processing
+- **Criticality Level**: Critical
+- **Service Classification**: Core
+- **Business Impact**: If this service fails, live market data and trading signals will be unavailable.
+
+### 5. **Live Alerts Service** (Port 8008)
+- **Service**: Live Alerts Service
+- **Port**: 8008
+- **Type**: Alert Processing Service
+- **Description**: Real-time trading alerts generation using Messi, Pele, and Maradona strategies
+- **Criticality Level**: High
+- **Service Classification**: Core
+- **Business Impact**: If this service fails, trading alert notifications will be unavailable.
+
+### 6. **Master Orchestration Agent** (Port 8002)
+- **Service**: Master Orchestration Agent
+- **Port**: 8002
+- **Type**: Orchestration Service
+- **Description**: Coordinates all system components and manages background operations
+- **Criticality Level**: Critical
+- **Service Classification**: Foundation
+- **Business Impact**: If this service fails, the entire system will be uncoordinated and may lead to data inconsistency and service failures.
+
+## Service Architecture
+
+### Key Features
+- **Frontend Dashboard Server**: Professional trading dashboard, live alerts system, real-time market data visualization, symbol management interface, enhanced alerts monitoring.
+- **Backend API Server**: RESTful API endpoints, trading operations, market data processing, database management, external API integrations (KuCoin, Binance, Cryptometer, etc.).
+- **API Keys Manager Service**: Secure credential storage, API key rotation, rate limit management, external service authentication, encrypted key storage.
+- **Market Data Aggregator Service**: Real-time Binance API integration, 21 technical indicators calculation, multi-timeframe analysis, market data caching, symbol validation.
+- **Live Alerts Service**: Messi/Pele/Maradona alert strategies, multi-timeframe alert generation, WebSocket real-time notifications, alert prioritization, trading signal analysis.
+- **Master Orchestration Agent**: Database orchestration, cross-event management, alerts system coordination, market data collection, pattern analysis, risk management.
+
+### Supported Operations
+- **Frontend Dashboard Server**: User interface interactions, data visualization, alerts management.
+- **Backend API Server**: Trading operations, data processing, API management, database operations.
+- **API Keys Manager Service**: Credential management, API authentication, security enforcement, key validation.
+- **Market Data Aggregator Service**: Data collection, indicator calculation, symbol processing, market analysis.
+- **Live Alerts Service**: Alert generation, strategy processing, notification distribution, signal analysis.
+- **Master Orchestration Agent**: System coordination, data collection, risk management, event management.
+
+### Integration Ecosystem
+- **Frontend Dashboard Server**: Integrates with the Backend API Server for data and operations.
+- **Backend API Server**: Integrates with the Frontend Dashboard Server for user interface, Market Data Aggregator for live data, and Master Orchestration Agent for system coordination.
+- **API Keys Manager Service**: Provides credentials to all external API integrations across all services.
+- **Market Data Aggregator Service**: Integrates with API Keys Manager for credentials, provides data to Backend API Server and Live Alerts Service.
+- **Live Alerts Service**: Integrates with Market Data Aggregator for indicator data, provides alerts to Frontend Dashboard Server.
+- **Master Orchestration Agent**: Integrates with all services for system coordination and management.
+
+## CRITICAL SERVICE CHARACTERISTICS FOR MASTER ORCHESTRATION
+
+### Service Dependencies
+- **Frontend Dashboard Server**: React, Vite, Axios, Redux, Node.js
+- **Backend API Server**: FastAPI, SQLAlchemy, Alembic, PostgreSQL, InfluxDB, Python 3.9+
+- **API Keys Manager Service**: Python 3.9+, FastAPI, Cryptography, Fernet, YAML, Pydantic
+- **Market Data Aggregator Service**: Python 3.9+, FastAPI, ccxt, pandas, numpy, SQLAlchemy, Binance API
+- **Live Alerts Service**: Python 3.9+, FastAPI, WebSocket, Market Data Aggregator, Technical Indicators
+- **Master Orchestration Agent**: Python 3.9+, Celery, Redis, PostgreSQL, asyncio, aiohttp
+
+### Inter-Service Operation Patterns
+- **Frontend Dashboard Server**: Provides services to users, depends on Backend API Server, communicates via HTTP, failure impact is HIGH, recovery depends on Backend API Server, data flows from Backend API Server to users.
+- **Backend API Server**: Provides services to Frontend Dashboard Server and Master Orchestration Agent, depends on Market Data Aggregator Service, communicates via HTTP and WebSocket, failure impact is CRITICAL, recovery depends on Market Data Aggregator Service, data flows from Market Data Aggregator to Frontend Dashboard Server.
+- **API Keys Manager Service**: Provides services to all external API integrations, depends on encrypted storage, communicates via HTTP API calls, failure impact is CRITICAL, recovery depends on credential restoration, data flows from encrypted storage to all services.
+- **Market Data Aggregator Service**: Provides services to Backend API Server and Live Alerts Service, depends on API Keys Manager Service, communicates via HTTP and database writes, failure impact is CRITICAL, recovery depends on API Keys Manager Service, data flows from external APIs to dependent services.
+- **Live Alerts Service**: Provides services to Frontend Dashboard Server, depends on Market Data Aggregator Service, communicates via WebSocket and HTTP, failure impact is HIGH, recovery depends on Market Data Aggregator Service, data flows from Market Data Aggregator to Frontend Dashboard Server.
+- **Master Orchestration Agent**: Provides services to all system services, depends on API Keys Manager and Market Data Aggregator Services, communicates via direct calls and health checks, failure impact is CRITICAL, recovery depends on dependent services, data flows between all services for coordination.
+
+### Service Lifecycle Behavior
+- **Frontend Dashboard Server**: Startup time is 5 seconds, depends on Node.js runtime, initializes React application, shuts down immediately, shutdown priority is 6, stateless, no persistence requirements.
+- **Backend API Server**: Startup time is 10 seconds, depends on Python runtime and databases, initializes FastAPI application and databases, shuts down gracefully, shutdown priority is 5, stateful, persistence required for trading data.
+- **API Keys Manager Service**: Startup time is 3 seconds, depends on Python runtime and encrypted storage, initializes credential manager, shuts down gracefully, shutdown priority is 1, stateful, persistence required for credentials.
+- **Market Data Aggregator Service**: Startup time is 8 seconds, depends on Python runtime and API Keys Manager, initializes data collection and indicators, shuts down gracefully, shutdown priority is 2, stateful, persistence required for market data.
+- **Live Alerts Service**: Startup time is 5 seconds, depends on Python runtime and Market Data Aggregator, initializes alert strategies and WebSocket, shuts down gracefully, shutdown priority is 4, stateful, persistence required for alert history.
+- **Master Orchestration Agent**: Startup time is 7 seconds, depends on Python runtime and dependent services, initializes orchestration and health monitoring, shuts down gracefully, shutdown priority is 3, stateful, persistence required for orchestration data.
+
+### Runtime Characteristics
+- **Frontend Dashboard Server**: Memory usage is low, CPU usage is low, network usage is medium, disk I/O is low, async concurrency model, performance bottleneck is network latency, scales horizontally.
+- **Backend API Server**: Memory usage is medium, CPU usage is high, network usage is high, disk I/O is high, async concurrency model, performance bottleneck is database operations, scales horizontally and vertically.
+- **API Keys Manager Service**: Memory usage is low, CPU usage is low, network usage is low, disk I/O is low, async concurrency model, performance bottleneck is encryption operations, scales horizontally.
+- **Market Data Aggregator Service**: Memory usage is high, CPU usage is high, network usage is very high, disk I/O is high, async concurrency model, performance bottleneck is API rate limits and indicator calculations, scales horizontally and vertically.
+- **Live Alerts Service**: Memory usage is medium, CPU usage is medium, network usage is medium, disk I/O is medium, async concurrency model, performance bottleneck is alert processing and WebSocket connections, scales horizontally.
+- **Master Orchestration Agent**: Memory usage is medium, CPU usage is medium, network usage is medium, disk I/O is medium, async concurrency model, performance bottleneck is cross-service coordination and health monitoring, scales horizontally.
+
+### Error Conditions & Recovery
+- **Frontend Dashboard Server**: Common failures include network errors and UI bugs, detected by user reports and automated tests, recovery by restarting service, disaster recovery by rolling back to previous version, circuit breaker when Backend API Server is down, fallback to cached data.
+- **Backend API Server**: Common failures include database errors and API bugs, detected by automated tests and logs, recovery by restarting service or repairing database, disaster recovery by rolling back to previous version or restoring from backup, circuit breaker when database is down, fallback to cached data.
+- **API Keys Manager Service**: Common failures include encryption errors and credential corruption, detected by authentication failures and health checks, recovery by restarting service or restoring credentials, disaster recovery by restoring from backup credentials, circuit breaker when credential storage is corrupted, fallback to emergency credentials.
+- **Market Data Aggregator Service**: Common failures include API rate limits and data source outages, detected by failed API calls and missing data, recovery by switching data sources or throttling requests, disaster recovery by using cached data and alternative APIs, circuit breaker when external APIs are down, fallback to cached market data.
+- **Live Alerts Service**: Common failures include alert processing errors and WebSocket connection issues, detected by failed alert generation and connection monitoring, recovery by restarting alert engines and reconnecting WebSockets, disaster recovery by switching to alternative notification methods, circuit breaker when Market Data Aggregator is down, fallback to cached alert data.
+- **Master Orchestration Agent**: Common failures include coordination errors and service discovery issues, detected by health check failures and cross-service communication errors, recovery by restarting orchestration and re-establishing service connections, disaster recovery by manual service coordination, circuit breaker when critical services are down, fallback to basic service monitoring.
+
+### Monitoring & Observability
+- **Frontend Dashboard Server**: Health check at "/health", key performance indicators include response time and error rate, logs for errors and warnings, alerts for high error rate, diagnostic commands include "curl localhost:3400/health", performance baseline is response time < 1 second.
+- **Backend API Server**: Health check at "/health", key performance indicators include response time, error rate, and database operations, logs for errors and warnings, alerts for high error rate or slow database operations, diagnostic commands include "curl localhost:8000/health", performance baseline is response time < 1 second and database operations < 100 per second.
+- **API Keys Manager Service**: Health check at "/health", key performance indicators include credential validation success rate and encryption performance, logs for security events and errors, alerts for authentication failures, diagnostic commands include "curl localhost:8001/health", performance baseline is validation success rate > 99.9% and encryption time < 100ms.
+- **Market Data Aggregator Service**: Health check at "/health", key performance indicators include data collection rate, indicator calculation speed, and API response times, logs for data quality and API errors, alerts for missing data or slow calculations, diagnostic commands include "curl localhost:8156/health", performance baseline is data collection > 95% and indicator calculation < 500ms.
+- **Live Alerts Service**: Health check at "/health", key performance indicators include alert generation rate, notification delivery success, and processing latency, logs for alert processing and WebSocket connections, alerts for failed notifications or high latency, diagnostic commands include "curl localhost:8008/health", performance baseline is alert delivery success > 98% and processing latency < 200ms.
+- **Master Orchestration Agent**: Health check at "/health", key performance indicators include service coordination success rate, health monitoring accuracy, and system response time, logs for orchestration events and service status, alerts for coordination failures or service outages, diagnostic commands include "curl localhost:8002/health", performance baseline is coordination success > 99% and system response time < 1 second.
+
+### Master Orchestration Integration Points
+- **Frontend Dashboard Server**: Service discovery by port 3400, health monitoring by HTTP check, lifecycle management by Node.js commands, resource coordination by CPU and memory usage, dependency coordination by Backend API Server, security coordination by HTTPS and JWT.
+- **Backend API Server**: Service discovery by port 8000, health monitoring by HTTP check, lifecycle management by Python commands, resource coordination by CPU, memory, and database usage, dependency coordination by Market Data Aggregator Service, security coordination by HTTPS, JWT, and database encryption.
+- **API Keys Manager Service**: Service discovery by port 8001, health monitoring by HTTP check, lifecycle management by Python commands, resource coordination by encryption workload and memory usage, dependency coordination by none (foundation service), security coordination by credential encryption and access control.
+- **Market Data Aggregator Service**: Service discovery by port 8156, health monitoring by HTTP check, lifecycle management by Python commands, resource coordination by CPU, memory, and network bandwidth, dependency coordination by API Keys Manager Service, security coordination by API authentication and data encryption.
+- **Live Alerts Service**: Service discovery by port 8008, health monitoring by HTTP check, lifecycle management by Python commands, resource coordination by alert processing load and WebSocket connections, dependency coordination by Market Data Aggregator Service, security coordination by WebSocket security and alert authentication.
+- **Master Orchestration Agent**: Service discovery by port 8002, health monitoring by HTTP check, lifecycle management by Python commands, resource coordination by coordination overhead and cross-service communication, dependency coordination by API Keys Manager and Market Data Aggregator Services, security coordination by orchestration permissions and inter-service authentication.
+
+### Critical Decision Patterns for Orchestration
+- **Frontend Dashboard Server**: Startup priority level is 6, shutdown priority level is 6, restart strategy is immediate, scaling strategy is based on user load, resource allocation is 1 CPU and 1 GB memory, update strategy is rolling, backup strategy is not applicable, security posture is isolation and access control.
+- **Backend API Server**: Startup priority level is 5, shutdown priority level is 5, restart strategy is immediate, scaling strategy is based on user load and database operations, resource allocation is 2 CPUs and 4 GB memory, update strategy is blue-green, backup strategy is daily database backup, security posture is isolation, access control, and database encryption.
+- **API Keys Manager Service**: Startup priority level is 1, shutdown priority level is 1, restart strategy is immediate, scaling strategy is based on credential load, resource allocation is 1 CPU and 512 MB memory, update strategy is maintenance window, backup strategy is encrypted credential backup, security posture is maximum security with encryption and access logging.
+- **Market Data Aggregator Service**: Startup priority level is 2, shutdown priority level is 2, restart strategy is immediate, scaling strategy is based on data volume and API rate limits, resource allocation is 2 CPUs and 2 GB memory, update strategy is rolling with data continuity, backup strategy is market data backup, security posture is API security and data encryption.
+- **Live Alerts Service**: Startup priority level is 4, shutdown priority level is 4, restart strategy is immediate, scaling strategy is based on alert volume and WebSocket connections, resource allocation is 1 CPU and 1 GB memory, update strategy is rolling, backup strategy is alert history backup, security posture is notification security and WebSocket encryption.
+- **Master Orchestration Agent**: Startup priority level is 3, shutdown priority level is 3, restart strategy is delayed for system stability, scaling strategy is based on system complexity and coordination load, resource allocation is 1 CPU and 2 GB memory, update strategy is maintenance window, backup strategy is orchestration data backup, security posture is maximum control with inter-service security and coordination logging.
+
+## API Endpoints
+- **Frontend Dashboard Server**: User interface endpoints at "/", "/enhanced-alerts", "/portfolio", health check at "/health", authentication by JWT, error handling by HTTP status codes.
+- **Backend API Server**: Complete endpoint list at "/docs", main API at "/api/v1/", health check at "/health", authentication by JWT, rate limiting by IP address, error handling by HTTP status codes.
+- **API Keys Manager Service**: Credential management at "/api/v1/credentials", service status at "/api/v1/services", health check at "/health", authentication by internal service tokens, rate limiting for security, error handling by HTTP status codes.
+- **Market Data Aggregator Service**: Market data at "/api/v1/market-data", indicators at "/api/v1/indicators", symbols at "/api/v1/symbols", health check at "/health", authentication by API keys, rate limiting by data volume, error handling by HTTP status codes.
+- **Live Alerts Service**: Alerts at "/api/v1/alerts", strategies at "/api/v1/strategies", WebSocket at "/ws/alerts", health check at "/health", authentication by JWT, rate limiting by alert frequency, error handling by HTTP status codes.
+- **Master Orchestration Agent**: Orchestration at "/api/v1/orchestration", services at "/api/v1/services", health at "/health", authentication by orchestration tokens, rate limiting for system protection, error handling by HTTP status codes.
+
+## Security Features
+- **Frontend Dashboard Server**: Authentication by JWT, authorization by user roles, encryption by HTTPS, audit logging by user actions, security controls by CORS and CSP.
+- **Backend API Server**: Authentication by JWT, authorization by user roles, encryption by HTTPS and database encryption, audit logging by user actions and database operations, security controls by rate limiting and input validation.
+- **API Keys Manager Service**: Authentication by internal service tokens, authorization by service permissions, encryption by Fernet symmetric encryption for credential storage, audit logging by credential access and modifications, security controls by access control lists and credential rotation.
+- **Market Data Aggregator Service**: Authentication by API keys from API Keys Manager, authorization by data access permissions, encryption by HTTPS for external APIs and data encryption at rest, audit logging by data collection and API usage, security controls by API rate limiting and data validation.
+- **Live Alerts Service**: Authentication by JWT and WebSocket tokens, authorization by alert subscription permissions, encryption by WebSocket SSL/TLS and alert data encryption, audit logging by alert generation and delivery, security controls by alert throttling and subscription management.
+- **Master Orchestration Agent**: Authentication by orchestration tokens, authorization by system-level permissions, encryption by inter-service communication encryption, audit logging by orchestration actions and service coordination, security controls by service access control and coordination validation.
+
+## Development Guidelines
+- **Frontend Dashboard Server**: Coding standards by ESLint, testing by Jest, deployment by Docker, configuration by .env files, documentation by comments and component documentation.
+- **Backend API Server**: Coding standards by PEP 8, testing by pytest, deployment by Docker, configuration by .env files, documentation by Swagger and API documentation.
+- **API Keys Manager Service**: Coding standards by PEP 8, testing by pytest with security focus, deployment by Docker with security hardening, configuration by encrypted configuration files, documentation by security documentation and API docs.
+- **Market Data Aggregator Service**: Coding standards by PEP 8, testing by pytest with data validation, deployment by Docker with resource optimization, configuration by .env files with API credentials, documentation by data flow documentation and API docs.
+- **Live Alerts Service**: Coding standards by PEP 8, testing by pytest with WebSocket testing, deployment by Docker with real-time optimization, configuration by .env files with alert settings, documentation by alert strategy documentation and API docs.
+- **Master Orchestration Agent**: Coding standards by PEP 8, testing by pytest with integration testing, deployment by Docker with orchestration capabilities, configuration by .env files with orchestration settings, documentation by orchestration documentation and system architecture docs.
+
+## Deployment Considerations
+- **Frontend Dashboard Server**: Infrastructure requirements include Node.js and NPM, environment configurations by .env files, scaling considerations by user load, monitoring requirements by response time and error rate, disaster recovery procedures by rolling back to previous version, capacity planning for up to 1000 concurrent users.
+- **Backend API Server**: Infrastructure requirements include Python, FastAPI, PostgreSQL, and InfluxDB, environment configurations by .env files, scaling considerations by user load and database operations, monitoring requirements by response time, error rate, and database operations, disaster recovery procedures by rolling back to previous version or restoring from backup, capacity planning for up to 1000 requests per second.
+- **API Keys Manager Service**: Infrastructure requirements include Python, FastAPI, and encrypted storage, environment configurations by encrypted configuration files, scaling considerations by credential volume and encryption load, monitoring requirements by authentication success rate and encryption performance, disaster recovery procedures by credential backup restoration and service rollback, capacity planning for high-security credential operations.
+- **Market Data Aggregator Service**: Infrastructure requirements include Python, FastAPI, ccxt, and external API connectivity, environment configurations by .env files with API credentials, scaling considerations by data volume and API rate limits, monitoring requirements by data collection rate and API response times, disaster recovery procedures by data source failover and cached data usage, capacity planning for real-time market data processing.
+- **Live Alerts Service**: Infrastructure requirements include Python, FastAPI, and WebSocket support, environment configurations by .env files with alert settings, scaling considerations by alert volume and WebSocket connections, monitoring requirements by alert delivery success and processing latency, disaster recovery procedures by notification method failover and alert queue recovery, capacity planning for high-frequency alert processing.
+- **Master Orchestration Agent**: Infrastructure requirements include Python, FastAPI, and orchestration libraries, environment configurations by .env files with orchestration settings, scaling considerations by system complexity and coordination load, monitoring requirements by coordination success rate and system response time, disaster recovery procedures by manual coordination fallback and service recovery, capacity planning for system-wide orchestration and monitoring.
+
+## COMPLETE ORCHESTRATED STARTUP SUMMARY
+
+### All 6 Orchestrated Services (Priority Order 1→6)
+1. **API Keys Manager Service** (Port 8001) - Foundation credentials service
+2. **Market Data Aggregator Service** (Port 8156) - Real-time data processing hub  
+3. **Master Orchestration Agent** (Port 8002) - System brain and coordination
+4. **Live Alerts Service** (Port 8008) - Trading alerts and notifications
+5. **Backend API Server** (Port 8000) - Main API gateway
+6. **Frontend Dashboard Server** (Port 3400) - User interface
+
+### Orchestrated Service Dependencies
+- **API Keys Manager** → **Market Data Aggregator** → **Master Orchestration** → **Live Alerts** → **Backend API** → **Frontend Dashboard**
+
+### Critical Orchestration Integration Points
+- **Service Discovery**: All services registered with ports and health endpoints
+- **Health Monitoring**: Continuous health checks for all 6 services
+- **Dependency Management**: Startup order enforced based on service dependencies
+- **Failure Recovery**: Automatic restart and coordination for failed services
+- **Performance Monitoring**: Real-time metrics collection for all services
+- **Security Coordination**: Centralized credential management through API Keys Manager
+
+### Master Orchestration Agent Responsibilities
+- Coordinates startup/shutdown of all 6 services in proper order
+- Monitors health and performance of each service
+- Manages service dependencies and communications
+- Provides intelligent failure analysis and recovery
+- Generates ChatGPT prompts using complete system context
+- Performs predictive analysis and optimization recommendations
+
+This comprehensive orchestrated startup process ensures that ZmartBot is fully operational with all 6 services properly synchronized, monitored, and communicating through the Master Orchestration Agent intelligence system.
+description:
+globs:
+alwaysApply: false
+---
+```
+
+This upgraded MDC file provides comprehensive orchestration intelligence for the Master Orchestration Agent to autonomously manage the ZmartBot trading platform. It includes detailed information about each service's characteristics, dependencies, operation patterns, lifecycle behavior, runtime characteristics, error conditions and recovery, monitoring and observability, integration points with the Master Orchestration Agent, critical decision patterns for orchestration, API endpoints, security features, development guidelines, and deployment considerations. This documentation enables the Master Orchestration Agent to understand every aspect of the ZmartBot trading platform for autonomous service management.

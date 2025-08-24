@@ -1,0 +1,733 @@
+# Maradona Alerts - Reversal and Divergence Pattern System
+
+## Overview
+**Maradona Alerts** represent the **reversal and divergence patterns** in the ZmartBot system, named after the legendary footballer's unpredictable, creative, and game-changing playing style. These alerts detect multiple indicator divergences, strong reversal signals, and extreme overbought/oversold conditions that create reversal trading opportunities.
+
+## Maradona Alert Philosophy
+
+### **Core Concept**
+Maradona Alerts are designed to capture **market reversals** and **divergence patterns** that occur when price action and indicators move in opposite directions. Just as Maradona's playing style was characterized by unexpected moves, creative solutions, and the ability to change the game's direction, these alerts identify similar patterns in market behavior.
+
+### **Trading Style**
+- **Timeframe Focus**: Primarily 4h and 1d charts
+- **Trading Approach**: Reversal trading and divergence analysis
+- **Position Duration**: Days to weeks (not hours)
+- **Risk Management**: Reversal-based stop-losses, divergence profit-taking
+
+## Alert Trigger Mechanisms
+
+### **1. Maradona Divergence Pattern**
+
+#### **Trigger Detection Algorithm**
+```python
+class MaradonaDivergence:
+    def __init__(self):
+        self.divergence_history = []
+        self.divergence_threshold = 3  # Minimum 3 divergences
+        self.confidence_threshold = 0.75  # 75% confidence
+        self.time_window = 100  # candles to analyze
+        
+    def detect_multiple_divergences(self, current_divergence, symbol, timeframe):
+        """Detect multiple indicator divergences simultaneously"""
+        
+        # Add current divergence data to history
+        self.divergence_history.append({
+            'divergence': current_divergence,
+            'timestamp': datetime.now(),
+            'symbol': symbol,
+            'timeframe': timeframe
+        })
+        
+        # Keep only recent history
+        if len(self.divergence_history) > self.time_window:
+            self.divergence_history.pop(0)
+        
+        # Calculate divergence metrics
+        if len(self.divergence_history) >= 50:
+            divergence_analysis = self.calculate_divergence_patterns()
+            
+            # Check for multiple divergences
+            if divergence_analysis['count'] >= self.divergence_threshold and \
+               divergence_analysis['confidence'] >= self.confidence_threshold:
+                return self.create_maradona_divergence_alert(divergence_analysis)
+        
+        return None
+    
+    def calculate_divergence_patterns(self):
+        """Calculate multiple divergence patterns"""
+        divergences = [entry['divergence'] for entry in self.divergence_history]
+        
+        analysis = {
+            'count': 0,
+            'confidence': 0,
+            'types': [],
+            'indicators_involved': [],
+            'strength': 0,
+            'direction': 'unknown',
+            'time_alignment': 0
+        }
+        
+        # Count different types of divergences
+        bullish_divergences = []
+        bearish_divergences = []
+        
+        for div in divergences:
+            if div.type == 'bullish':
+                bullish_divergences.append(div)
+            elif div.type == 'bearish':
+                bearish_divergences.append(div)
+        
+        # Calculate total divergence count
+        analysis['count'] = len(bullish_divergences) + len(bearish_divergences)
+        
+        # Determine dominant direction
+        if len(bullish_divergences) > len(bearish_divergences):
+            analysis['direction'] = 'bullish'
+            analysis['types'] = [d.indicator_type for d in bullish_divergences]
+        else:
+            analysis['direction'] = 'bearish'
+            analysis['types'] = [d.indicator_type for d in bearish_divergences]
+        
+        # Calculate confidence based on indicator agreement
+        indicator_agreement = len(set(analysis['types'])) / len(analysis['types']) if analysis['types'] else 0
+        analysis['confidence'] = indicator_agreement
+        
+        # Calculate divergence strength
+        strength_scores = []
+        for div in divergences:
+            strength = div.price_change / div.indicator_change if div.indicator_change != 0 else 0
+            strength_scores.append(abs(strength))
+        
+        analysis['strength'] = sum(strength_scores) / len(strength_scores) if strength_scores else 0
+        
+        # Calculate time alignment
+        timestamps = [entry['timestamp'] for entry in self.divergence_history]
+        time_spread = max(timestamps) - min(timestamps)
+        analysis['time_alignment'] = 1 - (time_spread.total_seconds() / (24 * 3600))  # Normalize to 1 day
+        
+        return analysis
+```
+
+#### **What Happens When Triggered**
+```python
+def create_maradona_divergence_alert(self, divergence_analysis):
+    """Create Maradona Divergence alert when multiple divergences detected"""
+    
+    alert = AlertTrigger(
+        type="MARADONA_DIVERGENCE",
+        symbol=self.divergence_history[-1]['symbol'],
+        timeframe=self.divergence_history[-1]['timeframe'],
+        value=self.divergence_history[-1]['divergence'].strength,
+        message=f"Maradona Divergence Pattern: {divergence_analysis['count']} divergences detected with {divergence_analysis['confidence']:.1%} confidence",
+        severity="HIGH",
+        action="Reversal trading opportunity - prepare for trend change",
+        indicators_triggered=["RSI", "MACD", "Stochastic Oscillator", "CCI"],
+        divergence_data=divergence_analysis,
+        trading_opportunity={
+            'type': 'reversal_trading',
+            'entry_strategy': 'divergence_confirmation',
+            'exit_strategy': 'trend_reversal',
+            'stop_loss': 'divergence_beyond',
+            'target_timeframe': '1d-1w'
+        }
+    )
+    
+    return alert
+```
+
+### **2. Maradona Reversal Pattern**
+
+#### **Trigger Detection Algorithm**
+```python
+class MaradonaReversal:
+    def __init__(self):
+        self.reversal_history = []
+        self.reversal_strength_threshold = 0.8  # 80% reversal strength
+        self.momentum_threshold = 0.7  # 70% momentum reversal
+        self.time_window = 60  # candles to analyze
+        
+    def detect_strong_reversal(self, current_reversal, symbol, timeframe):
+        """Detect strong reversal signals with momentum confirmation"""
+        
+        # Add current reversal data to history
+        self.reversal_history.append({
+            'reversal': current_reversal,
+            'timestamp': datetime.now(),
+            'symbol': symbol,
+            'timeframe': timeframe
+        })
+        
+        # Keep only recent history
+        if len(self.reversal_history) > self.time_window:
+            self.reversal_history.pop(0)
+        
+        # Calculate reversal metrics
+        if len(self.reversal_history) >= 30:
+            reversal_analysis = self.analyze_reversal_patterns()
+            
+            # Check for strong reversal
+            if reversal_analysis['strength'] >= self.reversal_strength_threshold and \
+               reversal_analysis['momentum_reversal'] >= self.momentum_threshold:
+                return self.create_maradona_reversal_alert(reversal_analysis)
+        
+        return None
+    
+    def analyze_reversal_patterns(self):
+        """Analyze reversal patterns for strength and confirmation"""
+        reversals = [entry['reversal'] for entry in self.reversal_history]
+        
+        analysis = {
+            'strength': 0,
+            'momentum_reversal': 0,
+            'reversal_type': 'unknown',
+            'price_momentum': 0,
+            'volume_confirmation': 0,
+            'trend_break': 0,
+            'support_resistance_break': 0
+        }
+        
+        # Calculate reversal strength
+        recent_reversals = reversals[-5:]  # Last 5 reversals
+        strength_scores = []
+        
+        for reversal in recent_reversals:
+            # Calculate strength based on price movement vs previous trend
+            strength = abs(reversal.price_change) / reversal.previous_trend_strength
+            strength_scores.append(strength)
+        
+        analysis['strength'] = sum(strength_scores) / len(strength_scores)
+        
+        # Calculate momentum reversal
+        momentum_changes = []
+        for reversal in recent_reversals:
+            momentum_change = abs(reversal.momentum_change)
+            momentum_changes.append(momentum_change)
+        
+        analysis['momentum_reversal'] = sum(momentum_changes) / len(momentum_changes)
+        
+        # Determine reversal type
+        bullish_reversals = sum(1 for r in recent_reversals if r.type == 'bullish')
+        bearish_reversals = sum(1 for r in recent_reversals if r.type == 'bearish')
+        
+        if bullish_reversals > bearish_reversals:
+            analysis['reversal_type'] = 'bullish'
+        else:
+            analysis['reversal_type'] = 'bearish'
+        
+        # Calculate volume confirmation
+        volume_ratios = [reversal.volume_ratio for reversal in recent_reversals]
+        analysis['volume_confirmation'] = sum(volume_ratios) / len(volume_ratios)
+        
+        # Calculate trend break strength
+        trend_breaks = [reversal.trend_break_strength for reversal in recent_reversals]
+        analysis['trend_break'] = sum(trend_breaks) / len(trend_breaks)
+        
+        return analysis
+```
+
+#### **What Happens When Triggered**
+```python
+def create_maradona_reversal_alert(self, reversal_analysis):
+    """Create Maradona Reversal alert when strong reversal detected"""
+    
+    alert = AlertTrigger(
+        type="MARADONA_REVERSAL",
+        symbol=self.reversal_history[-1]['symbol'],
+        timeframe=self.reversal_history[-1]['timeframe'],
+        value=self.reversal_history[-1]['reversal'].strength,
+        message=f"Maradona Reversal Pattern: Strong {reversal_analysis['reversal_type']} reversal with {reversal_analysis['strength']:.1%} strength",
+        severity="HIGH",
+        action="Reversal trading - enter against previous trend",
+        indicators_triggered=["Williams %R", "Ultimate Oscillator", "Parabolic SAR"],
+        reversal_data=reversal_analysis,
+        trading_opportunity={
+            'type': 'reversal_trading',
+            'entry_strategy': 'reversal_confirmation',
+            'exit_strategy': 'trend_establishment',
+            'stop_loss': 'reversal_beyond',
+            'target_timeframe': '1d-1w'
+        }
+    )
+    
+    return alert
+```
+
+### **3. Maradona Extreme Conditions Pattern**
+
+#### **Trigger Detection Algorithm**
+```python
+class MaradonaExtremeConditions:
+    def __init__(self):
+        self.extreme_history = []
+        self.extremity_threshold = 0.9  # 90% extremity
+        self.duration_threshold = 5  # 5 candles minimum
+        self.time_window = 80  # candles to analyze
+        
+    def detect_extreme_conditions(self, current_conditions, symbol, timeframe):
+        """Detect extreme overbought/oversold conditions"""
+        
+        # Add current conditions data to history
+        self.extreme_history.append({
+            'conditions': current_conditions,
+            'timestamp': datetime.now(),
+            'symbol': symbol,
+            'timeframe': timeframe
+        })
+        
+        # Keep only recent history
+        if len(self.extreme_history) > self.time_window:
+            self.extreme_history.pop(0)
+        
+        # Calculate extreme metrics
+        if len(self.extreme_history) >= 40:
+            extreme_analysis = self.analyze_extreme_patterns()
+            
+            # Check for extreme conditions
+            if extreme_analysis['extremity'] >= self.extremity_threshold and \
+               extreme_analysis['duration'] >= self.duration_threshold:
+                return self.create_maradona_extreme_alert(extreme_analysis)
+        
+        return None
+    
+    def analyze_extreme_patterns(self):
+        """Analyze extreme overbought/oversold patterns"""
+        conditions = [entry['conditions'] for entry in self.extreme_history]
+        
+        analysis = {
+            'extremity': 0,
+            'duration': 0,
+            'condition_type': 'unknown',
+            'mean_reversion_probability': 0,
+            'price_deviation': 0,
+            'indicator_agreement': 0,
+            'volume_pattern': 'normal'
+        }
+        
+        # Calculate extremity level
+        extremity_scores = []
+        for condition in conditions:
+            if condition.type == 'overbought':
+                extremity = (condition.rsi - 70) / 30  # Normalize to 0-1
+            else:  # oversold
+                extremity = (30 - condition.rsi) / 30  # Normalize to 0-1
+            extremity_scores.append(extremity)
+        
+        analysis['extremity'] = sum(extremity_scores) / len(extremity_scores)
+        
+        # Calculate duration
+        consecutive_extreme = 0
+        for condition in conditions:
+            if condition.is_extreme:
+                consecutive_extreme += 1
+            else:
+                break
+        analysis['duration'] = consecutive_extreme
+        
+        # Determine condition type
+        overbought_count = sum(1 for c in conditions if c.type == 'overbought')
+        oversold_count = sum(1 for c in conditions if c.type == 'oversold')
+        
+        if overbought_count > oversold_count:
+            analysis['condition_type'] = 'overbought'
+        else:
+            analysis['condition_type'] = 'oversold'
+        
+        # Calculate mean reversion probability
+        if analysis['duration'] > 3:
+            analysis['mean_reversion_probability'] = min(0.9, analysis['duration'] * 0.15)
+        
+        # Calculate price deviation
+        price_deviations = [condition.price_deviation for condition in conditions]
+        analysis['price_deviation'] = sum(price_deviations) / len(price_deviations)
+        
+        # Calculate indicator agreement
+        indicator_agreements = [condition.indicator_agreement for condition in conditions]
+        analysis['indicator_agreement'] = sum(indicator_agreements) / len(indicator_agreements)
+        
+        return analysis
+```
+
+#### **What Happens When Triggered**
+```python
+def create_maradona_extreme_alert(self, extreme_analysis):
+    """Create Maradona Extreme alert when extreme conditions detected"""
+    
+    alert = AlertTrigger(
+        type="MARADONA_EXTREME",
+        symbol=self.extreme_history[-1]['symbol'],
+        timeframe=self.extreme_history[-1]['timeframe'],
+        value=self.extreme_history[-1]['conditions'].extremity,
+        message=f"Maradona Extreme Pattern: {extreme_analysis['condition_type']} conditions with {extreme_analysis['extremity']:.1%} extremity",
+        severity="MEDIUM",
+        action="Mean reversion opportunity - trade against extremes",
+        indicators_triggered=["RSI", "Stochastic Oscillator", "CCI", "Williams %R"],
+        extreme_data=extreme_analysis,
+        trading_opportunity={
+            'type': 'mean_reversion',
+            'entry_strategy': 'extreme_bounce',
+            'exit_strategy': 'normalization',
+            'stop_loss': 'extreme_beyond',
+            'target_timeframe': '4h-1d'
+        }
+    )
+    
+    return alert
+```
+
+## Dynamic Indicator Changes
+
+### **Real-Time Indicator Updates**
+
+#### **1. RSI Dynamic Changes**
+```javascript
+class MaradonaRSIDynamicUpdater {
+    constructor() {
+        this.updateFrequency = 15000; // 15 seconds
+        this.divergenceBuffer = [];
+    }
+    
+    updateRSIOnMaradonaAlert(alert) {
+        const rsiCard = document.getElementById(`rsi-card-${alert.symbol}`);
+        const rsiChart = rsiCard.querySelector('.rsi-chart');
+        const rsiValue = rsiCard.querySelector('.rsi-value');
+        
+        // Add divergence data to buffer
+        this.divergenceBuffer.push(alert.divergence_data);
+        
+        // Update RSI display with divergence indicators
+        this.addDivergenceIndicators(rsiChart, alert.divergence_data);
+        
+        // Update value with divergence highlighting
+        rsiValue.textContent = alert.value;
+        rsiValue.classList.add('maradona-divergence');
+        
+        // Add divergence strength indicator
+        this.addDivergenceStrengthIndicator(rsiCard, alert.divergence_data);
+        
+        // Start real-time updates
+        this.startRealTimeUpdates(alert.symbol);
+    }
+    
+    addDivergenceIndicators(chart, divergenceData) {
+        // Add divergence zones
+        const divergenceZone = document.createElement('div');
+        divergenceZone.className = 'divergence-zone';
+        divergenceZone.style.backgroundColor = divergenceData.direction === 'bullish' ? 
+            'rgba(76, 175, 80, 0.2)' : 'rgba(244, 67, 54, 0.2)';
+        divergenceZone.style.border = `2px dashed ${divergenceData.direction === 'bullish' ? '#4CAF50' : '#f44336'}`;
+        
+        chart.appendChild(divergenceZone);
+        
+        // Add divergence arrows
+        divergenceData.divergence_points.forEach(point => {
+            const arrow = document.createElement('div');
+            arrow.className = 'divergence-arrow';
+            arrow.innerHTML = divergenceData.direction === 'bullish' ? '↗' : '↘';
+            arrow.style.left = `${point.position}%`;
+            arrow.style.top = `${point.value}%`;
+            arrow.style.color = divergenceData.direction === 'bullish' ? '#4CAF50' : '#f44336';
+            
+            chart.appendChild(arrow);
+        });
+        
+        // Add confidence indicator
+        const confidenceIndicator = document.createElement('div');
+        confidenceIndicator.className = 'confidence-indicator';
+        confidenceIndicator.innerHTML = `Confidence: ${(divergenceData.confidence * 100).toFixed(0)}%`;
+        confidenceIndicator.style.color = divergenceData.confidence > 0.8 ? '#4CAF50' : '#FF9800';
+        
+        chart.appendChild(confidenceIndicator);
+    }
+    
+    addDivergenceStrengthIndicator(card, divergenceData) {
+        const strengthIndicator = document.createElement('div');
+        strengthIndicator.className = 'divergence-strength-indicator';
+        strengthIndicator.innerHTML = `
+            <span class="divergence-label">Divergence Count:</span>
+            <span class="divergence-value">${divergenceData.count}</span>
+            <span class="divergence-strength">Strength: ${(divergenceData.strength * 100).toFixed(0)}%</span>
+        `;
+        
+        card.appendChild(strengthIndicator);
+    }
+    
+    startRealTimeUpdates(symbol) {
+        setInterval(() => {
+            this.updateDivergenceMetrics(symbol);
+        }, this.updateFrequency);
+    }
+    
+    updateDivergenceMetrics(symbol) {
+        const rsiCard = document.getElementById(`rsi-card-${symbol}`);
+        const confidenceValue = rsiCard.querySelector('.confidence-indicator');
+        const strengthValue = rsiCard.querySelector('.divergence-strength');
+        
+        // Calculate new metrics from buffer
+        const recentDivergences = this.divergenceBuffer.slice(-3);
+        const avgConfidence = recentDivergences.reduce((sum, div) => sum + div.confidence, 0) / recentDivergences.length;
+        const avgStrength = recentDivergences.reduce((sum, div) => sum + div.strength, 0) / recentDivergences.length;
+        
+        confidenceValue.innerHTML = `Confidence: ${(avgConfidence * 100).toFixed(0)}%`;
+        strengthValue.textContent = `Strength: ${(avgStrength * 100).toFixed(0)}%`;
+    }
+}
+```
+
+#### **2. MACD Dynamic Changes**
+```javascript
+class MaradonaMACDDynamicUpdater {
+    constructor() {
+        this.updateFrequency = 12000; // 12 seconds
+        this.reversalBuffer = [];
+    }
+    
+    updateMACDOnMaradonaAlert(alert) {
+        const macdCard = document.getElementById(`macd-card-${alert.symbol}`);
+        const macdChart = macdCard.querySelector('.macd-chart');
+        const macdValue = macdCard.querySelector('.macd-value');
+        
+        // Add reversal data to buffer
+        this.reversalBuffer.push(alert.reversal_data);
+        
+        // Update MACD display with reversal indicators
+        this.addReversalIndicators(macdChart, alert.reversal_data);
+        
+        // Update value with reversal highlighting
+        macdValue.textContent = alert.value;
+        macdValue.classList.add('maradona-reversal');
+        
+        // Add reversal strength indicator
+        this.addReversalStrengthIndicator(macdCard, alert.reversal_data);
+        
+        // Start real-time updates
+        this.startRealTimeUpdates(alert.symbol);
+    }
+    
+    addReversalIndicators(chart, reversalData) {
+        // Add reversal zone
+        const reversalZone = document.createElement('div');
+        reversalZone.className = 'reversal-zone';
+        reversalZone.style.backgroundColor = reversalData.reversal_type === 'bullish' ? 
+            'rgba(76, 175, 80, 0.3)' : 'rgba(244, 67, 54, 0.3)';
+        reversalZone.style.border = `3px solid ${reversalData.reversal_type === 'bullish' ? '#4CAF50' : '#f44336'}`;
+        
+        chart.appendChild(reversalZone);
+        
+        // Add momentum reversal bars
+        const momentumBars = document.createElement('div');
+        momentumBars.className = 'momentum-reversal-bars';
+        momentumBars.style.height = `${Math.min(reversalData.momentum_reversal * 100, 100)}%`;
+        momentumBars.style.backgroundColor = '#9C27B0';
+        
+        chart.appendChild(momentumBars);
+        
+        // Add trend break indicator
+        if (reversalData.trend_break > 0.7) {
+            const trendBreakIndicator = document.createElement('div');
+            trendBreakIndicator.className = 'trend-break-indicator';
+            trendBreakIndicator.innerHTML = `Trend Break: ${(reversalData.trend_break * 100).toFixed(0)}%`;
+            trendBreakIndicator.style.color = '#9C27B0';
+            
+            chart.appendChild(trendBreakIndicator);
+        }
+    }
+    
+    addReversalStrengthIndicator(card, reversalData) {
+        const strengthIndicator = document.createElement('div');
+        strengthIndicator.className = 'reversal-strength-indicator';
+        strengthIndicator.innerHTML = `
+            <span class="reversal-label">Reversal Strength:</span>
+            <span class="reversal-value">${(reversalData.strength * 100).toFixed(0)}%</span>
+            <span class="momentum-reversal">Momentum: ${(reversalData.momentum_reversal * 100).toFixed(0)}%</span>
+        `;
+        
+        card.appendChild(strengthIndicator);
+    }
+}
+```
+
+#### **3. Stochastic Oscillator Dynamic Changes**
+```javascript
+class MaradonaStochasticDynamicUpdater {
+    constructor() {
+        this.updateFrequency = 10000; // 10 seconds
+        this.extremeBuffer = [];
+    }
+    
+    updateStochasticOnMaradonaAlert(alert) {
+        const stochasticCard = document.getElementById(`stochastic-card-${alert.symbol}`);
+        const stochasticChart = stochasticCard.querySelector('.stochastic-chart');
+        const stochasticValue = stochasticCard.querySelector('.stochastic-value');
+        
+        // Add extreme data to buffer
+        this.extremeBuffer.push(alert.extreme_data);
+        
+        // Update Stochastic display with extreme indicators
+        this.addExtremeIndicators(stochasticChart, alert.extreme_data);
+        
+        // Update value with extreme highlighting
+        stochasticValue.textContent = alert.value;
+        stochasticValue.classList.add('maradona-extreme');
+        
+        // Add extreme strength indicator
+        this.addExtremeStrengthIndicator(stochasticCard, alert.extreme_data);
+        
+        // Start real-time updates
+        this.startRealTimeUpdates(alert.symbol);
+    }
+    
+    addExtremeIndicators(chart, extremeData) {
+        // Add extreme zone
+        const extremeZone = document.createElement('div');
+        extremeZone.className = 'extreme-zone';
+        extremeZone.style.backgroundColor = extremeData.condition_type === 'overbought' ? 
+            'rgba(244, 67, 54, 0.4)' : 'rgba(76, 175, 80, 0.4)';
+        extremeZone.style.border = `2px solid ${extremeData.condition_type === 'overbought' ? '#f44336' : '#4CAF50'}`;
+        
+        chart.appendChild(extremeZone);
+        
+        // Add mean reversion probability indicator
+        const reversionIndicator = document.createElement('div');
+        reversionIndicator.className = 'reversion-probability-indicator';
+        reversionIndicator.innerHTML = `Mean Reversion: ${(extremeData.mean_reversion_probability * 100).toFixed(0)}%`;
+        reversionIndicator.style.color = extremeData.mean_reversion_probability > 0.7 ? '#FF9800' : '#2196F3';
+        
+        chart.appendChild(reversionIndicator);
+        
+        // Add duration indicator
+        const durationIndicator = document.createElement('div');
+        durationIndicator.className = 'extreme-duration-indicator';
+        durationIndicator.innerHTML = `Duration: ${extremeData.duration} periods`;
+        durationIndicator.style.color = extremeData.duration > 7 ? '#f44336' : '#FF9800';
+        
+        chart.appendChild(durationIndicator);
+    }
+    
+    addExtremeStrengthIndicator(card, extremeData) {
+        const strengthIndicator = document.createElement('div');
+        strengthIndicator.className = 'extreme-strength-indicator';
+        strengthIndicator.innerHTML = `
+            <span class="extreme-label">Extremity Level:</span>
+            <span class="extreme-value">${(extremeData.extremity * 100).toFixed(0)}%</span>
+            <span class="indicator-agreement">Agreement: ${(extremeData.indicator_agreement * 100).toFixed(0)}%</span>
+        `;
+        
+        card.appendChild(strengthIndicator);
+    }
+}
+```
+
+## Trading Integration
+
+### **Maradona Alert Trading Strategy**
+```python
+class MaradonaTradingStrategy:
+    def __init__(self):
+        self.active_positions = {}
+        self.maradona_alerts = []
+        self.risk_manager = MaradonaRiskManager()
+    
+    def process_maradona_alert(self, alert):
+        """Process Maradona alert and execute trading strategy"""
+        
+        # Check if we should enter a position
+        if self.should_enter_position(alert):
+            position = self.enter_position(alert)
+            self.active_positions[alert.symbol] = position
+        
+        # Check if we should exit existing position
+        elif alert.symbol in self.active_positions:
+            if self.should_exit_position(alert):
+                self.exit_position(alert.symbol)
+    
+    def should_enter_position(self, alert):
+        """Determine if we should enter a position based on Maradona alert"""
+        
+        # Check risk management rules
+        if not self.risk_manager.can_enter_position(alert.symbol):
+            return False
+        
+        # Check alert strength
+        if alert.severity != "HIGH":
+            return False
+        
+        # Check for divergence confirmation
+        if alert.type == "MARADONA_DIVERGENCE":
+            if alert.divergence_data.confidence < 0.75:
+                return False
+        
+        # Check for reversal confirmation
+        elif alert.type == "MARADONA_REVERSAL":
+            if alert.reversal_data.strength < 0.8:
+                return False
+        
+        # Check for extreme confirmation
+        elif alert.type == "MARADONA_EXTREME":
+            if alert.extreme_data.extremity < 0.9:
+                return False
+        
+        return True
+    
+    def enter_position(self, alert):
+        """Enter a position based on Maradona alert"""
+        
+        position = {
+            'symbol': alert.symbol,
+            'entry_price': self.get_current_price(alert.symbol),
+            'entry_time': datetime.now(),
+            'alert_type': alert.type,
+            'direction': self.determine_direction(alert),
+            'size': self.calculate_position_size(alert),
+            'stop_loss': self.calculate_stop_loss(alert),
+            'take_profit': self.calculate_take_profit(alert),
+            'timeframe': alert.timeframe
+        }
+        
+        # Execute trade
+        self.execute_trade(position)
+        
+        return position
+    
+    def determine_direction(self, alert):
+        """Determine trade direction based on Maradona alert type"""
+        
+        if alert.type == "MARADONA_DIVERGENCE":
+            # Trade in divergence direction
+            return "LONG" if alert.divergence_data.direction == "bullish" else "SHORT"
+        
+        elif alert.type == "MARADONA_REVERSAL":
+            # Trade in reversal direction
+            return "LONG" if alert.reversal_data.reversal_type == "bullish" else "SHORT"
+        
+        elif alert.type == "MARADONA_EXTREME":
+            # Trade against extreme (mean reversion)
+            return "LONG" if alert.extreme_data.condition_type == "oversold" else "SHORT"
+        
+        return "NEUTRAL"
+```
+
+## Success Criteria
+
+### **Maradona Alert Performance**
+- ✅ **Multiple divergence detection** with 85%+ accuracy
+- ✅ **Strong reversal identification** with momentum confirmation
+- ✅ **Extreme condition recognition** with mean reversion signals
+- ✅ **Reversal trading opportunity identification** with clear entry/exit signals
+
+### **Trading Integration**
+- ✅ **Automated position management** based on Maradona alerts
+- ✅ **Risk management integration** with reversal-based stop-losses
+- ✅ **Multi-indicator confirmation** for entry decisions
+- ✅ **Mean reversion profit-taking** based on normalization
+
+### **User Experience**
+- ✅ **Visual divergence indicators** on RSI charts
+- ✅ **Reversal zone markers** on MACD charts
+- ✅ **Extreme condition indicators** with reversion probability
+- ✅ **Real-time confidence updates** showing pattern strength
+
+The Maradona Alerts system provides **powerful reversal trading opportunities** through divergence pattern recognition, dynamic indicator updates, and automated trading integration that captures market reversals and extreme conditions for counter-trend and mean reversion trading strategies.
+description:
+globs:
+alwaysApply: false
+---

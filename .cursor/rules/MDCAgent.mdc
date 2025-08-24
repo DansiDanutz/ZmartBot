@@ -1,0 +1,396 @@
+# MDCAgent.mdc
+> Purpose: Define how the MDC Agent gathers context, calls an LLM (gpt5, fallback gpt4),
+> validates & renders comprehensive service documentation into `.cursor/rules/services/{{SERVICE_NAME}}.mdc`.
+
+## Scope
+The MDC Agent is the documentation automation for ZmartBot services. It runs during **Step 5** of the `NewService.mdc` workflow and within the **StopStartCycle** (after the STOP gate and service registration). It:
+1) Collects service context (manifest, code, registry, ports, health),
+2) Builds a **deterministic prompt**,
+3) Calls **gpt5** (fallback **gpt4**),
+4) Validates LLM output against the **MDC Output Schema**,
+5) Renders a human‑friendly `.mdc` document and a machine JSON sidecar,
+6) Writes artifacts under versioned paths.
+
+## Variables
+- `{{SERVICE_NAME}}` = `zmart-{{kebab}}`
+- `{{SERVICE_DIR}}`   = `/Users/dansidanutz/Desktop/ZmartBot/services/{{SERVICE_NAME}}`
+- `{{MANIFEST}}`      = `{{SERVICE_DIR}}/service.yaml`
+- `{{PORT_DB}}`       = `/Users/dansidanutz/Desktop/ZmartBot/infra/port_manager.db`
+- `{{REGISTRY_URL}}`  = `http://localhost:8610`
+- `{{OUTPUT_MDC}}`    = `.cursor/rules/services/{{SERVICE_NAME}}.mdc`
+- `{{OUTPUT_JSON}}`   = `.cursor/rules/services/{{SERVICE_NAME}}.json`
+- `{{CONTEXT_PACK}}`  = `.cursor/rules/services/{{SERVICE_NAME}}.context.json`
+- `{{LOG_DIR}}`       = `/Users/dansidanutz/Desktop/ZmartBot/logs/{{SERVICE_NAME}}`
+
+## Triggers (When MDCAgent runs)
+- After `STOP_zmartbot.sh` succeeds (Step 3 in StopStartCycle), **and** after Registry registration succeeds (Step 4).
+- On changes to `service.yaml` or `docs/overview.md`.
+- On tagged release (e.g., `vX.Y.Z`) for the service.
+
+## Source‑of‑Truth Precedence
+1. **`service.yaml` (manifest)** — canonical metadata & lifecycle.
+2. **Service Registry (8610)** — resolved runtime metadata (owner, port, version).
+3. **PortManager DB** — port persistence & conflicts.
+4. **Code Introspection** — endpoints, health/readiness, CLI/lifecycle hints.
+5. **`docs/overview.md`** — optional narrative/diagrams.
+
+If conflicts occur, manifest wins for *intent*, Registry wins for *runtime*. Emit warnings when mismatches are detected.
+
+---
+
+## Operation Flow (Deterministic Pipeline)
+
+### Phase A — Context Collection
+- Validate `service.yaml` schema (fail-fast).
+- Read PortManager DB assignment for `{{SERVICE_NAME}}`.
+- Query Registry: `/services/{{SERVICE_NAME}}` (if present).
+- Introspect source code under `{{SERVICE_DIR}}`:
+  - Identify framework (FastAPI/Flask/etc.) heuristics.
+  - Extract routes, methods, and docstrings.
+  - Detect presence of `/health`, `/ready`, `/metrics`.
+  - Collect `lifecycle.start|stop|migrate` from manifest.
+- Optional: read `docs/overview.md` as additional context.
+- Produce a normalized **Context Pack** (`{{CONTEXT_PACK}}`).
+
+### Phase B — Prompt Build
+- Use **MDCAgent Prompt Template** (see extractable block below).
+- Inject a compact summary of the Context Pack (token‑bounded).
+- Set LLM params: `model=gpt5`, `temperature=0.1`, `max_tokens≈4000`.
+- Include **Output Schema** contract and require a valid JSON object first, followed by an `.mdc` render.
+
+### Phase C — LLM Call (with Fallback)
+1. Attempt `gpt5`.
+2. If schema validation fails or request errors → retry once.
+3. If still failing → fallback to `gpt4` with same prompt and a 10% shorter context.
+
+### Phase D — Validation & Rendering
+- Validate the returned JSON against **MDC_OUTPUT_SCHEMA_V1**.
+- Render final `.mdc` using **MDCAgent Render Template**.
+- Write both `.json` and `.mdc`.
+- Add generation footer with versions & hashes.
+
+### Phase E — Post‑Write Hooks
+- Emit event into PortManager DB `events` table.
+- (Optional) Send summary to Master Orchestration Agent (8002).
+- Update Snapshot baseline manifest list for the service.
+
+---
+
+## Quality Gates / Safety
+- **Idempotency:** Skip regeneration if hash(manifest+code routes+registry meta) unchanged.
+- **Redaction:** Never include secrets or token values; include **names only** of env vars.
+- **Determinism:** `temperature=0.1`, avoid creative rewriting of contract fields.
+- **Size Limits:** `.mdc` max ~200KB; truncate code excerpts with ellipses.
+- **Broken Health:** If `/health` or `/ready` missing, classify as **non‑conformant** and generate remediation guidance, but still produce docs.
+
+---
+
+## CLI (reference for your `infra.mdc_agent.generate`)
+```bash
+python -m infra.mdc_agent.generate \
+  --service "{{SERVICE_NAME}}" \
+  --manifest "{{MANIFEST}}" \
+  --output "{{OUTPUT_MDC}}" \
+  --json "{{OUTPUT_JSON}}" \
+  --context "{{CONTEXT_PACK}}" \
+  --llm "gpt5,fallback=gpt4"
+```
+
+---
+
+## Output Files
+
+* `{{OUTPUT_JSON}}` — machine‑readable doc (schema v1).
+* `{{OUTPUT_MDC}}`  — human markdown for `.cursor/rules/services/`.
+* `{{CONTEXT_PACK}}` — for reproducibility (inputs & hashes only).
+
+---
+
+## MDC Output Schema (authoritative)
+
+<!-- BEGIN:MDCAgentOutputSchema -->
+
+```json
+{
+  "$schema": "https://zmartbot/mdc.schema.v1.json",
+  "schema_version": "1.0",
+  "service_name": "string",
+  "service_type": "frontend|backend|internal_api|worker|orchestration",
+  "version": "string",
+  "owner": "string",
+  "description": "string",
+  "port": 0,
+  "endpoints": [
+    {
+      "method": "GET|POST|PUT|PATCH|DELETE",
+      "path": "/v1/example",
+      "summary": "string",
+      "request": { "params": {}, "query": {}, "body_shape": {} },
+      "responses": { "200": {"shape": {}}, "4xx?": {}, "5xx?": {} },
+      "auth_required": true
+    }
+  ],
+  "health": {
+    "liveness_path": "/health",
+    "readiness_path": "/ready",
+    "startup_grace_seconds": 0,
+    "timeout_seconds": 0
+  },
+  "lifecycle": {
+    "start": "string",
+    "stop": "string",
+    "migrate": "string?"
+  },
+  "dependencies": {
+    "services": ["zmart-registry"],
+    "env": ["DB_URL","REDIS_URL"]
+  },
+  "observability": {
+    "metrics_path": "/metrics?",
+    "logs_format": "jsonl",
+    "dashboards": ["string?"]
+  },
+  "security": {
+    "token_required": true,
+    "scopes": ["read","write"]
+  },
+  "orchestration": {
+    "basic_integration": true,
+    "master_agent_linked": false,
+    "ordering_hints": ["zmart-registry -> {{SERVICE_NAME}}"]
+  },
+  "performance": {
+    "baseline_ms_p95": 0,
+    "notes": "string?"
+  },
+  "failure_modes": [
+    {"name":"db-timeout","symptoms":"…","remediation":"…"}
+  ],
+  "rollback": {
+    "snapshot_required": true,
+    "playbook": ["isolate","restore_latest_snapshot","verify"]
+  },
+  "load_balancing": {
+    "enabled": false,
+    "pool": "string?"
+  },
+  "known_issues": ["string?"],
+  "changelog": [
+    {"version":"0.1.0","date":"YYYY-MM-DD","notes":"Initial integration"}
+  ],
+  "generation": {
+    "model_used": "gpt5|gpt4",
+    "timestamp": "ISO-8601",
+    "input_hash": "sha256-…",
+    "context_files": ["service.yaml","docs/overview.md?"]
+  }
+}
+```
+
+<!-- END:MDCAgentOutputSchema -->
+
+---
+
+## Rendered `.mdc` Template (human-facing)
+
+<!-- BEGIN:MDCAgentRenderTemplate -->
+
+```jinja
+# {{ service_name }}.mdc
+> Type: {{ service_type }} | Version: {{ version }} | Owner: {{ owner }} | Port: {{ port }}
+
+## Overview
+{{ description }}
+
+## Architecture & Integration
+- **Service Type:** {{ service_type }}
+- **Dependencies:** {{ dependencies.services | join(", ") or "none" }}
+- **Env Vars:** {{ dependencies.env | join(", ") or "none" }}
+- **Lifecycle:** start=`{{ lifecycle.start }}` | stop=`{{ lifecycle.stop }}`{% if lifecycle.migrate %} | migrate=`{{ lifecycle.migrate }}`{% endif %}
+
+## API Endpoints
+{% for e in endpoints -%}
+### {{ e.method }} {{ e.path }}
+- Summary: {{ e.summary }}
+- Auth Required: {{ "Yes" if e.auth_required else "No" }}
+- Request:
+  - Params: `{{ e.request.params }}`
+  - Query: `{{ e.request.query }}`
+  - Body: `{{ e.request.body_shape }}`
+- Responses:
+  - {{ e.responses | tojson }}
+
+{% endfor %}
+
+## Health & Readiness
+- Liveness: `{{ health.liveness_path }}`
+- Readiness: `{{ health.readiness_path }}`
+- Timeouts: startup_grace={{ health.startup_grace_seconds }}s, http_timeout={{ health.timeout_seconds }}s
+
+## Observability
+- Metrics: {{ observability.metrics_path or "n/a" }}
+- Logs: format={{ observability.logs_format }}
+- Dashboards: {{ observability.dashboards | join(", ") or "n/a" }}
+
+## Orchestration & Ordering
+- Basic Integration: {{ "Enabled" if orchestration.basic_integration else "Disabled" }}
+- Master Agent Linked: {{ "Yes" if orchestration.master_agent_linked else "No" }}
+- Ordering Hints: {{ orchestration.ordering_hints | join(" ; ") }}
+
+## Performance & SLO (Initial)
+- Baseline p95 (ms): {{ performance.baseline_ms_p95 }}
+- Notes: {{ performance.notes or "—" }}
+
+## Failure Modes & Runbooks
+{% for f in failure_modes -%}
+- **{{ f.name }}** — Symptoms: {{ f.symptoms }} — Remediation: {{ f.remediation }}
+{% endfor %}
+
+## Rollback
+- Snapshot required: {{ "Yes" if rollback.snapshot_required else "No" }}
+- Playbook: {{ rollback.playbook | join(" → ") }}
+
+## Load Balancing
+- Enabled: {{ "Yes" if load_balancing.enabled else "No" }}
+- Pool: {{ load_balancing.pool or "n/a" }}
+
+## Known Issues
+{{ known_issues | join("\n") or "None recorded" }}
+
+## Changelog
+{% for c in changelog -%}
+- {{ c.version }} ({{ c.date }}): {{ c.notes }}
+{% endfor %}
+
+---
+*Generated by MDCAgent ({{ generation.model_used }}) on {{ generation.timestamp }}; input {{ generation.input_hash }}; context: {{ generation.context_files | join(", ") }}.*
+```
+
+<!-- END:MDCAgentRenderTemplate -->
+
+---
+
+## Prompt Template (for LLM)
+
+<!-- BEGIN:MDCAgentPromptTemplate -->
+
+```
+You are MDCAgent for ZmartBot. Produce two artifacts:
+1) A valid JSON object that strictly matches MDC_OUTPUT_SCHEMA_V1 (included below).
+2) A human-readable .mdc document rendered using the provided Render Template fields.
+
+Follow these rules:
+- Do not invent endpoints or env vars not present in the context.
+- If an item is unknown, leave it empty or mark "n/a" while preserving schema types.
+- Health endpoints must reflect actual findings; if missing, set non-conformant notes in failure_modes.
+- Security: do not output secret values; list names only (e.g., DB_URL).
+- Keep responses concise but complete; avoid marketing language.
+
+### Input Context (summarized)
+{{CONTEXT_SUMMARY}}
+
+### Manifest (verbatim or summarized)
+{{MANIFEST_TEXT}}
+
+### Registry Snapshot (if any)
+{{REGISTRY_TEXT}}
+
+### PortManager Snapshot (if any)
+{{PORTMANAGER_TEXT}}
+
+### Code Introspection Summary
+{{CODE_INTROSPECTION}}
+
+### docs/overview.md (optional)
+{{OVERVIEW_MD}}
+
+--- Contract: MDC_OUTPUT_SCHEMA_V1 ---
+{{MDC_OUTPUT_SCHEMA_JSON}}
+
+--- Render Requirements ---
+After the JSON, output the final .mdc markdown using the Render Template fields.
+Ensure the markdown uses headings and sections as specified and contains no JSON.
+```
+
+<!-- END:MDCAgentPromptTemplate -->
+
+---
+
+## Context Pack (what we collect)
+
+A compact JSON with:
+
+* `manifest`: parsed fields
+* `registry`: current registration entry (or null)
+* `port_assignment`: port, range, conflicts
+* `routes`: list of methods/paths inferred
+* `health_presence`: booleans + detected paths
+* `env_vars_declared`: from manifest
+* `lifecycle`: start/stop/migrate strings
+* `hashes`: sha256 of manifest, routes, registry
+
+This is **not** shipped to the LLM verbatim; MDCAgent produces a trimmed `{{CONTEXT_SUMMARY}}` within token limits.
+
+---
+
+## Error Handling & Fallback
+
+* If JSON fails schema validation:
+
+  * Retry same model once with an auto‑patch hint.
+  * Fallback to `gpt4` if still failing.
+  * If still failing, emit **stub** JSON with "unknown" fields, plus a remediation section, and proceed so the pipeline does not block integration.
+* Always write logs to `{{LOG_DIR}}/mdc_agent.log` including model used, token counts, and hashes.
+
+---
+
+## Integration Points
+
+* **StopStartCycle**: runs after STOP and Registry registration.
+* **Registry (8610)**: provides runtime metadata & token issuance (admin token required).
+* **Snapshot Manager**: after successful generation, add the service doc to baseline snapshot list.
+* **Master Orchestration Agent (8002)**: optional notification to update its knowledge store.
+
+---
+
+## Verification Checklist (per run)
+
+1. ✅ Manifest valid & schema-checked
+2. ✅ Port assignment found & stable
+3. ✅ Registry entry consistent with manifest (warn on drift)
+4. ✅ LLM JSON passes `MDC_OUTPUT_SCHEMA_V1`
+5. ✅ `.mdc` written to `.cursor/rules/services/{{SERVICE_NAME}}.mdc`
+6. ✅ Context & generation metadata hashed and logged
+
+---
+
+## Extraction Helpers
+
+**Write out Prompt/Schema/Template blocks** (for your build scripts):
+
+* Prompt: between `<!-- BEGIN:MDCAgentPromptTemplate -->` and `<!-- END:MDCAgentPromptTemplate -->`
+* Schema: between `<!-- BEGIN:MDCAgentOutputSchema -->` and `<!-- END:MDCAgentOutputSchema -->`
+* Render: between `<!-- BEGIN:MDCAgentRenderTemplate -->` and `<!-- END:MDCAgentRenderTemplate -->`
+
+Example extractor (Python pseudo):
+
+```python
+import re, pathlib
+txt = pathlib.Path(".cursor/rules/MDCAgent.mdc").read_text()
+def grab(tag):
+    return re.search(rf'<!-- BEGIN:{tag} -->(.*?)<!-- END:{tag} -->', txt, re.S).group(1).strip()
+pathlib.Path(".cursor/rules/_gen/mdc_schema.json").write_text(grab("MDCAgentOutputSchema"))
+pathlib.Path(".cursor/rules/_gen/mdc_prompt.txt").write_text(grab("MDCAgentPromptTemplate"))
+pathlib.Path(".cursor/rules/_gen/mdc_render.jinja").write_text(grab("MDCAgentRenderTemplate"))
+```
+
+---
+
+## Notes
+
+* Uses same terminology as `NewService.mdc`: Snapshot Manager, Process Reaper, Registry @ 8610, Master Orchestration @ 8002.
+* Designed for **deterministic** outputs and safe regeneration without blocking integration work.
+description:
+globs:
+alwaysApply: false
+---
