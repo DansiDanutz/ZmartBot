@@ -1,0 +1,865 @@
+@trigger: event_detection_engine
+
+# Live Alerts - Real-Time Alert System
+
+## Overview
+**Live Alerts** is the **real-time alert system** that monitors all 21 technical indicators across 4 timeframes for all MySymbols. It provides instant notifications when specific conditions are met, updates indicator cards in real-time, and maintains comprehensive alert history in the 21-indicators database.
+
+## Alert System Architecture
+
+### **Core Components**
+```python
+class LiveAlertSystem:
+    def __init__(self):
+        self.indicators_db = IndicatorsHistoryDatabase()
+        self.alert_triggers = AlertTriggers()
+        self.notification_service = NotificationService()
+        self.card_updater = IndicatorCardUpdater()
+        self.alert_history = AlertHistory()
+```
+
+### **Alert Flow**
+1. **Real-time Monitoring**: Continuous monitoring of all 21 indicators
+2. **Trigger Detection**: Instant detection when conditions are met
+3. **Alert Processing**: Processing and categorization of alerts
+4. **Card Updates**: Real-time updates to indicator cards
+5. **Database Storage**: Storage in 21-indicators database
+6. **Notification Delivery**: Instant delivery to users
+
+## Implemented Alert Triggers
+
+### **1. RSI (Relative Strength Index) Triggers**
+
+#### **Trigger Conditions**
+```python
+class RSITriggers:
+    def check_rsi_triggers(self, rsi_value, symbol, timeframe):
+        triggers = []
+        
+        # Overbought trigger
+        if rsi_value > 70:
+            triggers.append(AlertTrigger(
+                type="RSI_OVERBOUGHT",
+                symbol=symbol,
+                timeframe=timeframe,
+                value=rsi_value,
+                message=f"RSI overbought at {rsi_value:.2f}",
+                severity="HIGH",
+                action="Consider short position or take profit"
+            ))
+        
+        # Oversold trigger
+        elif rsi_value < 30:
+            triggers.append(AlertTrigger(
+                type="RSI_OVERSOLD",
+                symbol=symbol,
+                timeframe=timeframe,
+                value=rsi_value,
+                message=f"RSI oversold at {rsi_value:.2f}",
+                severity="HIGH",
+                action="Consider long position or buy signal"
+            ))
+        
+        # Divergence trigger
+        if self.detect_rsi_divergence(symbol, timeframe):
+            triggers.append(AlertTrigger(
+                type="RSI_DIVERGENCE",
+                symbol=symbol,
+                timeframe=timeframe,
+                value=rsi_value,
+                message="RSI divergence detected",
+                severity="MEDIUM",
+                action="Potential trend reversal signal"
+            ))
+        
+        return triggers
+```
+
+#### **Card Update on Trigger**
+```javascript
+const updateRSICardOnAlert = (alert) => {
+    const rsiCard = document.getElementById(`rsi-card-${alert.symbol}`);
+    
+    // Update card appearance
+    rsiCard.classList.add('alert-triggered');
+    rsiCard.classList.add(`alert-${alert.severity.toLowerCase()}`);
+    
+    // Add alert indicator
+    const alertIndicator = document.createElement('div');
+    alertIndicator.className = 'alert-indicator';
+    alertIndicator.innerHTML = `
+        <span class="alert-type">${alert.type}</span>
+        <span class="alert-value">${alert.value}</span>
+        <span class="alert-message">${alert.message}</span>
+    `;
+    
+    rsiCard.appendChild(alertIndicator);
+    
+    // Flash animation
+    rsiCard.classList.add('alert-flash');
+    setTimeout(() => rsiCard.classList.remove('alert-flash'), 2000);
+};
+```
+
+### **2. MACD (Moving Average Convergence Divergence) Triggers**
+
+#### **Trigger Conditions**
+```python
+class MACDTriggers:
+    def check_macd_triggers(self, macd_data, symbol, timeframe):
+        triggers = []
+        
+        # Bullish crossover
+        if macd_data.macd > macd_data.signal and self.was_bearish_before(macd_data):
+            triggers.append(AlertTrigger(
+                type="MACD_BULLISH_CROSS",
+                symbol=symbol,
+                timeframe=timeframe,
+                value=macd_data.macd,
+                message="MACD bullish crossover detected",
+                severity="HIGH",
+                action="Strong buy signal - consider long position"
+            ))
+        
+        # Bearish crossover
+        elif macd_data.macd < macd_data.signal and self.was_bullish_before(macd_data):
+            triggers.append(AlertTrigger(
+                type="MACD_BEARISH_CROSS",
+                symbol=symbol,
+                timeframe=timeframe,
+                value=macd_data.macd,
+                message="MACD bearish crossover detected",
+                severity="HIGH",
+                action="Strong sell signal - consider short position"
+            ))
+        
+        # Histogram divergence
+        if self.detect_histogram_divergence(macd_data):
+            triggers.append(AlertTrigger(
+                type="MACD_HISTOGRAM_DIVERGENCE",
+                symbol=symbol,
+                timeframe=timeframe,
+                value=macd_data.histogram,
+                message="MACD histogram divergence",
+                severity="MEDIUM",
+                action="Potential momentum shift"
+            ))
+        
+        return triggers
+```
+
+#### **Card Update on Trigger**
+```javascript
+const updateMACDCardOnAlert = (alert) => {
+    const macdCard = document.getElementById(`macd-card-${alert.symbol}`);
+    
+    // Update MACD values with alert highlighting
+    const macdLine = macdCard.querySelector('.macd-line');
+    const signalLine = macdCard.querySelector('.signal-line');
+    
+    if (alert.type === 'MACD_BULLISH_CROSS') {
+        macdLine.classList.add('alert-highlight-bullish');
+        signalLine.classList.add('alert-highlight-bearish');
+    } else if (alert.type === 'MACD_BEARISH_CROSS') {
+        macdLine.classList.add('alert-highlight-bearish');
+        signalLine.classList.add('alert-highlight-bullish');
+    }
+    
+    // Add alert notification
+    addAlertNotification(macdCard, alert);
+};
+```
+
+### **3. Bollinger Bands Triggers**
+
+#### **Trigger Conditions**
+```python
+class BollingerBandsTriggers:
+    def check_bollinger_triggers(self, bb_data, current_price, symbol, timeframe):
+        triggers = []
+        
+        # Upper band breakout
+        if current_price > bb_data.upper:
+            triggers.append(AlertTrigger(
+                type="BB_UPPER_BREAKOUT",
+                symbol=symbol,
+                timeframe=timeframe,
+                value=current_price,
+                message=f"Price broke above upper Bollinger Band at {current_price:.2f}",
+                severity="HIGH",
+                action="Potential reversal or continuation - monitor closely"
+            ))
+        
+        # Lower band breakout
+        elif current_price < bb_data.lower:
+            triggers.append(AlertTrigger(
+                type="BB_LOWER_BREAKOUT",
+                symbol=symbol,
+                timeframe=timeframe,
+                value=current_price,
+                message=f"Price broke below lower Bollinger Band at {current_price:.2f}",
+                severity="HIGH",
+                action="Potential reversal or continuation - monitor closely"
+            ))
+        
+        # Bollinger squeeze
+        if bb_data.bandwidth < 0.01:  # Very narrow bands
+            triggers.append(AlertTrigger(
+                type="BB_SQUEEZE",
+                symbol=symbol,
+                timeframe=timeframe,
+                value=bb_data.bandwidth,
+                message="Bollinger Bands squeeze detected",
+                severity="MEDIUM",
+                action="Low volatility - prepare for breakout"
+            ))
+        
+        return triggers
+```
+
+#### **Card Update on Trigger**
+```javascript
+const updateBollingerCardOnAlert = (alert) => {
+    const bbCard = document.getElementById(`bollinger-card-${alert.symbol}`);
+    
+    // Highlight the relevant band
+    if (alert.type === 'BB_UPPER_BREAKOUT') {
+        const upperBand = bbCard.querySelector('.upper-band');
+        upperBand.classList.add('alert-breakout');
+    } else if (alert.type === 'BB_LOWER_BREAKOUT') {
+        const lowerBand = bbCard.querySelector('.lower-band');
+        lowerBand.classList.add('alert-breakout');
+    } else if (alert.type === 'BB_SQUEEZE') {
+        bbCard.classList.add('alert-squeeze');
+    }
+    
+    // Add price position indicator
+    addPricePositionIndicator(bbCard, alert);
+};
+```
+
+### **4. Volume Analysis Triggers**
+
+#### **Trigger Conditions**
+```python
+class VolumeTriggers:
+    def check_volume_triggers(self, volume_data, symbol, timeframe):
+        triggers = []
+        
+        # Volume spike
+        if volume_data.ratio > 2.0:  # 200% of average
+            triggers.append(AlertTrigger(
+                type="VOLUME_SPIKE",
+                symbol=symbol,
+                timeframe=timeframe,
+                value=volume_data.ratio,
+                message=f"Volume spike detected: {volume_data.ratio:.1f}x average",
+                severity="HIGH",
+                action="High market participation - validate price action"
+            ))
+        
+        # Volume divergence
+        if self.detect_volume_divergence(volume_data):
+            triggers.append(AlertTrigger(
+                type="VOLUME_DIVERGENCE",
+                symbol=symbol,
+                timeframe=timeframe,
+                value=volume_data.current,
+                message="Volume-price divergence detected",
+                severity="MEDIUM",
+                action="Potential trend weakness - monitor closely"
+            ))
+        
+        # Low volume
+        if volume_data.ratio < 0.3:  # 30% of average
+            triggers.append(AlertTrigger(
+                type="LOW_VOLUME",
+                symbol=symbol,
+                timeframe=timeframe,
+                value=volume_data.ratio,
+                message=f"Low volume detected: {volume_data.ratio:.1f}x average",
+                severity="LOW",
+                action="Low market participation - reduced confidence"
+            ))
+        
+        return triggers
+```
+
+### **5. Special Alerts: Messi, Pele, Maradona, and Whale Flow Triggers**
+
+#### **Messi Alerts (High-Frequency Trading Patterns)**
+```python
+class MessiAlerts:
+    def check_messi_triggers(self, market_data, symbol, timeframe):
+        triggers = []
+        
+        # Messi RSI Pattern: Rapid RSI oscillations
+        if self.detect_rsi_oscillations(market_data.rsi, threshold=5):
+            triggers.append(AlertTrigger(
+                type="MESSI_RSI_OSCILLATION",
+                symbol=symbol,
+                timeframe=timeframe,
+                value=market_data.rsi.current,
+                message="Messi RSI Pattern: Rapid oscillations detected",
+                severity="HIGH",
+                action="High-frequency trading opportunity - monitor for quick reversals",
+                indicators_triggered=["RSI", "Stochastic Oscillator", "Williams %R"]
+            ))
+        
+        # Messi Volume Pattern: Micro-volume spikes
+        if self.detect_micro_volume_spikes(market_data.volume):
+            triggers.append(AlertTrigger(
+                type="MESSI_VOLUME_SPIKE",
+                symbol=symbol,
+                timeframe=timeframe,
+                value=market_data.volume.ratio,
+                message="Messi Volume Pattern: Micro-volume spikes detected",
+                severity="MEDIUM",
+                action="Scalping opportunity - prepare for quick entries/exits",
+                indicators_triggered=["Volume Analysis", "OBV", "MFI"]
+            ))
+        
+        # Messi Momentum Pattern: Rapid momentum shifts
+        if self.detect_momentum_shifts(market_data.momentum):
+            triggers.append(AlertTrigger(
+                type="MESSI_MOMENTUM_SHIFT",
+                symbol=symbol,
+                timeframe=timeframe,
+                value=market_data.momentum.value,
+                message="Messi Momentum Pattern: Rapid momentum shifts detected",
+                severity="HIGH",
+                action="High-frequency momentum trading - adapt quickly",
+                indicators_triggered=["Momentum Indicator", "ROC", "TRIX"]
+            ))
+        
+        return triggers
+```
+
+#### **Pele Alerts (Trend Continuation Patterns)**
+```python
+class PeleAlerts:
+    def check_pele_triggers(self, market_data, symbol, timeframe):
+        triggers = []
+        
+        # Pele Trend Pattern: Strong trend continuation
+        if self.detect_strong_trend_continuation(market_data.trend):
+            triggers.append(AlertTrigger(
+                type="PELE_TREND_CONTINUATION",
+                symbol=symbol,
+                timeframe=timeframe,
+                value=market_data.trend.strength,
+                message="Pele Trend Pattern: Strong trend continuation detected",
+                severity="HIGH",
+                action="Trend following opportunity - ride the momentum",
+                indicators_triggered=["EMA", "SMA", "ADX", "DMI"]
+            ))
+        
+        # Pele Breakout Pattern: Clean breakout with volume
+        if self.detect_clean_breakout(market_data.breakout):
+            triggers.append(AlertTrigger(
+                type="PELE_BREAKOUT",
+                symbol=symbol,
+                timeframe=timeframe,
+                value=market_data.breakout.strength,
+                message="Pele Breakout Pattern: Clean breakout with volume confirmed",
+                severity="HIGH",
+                action="Breakout trading - enter with trend direction",
+                indicators_triggered=["Bollinger Bands", "Keltner Channel", "Parabolic SAR"]
+            ))
+        
+        # Pele Support/Resistance Pattern: Strong level respect
+        if self.detect_level_respect(market_data.levels):
+            triggers.append(AlertTrigger(
+                type="PELE_LEVEL_RESPECT",
+                symbol=symbol,
+                timeframe=timeframe,
+                value=market_data.levels.strength,
+                message="Pele Level Pattern: Strong support/resistance respect",
+                severity="MEDIUM",
+                action="Level-based trading - trade bounces and breaks",
+                indicators_triggered=["Bollinger Bands", "Keltner Channel", "ATR"]
+            ))
+        
+        return triggers
+```
+
+#### **Maradona Alerts (Reversal and Divergence Patterns)**
+```python
+class MaradonaAlerts:
+    def check_maradona_triggers(self, market_data, symbol, timeframe):
+        triggers = []
+        
+        # Maradona Divergence Pattern: Multiple indicator divergences
+        if self.detect_multiple_divergences(market_data.divergences):
+            triggers.append(AlertTrigger(
+                type="MARADONA_DIVERGENCE",
+                symbol=symbol,
+                timeframe=timeframe,
+                value=market_data.divergences.count,
+                message="Maradona Divergence Pattern: Multiple divergences detected",
+                severity="HIGH",
+                action="Reversal trading opportunity - prepare for trend change",
+                indicators_triggered=["RSI", "MACD", "Stochastic Oscillator", "CCI"]
+            ))
+        
+        # Maradona Reversal Pattern: Strong reversal signals
+        if self.detect_strong_reversal(market_data.reversal):
+            triggers.append(AlertTrigger(
+                type="MARADONA_REVERSAL",
+                symbol=symbol,
+                timeframe=timeframe,
+                value=market_data.reversal.strength,
+                message="Maradona Reversal Pattern: Strong reversal signals detected",
+                severity="HIGH",
+                action="Reversal trading - enter against previous trend",
+                indicators_triggered=["Williams %R", "Ultimate Oscillator", "Parabolic SAR"]
+            ))
+        
+        # Maradona Overbought/Oversold Pattern: Extreme conditions
+        if self.detect_extreme_conditions(market_data.conditions):
+            triggers.append(AlertTrigger(
+                type="MARADONA_EXTREME",
+                symbol=symbol,
+                timeframe=timeframe,
+                value=market_data.conditions.extremity,
+                message="Maradona Extreme Pattern: Overbought/oversold conditions",
+                severity="MEDIUM",
+                action="Mean reversion opportunity - trade against extremes",
+                indicators_triggered=["RSI", "Stochastic Oscillator", "CCI", "Williams %R"]
+            ))
+        
+        return triggers
+```
+
+#### **Whale Flow Alerts (Large Money Movement Patterns)**
+```python
+class WhaleFlowAlerts:
+    def check_whale_flow_triggers(self, market_data, symbol, timeframe):
+        triggers = []
+        
+        # Whale Volume Pattern: Massive volume spikes
+        if self.detect_massive_volume(market_data.volume, threshold=5.0):
+            triggers.append(AlertTrigger(
+                type="WHALE_VOLUME_SPIKE",
+                symbol=symbol,
+                timeframe=timeframe,
+                value=market_data.volume.ratio,
+                message="Whale Flow: Massive volume spike detected",
+                severity="HIGH",
+                action="Whale activity detected - follow the money flow",
+                indicators_triggered=["Volume Analysis", "OBV", "VWAP", "MFI"]
+            ))
+        
+        # Whale Order Flow Pattern: Large order blocks
+        if self.detect_large_orders(market_data.order_flow):
+            triggers.append(AlertTrigger(
+                type="WHALE_ORDER_FLOW",
+                symbol=symbol,
+                timeframe=timeframe,
+                value=market_data.order_flow.size,
+                message="Whale Flow: Large order blocks detected",
+                severity="HIGH",
+                action="Institutional activity - monitor for accumulation/distribution",
+                indicators_triggered=["Volume Analysis", "OBV", "MFI", "VWAP"]
+            ))
+        
+        # Whale Accumulation Pattern: Steady buying pressure
+        if self.detect_accumulation(market_data.accumulation):
+            triggers.append(AlertTrigger(
+                type="WHALE_ACCUMULATION",
+                symbol=symbol,
+                timeframe=timeframe,
+                value=market_data.accumulation.strength,
+                message="Whale Flow: Accumulation pattern detected",
+                severity="MEDIUM",
+                action="Smart money accumulating - consider long positions",
+                indicators_triggered=["OBV", "Volume Analysis", "MFI", "ADX"]
+            ))
+        
+        # Whale Distribution Pattern: Steady selling pressure
+        if self.detect_distribution(market_data.distribution):
+            triggers.append(AlertTrigger(
+                type="WHALE_DISTRIBUTION",
+                symbol=symbol,
+                timeframe=timeframe,
+                value=market_data.distribution.strength,
+                message="Whale Flow: Distribution pattern detected",
+                severity="MEDIUM",
+                action="Smart money distributing - consider short positions",
+                indicators_triggered=["OBV", "Volume Analysis", "MFI", "ADX"]
+            ))
+        
+        return triggers
+```
+
+## Alert Processing System
+
+### **Alert Categorization**
+```python
+class AlertProcessor:
+    def process_alert(self, alert):
+        # Categorize alert by severity
+        if alert.severity == "HIGH":
+            self.process_high_priority_alert(alert)
+        elif alert.severity == "MEDIUM":
+            self.process_medium_priority_alert(alert)
+        else:
+            self.process_low_priority_alert(alert)
+        
+        # Update indicator card
+        self.update_indicator_card(alert)
+        
+        # Store in database
+        self.store_alert_in_database(alert)
+        
+        # Send notification
+        self.send_notification(alert)
+    
+    def process_high_priority_alert(self, alert):
+        """Process high priority alerts immediately"""
+        # Immediate notification
+        self.notification_service.send_urgent_notification(alert)
+        
+        # Update trading signals
+        self.update_trading_signals(alert)
+        
+        # Log for analysis
+        self.log_alert_for_analysis(alert)
+```
+
+### **Real-time Alert Monitoring**
+```python
+class AlertMonitor:
+    def __init__(self):
+        self.indicators_db = IndicatorsHistoryDatabase()
+        self.alert_processor = AlertProcessor()
+        self.active_alerts = {}
+    
+    async def monitor_all_symbols(self):
+        """Monitor all symbols for alert conditions"""
+        symbols = get_all_mysymbols()
+        timeframes = ['15m', '1h', '4h', '1d']
+        
+        while True:
+            for symbol in symbols:
+                for timeframe in timeframes:
+                    # Get latest indicators
+                    indicators = self.indicators_db.get_latest_indicators(symbol, timeframe)
+                    
+                    # Check all trigger conditions
+                    alerts = self.check_all_triggers(indicators, symbol, timeframe)
+                    
+                    # Process new alerts
+                    for alert in alerts:
+                        if self.is_new_alert(alert):
+                            await self.alert_processor.process_alert(alert)
+                            self.active_alerts[alert.id] = alert
+            
+            # Wait before next check
+            await asyncio.sleep(15)  # Check every 15 seconds
+    
+    def check_all_triggers(self, indicators, symbol, timeframe):
+        """Check all 21 indicators for trigger conditions"""
+        alerts = []
+        
+        # RSI triggers
+        alerts.extend(self.rsi_triggers.check_rsi_triggers(indicators.rsi, symbol, timeframe))
+        
+        # MACD triggers
+        alerts.extend(self.macd_triggers.check_macd_triggers(indicators.macd, symbol, timeframe))
+        
+        # Bollinger Bands triggers
+        alerts.extend(self.bb_triggers.check_bollinger_triggers(indicators.bollinger, indicators.price, symbol, timeframe))
+        
+        # Volume triggers
+        alerts.extend(self.volume_triggers.check_volume_triggers(indicators.volume, symbol, timeframe))
+        
+        # Special Alerts: Messi, Pele, Maradona, Whale Flow
+        alerts.extend(self.messi_alerts.check_messi_triggers(indicators, symbol, timeframe))
+        alerts.extend(self.pele_alerts.check_pele_triggers(indicators, symbol, timeframe))
+        alerts.extend(self.maradona_alerts.check_maradona_triggers(indicators, symbol, timeframe))
+        alerts.extend(self.whale_flow_alerts.check_whale_flow_triggers(indicators, symbol, timeframe))
+        
+        # ... check all 21 indicators
+        
+        return alerts
+```
+
+## Indicator Card Updates
+
+### **Real-time Card Update System**
+```javascript
+class IndicatorCardUpdater {
+    constructor() {
+        this.updateQueue = [];
+        this.isUpdating = false;
+    }
+    
+    async updateCardOnAlert(alert) {
+        // Add to update queue
+        this.updateQueue.push(alert);
+        
+        // Process queue if not already updating
+        if (!this.isUpdating) {
+            await this.processUpdateQueue();
+        }
+    }
+    
+    async processUpdateQueue() {
+        this.isUpdating = true;
+        
+        while (this.updateQueue.length > 0) {
+            const alert = this.updateQueue.shift();
+            
+            // Update specific indicator card
+            await this.updateSpecificCard(alert);
+            
+            // Update overall sentiment
+            await this.updateMarketSentiment(alert.symbol);
+            
+            // Update win rate ratio
+            await this.updateWinRateRatio(alert.symbol);
+        }
+        
+        this.isUpdating = false;
+    }
+    
+    async updateSpecificCard(alert) {
+        const cardId = `${alert.indicator}-card-${alert.symbol}`;
+        const card = document.getElementById(cardId);
+        
+        if (card) {
+            // Add alert styling
+            card.classList.add('alert-active');
+            card.classList.add(`alert-${alert.severity}`);
+            
+            // Update indicator value with alert highlight
+            const valueElement = card.querySelector('.indicator-value');
+            valueElement.textContent = alert.value;
+            valueElement.classList.add('alert-highlight');
+            
+            // Add alert message
+            this.addAlertMessage(card, alert);
+            
+            // Trigger animation
+            this.triggerAlertAnimation(card, alert);
+        }
+    }
+    
+    addAlertMessage(card, alert) {
+        const alertContainer = card.querySelector('.alert-container') || 
+                              this.createAlertContainer(card);
+        
+        const alertElement = document.createElement('div');
+        alertElement.className = `alert-message alert-${alert.severity}`;
+        alertElement.innerHTML = `
+            <span class="alert-type">${alert.type}</span>
+            <span class="alert-message-text">${alert.message}</span>
+            <span class="alert-action">${alert.action}</span>
+            <span class="alert-timestamp">${new Date().toLocaleTimeString()}</span>
+        `;
+        
+        alertContainer.appendChild(alertElement);
+        
+        // Auto-remove after 30 seconds
+        setTimeout(() => {
+            alertElement.remove();
+        }, 30000);
+    }
+    
+    triggerAlertAnimation(card, alert) {
+        // Flash animation
+        card.classList.add('alert-flash');
+        
+        // Pulse animation for high priority alerts
+        if (alert.severity === 'HIGH') {
+            card.classList.add('alert-pulse');
+        }
+        
+        // Special alert animations
+        if (alert.type.includes('MESSI_')) {
+            card.classList.add('alert-messi');
+        } else if (alert.type.includes('PELE_')) {
+            card.classList.add('alert-pele');
+        } else if (alert.type.includes('MARADONA_')) {
+            card.classList.add('alert-maradona');
+        } else if (alert.type.includes('WHALE_')) {
+            card.classList.add('alert-whale');
+        }
+        
+        // Remove animation classes after animation completes
+        setTimeout(() => {
+            card.classList.remove('alert-flash', 'alert-pulse', 'alert-messi', 'alert-pele', 'alert-maradona', 'alert-whale');
+        }, 3000);
+    }
+    
+    updateSpecialAlertIndicators(alert) {
+        """Update specific indicators triggered by special alerts"""
+        if (alert.indicators_triggered) {
+            alert.indicators_triggered.forEach(indicator => {
+                const indicatorCard = document.getElementById(`${indicator.toLowerCase()}-card-${alert.symbol}`);
+                if (indicatorCard) {
+                    // Add special alert styling
+                    indicatorCard.classList.add(`special-alert-${alert.type.split('_')[0].toLowerCase()}`);
+                    
+                    // Add indicator-specific highlighting
+                    this.highlightTriggeredIndicator(indicatorCard, alert);
+                }
+            });
+        }
+    }
+    
+    highlightTriggeredIndicator(card, alert) {
+        """Highlight specific indicator elements based on alert type"""
+        const valueElement = card.querySelector('.indicator-value');
+        const chartElement = card.querySelector('.indicator-chart');
+        
+        if (valueElement) {
+            valueElement.classList.add('triggered-indicator');
+            valueElement.setAttribute('data-alert-type', alert.type);
+        }
+        
+        if (chartElement) {
+            chartElement.classList.add('triggered-chart');
+            chartElement.setAttribute('data-alert-type', alert.type);
+        }
+    }
+}
+```
+
+## Database Integration
+
+### **21-Indicators Database Updates**
+```python
+class AlertDatabaseUpdater:
+    def __init__(self):
+        self.indicators_db = IndicatorsHistoryDatabase()
+    
+    def update_database_on_alert(self, alert):
+        """Update 21-indicators database when alert triggers"""
+        
+        # Update indicator snapshot with alert data
+        self.update_indicator_snapshot(alert)
+        
+        # Store alert in alert history
+        self.store_alert_history(alert)
+        
+        # Update pattern analysis
+        self.update_pattern_analysis(alert)
+        
+        # Update win rate calculations
+        self.update_win_rate_calculations(alert)
+    
+    def update_indicator_snapshot(self, alert):
+        """Update indicator snapshot with alert information"""
+        snapshot = self.indicators_db.get_latest_snapshot(alert.symbol, alert.timeframe)
+        
+        # Add alert data to snapshot
+        snapshot.alert_triggers.append({
+            'type': alert.type,
+            'value': alert.value,
+            'severity': alert.severity,
+            'timestamp': alert.timestamp,
+            'message': alert.message
+        })
+        
+        # Update alert status
+        snapshot.alert_status = 'ACTIVE'
+        snapshot.last_alert_time = alert.timestamp
+        
+        # Save updated snapshot
+        self.indicators_db.update_snapshot(snapshot)
+    
+    def store_alert_history(self, alert):
+        """Store alert in historical database"""
+        alert_record = {
+            'id': str(uuid.uuid4()),
+            'symbol': alert.symbol,
+            'timeframe': alert.timeframe,
+            'indicator': alert.indicator,
+            'alert_type': alert.type,
+            'value': alert.value,
+            'severity': alert.severity,
+            'message': alert.message,
+            'action': alert.action,
+            'triggered_at': alert.timestamp,
+            'resolved_at': None,
+            'outcome': None
+        }
+        
+        self.indicators_db.store_alert_history(alert_record)
+    
+    def update_pattern_analysis(self, alert):
+        """Update pattern analysis based on alert"""
+        # Analyze if alert contributes to pattern formation
+        patterns = self.analyze_alert_patterns(alert)
+        
+        for pattern in patterns:
+            self.indicators_db.update_pattern_analysis(pattern)
+    
+    def update_win_rate_calculations(self, alert):
+        """Update win rate calculations based on alert"""
+        # Calculate new win rate based on alert type
+        win_rate = self.calculate_alert_win_rate(alert)
+        
+        # Update win rate in database
+        self.indicators_db.update_win_rate(alert.symbol, alert.timeframe, win_rate)
+```
+
+### **Alert History Tracking**
+```sql
+-- Alert history table in 21-indicators database
+CREATE TABLE alert_history (
+    id TEXT PRIMARY KEY,
+    symbol TEXT NOT NULL,
+    timeframe TEXT NOT NULL,
+    indicator TEXT NOT NULL,
+    alert_type TEXT NOT NULL,
+    value REAL,
+    severity TEXT NOT NULL,
+    message TEXT,
+    action TEXT,
+    triggered_at TIMESTAMP NOT NULL,
+    resolved_at TIMESTAMP,
+    outcome TEXT,
+    win_rate_impact REAL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Alert patterns table
+CREATE TABLE alert_patterns (
+    id TEXT PRIMARY KEY,
+    symbol TEXT NOT NULL,
+    pattern_type TEXT NOT NULL,
+    alerts_involved TEXT, -- JSON array of alert IDs
+    confidence_score REAL,
+    prediction TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+## Success Criteria
+
+### **Alert System Performance**
+- ✅ **Real-time monitoring** every 15 seconds
+- ✅ **Instant trigger detection** for all 21 indicators
+- ✅ **Immediate card updates** when alerts trigger
+- ✅ **Database updates** within 1 second of alert
+
+### **User Experience**
+- ✅ **Visual alert indicators** on indicator cards
+- ✅ **Color-coded severity** (red=high, orange=medium, yellow=low)
+- ✅ **Animated notifications** for immediate attention
+- ✅ **Clear action recommendations** for each alert
+
+### **Data Integrity**
+- ✅ **Complete alert history** stored in database
+- ✅ **Pattern analysis** updated with each alert
+- ✅ **Win rate calculations** adjusted based on alerts
+- ✅ **Cross-verification** with multiple indicators
+
+The Live Alerts system provides **comprehensive real-time monitoring** of all technical indicators, with instant notifications, visual card updates, and complete database integration that maintains the integrity and accuracy of the 21-indicators system.
+description:
+globs:
+alwaysApply: false
+---

@@ -1,0 +1,19 @@
+{
+  "api_plan": "FULLACCESS129",
+  "monthly_limit": 100000,
+  "current_usage": 20793,
+  "reset_date": "2025-08-30",
+  "subscription_expiry": "2025-08-30",
+  "notification_days_before": 1,
+  "last_notification_sent": null,
+  "notification_settings": {
+    "email_enabled": false,
+    "console_enabled": true,
+    "admin_email": "dansidanutz@example.com"
+  },
+  "usage_thresholds": {
+    "warning": 70,
+    "critical": 85,
+    "emergency": 95
+  }
+}

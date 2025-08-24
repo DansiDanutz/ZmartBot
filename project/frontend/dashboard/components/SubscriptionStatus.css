@@ -1,0 +1,441 @@
+/* Subscription Status Component Styles */
+
+.subscription-status {
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Status color variants */
+.subscription-status.healthy {
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  color: #22c55e;
+}
+
+.subscription-status.caution {
+  background: rgba(251, 191, 36, 0.1);
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  color: #fbbf24;
+}
+
+.subscription-status.warning {
+  background: rgba(249, 115, 22, 0.1);
+  border: 1px solid rgba(249, 115, 22, 0.3);
+  color: #f97316;
+}
+
+.subscription-status.critical {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #ef4444;
+}
+
+/* Loading state */
+.subscription-status.loading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: rgba(107, 114, 128, 0.1);
+  border: 1px solid rgba(107, 114, 128, 0.3);
+  color: #6b7280;
+}
+
+.loading-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid currentColor;
+  border-top: 2px solid transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* Error state */
+.subscription-status.error {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #ef4444;
+}
+
+.error-icon {
+  font-size: 16px;
+}
+
+/* Compact version styles for header */
+.subscription-status.compact {
+  padding: 8px 16px;
+  min-width: 180px;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
+  transition: all 0.2s ease;
+}
+
+.subscription-status.compact.clickable {
+  cursor: pointer;
+}
+
+.subscription-status.compact.clickable:hover {
+  background: rgba(0, 0, 0, 0.6);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.subscription-status.compact.clickable:hover .cryptometer-label {
+  opacity: 1;
+  text-shadow: 0 0 8px currentColor;
+}
+
+.cryptometer-header {
+  margin-bottom: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cryptometer-label {
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: currentColor;
+  opacity: 0.9;
+}
+
+.rate-limit-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  min-width: 24px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rate-limit-toggle:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: scale(1.1);
+}
+
+.rate-limit-toggle:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+  transform: none;
+}
+
+.rate-limit-toggle.enabled {
+  color: #22c55e;
+}
+
+.rate-limit-toggle.disabled {
+  color: #f97316;
+  animation: pulse-warning 2s ease-in-out infinite;
+}
+
+@keyframes pulse-warning {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.compact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.usage-display {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.usage-percent {
+  font-weight: 700;
+  font-size: 14px;
+  color: currentColor;
+}
+
+.days-remaining {
+  font-size: 11px;
+  font-weight: 500;
+  opacity: 0.8;
+  white-space: nowrap;
+}
+
+.unlimited-warning {
+  margin-top: 2px;
+  text-align: center;
+}
+
+.unlimited-text {
+  font-size: 10px;
+  font-weight: 700;
+  color: #f97316;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  animation: pulse-warning 2s ease-in-out infinite;
+}
+
+/* Full version styles */
+.subscription-status.full {
+  padding: 20px;
+  max-width: 500px;
+}
+
+.subscription-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.subscription-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: inherit;
+}
+
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-badge.healthy {
+  background: rgba(34, 197, 94, 0.2);
+  color: #22c55e;
+}
+
+.status-badge.caution {
+  background: rgba(251, 191, 36, 0.2);
+  color: #fbbf24;
+}
+
+.status-badge.warning {
+  background: rgba(249, 115, 22, 0.2);
+  color: #f97316;
+}
+
+.status-badge.critical {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+}
+
+.subscription-details {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Usage section */
+.usage-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.usage-title {
+  font-size: 14px;
+  font-weight: 600;
+  opacity: 0.8;
+  margin-bottom: 8px;
+}
+
+.usage-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.usage-numbers {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  font-size: 18px;
+}
+
+.usage-numbers .current {
+  font-weight: 700;
+  color: currentColor;
+}
+
+.usage-numbers .separator {
+  opacity: 0.5;
+  margin: 0 2px;
+}
+
+.usage-numbers .limit {
+  font-weight: 500;
+  opacity: 0.7;
+}
+
+.usage-numbers .unit {
+  font-size: 14px;
+  opacity: 0.6;
+  margin-left: 4px;
+}
+
+.subscription-details .usage-bar {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.usage-percent {
+  font-size: 14px;
+  font-weight: 600;
+  text-align: right;
+}
+
+.remaining-calls {
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+/* Dates section */
+.dates-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.date-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+}
+
+.date-label {
+  font-weight: 500;
+  opacity: 0.8;
+}
+
+.date-value {
+  font-weight: 600;
+}
+
+.date-value.urgent {
+  color: #ef4444;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Forecast section */
+.forecast-section {
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.forecast-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  opacity: 0.9;
+}
+
+.forecast-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.forecast-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+}
+
+.forecast-label {
+  opacity: 0.8;
+}
+
+.forecast-value {
+  font-weight: 600;
+}
+
+.forecast-warning {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 6px;
+  color: #ef4444;
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+/* Alert section */
+.subscription-alert {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  border: 1px solid currentColor;
+  margin-top: 16px;
+}
+
+.alert-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.alert-message {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* Animations */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .subscription-status.full {
+    padding: 16px;
+  }
+  
+  .subscription-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .usage-numbers {
+    font-size: 16px;
+  }
+  
+  .forecast-section {
+    padding: 12px;
+  }
+}

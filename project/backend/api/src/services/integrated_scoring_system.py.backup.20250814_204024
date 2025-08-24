@@ -1,0 +1,258 @@
+#!/usr/bin/env python3
+"""
+Integrated Scoring System - Dynamic Version
+Unified scoring system with intelligent dynamic weighting
+Combines KingFisher, Cryptometer, and RiskMetric 100-point scores
+"""
+
+import logging
+from typing import Dict, Any, List, Optional
+from datetime import datetime
+
+from .calibrated_scoring_service import CalibratedScoringService
+from .unified_riskmetric import UnifiedRiskMetric as RiskMetricService
+from ..agents.scoring.dynamic_scoring_agent import DynamicScoringAgent, MarketCondition
+
+logger = logging.getLogger(__name__)
+
+class IntegratedScoringSystem:
+    """
+    Integrated scoring system with dynamic weighting
+    
+    Features:
+    - Dynamic weight calculation based on data quality
+    - Market condition awareness
+    - 100-point final scoring scale
+    - Intelligent confidence assessment
+    """
+    
+    def __init__(self):
+        self.calibrated_scoring = CalibratedScoringService()
+        self.riskmetric_service = RiskMetricService()
+        self.dynamic_agent = DynamicScoringAgent()
+        logger.info("Integrated Scoring System with Dynamic Agent initialized")
+    
+    async def get_comprehensive_score(self, symbol: str) -> Dict[str, Any]:
+        """
+        Get comprehensive dynamic score using intelligent weighting
+        
+        Returns 100-point final score with dynamic weight analysis
+        """
+        try:
+            # Start the dynamic agent if not running
+            if self.dynamic_agent.status != "running":
+                await self.dynamic_agent.start()
+            
+            # Collect scores from all three systems
+            kingfisher_score, kingfisher_metadata = await self._get_kingfisher_score(symbol)
+            cryptometer_score, cryptometer_metadata = await self._get_cryptometer_score(symbol)
+            riskmetric_score, riskmetric_metadata = await self._get_riskmetric_score(symbol)
+            
+            # Calculate dynamic weighted score
+            result = await self.dynamic_agent.calculate_dynamic_score(
+                symbol=symbol,
+                kingfisher_score=kingfisher_score,
+                cryptometer_score=cryptometer_score,
+                riskmetric_score=riskmetric_score,
+                kingfisher_metadata=kingfisher_metadata,
+                cryptometer_metadata=cryptometer_metadata,
+                riskmetric_metadata=riskmetric_metadata
+            )
+            
+            # Format response
+            return {
+                'symbol': symbol,
+                'final_score': result.final_score,  # 0-100 scale
+                'signal': result.signal,
+                'confidence': result.overall_confidence,
+                'market_condition': result.market_condition.value,
+                'dynamic_weights': {
+                    'kingfisher': result.dynamic_weights.kingfisher_weight,
+                    'cryptometer': result.dynamic_weights.cryptometer_weight,
+                    'riskmetric': result.dynamic_weights.riskmetric_weight,
+                    'reasoning': result.dynamic_weights.reasoning,
+                    'weight_confidence': result.dynamic_weights.confidence
+                },
+                'component_scores': {
+                    'kingfisher': {
+                        'score': result.kingfisher_data.score if result.kingfisher_data else None,
+                        'confidence': result.kingfisher_data.confidence if result.kingfisher_data else None,
+                        'data_quality': result.kingfisher_data.data_quality if result.kingfisher_data else None,
+                        'data_age_minutes': result.kingfisher_data.data_age if result.kingfisher_data else None
+                    },
+                    'cryptometer': {
+                        'score': result.cryptometer_data.score if result.cryptometer_data else None,
+                        'confidence': result.cryptometer_data.confidence if result.cryptometer_data else None,
+                        'data_quality': result.cryptometer_data.data_quality if result.cryptometer_data else None,
+                        'data_age_minutes': result.cryptometer_data.data_age if result.cryptometer_data else None
+                    },
+                    'riskmetric': {
+                        'score': result.riskmetric_data.score if result.riskmetric_data else None,
+                        'confidence': result.riskmetric_data.confidence if result.riskmetric_data else None,
+                        'data_quality': result.riskmetric_data.data_quality if result.riskmetric_data else None,
+                        'data_age_minutes': result.riskmetric_data.data_age if result.riskmetric_data else None
+                    }
+                },
+                'timestamp': result.timestamp.isoformat()
+            }
+            
+        except Exception as e:
+            logger.error(f"Error getting comprehensive score for {symbol}: {str(e)}")
+            return {
+                'symbol': symbol, 
+                'final_score': 50.0,  # Neutral score on error
+                'signal': 'Hold',
+                'confidence': 0.0,
+                'error': str(e),
+                'timestamp': datetime.now().isoformat()
+            }
+    
+    async def _get_kingfisher_score(self, symbol: str) -> tuple[Optional[float], Dict[str, Any]]:
+        """Get KingFisher 100-point score and metadata"""
+        try:
+            # TODO: Integrate with actual KingFisher service
+            # For now, return mock data structure
+            
+            # This would call the actual KingFisher service:
+            # kingfisher_result = await self.kingfisher_service.get_strategy_score(symbol)
+            
+            # Mock implementation
+            kingfisher_score = 75.0  # Mock 100-point score
+            kingfisher_metadata = {
+                'confidence': 0.85,
+                'data_age_minutes': 10.0,
+                'liquidation_map': True,
+                'toxic_flow': True,
+                'ratios': True,
+                'source': 'kingfisher_v2'
+            }
+            
+            return kingfisher_score, kingfisher_metadata
+            
+        except Exception as e:
+            logger.error(f"Error getting KingFisher score for {symbol}: {e}")
+            return None, {}
+    
+    async def _get_cryptometer_score(self, symbol: str) -> tuple[Optional[float], Dict[str, Any]]:
+        """Get Cryptometer 100-point score and metadata"""
+        try:
+            # Get data from existing calibrated scoring service
+            independent_scores = await self.calibrated_scoring.get_independent_scores(symbol)
+            
+            if independent_scores:
+                available_scores = independent_scores.get_available_scores()
+                
+                # Convert component scores to 100-point scale
+                total_components = len(available_scores)
+                if total_components > 0:
+                    component_sum = sum(
+                        getattr(score, 'score', 0) for score in available_scores.values() 
+                        if score and hasattr(score, 'score')
+                    )
+                    # Normalize to 100-point scale
+                    cryptometer_score = min(100.0, (component_sum / total_components) * 4)  # Scale up
+                    
+                    cryptometer_metadata = {
+                        'confidence': 0.80,
+                        'data_age_minutes': 5.0,
+                        'short_term': 'short_term' in available_scores,
+                        'medium_term': 'medium_term' in available_scores,
+                        'long_term': 'long_term' in available_scores,
+                        'component_count': total_components,
+                        'source': 'cryptometer_api'
+                    }
+                    
+                    return cryptometer_score, cryptometer_metadata
+            
+            return None, {}
+            
+        except Exception as e:
+            logger.error(f"Error getting Cryptometer score for {symbol}: {e}")
+            return None, {}
+    
+    async def _get_riskmetric_score(self, symbol: str) -> tuple[Optional[float], Dict[str, Any]]:
+        """Get RiskMetric 100-point score and metadata"""
+        try:
+            # Get assessment from UnifiedRiskMetric service
+            assessment = await self.riskmetric_service.assess_risk(symbol)
+            
+            if assessment:
+                # Score is already on 0-100 scale
+                riskmetric_score = assessment.score
+                
+                riskmetric_metadata = {
+                    'confidence': assessment.win_rate,  # Use win rate as confidence
+                    'data_age_minutes': 2.0,  # RiskMetric is usually very fresh
+                    'risk_band': assessment.risk_band,
+                    'risk_value': assessment.risk_value,
+                    'signal': assessment.signal,
+                    'tradeable': assessment.tradeable,
+                    'source': 'riskmetric_cowen'
+                }
+                
+                return riskmetric_score, riskmetric_metadata
+            
+            return None, {}
+            
+        except Exception as e:
+            logger.error(f"Error getting RiskMetric score for {symbol}: {e}")
+            return None, {}
+    
+    async def get_scoring_health(self) -> Dict[str, Any]:
+        """Get health status of all scoring engines including dynamic agent"""
+        try:
+            dynamic_status = await self.dynamic_agent.get_status()
+            
+            return {
+                'integrated_scoring': 'healthy',
+                'calibrated_scoring': 'healthy',
+                'riskmetric_scoring': 'healthy',
+                'dynamic_agent': {
+                    'status': dynamic_status['status'],
+                    'market_condition': dynamic_status['market_condition'],
+                    'reliability_scores': dynamic_status['reliability_scores']
+                },
+                'timestamp': datetime.now().isoformat()
+            }
+        except Exception as e:
+            logger.error(f"Error getting scoring health: {e}")
+            return {
+                'integrated_scoring': 'error',
+                'error': str(e),
+                'timestamp': datetime.now().isoformat()
+            }
+    
+    async def update_market_condition(self, condition: str):
+        """Update market condition for dynamic weighting"""
+        try:
+            market_condition = MarketCondition(condition)
+            await self.dynamic_agent.set_market_condition(market_condition)
+            logger.info(f"Market condition updated to: {condition}")
+        except ValueError:
+            logger.error(f"Invalid market condition: {condition}")
+            raise ValueError(f"Invalid market condition. Valid options: {[c.value for c in MarketCondition]}")
+    
+    async def update_reliability_score(self, source: str, score: float):
+        """Update reliability score for a scoring source"""
+        await self.dynamic_agent.update_reliability_score(source, score)
+    
+    async def get_dynamic_weights_explanation(self, symbol: str) -> Dict[str, Any]:
+        """Get detailed explanation of current dynamic weights for a symbol"""
+        try:
+            # Get a quick scoring to see current weights
+            result = await self.get_comprehensive_score(symbol)
+            
+            return {
+                'symbol': symbol,
+                'current_weights': result.get('dynamic_weights', {}),
+                'market_condition': result.get('market_condition'),
+                'component_data_quality': {
+                    'kingfisher': result.get('component_scores', {}).get('kingfisher', {}),
+                    'cryptometer': result.get('component_scores', {}).get('cryptometer', {}),
+                    'riskmetric': result.get('component_scores', {}).get('riskmetric', {})
+                },
+                'timestamp': datetime.now().isoformat()
+            }
+        except Exception as e:
+            logger.error(f"Error getting weights explanation for {symbol}: {e}")
+            return {'error': str(e)}

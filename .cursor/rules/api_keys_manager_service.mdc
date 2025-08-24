@@ -1,0 +1,45 @@
+# Api Keys Manager Service Configuration
+
+## 1. Service Overview
+- **Name**: api_keys_manager_service
+- **Port**: 8006
+- **Type**: Microservice
+- **Description**: This service is responsible for managing API keys for various services. It provides endpoints for adding, updating, and retrieving API keys.
+
+## 2. Service Architecture
+- **Key Features**: The service provides a centralized location for API key management. It uses FastAPI for creating the endpoints and SQLite for storing the API keys.
+- **Supported Operations**: The service supports operations for adding, updating, and retrieving API keys.
+
+## 3. Critical Service Characteristics for Master Orchestration
+- **Service Dependencies**: The service depends on several Python modules including asyncio, os, sys, json, sqlite3, datetime, fastapi, uvicorn, pydantic, and typing. It does not have any external service or database dependencies.
+- **Inter-Service Operation Patterns**: The service does not communicate with other services. It does not have any impact on other services in case of failure. Recovery is handled by the Master Orchestration Agent.
+- **Service Lifecycle Behavior**: The service has startup and shutdown events which are handled asynchronously. It does not persist any data between restarts.
+- **Runtime Characteristics**: The service is expected to have low CPU and memory usage. It does not have any specific network or concurrency requirements.
+- **Error Conditions & Recovery**: The service does not have any specific error handling patterns or recovery strategies. These are handled by the Master Orchestration Agent.
+- **Monitoring & Observability**: The service provides a health check endpoint for monitoring its status. It does not provide any other metrics or logging.
+- **Master Orchestration Integration Points**: The service does not have any specific integration points with the Master Orchestration Agent.
+- **Critical Decision Patterns for Orchestration**: The service should be started before any services that depend on it for API keys. It should be shut down last. It does not have any specific scaling requirements or update priorities.
+
+## 4. API Endpoints
+- **/startup_event**: Initialize service and register with port manager
+- **/shutdown_event**: Cleanup on shutdown
+- **/health_check**: Health check endpoint
+- **/root**: Root endpoint
+- **/list_services**: List all configured services
+- **/get_service_info**: Get detailed info about a specific service
+- **/add_api_key**: Add or update an API key for a service
+- **/get_usage_stats**: Get API usage statistics
+- **/test_service_connections**: Test connections to configured services
+
+## 5. Security Features
+- **Authentication**: The service does not provide any authentication features.
+- **Encryption**: The service does not provide any encryption features.
+- **Access Control**: The service does not provide any access control features.
+
+## 6. Development Guidelines
+- **Coding Standards**: The service follows Python's PEP 8 style guide.
+- **Best Practices**: The service uses FastAPI for creating endpoints and SQLite for storing data. It follows best practices for asynchronous programming and error handling.
+
+## 7. Deployment Considerations
+- **Requirements**: The service requires Python 3.7 or higher and the modules listed in the service dependencies.
+- **Constraints**: The service does not have any specific deployment constraints.

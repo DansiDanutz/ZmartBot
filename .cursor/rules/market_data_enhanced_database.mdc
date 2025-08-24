@@ -1,0 +1,353 @@
+# Market Data Enhanced Database - Database Structure MDC File
+
+## 1. Database Overview
+- **Database Name**: `market_data_enhanced.db`
+- **Database Type**: SQLite 3
+- **Location**: `/Users/dansidanutz/Desktop/ZmartBot/zmart-api/data/market_data_enhanced.db`
+- **Purpose**: Growing historical repository for comprehensive market intelligence
+- **Architecture**: Specialized tables for 21+ technical indicators and analysis
+- **Growth Pattern**: Permanent data retention, expanding with symbol additions
+
+## 2. Database Architecture Philosophy
+
+### **Growing Repository Model**
+- **Design Principle**: NEVER delete historical data
+- **Symbol Growth**: Starts with 10 symbols, grows permanently with portfolio changes
+- **Data Accumulation**: Becomes more valuable over time with richer datasets
+- **Intelligence Evolution**: Foundation for pattern recognition and ML training
+
+### **vs MySymbols Database Distinction**
+- **MySymbols**: Fixed 10 symbols, current portfolio only
+- **Market Data Enhanced**: Growing 10+ symbols, permanent historical archive
+- **Purpose**: Ecosystem intelligence vs current trading decisions
+
+## 3. Core Database Tables
+
+### **Table 1: market_data_live** (Primary Data Source)
+```sql
+CREATE TABLE market_data_live (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    symbol TEXT NOT NULL,                    -- Trading pair (BTCUSDT, ETHUSDT, etc.)
+    price REAL NOT NULL,                     -- Current price from Binance
+    bid_price REAL,                          -- Best bid price
+    ask_price REAL,                          -- Best ask price  
+    spread REAL,                             -- Ask - Bid spread
+    volume_24h REAL NOT NULL,                -- 24-hour trading volume
+    volume_24h_quote REAL,                   -- 24-hour quote volume
+    high_24h REAL,                           -- 24-hour high price
+    low_24h REAL,                            -- 24-hour low price
+    price_change_24h REAL,                   -- 24-hour price change
+    price_change_percent_24h REAL,           -- 24-hour percentage change
+    weighted_avg_price REAL,                 -- Weighted average price
+    prev_close_price REAL,                   -- Previous close price
+    open_price REAL,                         -- Opening price
+    timestamp TEXT NOT NULL,                 -- Data collection timestamp
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(symbol, timestamp)                -- Prevent duplicate entries
+);
+```
+
+**Purpose**: Core real-time market data from Binance API
+**Update Frequency**: Every 30 seconds
+**Data Source**: Binance ticker API
+**Current Records**: 155+ and growing
+
+### **Table 2: rsi_data** (RSI Technical Indicator)
+```sql
+CREATE TABLE rsi_data (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    symbol TEXT NOT NULL,                    -- Trading pair
+    timeframe TEXT NOT NULL,                 -- 15m, 1h, 4h, 1d
+    rsi_value REAL NOT NULL,                 -- RSI value (0-100)
+    rsi_signal TEXT,                         -- overbought/oversold/neutral
+    overbought BOOLEAN DEFAULT FALSE,        -- RSI > 70
+    oversold BOOLEAN DEFAULT FALSE,          -- RSI < 30
+    divergence_detected BOOLEAN DEFAULT FALSE, -- Bullish/bearish divergence
+    timestamp TEXT NOT NULL,                 -- Calculation timestamp
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(symbol, timeframe, timestamp)     -- One per symbol/timeframe
+);
+```
+
+**Purpose**: RSI (Relative Strength Index) analysis across timeframes
+**Calculation**: 14-period RSI with overbought/oversold detection
+**Update Frequency**: Every 30 seconds (when sufficient data)
+**Current Records**: 460+ (4 timeframes × 10+ symbols × multiple cycles)
+
+### **Table 3: macd_data** (MACD Technical Indicator)
+```sql  
+CREATE TABLE macd_data (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    symbol TEXT NOT NULL,                    -- Trading pair
+    timeframe TEXT NOT NULL,                 -- 15m, 1h, 4h, 1d
+    macd_line REAL NOT NULL,                 -- MACD line (EMA12 - EMA26)
+    signal_line REAL NOT NULL,               -- Signal line (EMA of MACD)
+    histogram REAL NOT NULL,                 -- MACD - Signal line
+    signal TEXT,                             -- bullish/bearish signal
+    bullish_cross BOOLEAN DEFAULT FALSE,     -- MACD crosses above signal
+    bearish_cross BOOLEAN DEFAULT FALSE,     -- MACD crosses below signal
+    timestamp TEXT NOT NULL,                 -- Calculation timestamp
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(symbol, timeframe, timestamp)     -- One per symbol/timeframe
+);
+```
+
+**Purpose**: MACD (Moving Average Convergence Divergence) analysis
+**Parameters**: Fast=12, Slow=26, Signal=9
+**Signals**: Cross detection and trend analysis
+**Current Records**: 460+ (matching RSI pattern)
+
+### **Table 4: bollinger_bands_data** (Bollinger Bands)
+```sql
+CREATE TABLE bollinger_bands_data (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    symbol TEXT NOT NULL,                    -- Trading pair
+    timeframe TEXT NOT NULL,                 -- 15m, 1h, 4h, 1d
+    upper_band REAL NOT NULL,                -- Upper Bollinger Band
+    middle_band REAL NOT NULL,               -- Middle band (20-period SMA)
+    lower_band REAL NOT NULL,                -- Lower Bollinger Band
+    bandwidth REAL,                          -- Band width measurement
+    squeeze_detected BOOLEAN DEFAULT FALSE,  -- Bollinger Band squeeze
+    breakout_signal TEXT,                    -- Breakout direction
+    price_position TEXT,                     -- above_upper/middle/below_lower
+    timestamp TEXT NOT NULL,                 -- Calculation timestamp
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(symbol, timeframe, timestamp)     -- One per symbol/timeframe
+);
+```
+
+**Purpose**: Bollinger Bands analysis for volatility and breakouts
+**Parameters**: 20-period SMA, 2 standard deviations
+**Analysis**: Price position, squeeze detection, breakout signals
+
+### **Table 5: stochastic_data** (Stochastic Oscillator)
+```sql
+CREATE TABLE stochastic_data (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    symbol TEXT NOT NULL,                    -- Trading pair
+    timeframe TEXT NOT NULL,                 -- 15m, 1h, 4h, 1d
+    k_percent REAL NOT NULL,                 -- %K value (fast stochastic)
+    d_percent REAL NOT NULL,                 -- %D value (slow stochastic)
+    signal TEXT,                             -- overbought/oversold/neutral
+    overbought BOOLEAN DEFAULT FALSE,        -- %K > 80
+    oversold BOOLEAN DEFAULT FALSE,          -- %K < 20
+    bullish_divergence BOOLEAN DEFAULT FALSE, -- Price vs indicator divergence
+    bearish_divergence BOOLEAN DEFAULT FALSE, -- Price vs indicator divergence
+    timestamp TEXT NOT NULL,                 -- Calculation timestamp
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(symbol, timeframe, timestamp)     -- One per symbol/timeframe
+);
+```
+
+**Purpose**: Stochastic momentum analysis
+**Parameters**: 14-period %K, 3-period %D smoothing
+**Signals**: Overbought/oversold conditions and divergences
+
+### **Table 6: volume_analysis_data** (Volume Indicators)
+```sql
+CREATE TABLE volume_analysis_data (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    symbol TEXT NOT NULL,                    -- Trading pair
+    timeframe TEXT NOT NULL,                 -- 15m, 1h, 4h, 1d
+    volume_current REAL NOT NULL,            -- Current volume
+    volume_sma_20 REAL,                      -- 20-period volume SMA
+    volume_trend TEXT,                       -- high/normal/low trend
+    volume_spike BOOLEAN DEFAULT FALSE,      -- Volume spike detection
+    vwap REAL,                               -- Volume Weighted Average Price
+    obv REAL,                                -- On Balance Volume
+    accumulation_distribution REAL,          -- A/D indicator
+    timestamp TEXT NOT NULL,                 -- Calculation timestamp
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(symbol, timeframe, timestamp)     -- One per symbol/timeframe
+);
+```
+
+**Purpose**: Volume-based technical analysis
+**Indicators**: VWAP, OBV, A/D Line, Volume trends
+**Analysis**: Volume spikes, accumulation/distribution patterns
+
+### **Table 7: technical_alerts** (Alert System)
+```sql
+CREATE TABLE technical_alerts (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    symbol TEXT NOT NULL,                    -- Trading pair
+    timeframe TEXT NOT NULL,                 -- 15m, 1h, 4h, 1d
+    alert_type TEXT NOT NULL,                -- rsi_overbought, macd_cross, etc.
+    alert_severity TEXT NOT NULL,            -- low/medium/high/critical
+    alert_message TEXT NOT NULL,             -- Human-readable alert message
+    indicator_name TEXT,                     -- RSI, MACD, BB, STOCH, VOL
+    trigger_value REAL,                      -- Value that triggered alert
+    current_value REAL,                      -- Current indicator value
+    alert_status TEXT DEFAULT 'active',     -- active/resolved/ignored
+    resolved_at DATETIME,                    -- When alert was resolved
+    timestamp TEXT NOT NULL,                -- Alert generation time
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+**Purpose**: Technical indicator alert generation and tracking
+**Alert Types**: Overbought/oversold, crosses, breakouts, divergences
+**Status Tracking**: Active alerts, resolution tracking
+**Current Records**: 0 (alerts generated when conditions met)
+
+## 4. Database Indexes (Performance Optimization)
+
+### **Primary Indexes**
+```sql
+-- Market data time-series queries
+CREATE INDEX idx_market_data_symbol_time ON market_data_live(symbol, timestamp);
+
+-- Indicator time-series queries  
+CREATE INDEX idx_rsi_symbol_time ON rsi_data(symbol, timeframe, timestamp);
+CREATE INDEX idx_macd_symbol_time ON macd_data(symbol, timeframe, timestamp);
+CREATE INDEX idx_bollinger_symbol_time ON bollinger_bands_data(symbol, timeframe, timestamp);
+CREATE INDEX idx_stochastic_symbol_time ON stochastic_data(symbol, timeframe, timestamp);
+CREATE INDEX idx_volume_symbol_time ON volume_analysis_data(symbol, timeframe, timestamp);
+
+-- Alert queries
+CREATE INDEX idx_alerts_symbol_time ON technical_alerts(symbol, timeframe, timestamp);
+```
+
+**Purpose**: Optimize time-series queries for historical analysis
+**Query Patterns**: Symbol + timestamp range queries most common
+
+## 5. Data Flow & Relationships
+
+### **Data Collection Flow**
+```
+Binance API → market_data_live → Historical Analysis → Technical Indicators
+     ↓
+[RSI, MACD, Bollinger, Stochastic, Volume] → Alert Generation
+     ↓
+Technical Alerts → Live Alerts System → Dashboard
+```
+
+### **Symbol Relationships** 
+```sql
+-- Get all data for a symbol across timeframes
+SELECT * FROM rsi_data WHERE symbol = 'BTCUSDT' ORDER BY timestamp DESC;
+
+-- Cross-indicator analysis
+SELECT r.rsi_value, m.macd_line, b.price_position 
+FROM rsi_data r 
+JOIN macd_data m ON r.symbol = m.symbol AND r.timestamp = m.timestamp
+JOIN bollinger_bands_data b ON r.symbol = b.symbol AND r.timestamp = b.timestamp
+WHERE r.symbol = 'BTCUSDT' AND r.timeframe = '1h';
+```
+
+## 6. Database Growth Patterns
+
+### **Current Status** (Active System)
+- **market_data_live**: 155 records (real market data)
+- **rsi_data**: 460 records (4 timeframes × 10 symbols × cycles)
+- **macd_data**: 460 records (matching RSI pattern)
+- **Other indicators**: Similar growth pattern
+- **Total Database Size**: ~10MB and growing
+
+### **Growth Projection**
+```
+Current (10 symbols):     155 market records/week
+Month 1 (10+ symbols):    600+ records/week  
+Month 6 (20+ symbols):    1,200+ records/week
+Year 1 (40+ symbols):     2,400+ records/week
+```
+
+### **Storage Scaling**
+- **Daily Growth**: ~50MB with 10 symbols
+- **Monthly Growth**: ~1.5GB with expanding symbol count
+- **Annual Projection**: ~18GB with full repository
+
+## 7. Data Quality & Integrity
+
+### **Data Validation**
+- **UNIQUE Constraints**: Prevent duplicate time-series data
+- **NOT NULL Requirements**: Ensure data completeness
+- **Timestamp Consistency**: ISO format standardization
+- **Value Ranges**: RSI (0-100), Stochastic (0-100), etc.
+
+### **Data Consistency Patterns**
+```sql
+-- Ensure indicator data matches market data timestamps
+SELECT COUNT(*) FROM market_data_live m
+LEFT JOIN rsi_data r ON m.symbol = r.symbol 
+WHERE r.symbol IS NULL;
+```
+
+### **Backup & Recovery**
+- **Database Backup**: Every 2 hours (growing database)
+- **Point-in-time Recovery**: Transaction log preservation
+- **Data Integrity Checks**: Regular consistency validation
+
+## 8. Query Patterns & Performance
+
+### **Common Query Patterns**
+```sql
+-- Latest data for symbol
+SELECT * FROM market_data_live 
+WHERE symbol = ? ORDER BY timestamp DESC LIMIT 1;
+
+-- Historical indicator analysis
+SELECT * FROM rsi_data 
+WHERE symbol = ? AND timeframe = ? 
+ORDER BY timestamp DESC LIMIT 100;
+
+-- Cross-timeframe analysis
+SELECT symbol, timeframe, rsi_value, timestamp 
+FROM rsi_data 
+WHERE symbol = ? AND timestamp > ? 
+ORDER BY timeframe, timestamp;
+```
+
+### **Performance Characteristics**
+- **Query Response Time**: <50ms for recent data
+- **Historical Queries**: <500ms for 100+ records
+- **Cross-table Joins**: <200ms with proper indexes
+- **Full Table Scans**: Avoided through indexing
+
+## 9. Advanced Features & Extensions
+
+### **Planned Database Enhancements**
+```sql
+-- Symbol repository tracking (for Cryptometer version)
+CREATE TABLE symbol_repository (
+    symbol TEXT PRIMARY KEY,
+    first_added DATETIME,
+    is_current_portfolio BOOLEAN,
+    historical_range_days INTEGER
+);
+
+-- Cryptometer analysis integration
+CREATE TABLE cryptometer_analysis (
+    symbol TEXT, sentiment_score REAL,
+    ai_prediction TEXT, confidence_score REAL
+);
+```
+
+### **Analytics & Intelligence Extensions**
+- **Pattern Recognition**: Historical pattern detection across symbols
+- **ML Feature Engineering**: Technical indicators as ML features
+- **Correlation Analysis**: Cross-symbol correlation matrices
+- **Seasonal Analysis**: Time-based pattern recognition
+
+## 10. Database Administration
+
+### **Maintenance Tasks**
+```sql
+-- Database size monitoring
+SELECT page_count * page_size as size FROM pragma_page_count(), pragma_page_size();
+
+-- Table statistics
+SELECT name, COUNT(*) FROM sqlite_master 
+WHERE type='table' GROUP BY name;
+
+-- Index usage analysis
+EXPLAIN QUERY PLAN SELECT * FROM rsi_data WHERE symbol = 'BTCUSDT';
+```
+
+### **Optimization Strategies**
+- **VACUUM**: Periodic database compaction
+- **ANALYZE**: Statistics updates for query planner
+- **Index Maintenance**: Monitor index usage and effectiveness
+- **Archive Strategy**: Future consideration for very old data
+
+This database represents the **historical memory** of the ZmartBot ecosystem, designed to accumulate intelligence and become more valuable over time as the repository grows with additional symbols and richer datasets.

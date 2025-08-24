@@ -1,0 +1,43 @@
+# Cursor Rules — Command Guardrails
+
+These rules govern what Cursor (and any automation) may execute inside this workspace.
+
+## Hard‑Blocked (NEVER RUN)
+- Destructive filesystem:
+  - `rm -rf /`, `sudo rm -rf /*`, `chmod -R 777 /`, `chown -R root /`
+  - Any `rm -rf` outside the project root
+- Blind remote execution:
+  - `curl * | bash`, `wget * -O- | bash`
+- Device/disk writes:
+  - `dd if=/dev/* of=/dev/*`, raw disk formatting/partitioning utilities
+- Unscoped process kills:
+  - `pkill -f python`, `kill -9 -1`, anything that can affect non-Zmart processes
+- Kernel / system config writes (outside containers):
+  - writing to `/etc/*`, `/sys/*`, `/proc/*` without explicit task & approval
+- Secrets exfiltration:
+  - printing env vars wholesale, catting secret files, uploading tokens/keys
+
+## Confirm‑Before‑Run (Require explicit human OK)
+- `git push --force`, `git reset --hard`, `git clean -xfd`
+- `docker system prune -a`, `docker rm -f $(docker ps -aq)`
+- Mass file operations (moving/deleting >100 files)
+- Package manager global installs that change toolchains (e.g., `npm i -g`, `pip install --break-system-packages`)
+- Network/security tooling (nmap/iptables) in non‑isolated environments
+
+## Allowed (Safe by default)
+- `ls`, `pwd`, `cat`, `cp`, `mv` (inside repo), `mkdir`, `grep`, `sed`, `awk`
+- `python -m ...` within the ZmartBot workspace
+- Running project scripts that adhere to Rule 0 and start with `set -euo pipefail`
+
+## Notes
+- All orchestration scripts must be idempotent and scoped to ZmartBot process groups.
+- Shell scripts must log actions and exit non‑zero on error.
+
+---
+description: "Workspace command policy for Cursor (block/confirm/allow)"
+globs:
+  - "**/*"
+alwaysApply: true
+severity: "warning"
+tags: ["safety","ops","workspace"]
+updated: "2025-08-24"

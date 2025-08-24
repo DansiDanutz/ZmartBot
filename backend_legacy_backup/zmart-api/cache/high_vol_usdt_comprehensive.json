@@ -1,0 +1,20 @@
+{
+  "symbol": "HIGH_VOL/USDT",
+  "data": {
+    "market_price_analysis": {
+      "price_24h_change": 18.0
+    },
+    "endpoint_analyses": [
+      {
+        "endpoint_name": "test",
+        "processed_metrics": {}
+      }
+    ]
+  },
+  "timestamp": "2025-07-31T12:57:42.542516",
+  "expires_at": "2025-07-31T13:02:42.542516",
+  "data_hash": "08dc924335e634c0d22853ae0816eecf",
+  "analysis_type": "comprehensive",
+  "confidence_level": 0.8,
+  "endpoint_count": 1
+}

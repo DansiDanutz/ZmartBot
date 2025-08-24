@@ -1,0 +1,60 @@
+#!/usr/bin/env python3
+"""
+Test script for Life Age Updater
+"""
+
+import sys
+from pathlib import Path
+
+# Add the current directory to the path
+sys.path.append(str(Path(__file__).parent))
+
+from life_age_updater import (
+    create_life_age_table,
+    increment_life_age,
+    get_life_age,
+    set_life_age,
+    get_all_life_ages
+)
+
+def test_life_age_system():
+    """Test the life age system"""
+    print("🧪 Testing Life Age System...")
+    
+    # Test 1: Create table
+    print("\n1️⃣ Creating life age table...")
+    create_life_age_table()
+    
+    # Test 2: Get all life ages
+    print("\n2️⃣ Getting all life ages...")
+    all_ages = get_all_life_ages()
+    print(f"Found {len(all_ages)} symbols:")
+    for age_data in all_ages:
+        print(f"  {age_data['symbol']}: {age_data['age_days']} days")
+    
+    # Test 3: Get specific symbol
+    print("\n3️⃣ Getting BTC life age...")
+    btc_age = get_life_age('BTC')
+    print(f"BTC life age: {btc_age} days")
+    
+    # Test 4: Set specific symbol
+    print("\n4️⃣ Setting ETH life age to 500 days...")
+    set_life_age('ETH', 500)
+    eth_age = get_life_age('ETH')
+    print(f"ETH life age after setting: {eth_age} days")
+    
+    # Test 5: Increment all ages
+    print("\n5️⃣ Incrementing all life ages by +1...")
+    increment_life_age()
+    
+    # Test 6: Verify increment
+    print("\n6️⃣ Verifying increment...")
+    btc_age_after = get_life_age('BTC')
+    eth_age_after = get_life_age('ETH')
+    print(f"BTC life age after increment: {btc_age_after} days")
+    print(f"ETH life age after increment: {eth_age_after} days")
+    
+    print("\n✅ All tests completed successfully!")
+
+if __name__ == "__main__":
+    test_life_age_system()

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caching System Test</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 20px; 
+            background: #1a1a1a; 
+            color: white; 
+        }
+        .test-section { 
+            margin: 20px 0; 
+            padding: 20px; 
+            border: 1px solid #333; 
+            border-radius: 8px; 
+        }
+        .success { color: #10b981; }
+        .error { color: #ef4444; }
+        .info { color: #3b82f6; }
+        .cache-test { 
+            background: #2a2a2a; 
+            padding: 15px; 
+            border-radius: 8px; 
+            margin: 10px 0; 
+        }
+        .cache-result {
+            background: #333;
+            padding: 10px;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>🚀 Caching System Test</h1>
+    
+    <div class="test-section">
+        <h2>📊 API Endpoints Test</h2>
+        <div id="api-test">Testing APIs...</div>
+    </div>
+    
+    <div class="test-section">
+        <h2>📦 Cache Performance Test</h2>
+        <div class="cache-test">
+            <button onclick="testCachePerformance()" style="padding: 10px 20px; background: #3b82f6; color: white; border: none; border-radius: 6px; cursor: pointer;">
+                🚀 Test Cache Performance
+            </button>
+            <div id="cache-performance-result"></div>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>🔗 Navigation</h2>
+        <p><a href="/" style="color: #3b82f6;">🏠 Main Dashboard</a></p>
+        <p><a href="/alerts" style="color: #3b82f6;">🔔 Enhanced Alerts (with Caching)</a></p>
+        <p><a href="/api/futures-symbols/my-symbols/current" style="color: #3b82f6;">📊 Symbols API</a></p>
+    </div>
+
+    <script>
+        // Test API endpoints
+        async function testAPIs() {
+            const testDiv = document.getElementById('api-test');
+            const results = [];
+            
+            try {
+                // Test symbols API
+                const startTime = performance.now();
+                const symbolsResponse = await fetch('/api/futures-symbols/my-symbols/current');
+                const symbolsTime = performance.now() - startTime;
+                
+                if (symbolsResponse.ok) {
+                    const symbolsData = await symbolsResponse.json();
+                    results.push(`✅ Symbols API: ${symbolsData.portfolio?.symbols?.length || 0} symbols (${symbolsTime.toFixed(2)}ms)`);
+                } else {
+                    results.push(`❌ Symbols API: Failed (${symbolsResponse.status})`);
+                }
+                
+                // Test alerts API
+                const alertsStartTime = performance.now();
+                const alertsResponse = await fetch('/api/v1/alerts/status');
+                const alertsTime = performance.now() - alertsStartTime;
+                
+                if (alertsResponse.ok) {
+                    const alertsData = await alertsResponse.json();
+                    results.push(`✅ Alerts API: ${alertsData.success ? 'Working' : 'Error'} (${alertsTime.toFixed(2)}ms)`);
+                } else {
+                    results.push(`❌ Alerts API: Failed (${alertsResponse.status})`);
+                }
+                
+                // Test price API
+                const priceStartTime = performance.now();
+                const priceResponse = await fetch('/api/v1/binance/ticker/24hr?symbol=BTCUSDT');
+                const priceTime = performance.now() - priceStartTime;
+                
+                if (priceResponse.ok) {
+                    const priceData = await priceResponse.json();
+                    results.push(`✅ Price API: $${priceData.lastPrice} (${priceTime.toFixed(2)}ms)`);
+                } else {
+                    results.push(`❌ Price API: Failed (${priceResponse.status})`);
+                }
+                
+            } catch (error) {
+                results.push(`❌ Error: ${error.message}`);
+            }
+            
+            testDiv.innerHTML = results.map(result => `<div class="cache-result">${result}</div>`).join('');
+        }
+        
+        // Test cache performance
+        async function testCachePerformance() {
+            const resultDiv = document.getElementById('cache-performance-result');
+            resultDiv.innerHTML = '<div class="info">🔄 Testing cache performance...</div>';
+            
+            const results = [];
+            const symbol = 'BTCUSDT';
+            
+            try {
+                // First request (should be slower)
+                const firstStart = performance.now();
+                const firstResponse = await fetch(`/api/v1/binance/ticker/24hr?symbol=${symbol}`);
+                const firstTime = performance.now() - firstStart;
+                
+                if (firstResponse.ok) {
+                    results.push(`📡 First Request: ${firstTime.toFixed(2)}ms (Fresh data)`);
+                    
+                    // Second request (should be faster if cached)
+                    const secondStart = performance.now();
+                    const secondResponse = await fetch(`/api/v1/binance/ticker/24hr?symbol=${symbol}`);
+                    const secondTime = performance.now() - secondStart;
+                    
+                    if (secondResponse.ok) {
+                        results.push(`📦 Second Request: ${secondTime.toFixed(2)}ms (Potentially cached)`);
+                        
+                        const improvement = ((firstTime - secondTime) / firstTime * 100).toFixed(1);
+                        if (secondTime < firstTime) {
+                            results.push(`⚡ Performance Improvement: ${improvement}% faster`);
+                        } else {
+                            results.push(`ℹ️ No significant improvement (backend may not be caching)`);
+                        }
+                    }
+                }
+                
+                // Test multiple symbols
+                const symbols = ['BTCUSDT', 'ETHUSDT', 'SOLUSDT'];
+                const multiStart = performance.now();
+                const multiPromises = symbols.map(s => fetch(`/api/v1/binance/ticker/24hr?symbol=${s}`));
+                await Promise.all(multiPromises);
+                const multiTime = performance.now() - multiStart;
+                
+                results.push(`🔄 Multiple Symbols (${symbols.length}): ${multiTime.toFixed(2)}ms`);
+                
+            } catch (error) {
+                results.push(`❌ Error: ${error.message}`);
+            }
+            
+            resultDiv.innerHTML = results.map(result => `<div class="cache-result">${result}</div>`).join('');
+        }
+        
+        // Run tests on page load
+        testAPIs();
+    </script>
+</body>
+</html>

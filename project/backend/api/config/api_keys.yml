@@ -1,0 +1,18 @@
+api_configs:
+  openai:
+    api_key: gAAAAABopwlIPGFRY5AGaZ0Bdnj8Om8i5_5UT4gfaqkHc4yfADcMiR4pjKngvPk7K4d59U6w9gE7N2mQ0tKkaVpvJ4Mkstu12v3d4nHaCWZX0-vNt1wmcIQexQ2roUSV0kPXQZb3jrogazPBYIp5sFnvqxh9SL_IPy4DFjrN-Uwo0r5_YW89uVZhwAmjJHw99yTvyLISWSsRY6p1XxdEXqWJlidqfK0G4IWICBob-nrwVj-GIXR0LglbinmhXsB-FfCKsLYSjvBGVPB-7qYHIwXeX_ckQ6iaESRy8FxVWx6AunVmf0PoVAk=
+    base_url: https://api.openai.com/v1
+    created_at: '2025-08-21T14:55:52.731831'
+    description: OpenAI API for ChatGPT-5/GPT-4 trading analysis (ZmartGPT)
+    is_active: true
+    last_used: null
+    passphrase: null
+    rate_limit: 3500
+    secret_key: null
+    service_name: openai
+    usage_count: 0
+exchange_configs: {}
+metadata:
+  created_at: '2025-08-21T14:55:52.731871'
+  encrypted: true
+  version: '1.0'

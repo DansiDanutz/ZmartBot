@@ -1,0 +1,1149 @@
+@agent: IndicatorEngine
+
+# 21 Technical Indicators - Complete System Documentation
+
+## Overview
+The **21 Technical Indicators** system provides comprehensive technical analysis for all MySymbols across 4 timeframes (15m, 1h, 4h, 1d). Each indicator is calculated in real-time and stored in the MySymbolsDatabase, accessible through dedicated API endpoints.
+
+## Indicator List & Categories
+
+### **Momentum Indicators**
+1. **RSI (Relative Strength Index)**
+2. **Stochastic Oscillator**
+3. **Williams %R**
+4. **ROC (Rate of Change)**
+5. **MFI (Money Flow Index)**
+6. **Ultimate Oscillator**
+
+### **Trend Indicators**
+7. **MACD (Moving Average Convergence Divergence)**
+8. **EMA (Exponential Moving Average)**
+9. **SMA (Simple Moving Average)**
+10. **ADX (Average Directional Index)**
+11. **DMI (Directional Movement Index)**
+12. **Parabolic SAR**
+13. **Aroon Indicator**
+14. **TRIX Indicator**
+
+### **Volatility Indicators**
+15. **Bollinger Bands**
+16. **ATR (Average True Range)**
+17. **Keltner Channel**
+
+### **Volume Indicators**
+18. **OBV (On-Balance Volume)**
+19. **VWAP (Volume Weighted Average Price)**
+
+### **Other Indicators**
+20. **CCI (Commodity Channel Index)**
+21. **Momentum Indicator**
+
+## Detailed Indicator Specifications
+
+### **1. RSI (Relative Strength Index)**
+
+#### **Calculation Method**
+```python
+def calculate_rsi(prices, period=14):
+    """Calculate RSI for given price series"""
+    deltas = np.diff(prices)
+    gains = np.where(deltas > 0, deltas, 0)
+    losses = np.where(deltas < 0, -deltas, 0)
+    
+    avg_gain = np.mean(gains[-period:])
+    avg_loss = np.mean(losses[-period:])
+    
+    rs = avg_gain / avg_loss if avg_loss != 0 else 0
+    rsi = 100 - (100 / (1 + rs))
+    return rsi
+```
+
+#### **Data Output**
+```json
+{
+  "indicator": "RSI",
+  "value": 65.4,
+  "period": 14,
+  "interpretation": "NEUTRAL",
+  "signals": {
+    "overbought": false,
+    "oversold": false,
+    "divergence": null
+  },
+  "levels": {
+    "overbought": 70,
+    "oversold": 30,
+    "neutral": 50
+  }
+}
+```
+
+#### **API Endpoints**
+```http
+GET /api/v1/mysymbols/{symbol}/indicators/RSI
+# Get RSI value for symbol
+# Query: ?timeframe=1h&period=14
+# Returns: RSI value and interpretation
+
+GET /api/v1/mysymbols/{symbol}/indicators/RSI/history
+# Get RSI historical data
+# Query: ?timeframe=1h&period=14&limit=100
+# Returns: Array of RSI values over time
+
+POST /api/v1/mysymbols/{symbol}/indicators/RSI/update
+# Force update RSI calculation
+# Body: {"timeframe": "1h", "period": 14}
+# Returns: Updated RSI value
+```
+
+### **2. MACD (Moving Average Convergence Divergence)**
+
+#### **Calculation Method**
+```python
+def calculate_macd(prices, fast_period=12, slow_period=26, signal_period=9):
+    """Calculate MACD for given price series"""
+    ema_fast = calculate_ema(prices, fast_period)
+    ema_slow = calculate_ema(prices, slow_period)
+    macd_line = ema_fast - ema_slow
+    signal_line = calculate_ema(macd_line, signal_period)
+    histogram = macd_line - signal_line
+    
+    return {
+        "macd": macd_line[-1],
+        "signal": signal_line[-1],
+        "histogram": histogram[-1]
+    }
+```
+
+#### **Data Output**
+```json
+{
+  "indicator": "MACD",
+  "values": {
+    "macd": 125.5,
+    "signal": 120.2,
+    "histogram": 5.3
+  },
+  "periods": {
+    "fast": 12,
+    "slow": 26,
+    "signal": 9
+  },
+  "signals": {
+    "bullish_crossover": false,
+    "bearish_crossover": false,
+    "divergence": null
+  },
+  "interpretation": "BULLISH"
+}
+```
+
+#### **API Endpoints**
+```http
+GET /api/v1/mysymbols/{symbol}/indicators/MACD
+# Get MACD values for symbol
+# Query: ?timeframe=1h&fast=12&slow=26&signal=9
+# Returns: MACD, signal, and histogram values
+
+GET /api/v1/mysymbols/{symbol}/indicators/MACD/crossovers
+# Get MACD crossover signals
+# Query: ?timeframe=1h&limit=10
+# Returns: Recent crossover events
+
+POST /api/v1/mysymbols/{symbol}/indicators/MACD/update
+# Force update MACD calculation
+# Body: {"timeframe": "1h", "fast": 12, "slow": 26, "signal": 9}
+# Returns: Updated MACD values
+```
+
+### **3. Bollinger Bands**
+
+#### **Calculation Method**
+```python
+def calculate_bollinger_bands(prices, period=20, std_dev=2):
+    """Calculate Bollinger Bands for given price series"""
+    sma = calculate_sma(prices, period)
+    std = np.std(prices[-period:])
+    
+    upper_band = sma + (std_dev * std)
+    lower_band = sma - (std_dev * std)
+    
+    return {
+        "upper": upper_band,
+        "middle": sma,
+        "lower": lower_band,
+        "bandwidth": (upper_band - lower_band) / sma,
+        "percent_b": (prices[-1] - lower_band) / (upper_band - lower_band)
+    }
+```
+
+#### **Data Output**
+```json
+{
+  "indicator": "Bollinger_Bands",
+  "values": {
+    "upper": 43500.0,
+    "middle": 43250.0,
+    "lower": 43000.0
+  },
+  "parameters": {
+    "period": 20,
+    "std_dev": 2
+  },
+  "metrics": {
+    "bandwidth": 0.0116,
+    "percent_b": 0.75
+  },
+  "signals": {
+    "price_position": "UPPER_BAND",
+    "squeeze": false,
+    "breakout": false
+  }
+}
+```
+
+#### **API Endpoints**
+```http
+GET /api/v1/mysymbols/{symbol}/indicators/Bollinger_Bands
+# Get Bollinger Bands for symbol
+# Query: ?timeframe=1h&period=20&std_dev=2
+# Returns: Upper, middle, lower bands and metrics
+
+GET /api/v1/mysymbols/{symbol}/indicators/Bollinger_Bands/squeeze
+# Get Bollinger Band squeeze signals
+# Query: ?timeframe=1h&threshold=0.01
+# Returns: Squeeze detection signals
+
+POST /api/v1/mysymbols/{symbol}/indicators/Bollinger_Bands/update
+# Force update Bollinger Bands
+# Body: {"timeframe": "1h", "period": 20, "std_dev": 2}
+# Returns: Updated Bollinger Bands values
+```
+
+### **4. EMA (Exponential Moving Average)**
+
+#### **Calculation Method**
+```python
+def calculate_ema(prices, period):
+    """Calculate EMA for given price series"""
+    multiplier = 2 / (period + 1)
+    ema_values = [prices[0]]
+    
+    for price in prices[1:]:
+        ema = (price * multiplier) + (ema_values[-1] * (1 - multiplier))
+        ema_values.append(ema)
+    
+    return ema_values[-1]
+```
+
+#### **Data Output**
+```json
+{
+  "indicator": "EMA",
+  "values": {
+    "ema_12": 43200.0,
+    "ema_26": 43100.0
+  },
+  "periods": [12, 26],
+  "signals": {
+    "golden_cross": false,
+    "death_cross": false,
+    "trend": "BULLISH"
+  },
+  "price_position": {
+    "above_ema_12": true,
+    "above_ema_26": true
+  }
+}
+```
+
+#### **API Endpoints**
+```http
+GET /api/v1/mysymbols/{symbol}/indicators/EMA
+# Get EMA values for symbol
+# Query: ?timeframe=1h&periods=12,26
+# Returns: EMA values for specified periods
+
+GET /api/v1/mysymbols/{symbol}/indicators/EMA/crossovers
+# Get EMA crossover signals
+# Query: ?timeframe=1h&fast=12&slow=26
+# Returns: Golden cross and death cross events
+
+POST /api/v1/mysymbols/{symbol}/indicators/EMA/update
+# Force update EMA calculation
+# Body: {"timeframe": "1h", "periods": [12, 26]}
+# Returns: Updated EMA values
+```
+
+### **5. SMA (Simple Moving Average)**
+
+#### **Calculation Method**
+```python
+def calculate_sma(prices, period):
+    """Calculate SMA for given price series"""
+    return np.mean(prices[-period:])
+```
+
+#### **Data Output**
+```json
+{
+  "indicator": "SMA",
+  "values": {
+    "sma_20": 43150.0,
+    "sma_50": 43000.0,
+    "sma_200": 42500.0
+  },
+  "periods": [20, 50, 200],
+  "signals": {
+    "golden_cross": false,
+    "death_cross": false,
+    "trend": "BULLISH"
+  },
+  "support_resistance": {
+    "sma_20_support": 43150.0,
+    "sma_50_support": 43000.0
+  }
+}
+```
+
+#### **API Endpoints**
+```http
+GET /api/v1/mysymbols/{symbol}/indicators/SMA
+# Get SMA values for symbol
+# Query: ?timeframe=1h&periods=20,50,200
+# Returns: SMA values for specified periods
+
+GET /api/v1/mysymbols/{symbol}/indicators/SMA/support_resistance
+# Get SMA support and resistance levels
+# Query: ?timeframe=1h&periods=20,50,200
+# Returns: Support and resistance levels
+
+POST /api/v1/mysymbols/{symbol}/indicators/SMA/update
+# Force update SMA calculation
+# Body: {"timeframe": "1h", "periods": [20, 50, 200]}
+# Returns: Updated SMA values
+```
+
+### **6. Stochastic Oscillator**
+
+#### **Calculation Method**
+```python
+def calculate_stochastic(highs, lows, closes, k_period=14, d_period=3):
+    """Calculate Stochastic Oscillator"""
+    lowest_low = np.min(lows[-k_period:])
+    highest_high = np.max(highs[-k_period:])
+    
+    k_percent = ((closes[-1] - lowest_low) / (highest_high - lowest_low)) * 100
+    d_percent = np.mean([k_percent])  # Simplified for single value
+    
+    return {
+        "k": k_percent,
+        "d": d_percent
+    }
+```
+
+#### **Data Output**
+```json
+{
+  "indicator": "Stochastic",
+  "values": {
+    "k": 75.2,
+    "d": 72.1
+  },
+  "periods": {
+    "k": 14,
+    "d": 3
+  },
+  "levels": {
+    "overbought": 80,
+    "oversold": 20
+  },
+  "signals": {
+    "overbought": false,
+    "oversold": false,
+    "bullish_crossover": false,
+    "bearish_crossover": false
+  }
+}
+```
+
+#### **API Endpoints**
+```http
+GET /api/v1/mysymbols/{symbol}/indicators/Stochastic
+# Get Stochastic values for symbol
+# Query: ?timeframe=1h&k_period=14&d_period=3
+# Returns: %K and %D values
+
+GET /api/v1/mysymbols/{symbol}/indicators/Stochastic/signals
+# Get Stochastic signals
+# Query: ?timeframe=1h&overbought=80&oversold=20
+# Returns: Overbought/oversold signals
+
+POST /api/v1/mysymbols/{symbol}/indicators/Stochastic/update
+# Force update Stochastic calculation
+# Body: {"timeframe": "1h", "k_period": 14, "d_period": 3}
+# Returns: Updated Stochastic values
+```
+
+### **7. ATR (Average True Range)**
+
+#### **Calculation Method**
+```python
+def calculate_atr(highs, lows, closes, period=14):
+    """Calculate Average True Range"""
+    true_ranges = []
+    
+    for i in range(1, len(highs)):
+        high_low = highs[i] - lows[i]
+        high_close = abs(highs[i] - closes[i-1])
+        low_close = abs(lows[i] - closes[i-1])
+        true_range = max(high_low, high_close, low_close)
+        true_ranges.append(true_range)
+    
+    return np.mean(true_ranges[-period:])
+```
+
+#### **Data Output**
+```json
+{
+  "indicator": "ATR",
+  "value": 850.5,
+  "period": 14,
+  "interpretation": "HIGH_VOLATILITY",
+  "volatility_level": "HIGH",
+  "stop_loss_suggestions": {
+    "long": 42399.5,
+    "short": 44099.5
+  }
+}
+```
+
+#### **API Endpoints**
+```http
+GET /api/v1/mysymbols/{symbol}/indicators/ATR
+# Get ATR value for symbol
+# Query: ?timeframe=1h&period=14
+# Returns: ATR value and volatility interpretation
+
+GET /api/v1/mysymbols/{symbol}/indicators/ATR/stop_loss
+# Get ATR-based stop loss levels
+# Query: ?timeframe=1h&multiplier=2
+# Returns: Suggested stop loss levels
+
+POST /api/v1/mysymbols/{symbol}/indicators/ATR/update
+# Force update ATR calculation
+# Body: {"timeframe": "1h", "period": 14}
+# Returns: Updated ATR value
+```
+
+### **8. CCI (Commodity Channel Index)**
+
+#### **Calculation Method**
+```python
+def calculate_cci(highs, lows, closes, period=20):
+    """Calculate Commodity Channel Index"""
+    typical_prices = (highs + lows + closes) / 3
+    sma_tp = np.mean(typical_prices[-period:])
+    mean_deviation = np.mean(np.abs(typical_prices[-period:] - sma_tp))
+    
+    cci = (typical_prices[-1] - sma_tp) / (0.015 * mean_deviation)
+    return cci
+```
+
+#### **Data Output**
+```json
+{
+  "indicator": "CCI",
+  "value": 125.8,
+  "period": 20,
+  "levels": {
+    "overbought": 100,
+    "oversold": -100
+  },
+  "signals": {
+    "overbought": true,
+    "oversold": false,
+    "trend": "BULLISH"
+  }
+}
+```
+
+#### **API Endpoints**
+```http
+GET /api/v1/mysymbols/{symbol}/indicators/CCI
+# Get CCI value for symbol
+# Query: ?timeframe=1h&period=20
+# Returns: CCI value and signals
+
+POST /api/v1/mysymbols/{symbol}/indicators/CCI/update
+# Force update CCI calculation
+# Body: {"timeframe": "1h", "period": 20}
+# Returns: Updated CCI value
+```
+
+### **9. ADX (Average Directional Index)**
+
+#### **Calculation Method**
+```python
+def calculate_adx(highs, lows, closes, period=14):
+    """Calculate Average Directional Index"""
+    # Simplified calculation
+    plus_dm = np.mean(np.where(np.diff(highs) > 0, np.diff(highs), 0)[-period:])
+    minus_dm = np.mean(np.where(np.diff(lows) < 0, -np.diff(lows), 0)[-period:])
+    
+    tr = calculate_atr(highs, lows, closes, period)
+    plus_di = (plus_dm / tr) * 100
+    minus_di = (minus_dm / tr) * 100
+    
+    dx = abs(plus_di - minus_di) / (plus_di + minus_di) * 100
+    adx = np.mean([dx])  # Simplified for single value
+    
+    return {
+        "adx": adx,
+        "plus_di": plus_di,
+        "minus_di": minus_di
+    }
+```
+
+#### **Data Output**
+```json
+{
+  "indicator": "ADX",
+  "values": {
+    "adx": 28.4,
+    "plus_di": 25.4,
+    "minus_di": 18.2
+  },
+  "period": 14,
+  "trend_strength": "WEAK",
+  "signals": {
+    "strong_trend": false,
+    "trend_direction": "BULLISH"
+  }
+}
+```
+
+#### **API Endpoints**
+```http
+GET /api/v1/mysymbols/{symbol}/indicators/ADX
+# Get ADX values for symbol
+# Query: ?timeframe=1h&period=14
+# Returns: ADX, +DI, -DI values
+
+POST /api/v1/mysymbols/{symbol}/indicators/ADX/update
+# Force update ADX calculation
+# Body: {"timeframe": "1h", "period": 14}
+# Returns: Updated ADX values
+```
+
+### **10. OBV (On-Balance Volume)**
+
+#### **Calculation Method**
+```python
+def calculate_obv(closes, volumes):
+    """Calculate On-Balance Volume"""
+    obv = [volumes[0]]
+    
+    for i in range(1, len(closes)):
+        if closes[i] > closes[i-1]:
+            obv.append(obv[-1] + volumes[i])
+        elif closes[i] < closes[i-1]:
+            obv.append(obv[-1] - volumes[i])
+        else:
+            obv.append(obv[-1])
+    
+    return obv[-1]
+```
+
+#### **Data Output**
+```json
+{
+  "indicator": "OBV",
+  "value": 1250000000,
+  "trend": "BULLISH",
+  "divergence": {
+    "price_obv_divergence": false,
+    "divergence_type": null
+  },
+  "volume_trend": "INCREASING"
+}
+```
+
+#### **API Endpoints**
+```http
+GET /api/v1/mysymbols/{symbol}/indicators/OBV
+# Get OBV value for symbol
+# Query: ?timeframe=1h
+# Returns: OBV value and trend analysis
+
+GET /api/v1/mysymbols/{symbol}/indicators/OBV/divergence
+# Get OBV divergence signals
+# Query: ?timeframe=1h&period=20
+# Returns: Price-OBV divergence detection
+
+POST /api/v1/mysymbols/{symbol}/indicators/OBV/update
+# Force update OBV calculation
+# Body: {"timeframe": "1h"}
+# Returns: Updated OBV value
+```
+
+### **11. VWAP (Volume Weighted Average Price)**
+
+#### **Calculation Method**
+```python
+def calculate_vwap(highs, lows, closes, volumes):
+    """Calculate Volume Weighted Average Price"""
+    typical_prices = (highs + lows + closes) / 3
+    vwap = np.sum(typical_prices * volumes) / np.sum(volumes)
+    return vwap
+```
+
+#### **Data Output**
+```json
+{
+  "indicator": "VWAP",
+  "value": 43225.75,
+  "price_position": "ABOVE_VWAP",
+  "signals": {
+    "bullish": true,
+    "support_resistance": "SUPPORT"
+  }
+}
+```
+
+#### **API Endpoints**
+```http
+GET /api/v1/mysymbols/{symbol}/indicators/VWAP
+# Get VWAP value for symbol
+# Query: ?timeframe=1h
+# Returns: VWAP value and price position
+
+POST /api/v1/mysymbols/{symbol}/indicators/VWAP/update
+# Force update VWAP calculation
+# Body: {"timeframe": "1h"}
+# Returns: Updated VWAP value
+```
+
+### **12. Williams %R**
+
+#### **Calculation Method**
+```python
+def calculate_williams_r(highs, lows, closes, period=14):
+    """Calculate Williams %R"""
+    highest_high = np.max(highs[-period:])
+    lowest_low = np.min(lows[-period:])
+    
+    williams_r = ((highest_high - closes[-1]) / (highest_high - lowest_low)) * -100
+    return williams_r
+```
+
+#### **Data Output**
+```json
+{
+  "indicator": "Williams_R",
+  "value": -25.6,
+  "period": 14,
+  "levels": {
+    "overbought": -20,
+    "oversold": -80
+  },
+  "signals": {
+    "overbought": false,
+    "oversold": false
+  }
+}
+```
+
+#### **API Endpoints**
+```http
+GET /api/v1/mysymbols/{symbol}/indicators/Williams_R
+# Get Williams %R value for symbol
+# Query: ?timeframe=1h&period=14
+# Returns: Williams %R value and signals
+
+POST /api/v1/mysymbols/{symbol}/indicators/Williams_R/update
+# Force update Williams %R calculation
+# Body: {"timeframe": "1h", "period": 14}
+# Returns: Updated Williams %R value
+```
+
+### **13. ROC (Rate of Change)**
+
+#### **Calculation Method**
+```python
+def calculate_roc(prices, period=14):
+    """Calculate Rate of Change"""
+    current_price = prices[-1]
+    past_price = prices[-period-1]
+    roc = ((current_price - past_price) / past_price) * 100
+    return roc
+```
+
+#### **Data Output**
+```json
+{
+  "indicator": "ROC",
+  "value": 1.2,
+  "period": 14,
+  "interpretation": "BULLISH",
+  "momentum": "INCREASING"
+}
+```
+
+#### **API Endpoints**
+```http
+GET /api/v1/mysymbols/{symbol}/indicators/ROC
+# Get ROC value for symbol
+# Query: ?timeframe=1h&period=14
+# Returns: ROC value and interpretation
+
+POST /api/v1/mysymbols/{symbol}/indicators/ROC/update
+# Force update ROC calculation
+# Body: {"timeframe": "1h", "period": 14}
+# Returns: Updated ROC value
+```
+
+### **14. MFI (Money Flow Index)**
+
+#### **Calculation Method**
+```python
+def calculate_mfi(highs, lows, closes, volumes, period=14):
+    """Calculate Money Flow Index"""
+    typical_prices = (highs + lows + closes) / 3
+    money_flow = typical_prices * volumes
+    
+    positive_flow = np.sum(money_flow[1:][np.diff(typical_prices) > 0][-period:])
+    negative_flow = np.sum(money_flow[1:][np.diff(typical_prices) < 0][-period:])
+    
+    money_ratio = positive_flow / negative_flow if negative_flow != 0 else 0
+    mfi = 100 - (100 / (1 + money_ratio))
+    return mfi
+```
+
+#### **Data Output**
+```json
+{
+  "indicator": "MFI",
+  "value": 68.9,
+  "period": 14,
+  "levels": {
+    "overbought": 80,
+    "oversold": 20
+  },
+  "signals": {
+    "overbought": false,
+    "oversold": false
+  }
+}
+```
+
+#### **API Endpoints**
+```http
+GET /api/v1/mysymbols/{symbol}/indicators/MFI
+# Get MFI value for symbol
+# Query: ?timeframe=1h&period=14
+# Returns: MFI value and signals
+
+POST /api/v1/mysymbols/{symbol}/indicators/MFI/update
+# Force update MFI calculation
+# Body: {"timeframe": "1h", "period": 14}
+# Returns: Updated MFI value
+```
+
+### **15. DMI (Directional Movement Index)**
+
+#### **Calculation Method**
+```python
+def calculate_dmi(highs, lows, period=14):
+    """Calculate Directional Movement Index"""
+    # Simplified calculation
+    plus_dm = np.mean(np.where(np.diff(highs) > 0, np.diff(highs), 0)[-period:])
+    minus_dm = np.mean(np.where(np.diff(lows) < 0, -np.diff(lows), 0)[-period:])
+    
+    return {
+        "plus_di": plus_dm,
+        "minus_di": minus_dm
+    }
+```
+
+#### **Data Output**
+```json
+{
+  "indicator": "DMI",
+  "values": {
+    "plus_di": 25.4,
+    "minus_di": 18.2
+  },
+  "period": 14,
+  "trend": "BULLISH"
+}
+```
+
+#### **API Endpoints**
+```http
+GET /api/v1/mysymbols/{symbol}/indicators/DMI
+# Get DMI values for symbol
+# Query: ?timeframe=1h&period=14
+# Returns: +DI and -DI values
+
+POST /api/v1/mysymbols/{symbol}/indicators/DMI/update
+# Force update DMI calculation
+# Body: {"timeframe": "1h", "period": 14}
+# Returns: Updated DMI values
+```
+
+### **16. Parabolic SAR**
+
+#### **Calculation Method**
+```python
+def calculate_parabolic_sar(highs, lows, acceleration=0.02, maximum=0.2):
+    """Calculate Parabolic SAR"""
+    # Simplified calculation
+    sar = lows[0]
+    for i in range(1, len(highs)):
+        if highs[i] > highs[i-1]:  # Uptrend
+            sar = min(sar, lows[i-1])
+        else:  # Downtrend
+            sar = max(sar, highs[i-1])
+    
+    return sar
+```
+
+#### **Data Output**
+```json
+{
+  "indicator": "Parabolic_SAR",
+  "value": 42800.0,
+  "trend": "BULLISH",
+  "stop_loss": 42800.0
+}
+```
+
+#### **API Endpoints**
+```http
+GET /api/v1/mysymbols/{symbol}/indicators/Parabolic_SAR
+# Get Parabolic SAR value for symbol
+# Query: ?timeframe=1h&acceleration=0.02&maximum=0.2
+# Returns: SAR value and trend
+
+POST /api/v1/mysymbols/{symbol}/indicators/Parabolic_SAR/update
+# Force update Parabolic SAR calculation
+# Body: {"timeframe": "1h", "acceleration": 0.02, "maximum": 0.2}
+# Returns: Updated Parabolic SAR value
+```
+
+### **17. Aroon Indicator**
+
+#### **Calculation Method**
+```python
+def calculate_aroon(highs, lows, period=14):
+    """Calculate Aroon Indicator"""
+    high_period = np.argmax(highs[-period:])
+    low_period = np.argmin(lows[-period:])
+    
+    aroon_up = ((period - high_period) / period) * 100
+    aroon_down = ((period - low_period) / period) * 100
+    
+    return {
+        "aroon_up": aroon_up,
+        "aroon_down": aroon_down
+    }
+```
+
+#### **Data Output**
+```json
+{
+  "indicator": "Aroon",
+  "values": {
+    "aroon_up": 85.2,
+    "aroon_down": 15.8
+  },
+  "period": 14,
+  "trend": "BULLISH",
+  "signals": {
+    "strong_trend": true
+  }
+}
+```
+
+#### **API Endpoints**
+```http
+GET /api/v1/mysymbols/{symbol}/indicators/Aroon
+# Get Aroon values for symbol
+# Query: ?timeframe=1h&period=14
+# Returns: Aroon Up and Down values
+
+POST /api/v1/mysymbols/{symbol}/indicators/Aroon/update
+# Force update Aroon calculation
+# Body: {"timeframe": "1h", "period": 14}
+# Returns: Updated Aroon values
+```
+
+### **18. Momentum Indicator**
+
+#### **Calculation Method**
+```python
+def calculate_momentum(prices, period=10):
+    """Calculate Momentum Indicator"""
+    current_price = prices[-1]
+    past_price = prices[-period-1]
+    momentum = current_price - past_price
+    return momentum
+```
+
+#### **Data Output**
+```json
+{
+  "indicator": "Momentum",
+  "value": 125.5,
+  "period": 10,
+  "interpretation": "BULLISH",
+  "strength": "STRONG"
+}
+```
+
+#### **API Endpoints**
+```http
+GET /api/v1/mysymbols/{symbol}/indicators/Momentum
+# Get Momentum value for symbol
+# Query: ?timeframe=1h&period=10
+# Returns: Momentum value and interpretation
+
+POST /api/v1/mysymbols/{symbol}/indicators/Momentum/update
+# Force update Momentum calculation
+# Body: {"timeframe": "1h", "period": 10}
+# Returns: Updated Momentum value
+```
+
+### **19. TRIX Indicator**
+
+#### **Calculation Method**
+```python
+def calculate_trix(prices, period=15):
+    """Calculate TRIX Indicator"""
+    # Simplified calculation
+    ema1 = calculate_ema(prices, period)
+    ema2 = calculate_ema([ema1], period)
+    ema3 = calculate_ema([ema2], period)
+    
+    trix = ((ema3 - ema2) / ema2) * 100
+    return trix
+```
+
+#### **Data Output**
+```json
+{
+  "indicator": "TRIX",
+  "value": 0.85,
+  "period": 15,
+  "trend": "BULLISH",
+  "signals": {
+    "zero_line_crossover": false
+  }
+}
+```
+
+#### **API Endpoints**
+```http
+GET /api/v1/mysymbols/{symbol}/indicators/TRIX
+# Get TRIX value for symbol
+# Query: ?timeframe=1h&period=15
+# Returns: TRIX value and trend
+
+POST /api/v1/mysymbols/{symbol}/indicators/TRIX/update
+# Force update TRIX calculation
+# Body: {"timeframe": "1h", "period": 15}
+# Returns: Updated TRIX value
+```
+
+### **20. Ultimate Oscillator**
+
+#### **Calculation Method**
+```python
+def calculate_ultimate_oscillator(highs, lows, closes, period1=7, period2=14, period3=28):
+    """Calculate Ultimate Oscillator"""
+    # Simplified calculation
+    typical_prices = (highs + lows + closes) / 3
+    tr = calculate_atr(highs, lows, closes, 1)
+    
+    bp = typical_prices[-1] - min(lows[-period1:])
+    tr_sum = sum(tr[-period1:])
+    
+    uo = (bp / tr_sum) * 100 if tr_sum != 0 else 0
+    return uo
+```
+
+#### **Data Output**
+```json
+{
+  "indicator": "Ultimate_Oscillator",
+  "value": 65.4,
+  "periods": [7, 14, 28],
+  "levels": {
+    "overbought": 70,
+    "oversold": 30
+  },
+  "signals": {
+    "overbought": false,
+    "oversold": false
+  }
+}
+```
+
+#### **API Endpoints**
+```http
+GET /api/v1/mysymbols/{symbol}/indicators/Ultimate_Oscillator
+# Get Ultimate Oscillator value for symbol
+# Query: ?timeframe=1h&period1=7&period2=14&period3=28
+# Returns: Ultimate Oscillator value and signals
+
+POST /api/v1/mysymbols/{symbol}/indicators/Ultimate_Oscillator/update
+# Force update Ultimate Oscillator calculation
+# Body: {"timeframe": "1h", "period1": 7, "period2": 14, "period3": 28}
+# Returns: Updated Ultimate Oscillator value
+```
+
+### **21. Keltner Channel**
+
+#### **Calculation Method**
+```python
+def calculate_keltner_channel(highs, lows, closes, period=20, multiplier=2):
+    """Calculate Keltner Channel"""
+    typical_prices = (highs + lows + closes) / 3
+    atr = calculate_atr(highs, lows, closes, period)
+    
+    middle = np.mean(typical_prices[-period:])
+    upper = middle + (multiplier * atr)
+    lower = middle - (multiplier * atr)
+    
+    return {
+        "upper": upper,
+        "middle": middle,
+        "lower": lower
+    }
+```
+
+#### **Data Output**
+```json
+{
+  "indicator": "Keltner_Channel",
+  "values": {
+    "upper": 43500.0,
+    "middle": 43250.0,
+    "lower": 43000.0
+  },
+  "parameters": {
+    "period": 20,
+    "multiplier": 2
+  },
+  "price_position": "MIDDLE_CHANNEL",
+  "signals": {
+    "breakout": false,
+    "squeeze": false
+  }
+}
+```
+
+#### **API Endpoints**
+```http
+GET /api/v1/mysymbols/{symbol}/indicators/Keltner_Channel
+# Get Keltner Channel values for symbol
+# Query: ?timeframe=1h&period=20&multiplier=2
+# Returns: Upper, middle, lower channel values
+
+POST /api/v1/mysymbols/{symbol}/indicators/Keltner_Channel/update
+# Force update Keltner Channel calculation
+# Body: {"timeframe": "1h", "period": 20, "multiplier": 2}
+# Returns: Updated Keltner Channel values
+```
+
+## Global Indicator Management
+
+### **All Indicators Endpoint**
+```http
+GET /api/v1/mysymbols/{symbol}/indicators/all
+# Get all 21 indicators for a symbol
+# Query: ?timeframe=1h
+# Returns: Complete indicator data for all 21 indicators
+
+GET /api/v1/mysymbols/indicators/all
+# Get all indicators for all symbols
+# Query: ?timeframe=1h
+# Returns: All symbols with all indicators
+
+POST /api/v1/mysymbols/{symbol}/indicators/update/all
+# Force update all indicators for a symbol
+# Body: {"timeframe": "1h"}
+# Returns: Updated values for all 21 indicators
+```
+
+### **Indicator Categories Endpoints**
+```http
+GET /api/v1/mysymbols/{symbol}/indicators/momentum
+# Get all momentum indicators
+# Returns: RSI, Stochastic, Williams %R, ROC, MFI, Ultimate Oscillator
+
+GET /api/v1/mysymbols/{symbol}/indicators/trend
+# Get all trend indicators
+# Returns: MACD, EMA, SMA, ADX, DMI, Parabolic SAR, Aroon, TRIX
+
+GET /api/v1/mysymbols/{symbol}/indicators/volatility
+# Get all volatility indicators
+# Returns: Bollinger Bands, ATR, Keltner Channel
+
+GET /api/v1/mysymbols/{symbol}/indicators/volume
+# Get all volume indicators
+# Returns: OBV, VWAP
+
+GET /api/v1/mysymbols/{symbol}/indicators/other
+# Get other indicators
+# Returns: CCI, Momentum
+```
+
+## Update Frequency & Scheduling
+
+### **Automatic Updates**
+- **Real-time**: Every 1-5 minutes based on timeframe
+- **15m timeframe**: Updates every 15 minutes
+- **1h timeframe**: Updates every hour
+- **4h timeframe**: Updates every 4 hours
+- **1d timeframe**: Updates daily
+
+### **Manual Updates**
+```http
+POST /api/v1/mysymbols/{symbol}/indicators/{indicator}/update
+# Force update specific indicator
+# Body: {"timeframe": "1h", "parameters": {...}}
+# Returns: Updated indicator value
+
+POST /api/v1/mysymbols/{symbol}/indicators/update/batch
+# Force update multiple indicators
+# Body: {"timeframe": "1h", "indicators": ["RSI", "MACD", "BB"]}
+# Returns: Updated values for specified indicators
+```
+
+## Success Criteria
+
+### **Data Accuracy**
+- ✅ Real-time calculation accuracy
+- ✅ Proper parameter validation
+- ✅ Cross-verification with exchange data
+- ✅ Historical data consistency
+
+### **Performance**
+- ✅ Sub-second calculation times
+- ✅ Efficient memory usage
+- ✅ Optimized database queries
+- ✅ Minimal API response times
+
+### **Reliability**
+- ✅ 99.9% calculation uptime
+- ✅ Automatic error recovery
+- ✅ Data validation checks
+- ✅ Backup calculation methods
+
+The 21 Technical Indicators system provides comprehensive technical analysis capabilities with real-time calculations, multiple timeframes, and extensive API access for all trading operations in the ZmartBot platform.
+description:
+globs:
+alwaysApply: false
+---

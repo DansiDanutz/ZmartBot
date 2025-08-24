@@ -1,0 +1,1025 @@
+@agent: SymbolValidator
+
+# MySymbolsDatabase - Core Trading Portfolio Database
+
+## Overview
+**MySymbolsDatabase** is the **central repository** for all trading symbols, market data, indicators, and alerts in the ZmartBot system. This database contains **exclusively the 10 selected symbols** that are actively traded, monitored, and managed by the platform.
+
+## Database Location & Configuration
+- **File Path**: `src/data/my_symbols.db`
+- **Database Type**: SQLite3
+- **Purpose**: Store and manage the core trading portfolio
+- **Max Capacity**: 10 symbols maximum
+- **Real-time Updates**: Continuous data updates from exchanges
+
+## Database Schema & Structure
+
+### **1. Main Symbols Table (`my_symbols`)**
+```sql
+CREATE TABLE my_symbols (
+    id INTEGER PRIMARY KEY,
+    symbol TEXT NOT NULL UNIQUE,
+    exchange_binance BOOLEAN DEFAULT TRUE,
+    exchange_kucoin BOOLEAN DEFAULT TRUE,
+    added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    status TEXT DEFAULT 'ACTIVE',
+    priority INTEGER DEFAULT 0,
+    description TEXT
+);
+```
+
+**Purpose**: Core symbol registry with exchange availability and status tracking
+
+**Contains**:
+- **Symbol ID**: Unique identifier for each symbol
+- **Symbol Name**: Trading symbol (e.g., BTCUSDT, ETHUSDT)
+- **Exchange Flags**: Whether symbol is available on Binance/KuCoin
+- **Timestamps**: When symbol was added and last updated
+- **Status**: ACTIVE, INACTIVE, SUSPENDED
+- **Priority**: Trading priority ranking (0-9)
+- **Description**: Optional symbol description
+
+### **2. Market Prices Table (`symbol_prices`)**
+```sql
+CREATE TABLE symbol_prices (
+    id INTEGER PRIMARY KEY,
+    symbol_id INTEGER,
+    price REAL NOT NULL,
+    change_24h REAL,
+    volume_24h REAL,
+    high_24h REAL,
+    low_24h REAL,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (symbol_id) REFERENCES my_symbols(id)
+);
+```
+
+**Purpose**: Real-time market price data and 24-hour statistics
+
+**Contains**:
+- **Current Price**: Live market price from exchanges
+- **24h Change**: Percentage change over 24 hours
+- **24h Volume**: Trading volume over 24 hours
+- **24h High/Low**: Highest and lowest prices in 24 hours
+- **Timestamp**: When price data was recorded
+- **Cross-Exchange Data**: Aggregated data from Binance and KuCoin
+
+### **3. Technical Indicators Table (`symbol_indicators`)**
+```sql
+CREATE TABLE symbol_indicators (
+    id INTEGER PRIMARY KEY,
+    symbol_id INTEGER,
+    indicator_name TEXT NOT NULL,
+    indicator_value REAL,
+    indicator_data JSON,
+    timeframe TEXT DEFAULT '1h',
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (symbol_id) REFERENCES my_symbols(id)
+);
+```
+
+**Purpose**: Store all 21 technical indicators for each symbol and timeframe
+
+**Contains**:
+- **21 Technical Indicators**: RSI, MACD, Bollinger Bands, EMA, SMA, Stochastic, ATR, CCI, ADX, OBV, VWAP, Williams %R, ROC, MFI, DMI, Parabolic SAR, Aroon, Momentum, TRIX, Ultimate Oscillator, Keltner Channel
+- **Indicator Values**: Calculated numerical values
+- **Indicator Data**: JSON format for complex indicator data
+- **Timeframes**: 15m, 1h, 4h, 1d for each indicator
+- **Update Timestamps**: When each indicator was last calculated
+
+### **4. Alert History Table (`symbol_alerts`)**
+```sql
+CREATE TABLE symbol_alerts (
+    id INTEGER PRIMARY KEY,
+    symbol_id INTEGER,
+    alert_type TEXT NOT NULL,
+    alert_message TEXT,
+    alert_value REAL,
+    triggered_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    acknowledged BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (symbol_id) REFERENCES my_symbols(id)
+);
+```
+
+**Purpose**: Track all alerts triggered for each symbol
+
+**Contains**:
+- **Alert Types**: PRICE_BREAKOUT, INDICATOR_SIGNAL, VOLUME_SPIKE, LIQUIDATION_EVENT, RISK_ALERT, PATTERN_RECOGNITION, CROSS_SIGNAL, WIN_RATIO_UPDATE
+- **Alert Messages**: Detailed alert descriptions
+- **Alert Values**: Numerical values that triggered the alert
+- **Trigger Timestamps**: When alerts were activated
+- **Acknowledgment Status**: Whether alerts have been acknowledged
+
+## Database Contents by Category
+
+### **Symbol Portfolio Data**
+```python
+# Example of what's stored for each symbol
+{
+    "symbol": "BTCUSDT",
+    "exchanges": {
+        "binance": True,
+        "kucoin": True
+    },
+    "status": "ACTIVE",
+    "priority": 1,
+    "added_at": "2024-01-15 10:30:00",
+    "last_updated": "2024-01-15 15:45:00"
+}
+```
+
+### **Real-time Market Data**
+```python
+# Current market data for each symbol
+{
+    "symbol": "BTCUSDT",
+    "current_price": 43250.50,
+    "change_24h": 2.45,
+    "volume_24h": 1250000000,
+    "high_24h": 43500.00,
+    "low_24h": 42800.00,
+    "timestamp": "2024-01-15 15:45:00"
+}
+```
+
+### **Technical Indicators Data**
+```python
+# All 21 indicators for each timeframe
+{
+    "symbol": "BTCUSDT",
+    "timeframe": "1h",
+    "indicators": {
+        "RSI": 65.4,
+        "MACD": {"macd": 125.5, "signal": 120.2, "histogram": 5.3},
+        "BB": {"upper": 43500, "middle": 43250, "lower": 43000},
+        "EMA": {"ema_12": 43200, "ema_26": 43100},
+        "SMA": {"sma_20": 43150, "sma_50": 43000},
+        "STOCH": {"k": 75.2, "d": 72.1},
+        "ATR": 850.5,
+        "CCI": 125.8,
+        "ADX": 28.4,
+        "OBV": 1250000000,
+        "VWAP": 43225.75,
+        "WILLIAMS_R": -25.6,
+        "ROC": 1.2,
+        "MFI": 68.9,
+        "DMI": {"plus_di": 25.4, "minus_di": 18.2},
+        "PARABOLIC_SAR": 42800,
+        "AROON": {"aroon_up": 85.2, "aroon_down": 15.8},
+        "MOMENTUM": 125.5,
+        "TRIX": 0.85,
+        "ULTIMATE_OSCILLATOR": 65.4,
+        "KELTNER_CHANNEL": {"upper": 43500, "middle": 43250, "lower": 43000}
+    }
+}
+```
+
+### **Alert System Data**
+```python
+# Alert history and active alerts
+{
+    "symbol": "BTCUSDT",
+    "alerts": [
+        {
+            "alert_type": "PRICE_BREAKOUT",
+            "message": "BTCUSDT broke above resistance at 43500",
+            "value": 43500,
+            "triggered_at": "2024-01-15 15:30:00",
+            "acknowledged": False
+        },
+        {
+            "alert_type": "INDICATOR_SIGNAL",
+            "message": "RSI crossed above 70 indicating overbought",
+            "value": 70.5,
+            "triggered_at": "2024-01-15 15:25:00",
+            "acknowledged": True
+        }
+    ]
+}
+```
+
+## Dynamic Symbol Management
+
+### **Symbol Operations**
+
+#### **1. Adding New Symbols**
+```python
+class SymbolManager:
+    def add_symbol(self, symbol, exchange, market_type):
+        """Add a new symbol to MySymbolsDatabase"""
+        
+        # Validate symbol format and availability
+        if not self.validate_symbol(symbol, exchange):
+            raise ValueError(f"Invalid symbol {symbol} for {exchange}")
+        
+        # Check if maximum symbols reached
+        current_count = self.get_symbol_count()
+        if current_count >= 10:
+            raise ValueError("Maximum 10 symbols allowed. Remove one before adding.")
+        
+        # Add symbol to database
+        symbol_id = self.insert_symbol(symbol, exchange, market_type)
+        
+        # Trigger system-wide updates
+        self.trigger_symbol_addition_updates(symbol_id, symbol)
+        
+        return symbol_id
+    
+    def trigger_symbol_addition_updates(self, symbol_id, symbol):
+        """Trigger updates across all services when symbol is added"""
+        
+        # Update 21 Indicators Database
+        self.update_21indicators_database(symbol)
+        
+        # Update Live Alerts System
+        self.update_live_alerts_system(symbol)
+        
+        # Update Technical Analysis Services
+        self.update_technical_analysis(symbol)
+        
+        # Update Market Data Collection
+        self.update_market_data_collection(symbol)
+        
+        # Update Frontend Components
+        self.update_frontend_components(symbol)
+        
+        # Update Trading Systems
+        self.update_trading_systems(symbol)
+        
+        # Notify Master Orchestration Agent
+        self.notify_master_orchestration(symbol, 'ADDED')
+```
+
+#### **2. Replacing Symbols**
+```python
+def replace_symbol(self, old_symbol, new_symbol, exchange, market_type):
+    """Replace an existing symbol with a new one"""
+    
+    # Validate new symbol
+    if not self.validate_symbol(new_symbol, exchange):
+        raise ValueError(f"Invalid symbol {new_symbol} for {exchange}")
+    
+    # Get old symbol data
+    old_symbol_data = self.get_symbol_data(old_symbol)
+    
+    # Replace symbol in database
+    new_symbol_id = self.replace_symbol_in_database(old_symbol, new_symbol, exchange, market_type)
+    
+    # Trigger system-wide replacement updates
+    self.trigger_symbol_replacement_updates(old_symbol, new_symbol, old_symbol_data)
+    
+    return new_symbol_id
+
+def trigger_symbol_replacement_updates(self, old_symbol, new_symbol, old_data):
+    """Trigger updates across all services when symbol is replaced"""
+    
+    # Update 21 Indicators Database
+    self.replace_in_21indicators_database(old_symbol, new_symbol)
+    
+    # Update Live Alerts System
+    self.replace_in_live_alerts_system(old_symbol, new_symbol)
+    
+    # Update Technical Analysis Services
+    self.replace_in_technical_analysis(old_symbol, new_symbol)
+    
+    # Update Market Data Collection
+    self.replace_in_market_data_collection(old_symbol, new_symbol)
+    
+    # Update Frontend Components
+    self.replace_in_frontend_components(old_symbol, new_symbol)
+    
+    # Update Trading Systems
+    self.replace_in_trading_systems(old_symbol, new_symbol)
+    
+    # Migrate historical data if needed
+    self.migrate_historical_data(old_symbol, new_symbol)
+    
+    # Notify Master Orchestration Agent
+    self.notify_master_orchestration(new_symbol, 'REPLACED', old_symbol)
+```
+
+#### **3. Deleting Symbols**
+```python
+def delete_symbol(self, symbol):
+    """Delete a symbol from MySymbolsDatabase"""
+    
+    # Get symbol data before deletion
+    symbol_data = self.get_symbol_data(symbol)
+    
+    # Check if symbol exists
+    if not symbol_data:
+        raise ValueError(f"Symbol {symbol} not found in database")
+    
+    # Delete symbol from database
+    self.delete_symbol_from_database(symbol)
+    
+    # Trigger system-wide deletion updates
+    self.trigger_symbol_deletion_updates(symbol, symbol_data)
+    
+    return True
+
+def trigger_symbol_deletion_updates(self, symbol, symbol_data):
+    """Trigger updates across all services when symbol is deleted"""
+    
+    # Update 21 Indicators Database
+    self.remove_from_21indicators_database(symbol)
+    
+    # Update Live Alerts System
+    self.remove_from_live_alerts_system(symbol)
+    
+    # Update Technical Analysis Services
+    self.remove_from_technical_analysis(symbol)
+    
+    # Update Market Data Collection
+    self.remove_from_market_data_collection(symbol)
+    
+    # Update Frontend Components
+    self.remove_from_frontend_components(symbol)
+    
+    # Update Trading Systems
+    self.remove_from_trading_systems(symbol)
+    
+    # Clean up historical data
+    self.cleanup_historical_data(symbol)
+    
+    # Notify Master Orchestration Agent
+    self.notify_master_orchestration(symbol, 'DELETED')
+```
+
+### **Service Impact Management**
+
+#### **1. 21 Indicators Database Updates**
+```python
+def update_21indicators_database(self, symbol):
+    """Update 21 Indicators Database when symbol changes"""
+    
+    # Add symbol to indicator snapshots
+    self.add_symbol_to_indicator_snapshots(symbol)
+    
+    # Initialize all 21 indicators for new symbol
+    for indicator in self.get_all_indicators():
+        self.initialize_indicator_for_symbol(symbol, indicator)
+    
+    # Update pattern analysis tables
+    self.add_symbol_to_pattern_analysis(symbol)
+    
+    # Update indicator history tracking
+    self.add_symbol_to_indicator_history(symbol)
+    
+    # Notify 21 Indicators Service
+    self.notify_21indicators_service(symbol, 'ADDED')
+
+def replace_in_21indicators_database(self, old_symbol, new_symbol):
+    """Replace symbol in 21 Indicators Database"""
+    
+    # Update symbol references in all tables
+    self.update_symbol_references(old_symbol, new_symbol)
+    
+    # Migrate indicator data
+    self.migrate_indicator_data(old_symbol, new_symbol)
+    
+    # Update pattern analysis
+    self.update_pattern_analysis_symbol(old_symbol, new_symbol)
+    
+    # Notify 21 Indicators Service
+    self.notify_21indicators_service(new_symbol, 'REPLACED', old_symbol)
+
+def remove_from_21indicators_database(self, symbol):
+    """Remove symbol from 21 Indicators Database"""
+    
+    # Remove from indicator snapshots
+    self.remove_symbol_from_indicator_snapshots(symbol)
+    
+    # Remove from pattern analysis
+    self.remove_symbol_from_pattern_analysis(symbol)
+    
+    # Clean up indicator history
+    self.cleanup_indicator_history(symbol)
+    
+    # Notify 21 Indicators Service
+    self.notify_21indicators_service(symbol, 'DELETED')
+```
+
+#### **2. Live Alerts System Updates**
+```python
+def update_live_alerts_system(self, symbol):
+    """Update Live Alerts System when symbol changes"""
+    
+    # Add symbol to alert monitoring
+    self.add_symbol_to_alert_monitoring(symbol)
+    
+    # Initialize alert triggers for new symbol
+    self.initialize_alert_triggers(symbol)
+    
+    # Add to Messi, Pele, Maradona, Whale alert systems
+    self.add_symbol_to_special_alerts(symbol)
+    
+    # Update alert history tracking
+    self.add_symbol_to_alert_history(symbol)
+    
+    # Notify Live Alerts Service
+    self.notify_live_alerts_service(symbol, 'ADDED')
+
+def replace_in_live_alerts_system(self, old_symbol, new_symbol):
+    """Replace symbol in Live Alerts System"""
+    
+    # Update alert monitoring
+    self.replace_symbol_in_alert_monitoring(old_symbol, new_symbol)
+    
+    # Migrate alert triggers
+    self.migrate_alert_triggers(old_symbol, new_symbol)
+    
+    # Update special alerts systems
+    self.replace_in_special_alerts(old_symbol, new_symbol)
+    
+    # Migrate alert history
+    self.migrate_alert_history(old_symbol, new_symbol)
+    
+    # Notify Live Alerts Service
+    self.notify_live_alerts_service(new_symbol, 'REPLACED', old_symbol)
+
+def remove_from_live_alerts_system(self, symbol):
+    """Remove symbol from Live Alerts System"""
+    
+    # Remove from alert monitoring
+    self.remove_symbol_from_alert_monitoring(symbol)
+    
+    # Clean up alert triggers
+    self.cleanup_alert_triggers(symbol)
+    
+    # Remove from special alerts
+    self.remove_from_special_alerts(symbol)
+    
+    # Clean up alert history
+    self.cleanup_alert_history(symbol)
+    
+    # Notify Live Alerts Service
+    self.notify_live_alerts_service(symbol, 'DELETED')
+```
+
+#### **3. Frontend Component Updates**
+```python
+def update_frontend_components(self, symbol):
+    """Update Frontend Components when symbol changes"""
+    
+    # Add symbol card to dashboard
+    self.add_symbol_card_to_frontend(symbol)
+    
+    # Initialize indicator cards for new symbol
+    self.initialize_indicator_cards(symbol)
+    
+    # Update symbol list in UI
+    self.update_symbol_list_ui(symbol, 'ADD')
+    
+    # Update market sentiment calculations
+    self.update_market_sentiment_calculations(symbol)
+    
+    # Update win rate ratio calculations
+    self.update_win_rate_calculations(symbol)
+    
+    # Notify Frontend Service
+    self.notify_frontend_service(symbol, 'ADDED')
+
+def replace_in_frontend_components(self, old_symbol, new_symbol):
+    """Replace symbol in Frontend Components"""
+    
+    # Replace symbol card
+    self.replace_symbol_card(old_symbol, new_symbol)
+    
+    # Update indicator cards
+    self.replace_indicator_cards(old_symbol, new_symbol)
+    
+    # Update symbol list in UI
+    self.update_symbol_list_ui(new_symbol, 'REPLACE', old_symbol)
+    
+    # Update market sentiment
+    self.replace_market_sentiment(old_symbol, new_symbol)
+    
+    # Update win rate ratio
+    self.replace_win_rate_ratio(old_symbol, new_symbol)
+    
+    # Notify Frontend Service
+    self.notify_frontend_service(new_symbol, 'REPLACED', old_symbol)
+
+def remove_from_frontend_components(self, symbol):
+    """Remove symbol from Frontend Components"""
+    
+    # Remove symbol card
+    self.remove_symbol_card(symbol)
+    
+    # Remove indicator cards
+    self.remove_indicator_cards(symbol)
+    
+    # Update symbol list in UI
+    self.update_symbol_list_ui(symbol, 'REMOVE')
+    
+    # Update market sentiment calculations
+    self.remove_from_market_sentiment(symbol)
+    
+    # Update win rate ratio calculations
+    self.remove_from_win_rate_ratio(symbol)
+    
+    # Notify Frontend Service
+    self.notify_frontend_service(symbol, 'DELETED')
+```
+
+#### **4. Trading System Updates**
+```python
+def update_trading_systems(self, symbol):
+    """Update Trading Systems when symbol changes"""
+    
+    # Add symbol to trading portfolio
+    self.add_symbol_to_trading_portfolio(symbol)
+    
+    # Initialize position tracking
+    self.initialize_position_tracking(symbol)
+    
+    # Add to risk management system
+    self.add_symbol_to_risk_management(symbol)
+    
+    # Update trading signals
+    self.add_symbol_to_trading_signals(symbol)
+    
+    # Notify Trading Service
+    self.notify_trading_service(symbol, 'ADDED')
+
+def replace_in_trading_systems(self, old_symbol, new_symbol):
+    """Replace symbol in Trading Systems"""
+    
+    # Update trading portfolio
+    self.replace_in_trading_portfolio(old_symbol, new_symbol)
+    
+    # Migrate position tracking
+    self.migrate_position_tracking(old_symbol, new_symbol)
+    
+    # Update risk management
+    self.replace_in_risk_management(old_symbol, new_symbol)
+    
+    # Update trading signals
+    self.replace_in_trading_signals(old_symbol, new_symbol)
+    
+    # Notify Trading Service
+    self.notify_trading_service(new_symbol, 'REPLACED', old_symbol)
+
+def remove_from_trading_systems(self, symbol):
+    """Remove symbol from Trading Systems"""
+    
+    # Remove from trading portfolio
+    self.remove_from_trading_portfolio(symbol)
+    
+    # Clean up position tracking
+    self.cleanup_position_tracking(symbol)
+    
+    # Remove from risk management
+    self.remove_from_risk_management(symbol)
+    
+    # Remove from trading signals
+    self.remove_from_trading_signals(symbol)
+    
+    # Notify Trading Service
+    self.notify_trading_service(symbol, 'DELETED')
+```
+
+### **Master Orchestration Integration**
+
+#### **Symbol Change Notifications**
+```python
+def notify_master_orchestration(self, symbol, action, old_symbol=None):
+    """Notify Master Orchestration Agent of symbol changes"""
+    
+    notification = {
+        'action': action,  # 'ADDED', 'REPLACED', 'DELETED'
+        'symbol': symbol,
+        'old_symbol': old_symbol,
+        'timestamp': datetime.now(),
+        'services_affected': [
+            '21indicators_database',
+            'live_alerts_system',
+            'technical_analysis',
+            'market_data_collection',
+            'frontend_components',
+            'trading_systems'
+        ],
+        'requires_restart': action in ['REPLACED', 'DELETED']
+    }
+    
+    # Send notification to Master Orchestration Agent
+    self.send_to_master_orchestration(notification)
+    
+    # Log symbol change for audit
+    self.log_symbol_change(notification)
+```
+
+### **Impact Assessment**
+
+#### **Service Dependencies**
+When symbols are added, replaced, or deleted, the following services are **automatically updated**:
+
+1. **21 Indicators Database**: All indicator calculations and historical data
+2. **Live Alerts System**: All alert monitoring and trigger systems
+3. **Technical Analysis Services**: All analysis and pattern recognition
+4. **Market Data Collection**: Real-time price and volume data
+5. **Frontend Components**: All UI elements and visualizations
+6. **Trading Systems**: Portfolio management and risk controls
+7. **Master Orchestration Agent**: System-wide coordination
+
+#### **Performance Impact**
+- **Adding Symbols**: Minimal impact, services initialize new data structures
+- **Replacing Symbols**: Moderate impact, requires data migration and service updates
+- **Deleting Symbols**: Moderate impact, requires cleanup and service reconfiguration
+
+#### **Data Integrity**
+- **Automatic Validation**: All symbol changes are validated before processing
+- **Rollback Capability**: Failed operations can be rolled back
+- **Data Migration**: Historical data is preserved and migrated when replacing symbols
+- **Service Synchronization**: All services are synchronized to prevent data inconsistencies
+
+## Database Operations & Queries
+
+### **Symbol Management Queries**
+```sql
+-- Get all active symbols
+SELECT symbol, priority, status, last_updated 
+FROM my_symbols 
+WHERE status = 'ACTIVE' 
+ORDER BY priority DESC;
+
+-- Check symbol count
+SELECT COUNT(*) as symbol_count 
+FROM my_symbols 
+WHERE status = 'ACTIVE';
+
+-- Get symbol with all data
+SELECT m.symbol, p.price, p.change_24h, p.volume_24h
+FROM my_symbols m
+JOIN symbol_prices p ON m.id = p.symbol_id
+WHERE m.symbol = 'BTCUSDT'
+ORDER BY p.timestamp DESC LIMIT 1;
+```
+
+### **Indicator Queries**
+```sql
+-- Get all indicators for a symbol and timeframe
+SELECT indicator_name, indicator_value, timestamp
+FROM symbol_indicators
+WHERE symbol_id = (SELECT id FROM my_symbols WHERE symbol = 'BTCUSDT')
+AND timeframe = '1h'
+ORDER BY timestamp DESC;
+
+-- Get latest indicator values
+SELECT indicator_name, indicator_value
+FROM symbol_indicators si
+JOIN my_symbols m ON si.symbol_id = m.id
+WHERE m.symbol = 'BTCUSDT'
+AND si.timestamp = (
+    SELECT MAX(timestamp) 
+    FROM symbol_indicators 
+    WHERE symbol_id = si.symbol_id
+);
+```
+
+### **Alert Queries**
+```sql
+-- Get unacknowledged alerts
+SELECT m.symbol, sa.alert_type, sa.alert_message, sa.triggered_at
+FROM symbol_alerts sa
+JOIN my_symbols m ON sa.symbol_id = m.id
+WHERE sa.acknowledged = FALSE
+ORDER BY sa.triggered_at DESC;
+
+-- Get alert history for a symbol
+SELECT alert_type, alert_message, alert_value, triggered_at
+FROM symbol_alerts sa
+JOIN my_symbols m ON sa.symbol_id = m.id
+WHERE m.symbol = 'BTCUSDT'
+ORDER BY triggered_at DESC;
+```
+
+## Database Update Frequency
+
+### **Real-time Updates**
+- **Market Prices**: Every 1-5 seconds from exchanges
+- **Technical Indicators**: Every 1-5 minutes based on timeframe
+- **Alerts**: Instant when conditions are met
+- **Symbol Status**: Real-time as changes occur
+
+### **Batch Updates**
+- **Historical Data**: Daily backups and archiving
+- **Performance Optimization**: Weekly database optimization
+- **Data Cleanup**: Monthly cleanup of old records
+- **Backup**: Daily automated backups
+
+## Database Integration Points
+
+### **With Frontend (Port 3400)**
+- **Symbol Cards**: Display current prices and indicators
+- **Alert Center**: Show active and historical alerts
+- **Portfolio Overview**: Real-time portfolio status
+- **Chart Data**: Technical analysis data for charts
+
+### **With Backend API (Port 8000)**
+- **Data Retrieval**: Fetch symbol data for API endpoints
+- **Order Management**: Symbol validation for trading
+- **Alert System**: Store and retrieve alert data
+- **Market Data**: Provide real-time market information
+
+### **With Orchestration System**
+- **Data Synchronization**: Ensure data consistency across services
+- **Alert Processing**: Process and store alert triggers
+- **Indicator Calculations**: Store calculated indicator values
+- **Portfolio Management**: Track symbol portfolio status
+
+## API Access to Database
+
+### **Database Access via API Calls**
+The MySymbolsDatabase can be accessed **exclusively through API calls** to the Backend API (Port 8000). All database operations are performed through RESTful API endpoints that provide secure, validated access to the database contents.
+
+### **API Endpoints for Database Access**
+
+#### **Symbol Management Endpoints**
+```http
+GET /api/v1/mysymbols
+# Get all MySymbols with current data
+# Returns: List of all 10 symbols with prices, indicators, alerts
+
+GET /api/v1/mysymbols/{symbol}
+# Get specific symbol data
+# Returns: Complete data for one symbol
+
+POST /api/v1/mysymbols
+# Add new symbol to MySymbols
+# Body: {"symbol": "BTCUSDT", "priority": 1, "description": "Bitcoin"}
+
+DELETE /api/v1/mysymbols/{symbol}
+# Remove symbol from MySymbols
+# Returns: Success confirmation
+
+PUT /api/v1/mysymbols/{symbol}
+# Update symbol data
+# Body: {"priority": 2, "description": "Updated description"}
+```
+
+#### **Market Data Endpoints**
+```http
+GET /api/v1/mysymbols/{symbol}/price
+# Get current market price data
+# Returns: {"price": 43250.50, "change_24h": 2.45, "volume_24h": 1250000000}
+
+GET /api/v1/mysymbols/{symbol}/prices/history
+# Get historical price data
+# Query: ?timeframe=1h&limit=100
+# Returns: Array of historical prices
+
+GET /api/v1/mysymbols/prices/all
+# Get prices for all MySymbols
+# Returns: All symbols with current prices
+```
+
+#### **Technical Indicators Endpoints**
+```http
+GET /api/v1/mysymbols/{symbol}/indicators
+# Get all 21 indicators for a symbol
+# Query: ?timeframe=1h
+# Returns: All indicators with values
+
+GET /api/v1/mysymbols/{symbol}/indicators/{indicator}
+# Get specific indicator data
+# Example: /api/v1/mysymbols/BTCUSDT/indicators/RSI?timeframe=1h
+# Returns: RSI value and data
+
+GET /api/v1/mysymbols/indicators/all
+# Get all indicators for all symbols
+# Query: ?timeframe=1h
+# Returns: All symbols with all indicators
+```
+
+#### **Alert System Endpoints**
+```http
+GET /api/v1/mysymbols/{symbol}/alerts
+# Get alerts for a specific symbol
+# Query: ?acknowledged=false&limit=50
+# Returns: Alert history for symbol
+
+GET /api/v1/mysymbols/alerts/all
+# Get all alerts for all symbols
+# Query: ?type=PRICE_BREAKOUT&acknowledged=false
+# Returns: All active alerts
+
+POST /api/v1/mysymbols/{symbol}/alerts/{alert_id}/acknowledge
+# Acknowledge an alert
+# Returns: Success confirmation
+
+GET /api/v1/mysymbols/alerts/active
+# Get all unacknowledged alerts
+# Returns: All active alerts across all symbols
+```
+
+#### **Portfolio Management Endpoints**
+```http
+GET /api/v1/mysymbols/portfolio
+# Get complete portfolio overview
+# Returns: All symbols with prices, indicators, alerts, risk scores
+
+GET /api/v1/mysymbols/portfolio/summary
+# Get portfolio summary statistics
+# Returns: Total value, performance, risk metrics
+
+GET /api/v1/mysymbols/portfolio/performance
+# Get performance data for all symbols
+# Query: ?timeframe=24h
+# Returns: Performance metrics for all symbols
+```
+
+### **API Response Formats**
+
+#### **Symbol Data Response**
+```json
+{
+  "symbol": "BTCUSDT",
+  "exchanges": {
+    "binance": true,
+    "kucoin": true
+  },
+  "status": "ACTIVE",
+  "priority": 1,
+  "current_price": {
+    "price": 43250.50,
+    "change_24h": 2.45,
+    "volume_24h": 1250000000,
+    "high_24h": 43500.00,
+    "low_24h": 42800.00,
+    "timestamp": "2024-01-15T15:45:00Z"
+  },
+  "indicators": {
+    "1h": {
+      "RSI": 65.4,
+      "MACD": {"macd": 125.5, "signal": 120.2, "histogram": 5.3},
+      "BB": {"upper": 43500, "middle": 43250, "lower": 43000}
+    },
+    "4h": {
+      "RSI": 58.2,
+      "MACD": {"macd": 110.5, "signal": 115.2, "histogram": -4.7}
+    }
+  },
+  "alerts": [
+    {
+      "id": 123,
+      "type": "PRICE_BREAKOUT",
+      "message": "BTCUSDT broke above resistance at 43500",
+      "value": 43500,
+      "triggered_at": "2024-01-15T15:30:00Z",
+      "acknowledged": false
+    }
+  ],
+  "risk_score": 7.5,
+  "last_updated": "2024-01-15T15:45:00Z"
+}
+```
+
+#### **Portfolio Response**
+```json
+{
+  "total_symbols": 10,
+  "active_symbols": 10,
+  "total_value": 1250000.50,
+  "total_change_24h": 2.15,
+  "risk_level": "MEDIUM",
+  "symbols": [
+    {
+      "symbol": "BTCUSDT",
+      "price": 43250.50,
+      "change_24h": 2.45,
+      "risk_score": 7.5,
+      "alerts_count": 2
+    }
+  ],
+  "performance": {
+    "best_performer": "ETHUSDT",
+    "worst_performer": "ADAUSDT",
+    "avg_change_24h": 1.85
+  }
+}
+```
+
+### **API Security & Access Control**
+
+#### **Authentication**
+- **API Key Required**: All database access requires valid API key
+- **Rate Limiting**: Prevents excessive API calls
+- **Request Validation**: All inputs validated before database access
+
+#### **Data Validation**
+- **Input Sanitization**: All API inputs sanitized
+- **Symbol Validation**: Ensures symbols exist in MySymbols
+- **Timeframe Validation**: Validates timeframe parameters
+- **Permission Checks**: Verifies access permissions
+
+#### **Error Handling**
+```json
+{
+  "error": "SYMBOL_NOT_FOUND",
+  "message": "Symbol BTCUSDT not found in MySymbols",
+  "status_code": 404,
+  "timestamp": "2024-01-15T15:45:00Z"
+}
+```
+
+### **API Usage Examples**
+
+#### **Frontend Integration**
+```javascript
+// Get all MySymbols for dashboard
+const response = await fetch('/api/v1/mysymbols');
+const symbols = await response.json();
+
+// Get specific symbol data
+const symbolData = await fetch('/api/v1/mysymbols/BTCUSDT');
+const btcData = await symbolData.json();
+
+// Get alerts for symbol
+const alerts = await fetch('/api/v1/mysymbols/BTCUSDT/alerts?acknowledged=false');
+const activeAlerts = await alerts.json();
+```
+
+#### **Real-time Updates**
+```javascript
+// Poll for price updates
+setInterval(async () => {
+  const prices = await fetch('/api/v1/mysymbols/prices/all');
+  const currentPrices = await prices.json();
+  updateDashboard(prices);
+}, 5000);
+
+// Check for new alerts
+setInterval(async () => {
+  const alerts = await fetch('/api/v1/mysymbols/alerts/active');
+  const newAlerts = await alerts.json();
+  if (newAlerts.length > 0) {
+    showAlerts(newAlerts);
+  }
+}, 10000);
+```
+
+### **Database Access Workflow**
+
+1. **Client Request**: Frontend or external service makes API call
+2. **API Validation**: Backend validates request and permissions
+3. **Database Query**: API executes appropriate database query
+4. **Data Processing**: Results processed and formatted
+5. **Response**: Formatted data returned to client
+6. **Logging**: All access logged for monitoring and security
+
+The API-based access ensures **secure, controlled, and validated** access to the MySymbolsDatabase, preventing direct database manipulation and maintaining data integrity across all system components.
+
+## Database Security & Integrity
+
+### **Data Validation**
+- **Symbol Validation**: Ensure symbols exist on exchanges
+- **Price Validation**: Validate price data against exchange feeds
+- **Indicator Validation**: Verify indicator calculations
+- **Alert Validation**: Validate alert conditions and data
+
+### **Data Integrity**
+- **Foreign Key Constraints**: Maintain referential integrity
+- **Unique Constraints**: Prevent duplicate symbol entries
+- **Timestamp Tracking**: Track all data modifications
+- **Backup & Recovery**: Regular backups and recovery procedures
+
+### **Access Control**
+- **Read Access**: Frontend and API services
+- **Write Access**: Market data services and alert system
+- **Admin Access**: Symbol management operations
+- **Backup Access**: Automated backup processes
+
+## Success Criteria
+
+### **Data Accuracy**
+- ✅ Real-time price data from exchanges
+- ✅ Accurate technical indicator calculations
+- ✅ Reliable alert trigger conditions
+- ✅ Consistent cross-exchange data
+
+### **Performance**
+- ✅ Sub-second query response times
+- ✅ Efficient data storage and retrieval
+- ✅ Optimized database operations
+- ✅ Minimal resource usage
+
+### **Reliability**
+- ✅ 99.9% database uptime
+- ✅ Automatic backup and recovery
+- ✅ Data integrity maintenance
+- ✅ Error handling and logging
+
+### **Scalability**
+- ✅ Support for 10 symbols maximum
+- ✅ Efficient data growth management
+- ✅ Optimized query performance
+- ✅ Resource usage optimization
+
+The MySymbolsDatabase serves as the **single source of truth** for all trading symbol data, ensuring that only the selected 10 symbols are actively traded and monitored with comprehensive market data, technical indicators, and alert history.
+description:
+globs:
+alwaysApply: false
+---

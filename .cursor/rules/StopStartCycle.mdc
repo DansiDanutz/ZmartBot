@@ -1,0 +1,90 @@
+# StopStartCycle.mdc
+> Purpose: Controlled, idempotent transition from development to registered service.
+
+## Preconditions
+- `service.yaml` present and validated
+- Port assigned and persisted in PortManager DB
+- Local health checks pass
+
+## Step 3 — STOP Gate (`STOP_zmartbot.sh`)  **CRITICAL**
+1. Freeze discovery watcher.
+2. Validate `/health` across current services.
+3. Create system snapshot (DB, registry, graph, logs, PIDs).
+4. Run Process Reaper for ZmartBot scope only.
+5. Confirm port assignment for new service is persisted.
+
+**Command**
+```bash
+bash infra/scripts/STOP_zmartbot.sh \
+  --db "/Users/dansidanutz/Desktop/ZmartBot/infra/port_manager.db" \
+  --snapshot-dir "/Users/dansidanutz/Desktop/ZmartBot/infra/snapshots" \
+  --scope "zmart-*"
+```
+
+## Step 4 — Service Registry Registration (8610)
+
+**Command**
+
+```bash
+python -m infra.registry_client.register \
+  --registry "http://localhost:8610" \
+  --manifest "/Users/dansidanutz/Desktop/ZmartBot/services/{{SERVICE_NAME}}/service.yaml" \
+  --port-db "/Users/dansidanutz/Desktop/ZmartBot/infra/port_manager.db"
+```
+
+## Step 5 — MDC Documentation Generation (AI)
+
+**Command**
+
+```bash
+python -m infra.mdc_agent.generate \
+  --service "{{SERVICE_NAME}}" \
+  --manifest "/Users/dansidanutz/Desktop/ZmartBot/services/{{SERVICE_NAME}}/service.yaml" \
+  --output ".cursor/rules/services/{{SERVICE_NAME}}.mdc" \
+  --llm "gpt5,fallback=gpt4"
+```
+
+## Step 6A — Orchestration (Basic)
+
+**Command**
+
+```bash
+bash infra/orchestration/orchestrationstart.sh add "{{SERVICE_NAME}}"
+```
+
+## Step 7 — Health & Readiness Verification
+
+**Command**
+
+```bash
+bash infra/orchestration/orchestrationstart.sh start "{{SERVICE_NAME}}"
+python -m infra.health.wait_ready --service "{{SERVICE_NAME}}" --timeout 60
+python -m infra.tests.smoke --service "{{SERVICE_NAME}}"
+```
+
+## Step 8 — Production Activation
+
+**Command**
+
+```bash
+python -m infra.orchestrator.activate --service "{{SERVICE_NAME}}"
+python -m infra.snapshot.update-baseline --service "{{SERVICE_NAME}}"
+```
+
+## Rollback
+
+If any step fails:
+
+```bash
+python -m infra.orchestrator.isolate --service "{{SERVICE_NAME}}" || true
+python -m infra.snapshot.restore --latest-success
+python -m infra.discovery.unfreeze
+exit 1
+```
+
+## Success Criteria
+
+* Service listed in Registry with correct metadata
+* `/ready` returns 200; smoke tests pass
+* Snapshot baseline updated
+* Orchestrator shows the service in the active graph

@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Symbols Cards Demo</title>
+    <link rel="stylesheet" href="/assets/index-FvA21pyf.css">
+    <link rel="stylesheet" href="/symbols-enhanced-v2.css">
+    <style>
+        body {
+            background: #0a0a0a;
+            padding: 20px;
+        }
+        .demo-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .demo-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .demo-title {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        .demo-subtitle {
+            color: #a1a1aa;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <div class="demo-header">
+            <h1 class="demo-title">Enhanced Symbol Cards</h1>
+            <p class="demo-subtitle">Select symbols from different exchanges to add to your watchlist</p>
+        </div>
+
+        <div class="exchange-cards-container">
+            <!-- KuCoin Card -->
+            <div class="exchange-card kucoin">
+                <div class="exchange-card-header">
+                    <div class="exchange-logo">
+                        <div class="exchange-icon">K</div>
+                        <div class="exchange-name">KuCoin</div>
+                    </div>
+                    <div class="exchange-status">
+                        <span class="status-dot"></span>
+                        <span>Connected</span>
+                    </div>
+                </div>
+
+                <div class="symbol-selection-area">
+                    <div class="selection-controls">
+                        <div class="control-group">
+                            <label class="control-label">Symbol Type</label>
+                            <div class="enhanced-dropdown">
+                                <select class="dropdown-select-enhanced" id="kucoin-type">
+                                    <option value="all">All Futures</option>
+                                    <option value="btc">BTC Pairs</option>
+                                    <option value="eth">ETH Pairs</option>
+                                    <option value="usdt">USDT Perpetuals</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">Search</label>
+                            <input type="text" class="search-input-enhanced" placeholder="Search symbols..." id="kucoin-search">
+                        </div>
+                    </div>
+
+                    <div class="symbols-grid-enhanced" id="kucoin-symbols">
+                        <button class="symbol-button">BTCUSDT</button>
+                        <button class="symbol-button">ETHUSDT</button>
+                        <button class="symbol-button">SOLUSDT</button>
+                        <button class="symbol-button">AVAXUSDT</button>
+                        <button class="symbol-button">ADAUSDT</button>
+                        <button class="symbol-button">DOTUSDT</button>
+                        <button class="symbol-button">MATICUSDT</button>
+                        <button class="symbol-button">LINKUSDT</button>
+                        <button class="symbol-button">UNIUSDT</button>
+                        <button class="symbol-button">ATOMUSDT</button>
+                        <button class="symbol-button">XLMUSDT</button>
+                        <button class="symbol-button">VETUSDT</button>
+                    </div>
+
+                    <div class="exchange-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">247</div>
+                            <div class="stat-label">Total Pairs</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">12</div>
+                            <div class="stat-label">Selected</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">$2.5B</div>
+                            <div class="stat-label">24h Volume</div>
+                        </div>
+                    </div>
+
+                    <div class="exchange-actions">
+                        <button class="action-button secondary">Clear All</button>
+                        <button class="action-button primary">Add Selected</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Binance Card -->
+            <div class="exchange-card binance">
+                <div class="exchange-card-header">
+                    <div class="exchange-logo">
+                        <div class="exchange-icon">B</div>
+                        <div class="exchange-name">Binance</div>
+                    </div>
+                    <div class="exchange-status">
+                        <span class="status-dot"></span>
+                        <span>Connected</span>
+                    </div>
+                </div>
+
+                <div class="symbol-selection-area">
+                    <div class="selection-controls">
+                        <div class="control-group">
+                            <label class="control-label">Symbol Type</label>
+                            <div class="enhanced-dropdown">
+                                <select class="dropdown-select-enhanced" id="binance-type">
+                                    <option value="all">All Futures</option>
+                                    <option value="perp">Perpetuals</option>
+                                    <option value="quarterly">Quarterly</option>
+                                    <option value="top">Top Volume</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">Search</label>
+                            <input type="text" class="search-input-enhanced" placeholder="Search symbols..." id="binance-search">
+                        </div>
+                    </div>
+
+                    <div class="symbols-grid-enhanced" id="binance-symbols">
+                        <button class="symbol-button selected">BTCUSDT</button>
+                        <button class="symbol-button selected">ETHUSDT</button>
+                        <button class="symbol-button">BNBUSDT</button>
+                        <button class="symbol-button">XRPUSDT</button>
+                        <button class="symbol-button">DOGEUSDT</button>
+                        <button class="symbol-button">SHIBUSDT</button>
+                        <button class="symbol-button">LTCUSDT</button>
+                        <button class="symbol-button">TRXUSDT</button>
+                        <button class="symbol-button">AVAXUSDT</button>
+                        <button class="symbol-button">FTMUSDT</button>
+                        <button class="symbol-button">NEARUSDT</button>
+                        <button class="symbol-button">APTUSDT</button>
+                    </div>
+
+                    <div class="exchange-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">312</div>
+                            <div class="stat-label">Total Pairs</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">2</div>
+                            <div class="stat-label">Selected</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">$12.8B</div>
+                            <div class="stat-label">24h Volume</div>
+                        </div>
+                    </div>
+
+                    <div class="exchange-actions">
+                        <button class="action-button secondary">Clear All</button>
+                        <button class="action-button primary">Add Selected</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Both Exchanges (Common) Card -->
+            <div class="exchange-card both">
+                <div class="exchange-card-header">
+                    <div class="exchange-logo">
+                        <div class="exchange-icon">⚡</div>
+                        <div class="exchange-name">Both Exchanges</div>
+                    </div>
+                    <div class="exchange-status">
+                        <span class="status-dot"></span>
+                        <span>Ready</span>
+                    </div>
+                </div>
+
+                <div class="symbol-selection-area">
+                    <div class="selection-controls">
+                        <div class="control-group">
+                            <label class="control-label">Common Pairs</label>
+                            <div class="enhanced-dropdown">
+                                <select class="dropdown-select-enhanced" id="both-type">
+                                    <option value="all">All Common</option>
+                                    <option value="major">Major Coins</option>
+                                    <option value="defi">DeFi Tokens</option>
+                                    <option value="layer1">Layer 1s</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">Search</label>
+                            <input type="text" class="search-input-enhanced" placeholder="Search symbols..." id="both-search">
+                        </div>
+                    </div>
+
+                    <div class="symbols-grid-enhanced" id="both-symbols">
+                        <button class="symbol-button">BTCUSDT</button>
+                        <button class="symbol-button">ETHUSDT</button>
+                        <button class="symbol-button">SOLUSDT</button>
+                        <button class="symbol-button">AVAXUSDT</button>
+                        <button class="symbol-button">ADAUSDT</button>
+                        <button class="symbol-button">DOTUSDT</button>
+                        <button class="symbol-button">MATICUSDT</button>
+                        <button class="symbol-button">LINKUSDT</button>
+                    </div>
+
+                    <div class="exchange-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">186</div>
+                            <div class="stat-label">Common Pairs</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">0</div>
+                            <div class="stat-label">Selected</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">Best</div>
+                            <div class="stat-label">Liquidity</div>
+                        </div>
+                    </div>
+
+                    <div class="exchange-actions">
+                        <button class="action-button secondary">Clear All</button>
+                        <button class="action-button primary">Add Selected</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- All Symbols Card -->
+            <div class="exchange-card all-symbols">
+                <div class="exchange-card-header">
+                    <div class="exchange-logo">
+                        <div class="exchange-icon">★</div>
+                        <div class="exchange-name">All Symbols</div>
+                    </div>
+                    <div class="exchange-status">
+                        <span class="status-dot"></span>
+                        <span>Quick Add</span>
+                    </div>
+                </div>
+
+                <div class="all-symbols-info">
+                    <div class="all-symbols-title">Add All Available Symbols</div>
+                    <div class="all-symbols-description">
+                        Instantly add all available trading pairs from both KuCoin and Binance to your watchlist. 
+                        This includes 500+ futures pairs with real-time monitoring.
+                    </div>
+                </div>
+
+                <div class="symbol-selection-area">
+                    <div class="selection-controls">
+                        <div class="control-group">
+                            <label class="control-label">Quick Selection</label>
+                            <div class="enhanced-dropdown">
+                                <select class="dropdown-select-enhanced" id="all-type">
+                                    <option value="all">All Symbols (500+)</option>
+                                    <option value="top50">Top 50 by Volume</option>
+                                    <option value="top100">Top 100 by Volume</option>
+                                    <option value="majors">Major Coins Only (20)</option>
+                                    <option value="defi">All DeFi (120+)</option>
+                                    <option value="layer1">All Layer 1s (40+)</option>
+                                    <option value="memes">Meme Coins (30+)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="quick-add-all" onclick="addAllSymbols()">
+                        <svg class="quick-add-all-icon" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"/>
+                        </svg>
+                        Add All Selected Symbols
+                    </button>
+
+                    <div class="exchange-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">559</div>
+                            <div class="stat-label">Total Available</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">2</div>
+                            <div class="stat-label">Exchanges</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">Real-time</div>
+                            <div class="stat-label">Updates</div>
+                        </div>
+                    </div>
+
+                    <div class="exchange-actions">
+                        <button class="action-button secondary">View List</button>
+                        <button class="action-button primary">Configure</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add interactivity to symbol buttons
+        document.querySelectorAll('.symbol-button').forEach(button => {
+            button.addEventListener('click', function() {
+                this.classList.toggle('selected');
+                updateStats(this.closest('.exchange-card'));
+            });
+        });
+
+        // Update statistics when symbols are selected
+        function updateStats(card) {
+            const selected = card.querySelectorAll('.symbol-button.selected').length;
+            const statValue = card.querySelector('.stat-item:nth-child(2) .stat-value');
+            if (statValue) {
+                statValue.textContent = selected;
+            }
+        }
+
+        // Search functionality
+        document.querySelectorAll('.search-input-enhanced').forEach(input => {
+            input.addEventListener('input', function(e) {
+                const searchTerm = e.target.value.toLowerCase();
+                const card = this.closest('.exchange-card');
+                const symbols = card.querySelectorAll('.symbol-button');
+                
+                symbols.forEach(symbol => {
+                    const text = symbol.textContent.toLowerCase();
+                    symbol.style.display = text.includes(searchTerm) ? '' : 'none';
+                });
+            });
+        });
+
+        // Add all symbols function
+        function addAllSymbols() {
+            const selectValue = document.getElementById('all-type').value;
+            console.log('Adding symbols:', selectValue);
+            
+            // Show loading state
+            const button = document.querySelector('.quick-add-all');
+            const originalText = button.innerHTML;
+            button.innerHTML = '<div class="loading-spinner"></div> Adding symbols...';
+            button.disabled = true;
+            
+            // Simulate API call
+            setTimeout(() => {
+                button.innerHTML = originalText;
+                button.disabled = false;
+                alert(`Successfully added ${selectValue} to your watchlist!`);
+            }, 2000);
+        }
+
+        // Clear all selections
+        document.querySelectorAll('.action-button.secondary').forEach(button => {
+            if (button.textContent === 'Clear All') {
+                button.addEventListener('click', function() {
+                    const card = this.closest('.exchange-card');
+                    card.querySelectorAll('.symbol-button.selected').forEach(btn => {
+                        btn.classList.remove('selected');
+                    });
+                    updateStats(card);
+                });
+            }
+        });
+
+        // Add selected symbols
+        document.querySelectorAll('.action-button.primary').forEach(button => {
+            if (button.textContent === 'Add Selected') {
+                button.addEventListener('click', function() {
+                    const card = this.closest('.exchange-card');
+                    const selected = card.querySelectorAll('.symbol-button.selected');
+                    const symbols = Array.from(selected).map(btn => btn.textContent);
+                    
+                    if (symbols.length > 0) {
+                        console.log('Adding symbols:', symbols);
+                        alert(`Added ${symbols.length} symbols: ${symbols.join(', ')}`);
+                    } else {
+                        alert('Please select symbols to add');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

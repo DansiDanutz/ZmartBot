@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1"></script>
+    <style>
+      .slide-container {
+        width: 1280px;
+        min-height: 720px;
+        background: #0F172A;
+        color: #E2E8F0;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        padding: 40px;
+        position: relative;
+        overflow: hidden;
+      }
+      .title {
+        color: #F8FAFC;
+        font-size: 36px;
+        font-weight: 700;
+        margin-bottom: 10px;
+      }
+      .content {
+        font-size: 18px;
+        line-height: 1.5;
+      }
+      .accent {
+        color: #3B82F6;
+      }
+      .accent-green {
+        color: #10B981;
+      }
+      .section-box {
+        background: rgba(30, 41, 59, 0.7);
+        border-radius: 12px;
+        padding: 12px;
+        margin-bottom: 12px;
+        border-left: 4px solid #3B82F6;
+      }
+      .section-title {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 5px;
+        color: #F8FAFC;
+        display: flex;
+        align-items: center;
+      }
+      .section-icon {
+        margin-right: 10px;
+        color: #3B82F6;
+      }
+      .code-block {
+        background: rgba(15, 23, 42, 0.7);
+        border-radius: 8px;
+        padding: 8px;
+        font-family: 'JetBrains Mono', 'Fira Code', monospace;
+        font-size: 14px;
+        color: #E2E8F0;
+        margin: 8px 0;
+        border-left: 3px solid #3B82F6;
+        overflow-x: auto;
+      }
+      .glow {
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(59, 130, 246, 0.2) 0%, rgba(16, 185, 129, 0.1) 50%, rgba(15, 23, 42, 0) 70%);
+        filter: blur(50px);
+        z-index: 0;
+      }
+      .glow-1 {
+        top: -100px;
+        right: -100px;
+      }
+      .glow-2 {
+        bottom: -100px;
+        left: -100px;
+      }
+      .z-10 {
+        z-index: 10;
+        position: relative;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="slide-container">
+      <!-- Background glows -->
+      <div class="glow glow-1"></div>
+      <div class="glow glow-2"></div>
+      
+      <!-- Content -->
+      <div class="z-10">
+        <h1 class="title">Testing & Deployment</h1>
+        <p class="content mb-3">
+          Comprehensive testing strategy and deployment procedures for the Zmart Trading Bot Platform.
+        </p>
+        
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <div class="section-box">
+              <h3 class="section-title">
+                <i class="fas fa-vial section-icon"></i>Testing Strategy
+              </h3>
+              <div class="grid grid-cols-2 gap-2 mb-2">
+                <div>• Unit Tests</div>
+                <div>• Integration Tests</div>
+                <div>• End-to-End Tests</div>
+                <div>• Performance Tests</div>
+                <div>• Security Tests</div>
+                <div>• Stress Tests</div>
+              </div>
+              <p>Implement comprehensive test coverage for all critical components:</p>
+              <div class="code-block">
+                <span class="text-blue-400"># test_risk_guard.py</span><br>
+                <span class="text-purple-400">def</span> <span class="text-yellow-400">test_circuit_breaker_activation</span>():<br>
+                &nbsp;&nbsp;risk_guard = RiskGuard(TestConfig())<br>
+                &nbsp;&nbsp;signal = Signal(symbol=<span class="text-green-400">"BTC-USDT"</span>, type=<span class="text-green-400">"LONG"</span>)<br>
+                <br>
+                &nbsp;&nbsp;<span class="text-green-400"># Simulate high exposure</span><br>
+                &nbsp;&nbsp;risk_guard.portfolio_exposure = 15.0  <span class="text-green-400"># > 10% limit</span><br>
+                <br>
+                &nbsp;&nbsp;result = risk_guard.check_risk_levels(signal, 0.8)<br>
+                &nbsp;&nbsp;assert result == <span class="text-purple-400">False</span>  <span class="text-green-400"># Circuit breaker should activate</span><br>
+              </div>
+            </div>
+            
+            <div class="section-box">
+              <h3 class="section-title">
+                <i class="fas fa-chart-line section-icon"></i>Test Coverage Metrics
+              </h3>
+              <div style="height: 200px;">
+                <canvas id="coverageChart"></canvas>
+              </div>
+            </div>
+          </div>
+          
+          <div>
+            <div class="section-box">
+              <h3 class="section-title">
+                <i class="fas fa-rocket section-icon"></i>Deployment Pipeline
+              </h3>
+              <ol class="list-decimal ml-6 mt-2 space-y-1">
+                <li>Code commit triggers CI/CD pipeline</li>
+                <li>Automated tests run in staging environment</li>
+                <li>Docker images built and tagged</li>
+                <li>Kubernetes manifests updated</li>
+                <li>Deployment to production cluster</li>
+                <li>Post-deployment health checks</li>
+              </ol>
+              <div class="code-block">
+                <span class="text-blue-400"># .github/workflows/deploy.yml</span><br>
+                <span class="text-green-400">name:</span> Deploy to Production<br>
+                <span class="text-green-400">on:</span><br>
+                &nbsp;&nbsp;<span class="text-green-400">push:</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-green-400">branches:</span> [ main ]<br>
+                <br>
+                <span class="text-green-400">jobs:</span><br>
+                &nbsp;&nbsp;<span class="text-green-400">test:</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-green-400">runs-on:</span> ubuntu-latest<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-green-400">steps:</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- <span class="text-green-400">uses:</span> actions/checkout@v3<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- <span class="text-green-400">name:</span> Run tests<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-green-400">run:</span> |<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;docker-compose -f docker-compose.test.yml up<br>
+              </div>
+            </div>
+            
+            <div class="section-box">
+              <h3 class="section-title">
+                <i class="fas fa-tachometer-alt section-icon"></i>Monitoring & Observability
+              </h3>
+              <div class="grid grid-cols-2 gap-2">
+                <div>• Prometheus metrics</div>
+                <div>• Grafana dashboards</div>
+                <div>• ELK stack for logs</div>
+                <div>• Jaeger for tracing</div>
+                <div>• Health check endpoints</div>
+                <div>• Alerting via Slack/Email</div>
+              </div>
+              <p class="mt-2">Key metrics to monitor:</p>
+              <div class="grid grid-cols-2 gap-2">
+                <div>• Signal processing time</div>
+                <div>• Trade execution latency</div>
+                <div>• API response times</div>
+                <div>• Error rates</div>
+                <div>• System resource usage</div>
+                <div>• Database performance</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <script>
+      // Test Coverage Chart
+      const ctx = document.getElementById('coverageChart').getContext('2d');
+      const coverageChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Backend Core', 'Frontend', 'API Layer', 'Trading Agents', 'Data Services'],
+          datasets: [
+            {
+              label: 'Test Coverage (%)',
+              data: [92, 85, 88, 95, 80],
+              backgroundColor: [
+                'rgba(59, 130, 246, 0.8)',
+                'rgba(59, 130, 246, 0.8)',
+                'rgba(59, 130, 246, 0.8)',
+                'rgba(59, 130, 246, 0.8)',
+                'rgba(59, 130, 246, 0.8)'
+              ],
+              borderColor: [
+                'rgba(59, 130, 246, 1)',
+                'rgba(59, 130, 246, 1)',
+                'rgba(59, 130, 246, 1)',
+                'rgba(59, 130, 246, 1)',
+                'rgba(59, 130, 246, 1)'
+              ],
+              borderWidth: 1
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: true,
+              position: 'top',
+              labels: {
+                color: '#E2E8F0',
+                font: {
+                  size: 14
+                }
+              }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: 100,
+              grid: {
+                color: 'rgba(226, 232, 240, 0.1)'
+              },
+              ticks: {
+                color: '#E2E8F0'
+              }
+            },
+            x: {
+              grid: {
+                display: false
+              },
+              ticks: {
+                color: '#E2E8F0',
+                font: {
+                  size: 12
+                }
+              }
+            }
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
+

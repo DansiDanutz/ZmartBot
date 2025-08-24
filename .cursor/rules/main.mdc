@@ -1,0 +1,82 @@
+
+
+## ZmartBot Orchestration Entry Point
+
+@include "2IndicatorsDatabase.mdc"
+@include "API-Manager.mdc"
+@include "Backend.mdc"
+@include "BackendDoctorPack.mdc"
+@include "ProcessReaper.mdc"
+@include "LiveAlerts.mdc"
+@include "IndicatorCard.mdc"
+@include "MasterOrchestrationAgent.mdc"
+@include "MesseiAlerts.mdc"
+@include "MySymbols.mdc"
+@include "MySymbolsDatabase.mdc"
+@include "OrchestrationStart.mdc"
+@include "Pele.mdc"
+@include "PortManager.mdc"
+@include "PortManagerDatabase.mdc"
+@include "START_zmartbot.mdc"
+@include "STOP_zmartbot.mdc"
+@include "WhaleAlerts.mdc"
+@include "ServiceRegistry.mdc"
+@include "StartGuard.mdc"
+@include "ControlUI.mdc"
+@include "zmartbot.dynamic.test.mdc"
+@include "BackendFrontendProtection.mdc"
+@include "ClaudeMDCUpdate.mdc"
+@include "ServiceDiscovery.mdc"
+@include "rules.mdc"
+
+
+### System Description
+
+ZmartBot is an AI-driven crypto trading system using symbol selection, risk metrics, liquidity tracking, and orchestration agents.
+
+This file aggregates all rule modules and should be used as the master entry point for orchestrating agents, symbol operations, and alerting logic.
+
+### Core System Components
+
+1. **Orchestration System**
+   - Master Orchestration Agent coordinates all system components
+   - Port Manager handles service port assignments
+   - ProcessReaper utility resolves port conflicts and orphaned processes
+
+2. **Trading Infrastructure**
+   - Backend API (FastAPI) on port 8000
+   - Professional Dashboard (React/Vite) on port 3400
+   - MySymbols management (max 10 symbols)
+   - 21 Technical Indicators with real-time updates
+
+3. **Alert System**
+   - Live Alerts with dynamic indicator updates
+   - Special Alerts: Messi, Pele, Maradona, Whale Flow
+   - Real-time market data integration
+
+4. **Data Management**
+   - SQLite databases for port registry and MySymbols
+   - PostgreSQL, Redis, InfluxDB for various data types
+   - API Keys Manager for secure credential management
+
+### Operational Rules
+
+- Each service runs on unique, permanently assigned ports
+- Maximum 10 symbols in MySymbols portfolio
+- Dynamic symbol changes trigger system-wide updates
+- All API credentials stored in environment variables
+- Single instance enforcement for all services
+- Comprehensive logging and monitoring
+
+### Startup/Shutdown Procedures
+
+- Use START_ZMARTBOT.sh for clean system startup
+- Use STOP_ZMARTBOT.sh for controlled shutdown
+- ProcessReaper automatically resolves conflicts during startup
+- Port Manager ensures proper service isolation
+
+This master file serves as the central reference for all ZmartBot system operations and architecture.
+description:
+globs:
+alwaysApply: false
+---

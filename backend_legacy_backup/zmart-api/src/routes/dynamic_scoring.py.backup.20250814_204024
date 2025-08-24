@@ -1,0 +1,372 @@
+#!/usr/bin/env python3
+"""
+Dynamic Scoring API Routes
+API endpoints for the new dynamic scoring system
+"""
+
+import logging
+from typing import Dict, Any, Optional
+from fastapi import APIRouter, HTTPException, Query, Body
+from pydantic import BaseModel, Field
+
+from ..services.integrated_scoring_system import IntegratedScoringSystem
+from ..agents.scoring.dynamic_scoring_agent import MarketCondition
+
+logger = logging.getLogger(__name__)
+router = APIRouter(prefix="/api/scoring/dynamic", tags=["Dynamic Scoring"])
+
+# Initialize integrated scoring system
+integrated_scoring = IntegratedScoringSystem()
+
+# Pydantic models for request/response validation
+class ScoreRequest(BaseModel):
+    """Request model for manual score input"""
+    symbol: str = Field(..., description="Trading symbol (e.g., BTCUSDT)")
+    kingfisher_score: Optional[float] = Field(None, ge=0, le=100, description="KingFisher 100-point score")
+    cryptometer_score: Optional[float] = Field(None, ge=0, le=100, description="Cryptometer 100-point score")
+    riskmetric_score: Optional[float] = Field(None, ge=0, le=100, description="RiskMetric 100-point score")
+    kingfisher_metadata: Optional[Dict[str, Any]] = Field(None, description="KingFisher metadata")
+    cryptometer_metadata: Optional[Dict[str, Any]] = Field(None, description="Cryptometer metadata")
+    riskmetric_metadata: Optional[Dict[str, Any]] = Field(None, description="RiskMetric metadata")
+
+class MarketConditionUpdate(BaseModel):
+    """Request model for market condition updates"""
+    condition: str = Field(..., description="Market condition")
+
+class ReliabilityUpdate(BaseModel):
+    """Request model for reliability score updates"""
+    source: str = Field(..., description="Scoring source (kingfisher, cryptometer, riskmetric)")
+    score: float = Field(..., ge=0, le=1, description="Reliability score (0-1)")
+
+@router.get("/score/{symbol}")
+async def get_dynamic_score(
+    symbol: str,
+    include_explanation: bool = Query(False, description="Include detailed weight explanation")
+):
+    """
+    Get dynamic weighted score for a symbol
+    
+    This endpoint automatically fetches scores from all three systems and
+    applies intelligent dynamic weighting based on data quality and market conditions.
+    
+    Returns:
+        - final_score: 0-100 point final score
+        - signal: Trading signal recommendation
+        - confidence: Overall confidence (0-1)
+        - dynamic_weights: Current weight distribution
+        - component_scores: Individual system scores and metadata
+    """
+    try:
+        logger.info(f"🎯 Getting dynamic score for {symbol}")
+        
+        # Get comprehensive score using dynamic weighting
+        result = await integrated_scoring.get_comprehensive_score(symbol)
+        
+        if include_explanation:
+            # Add detailed explanation
+            explanation = await integrated_scoring.get_dynamic_weights_explanation(symbol)
+            result['explanation'] = explanation
+        
+        logger.info(f"✅ Dynamic score calculated for {symbol}: {result.get('final_score', 'N/A')}")
+        return result
+        
+    except Exception as e:
+        logger.error(f"❌ Error getting dynamic score for {symbol}: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error calculating dynamic score: {str(e)}")
+
+@router.post("/score/manual")
+async def calculate_manual_score(request: ScoreRequest):
+    """
+    Calculate dynamic score with manually provided component scores
+    
+    Useful for testing different score combinations or when you have
+    scores from external sources that need dynamic weighting.
+    """
+    try:
+        logger.info(f"🎯 Calculating manual dynamic score for {request.symbol}")
+        
+        # Start the dynamic agent if needed
+        if integrated_scoring.dynamic_agent.status != "running":
+            await integrated_scoring.dynamic_agent.start()
+        
+        # Calculate dynamic score with provided data
+        result = await integrated_scoring.dynamic_agent.calculate_dynamic_score(
+            symbol=request.symbol,
+            kingfisher_score=request.kingfisher_score,
+            cryptometer_score=request.cryptometer_score,
+            riskmetric_score=request.riskmetric_score,
+            kingfisher_metadata=request.kingfisher_metadata or {},
+            cryptometer_metadata=request.cryptometer_metadata or {},
+            riskmetric_metadata=request.riskmetric_metadata or {}
+        )
+        
+        # Format response
+        response = {
+            'symbol': result.symbol,
+            'final_score': result.final_score,
+            'signal': result.signal,
+            'confidence': result.overall_confidence,
+            'market_condition': result.market_condition.value,
+            'dynamic_weights': {
+                'kingfisher': result.dynamic_weights.kingfisher_weight,
+                'cryptometer': result.dynamic_weights.cryptometer_weight,
+                'riskmetric': result.dynamic_weights.riskmetric_weight,
+                'reasoning': result.dynamic_weights.reasoning,
+                'weight_confidence': result.dynamic_weights.confidence
+            },
+            'component_scores': {
+                'kingfisher': {
+                    'score': result.kingfisher_data.score if result.kingfisher_data else None,
+                    'confidence': result.kingfisher_data.confidence if result.kingfisher_data else None,
+                    'data_quality': result.kingfisher_data.data_quality if result.kingfisher_data else None
+                },
+                'cryptometer': {
+                    'score': result.cryptometer_data.score if result.cryptometer_data else None,
+                    'confidence': result.cryptometer_data.confidence if result.cryptometer_data else None,
+                    'data_quality': result.cryptometer_data.data_quality if result.cryptometer_data else None
+                },
+                'riskmetric': {
+                    'score': result.riskmetric_data.score if result.riskmetric_data else None,
+                    'confidence': result.riskmetric_data.confidence if result.riskmetric_data else None,
+                    'data_quality': result.riskmetric_data.data_quality if result.riskmetric_data else None
+                }
+            },
+            'timestamp': result.timestamp.isoformat()
+        }
+        
+        logger.info(f"✅ Manual dynamic score calculated for {request.symbol}: {result.final_score}")
+        return response
+        
+    except Exception as e:
+        logger.error(f"❌ Error calculating manual score for {request.symbol}: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error calculating manual score: {str(e)}")
+
+@router.get("/weights/explanation/{symbol}")
+async def get_weights_explanation(symbol: str):
+    """
+    Get detailed explanation of how dynamic weights are calculated for a symbol
+    
+    This endpoint provides transparency into the dynamic weighting algorithm,
+    showing why certain weights were chosen based on data quality, market conditions,
+    and historical reliability.
+    """
+    try:
+        logger.info(f"🔍 Getting weights explanation for {symbol}")
+        
+        explanation = await integrated_scoring.get_dynamic_weights_explanation(symbol)
+        
+        logger.info(f"✅ Weights explanation generated for {symbol}")
+        return explanation
+        
+    except Exception as e:
+        logger.error(f"❌ Error getting weights explanation for {symbol}: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error getting explanation: {str(e)}")
+
+@router.get("/health")
+async def get_scoring_health():
+    """
+    Get health status of all scoring components including the dynamic agent
+    
+    Returns status of:
+    - Integrated scoring system
+    - Dynamic scoring agent
+    - Market condition detection
+    - Reliability tracking
+    """
+    try:
+        logger.info("🏥 Getting scoring system health")
+        
+        health = await integrated_scoring.get_scoring_health()
+        
+        logger.info("✅ Scoring system health retrieved")
+        return health
+        
+    except Exception as e:
+        logger.error(f"❌ Error getting scoring health: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error getting health status: {str(e)}")
+
+@router.post("/market-condition")
+async def update_market_condition(request: MarketConditionUpdate):
+    """
+    Update current market condition for dynamic weighting
+    
+    Market conditions affect how the dynamic agent weights different scoring sources:
+    - bull_market: Favors Cryptometer for trend analysis
+    - bear_market: Favors RiskMetric for risk assessment  
+    - sideways: Balanced approach with slight RiskMetric preference
+    - high_volatility: Favors KingFisher for liquidation analysis
+    - low_volatility: Standard weighting based on data quality
+    """
+    try:
+        logger.info(f"🌊 Updating market condition to: {request.condition}")
+        
+        # Validate market condition
+        valid_conditions = [c.value for c in MarketCondition]
+        if request.condition not in valid_conditions:
+            raise HTTPException(
+                status_code=400, 
+                detail=f"Invalid market condition. Valid options: {valid_conditions}"
+            )
+        
+        await integrated_scoring.update_market_condition(request.condition)
+        
+        logger.info(f"✅ Market condition updated to: {request.condition}")
+        return {
+            "message": f"Market condition updated to {request.condition}",
+            "condition": request.condition,
+            "valid_conditions": valid_conditions,
+            "timestamp": "2025-01-01T00:00:00"  # Will be replaced with actual timestamp
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"❌ Error updating market condition: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error updating market condition: {str(e)}")
+
+@router.post("/reliability")
+async def update_reliability_score(request: ReliabilityUpdate):
+    """
+    Update reliability score for a scoring source
+    
+    Reliability scores affect how much weight each source gets in the final calculation.
+    Higher reliability = higher potential weight when data quality is good.
+    
+    Sources:
+    - kingfisher: KingFisher liquidation analysis
+    - cryptometer: Cryptometer multi-timeframe analysis
+    - riskmetric: RiskMetric Benjamin Cowen methodology
+    """
+    try:
+        logger.info(f"📊 Updating {request.source} reliability to: {request.score}")
+        
+        # Validate source
+        valid_sources = ['kingfisher', 'cryptometer', 'riskmetric']
+        if request.source not in valid_sources:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Invalid source. Valid options: {valid_sources}"
+            )
+        
+        await integrated_scoring.update_reliability_score(request.source, request.score)
+        
+        logger.info(f"✅ {request.source} reliability updated to: {request.score}")
+        return {
+            "message": f"Reliability score updated for {request.source}",
+            "source": request.source,
+            "new_score": request.score,
+            "valid_sources": valid_sources,
+            "timestamp": "2025-01-01T00:00:00"  # Will be replaced with actual timestamp
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"❌ Error updating reliability score: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error updating reliability: {str(e)}")
+
+@router.get("/market-conditions")
+async def get_market_conditions():
+    """
+    Get list of available market conditions and their descriptions
+    """
+    return {
+        "market_conditions": [
+            {
+                "value": "bull_market",
+                "description": "Strong upward trend - favors Cryptometer trend analysis",
+                "weight_bias": "cryptometer"
+            },
+            {
+                "value": "bear_market", 
+                "description": "Strong downward trend - favors RiskMetric risk assessment",
+                "weight_bias": "riskmetric"
+            },
+            {
+                "value": "sideways",
+                "description": "Range-bound market - balanced approach with RiskMetric preference",
+                "weight_bias": "riskmetric (slight)"
+            },
+            {
+                "value": "high_volatility",
+                "description": "High price volatility - favors KingFisher liquidation analysis",
+                "weight_bias": "kingfisher"
+            },
+            {
+                "value": "low_volatility",
+                "description": "Low price volatility - standard data quality weighting",
+                "weight_bias": "none"
+            }
+        ]
+    }
+
+@router.get("/scoring-sources")
+async def get_scoring_sources():
+    """
+    Get information about the three scoring sources and their characteristics
+    """
+    return {
+        "scoring_sources": [
+            {
+                "name": "kingfisher",
+                "full_name": "KingFisher Analysis",
+                "description": "Liquidation cluster mapping and toxic order flow analysis",
+                "score_range": "0-100",
+                "strengths": ["Liquidation analysis", "Visual pattern recognition", "Order flow"],
+                "best_conditions": ["High volatility", "Liquidation events"],
+                "data_requirements": ["liquidation_map", "toxic_flow", "ratios"]
+            },
+            {
+                "name": "cryptometer",
+                "full_name": "Cryptometer Multi-Timeframe",
+                "description": "Multi-timeframe market analysis with 17 API endpoints",
+                "score_range": "0-100",
+                "strengths": ["Trend analysis", "Multi-timeframe", "Comprehensive data"],
+                "best_conditions": ["Bull markets", "Bear markets", "Clear trends"],
+                "data_requirements": ["short_term", "medium_term", "long_term"]
+            },
+            {
+                "name": "riskmetric",
+                "full_name": "RiskMetric Benjamin Cowen",
+                "description": "Benjamin Cowen risk methodology with historical risk bands",
+                "score_range": "0-100", 
+                "strengths": ["Risk assessment", "Historical accuracy", "Market cycles"],
+                "best_conditions": ["Uncertain markets", "Risk evaluation", "Sideways markets"],
+                "data_requirements": ["risk_band", "historical_data", "cowen_score"]
+            }
+        ]
+    }
+
+@router.get("/status")
+async def get_dynamic_scoring_status():
+    """
+    Get comprehensive status of the dynamic scoring system
+    """
+    try:
+        # Get agent status
+        agent_status = await integrated_scoring.dynamic_agent.get_status()
+        
+        # Get health status
+        health_status = await integrated_scoring.get_scoring_health()
+        
+        return {
+            "dynamic_scoring_system": {
+                "status": "operational",
+                "agent_status": agent_status,
+                "health_status": health_status,
+                "features": {
+                    "dynamic_weighting": True,
+                    "market_condition_awareness": True,
+                    "data_quality_assessment": True,
+                    "reliability_tracking": True,
+                    "100_point_scoring": True
+                }
+            }
+        }
+        
+    except Exception as e:
+        logger.error(f"❌ Error getting dynamic scoring status: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error getting status: {str(e)}")
+
+# Add router tags for better API documentation
+router.tags = ["Dynamic Scoring", "AI Scoring", "Market Analysis"]

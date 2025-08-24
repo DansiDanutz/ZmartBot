@@ -1,0 +1,30 @@
+{
+  "month": "2025-08",
+  "calls_made": 518,
+  "calls_limit": 100000,
+  "daily_quotas": {
+    "2025-08-21": {
+      "date": "2025-08-21",
+      "calls_made": 518,
+      "calls_limit": 8500,
+      "emergency_limit": 10000,
+      "services_usage": {
+        "cryptometer_coinlist": 7,
+        "cryptometer_tickerlist": 33,
+        "cryptometer_ticker": 64,
+        "cryptometer_cryptocurrency_info": 9,
+        "cryptometer_coin_info": 11,
+        "cryptometer_tickerlist_pro": 34,
+        "cryptometer_trend_indicator_v3": 15,
+        "cryptometer_ls_ratio": 62,
+        "cryptometer_open_interest": 61,
+        "cryptometer_liquidation_data_v2": 59,
+        "cryptometer_rapid_movements": 33,
+        "cryptometer_ai_screener": 15,
+        "cryptometer_ai_screener_analysis": 57,
+        "cryptometer_forex_rates": 30,
+        "cryptometer_account_info": 28
+      }
+    }
+  }
+}
