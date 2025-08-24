@@ -1,0 +1,447 @@
+@step: orchestration_flow
+
+# OrchestrationStart - Project Startup Orchestration Process
+
+## Overview
+The OrchestrationStart process is responsible for coordinating the startup of the entire ZmartBot project, ensuring proper port management, service coordination, and database synchronization between startup and shutdown cycles.
+
+## What OrchestrationStart Does
+
+### 1. **Core Service Verification** (Ports 3400 & 8000)
+- **Frontend Dashboard**: Ensures service is running on port 3400
+  - Professional Dashboard Server
+  - React/Vite development server
+  - Web interface accessibility
+  - Health check verification
+
+- **Backend API**: Ensures service is running on port 8000
+  - FastAPI Backend Server
+  - RESTful API endpoints
+  - Database connections
+  - External API integrations
+
+### 2. **Port Manager Database Check**
+- **Database Location**: `src/data/port_registry.db`
+- **Purpose**: Verify all currently assigned ports
+- **Checks**:
+  - Existing port assignments
+  - Service-to-port mappings
+  - Port availability status
+  - Orphaned port entries
+
+### 3. **New Port Assignment Detection**
+- **Trigger**: Previous STOP_ZMARTBOT execution
+- **Process**:
+  - Scan for new port assignments made by Port Manager
+  - Identify services that received new ports during conflicts
+  - Verify port assignment persistence
+  - Check for any unregistered services
+
+### 4. **Database Synchronization**
+- **Old Ports**: Update existing port assignments
+- **New Ports**: Register newly assigned ports
+- **Cleanup**: Remove orphaned or invalid entries
+- **Validation**: Ensure all services have valid port mappings
+
+## Profile-Driven OrchestrationStart Workflow
+
+### Phase 1: Profile Detection & Loading
+@step: load_active_profile
+```python
+# Load active service profile
+def load_active_profile():
+    """Load the currently active service profile"""
+    profile_path = "/profiles/current"
+    
+    if os.path.exists(profile_path):
+        with open(profile_path, 'r') as f:
+            active_profile = json.load(f)
+        logger.info(f"Loaded active profile: {active_profile['name']}")
+        return active_profile
+    else:
+        # Fallback to default ACTIVE set
+        default_profile = {
+            "name": "default",
+            "services": ["backend_api", "dashboard_server", "orchestration_agent"],
+            "description": "Default core services"
+        }
+        logger.info("No active profile found, using default ACTIVE set")
+        return default_profile
+```
+
+### Phase 2: Load Current Profile
+@step: load_current_profile
+```python
+def load_current_profile():
+    """Load the current active profile from Service Registry"""
+    import requests
+    
+    try:
+        # Try to get current profile
+        response = requests.get("http://127.0.0.1:8610/profiles/current", timeout=3)
+        data = response.json()
+        
+        if data.get("services"):
+            # Current profile exists, get full service details
+            active_response = requests.get("http://127.0.0.1:8610/profiles/default", timeout=3)
+            return active_response.json()
+        else:
+            # No current profile, fallback to default (ACTIVE services)
+            fallback_response = requests.get("http://127.0.0.1:8610/profiles/default", timeout=3)
+            return fallback_response.json()
+            
+    except Exception as e:
+        logger.error(f"Failed to load profile: {e}")
+        # Fallback to default services
+        return [
+            {"service_name": "backend-api", "port": 8000, "start_cmd": "python3 run_dev.py"},
+            {"service_name": "frontend", "port": 3400, "start_cmd": "python3 professional_dashboard_server.py --port 3400"}
+        ]
+```
+
+### Phase 3: Start Services in Order
+@step: start_services_in_order
+```python
+def start_services_in_order(services):
+    """Start services in dependency order"""
+    import subprocess
+    import time
+    import requests
+    
+    for service in services:
+        service_name = service["service_name"]
+        start_cmd = service.get("start_cmd")
+        port = service.get("port")
+        health_url = service.get("health_url")
+        
+        if not start_cmd:
+            logger.warning(f"[SKIP] {service_name}: no start_cmd")
+            continue
+        
+        logger.info(f"[START] {service_name} -> {start_cmd}")
+        
+        try:
+            # Start service
+            subprocess.Popen(start_cmd.split(), stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+            
+            # Wait for service to start
+            time.sleep(0.4)
+            
+            # Verify service is running
+            if health_url:
+                try:
+                    response = requests.get(health_url, timeout=5)
+                    if response.status_code == 200:
+                        logger.info(f"✅ {service_name} started successfully on port {port}")
+                    else:
+                        logger.warning(f"⚠️ {service_name} started but health check failed: {response.status_code}")
+                except Exception as e:
+                    logger.warning(f"⚠️ {service_name} started but health check failed: {e}")
+            else:
+                logger.info(f"✅ {service_name} started on port {port}")
+                
+        except Exception as e:
+            logger.error(f"❌ Failed to start {service_name}: {e}")
+            # Continue with other services
+```
+
+### Phase 4: Finalize
+@step: finalize
+```python
+def finalize_orchestration(services):
+    """Print service status table and hand off to MasterOrchestrationAgent"""
+    import psutil
+    
+    print("\n🎯 ORCHESTRATION STARTUP COMPLETE")
+    print("=" * 50)
+    print("Service ⇄ Port ⇄ PID ⇄ Status")
+    print("-" * 50)
+    
+    for service in services:
+        service_name = service["service_name"]
+        port = service.get("port", "N/A")
+        
+        # Find PID by port
+        pid = "N/A"
+        try:
+            for conn in psutil.net_connections():
+                if conn.laddr.port == port and conn.status == 'LISTEN':
+                    pid = conn.pid
+                    break
+        except:
+            pass
+        
+        # Check status
+        status = "RUNNING" if pid != "N/A" else "UNKNOWN"
+        
+        print(f"{service_name:<15} {port:<6} {pid:<6} {status}")
+    
+    print("=" * 50)
+    print("Handing off to MasterOrchestrationAgent...")
+    
+    # Hand off to MasterOrchestrationAgent
+    return services
+
+@step: state_snapshot_management
+```python
+def manage_state_snapshot():
+    """Handle state snapshot for smooth startup experience"""
+    if state_screenshot_exists():
+        log_info("📸 Found state screenshot - serving cached data")
+        serve_cached_data()
+        
+        # Wait for all services to be ready
+        wait_for_services_ready()
+        
+        # Transition to live data
+        log_info("📸→🔴 TRANSITION: Cached data → Live data")
+        log_info("🔄 System fully ready - clearing cached data for live operation")
+        clear_cached_data()
+        log_success("✅ Now serving live data from all services")
+    else:
+        log_info("No state screenshot found - starting with fresh data")
+```
+
+@step: service_discovery_and_assignment
+```python
+def discover_and_assign_new_services():
+    """Discover new services and assign ports automatically"""
+    # Detect new services
+    new_services = detect_new_services()
+    
+    if new_services:
+        log_info(f"🔍 Found {len(new_services)} new services to integrate")
+        
+        # Assign ports to new services
+        for service in new_services:
+            port = assign_port_to_new_service(service)
+            log_info(f"✅ Assigned port {port} to {service.name}")
+        
+        # Notify Master Orchestration Agent
+        notify_master_orchestration_agent(new_services)
+        
+        log_success(f"🎯 Integrated {len(new_services)} new services into orchestration")
+    else:
+        log_info("No new services detected")
+```
+```
+
+### Phase 3: BackendDoctorAgent Activation
+@step: start_BackendDoctorAgent
+```bash
+# Activate BackendDoctorAgent in monitoring mode
+@agent: BackendDoctorAgent
+
+# Begin logging to doctor_monitor.log
+python3 doctor.py --monitor 120 &
+```
+
+### Phase 4: MDC File Watcher Activation
+@step: start_MDCFileWatcher
+```bash
+# Activate MDC file watcher for automatic CLAUDE.md updates
+@agent: ClaudeMDCUpdateAgent
+
+# Start file watcher in background
+cd /Users/dansidanutz/Desktop/ZmartBot/zmart-api
+source venv/bin/activate
+nohup python3 watch_mdc_changes_simple.py > mdc_watcher.log 2>&1 &
+```
+
+**BackendDoctorAgent Integration:**
+- **Activation**: `@agent: BackendDoctorAgent` for comprehensive health monitoring
+- **Monitoring Mode**: Continuous health monitoring with 120-second intervals
+- **Logging**: All health data logged to `doctor_monitor.log`
+- **Auto-Recovery**: Automatic problem detection and resolution
+- **Health Reporting**: Real-time system health status and recommendations
+
+### Phase 2: Port Manager Database Analysis
+```python
+# Access port registry database
+from src.utils.port_registry import port_registry
+
+# Get all current assignments
+current_assignments = port_registry.get_all_services()
+
+# Check for new assignments
+new_assignments = port_registry.get_new_assignments()
+```
+
+### Phase 3: Port Assignment Reconciliation
+```python
+# Update database with new assignments
+for service in new_assignments:
+    port_registry.update_service_port(
+        service_name=service.name,
+        port=service.port,
+        pid=service.pid
+    )
+
+# Clean up orphaned entries
+port_registry.cleanup_orphaned_services()
+```
+
+### Phase 4: Database Synchronization
+```python
+# Ensure all services are properly registered
+port_registry.sync_all_services()
+
+# Update orchestration configuration
+update_orchestration_config()
+```
+
+## Port Management Integration
+
+### Port Registry Database Schema
+```sql
+-- Service assignments table
+CREATE TABLE port_assignments (
+    id INTEGER PRIMARY KEY,
+    service_name TEXT NOT NULL,
+    port INTEGER NOT NULL,
+    pid INTEGER,
+    status TEXT DEFAULT 'RUNNING',
+    assigned_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+### Service Types Managed
+- **Backend API**: Port 8000 (Fixed)
+- **Dashboard Server**: Port 3400 (Fixed)
+- **Orchestration Agent**: Dynamic assignment
+- **KingFisher Service**: Dynamic assignment
+- **Additional Services**: Dynamic assignment
+
+## STOP_ZMARTBOT Integration
+
+### Before STOP
+- Port Manager saves current assignments
+- New port assignments are recorded
+- Service status is updated
+
+### After START
+- OrchestrationStart reads saved assignments
+- New ports are applied to services
+- Database is synchronized
+- All services are verified
+
+## Error Handling
+
+### Port Conflicts
+- **Detection**: Port already in use
+- **Resolution**: Assign new port automatically
+- **Recording**: Save new assignment to database
+- **Notification**: Log port change
+
+### Service Failures
+- **Detection**: Service not responding
+- **Retry**: Attempt restart with same port
+- **Fallback**: Assign new port if needed
+- **Monitoring**: Track service health
+
+### Database Issues
+- **Backup**: Create backup before changes
+- **Validation**: Verify data integrity
+- **Recovery**: Restore from backup if needed
+- **Logging**: Record all database operations
+
+## Configuration Files
+
+### Port Registry Configuration
+```json
+{
+  "database_path": "src/data/port_registry.db",
+  "backup_enabled": true,
+  "auto_cleanup": true,
+  "conflict_resolution": "auto_assign"
+}
+```
+
+### Orchestration Configuration
+```json
+{
+  "core_services": {
+    "backend_api": {"port": 8000, "fixed": true},
+    "dashboard_server": {"port": 3400, "fixed": true}
+  },
+  "dynamic_services": {
+    "orchestration_agent": {"auto_assign": true},
+    "kingfisher_service": {"auto_assign": true}
+  }
+}
+```
+
+## Monitoring and Logging
+
+### Health Checks
+- Service responsiveness
+- Port availability
+- Database connectivity
+- Process status
+
+### Logging
+- Port assignment changes
+- Service startup/shutdown
+- Database operations
+- Error conditions
+
+### Metrics
+- Port utilization
+- Service uptime
+- Conflict resolution frequency
+- Database performance
+
+## Integration Points
+
+### With START_ZMARTBOT.sh
+- Called after core services start
+- Verifies service health
+- Updates port assignments
+- Synchronizes database
+
+### With STOP_ZMARTBOT.sh
+- Saves current port state
+- Records new assignments
+- Prepares for next startup
+- Cleans up resources
+
+### With Port Manager
+- Reads port assignments
+- Updates service mappings
+- Manages conflicts
+- Maintains database
+
+### With BackendDoctorAgent
+- Activates comprehensive health monitoring
+- Provides real-time system health analysis
+- Enables automatic problem resolution
+- Maintains health monitoring logs
+- Integrates with service startup verification
+
+## Success Criteria
+
+### Service Verification
+- ✅ Frontend Dashboard responding on port 3400
+- ✅ Backend API responding on port 8000
+- ✅ All dynamic services have valid ports
+- ✅ No port conflicts detected
+
+### Database Synchronization
+- ✅ All services registered in database
+- ✅ Port assignments are current
+- ✅ No orphaned entries
+- ✅ Backup created successfully
+
+### Orchestration Status
+- ✅ All services coordinated
+- ✅ Port Manager database updated
+- ✅ Configuration files synchronized
+- ✅ BackendDoctorAgent monitoring active
+- ✅ System ready for operations
+
+This orchestration process ensures that ZmartBot starts consistently with proper port management and service coordination across all startup/shutdown cycles.
+description:
+globs:
+alwaysApply: false
+---

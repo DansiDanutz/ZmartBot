@@ -1,0 +1,349 @@
+# NewService.mdc
+> Purpose: Single source of truth to integrate any new service into ZmartBot — deterministically, safely, and repeatably.
+
+## Scope
+This rule governs the end-to-end lifecycle from **development** to **production activation**:
+- Discovery → Port assignment → STOP gate → Registration → Orchestration → Verification → Activation → Learning.
+
+## Variables
+- `{{SERVICE_DIR}}` = `/Users/dansidanutz/Desktop/ZmartBot/services/{{service_name}}`
+- `{{SERVICE_NAME}}` = `zmart-{{kebab}}`
+- `{{MANIFEST}}` = `{{SERVICE_DIR}}/service.yaml`
+- `{{PORT_MANAGER_DB}}` = `/Users/dansidanutz/Desktop/ZmartBot/infra/port_manager.db`
+- `{{SNAPSHOT_DIR}}` = `/Users/dansidanutz/Desktop/ZmartBot/infra/snapshots`
+- `{{LOG_DIR}}` = `/Users/dansidanutz/Desktop/ZmartBot/logs/{{SERVICE_NAME}}`
+
+---
+
+## Phase 1 — Development & Preparation
+
+### Step 1 — Service Development & Local Testing
+**Requirements**
+- Implement `/health` (liveness) and `/ready` (readiness).
+- Conform to coding standards and logging format (JSON lines).
+- Provide `service.yaml` manifest (see template at top).
+- Local test: run, restart, validate endpoints.
+
+**Automation (suggested)**
+```bash
+# Create skeleton (example)
+python -m infra.cli.scaffold --name "{{SERVICE_NAME}}" --type backend
+
+# Local run
+PORT=8000 python -m services.{{module}} --port $PORT &
+curl -fsS "http://localhost:$PORT/health" | jq .
+curl -fsS "http://localhost:$PORT/ready"  | jq .
+```
+
+---
+
+## Phase 2 — Discovery & Port Assignment
+
+### Step 2 — Service Discovery Agent Detection
+
+**Mechanism**
+
+* Watch for new/changed `service.yaml`.
+* Validate schema (fail fast).
+* Classify by `service_type`.
+* Trigger Port Manager for assignment (persistent).
+
+**Automation**
+
+```bash
+python -m infra.discovery.scan --root /Users/dansidanutz/Desktop/ZmartBot/services
+python -m infra.port_manager.assign --db "{{PORT_MANAGER_DB}}" --manifest "{{MANIFEST}}"
+python -m infra.port_manager.print --db "{{PORT_MANAGER_DB}}" --service "{{SERVICE_NAME}}"
+```
+
+**Port Policy**
+
+* frontend: 3400–3499
+* backend: 8000–8099
+* internal\_api: 8200–8299
+* worker: 8300–8399
+* orchestration: 8500–8599
+  *Port is persisted; no reuse after restart.*
+
+**DB (SQLite) Schema (reference)**
+
+```sql
+create table if not exists services(
+  service_name text primary key,
+  service_type text not null,
+  version text,
+  owner text,
+  port integer unique,
+  manifest_path text not null,
+  created_at text default current_timestamp,
+  updated_at text
+);
+create table if not exists dependencies(
+  service_name text,
+  depends_on text,
+  primary key(service_name, depends_on)
+);
+create table if not exists events(
+  id integer primary key autoincrement,
+  ts text default current_timestamp,
+  service_name text,
+  event text,
+  details text
+);
+```
+
+---
+
+## Phase 3 — Integration Control Gate
+
+<!-- BEGIN:StopStartCycle -->
+
+### Step 3 — STOP Gate (`STOP_zmartbot.sh`)  **CRITICAL**
+
+**Purpose**: Prevent premature integration; capture a safe restore point.
+
+**During STOP**
+
+1. Freeze discovery watcher.
+2. System-wide validation: all *current* services `200` on `/health`.
+3. Snapshot Manager:
+
+   * Dump PortManager DB, Registry state, Orchestrator desired graph
+   * Capture ZmartBot process list (scoped) and last 200 log lines each
+   * Store as `{{SNAPSHOT_DIR}}/snapshot-YYYYmmdd-HHMMSS/`
+4. Process Reaper: clean orphaned ZmartBot PIDs and stale ports (scoped).
+5. Persist final port assignment for the **new** service (no changes for existing).
+
+**Automation**
+
+```bash
+bash infra/scripts/STOP_zmartbot.sh \
+  --db "{{PORT_MANAGER_DB}}" \
+  --snapshot-dir "{{SNAPSHOT_DIR}}" \
+  --scope "zmart-*"
+```
+
+### Step 4 — Service Registry Registration (port 8610)
+
+**Action**: Register the service contract with Registry.
+
+**Automation**
+
+```bash
+python -m infra.registry_client.register \
+  --registry "http://localhost:8610" \
+  --manifest "{{MANIFEST}}" \
+  --port-db "{{PORT_MANAGER_DB}}"
+```
+
+### Step 5 — MDC Documentation Generation (AI)
+
+**Action**: MDC Agent analyzes code + manifest and generates `.mdc` into `.cursor/rules/services/{{SERVICE_NAME}}.mdc`.
+Primary: GPT‑5; Fallback: GPT‑4.
+
+**Automation**
+
+```bash
+python -m infra.mdc_agent.generate \
+  --service "{{SERVICE_NAME}}" \
+  --manifest "{{MANIFEST}}" \
+  --output ".cursor/rules/services/{{SERVICE_NAME}}.mdc" \
+  --llm "gpt5,fallback=gpt4"
+```
+
+### Step 6A — Orchestration (Basic: `orchestrationstart`)
+
+**Action**: Add the service into start/stop graph (order by deps). No adaptive logic yet.
+
+**Automation**
+
+```bash
+bash infra/orchestration/orchestrationstart.sh add "{{SERVICE_NAME}}"
+```
+
+### Step 7 — Health & Readiness Verification
+
+**Action**: Start only the new service, wait for `/ready`, test integration flows.
+
+**Automation**
+
+```bash
+bash infra/orchestration/orchestrationstart.sh start "{{SERVICE_NAME}}"
+python -m infra.health.wait_ready --service "{{SERVICE_NAME}}" --timeout 60
+python -m infra.tests.smoke --service "{{SERVICE_NAME}}"
+```
+
+### Step 8 — Production Activation
+
+**Action**: Wire into traffic / notify dependents; update snapshot baseline; enable real‑time monitoring.
+
+**Automation**
+
+```bash
+python -m infra.orchestrator.activate --service "{{SERVICE_NAME}}"
+python -m infra.snapshot.update-baseline --service "{{SERVICE_NAME}}"
+```
+
+<!-- END:StopStartCycle -->
+
+---
+
+## Phase 4 — Advanced Orchestration (Master Agent @ 8002)
+
+### Step 6B — Master Orchestration Agent (Adaptive)
+
+* Behavior profiling, utility assessment, coordination learning
+* Failure mode discovery & automated remediation playbooks
+
+**Activation**
+
+```bash
+python -m infra.master_agent.link --service "{{SERVICE_NAME}}" --agent "http://localhost:8002"
+```
+
+---
+
+## Phase 5 — System Health & Dependency Integration
+
+### Health, Performance, Monitoring
+
+* Establish baselines (latency, error rate, CPU/mem).
+* Register metrics path if present.
+
+**Automation**
+
+```bash
+python -m infra.metrics.register --service "{{SERVICE_NAME}}" --metrics-path "/metrics"
+python -m infra.monitoring.baseline --service "{{SERVICE_NAME}}"
+```
+
+### Dependencies & Load Balancing
+
+* Validate service-to-service calls; update LB if applicable.
+
+**Automation**
+
+```bash
+python -m infra.deps.sync --service "{{SERVICE_NAME}}"
+python -m infra.lb.configure --service "{{SERVICE_NAME}}"
+```
+
+---
+
+## Phase 6 — Integration Success Verification (Checklist)
+
+1. ✅ `/health` and `/ready` pass consistently
+2. ✅ Registered in Registry (8610) with correct metadata
+3. ✅ Service `.mdc` generated and stored
+4. ✅ Port assignment persisted and conflict-free
+5. ✅ Dependencies mapped and validated
+6. ✅ Master Orchestration recognizes & coordinates
+7. ✅ Snapshot Manager includes the service in baselines
+8. ✅ Orchestration start/stop is correct and ordered
+9. ✅ Monitoring active; baseline recorded
+10. ✅ Learning phase initiated (if opted)
+
+---
+
+## Reference: Shell & Script Skeletons
+
+**`infra/scripts/STOP_zmartbot.sh`**
+
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
+DB="${1:-/Users/dansidanutz/Desktop/ZmartBot/infra/port_manager.db}"
+SNAPDIR="${2:-/Users/dansidanutz/Desktop/ZmartBot/infra/snapshots}"
+SCOPE="zmart-"
+
+python -m infra.discovery.freeze
+python -m infra.health.check --all || { echo "Health check failed"; exit 1; }
+
+python -m infra.snapshot.create --db "$DB" --out "$SNAPDIR" --scope "$SCOPE"
+python -m infra.process_reaper.clean --scope "$SCOPE" --safe-only
+
+echo "STOP gate completed."
+```
+
+**`infra/process_reaper.py` (behavior)**
+
+* Identify processes by `--scope` (prefix match on unit name or PID files under `infra/pids/`).
+* Refuse to kill anything outside scope; print dry‑run before action.
+
+**`infra/mdc_agent/generate.py` (inputs)**
+
+* `service.yaml`, `docs/overview.md`, code introspection (optional).
+* Emits `.cursor/rules/services/{{SERVICE_NAME}}.mdc`.
+
+**`infra/health/wait_ready.py`**
+
+* Polls `http://localhost:$PORT/ready` until `200` or timeout.
+
+---
+
+## Contract for Service Health Endpoints
+
+**`GET /health`**
+
+```json
+{ "status":"ok", "uptime_seconds":123, "version":"0.1.0", "checks":{"db":"ok","cache":"ok"} }
+```
+
+**`GET /ready`**
+
+```json
+{ "status":"ready", "dependencies":{"db":"ready","cache":"ready"} }
+```
+
+**HTTP 200** is mandatory for healthy/ready. Timeouts are treated as failure.
+
+---
+
+## Governance / Security Notes
+
+* Registry requires admin token for mutating endpoints.
+* Orchestrator injects a **Service Token** into the environment at start (`SERVICE_TOKEN`); peer services must validate it on inbound calls when `security.token_required: true`.
+
+```
+# Example env injection at start (pseudocode)
+export PORT=8003
+export SERVICE_TOKEN="$(python -m infra.registry_client.issue_token --service {{SERVICE_NAME}})"
+exec python -m services.{{module}} --port $PORT
+```
+
+---
+
+## Failure & Rollback Playbook
+
+* If Step 7 (readiness) fails: stop new service, **restore snapshot**, unfreeze discovery, open ticket `sev-3`.
+* If system health check fails post-activation: orchestrator automatically isolates new service (traffic weight 0), alerts, and reverts LB config.
+
+```
+python -m infra.snapshot.restore --latest-success
+```
+
+---
+
+## Appendix: Keep StopStartCycle in Sync
+
+This `NewService.mdc` deliberately wraps Steps 3–8 with:
+
+```
+<!-- BEGIN:StopStartCycle -->
+...subset...
+<!-- END:StopStartCycle -->
+```
+
+You can auto-extract to `StopStartCycle.mdc` via:
+
+```bash
+python - <<'PY'
+import re, sys, pathlib
+p=pathlib.Path('.cursor/rules/NewService.mdc').read_text()
+m=re.search(r'<!-- BEGIN:StopStartCycle -->(.*)<!-- END:StopStartCycle -->', p, re.S)
+pathlib.Path('.cursor/rules/StopStartCycle.mdc').write_text(
+  "# StopStartCycle.mdc\n" + m.group(1).strip()+"\n"
+)
+print("StopStartCycle.mdc updated")
+PY
+```

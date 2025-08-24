@@ -1,0 +1,344 @@
+# MDC Monitoring System - Comprehensive Documentation
+
+@agent: MonitoringMDC
+description: "Comprehensive documentation and management of the MDC (Markdown-driven Configuration) monitoring system, including file watching, automatic updates, and integration with CLAUDE.md"
+
+## Purpose & Scope
+
+The MDC Monitoring System is a critical infrastructure component that ensures real-time synchronization between MDC files in `.cursor/rules` and the main `CLAUDE.md` file. This system provides:
+
+- **Real-time file monitoring** for all `.mdc` files
+- **Automatic content synchronization** to `CLAUDE.md`
+- **Backup and recovery** mechanisms
+- **Integration** with the CLAUDE.md organization system
+- **Comprehensive logging** and status reporting
+
+## System Architecture
+
+### Core Components
+
+1. **MDC File Watcher** (`watch_mdc_changes.py`)
+   - Monitors `.cursor/rules` directory for file changes
+   - Triggers updates on create, modify, delete, and move events
+   - Implements cooldown mechanism to prevent rapid-fire updates
+   - Provides real-time status and logging
+
+2. **Claude MDC Updater** (`update_claude_mdc.py`)
+   - Reads all MDC files and extracts structured content
+   - Parses agent names, descriptions, and full content
+   - Creates formatted sections for CLAUDE.md
+   - Maintains backup of previous CLAUDE.md versions
+   - Generates comprehensive MDC content summaries
+
+3. **CLAUDE.md Organization System** (`claude-organize`)
+   - Manages CLAUDE.md file size (keeps under 40k characters)
+   - Creates modular directory structure (`~/.claude/`)
+   - Integrates with MDC monitoring system
+   - Provides backup and archival capabilities
+
+### File Structure
+
+```
+ZmartBot/
+├── .cursor/rules/                    # MDC files directory
+│   ├── *.mdc                        # All MDC configuration files
+│   └── services/                    # Service-specific MDC files
+├── zmart-api/
+│   ├── watch_mdc_changes.py         # File watcher script
+│   ├── update_claude_mdc.py         # Content updater script
+│   └── infra/                       # Infrastructure modules
+└── ~/.claude/                       # CLAUDE.md organization
+    ├── CLAUDE.md                    # Main active context file
+    ├── archive/                     # Historical backups
+    ├── projects/                    # Project-specific details
+    │   └── mdc-files.md            # MDC files documentation
+    └── references/                  # Reusable information
+```
+
+## MDC File Format & Standards
+
+### File Naming Convention
+- **Format**: `[ServiceName].mdc` or `[Category][ServiceName].mdc`
+- **Examples**: `rule_0_mandatory.mdc`, `NewService.mdc`, `MDCAgent.mdc`
+- **Location**: `.cursor/rules/` directory
+
+### Content Structure
+Each MDC file should include:
+
+```markdown
+# [Service/Component Name]
+
+@agent: [AgentName]
+description: "[Brief description of the agent/service]"
+
+## Purpose & Scope
+[Detailed explanation of what this MDC file governs]
+
+## [Additional sections as needed]
+```
+
+### Current MDC Files Inventory
+
+#### Core System Files
+- `rule_0_mandatory.mdc` - Central mandatory rules for ZmartBot
+- `rules.mdc` - Command guardrails and safety policies
+- `MDCAgent.mdc` - MDC documentation generation agent
+- `main.mdc` - Main system configuration
+
+#### Service Integration
+- `NewService.mdc` - New service integration workflow
+- `StopStartCycle.mdc` - Critical start/stop operations
+- `MasterOrchestrationAgent.mdc` - Master orchestration system
+- `ProcessReaper.mdc` - Process management and cleanup
+
+#### Infrastructure
+- `PortManager.mdc` - Port assignment and management
+- `ServiceDiscovery.mdc` - Service discovery mechanisms
+- `ServiceRegistry.mdc` - Service registration system
+- `BackendDoctorPack.mdc` - Backend health monitoring
+
+#### Trading & Alerts
+- `WhaleAlerts.mdc` - Whale alert system
+- `MessiAlerts.mdc` - Messi alert service
+- `Pele.mdc` - Pele alert service
+- `Maradona.mdc` - Maradona alert service
+- `LiveAlerts.mdc` - Live alert management
+
+#### Data & Analytics
+- `market_data_aggregator.mdc` - Market data aggregation
+- `market_data_enhanced_database.mdc` - Enhanced database system
+- `21indicators.mdc` - 21 indicators system
+- `MySymbols.mdc` - Symbol management
+
+#### Frontend & UI
+- `frontend.mdc` - Frontend configuration
+- `ControlUI.mdc` - Control UI system
+- `IndicatorCard.mdc` - Indicator card components
+
+## Monitoring System Operation
+
+### File Watching Process
+
+1. **Initialization**
+   ```bash
+   cd /Users/dansidanutz/Desktop/ZmartBot/zmart-api
+   python watch_mdc_changes.py
+   ```
+
+2. **Event Detection**
+   - **Created**: New `.mdc` file added
+   - **Modified**: Existing `.mdc` file changed
+   - **Deleted**: `.mdc` file removed
+   - **Moved**: `.mdc` file renamed or relocated
+
+3. **Update Triggering**
+   - Cooldown period (2 seconds) prevents rapid updates
+   - Automatic execution of `update_claude_mdc.py`
+   - Real-time status reporting
+
+### Content Update Process
+
+1. **MDC File Reading**
+   - Scan `.cursor/rules` for all `.mdc` files
+   - Parse agent names and descriptions
+   - Extract full content for formatting
+
+2. **CLAUDE.md Integration**
+   - Preserve existing header content
+   - Add comprehensive MDC section
+   - Include summary table and detailed content
+   - Maintain backup of previous version
+
+3. **Content Organization**
+   - Structured sections for each MDC file
+   - Metadata extraction (agent, description, file size)
+   - Formatted markdown output
+
+## Integration with CLAUDE.md Organization
+
+### Automatic Updates
+- MDC changes automatically sync to CLAUDE.md
+- Content is preserved in main CLAUDE.md file
+- Organization system works alongside monitoring
+
+### Size Management
+- CLAUDE.md kept under 40k characters
+- Modular structure in `~/.claude/` directory
+- Historical backups in archive directory
+
+### Coordination
+- `claude-organize` script integrates with MDC monitoring
+- Creates `~/.claude/projects/mdc-files.md` for documentation
+- Provides status reporting for both systems
+
+## Usage & Commands
+
+### Starting MDC Monitoring
+```bash
+# Navigate to zmart-api directory
+cd /Users/dansidanutz/Desktop/ZmartBot/zmart-api
+
+# Start file watcher
+python watch_mdc_changes.py
+
+# Manual update (if needed)
+python update_claude_mdc.py
+```
+
+### Managing CLAUDE.md Organization
+```bash
+# Check current status
+~/.local/bin/claude-organize --status
+
+# Force reorganization
+~/.local/bin/claude-organize --force
+
+# Create backup only
+~/.local/bin/claude-organize --backup-only
+```
+
+### Monitoring System Status
+```bash
+# Check if monitoring scripts exist
+ls -la /Users/dansidanutz/Desktop/ZmartBot/zmart-api/watch_mdc_changes.py
+ls -la /Users/dansidanutz/Desktop/ZmartBot/zmart-api/update_claude_mdc.py
+
+# Check MDC files count
+find /Users/dansidanutz/Desktop/ZmartBot/.cursor/rules -name "*.mdc" | wc -l
+
+# Check CLAUDE.md size
+wc -c ~/.claude/CLAUDE.md
+```
+
+## Error Handling & Recovery
+
+### Common Issues
+
+1. **File Not Found Errors**
+   - Verify paths in monitoring scripts
+   - Check file permissions
+   - Ensure directories exist
+
+2. **Permission Errors**
+   - Check file write permissions
+   - Verify directory access rights
+   - Run with appropriate user privileges
+
+3. **Content Parsing Errors**
+   - Validate MDC file format
+   - Check for malformed markdown
+   - Verify agent name extraction
+
+### Recovery Procedures
+
+1. **Backup Restoration**
+   ```bash
+   # Restore from backup
+   cp /Users/dansidanutz/Desktop/ZmartBot/CLAUDE_BACKUP.md ~/.claude/CLAUDE.md
+   ```
+
+2. **Manual Update**
+   ```bash
+   # Force manual update
+   cd /Users/dansidanutz/Desktop/ZmartBot/zmart-api
+   python update_claude_mdc.py
+   ```
+
+3. **System Reset**
+   ```bash
+   # Reorganize CLAUDE.md
+   ~/.local/bin/claude-organize --force
+   ```
+
+## Security & Best Practices
+
+### File Security
+- MDC files contain sensitive configuration
+- Access restricted to authorized users
+- Backup files maintained for recovery
+
+### Content Validation
+- MDC files validated for proper format
+- Agent names extracted and verified
+- Content size monitored and reported
+
+### System Monitoring
+- Real-time status reporting
+- Error logging and notification
+- Performance monitoring for large files
+
+## Performance Considerations
+
+### File Size Management
+- Individual MDC files: < 50KB recommended
+- Total MDC content: < 100KB recommended
+- CLAUDE.md target: < 40KB
+
+### Update Frequency
+- Cooldown period: 2 seconds between updates
+- Batch processing for multiple changes
+- Efficient content parsing and formatting
+
+### Resource Usage
+- Minimal CPU usage for file watching
+- Efficient memory usage for content processing
+- Optimized file I/O operations
+
+## Future Enhancements
+
+### Planned Features
+- Web-based monitoring dashboard
+- Email notifications for critical changes
+- Advanced content validation
+- Integration with version control
+
+### Scalability Improvements
+- Support for multiple MDC directories
+- Distributed monitoring capabilities
+- Advanced caching mechanisms
+- Performance optimization
+
+## Troubleshooting Guide
+
+### Monitoring Not Working
+1. Check if `watchdog` library is installed
+2. Verify file paths and permissions
+3. Check for Python environment issues
+4. Review error logs and output
+
+### Content Not Updating
+1. Verify MDC file format
+2. Check CLAUDE.md write permissions
+3. Review update script output
+4. Validate file paths and structure
+
+### Performance Issues
+1. Monitor file sizes and update frequency
+2. Check system resources
+3. Review cooldown settings
+4. Optimize content processing
+
+## Maintenance & Support
+
+### Regular Maintenance
+- Monitor file sizes and growth
+- Review and clean backup files
+- Update monitoring scripts as needed
+- Validate MDC file formats
+
+### Support Procedures
+- Check system status with `--status` flag
+- Review error logs and output
+- Validate file paths and permissions
+- Test monitoring system functionality
+
+---
+
+**Last Updated**: 2025-08-24
+**Version**: 1.0.0
+**Maintainer**: ZmartBot Development Team
+**Integration**: MDC Monitoring System + CLAUDE.md Organization
+description:
+globs:
+alwaysApply: false
+---

@@ -1,0 +1,148 @@
+# Gitleaks Configuration for ZmartBot
+# This file configures secret detection rules and exclusions
+
+[global]
+# Enable verbose output
+verbose = true
+
+# Enable debug mode
+debug = false
+
+# Set the output format (json, csv, sarif)
+report-format = "json"
+
+# Set the output file
+report-path = "gitleaks-report.json"
+
+# Enable all rules
+enable-git = true
+enable-docker = true
+
+# Set timeout for scanning
+timeout = 300
+
+# Custom rules for ZmartBot specific patterns
+[[rules]]
+id = "zmartbot-api-key"
+description = "ZmartBot API Key Pattern"
+regex = '''(?i)(?:api[_-]?key|apikey|api_key)[\s]*[=:][\s]*["']?[a-zA-Z0-9]{32,}["']?'''
+tags = ["key", "zmartbot"]
+
+[[rules]]
+id = "zmartbot-secret"
+description = "ZmartBot Secret Pattern"
+regex = '''(?i)(?:secret|password|token)[\s]*[=:][\s]*["']?[a-zA-Z0-9]{16,}["']?'''
+tags = ["secret", "zmartbot"]
+
+[[rules]]
+id = "zmartbot-database-url"
+description = "ZmartBot Database URL Pattern"
+regex = '''(?i)(?:database_url|db_url|connection_string)[\s]*[=:][\s]*["']?[a-zA-Z]+://[^\s"']+["']?'''
+tags = ["database", "zmartbot"]
+
+# Exclude patterns for ZmartBot
+[[rules]]
+id = "zmartbot-exclude"
+description = "Exclude ZmartBot specific patterns"
+regex = '''(?i)(?:example|test|mock|fake|dummy|placeholder)[\s]*[=:][\s]*["']?[a-zA-Z0-9]+["']?'''
+tags = ["exclude", "zmartbot"]
+
+# Exclude directories and files
+[allowlist]
+description = "ZmartBot Allowlist"
+paths = [
+    "**/*.md",
+    "**/*.txt",
+    "**/*.json",
+    "**/*.yml",
+    "**/*.yaml",
+    "**/node_modules/**",
+    "**/venv/**",
+    "**/__pycache__/**",
+    "**/.git/**",
+    "**/backups/**",
+    "**/cache/**",
+    "**/logs/**",
+    "**/tmp/**",
+    "**/temp/**",
+    "**/test/**",
+    "**/tests/**",
+    "**/examples/**",
+    "**/docs/**",
+    "**/documentation/**",
+    "**/screenshots/**",
+    "**/images/**",
+    "**/assets/**",
+    "**/static/**",
+    "**/public/**",
+    "**/dist/**",
+    "**/build/**",
+    "**/coverage/**",
+    "**/.pytest_cache/**",
+    "**/.mypy_cache/**",
+    "**/.tox/**",
+    "**/.venv/**",
+    "**/env/**",
+    "**/.env.example",
+    "**/config.example",
+    "**/settings.example",
+    "**/template",
+    "**/sample",
+    "**/demo",
+    "**/mock",
+    "**/fake",
+    "**/dummy",
+    "**/placeholder"
+]
+
+# Exclude specific patterns
+regexes = [
+    '''(?i)example[_-]?key''',
+    '''(?i)test[_-]?key''',
+    '''(?i)mock[_-]?key''',
+    '''(?i)fake[_-]?key''',
+    '''(?i)dummy[_-]?key''',
+    '''(?i)placeholder[_-]?key''',
+    '''(?i)sample[_-]?key''',
+    '''(?i)demo[_-]?key''',
+    '''(?i)template[_-]?key''',
+    '''(?i)example[_-]?secret''',
+    '''(?i)test[_-]?secret''',
+    '''(?i)mock[_-]?secret''',
+    '''(?i)fake[_-]?secret''',
+    '''(?i)dummy[_-]?secret''',
+    '''(?i)placeholder[_-]?secret''',
+    '''(?i)sample[_-]?secret''',
+    '''(?i)demo[_-]?secret''',
+    '''(?i)template[_-]?secret''',
+    '''(?i)example[_-]?password''',
+    '''(?i)test[_-]?password''',
+    '''(?i)mock[_-]?password''',
+    '''(?i)fake[_-]?password''',
+    '''(?i)dummy[_-]?password''',
+    '''(?i)placeholder[_-]?password''',
+    '''(?i)sample[_-]?password''',
+    '''(?i)demo[_-]?password''',
+    '''(?i)template[_-]?password''',
+    '''(?i)example[_-]?token''',
+    '''(?i)test[_-]?token''',
+    '''(?i)mock[_-]?token''',
+    '''(?i)fake[_-]?token''',
+    '''(?i)dummy[_-]?token''',
+    '''(?i)placeholder[_-]?token''',
+    '''(?i)sample[_-]?token''',
+    '''(?i)demo[_-]?token''',
+    '''(?i)template[_-]?token'''
+]
+
+# Exclude specific commits
+commits = [
+    "example-commit-hash-1",
+    "example-commit-hash-2"
+]
+
+# Exclude specific files
+files = [
+    "example-file-1.txt",
+    "example-file-2.py"
+]

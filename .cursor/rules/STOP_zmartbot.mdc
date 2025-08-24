@@ -1,0 +1,40 @@
+
+@agent: StopAgent
+
+## STOP_zmartbot.mdc – Updated with ProcessReaper fallback
+
+@step: signal_services_to_stop
+- Send graceful shutdown signal to:
+  - Dashboard (port 3400)
+  - Backend API (port 8000)
+  - Orchestration agent
+
+@step: wait_and_verify
+- Wait 3 seconds and check PIDs
+- If any PID is still active, escalate
+
+@step: call_ProcessReaper
+- For any services still running, call ProcessReaper agent
+- Log to processreaper.log with PID and port info
+
+@step: stop_BackendDoctorAgent
+- Stop monitoring loop and flush logs
+- Terminate BackendDoctorAgent monitoring process
+- Save final health status to doctor_monitor.log
+- Flush any pending health data
+
+@step: stop_MDCFileWatcher
+- Stop MDC file watcher process
+- Terminate watch_mdc_changes_simple.py
+- Save final update status to mdc_watcher.log
+- Flush any pending file change notifications
+
+@step: create_state_screenshot
+- Capture current system state for next startup
+- Save port assignments and service configurations
+- Create cached data snapshot for smooth startup
+- Log: "✅ State screenshot captured"
+
+@step: confirm_shutdown
+- Print success message if all processes terminated
+- Output summary to zmartbot_shutdown.log

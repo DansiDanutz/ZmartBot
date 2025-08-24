@@ -1,0 +1,345 @@
+@agent: ServiceDiscoveryAgent
+
+# Service Discovery & Port Assignment System
+
+## Overview
+The **Service Discovery & Port Assignment System** automatically detects new services added to the orchestration, assigns unique ports, and ensures the Master Orchestration Agent recognizes and manages them. This system provides seamless integration of new services without manual configuration.
+
+## Core Components
+
+### 1. **Automatic Service Detection**
+- **File System Monitoring**: Watches for new service files in orchestration directories
+- **Registry Scanning**: Detects unregistered services in Service Registry
+- **Configuration Parsing**: Reads service configurations from MDC files and startup scripts
+- **Dependency Analysis**: Identifies service dependencies and startup order
+
+### 2. **Intelligent Port Assignment**
+- **Port Range Mapping**: Maps service types to appropriate port ranges
+  - Frontend: 3400-3499
+  - Backend: 8000-8099
+  - Internal API: 8200-8299
+  - Worker: 8300-8399
+  - Orchestration: 8500-8599
+- **Conflict Resolution**: Automatically resolves port conflicts
+- **Permanent Assignment**: Assigns permanent ports after successful startup
+- **Database Persistence**: Stores assignments in both legacy and Service Registry
+
+### 3. **Master Orchestration Agent Integration**
+- **Service Recognition**: Automatically recognizes new services
+- **Topology Learning**: Updates service dependency maps
+- **Health Monitoring**: Includes new services in health checks
+- **Orchestration Management**: Manages new services in startup/shutdown cycles
+
+## Workflow
+
+### Phase 1: Service Detection
+```python
+@step: detect_new_services
+def detect_new_services():
+    """Detect new services that need port assignment"""
+    # Scan orchestration directories
+    new_services = scan_orchestration_directories()
+    
+    # Check Service Registry for unregistered services
+    unregistered = check_service_registry()
+    
+    # Parse MDC files for service definitions
+    mdc_services = parse_mdc_service_definitions()
+    
+    # Combine all detected services
+    all_new_services = combine_detections(new_services, unregistered, mdc_services)
+    
+    return all_new_services
+```
+
+### Phase 2: Port Assignment
+```python
+@step: assign_ports_to_new_services
+def assign_ports_to_new_services(new_services):
+    """Assign unique ports to new services"""
+    for service in new_services:
+        # Determine service type and port range
+        service_type = classify_service(service)
+        port_range = get_port_range(service_type)
+        
+        # Find available port in range
+        available_port = find_available_port(port_range)
+        
+        # Assign port to service
+        assign_port_to_service(service, available_port)
+        
+        # Register in Service Registry
+        register_service_in_registry(service, available_port)
+        
+        log_info(f"✅ Assigned port {available_port} to {service.name}")
+```
+
+### Phase 3: Master Orchestration Agent Recognition
+```python
+@step: notify_master_orchestration_agent
+def notify_master_orchestration_agent(new_services):
+    """Notify Master Orchestration Agent of new services"""
+    for service in new_services:
+        # Update Master Orchestration Agent's service cache
+        master_agent.update_service_cache(service)
+        
+        # Update dependency maps
+        master_agent.update_dependency_maps(service)
+        
+        # Add to health monitoring
+        master_agent.add_to_health_monitoring(service)
+        
+        # Update orchestration topology
+        master_agent.update_topology(service)
+        
+        log_info(f"🎯 Master Orchestration Agent now recognizes {service.name}")
+```
+
+## Service Classification
+
+### Frontend Services (3400-3499)
+- **Criteria**: React/Vue applications, web interfaces, dashboards
+- **Examples**: Professional Dashboard, Control UI, Monitoring Interface
+- **Health Check**: HTTP endpoint on assigned port
+
+### Backend Services (8000-8099)
+- **Criteria**: API servers, data processing, business logic
+- **Examples**: FastAPI servers, REST APIs, GraphQL endpoints
+- **Health Check**: `/health` or `/api/health` endpoint
+
+### Internal API Services (8200-8299)
+- **Criteria**: Internal microservices, data services, utilities
+- **Examples**: My Symbols Service, Test Service, Internal APIs
+- **Health Check**: Service-specific health endpoints
+
+### Worker Services (8300-8399)
+- **Criteria**: Background workers, data processors, task queues
+- **Examples**: Data collectors, alert processors, background tasks
+- **Health Check**: Process status and queue health
+
+### Orchestration Services (8500-8599)
+- **Criteria**: Orchestration, coordination, management services
+- **Examples**: Service Registry, Control UI, Orchestration Agents
+- **Health Check**: Management API endpoints
+
+## Integration Points
+
+### Service Registry Integration
+```python
+@function: register_new_service
+def register_new_service(service_name, port, service_type):
+    """Register new service in Service Registry"""
+    registry_data = {
+        "name": service_name,
+        "port": port,
+        "type": service_type,
+        "status": "DISCOVERED",
+        "health_url": f"http://127.0.0.1:{port}/health",
+        "start_cmd": generate_start_command(service_name),
+        "dependencies": detect_dependencies(service_name)
+    }
+    
+    # POST to Service Registry
+    response = requests.post(
+        "http://127.0.0.1:8610/services/register",
+        json=registry_data,
+        headers={"X-Token": REGISTRY_TOKEN}
+    )
+    
+    return response.json()
+```
+
+### Port Manager Integration
+```python
+@function: update_port_manager
+def update_port_manager(service_name, port):
+    """Update Port Manager with new service assignment"""
+    # Update legacy port registry
+    port_registry.assign_port(service_name, port, permanent=True)
+    
+    # Update Service Registry
+    service_registry.update_service_port(service_name, port)
+    
+    # Log assignment
+    log_info(f"📊 Port {port} assigned to {service_name}")
+```
+
+### Master Orchestration Agent Integration
+```python
+@function: update_master_agent
+def update_master_agent(service_info):
+    """Update Master Orchestration Agent with new service"""
+    # Add to service cache
+    master_agent.services[service_info.name] = service_info
+    
+    # Update dependency maps
+    master_agent.dependency_maps[service_info.name] = service_info.dependencies
+    
+    # Add to health monitoring
+    master_agent.health_monitors[service_info.name] = {
+        "url": service_info.health_url,
+        "port": service_info.port,
+        "status": "UNKNOWN"
+    }
+    
+    # Update topology
+    master_agent.update_topology()
+    
+    log_info(f"🎯 Master Agent now manages {service_info.name}")
+```
+
+## Automatic Discovery Triggers
+
+### 1. **OrchestrationStart Trigger**
+- Detects new services during startup sequence
+- Assigns ports before service startup
+- Notifies Master Orchestration Agent
+
+### 2. **Service Registry Scan**
+- Periodic scanning of Service Registry
+- Identifies unregistered services
+- Triggers automatic registration
+
+### 3. **MDC File Changes**
+- Watches for new service definitions in MDC files
+- Parses service configurations
+- Creates service registrations
+
+### 4. **Manual Service Addition**
+- Detects manually added service files
+- Validates service configurations
+- Integrates into orchestration system
+
+## Error Handling
+
+### Port Conflict Resolution
+```python
+@function: resolve_port_conflict
+def resolve_port_conflict(service_name, desired_port):
+    """Resolve port conflicts automatically"""
+    if port_is_available(desired_port):
+        return desired_port
+    
+    # Find next available port in range
+    service_type = get_service_type(service_name)
+    port_range = get_port_range(service_type)
+    
+    for port in range(port_range[0], port_range[1]):
+        if port_is_available(port):
+            log_warning(f"⚠️ Port {desired_port} in use, using {port} for {service_name}")
+            return port
+    
+    raise Exception(f"No available ports in range {port_range} for {service_name}")
+```
+
+### Service Validation
+```python
+@function: validate_new_service
+def validate_new_service(service_info):
+    """Validate new service before integration"""
+    # Check service configuration
+    if not service_info.start_cmd:
+        raise ValidationError(f"Missing start_cmd for {service_info.name}")
+    
+    # Validate health endpoint
+    if not service_info.health_url:
+        raise ValidationError(f"Missing health_url for {service_info.name}")
+    
+    # Check dependencies
+    for dep in service_info.dependencies:
+        if not service_exists(dep):
+            log_warning(f"⚠️ Dependency {dep} not found for {service_info.name}")
+    
+    return True
+```
+
+## Monitoring and Logging
+
+### Discovery Logging
+```python
+@function: log_service_discovery
+def log_service_discovery(service_name, port, discovery_method):
+    """Log service discovery events"""
+    log_entry = {
+        "timestamp": datetime.now().isoformat(),
+        "service_name": service_name,
+        "port": port,
+        "discovery_method": discovery_method,
+        "status": "DISCOVERED"
+    }
+    
+    # Write to discovery log
+    with open("service_discovery.log", "a") as f:
+        f.write(json.dumps(log_entry) + "\n")
+    
+    log_info(f"🔍 Discovered {service_name} on port {port} via {discovery_method}")
+```
+
+### Health Monitoring Integration
+```python
+@function: integrate_health_monitoring
+def integrate_health_monitoring(service_info):
+    """Integrate new service into health monitoring"""
+    # Add to BackendDoctorAgent monitoring
+    doctor_agent.add_service_monitoring(service_info)
+    
+    # Add to Service Registry health tracking
+    service_registry.add_health_monitoring(service_info)
+    
+    # Update Master Orchestration Agent health checks
+    master_agent.add_health_check(service_info)
+    
+    log_info(f"🏥 Health monitoring enabled for {service_info.name}")
+```
+
+## Success Criteria
+
+### Automatic Discovery
+- ✅ New services detected without manual intervention
+- ✅ Port assignment happens automatically
+- ✅ Service Registry updated automatically
+- ✅ Master Orchestration Agent recognizes new services
+
+### Integration Quality
+- ✅ Services appear in orchestration topology
+- ✅ Health monitoring includes new services
+- ✅ Startup/shutdown cycles include new services
+- ✅ Dependency management works correctly
+
+### Error Handling
+- ✅ Port conflicts resolved automatically
+- ✅ Invalid services rejected with clear errors
+- ✅ Missing dependencies logged as warnings
+- ✅ Failed integrations don't break existing services
+
+## Usage Examples
+
+### Adding a New Service
+```bash
+# 1. Create service file
+touch zmart-api/new_service.py
+
+# 2. Add service configuration to MDC file
+echo "@service: new-service" >> .cursor/rules/NewService.mdc
+
+# 3. Run orchestration - service will be automatically discovered
+./START_ZmartBot.sh
+```
+
+### Manual Service Registration
+```python
+# Register service manually if needed
+from service_discovery import register_new_service
+
+register_new_service(
+    service_name="my-new-service",
+    port=8201,
+    service_type="internal_api"
+)
+```
+
+This system ensures that new services are seamlessly integrated into the ZmartBot orchestration without manual configuration, providing a truly dynamic and self-managing system.
+description:
+globs:
+alwaysApply: false
+---

@@ -1,0 +1,110 @@
+# MAXIMUM UPGRADE: ProcessReaper.mdc
+
+## Service Overview
+- **Name**: ProcessReaper
+- **Port**: Dynamic (Assigned by Port Manager)
+- **Type**: Security and Cleanup Agent
+- **Description**: ProcessReaper is a critical security and cleanup script that acts as the system's "immune system" for the ZmartBot project. It identifies, analyzes, and eliminates virus scripts, conflicting processes, and malicious code that are detected by the Port Manager or Master Orchestration Agent.
+- **Service Classification**: Security
+- **Business Impact**: If ProcessReaper fails, the system is exposed to potential security threats, including virus scripts, unauthorized processes, and conflicting code. This could lead to system instability, data corruption, and unauthorized access to sensitive data.
+
+## Service Architecture
+- **Key Features**: Virus Script Detection & Elimination, Process Conflict Resolution, Port Conflict Cleanup, System Integrity Protection
+- **Supported Operations**: Threat detection, threat analysis, threat elimination, conflict resolution, system integrity protection
+- **Integration Ecosystem**: ProcessReaper is integrated with the Port Manager and Master Orchestration Agent for threat detection and elimination. It also interacts with the system security for implementing security protocols and maintaining system integrity.
+
+## CRITICAL SERVICE CHARACTERISTICS FOR MASTER ORCHESTRATION
+
+### Service Dependencies
+- **Required Modules**: Python's os, sys, subprocess, and shutil modules
+- **Database Dependencies**: SQLite for logging and reporting
+- **External Service Dependencies**: None
+- **File System Dependencies**: Configuration files in /etc/doctor_kill, quarantine directory in /tmp/zmartbot_quarantine
+- **Network Dependencies**: Dynamic port assigned by Port Manager
+
+### Inter-Service Operation Patterns
+- **Provides Services To**: Master Orchestration Agent, Port Manager
+- **Depends On Services**: Port Manager, Master Orchestration Agent
+- **Communication Patterns**: Direct calls for threat detection and elimination, HTTP for reporting
+- **Failure Impact Analysis**: CRITICAL - system exposed to potential security threats
+- **Recovery Dependencies**: Port Manager, Master Orchestration Agent
+- **Data Flow Patterns**: Receives threat alerts from Port Manager and Master Orchestration Agent, sends elimination reports to Master Orchestration Agent
+
+### Service Lifecycle Behavior
+- **Startup Time**: 5 seconds, affected by system load and network latency
+- **Startup Dependencies**: Port Manager, Master Orchestration Agent
+- **Startup Sequence**: Load configuration, initialize threat detection, subscribe to Port Manager and Master Orchestration Agent alerts
+- **Shutdown Behavior**: Graceful, with cleanup of temporary files and closing of database connections
+- **Shutdown Priority**: High, to ensure security threats are handled before other services shutdown
+- **Persistence Requirements**: Elimination logs, security reports
+- **State Management**: Stateless, with state recovery from logs
+
+### Runtime Characteristics
+- **Memory Usage**: Typical 50MB, peak 100MB, scales with number of threats detected
+- **CPU Usage**: Typical 5%, peak 25%, intensive during threat analysis and elimination
+- **Network Usage**: Low bandwidth, connection to Port Manager and Master Orchestration Agent
+- **Disk I/O**: Moderate, read/write patterns for logging and reporting
+- **Concurrency Model**: Async, handling multiple threat alerts simultaneously
+- **Performance Bottlenecks**: CPU during threat analysis, Disk I/O during logging
+- **Scaling Characteristics**: Vertical scaling based on system load
+
+### Error Conditions & Recovery
+- **Common Failure Modes**: Failure in threat detection, failure in threat elimination
+- **Failure Detection Methods**: Error logs, unsuccessful threat elimination
+- **Recovery Strategies**: Restart on failure, repair on configuration errors, rollback on system integrity failure
+- **Disaster Recovery**: Restore from backup, restart service
+- **Circuit Breaker Patterns**: Stop calling service if repeated failures occur
+- **Fallback Mechanisms**: Use backup service if available, alert Master Orchestration Agent
+
+### Monitoring & Observability
+- **Health Check Endpoints**: /healthcheck, returns 200 OK if service is running
+- **Key Performance Indicators**: Number of threats detected, number of threats eliminated
+- **Log Patterns**: ERROR logs indicate problems
+- **Alert Conditions**: Failure in threat detection or elimination, system integrity failure
+- **Diagnostic Commands**: doctor_kill --status, doctor_kill --logs
+- **Performance Baselines**: Normal operation with low CPU and memory usage, occasional peaks during threat elimination
+
+### Master Orchestration Integration Points
+- **Service Discovery**: Registered with Master Orchestration Agent at startup
+- **Health Monitoring**: Provides /healthcheck endpoint for Master Orchestration Agent
+- **Lifecycle Management**: Managed by Master Orchestration Agent for startup and shutdown
+- **Resource Coordination**: Reports resource usage to Master Orchestration Agent
+- **Dependency Coordination**: Reports service dependencies to Master Orchestration Agent
+- **Security Coordination**: Reports security threats to Master Orchestration Agent
+
+### Critical Decision Patterns for Orchestration
+- **Startup Priority Level**: 9 (High, due to security role)
+- **Shutdown Priority Level**: 2 (Low, to handle threats during system shutdown)
+- **Restart Strategy**: Immediate, to minimize system exposure to threats
+- **Scaling Strategy**: Scale up CPU and memory based on system load
+- **Resource Allocation**: Minimum 1 CPU, 50MB memory, optimal 2 CPU, 100MB memory
+- **Update Strategy**: Rolling, to maintain continuous threat detection
+- **Backup Strategy**: Daily backup of logs and reports
+- **Security Posture**: High isolation, strict access control, comprehensive audit requirements
+
+## API Endpoints
+- **Complete endpoint list**: /healthcheck (GET), /report (GET)
+- **Authentication requirements**: Basic authentication for /report
+- **Rate limiting specifications**: 10 requests per second
+- **Error handling patterns**: Returns 500 Internal Server Error on failure
+
+## Security Features
+- **Authentication mechanisms**: Basic authentication for /report
+- **Authorization patterns**: Only Master Orchestration Agent authorized to access /report
+- **Encryption requirements**: All communication encrypted with TLS
+- **Audit logging specifications**: All threat detection and elimination actions logged
+- **Security controls and compliance**: Complies with ZmartBot security standards
+
+## Development Guidelines
+- **Coding standards and patterns**: PEP 8 Python coding standards
+- **Testing requirements**: Unit tests for all functions, integration tests with Port Manager and Master Orchestration Agent
+- **Deployment procedures**: Deployed as a Docker container
+- **Configuration management**: Configuration files in /etc/doctor_kill
+- **Documentation standards**: Docstrings for all functions, README for service overview
+
+## Deployment Considerations
+- **Infrastructure requirements**: Docker-compatible system
+- **Environment configurations**: Configuration files in /etc/doctor_kill
+- **Scaling considerations**: Vertical scaling based on system load
+- **Monitoring requirements**: Monitoring of CPU, memory, and network usage
+- **Disaster recovery procedures**: Restore from backup, restart service

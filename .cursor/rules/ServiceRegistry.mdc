@@ -1,0 +1,21 @@
+@agent: ServiceRegistryAgent
+
+# Service Registry – Control Plane
+Manages dynamic service discovery, unique ports, SAVE/UNDO profiles, and dependency-ordered startup.
+
+## Endpoints (on 127.0.0.1:8610)
+- GET /services
+- GET /services/active
+- GET /profiles/current
+- GET /profiles/default
+- POST /services/register (X-Token if REGISTRY_TOKEN set)
+- POST /services/{name}/status
+- POST /profiles/save
+- POST /profiles/undo
+
+## Contract
+- Each service has a unique port (enforced by DB).
+- STOP = SAVE: promote TESTED→ACTIVE and snapshot profile.
+- UNDO: roll back to the previous profile.
+- State snapshots include service configurations and cached data for smooth startup.
+- Snapshot creation during STOP operations, loading and transition during START operations.

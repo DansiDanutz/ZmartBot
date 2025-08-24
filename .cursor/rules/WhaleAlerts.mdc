@@ -1,0 +1,926 @@
+@trigger: event_detection_engine
+
+# Whale Flow Alerts - Large Money Movement Pattern System
+
+## Overview
+**Whale Flow Alerts** represent the **large money movement patterns** in the ZmartBot system, designed to detect institutional activity, massive volume spikes, and smart money accumulation/distribution patterns. These alerts identify when "whales" (large institutional investors) are actively trading, providing opportunities to follow the money flow.
+
+## Whale Alert Philosophy
+
+### **Core Concept**
+Whale Flow Alerts are designed to capture **institutional money movements** and **large order blocks** that significantly impact market direction. Just as whales in the ocean create massive waves that smaller fish follow, these alerts identify when large institutional players are making significant moves in the market.
+
+### **Trading Style**
+- **Timeframe Focus**: Primarily 1h, 4h, and 1d charts
+- **Trading Approach**: Follow the money flow and institutional activity
+- **Position Duration**: Hours to days (following whale movements)
+- **Risk Management**: Volume-based stop-losses, institutional profit-taking
+
+## Alert Trigger Mechanisms
+
+### **1. Whale Volume Spike Pattern**
+
+#### **Trigger Detection Algorithm**
+```python
+class WhaleVolumeSpike:
+    def __init__(self):
+        self.volume_history = []
+        self.massive_threshold = 5.0  # 500% of average volume
+        self.institutional_threshold = 10.0  # 1000% of average volume
+        self.time_window = 50  # candles to analyze
+        
+    def detect_massive_volume(self, current_volume, symbol, timeframe):
+        """Detect massive volume spikes indicating whale activity"""
+        
+        # Add current volume data to history
+        self.volume_history.append({
+            'volume': current_volume,
+            'timestamp': datetime.now(),
+            'symbol': symbol,
+            'timeframe': timeframe
+        })
+        
+        # Keep only recent history
+        if len(self.volume_history) > self.time_window:
+            self.volume_history.pop(0)
+        
+        # Calculate volume metrics
+        if len(self.volume_history) >= 30:
+            volume_analysis = self.analyze_whale_volume_patterns()
+            
+            # Check for massive volume spikes
+            if volume_analysis['massive_spikes'] >= 1 and volume_analysis['avg_ratio'] >= self.massive_threshold:
+                return self.create_whale_volume_alert(volume_analysis)
+        
+        return None
+    
+    def analyze_whale_volume_patterns(self):
+        """Analyze volume patterns for whale activity"""
+        volumes = [entry['volume'] for entry in self.volume_history]
+        avg_volume = sum(volumes) / len(volumes)
+        
+        analysis = {
+            'massive_spikes': 0,
+            'institutional_spikes': 0,
+            'avg_ratio': 0,
+            'spike_frequency': 0,
+            'volume_distribution': 'normal',
+            'whale_activity_level': 'low',
+            'price_impact': 0
+        }
+        
+        # Count massive and institutional spikes
+        for volume in volumes:
+            ratio = volume / avg_volume
+            if ratio >= self.massive_threshold:
+                analysis['massive_spikes'] += 1
+            if ratio >= self.institutional_threshold:
+                analysis['institutional_spikes'] += 1
+        
+        analysis['avg_ratio'] = sum([v/avg_volume for v in volumes]) / len(volumes)
+        analysis['spike_frequency'] = analysis['massive_spikes'] / len(volumes)
+        
+        # Determine whale activity level
+        if analysis['institutional_spikes'] > 0:
+            analysis['whale_activity_level'] = 'institutional'
+        elif analysis['massive_spikes'] > 0:
+            analysis['whale_activity_level'] = 'massive'
+        else:
+            analysis['whale_activity_level'] = 'normal'
+        
+        # Calculate price impact
+        price_changes = [abs(v.price_change) for v in volumes if hasattr(v, 'price_change')]
+        if price_changes:
+            analysis['price_impact'] = sum(price_changes) / len(price_changes)
+        
+        return analysis
+```
+
+#### **What Happens When Triggered**
+```python
+def create_whale_volume_alert(self, volume_analysis):
+    """Create Whale Volume alert when massive spikes detected"""
+    
+    alert = AlertTrigger(
+        type="WHALE_VOLUME_SPIKE",
+        symbol=self.volume_history[-1]['symbol'],
+        timeframe=self.volume_history[-1]['timeframe'],
+        value=self.volume_history[-1]['volume'],
+        message=f"Whale Flow: Massive volume spike detected - {volume_analysis['whale_activity_level']} activity level",
+        severity="HIGH",
+        action="Whale activity detected - follow the money flow",
+        indicators_triggered=["Volume Analysis", "OBV", "VWAP", "MFI"],
+        volume_data=volume_analysis,
+        trading_opportunity={
+            'type': 'whale_following',
+            'entry_strategy': 'volume_confirmation',
+            'exit_strategy': 'whale_exit',
+            'stop_loss': 'volume_based',
+            'target_timeframe': '1h-4h'
+        }
+    )
+    
+    return alert
+```
+
+### **2. Whale Order Flow Pattern**
+
+#### **Trigger Detection Algorithm**
+```python
+class WhaleOrderFlow:
+    def __init__(self):
+        self.order_flow_history = []
+        self.large_order_threshold = 1000000  # $1M minimum order size
+        self.block_threshold = 5000000  # $5M block size
+        self.time_window = 100  # candles to analyze
+        
+    def detect_large_orders(self, current_order_flow, symbol, timeframe):
+        """Detect large order blocks indicating institutional activity"""
+        
+        # Add current order flow data to history
+        self.order_flow_history.append({
+            'order_flow': current_order_flow,
+            'timestamp': datetime.now(),
+            'symbol': symbol,
+            'timeframe': timeframe
+        })
+        
+        # Keep only recent history
+        if len(self.order_flow_history) > self.time_window:
+            self.order_flow_history.pop(0)
+        
+        # Calculate order flow metrics
+        if len(self.order_flow_history) >= 50:
+            order_flow_analysis = self.analyze_order_flow_patterns()
+            
+            # Check for large order blocks
+            if order_flow_analysis['large_orders'] >= 2 and order_flow_analysis['total_volume'] >= self.block_threshold:
+                return self.create_whale_order_flow_alert(order_flow_analysis)
+        
+        return None
+    
+    def analyze_order_flow_patterns(self):
+        """Analyze order flow patterns for institutional activity"""
+        order_flows = [entry['order_flow'] for entry in self.order_flow_history]
+        
+        analysis = {
+            'large_orders': 0,
+            'block_orders': 0,
+            'total_volume': 0,
+            'buy_pressure': 0,
+            'sell_pressure': 0,
+            'order_imbalance': 0,
+            'institutional_activity': 'low',
+            'accumulation_distribution': 'neutral'
+        }
+        
+        # Count large and block orders
+        for order_flow in order_flows:
+            if order_flow.size >= self.large_order_threshold:
+                analysis['large_orders'] += 1
+            if order_flow.size >= self.block_threshold:
+                analysis['block_orders'] += 1
+            
+            analysis['total_volume'] += order_flow.size
+            
+            # Calculate buy/sell pressure
+            if order_flow.side == 'buy':
+                analysis['buy_pressure'] += order_flow.size
+            else:
+                analysis['sell_pressure'] += order_flow.size
+        
+        # Calculate order imbalance
+        total_pressure = analysis['buy_pressure'] + analysis['sell_pressure']
+        if total_pressure > 0:
+            analysis['order_imbalance'] = (analysis['buy_pressure'] - analysis['sell_pressure']) / total_pressure
+        
+        # Determine institutional activity level
+        if analysis['block_orders'] > 0:
+            analysis['institutional_activity'] = 'high'
+        elif analysis['large_orders'] > 2:
+            analysis['institutional_activity'] = 'medium'
+        else:
+            analysis['institutional_activity'] = 'low'
+        
+        # Determine accumulation/distribution
+        if analysis['order_imbalance'] > 0.3:
+            analysis['accumulation_distribution'] = 'accumulation'
+        elif analysis['order_imbalance'] < -0.3:
+            analysis['accumulation_distribution'] = 'distribution'
+        else:
+            analysis['accumulation_distribution'] = 'neutral'
+        
+        return analysis
+```
+
+#### **What Happens When Triggered**
+```python
+def create_whale_order_flow_alert(self, order_flow_analysis):
+    """Create Whale Order Flow alert when large orders detected"""
+    
+    alert = AlertTrigger(
+        type="WHALE_ORDER_FLOW",
+        symbol=self.order_flow_history[-1]['symbol'],
+        timeframe=self.order_flow_history[-1]['timeframe'],
+        value=self.order_flow_history[-1]['order_flow'].size,
+        message=f"Whale Flow: Large order blocks detected - {order_flow_analysis['institutional_activity']} activity",
+        severity="HIGH",
+        action="Institutional activity - monitor for accumulation/distribution",
+        indicators_triggered=["Volume Analysis", "OBV", "MFI", "VWAP"],
+        order_flow_data=order_flow_analysis,
+        trading_opportunity={
+            'type': 'institutional_following',
+            'entry_strategy': 'order_flow_confirmation',
+            'exit_strategy': 'institutional_exit',
+            'stop_loss': 'order_flow_based',
+            'target_timeframe': '4h-1d'
+        }
+    )
+    
+    return alert
+```
+
+### **3. Whale Accumulation Pattern**
+
+#### **Trigger Detection Algorithm**
+```python
+class WhaleAccumulation:
+    def __init__(self):
+        self.accumulation_history = []
+        self.accumulation_threshold = 0.6  # 60% accumulation strength
+        self.duration_threshold = 10  # 10 candles minimum
+        self.time_window = 200  # candles to analyze
+        
+    def detect_accumulation(self, current_accumulation, symbol, timeframe):
+        """Detect steady buying pressure indicating accumulation"""
+        
+        # Add current accumulation data to history
+        self.accumulation_history.append({
+            'accumulation': current_accumulation,
+            'timestamp': datetime.now(),
+            'symbol': symbol,
+            'timeframe': timeframe
+        })
+        
+        # Keep only recent history
+        if len(self.accumulation_history) > self.time_window:
+            self.accumulation_history.pop(0)
+        
+        # Calculate accumulation metrics
+        if len(self.accumulation_history) >= 100:
+            accumulation_analysis = self.analyze_accumulation_patterns()
+            
+            # Check for accumulation pattern
+            if accumulation_analysis['strength'] >= self.accumulation_threshold and \
+               accumulation_analysis['duration'] >= self.duration_threshold:
+                return self.create_whale_accumulation_alert(accumulation_analysis)
+        
+        return None
+    
+    def analyze_accumulation_patterns(self):
+        """Analyze accumulation patterns for smart money activity"""
+        accumulations = [entry['accumulation'] for entry in self.accumulation_history]
+        
+        analysis = {
+            'strength': 0,
+            'duration': 0,
+            'buy_pressure': 0,
+            'price_action': 'stable',
+            'volume_profile': 'increasing',
+            'smart_money_confidence': 0,
+            'accumulation_phase': 'early'
+        }
+        
+        # Calculate accumulation strength
+        buy_pressures = [acc.buy_pressure for acc in accumulations]
+        sell_pressures = [acc.sell_pressure for acc in accumulations]
+        
+        total_buy = sum(buy_pressures)
+        total_sell = sum(sell_pressures)
+        
+        if total_buy + total_sell > 0:
+            analysis['strength'] = total_buy / (total_buy + total_sell)
+        
+        # Calculate duration
+        consecutive_accumulation = 0
+        for acc in accumulations:
+            if acc.buy_pressure > acc.sell_pressure:
+                consecutive_accumulation += 1
+            else:
+                break
+        analysis['duration'] = consecutive_accumulation
+        
+        # Calculate buy pressure trend
+        recent_buy_pressures = buy_pressures[-10:]  # Last 10 periods
+        if len(recent_buy_pressures) > 1:
+            analysis['buy_pressure'] = sum(recent_buy_pressures) / len(recent_buy_pressures)
+        
+        # Determine price action
+        price_changes = [acc.price_change for acc in accumulations]
+        avg_price_change = sum(price_changes) / len(price_changes)
+        
+        if avg_price_change > 0.02:
+            analysis['price_action'] = 'rising'
+        elif avg_price_change < -0.02:
+            analysis['price_action'] = 'falling'
+        else:
+            analysis['price_action'] = 'stable'
+        
+        # Determine accumulation phase
+        if analysis['duration'] < 5:
+            analysis['accumulation_phase'] = 'early'
+        elif analysis['duration'] < 15:
+            analysis['accumulation_phase'] = 'middle'
+        else:
+            analysis['accumulation_phase'] = 'late'
+        
+        # Calculate smart money confidence
+        volume_increases = [acc.volume_increase for acc in accumulations if hasattr(acc, 'volume_increase')]
+        if volume_increases:
+            analysis['smart_money_confidence'] = sum(volume_increases) / len(volume_increases)
+        
+        return analysis
+```
+
+#### **What Happens When Triggered**
+```python
+def create_whale_accumulation_alert(self, accumulation_analysis):
+    """Create Whale Accumulation alert when accumulation detected"""
+    
+    alert = AlertTrigger(
+        type="WHALE_ACCUMULATION",
+        symbol=self.accumulation_history[-1]['symbol'],
+        timeframe=self.accumulation_history[-1]['timeframe'],
+        value=self.accumulation_history[-1]['accumulation'].strength,
+        message=f"Whale Flow: Accumulation pattern detected - {accumulation_analysis['accumulation_phase']} phase",
+        severity="MEDIUM",
+        action="Smart money accumulating - consider long positions",
+        indicators_triggered=["OBV", "Volume Analysis", "MFI", "ADX"],
+        accumulation_data=accumulation_analysis,
+        trading_opportunity={
+            'type': 'accumulation_following',
+            'entry_strategy': 'accumulation_confirmation',
+            'exit_strategy': 'distribution_start',
+            'stop_loss': 'accumulation_beyond',
+            'target_timeframe': '1d-1w'
+        }
+    )
+    
+    return alert
+```
+
+### **4. Whale Distribution Pattern**
+
+#### **Trigger Detection Algorithm**
+```python
+class WhaleDistribution:
+    def __init__(self):
+        self.distribution_history = []
+        self.distribution_threshold = 0.6  # 60% distribution strength
+        self.duration_threshold = 8  # 8 candles minimum
+        self.time_window = 150  # candles to analyze
+        
+    def detect_distribution(self, current_distribution, symbol, timeframe):
+        """Detect steady selling pressure indicating distribution"""
+        
+        # Add current distribution data to history
+        self.distribution_history.append({
+            'distribution': current_distribution,
+            'timestamp': datetime.now(),
+            'symbol': symbol,
+            'timeframe': timeframe
+        })
+        
+        # Keep only recent history
+        if len(self.distribution_history) > self.time_window:
+            self.distribution_history.pop(0)
+        
+        # Calculate distribution metrics
+        if len(self.distribution_history) >= 75:
+            distribution_analysis = self.analyze_distribution_patterns()
+            
+            # Check for distribution pattern
+            if distribution_analysis['strength'] >= self.distribution_threshold and \
+               distribution_analysis['duration'] >= self.duration_threshold:
+                return self.create_whale_distribution_alert(distribution_analysis)
+        
+        return None
+    
+    def analyze_distribution_patterns(self):
+        """Analyze distribution patterns for smart money activity"""
+        distributions = [entry['distribution'] for entry in self.distribution_history]
+        
+        analysis = {
+            'strength': 0,
+            'duration': 0,
+            'sell_pressure': 0,
+            'price_action': 'stable',
+            'volume_profile': 'decreasing',
+            'smart_money_confidence': 0,
+            'distribution_phase': 'early'
+        }
+        
+        # Calculate distribution strength
+        buy_pressures = [dist.buy_pressure for dist in distributions]
+        sell_pressures = [dist.sell_pressure for dist in distributions]
+        
+        total_buy = sum(buy_pressures)
+        total_sell = sum(sell_pressures)
+        
+        if total_buy + total_sell > 0:
+            analysis['strength'] = total_sell / (total_buy + total_sell)
+        
+        # Calculate duration
+        consecutive_distribution = 0
+        for dist in distributions:
+            if dist.sell_pressure > dist.buy_pressure:
+                consecutive_distribution += 1
+            else:
+                break
+        analysis['duration'] = consecutive_distribution
+        
+        # Calculate sell pressure trend
+        recent_sell_pressures = sell_pressures[-8:]  # Last 8 periods
+        if len(recent_sell_pressures) > 1:
+            analysis['sell_pressure'] = sum(recent_sell_pressures) / len(recent_sell_pressures)
+        
+        # Determine price action
+        price_changes = [dist.price_change for dist in distributions]
+        avg_price_change = sum(price_changes) / len(price_changes)
+        
+        if avg_price_change > 0.02:
+            analysis['price_action'] = 'rising'
+        elif avg_price_change < -0.02:
+            analysis['price_action'] = 'falling'
+        else:
+            analysis['price_action'] = 'stable'
+        
+        # Determine distribution phase
+        if analysis['duration'] < 4:
+            analysis['distribution_phase'] = 'early'
+        elif analysis['duration'] < 12:
+            analysis['distribution_phase'] = 'middle'
+        else:
+            analysis['distribution_phase'] = 'late'
+        
+        # Calculate smart money confidence
+        volume_decreases = [dist.volume_decrease for dist in distributions if hasattr(dist, 'volume_decrease')]
+        if volume_decreases:
+            analysis['smart_money_confidence'] = sum(volume_decreases) / len(volume_decreases)
+        
+        return analysis
+```
+
+#### **What Happens When Triggered**
+```python
+def create_whale_distribution_alert(self, distribution_analysis):
+    """Create Whale Distribution alert when distribution detected"""
+    
+    alert = AlertTrigger(
+        type="WHALE_DISTRIBUTION",
+        symbol=self.distribution_history[-1]['symbol'],
+        timeframe=self.distribution_history[-1]['timeframe'],
+        value=self.distribution_history[-1]['distribution'].strength,
+        message=f"Whale Flow: Distribution pattern detected - {distribution_analysis['distribution_phase']} phase",
+        severity="MEDIUM",
+        action="Smart money distributing - consider short positions",
+        indicators_triggered=["OBV", "Volume Analysis", "MFI", "ADX"],
+        distribution_data=distribution_analysis,
+        trading_opportunity={
+            'type': 'distribution_following',
+            'entry_strategy': 'distribution_confirmation',
+            'exit_strategy': 'accumulation_start',
+            'stop_loss': 'distribution_beyond',
+            'target_timeframe': '1d-1w'
+        }
+    )
+    
+    return alert
+```
+
+## Dynamic Indicator Changes
+
+### **Real-Time Indicator Updates**
+
+#### **1. Volume Analysis Dynamic Changes**
+```javascript
+class WhaleVolumeDynamicUpdater {
+    constructor() {
+        this.updateFrequency = 8000; // 8 seconds
+        this.volumeBuffer = [];
+    }
+    
+    updateVolumeOnWhaleAlert(alert) {
+        const volumeCard = document.getElementById(`volume-card-${alert.symbol}`);
+        const volumeChart = volumeCard.querySelector('.volume-chart');
+        const volumeValue = volumeCard.querySelector('.volume-value');
+        
+        // Add volume data to buffer
+        this.volumeBuffer.push(alert.volume_data);
+        
+        // Update volume display with whale indicators
+        this.addWhaleVolumeIndicators(volumeChart, alert.volume_data);
+        
+        // Update value with whale highlighting
+        volumeValue.textContent = `${alert.value.toLocaleString()}`;
+        volumeValue.classList.add('whale-volume');
+        
+        // Add whale activity indicator
+        this.addWhaleActivityIndicator(volumeCard, alert.volume_data);
+        
+        // Start real-time updates
+        this.startRealTimeUpdates(alert.symbol);
+    }
+    
+    addWhaleVolumeIndicators(chart, volumeData) {
+        // Add whale activity zone
+        const whaleZone = document.createElement('div');
+        whaleZone.className = 'whale-activity-zone';
+        whaleZone.style.backgroundColor = volumeData.whale_activity_level === 'institutional' ? 
+            'rgba(156, 39, 176, 0.4)' : 'rgba(255, 152, 0, 0.4)';
+        whaleZone.style.border = `3px solid ${volumeData.whale_activity_level === 'institutional' ? '#9C27B0' : '#FF9800'}`;
+        
+        chart.appendChild(whaleZone);
+        
+        // Add volume spike markers
+        volumeData.spike_points.forEach(spike => {
+            const spikeMarker = document.createElement('div');
+            spikeMarker.className = 'whale-spike-marker';
+            spikeMarker.style.left = `${spike.position}%`;
+            spikeMarker.style.height = `${spike.intensity}%`;
+            spikeMarker.style.backgroundColor = spike.intensity > 10.0 ? '#9C27B0' : '#FF9800';
+            
+            chart.appendChild(spikeMarker);
+        });
+        
+        // Add price impact indicator
+        if (volumeData.price_impact > 0.05) {
+            const impactIndicator = document.createElement('div');
+            impactIndicator.className = 'price-impact-indicator';
+            impactIndicator.innerHTML = `Price Impact: ${(volumeData.price_impact * 100).toFixed(1)}%`;
+            impactIndicator.style.color = '#9C27B0';
+            
+            chart.appendChild(impactIndicator);
+        }
+    }
+    
+    addWhaleActivityIndicator(card, volumeData) {
+        const activityIndicator = document.createElement('div');
+        activityIndicator.className = 'whale-activity-indicator';
+        activityIndicator.innerHTML = `
+            <span class="activity-label">Whale Activity:</span>
+            <span class="activity-level">${volumeData.whale_activity_level.toUpperCase()}</span>
+            <span class="spike-count">Spikes: ${volumeData.massive_spikes}</span>
+        `;
+        
+        card.appendChild(activityIndicator);
+    }
+    
+    startRealTimeUpdates(symbol) {
+        setInterval(() => {
+            this.updateWhaleMetrics(symbol);
+        }, this.updateFrequency);
+    }
+    
+    updateWhaleMetrics(symbol) {
+        const volumeCard = document.getElementById(`volume-card-${symbol}`);
+        const activityLevel = volumeCard.querySelector('.activity-level');
+        const spikeCount = volumeCard.querySelector('.spike-count');
+        
+        // Calculate new metrics from buffer
+        const recentVolumes = this.volumeBuffer.slice(-3);
+        const avgActivity = recentVolumes.reduce((sum, vol) => {
+            const level = vol.whale_activity_level === 'institutional' ? 3 : 
+                         vol.whale_activity_level === 'massive' ? 2 : 1;
+            return sum + level;
+        }, 0) / recentVolumes.length;
+        
+        const avgSpikes = recentVolumes.reduce((sum, vol) => sum + vol.massive_spikes, 0) / recentVolumes.length;
+        
+        activityLevel.textContent = avgActivity > 2.5 ? 'INSTITUTIONAL' : 
+                                   avgActivity > 1.5 ? 'MASSIVE' : 'NORMAL';
+        spikeCount.textContent = `Spikes: ${avgSpikes.toFixed(1)}`;
+    }
+}
+```
+
+#### **2. OBV Dynamic Changes**
+```javascript
+class WhaleOBVDynamicUpdater {
+    constructor() {
+        this.updateFrequency = 10000; // 10 seconds
+        this.orderFlowBuffer = [];
+    }
+    
+    updateOBVOnWhaleAlert(alert) {
+        const obvCard = document.getElementById(`obv-card-${alert.symbol}`);
+        const obvChart = obvCard.querySelector('.obv-chart');
+        const obvValue = obvCard.querySelector('.obv-value');
+        
+        // Add order flow data to buffer
+        this.orderFlowBuffer.push(alert.order_flow_data);
+        
+        // Update OBV display with order flow indicators
+        this.addOrderFlowIndicators(obvChart, alert.order_flow_data);
+        
+        // Update value with order flow highlighting
+        obvValue.textContent = alert.value;
+        obvValue.classList.add('whale-order-flow');
+        
+        // Add institutional activity indicator
+        this.addInstitutionalActivityIndicator(obvCard, alert.order_flow_data);
+        
+        // Start real-time updates
+        this.startRealTimeUpdates(alert.symbol);
+    }
+    
+    addOrderFlowIndicators(chart, orderFlowData) {
+        // Add institutional activity zone
+        const institutionalZone = document.createElement('div');
+        institutionalZone.className = 'institutional-activity-zone';
+        institutionalZone.style.backgroundColor = orderFlowData.institutional_activity === 'high' ? 
+            'rgba(156, 39, 176, 0.3)' : 'rgba(255, 152, 0, 0.3)';
+        institutionalZone.style.border = `2px solid ${orderFlowData.institutional_activity === 'high' ? '#9C27B0' : '#FF9800'}`;
+        
+        chart.appendChild(institutionalZone);
+        
+        // Add order imbalance indicator
+        const imbalanceIndicator = document.createElement('div');
+        imbalanceIndicator.className = 'order-imbalance-indicator';
+        imbalanceIndicator.innerHTML = `Imbalance: ${(orderFlowData.order_imbalance * 100).toFixed(1)}%`;
+        imbalanceIndicator.style.color = orderFlowData.order_imbalance > 0.3 ? '#4CAF50' : 
+                                        orderFlowData.order_imbalance < -0.3 ? '#f44336' : '#FF9800';
+        
+        chart.appendChild(imbalanceIndicator);
+        
+        // Add accumulation/distribution indicator
+        const accDistIndicator = document.createElement('div');
+        accDistIndicator.className = 'acc-dist-indicator';
+        accDistIndicator.innerHTML = orderFlowData.accumulation_distribution.toUpperCase();
+        accDistIndicator.style.color = orderFlowData.accumulation_distribution === 'accumulation' ? '#4CAF50' : 
+                                      orderFlowData.accumulation_distribution === 'distribution' ? '#f44336' : '#FF9800';
+        
+        chart.appendChild(accDistIndicator);
+    }
+    
+    addInstitutionalActivityIndicator(card, orderFlowData) {
+        const activityIndicator = document.createElement('div');
+        activityIndicator.className = 'institutional-activity-indicator';
+        activityIndicator.innerHTML = `
+            <span class="institutional-label">Institutional Activity:</span>
+            <span class="activity-level">${orderFlowData.institutional_activity.toUpperCase()}</span>
+            <span class="large-orders">Large Orders: ${orderFlowData.large_orders}</span>
+        `;
+        
+        card.appendChild(activityIndicator);
+    }
+}
+```
+
+#### **3. MFI Dynamic Changes**
+```javascript
+class WhaleMFIDynamicUpdater {
+    constructor() {
+        this.updateFrequency = 12000; // 12 seconds
+        this.accumulationBuffer = [];
+        this.distributionBuffer = [];
+    }
+    
+    updateMFIOnWhaleAlert(alert) {
+        const mfiCard = document.getElementById(`mfi-card-${alert.symbol}`);
+        const mfiChart = mfiCard.querySelector('.mfi-chart');
+        const mfiValue = mfiCard.querySelector('.mfi-value');
+        
+        if (alert.type === 'WHALE_ACCUMULATION') {
+            // Add accumulation data to buffer
+            this.accumulationBuffer.push(alert.accumulation_data);
+            
+            // Update MFI display with accumulation indicators
+            this.addAccumulationIndicators(mfiChart, alert.accumulation_data);
+            
+            // Update value with accumulation highlighting
+            mfiValue.textContent = alert.value;
+            mfiValue.classList.add('whale-accumulation');
+            
+            // Add accumulation phase indicator
+            this.addAccumulationPhaseIndicator(mfiCard, alert.accumulation_data);
+        } else if (alert.type === 'WHALE_DISTRIBUTION') {
+            // Add distribution data to buffer
+            this.distributionBuffer.push(alert.distribution_data);
+            
+            // Update MFI display with distribution indicators
+            this.addDistributionIndicators(mfiChart, alert.distribution_data);
+            
+            // Update value with distribution highlighting
+            mfiValue.textContent = alert.value;
+            mfiValue.classList.add('whale-distribution');
+            
+            // Add distribution phase indicator
+            this.addDistributionPhaseIndicator(mfiCard, alert.distribution_data);
+        }
+        
+        // Start real-time updates
+        this.startRealTimeUpdates(alert.symbol);
+    }
+    
+    addAccumulationIndicators(chart, accumulationData) {
+        // Add accumulation zone
+        const accumulationZone = document.createElement('div');
+        accumulationZone.className = 'accumulation-zone';
+        accumulationZone.style.backgroundColor = 'rgba(76, 175, 80, 0.3)';
+        accumulationZone.style.border = `2px solid #4CAF50`;
+        
+        chart.appendChild(accumulationZone);
+        
+        // Add accumulation strength indicator
+        const strengthIndicator = document.createElement('div');
+        strengthIndicator.className = 'accumulation-strength-indicator';
+        strengthIndicator.innerHTML = `Strength: ${(accumulationData.strength * 100).toFixed(0)}%`;
+        strengthIndicator.style.color = '#4CAF50';
+        
+        chart.appendChild(strengthIndicator);
+        
+        // Add phase indicator
+        const phaseIndicator = document.createElement('div');
+        phaseIndicator.className = 'accumulation-phase-indicator';
+        phaseIndicator.innerHTML = `Phase: ${accumulationData.accumulation_phase.toUpperCase()}`;
+        phaseIndicator.style.color = accumulationData.accumulation_phase === 'late' ? '#FF9800' : '#4CAF50';
+        
+        chart.appendChild(phaseIndicator);
+    }
+    
+    addDistributionIndicators(chart, distributionData) {
+        // Add distribution zone
+        const distributionZone = document.createElement('div');
+        distributionZone.className = 'distribution-zone';
+        distributionZone.style.backgroundColor = 'rgba(244, 67, 54, 0.3)';
+        distributionZone.style.border = `2px solid #f44336`;
+        
+        chart.appendChild(distributionZone);
+        
+        // Add distribution strength indicator
+        const strengthIndicator = document.createElement('div');
+        strengthIndicator.className = 'distribution-strength-indicator';
+        strengthIndicator.innerHTML = `Strength: ${(distributionData.strength * 100).toFixed(0)}%`;
+        strengthIndicator.style.color = '#f44336';
+        
+        chart.appendChild(strengthIndicator);
+        
+        // Add phase indicator
+        const phaseIndicator = document.createElement('div');
+        phaseIndicator.className = 'distribution-phase-indicator';
+        phaseIndicator.innerHTML = `Phase: ${distributionData.distribution_phase.toUpperCase()}`;
+        phaseIndicator.style.color = distributionData.distribution_phase === 'late' ? '#FF9800' : '#f44336';
+        
+        chart.appendChild(phaseIndicator);
+    }
+    
+    addAccumulationPhaseIndicator(card, accumulationData) {
+        const phaseIndicator = document.createElement('div');
+        phaseIndicator.className = 'accumulation-phase-indicator';
+        phaseIndicator.innerHTML = `
+            <span class="phase-label">Accumulation Phase:</span>
+            <span class="phase-value">${accumulationData.accumulation_phase.toUpperCase()}</span>
+            <span class="duration">Duration: ${accumulationData.duration} periods</span>
+        `;
+        
+        card.appendChild(phaseIndicator);
+    }
+    
+    addDistributionPhaseIndicator(card, distributionData) {
+        const phaseIndicator = document.createElement('div');
+        phaseIndicator.className = 'distribution-phase-indicator';
+        phaseIndicator.innerHTML = `
+            <span class="phase-label">Distribution Phase:</span>
+            <span class="phase-value">${distributionData.distribution_phase.toUpperCase()}</span>
+            <span class="duration">Duration: ${distributionData.duration} periods</span>
+        `;
+        
+        card.appendChild(phaseIndicator);
+    }
+}
+```
+
+## Trading Integration
+
+### **Whale Alert Trading Strategy**
+```python
+class WhaleTradingStrategy:
+    def __init__(self):
+        self.active_positions = {}
+        self.whale_alerts = []
+        self.risk_manager = WhaleRiskManager()
+    
+    def process_whale_alert(self, alert):
+        """Process Whale alert and execute trading strategy"""
+        
+        # Check if we should enter a position
+        if self.should_enter_position(alert):
+            position = self.enter_position(alert)
+            self.active_positions[alert.symbol] = position
+        
+        # Check if we should exit existing position
+        elif alert.symbol in self.active_positions:
+            if self.should_exit_position(alert):
+                self.exit_position(alert.symbol)
+    
+    def should_enter_position(self, alert):
+        """Determine if we should enter a position based on Whale alert"""
+        
+        # Check risk management rules
+        if not self.risk_manager.can_enter_position(alert.symbol):
+            return False
+        
+        # Check alert strength
+        if alert.severity != "HIGH":
+            return False
+        
+        # Check for volume confirmation
+        if alert.type == "WHALE_VOLUME_SPIKE":
+            if alert.volume_data.whale_activity_level == "normal":
+                return False
+        
+        # Check for order flow confirmation
+        elif alert.type == "WHALE_ORDER_FLOW":
+            if alert.order_flow_data.institutional_activity == "low":
+                return False
+        
+        # Check for accumulation confirmation
+        elif alert.type == "WHALE_ACCUMULATION":
+            if alert.accumulation_data.strength < 0.6:
+                return False
+        
+        # Check for distribution confirmation
+        elif alert.type == "WHALE_DISTRIBUTION":
+            if alert.distribution_data.strength < 0.6:
+                return False
+        
+        return True
+    
+    def enter_position(self, alert):
+        """Enter a position based on Whale alert"""
+        
+        position = {
+            'symbol': alert.symbol,
+            'entry_price': self.get_current_price(alert.symbol),
+            'entry_time': datetime.now(),
+            'alert_type': alert.type,
+            'direction': self.determine_direction(alert),
+            'size': self.calculate_position_size(alert),
+            'stop_loss': self.calculate_stop_loss(alert),
+            'take_profit': self.calculate_take_profit(alert),
+            'timeframe': alert.timeframe
+        }
+        
+        # Execute trade
+        self.execute_trade(position)
+        
+        return position
+    
+    def determine_direction(self, alert):
+        """Determine trade direction based on Whale alert type"""
+        
+        if alert.type == "WHALE_VOLUME_SPIKE":
+            # Follow volume direction
+            return "LONG" if alert.volume_data.price_impact > 0 else "SHORT"
+        
+        elif alert.type == "WHALE_ORDER_FLOW":
+            # Follow order flow direction
+            return "LONG" if alert.order_flow_data.order_imbalance > 0 else "SHORT"
+        
+        elif alert.type == "WHALE_ACCUMULATION":
+            # Follow accumulation (long)
+            return "LONG"
+        
+        elif alert.type == "WHALE_DISTRIBUTION":
+            # Follow distribution (short)
+            return "SHORT"
+        
+        return "NEUTRAL"
+```
+
+## Success Criteria
+
+### **Whale Alert Performance**
+- ✅ **Massive volume detection** with 90%+ accuracy
+- ✅ **Institutional activity identification** with order flow confirmation
+- ✅ **Accumulation/distribution recognition** with smart money signals
+- ✅ **Whale following opportunity identification** with clear entry/exit signals
+
+### **Trading Integration**
+- ✅ **Automated position management** based on Whale alerts
+- ✅ **Risk management integration** with volume-based stop-losses
+- ✅ **Multi-indicator confirmation** for entry decisions
+- ✅ **Institutional profit-taking** based on whale exits
+
+### **User Experience**
+- ✅ **Visual whale activity indicators** on volume charts
+- ✅ **Institutional activity markers** on OBV charts
+- ✅ **Accumulation/distribution indicators** with phase tracking
+- ✅ **Real-time whale activity updates** showing institutional movements
+
+The Whale Flow Alerts system provides **powerful institutional following opportunities** through large money movement recognition, dynamic indicator updates, and automated trading integration that captures smart money activity for following institutional players and large market movers.
+description:
+globs:
+alwaysApply: false
+---
