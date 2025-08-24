@@ -110,7 +110,7 @@ class PerformanceDashboard:
         if len(self.performance_data["file_changes"]) > 200:
             self.performance_data["file_changes"] = self.performance_data["file_changes"][-200:]
     
-    def record_error(self, error_type: str, error_message: str, context: Dict = None):
+    def record_error(self, error_type: str, error_message: str, context: Optional[Dict[str, Any]] = None):
         """Record an error for monitoring."""
         error_info = {
             "type": error_type,
@@ -299,10 +299,10 @@ class PerformanceDashboard:
         
         return recommendations
     
-    def save_performance_data(self, file_path: str = None):
+    def save_performance_data(self, file_path: Optional[str] = None):
         """Save performance data to file."""
         if file_path is None:
-            file_path = self.claude_dir / "performance_data.json"
+            file_path = str(self.claude_dir / "performance_data.json")
         
         try:
             with open(file_path, 'w') as f:
@@ -311,12 +311,13 @@ class PerformanceDashboard:
         except Exception as e:
             self.record_error("save_data", str(e))
     
-    def load_performance_data(self, file_path: str = None):
+    def load_performance_data(self, file_path: Optional[str] = None):
         """Load performance data from file."""
         if file_path is None:
-            file_path = self.claude_dir / "performance_data.json"
+            file_path = str(self.claude_dir / "performance_data.json")
         
-        if file_path.exists():
+        file_path_obj = Path(file_path)
+        if file_path_obj.exists():
             try:
                 with open(file_path, 'r') as f:
                     self.performance_data = json.load(f)
