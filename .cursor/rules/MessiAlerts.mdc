@@ -624,5 +624,5 @@ class MessiTradingStrategy:
 The Messi Alerts system provides **high-frequency trading opportunities** through rapid pattern recognition, dynamic indicator updates, and automated trading integration that captures micro-movements in the market for scalping and quick profit-taking strategies.
 description:
 globs:
-alwaysApply: false
+alwaysApply: true
 ---

@@ -1,0 +1,184 @@
+# KingFisher Prometheus Alert Rules
+# Version: 1.1.0
+# Last Updated: 2025-08-25
+
+groups:
+- name: kingfisher-service
+  rules:
+  - alert: KingfisherServiceDown
+    expr: up{job="zmart_services", service="zmart-kingfisher"} == 0
+    for: 2m
+    labels:
+      severity: critical
+      service: kingfisher
+      team: trading-ai
+    annotations:
+      summary: "KingFisher service is down"
+      description: "KingFisher service has been down for more than 2 minutes. No metrics are being collected."
+      runbook_url: "https://docs.internal/runbooks/kingfisher-service-down"
+
+  - alert: KingfisherReadinessFailure
+    expr: kingfisher_service_ready{job="zmart_services"} == 0
+    for: 3m
+    labels:
+      severity: warning
+      service: kingfisher
+      team: trading-ai
+    annotations:
+      summary: "KingFisher service not ready"
+      description: "KingFisher readiness check has been failing for more than 3 minutes. Hard dependencies may be down."
+      runbook_url: "https://docs.internal/runbooks/kingfisher-readiness-failure"
+
+- name: kingfisher-pipeline
+  rules:
+  - alert: KingfisherPipelineFailuresHigh
+    expr: increase(kingfisher_pipeline_failures_total[5m]) > 5
+    for: 5m
+    labels:
+      severity: warning
+      service: kingfisher
+      team: trading-ai
+    annotations:
+      summary: "High pipeline failure rate"
+      description: "KingFisher pipeline has failed {{ $value }} times in the last 5 minutes. Check logs for errors."
+      runbook_url: "https://docs.internal/runbooks/kingfisher-pipeline-failures"
+
+  - alert: KingfisherAnalysisLatencyHigh
+    expr: histogram_quantile(0.95, sum(rate(kingfisher_analysis_duration_seconds_bucket[5m])) by (le)) > 30
+    for: 10m
+    labels:
+      severity: warning
+      service: kingfisher
+      team: trading-ai
+    annotations:
+      summary: "Analysis latency is high"
+      description: "95th percentile analysis time is {{ $value }}s, above 30s threshold for 10 minutes."
+      runbook_url: "https://docs.internal/runbooks/kingfisher-high-latency"
+
+  - alert: KingfisherImageProcessingStalled
+    expr: rate(kingfisher_images_downloaded_total[10m]) == 0 and ON() hour() >= 8 and ON() hour() <= 22
+    for: 15m
+    labels:
+      severity: warning
+      service: kingfisher
+      team: trading-ai
+    annotations:
+      summary: "Image processing appears stalled"
+      description: "No images have been downloaded in the last 15 minutes during business hours (8 AM - 10 PM)."
+      runbook_url: "https://docs.internal/runbooks/kingfisher-processing-stalled"
+
+- name: kingfisher-security
+  rules:
+  - alert: KingfisherSecurityViolationsHigh
+    expr: increase(kingfisher_security_violations_total[5m]) > 10
+    for: 2m
+    labels:
+      severity: critical
+      service: kingfisher
+      team: security
+    annotations:
+      summary: "High security violation rate"
+      description: "{{ $value }} security violations detected in 5 minutes. Possible attack or misconfiguration."
+      runbook_url: "https://docs.internal/runbooks/kingfisher-security-violations"
+
+  - alert: KingfisherRateLimitExceeded
+    expr: increase(kingfisher_security_violations_total{type="rate_limit"}[5m]) > 20
+    for: 3m
+    labels:
+      severity: warning
+      service: kingfisher
+      team: trading-ai
+    annotations:
+      summary: "Rate limits being exceeded frequently"
+      description: "{{ $value }} rate limit violations in 5 minutes. Check client configurations."
+      runbook_url: "https://docs.internal/runbooks/kingfisher-rate-limits"
+
+- name: kingfisher-dependencies
+  rules:
+  - alert: KingfisherOpenAIQuotaExhausted
+    expr: increase(kingfisher_openai_tokens_total[1h]) > 50000
+    for: 5m
+    labels:
+      severity: warning
+      service: kingfisher
+      team: trading-ai
+    annotations:
+      summary: "OpenAI token usage is very high"
+      description: "{{ $value }} tokens used in the last hour. Check for unusual usage patterns."
+      runbook_url: "https://docs.internal/runbooks/kingfisher-openai-quota"
+
+  - alert: KingfisherOutboxEventsStuck
+    expr: kingfisher_outbox_events_total{status="pending"} > 100
+    for: 10m
+    labels:
+      severity: warning
+      service: kingfisher
+      team: trading-ai
+    annotations:
+      summary: "Events stuck in outbox"
+      description: "{{ $value }} events pending in outbox for more than 10 minutes. RabbitMQ may be down."
+      runbook_url: "https://docs.internal/runbooks/kingfisher-outbox-stuck"
+
+  - alert: KingfisherDatabaseConnectionsHigh
+    expr: kingfisher_db_connections_active / kingfisher_db_connections_max > 0.8
+    for: 5m
+    labels:
+      severity: warning
+      service: kingfisher
+      team: trading-ai
+    annotations:
+      summary: "Database connection pool utilization high"
+      description: "Database connections are {{ $value | humanizePercentage }} of maximum. Consider increasing pool size."
+      runbook_url: "https://docs.internal/runbooks/kingfisher-db-connections"
+
+- name: kingfisher-plugins
+  rules:
+  - alert: KingfisherPluginExecutionSlow
+    expr: histogram_quantile(0.95, sum(rate(kingfisher_plugin_execution_duration_seconds_bucket[5m])) by (le, plugin)) > 60
+    for: 10m
+    labels:
+      severity: warning
+      service: kingfisher
+      team: trading-ai
+    annotations:
+      summary: "Plugin execution is slow"
+      description: "Plugin {{ $labels.plugin }} 95th percentile execution time is {{ $value }}s, above 60s threshold."
+      runbook_url: "https://docs.internal/runbooks/kingfisher-plugin-slow"
+
+  - alert: KingfisherPluginFailureRate
+    expr: rate(kingfisher_pipeline_failures_total{step=~".*plugin.*"}[10m]) / rate(kingfisher_plugin_execution_duration_seconds_count[10m]) > 0.1
+    for: 5m
+    labels:
+      severity: warning
+      service: kingfisher
+      team: trading-ai
+    annotations:
+      summary: "Plugin failure rate is high"
+      description: "Plugin failure rate is {{ $value | humanizePercentage }} over the last 10 minutes."
+      runbook_url: "https://docs.internal/runbooks/kingfisher-plugin-failures"
+
+- name: kingfisher-business
+  rules:
+  - alert: KingfisherReportGenerationDown
+    expr: rate(kingfisher_reports_generated_total[30m]) == 0 and ON() hour() >= 8 and ON() hour() <= 22
+    for: 30m
+    labels:
+      severity: critical
+      service: kingfisher
+      team: trading-ai
+    annotations:
+      summary: "No reports generated in 30 minutes"
+      description: "KingFisher has not generated any reports during business hours for 30 minutes."
+      runbook_url: "https://docs.internal/runbooks/kingfisher-no-reports"
+
+  - alert: KingfisherDuplicationRateUnusual
+    expr: rate(kingfisher_images_deduplicated_total[1h]) / rate(kingfisher_images_downloaded_total[1h]) > 0.7
+    for: 30m
+    labels:
+      severity: info
+      service: kingfisher
+      team: trading-ai
+    annotations:
+      summary: "Unusually high image duplication rate"
+      description: "{{ $value | humanizePercentage }} of images are being marked as duplicates. Check data sources."
+      runbook_url: "https://docs.internal/runbooks/kingfisher-high-duplication"

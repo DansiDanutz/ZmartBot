@@ -149,9 +149,15 @@ class EnhancedSmartContextOptimizer(SmartContextOptimizer):
                 f.write(content)
             # Update file hash after writing
             self.performance_metrics["file_hashes"][file_path] = self.calculate_file_hash(file_path)
+            # Verify write was successful
+            return os.path.exists(file_path) and os.path.getsize(file_path) > 0
         
         with self.get_file_lock(file_path):
-            return self.safe_operation(write_operation)
+            try:
+                result = self.safe_operation(write_operation)
+                return result if isinstance(result, bool) else False
+            except Exception:
+                return False
     
     def safe_scan_files(self) -> List[Dict[str, Any]]:
         """Safely scan MDC files with error recovery and integrity checks"""
@@ -179,7 +185,11 @@ class EnhancedSmartContextOptimizer(SmartContextOptimizer):
             
             return mdc_files
         
-        return self.safe_operation(scan_operation)
+        try:
+            result = self.safe_operation(scan_operation)
+            return result if isinstance(result, list) else []
+        except Exception:
+            return []
     
     def enhanced_update_claude_md(self, current_task: str = "", focus_domain: str = "core") -> bool:
         """Enhanced update of CLAUDE.md with comprehensive error handling"""
@@ -221,8 +231,7 @@ class EnhancedSmartContextOptimizer(SmartContextOptimizer):
         if len(self.performance_metrics["operation_times"]) > 1000:
             self.performance_metrics["operation_times"] = self.performance_metrics["operation_times"][-1000:]
         
-        # Clean up expired file locks (older than 1 hour)
-        current_time = time.time()
+        # Clean up expired file locks (simple cleanup based on count)
         expired_locks = []
         for lock_key in list(self.file_locks.keys()):
             # Simple cleanup - in production you'd track lock usage time

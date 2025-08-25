@@ -23,3 +23,8 @@
 @test: Alerts
 - Simulate RSI<30 for ETH
 - Trigger alert and confirm delivery
+
+description:
+globs:
+alwaysApply: true
+---

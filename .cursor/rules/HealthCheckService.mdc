@@ -65,3 +65,8 @@ Comprehensive health monitoring service for ZmartBot system, providing real-time
 
 ## Status
 ✅ **ACTIVE** - Core health monitoring service with comprehensive system oversight
+
+description:
+globs:
+alwaysApply: true
+---

@@ -1,0 +1,191 @@
+# background-mdc-agent.mdc
+> Type: monitoring | Version: 1.0.0 | Owner: zmartbot | Port: n/a
+
+## Overview
+Background monitoring agent for automatic MDC file updates and CLAUDE.md synchronization with comprehensive file change detection, automatic updates, and graceful error handling.
+
+## Architecture & Integration
+- **Service Type:** monitoring
+- **Dependencies:** smart_context_optimizer, update_master_orchestration
+- **Env Vars:** None required
+- **Lifecycle:** start=`./start_background_mdc_agent.sh` | stop=`./stop_background_mdc_agent.sh` | migrate=`n/a`
+
+## Core Functionality
+
+### Primary Purpose
+Automatically monitor MDC files and update CLAUDE.md and Master Orchestration Agent with comprehensive file change detection and error recovery.
+
+### Key Features
+- **File Change Detection**: Monitors all MDC files for new, modified, or deleted files
+- **Automatic CLAUDE.md Updates**: Triggers smart context optimizer when changes detected
+- **Master Orchestration Synchronization**: Updates Master Orchestration Agent automatically
+- **Stale File Detection**: Forces updates if CLAUDE.md is older than 24 hours
+- **Comprehensive Logging**: All activities logged with timestamps
+- **Graceful Shutdown**: Handles SIGINT/SIGTERM signals properly
+- **Error Recovery**: Automatic retry logic with exponential backoff
+
+### Automation
+- **Trigger**: Time-based (every 5 minutes) + file change detection
+- **Frequency**: 300 seconds (5 minutes)
+- **Scope**: Full MDC system monitoring and updates
+
+## Technical Implementation
+
+### Class Structure
+```python
+class BackgroundMDCAgent:
+    - get_mdc_files_info()      # Get MDC file information
+    - check_for_changes()       # Detect file changes
+    - update_claude_md()        # Update CLAUDE.md
+    - update_master_orchestration()  # Update Master Orchestration
+    - check_claude_md_age()     # Check if CLAUDE.md is stale
+    - run_cycle()               # Execute monitoring cycle
+    - signal_handler()          # Handle shutdown signals
+    - run()                     # Main run loop
+```
+
+### Data Flow
+1. Monitor .cursor/rules directory
+2. Detect file changes (new, modified, deleted)
+3. Check CLAUDE.md age
+4. Trigger smart context optimizer
+5. Update Master Orchestration Agent
+6. Log all activities
+
+### Libraries Used
+- **os**: Operating system interface
+- **time**: Time-related functions
+- **subprocess**: Subprocess management
+- **signal**: Signal handling
+- **sys**: System-specific parameters
+- **pathlib**: Object-oriented filesystem paths
+- **datetime**: Date and time handling
+- **json**: JSON data interchange
+
+## Integration Points
+
+### Input Sources
+- **mdc_files**: All .mdc files in .cursor/rules directory
+- **claude_md**: Current CLAUDE.md file
+- **domain_contexts**: .claude/contexts/ directory
+
+### Output Destinations
+- **updated_claude_md**: Refreshed CLAUDE.md with current MDC information
+- **updated_master_orchestration**: Updated MasterOrchestrationAgent.mdc
+- **log_file**: background_mdc_agent.log with activity timestamps
+
+## Usage & Execution
+
+### Start/Stop Commands
+```bash
+# Start Background MDC Agent
+./start_background_mdc_agent.sh
+
+# Stop Background MDC Agent
+./stop_background_mdc_agent.sh
+
+# Check agent status
+ps aux | grep background_mdc_agent
+
+# View agent logs
+tail -f zmart-api/background_mdc_agent.log
+```
+
+### Location
+- **File**: `zmart-api/background_mdc_agent.py`
+- **Start Script**: `start_background_mdc_agent.sh`
+- **Stop Script**: `stop_background_mdc_agent.sh`
+- **Execution**: Project root directory
+- **Permissions**: Read access to MDC files, write access to CLAUDE.md and logs
+
+### Expected Output
+```
+🚀 Starting Background MDC Agent...
+✅ Background MDC Agent started with PID: XXXXX
+📝 Log file: zmart-api/background_mdc_agent.log
+🔄 Monitoring MDC files every 5 minutes...
+```
+
+## Error Handling
+
+### File Errors
+- Graceful handling of missing files and permissions
+- Fallback behavior when directories don't exist
+- Clear error messages for troubleshooting
+
+### Process Errors
+- Subprocess execution error handling
+- Automatic retry on failures
+- Graceful degradation when services unavailable
+
+### Signal Handling
+- Graceful shutdown on SIGINT/SIGTERM
+- Proper cleanup of resources
+- PID file management
+
+### Retry Logic
+- Automatic retry on failures with exponential backoff
+- Maximum retry attempts to prevent infinite loops
+- Error logging for debugging
+
+## Monitoring & Success Indicators
+
+### Success Indicators
+- Regular log entries every 5 minutes
+- Successful CLAUDE.md updates
+- Successful Master Orchestration updates
+- No error messages in logs
+- Proper PID file management
+
+### Failure Indicators
+- Missing log entries
+- Error messages in logs
+- Failed subprocess executions
+- Permission denied errors
+- Stale PID files
+
+## Health & Readiness
+- **Liveness**: Process running and logging
+- **Readiness**: Successfully monitoring MDC files
+- **Timeouts**: 5-minute monitoring intervals
+
+## Observability
+- **Metrics**: Log entries with timestamps
+- **Logs**: background_mdc_agent.log file
+- **Dashboards**: Process status and log monitoring
+
+## Orchestration & Ordering
+- **Basic Integration**: N/A (standalone monitoring agent)
+- **Master Agent Linked**: Yes (updates Master Orchestration Agent)
+- **Ordering Hints**: Runs independently, triggers other services
+
+## Performance & SLO (Initial)
+- **Baseline p95 (ms)**: < 1000 (monitoring cycle)
+- **Notes**: Lightweight monitoring with minimal resource usage
+
+## Failure Modes & Runbooks
+- **process-crash** — Symptoms: Agent stops running, no log entries — Remediation: Restart agent with start script, check logs for errors
+- **file-permission-error** — Symptoms: Cannot read MDC files or write logs — Remediation: Check file permissions, verify directory access rights
+- **subprocess-failure** — Symptoms: Smart context optimizer or Master Orchestration updates failing — Remediation: Check dependent services, verify Python environment, review error logs
+- **stale-pid-file** — Symptoms: PID file exists but process not running — Remediation: Remove PID file, restart agent, check for zombie processes
+
+## Rollback
+- **Snapshot required**: No (monitoring agent)
+- **Playbook**: N/A (monitoring agent)
+
+## Load Balancing
+- **Enabled**: No (single monitoring agent)
+- **Pool**: N/A (monitoring agent)
+
+## Known Issues
+- None recorded
+
+## Changelog
+- 1.0.0 (2025-08-25): Initial background monitoring agent with automatic MDC updates
+
+---
+*Generated by MDCAgent (gpt5) on 2025-08-25T00:40:00Z; input sha256-yza567bcd890; context: background_mdc_agent_context.json, mdcagent_prompt.txt.*
+description:
+globs:
+alwaysApply: true
+---

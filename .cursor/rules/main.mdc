@@ -78,5 +78,5 @@ This file aggregates all rule modules and should be used as the master entry poi
 This master file serves as the central reference for all ZmartBot system operations and architecture.
 description:
 globs:
-alwaysApply: false
+alwaysApply: true
 ---

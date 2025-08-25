@@ -1,0 +1,15 @@
+# Pylance ignore configuration
+# This file tells Pylance to completely ignore specific patterns
+
+# Ignore all selenium-related imports and usage
+selenium*
+*selenium*
+
+# Ignore all src module imports in test files  
+src.extractors*
+src.database*
+src.*
+
+# Ignore all webdriver attribute access
+*.driver.*
+*webdriver*

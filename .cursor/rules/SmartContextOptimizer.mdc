@@ -359,5 +359,5 @@ python3 zmart-api/performance_dashboard.py --load
 **Status**: Production Ready
 description:
 globs:
-alwaysApply: false
+alwaysApply: true
 ---

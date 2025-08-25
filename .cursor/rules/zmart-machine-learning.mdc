@@ -1,0 +1,187 @@
+# zmart-machine-learning.mdc
+> Purpose: ZmartBot Machine Learning Service providing predictive models, pattern recognition, and automated trading strategies.
+
+## Service Overview
+**zmart_machine_learning** is a comprehensive machine learning service that provides predictive models, pattern recognition, automated model training, feature engineering, and model evaluation for the ZmartBot trading system.
+
+## Architecture
+**Type**: Backend Service (FastAPI-based)
+**Port**: 8014
+**Language**: Python 3.11+
+**Framework**: FastAPI, TensorFlow, PyTorch, Scikit-learn
+**Database**: PostgreSQL (model data), Redis (caching)
+**Compute**: High-performance ML training and inference
+
+### Core Components
+- **Predictive Models**: Price prediction and forecasting models
+- **Pattern Recognition**: Advanced pattern detection algorithms
+- **Model Training**: Automated model training pipeline
+- **Feature Engineering**: Advanced feature extraction and selection
+- **Model Evaluation**: Comprehensive model assessment tools
+- **ML API**: RESTful API for machine learning operations
+- **Model Management**: Model versioning and deployment
+
+## API Endpoints
+
+### Health & Status
+- `GET /health` - Service health check
+- `GET /ready` - Service readiness check
+- `GET /metrics` - Prometheus metrics
+
+### Machine Learning Endpoints
+- `POST /api/v1/ml/predict` - Make predictions
+- `POST /api/v1/ml/train` - Train models
+- `POST /api/v1/ml/evaluate` - Evaluate model performance
+- `GET /api/v1/ml/models` - List available models
+- `POST /api/v1/ml/deploy` - Deploy model
+- `GET /api/v1/ml/performance` - Get model performance
+- `POST /api/v1/ml/optimize` - Optimize model hyperparameters
+
+### Feature Engineering Endpoints
+- `POST /api/v1/features/extract` - Extract features
+- `POST /api/v1/features/select` - Select features
+- `GET /api/v1/features/importance` - Get feature importance
+- `POST /api/v1/features/engineer` - Engineer new features
+
+### Pattern Recognition Endpoints
+- `POST /api/v1/patterns/detect` - Detect patterns
+- `GET /api/v1/patterns/types` - Get pattern types
+- `POST /api/v1/patterns/classify` - Classify patterns
+- `GET /api/v1/patterns/confidence` - Get pattern confidence
+
+### Data Endpoints
+- `GET /api/v1/data/training` - Get training data
+- `GET /api/v1/data/validation` - Get validation data
+- `POST /api/v1/data/preprocess` - Preprocess data
+- `GET /api/v1/data/statistics` - Get data statistics
+
+## Machine Learning Features
+
+### Predictive Models
+- **Price Prediction**: Short-term and long-term price forecasting
+- **Trend Prediction**: Market trend direction prediction
+- **Volatility Prediction**: Market volatility forecasting
+- **Volume Prediction**: Trading volume prediction
+- **Sentiment Analysis**: Market sentiment prediction
+- **Risk Prediction**: Risk factor prediction
+
+### Pattern Recognition
+- **Technical Patterns**: Chart pattern recognition
+- **Price Patterns**: Price action pattern detection
+- **Volume Patterns**: Volume pattern analysis
+- **Market Regimes**: Market regime identification
+- **Anomaly Detection**: Market anomaly detection
+- **Correlation Patterns**: Asset correlation patterns
+
+### Model Training
+- **Automated Training**: Scheduled model training
+- **Hyperparameter Tuning**: Automated hyperparameter optimization
+- **Cross-Validation**: K-fold cross-validation
+- **Ensemble Methods**: Ensemble model training
+- **Transfer Learning**: Pre-trained model adaptation
+- **Online Learning**: Incremental model updates
+
+### Feature Engineering
+- **Technical Features**: Technical indicator features
+- **Market Features**: Market microstructure features
+- **Sentiment Features**: News and social sentiment features
+- **Macro Features**: Macroeconomic features
+- **Alternative Features**: Alternative data features
+- **Feature Selection**: Automated feature selection
+
+### Model Evaluation
+- **Performance Metrics**: Accuracy, precision, recall, F1-score
+- **Financial Metrics**: Sharpe ratio, returns, drawdown
+- **Backtesting**: Historical performance validation
+- **Out-of-Sample Testing**: Out-of-sample validation
+- **Model Comparison**: Model performance comparison
+- **Statistical Testing**: Statistical significance testing
+
+### Model Management
+- **Version Control**: Model versioning and tracking
+- **Model Registry**: Centralized model registry
+- **Model Deployment**: Automated model deployment
+- **Model Monitoring**: Real-time model monitoring
+- **Model Rollback**: Model rollback capabilities
+- **Model Lifecycle**: Complete model lifecycle management
+
+## Data Sources
+- **Market Data**: Real-time and historical market data
+- **Technical Data**: Technical indicators and patterns
+- **News Data**: News sentiment and events
+- **Social Data**: Social media sentiment
+- **Macro Data**: Macroeconomic indicators
+- **Alternative Data**: Alternative data sources
+
+## Configuration
+- **Environment Variables**: Database connections, API keys
+- **Model Parameters**: Model architecture and parameters
+- **Training Settings**: Training configuration and schedules
+- **Feature Settings**: Feature engineering parameters
+- **Evaluation Settings**: Model evaluation criteria
+
+## Monitoring
+- **Health Checks**: Automated health monitoring
+- **Performance Metrics**: Model performance tracking
+- **Error Monitoring**: Model error tracking
+- **Resource Monitoring**: CPU, memory, GPU usage
+
+## Security
+- **Authentication**: Required for all endpoints
+- **Authorization**: Role-based access control
+- **Data Encryption**: All data encrypted in transit and at rest
+- **Audit Logging**: Comprehensive ML operation audit trail
+
+## Performance
+- **Caching**: Redis-based caching for model predictions
+- **GPU Acceleration**: GPU-accelerated training and inference
+- **Scaling**: Horizontal scaling capabilities
+- **Load Balancing**: Request distribution across instances
+
+## Dependencies
+- **zmart-api** (Port 8000) - Required for system integration
+- **master-orchestration-agent** (Port 8002) - Required for orchestration
+- **Database**: PostgreSQL for model data storage
+- **Cache**: Redis for performance optimization
+
+## Orchestration
+- **Service Discovery**: Automatic service registration
+- **Health Monitoring**: Integrated health checks
+- **Dependency Management**: Proper dependency resolution
+- **Scaling**: Automated scaling based on demand
+
+## Rollback
+- **Data Backup**: Automatic model data backup
+- **Configuration Backup**: Versioned configuration management
+- **Snapshot Recovery**: Point-in-time data recovery
+- **Service Rollback**: Service configuration rollback
+
+## Load Balancing
+- **Request Distribution**: Load balancing across instances
+- **Session Management**: Proper session handling
+- **Resource Management**: Efficient resource allocation
+- **Performance Monitoring**: Real-time performance tracking
+
+## Known Issues
+- **High Resource Usage**: High resource usage during model training
+- **Training Time**: Long training time for complex models
+- **Data Quality**: Data quality impact on model performance
+- **Workarounds**: Implemented optimization and monitoring
+
+## Status
+- **Operational Status**: ✅ **ACTIVE**
+- **Implementation Completeness**: 95%
+- **Performance**: Optimized for high-throughput ML operations
+- **Reliability**: High availability with failover support
+
+## Changelog
+- **Version 1.0.0**: Initial machine learning service with comprehensive features
+- **Performance Optimization**: Enhanced GPU acceleration and caching
+- **Security Enhancement**: Improved authentication and encryption
+- **Monitoring**: Advanced monitoring and alerting capabilities
+
+---
+
+description: ZmartBot Machine Learning Service Documentation
+globs:
+alwaysApply: true

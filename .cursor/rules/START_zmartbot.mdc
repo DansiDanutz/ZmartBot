@@ -55,3 +55,8 @@ Official ZmartBot system startup script with comprehensive orchestration, health
 
 ## Status
 ✅ **ACTIVE** - Official startup method with orchestration integration
+
+description:
+globs:
+alwaysApply: true
+---

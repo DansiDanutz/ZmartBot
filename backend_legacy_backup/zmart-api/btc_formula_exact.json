@@ -1,0 +1,21 @@
+{
+  "formula_type": "PURE_LOGARITHMIC",
+  "btc_min": 30000,
+  "btc_max": 299720,
+  "formula": {
+    "price_from_risk": "price = 30000 * exp(risk * ln(9.9907))",
+    "risk_from_price": "risk = (ln(price) - ln(30000)) / ln(9.9907)",
+    "simplified": "price = 30000 * (9.9907)^risk"
+  },
+  "verification": {
+    "average_error": 5.376070211076239,
+    "max_error": 9.287250348817489,
+    "is_exact": false
+  },
+  "constants": {
+    "ln_min": 10.308952660644293,
+    "ln_max": 12.610603984478248,
+    "ln_ratio": 2.3016513238339544,
+    "ratio": 9.990666666666666
+  }
+}

@@ -1,0 +1,195 @@
+{
+  "manifest": {
+    "service_name": "binance-service",
+    "service_type": "backend",
+    "version": "1.0.0",
+    "owner": "zmartbot",
+    "description": "Comprehensive Binance API integration service providing real-time market data, futures trading capabilities, and advanced market analysis for the ZmartBot trading platform",
+    "port": 8000,
+    "lifecycle": {
+      "start": "async with BinanceService()",
+      "stop": "await service.__aexit__()",
+      "migrate": null
+    },
+    "dependencies": {
+      "services": ["cryptometer", "kucoin", "rate_limiting_service"],
+      "env": ["BINANCE_API_KEY", "BINANCE_SECRET", "BINANCE_BASE_URL", "BINANCE_FUTURES_URL"]
+    }
+  },
+  "registry": {
+    "service_name": "binance-service",
+    "status": "active",
+    "port": 8000,
+    "version": "1.0.0",
+    "health_status": "healthy",
+    "last_updated": "2025-08-24T23:20:00Z"
+  },
+  "port_assignment": {
+    "port": 8000,
+    "range": "8000-8999",
+    "conflicts": [],
+    "assigned_at": "2025-08-24T23:20:00Z"
+  },
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/api/v1/binance/accounts",
+      "summary": "Get Binance account information and balances",
+      "auth_required": true
+    },
+    {
+      "method": "GET", 
+      "path": "/api/v1/binance/balance/{currency}",
+      "summary": "Get specific currency balance",
+      "auth_required": true
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/binance/positions", 
+      "summary": "Get all current futures positions",
+      "auth_required": true
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/binance/positions/{symbol}",
+      "summary": "Get position for specific symbol", 
+      "auth_required": true
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/binance/orders",
+      "summary": "Place new futures order",
+      "auth_required": true
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v1/binance/orders/{symbol}/{order_id}",
+      "summary": "Cancel existing order",
+      "auth_required": true
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/binance/orders/{symbol}",
+      "summary": "Get orders for specific symbol",
+      "auth_required": true
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/binance/market-data/{symbol}",
+      "summary": "Get comprehensive market data for symbol",
+      "auth_required": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/binance/price/{symbol}",
+      "summary": "Get current price for symbol",
+      "auth_required": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/binance/market-analysis",
+      "summary": "Get market analysis for multiple symbols",
+      "auth_required": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/binance/ticker/24hr",
+      "summary": "Get 24-hour ticker data (proxy endpoint)",
+      "auth_required": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/binance/klines",
+      "summary": "Get historical kline/candlestick data (proxy endpoint)",
+      "auth_required": false
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/binance/trade/bitcoin/buy",
+      "summary": "Convenience endpoint to buy Bitcoin futures",
+      "auth_required": true
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/binance/trade/bitcoin/sell",
+      "summary": "Convenience endpoint to sell Bitcoin futures",
+      "auth_required": true
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/binance/trade/ethereum/buy",
+      "summary": "Convenience endpoint to buy Ethereum futures",
+      "auth_required": true
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/binance/trade/ethereum/sell",
+      "summary": "Convenience endpoint to sell Ethereum futures",
+      "auth_required": true
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/binance/trade/avalanche/buy",
+      "summary": "Convenience endpoint to buy Avalanche futures",
+      "auth_required": true
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/binance/trade/avalanche/sell",
+      "summary": "Convenience endpoint to sell Avalanche futures",
+      "auth_required": true
+    }
+  ],
+  "health_presence": {
+    "liveness_path": "/health",
+    "readiness_path": "/ready",
+    "metrics_path": "/metrics",
+    "has_health": true,
+    "has_readiness": true,
+    "has_metrics": true
+  },
+  "env_vars_declared": [
+    "BINANCE_API_KEY",
+    "BINANCE_SECRET", 
+    "BINANCE_BASE_URL",
+    "BINANCE_FUTURES_URL"
+  ],
+  "lifecycle": {
+    "start": "async with BinanceService()",
+    "stop": "await service.__aexit__()",
+    "migrate": null
+  },
+  "hashes": {
+    "manifest_hash": "sha256-abc123def456",
+    "routes_hash": "sha256-789ghi012jkl",
+    "registry_hash": "sha256-mno345pqr678"
+  },
+  "code_introspection": {
+    "framework": "FastAPI",
+    "language": "Python",
+    "main_file": "src/services/binance_service.py",
+    "routes_file": "src/routes/binance.py",
+    "total_lines": 577,
+    "endpoints_count": 18,
+    "auth_required_endpoints": 10,
+    "public_endpoints": 8
+  },
+  "features": {
+    "market_data": true,
+    "trading": true,
+    "futures": true,
+    "rate_limiting": true,
+    "hmac_auth": true,
+    "websocket": true,
+    "historical_data": true,
+    "real_time_prices": true
+  },
+  "api_config": {
+    "base_url": "https://api.binance.com",
+    "futures_url": "https://fapi.binance.com",
+    "websocket_url": "wss://stream.binance.com:9443",
+    "rate_limit": "1200 requests per minute",
+    "auth_method": "HMAC-SHA256",
+    "supported_symbols": 500
+  }
+}

@@ -1,0 +1,171 @@
+# zmart-analytics.mdc
+> Purpose: ZmartBot Analytics Service providing advanced analytics, reporting, and insights for trading performance.
+
+## Service Overview
+**zmart_analytics** is a comprehensive analytics service that provides advanced data analytics, performance insights, trend analysis, and reporting capabilities for the ZmartBot trading system.
+
+## Architecture
+**Type**: Backend Service (FastAPI-based)
+**Port**: 8007
+**Language**: Python 3.11+
+**Framework**: FastAPI, Pandas, NumPy, Plotly
+**Database**: PostgreSQL (analytics data), Redis (caching)
+**Compute**: High-performance analytics engine
+
+### Core Components
+- **Performance Analytics**: System and trading performance analysis
+- **Market Analytics**: Market data analysis and insights
+- **Trend Analysis**: Trend identification and forecasting
+- **Reporting Engine**: Automated report generation
+- **Dashboard API**: Real-time dashboard data
+- **Analytics API**: RESTful API for analytics operations
+- **Data Visualization**: Advanced data visualization tools
+
+## API Endpoints
+
+### Health & Status
+- `GET /health` - Service health check
+- `GET /ready` - Service readiness check
+- `GET /metrics` - Prometheus metrics
+
+### Analytics Endpoints
+- `GET /api/v1/analytics/dashboard` - Analytics dashboard data
+- `GET /api/v1/analytics/metrics` - Performance metrics
+- `POST /api/v1/analytics/reports` - Generate analytics reports
+- `GET /api/v1/analytics/trends` - Market trends analysis
+- `GET /api/v1/analytics/performance` - Performance analysis
+- `POST /api/v1/analytics/export` - Export analytics data
+
+### Performance Endpoints
+- `GET /api/v1/performance/system` - System performance metrics
+- `GET /api/v1/performance/trading` - Trading performance metrics
+- `GET /api/v1/performance/risk` - Risk performance metrics
+- `POST /api/v1/performance/analysis` - Performance analysis
+
+### Market Endpoints
+- `GET /api/v1/market/trends` - Market trend analysis
+- `GET /api/v1/market/volatility` - Market volatility analysis
+- `GET /api/v1/market/correlation` - Market correlation analysis
+- `POST /api/v1/market/forecast` - Market forecasting
+
+### Reporting Endpoints
+- `GET /api/v1/reports/daily` - Daily performance reports
+- `GET /api/v1/reports/weekly` - Weekly performance reports
+- `GET /api/v1/reports/monthly` - Monthly performance reports
+- `POST /api/v1/reports/custom` - Custom report generation
+
+## Analytics Features
+
+### Performance Analytics
+- **System Performance**: CPU, memory, disk usage analysis
+- **Trading Performance**: P&L, win rate, Sharpe ratio analysis
+- **Risk Performance**: VaR, drawdown, risk metrics analysis
+- **Portfolio Performance**: Portfolio optimization and analysis
+- **Strategy Performance**: Strategy effectiveness analysis
+- **Execution Performance**: Trade execution quality analysis
+
+### Market Analytics
+- **Trend Analysis**: Market trend identification and analysis
+- **Volatility Analysis**: Market volatility measurement
+- **Correlation Analysis**: Asset correlation analysis
+- **Market Regimes**: Market regime identification
+- **Liquidity Analysis**: Market liquidity assessment
+- **Volume Analysis**: Trading volume analysis
+
+### Data Visualization
+- **Interactive Charts**: Real-time interactive charts
+- **Dashboard Widgets**: Customizable dashboard widgets
+- **Performance Graphs**: Performance visualization
+- **Risk Charts**: Risk metric visualization
+- **Trend Charts**: Trend visualization
+- **Correlation Heatmaps**: Correlation matrix visualization
+
+### Reporting Capabilities
+- **Automated Reports**: Scheduled report generation
+- **Custom Reports**: User-defined report templates
+- **Export Formats**: PDF, Excel, CSV export
+- **Email Distribution**: Automated report distribution
+- **Real-time Dashboards**: Live dashboard updates
+- **Alert Integration**: Analytics-based alerts
+
+## Data Sources
+- **Market Data**: Real-time and historical market data
+- **Trading Data**: Trading execution and performance data
+- **System Data**: System operational metrics
+- **Risk Data**: Risk metrics and calculations
+- **Portfolio Data**: Portfolio composition and performance
+- **External Data**: Third-party analytics data
+
+## Configuration
+- **Environment Variables**: Database connections, API keys
+- **Analytics Settings**: Analysis parameters and thresholds
+- **Reporting Settings**: Report generation configuration
+- **Dashboard Settings**: Dashboard customization options
+- **Export Settings**: Data export configuration
+
+## Monitoring
+- **Health Checks**: Automated health monitoring
+- **Performance Metrics**: Analytics processing performance
+- **Error Monitoring**: Analytics error tracking
+- **Resource Monitoring**: CPU, memory, disk usage
+
+## Security
+- **Authentication**: Required for all endpoints
+- **Authorization**: Role-based access control
+- **Data Encryption**: All data encrypted in transit and at rest
+- **Audit Logging**: Comprehensive analytics operation audit trail
+
+## Performance
+- **Caching**: Redis-based caching for analytics results
+- **Parallel Processing**: Parallel analytics computation
+- **Scaling**: Horizontal scaling capabilities
+- **Load Balancing**: Request distribution across instances
+
+## Dependencies
+- **zmart-api** (Port 8000) - Required for system integration
+- **my-symbols-extended-service** (Port 8005) - Required for symbol data
+- **master-orchestration-agent** (Port 8002) - Required for orchestration
+- **Database**: PostgreSQL for analytics data storage
+- **Cache**: Redis for performance optimization
+
+## Orchestration
+- **Service Discovery**: Automatic service registration
+- **Health Monitoring**: Integrated health checks
+- **Dependency Management**: Proper dependency resolution
+- **Scaling**: Automated scaling based on demand
+
+## Rollback
+- **Data Backup**: Automatic analytics data backup
+- **Configuration Backup**: Versioned configuration management
+- **Snapshot Recovery**: Point-in-time data recovery
+- **Service Rollback**: Service configuration rollback
+
+## Load Balancing
+- **Request Distribution**: Load balancing across instances
+- **Session Management**: Proper session handling
+- **Resource Management**: Efficient resource allocation
+- **Performance Monitoring**: Real-time performance tracking
+
+## Known Issues
+- **High Memory Usage**: High memory usage during large analytics
+- **Processing Time**: Long processing time for complex analysis
+- **Data Synchronization**: Analytics data synchronization complexity
+- **Workarounds**: Implemented optimization and monitoring
+
+## Status
+- **Operational Status**: ✅ **ACTIVE**
+- **Implementation Completeness**: 95%
+- **Performance**: Optimized for high-throughput analytics
+- **Reliability**: High availability with failover support
+
+## Changelog
+- **Version 1.0.0**: Initial analytics service with comprehensive features
+- **Performance Optimization**: Enhanced caching and parallel processing
+- **Security Enhancement**: Improved authentication and encryption
+- **Monitoring**: Advanced monitoring and alerting capabilities
+
+---
+
+description: ZmartBot Analytics Service Documentation
+globs:
+alwaysApply: true

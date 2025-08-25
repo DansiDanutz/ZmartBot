@@ -1,0 +1,224 @@
+# my-symbols-extended-service.mdc
+> Type: backend | Version: 1.0.0 | Owner: zmartbot | Port: 8005
+
+## Overview
+ZmartBot extended symbols service providing advanced symbol management, portfolio tracking, and extended market data analysis with comprehensive portfolio analytics and market data processing capabilities.
+
+## Architecture & Integration
+- **Service Type:** backend
+- **Dependencies:** zmart-api, mysymbols
+- **Env Vars:** SYMBOLS_EXTENDED_TOKEN, DATABASE_URL, SYMBOLS_API_KEY
+- **Lifecycle:** start=`python3 symbols_extended_server.py --port 8005` | stop=`pkill -f symbols_extended_server` | migrate=`n/a`
+
+## API Endpoints
+
+### GET /health
+- Summary: Extended symbols service health check
+- Auth Required: No
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: Health status
+  - 503: Service unavailable
+
+### GET /ready
+- Summary: Extended symbols service readiness check
+- Auth Required: No
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: Ready status
+  - 503: Not ready
+
+### GET /api/symbols-extended/status
+- Summary: Get extended symbols service status
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: Extended symbols status information
+  - 401: Authentication required
+
+### GET /api/symbols-extended/symbols
+- Summary: Get extended symbol information
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{"category": "string", "status": "string"}`
+  - Body: `{}`
+- Responses:
+  - 200: Extended symbols list
+  - 400: Invalid parameters
+  - 401: Authentication required
+
+### POST /api/symbols-extended/symbols
+- Summary: Add new extended symbol
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{"symbol": "string", "category": "string", "metadata": "object"}`
+- Responses:
+  - 200: Symbol added successfully
+  - 400: Invalid symbol data
+  - 401: Authentication required
+  - 409: Symbol already exists
+
+### GET /api/symbols-extended/portfolio
+- Summary: Get portfolio analytics
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{"timeframe": "string", "metrics": "string"}`
+  - Body: `{}`
+- Responses:
+  - 200: Portfolio analytics data
+  - 400: Invalid parameters
+  - 401: Authentication required
+
+### POST /api/symbols-extended/portfolio/calculate
+- Summary: Calculate portfolio performance
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{"symbols": ["string"], "timeframe": "string", "metrics": ["string"]}`
+- Responses:
+  - 200: Portfolio calculation results
+  - 400: Invalid calculation parameters
+  - 401: Authentication required
+
+### GET /api/symbols-extended/analytics
+- Summary: Get symbol analytics
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{"symbol": "string", "analysis_type": "string"}`
+  - Body: `{}`
+- Responses:
+  - 200: Symbol analytics data
+  - 400: Invalid parameters
+  - 401: Authentication required
+  - 404: Symbol not found
+
+### POST /api/symbols-extended/analytics/generate
+- Summary: Generate new symbol analytics
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{"symbol": "string", "analysis_type": "string", "parameters": "object"}`
+- Responses:
+  - 200: Analytics generation initiated
+  - 400: Invalid parameters
+  - 401: Authentication required
+
+### GET /api/symbols-extended/market-data
+- Summary: Get extended market data
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{"symbol": "string", "data_type": "string", "timeframe": "string"}`
+  - Body: `{}`
+- Responses:
+  - 200: Extended market data
+  - 400: Invalid parameters
+  - 401: Authentication required
+
+### POST /api/symbols-extended/sync
+- Summary: Synchronize symbol data
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{"symbols": ["string"], "sync_type": "string"}`
+- Responses:
+  - 200: Synchronization initiated
+  - 400: Invalid sync parameters
+  - 401: Authentication required
+
+### GET /api/symbols-extended/categories
+- Summary: Get symbol categories
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: Symbol categories list
+  - 401: Authentication required
+
+### POST /api/symbols-extended/categories
+- Summary: Create new symbol category
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{"name": "string", "description": "string", "rules": "object"}`
+- Responses:
+  - 200: Category created successfully
+  - 400: Invalid category data
+  - 401: Authentication required
+
+### GET /api/symbols-extended/reports
+- Summary: Get symbol reports
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{"report_type": "string", "date_range": "string"}`
+  - Body: `{}`
+- Responses:
+  - 200: Symbol reports
+  - 400: Invalid parameters
+  - 401: Authentication required
+
+## Health & Readiness
+- Liveness: `/health`
+- Readiness: `/ready`
+- Timeouts: startup_grace=30s, http_timeout=45s
+
+## Observability
+- Metrics: `/metrics`
+- Logs: format=jsonl
+- Dashboards: Symbols Extended Performance, Portfolio Analytics
+
+## Orchestration & Ordering
+- Basic Integration: Enabled
+- Master Agent Linked: Yes
+- Ordering Hints: zmart-api → my-symbols-extended-service, mysymbols → my-symbols-extended-service
+
+## Performance & SLO (Initial)
+- Baseline p95 (ms): 250
+- Notes: Extended symbols service with portfolio analytics and market data processing
+
+## Failure Modes & Runbooks
+- **database-connection-failed** — Symptoms: Cannot connect to symbols database, portfolio data unavailable — Remediation: Check database connectivity, restart symbols extended service
+- **symbol-sync-failed** — Symptoms: Symbol synchronization failing, outdated symbol data — Remediation: Check symbol API connectivity, restart service, verify API keys
+- **portfolio-calculation-error** — Symptoms: Portfolio calculations incorrect, performance metrics wrong — Remediation: Check calculation algorithms, validate data integrity, restart service
+
+## Rollback
+- Snapshot required: Yes
+- Playbook: isolate → restore_latest_snapshot → verify → reactivate
+
+## Load Balancing
+- Enabled: Yes
+- Pool: symbols_extended_pool
+
+## Known Issues
+- None recorded
+
+## Changelog
+- 1.0.0 (2025-08-24): Initial extended symbols service with portfolio analytics
+
+---
+*Generated by MDCAgent (gpt5) on 2025-08-24T23:58:00Z; input sha256-bcd890efg123; context: service.yaml, my_symbols_extended_context.json.*
+description:
+globs:
+alwaysApply: true
+---

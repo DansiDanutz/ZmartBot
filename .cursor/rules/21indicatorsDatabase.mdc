@@ -447,5 +447,5 @@ class IndicatorsUpdater:
 The 21 Indicators Database serves as the **foundation for all technical analysis** in the ZmartBot platform, providing comprehensive, real-time, and historical data that drives trading decisions, alerts, and AI analysis across all system components.
 description:
 globs:
-alwaysApply: false
+alwaysApply: true
 ---

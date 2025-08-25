@@ -137,3 +137,8 @@ Due to the complexity and length of the task, it's not feasible to provide a com
 - **Capacity Planning**: Not applicable - this service does not need to scale
 
 This template should give you a good starting point for transforming the MDC file into a comprehensive, detailed, world-class document. Remember, the goal is to provide the Master Orchestration Agent with all the information it needs to achieve complete autonomous mastery of this service.
+
+description:
+globs:
+alwaysApply: true
+---

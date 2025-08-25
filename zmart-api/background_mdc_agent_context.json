@@ -1,0 +1,94 @@
+{
+  "service_name": "background-mdc-agent",
+  "service_type": "monitoring",
+  "version": "1.0.0",
+  "owner": "zmartbot",
+  "description": "Background monitoring agent for automatic MDC file updates and CLAUDE.md synchronization",
+  "port": null,
+  "file_path": "zmart-api/background_mdc_agent.py",
+  "dependencies": {
+    "services": ["smart_context_optimizer", "update_master_orchestration"],
+    "files": [".cursor/rules/*.mdc", "CLAUDE.md", ".claude/contexts/"],
+    "scripts": ["start_background_mdc_agent.sh", "stop_background_mdc_agent.sh"]
+  },
+  "functionality": {
+    "primary_purpose": "Automatically monitor MDC files and update CLAUDE.md and Master Orchestration Agent",
+    "key_features": [
+      "File change detection for MDC files",
+      "Automatic CLAUDE.md updates",
+      "Master Orchestration Agent synchronization",
+      "Stale file detection (24-hour threshold)",
+      "Comprehensive logging with timestamps",
+      "Graceful shutdown handling",
+      "Error recovery and retry logic"
+    ],
+    "automation": {
+      "trigger": "Time-based (every 5 minutes) + file change detection",
+      "frequency": "300 seconds (5 minutes)",
+      "scope": "Full MDC system monitoring and updates"
+    }
+  },
+  "technical_details": {
+    "language": "Python 3",
+    "libraries": ["os", "time", "subprocess", "signal", "sys", "pathlib", "datetime", "json"],
+    "architecture": {
+      "class": "BackgroundMDCAgent",
+      "methods": [
+        "get_mdc_files_info()",
+        "check_for_changes()",
+        "update_claude_md()",
+        "update_master_orchestration()",
+        "check_claude_md_age()",
+        "run_cycle()",
+        "signal_handler()",
+        "run()"
+      ]
+    },
+    "data_flow": [
+      "Monitor .cursor/rules directory",
+      "Detect file changes (new, modified, deleted)",
+      "Check CLAUDE.md age",
+      "Trigger smart context optimizer",
+      "Update Master Orchestration Agent",
+      "Log all activities"
+    ]
+  },
+  "integration_points": {
+    "input": {
+      "mdc_files": "All .mdc files in .cursor/rules directory",
+      "claude_md": "Current CLAUDE.md file",
+      "domain_contexts": ".claude/contexts/ directory"
+    },
+    "output": {
+      "updated_claude_md": "Refreshed CLAUDE.md with current MDC information",
+      "updated_master_orchestration": "Updated MasterOrchestrationAgent.mdc",
+      "log_file": "background_mdc_agent.log with activity timestamps"
+    }
+  },
+  "error_handling": {
+    "file_errors": "Graceful handling of missing files and permissions",
+    "process_errors": "Subprocess execution error handling",
+    "signal_handling": "Graceful shutdown on SIGINT/SIGTERM",
+    "retry_logic": "Automatic retry on failures with exponential backoff"
+  },
+  "usage": {
+    "start_command": "./start_background_mdc_agent.sh",
+    "stop_command": "./stop_background_mdc_agent.sh",
+    "location": "Project root directory",
+    "permissions": "Read access to MDC files, write access to CLAUDE.md and logs"
+  },
+  "monitoring": {
+    "success_indicators": [
+      "Regular log entries every 5 minutes",
+      "Successful CLAUDE.md updates",
+      "Successful Master Orchestration updates",
+      "No error messages in logs"
+    ],
+    "failure_indicators": [
+      "Missing log entries",
+      "Error messages in logs",
+      "Failed subprocess executions",
+      "Permission denied errors"
+    ]
+  }
+}

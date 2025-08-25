@@ -1,0 +1,164 @@
+name: kingfisher_api
+version: "2.0.0"
+description: "KingFisher AI Module - Advanced Liquidation Analysis System"
+type: backend
+port: 8100
+status: active
+
+# Service Configuration
+config:
+  environment: production
+  debug: false
+  host: "0.0.0.0"
+  port: 8100
+
+# Health & Readiness
+health:
+  endpoint: "/health"
+  readiness_endpoint: "/ready"
+  timeout: 30s
+  interval: 10s
+
+# Dependencies
+dependencies:
+  - name: "zmart-api"
+    port: 8000
+    required: true
+  - name: "master-orchestration-agent"
+    port: 8002
+    required: true
+
+# API Endpoints
+endpoints:
+  - path: "/health"
+    method: "GET"
+    description: "Health check endpoint"
+  - path: "/ready"
+    method: "GET"
+    description: "Readiness check endpoint"
+  - path: "/api/v1/liquidation/analyze"
+    method: "POST"
+    description: "Liquidation analysis endpoint"
+  - path: "/api/v1/clusters/detect"
+    method: "POST"
+    description: "Liquidation cluster detection"
+  - path: "/api/v1/toxic-flow/analyze"
+    method: "POST"
+    description: "Toxic order flow analysis"
+  - path: "/api/v1/reports/generate"
+    method: "POST"
+    description: "Professional report generation"
+  - path: "/api/v1/telegram/monitor"
+    method: "GET"
+    description: "Telegram monitoring status"
+  - path: "/api/v1/ai-models/status"
+    method: "GET"
+    description: "Local AI models status"
+
+# 6-Step Automation Pipeline
+automation:
+  pipeline:
+    - step: "Image Monitoring & Download"
+      script: "King-Scripts/STEP1-Monitoring-Images-And-download.py"
+      status: "active"
+    - step: "AI-Powered Image Sorting"
+      script: "Integrated into STEP4"
+      status: "active"
+    - step: "Duplicate Removal"
+      script: "King-Scripts/STEP3-Remove-Duplicates.py"
+      status: "active"
+    - step: "Analysis & Report Creation"
+      script: "King-Scripts/STEP4-Analyze-And-Create-Reports.py"
+      status: "active"
+    - step: "Symbol Update & Market Data"
+      script: "King-Scripts/STEP5-ACCURATE-Symbol-Update.py"
+      status: "active"
+    - step: "Professional Report Generation"
+      script: "King-Scripts/STEP6-Enhanced-Professional-Reports.py"
+      status: "active"
+
+# Multi-Agent System
+agents:
+  - name: "KingFisher Main Agent"
+    file: "src/agents/kingfisher_main_agent.py"
+    status: "active"
+  - name: "QA Agent"
+    file: "src/agents/kingfisher_qa_agent.py"
+    status: "active"
+  - name: "Liquidation Heatmap Agent"
+    file: "src/agents/sub_agents/liq_heatmap_agent.py"
+    status: "active"
+  - name: "Liquidation Map Agent"
+    file: "src/agents/sub_agents/liquidation_map_agent.py"
+    status: "active"
+  - name: "RSI Heatmap Agent"
+    file: "src/agents/sub_agents/rsi_heatmap_agent.py"
+    status: "active"
+
+# Core Services
+services:
+  - name: "Master Agent"
+    file: "src/services/master_agent.py"
+    status: "active"
+  - name: "Image Processing Service"
+    file: "src/services/image_processing_service.py"
+    status: "active"
+  - name: "Professional Report Generator"
+    file: "src/services/professional_report_generator.py"
+    status: "active"
+  - name: "Enhanced Airtable Service"
+    file: "src/services/enhanced_airtable_service.py"
+    status: "active"
+  - name: "Telegram Service"
+    file: "src/services/telegram_service.py"
+    status: "active"
+  - name: "Workflow Orchestrator"
+    file: "src/services/workflow_orchestrator.py"
+    status: "active"
+
+# Integration Points
+integrations:
+  - name: "Telegram Bot"
+    file: "real_telegram_bot.py"
+    status: "active"
+  - name: "Local AI Models"
+    service: "Local AI Models Service"
+    status: "active"
+  - name: "Database"
+    type: "SQLite"
+    status: "active"
+  - name: "Redis"
+    type: "Cache"
+    status: "active"
+
+# Startup Scripts
+startup:
+  main: "run_dev.py"
+  unified_pattern: "unified_pattern_server.py"
+  orchestration: "King-Scripts/KING_ORCHESTRATION_AGENT.py"
+  continuous: "King-Scripts/RUN_ALL_STEPS_CONTINUOUS.py"
+
+# Monitoring
+monitoring:
+  system_health: "src/utils/monitoring.py"
+  database: "src/database/kingfisher_database.py"
+  metrics: "/metrics"
+
+# Security
+security:
+  telegram_token: "environment_variable"
+  api_keys: "secure_storage"
+  cors: "enabled"
+
+# Performance
+performance:
+  image_processing: "optimized"
+  ai_analysis: "parallel"
+  report_generation: "async"
+  database_operations: "cached"
+
+# Rollback
+rollback:
+  snapshots: "enabled"
+  data_backup: "automatic"
+  configuration: "versioned"

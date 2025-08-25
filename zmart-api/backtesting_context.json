@@ -1,0 +1,186 @@
+{
+  "service_name": "zmart_backtesting",
+  "service_type": "backend",
+  "port": 8013,
+  "description": "Comprehensive backtesting system for ZmartBot trading strategies with historical data analysis, performance metrics, and strategy optimization",
+  "context": {
+    "service_manifest": {
+      "name": "zmart_backtesting",
+      "version": "1.0.0",
+      "kind": "backend",
+      "description": "Comprehensive backtesting system for ZmartBot trading strategies with historical data analysis, performance metrics, and strategy optimization",
+      "owner": "zmart-team",
+      "maintainer": "zmart-admin"
+    },
+    "lifecycle": {
+      "startup_timeout": "45s",
+      "shutdown_timeout": "20s",
+      "health_check_interval": "15s",
+      "readiness_timeout": "90s"
+    },
+    "dependencies": [
+      "zmart-api",
+      "zmart_technical_analysis",
+      "zmart_risk_management",
+      "zmart_data_warehouse"
+    ],
+    "health": {
+      "liveness_path": "/health",
+      "readiness_path": "/ready",
+      "startup_probe": {
+        "path": "/startup",
+        "initial_delay": "10s",
+        "period": "15s",
+        "timeout": "10s",
+        "failure_threshold": 3
+      }
+    },
+    "observability": {
+      "metrics_path": "/metrics",
+      "logs_format": "json",
+      "log_level": "INFO",
+      "tracing_enabled": true,
+      "profiling_enabled": true
+    },
+    "security": {
+      "service_token_required": true,
+      "rate_limiting": {
+        "requests_per_minute": 500,
+        "burst_size": 50
+      }
+    },
+    "orchestration": {
+      "auto_start": true,
+      "restart_policy": "always",
+      "max_restarts": 3,
+      "restart_delay": "15s"
+    },
+    "performance": {
+      "memory_limit": "2GB",
+      "cpu_limit": "1.0",
+      "connection_pool_size": 100,
+      "request_timeout": "300s"
+    },
+    "failure_modes": [
+      {
+        "name": "historical_data_unavailable",
+        "symptoms": "Cannot access historical data for backtesting",
+        "remediation": "Check data warehouse connectivity, verify data availability"
+      },
+      {
+        "name": "backtest_execution_failed",
+        "symptoms": "Backtest execution errors or timeouts",
+        "remediation": "Check strategy configuration, restart backtesting engine"
+      },
+      {
+        "name": "performance_calculation_failed",
+        "symptoms": "Performance metrics calculation errors",
+        "remediation": "Check calculation algorithms, restart metrics engine"
+      }
+    ],
+    "rollback": {
+      "snapshot_required": true,
+      "rollback_strategy": "immediate",
+      "data_consistency_check": true
+    },
+    "load_balancing": {
+      "enabled": false,
+      "pool": null
+    },
+    "known_issues": [
+      {
+        "issue": "Long backtest execution times for large datasets",
+        "status": "monitoring",
+        "workaround": "Implement parallel processing and data chunking"
+      }
+    ],
+    "changelog": [
+      {
+        "version": "1.0.0",
+        "date": "2025-08-25",
+        "changes": [
+          "Initial backtesting system implementation",
+          "Historical data analysis and processing",
+          "Strategy performance evaluation",
+          "Risk metrics calculation",
+          "Optimization algorithms"
+        ]
+      }
+    ]
+  },
+  "backtesting_features": [
+    "Historical data analysis and processing",
+    "Strategy performance evaluation",
+    "Risk metrics calculation and analysis",
+    "Strategy optimization and parameter tuning",
+    "Performance comparison and benchmarking",
+    "Walk-forward analysis and validation",
+    "Monte Carlo simulation",
+    "Portfolio backtesting and optimization"
+  ],
+  "backtesting_methodologies": [
+    "Walk-Forward Analysis: Out-of-sample testing with rolling windows",
+    "Monte Carlo Simulation: Random sampling for robustness testing",
+    "Cross-Validation: K-fold validation for strategy reliability",
+    "Bootstrap Analysis: Resampling for statistical significance",
+    "Stress Testing: Extreme market condition simulation",
+    "Scenario Analysis: Different market scenario testing"
+  ],
+  "performance_metrics": [
+    "Total Return: Overall strategy performance",
+    "Sharpe Ratio: Risk-adjusted returns",
+    "Maximum Drawdown: Largest peak-to-trough decline",
+    "Calmar Ratio: Return to maximum drawdown ratio",
+    "Sortino Ratio: Downside risk-adjusted returns",
+    "Information Ratio: Excess return to tracking error",
+    "Win Rate: Percentage of profitable trades",
+    "Profit Factor: Gross profit to gross loss ratio",
+    "Average Trade: Mean profit/loss per trade",
+    "Risk of Ruin: Probability of account depletion"
+  ],
+  "risk_metrics": [
+    "Value at Risk (VaR): Potential loss at confidence level",
+    "Expected Shortfall: Average loss beyond VaR",
+    "Volatility: Standard deviation of returns",
+    "Beta: Market correlation and sensitivity",
+    "Correlation: Strategy correlation with benchmarks",
+    "Skewness: Return distribution asymmetry",
+    "Kurtosis: Return distribution tail behavior",
+    "Downside Deviation: Negative return volatility"
+  ],
+  "optimization_algorithms": [
+    "Genetic Algorithm: Evolutionary strategy optimization",
+    "Particle Swarm Optimization: Swarm intelligence optimization",
+    "Bayesian Optimization: Probabilistic parameter tuning",
+    "Grid Search: Exhaustive parameter search",
+    "Random Search: Stochastic parameter exploration",
+    "Simulated Annealing: Global optimization with local search"
+  ],
+  "data_requirements": [
+    "Historical Price Data: OHLCV data for all symbols",
+    "Market Data: Volume, bid/ask spreads, market depth",
+    "Economic Data: Interest rates, inflation, GDP",
+    "News Data: Market sentiment and news events",
+    "Technical Indicators: Pre-calculated technical indicators",
+    "Risk Metrics: Historical volatility and correlation data"
+  ],
+  "integration_points": [
+    "zmart-api for trading data and strategy execution",
+    "zmart_technical_analysis for technical indicator calculations",
+    "zmart_risk_management for risk metrics and limits",
+    "zmart_data_warehouse for historical data storage and retrieval",
+    "External data providers for market and economic data",
+    "Strategy development frameworks and libraries",
+    "Performance visualization and reporting tools"
+  ],
+  "backtesting_workflow": [
+    "Strategy Definition: Define trading rules and parameters",
+    "Data Preparation: Load and validate historical data",
+    "Backtest Execution: Run strategy on historical data",
+    "Performance Analysis: Calculate metrics and analyze results",
+    "Risk Assessment: Evaluate risk metrics and drawdowns",
+    "Optimization: Tune parameters for better performance",
+    "Validation: Out-of-sample testing and walk-forward analysis",
+    "Reporting: Generate comprehensive performance reports"
+  ]
+}

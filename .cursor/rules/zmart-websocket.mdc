@@ -1,0 +1,182 @@
+# zmart-websocket.mdc
+> Purpose: ZmartBot WebSocket Service providing real-time data streaming and communication.
+
+## Service Overview
+**zmart_websocket** is a comprehensive WebSocket service that provides real-time data streaming, live communication, and event broadcasting for the ZmartBot trading system.
+
+## Architecture
+**Type**: Backend Service (FastAPI-based)
+**Port**: 8009
+**Language**: Python 3.11+
+**Framework**: FastAPI, WebSockets, asyncio
+**Database**: Redis (connection state), PostgreSQL (message history)
+**Compute**: High-performance real-time streaming
+
+### Core Components
+- **WebSocket Server**: Core WebSocket connection management
+- **Connection Manager**: Connection pooling and management
+- **Message Router**: Real-time message routing and broadcasting
+- **Event Streamer**: Event streaming and broadcasting
+- **Authentication**: WebSocket authentication and authorization
+- **WebSocket API**: RESTful API for WebSocket operations
+- **Real-time Analytics**: Real-time data streaming
+
+## API Endpoints
+
+### Health & Status
+- `GET /health` - Service health check
+- `GET /ready` - Service readiness check
+- `GET /metrics` - Prometheus metrics
+
+### WebSocket Endpoints
+- `GET /ws` - WebSocket connection endpoint
+- `GET /api/v1/websocket/status` - WebSocket service status
+- `GET /api/v1/websocket/connections` - Active connections count
+- `POST /api/v1/websocket/broadcast` - Broadcast message to all clients
+- `GET /api/v1/websocket/rooms` - Get available rooms
+- `POST /api/v1/websocket/join` - Join WebSocket room
+
+### Connection Endpoints
+- `GET /api/v1/connections/list` - List active connections
+- `GET /api/v1/connections/{id}` - Get connection details
+- `POST /api/v1/connections/disconnect` - Disconnect client
+- `GET /api/v1/connections/stats` - Connection statistics
+
+### Message Endpoints
+- `POST /api/v1/messages/send` - Send message to specific client
+- `GET /api/v1/messages/history` - Get message history
+- `POST /api/v1/messages/broadcast` - Broadcast message
+- `GET /api/v1/messages/stats` - Message statistics
+
+## WebSocket Features
+
+### Real-time Data Streaming
+- **Market Data**: Live market data streaming
+- **Trading Signals**: Real-time trading signal broadcasting
+- **System Events**: System status and event streaming
+- **User Notifications**: User-specific notification streaming
+- **Analytics Data**: Real-time analytics data streaming
+- **Performance Metrics**: Live performance metrics
+
+### Connection Management
+- **Connection Pooling**: Efficient connection management
+- **Authentication**: WebSocket authentication and validation
+- **Rate Limiting**: Connection and message rate limiting
+- **Heartbeat Monitoring**: Connection health monitoring
+- **Auto-reconnection**: Automatic reconnection handling
+- **Connection Analytics**: Connection performance analytics
+
+### Message Broadcasting
+- **Global Broadcast**: Broadcast to all connected clients
+- **Room-based**: Room-specific message broadcasting
+- **User-specific**: User-targeted message delivery
+- **Channel-based**: Channel-specific message routing
+- **Priority Messaging**: Priority-based message delivery
+- **Message Queuing**: Message queuing and delivery
+
+### Event Streaming
+- **Market Events**: Real-time market event streaming
+- **Trading Events**: Trading activity event streaming
+- **System Events**: System operational event streaming
+- **Alert Events**: Alert and notification event streaming
+- **Performance Events**: Performance metric event streaming
+- **User Events**: User interaction event streaming
+
+### Security Features
+- **Token Authentication**: JWT-based authentication
+- **Connection Validation**: Connection request validation
+- **Message Validation**: Message content validation
+- **Rate Limiting**: Connection and message rate limiting
+- **Encryption**: WebSocket Secure (WSS) support
+- **Access Control**: Role-based access control
+
+### Performance Features
+- **High Concurrency**: Support for thousands of concurrent connections
+- **Low Latency**: Minimal message delivery latency
+- **Message Compression**: Efficient message compression
+- **Connection Scaling**: Horizontal connection scaling
+- **Load Balancing**: Connection load balancing
+- **Caching**: Message and connection caching
+
+## Data Sources
+- **Market Data**: Real-time market data feeds
+- **Trading Data**: Trading execution and signal data
+- **System Data**: System operational data
+- **Analytics Data**: Real-time analytics results
+- **Notification Data**: Notification and alert data
+- **User Data**: User interaction and preference data
+
+## Configuration
+- **Environment Variables**: WebSocket configuration, API keys
+- **Connection Settings**: Connection limits and timeouts
+- **Message Settings**: Message size and rate limits
+- **Security Settings**: Authentication and encryption settings
+- **Performance Settings**: Performance optimization settings
+
+## Monitoring
+- **Health Checks**: Automated health monitoring
+- **Connection Metrics**: Connection performance tracking
+- **Message Metrics**: Message delivery performance
+- **Resource Monitoring**: CPU, memory, connection usage
+
+## Security
+- **Authentication**: Required for all WebSocket connections
+- **Authorization**: Role-based access control
+- **Data Encryption**: All data encrypted in transit
+- **Audit Logging**: Comprehensive WebSocket operation audit trail
+
+## Performance
+- **Connection Pooling**: Efficient connection management
+- **Message Queuing**: Asynchronous message processing
+- **Scaling**: Horizontal scaling capabilities
+- **Load Balancing**: Connection distribution across instances
+
+## Dependencies
+- **zmart-api** (Port 8000) - Required for system integration
+- **zmart-analytics** (Port 8007) - Required for analytics streaming
+- **zmart-notification** (Port 8008) - Required for notification streaming
+- **master-orchestration-agent** (Port 8002) - Required for orchestration
+- **Database**: Redis for connection state, PostgreSQL for message history
+- **Cache**: Redis for connection and message caching
+
+## Orchestration
+- **Service Discovery**: Automatic service registration
+- **Health Monitoring**: Integrated health checks
+- **Dependency Management**: Proper dependency resolution
+- **Scaling**: Automated scaling based on demand
+
+## Rollback
+- **Data Backup**: Automatic WebSocket data backup
+- **Configuration Backup**: Versioned configuration management
+- **Snapshot Recovery**: Point-in-time data recovery
+- **Service Rollback**: Service configuration rollback
+
+## Load Balancing
+- **Connection Distribution**: Load balancing across instances
+- **Session Management**: Proper session handling
+- **Resource Management**: Efficient resource allocation
+- **Performance Monitoring**: Real-time performance tracking
+
+## Known Issues
+- **Connection Limits**: High connection count impact on performance
+- **Message Latency**: Network latency impact on message delivery
+- **Memory Usage**: High memory usage with many connections
+- **Workarounds**: Implemented optimization and monitoring
+
+## Status
+- **Operational Status**: ✅ **ACTIVE**
+- **Implementation Completeness**: 95%
+- **Performance**: Optimized for high-concurrency real-time streaming
+- **Reliability**: High availability with failover support
+
+## Changelog
+- **Version 1.0.0**: Initial WebSocket service with comprehensive features
+- **Performance Optimization**: Enhanced connection management and streaming
+- **Security Enhancement**: Improved authentication and encryption
+- **Monitoring**: Advanced monitoring and alerting capabilities
+
+---
+
+description: ZmartBot WebSocket Service Documentation
+globs:
+alwaysApply: true

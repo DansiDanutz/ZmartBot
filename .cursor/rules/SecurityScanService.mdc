@@ -63,3 +63,8 @@ Comprehensive security scanning and monitoring service for ZmartBot system, prov
 
 ## Status
 ✅ **ACTIVE** - Core security service with comprehensive protection capabilities
+
+description:
+globs:
+alwaysApply: true
+---

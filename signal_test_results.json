@@ -1,0 +1,297 @@
+[
+  {
+    "symbol": "BTCUSDT",
+    "timestamp": "2025-08-07T00:49:39.592675",
+    "price": {
+      "symbol": "BTCUSDT",
+      "price": 114967.67,
+      "source": "binance",
+      "volume_24h": 0.0,
+      "change_24h": 0.0,
+      "bid": 114910.186165,
+      "ask": 115025.15383499999,
+      "timestamp": "2025-08-06T21:49:39.224947",
+      "is_verified": false
+    },
+    "signals": {
+      "success": false,
+      "message": "No signals available for aggregation"
+    },
+    "sentiment": {
+      "success": true,
+      "symbol": "BTCUSDT",
+      "sentiment": {
+        "score": 50.0,
+        "raw_sentiment": 0.0,
+        "confidence": 30.0,
+        "label": "NEUTRAL",
+        "action": "HOLD",
+        "strength": "NEUTRAL"
+      },
+      "recommendation": "\u2696\ufe0f Neutral sentiment - Mixed signals from market",
+      "signals": {
+        "action": "HOLD",
+        "strength": "NEUTRAL",
+        "sentiment_label": "NEUTRAL",
+        "confidence": 30.0,
+        "key_topics": [],
+        "social_volume": 0,
+        "trending": false,
+        "influencer_bullish": false,
+        "retail_bullish": false,
+        "whale_bullish": false
+      },
+      "timestamp": "2025-08-07T00:49:39.585538",
+      "components": {
+        "grok_ai": 50.0,
+        "x_social": 50.0,
+        "influencer": 50.0,
+        "retail": 50.0,
+        "whale": 50.0,
+        "trending": 0,
+        "volume": 0.0
+      },
+      "scoring_contribution": {
+        "weight": 15,
+        "contribution": 7.5
+      }
+    },
+    "patterns": null
+  },
+  {
+    "symbol": "ETHUSDT",
+    "timestamp": "2025-08-07T00:49:44.434743",
+    "price": {
+      "symbol": "ETHUSDT",
+      "price": 3666.95,
+      "source": "binance",
+      "volume_24h": 0.0,
+      "change_24h": 0.0,
+      "bid": 3665.116525,
+      "ask": 3668.7834749999997,
+      "timestamp": "2025-08-06T21:49:44.178072",
+      "is_verified": false
+    },
+    "signals": {
+      "success": false,
+      "message": "No signals available for aggregation"
+    },
+    "sentiment": {
+      "success": true,
+      "symbol": "ETHUSDT",
+      "sentiment": {
+        "score": 50.0,
+        "raw_sentiment": 0.0,
+        "confidence": 30.0,
+        "label": "NEUTRAL",
+        "action": "HOLD",
+        "strength": "NEUTRAL"
+      },
+      "recommendation": "\u2696\ufe0f Neutral sentiment - Mixed signals from market",
+      "signals": {
+        "action": "HOLD",
+        "strength": "NEUTRAL",
+        "sentiment_label": "NEUTRAL",
+        "confidence": 30.0,
+        "key_topics": [],
+        "social_volume": 0,
+        "trending": false,
+        "influencer_bullish": false,
+        "retail_bullish": false,
+        "whale_bullish": false
+      },
+      "timestamp": "2025-08-07T00:49:44.428222",
+      "components": {
+        "grok_ai": 50.0,
+        "x_social": 50.0,
+        "influencer": 50.0,
+        "retail": 50.0,
+        "whale": 50.0,
+        "trending": 0,
+        "volume": 0.0
+      },
+      "scoring_contribution": {
+        "weight": 15,
+        "contribution": 7.5
+      }
+    },
+    "patterns": null
+  },
+  {
+    "symbol": "SOLUSDT",
+    "timestamp": "2025-08-07T00:49:49.588045",
+    "price": {
+      "symbol": "SOLUSDT",
+      "price": 167.95,
+      "source": "binance",
+      "volume_24h": 0.0,
+      "change_24h": 0.0,
+      "bid": 167.866025,
+      "ask": 168.03397499999997,
+      "timestamp": "2025-08-06T21:49:49.306748",
+      "is_verified": false
+    },
+    "signals": {
+      "success": false,
+      "message": "No signals available for aggregation"
+    },
+    "sentiment": {
+      "success": true,
+      "symbol": "SOLUSDT",
+      "sentiment": {
+        "score": 50.0,
+        "raw_sentiment": 0.0,
+        "confidence": 30.0,
+        "label": "NEUTRAL",
+        "action": "HOLD",
+        "strength": "NEUTRAL"
+      },
+      "recommendation": "\u2696\ufe0f Neutral sentiment - Mixed signals from market",
+      "signals": {
+        "action": "HOLD",
+        "strength": "NEUTRAL",
+        "sentiment_label": "NEUTRAL",
+        "confidence": 30.0,
+        "key_topics": [],
+        "social_volume": 0,
+        "trending": false,
+        "influencer_bullish": false,
+        "retail_bullish": false,
+        "whale_bullish": false
+      },
+      "timestamp": "2025-08-07T00:49:49.584039",
+      "components": {
+        "grok_ai": 50.0,
+        "x_social": 50.0,
+        "influencer": 50.0,
+        "retail": 50.0,
+        "whale": 50.0,
+        "trending": 0,
+        "volume": 0.0
+      },
+      "scoring_contribution": {
+        "weight": 15,
+        "contribution": 7.5
+      }
+    },
+    "patterns": null
+  },
+  {
+    "symbol": "BNBUSDT",
+    "timestamp": "2025-08-07T00:49:54.496800",
+    "price": {
+      "symbol": "BNBUSDT",
+      "price": 769.48,
+      "source": "binance",
+      "volume_24h": 0.0,
+      "change_24h": 0.0,
+      "bid": 769.09526,
+      "ask": 769.86474,
+      "timestamp": "2025-08-06T21:49:54.217538",
+      "is_verified": false
+    },
+    "signals": {
+      "success": false,
+      "message": "No signals available for aggregation"
+    },
+    "sentiment": {
+      "success": true,
+      "symbol": "BNBUSDT",
+      "sentiment": {
+        "score": 50.0,
+        "raw_sentiment": 0.0,
+        "confidence": 30.0,
+        "label": "NEUTRAL",
+        "action": "HOLD",
+        "strength": "NEUTRAL"
+      },
+      "recommendation": "\u2696\ufe0f Neutral sentiment - Mixed signals from market",
+      "signals": {
+        "action": "HOLD",
+        "strength": "NEUTRAL",
+        "sentiment_label": "NEUTRAL",
+        "confidence": 30.0,
+        "key_topics": [],
+        "social_volume": 0,
+        "trending": false,
+        "influencer_bullish": false,
+        "retail_bullish": false,
+        "whale_bullish": false
+      },
+      "timestamp": "2025-08-07T00:49:54.489774",
+      "components": {
+        "grok_ai": 50.0,
+        "x_social": 50.0,
+        "influencer": 50.0,
+        "retail": 50.0,
+        "whale": 50.0,
+        "trending": 0,
+        "volume": 0.0
+      },
+      "scoring_contribution": {
+        "weight": 15,
+        "contribution": 7.5
+      }
+    },
+    "patterns": null
+  },
+  {
+    "symbol": "ADAUSDT",
+    "timestamp": "2025-08-07T00:49:59.344016",
+    "price": {
+      "symbol": "ADAUSDT",
+      "price": 0.7398,
+      "source": "binance",
+      "volume_24h": 0.0,
+      "change_24h": 0.0,
+      "bid": 0.7394301000000001,
+      "ask": 0.7401698999999999,
+      "timestamp": "2025-08-06T21:49:59.058102",
+      "is_verified": false
+    },
+    "signals": {
+      "success": false,
+      "message": "No signals available for aggregation"
+    },
+    "sentiment": {
+      "success": true,
+      "symbol": "ADAUSDT",
+      "sentiment": {
+        "score": 50.0,
+        "raw_sentiment": 0.0,
+        "confidence": 30.0,
+        "label": "NEUTRAL",
+        "action": "HOLD",
+        "strength": "NEUTRAL"
+      },
+      "recommendation": "\u2696\ufe0f Neutral sentiment - Mixed signals from market",
+      "signals": {
+        "action": "HOLD",
+        "strength": "NEUTRAL",
+        "sentiment_label": "NEUTRAL",
+        "confidence": 30.0,
+        "key_topics": [],
+        "social_volume": 0,
+        "trending": false,
+        "influencer_bullish": false,
+        "retail_bullish": false,
+        "whale_bullish": false
+      },
+      "timestamp": "2025-08-07T00:49:59.340244",
+      "components": {
+        "grok_ai": 50.0,
+        "x_social": 50.0,
+        "influencer": 50.0,
+        "retail": 50.0,
+        "whale": 50.0,
+        "trending": 0,
+        "volume": 0.0
+      },
+      "scoring_contribution": {
+        "weight": 15,
+        "contribution": 7.5
+      }
+    },
+    "patterns": null
+  }
+]

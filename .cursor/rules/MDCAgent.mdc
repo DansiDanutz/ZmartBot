@@ -392,5 +392,5 @@ pathlib.Path(".cursor/rules/_gen/mdc_render.jinja").write_text(grab("MDCAgentRen
 * Designed for **deterministic** outputs and safe regeneration without blocking integration work.
 description:
 globs:
-alwaysApply: false
+alwaysApply: true
 ---

@@ -1,40 +1,48 @@
 # MDC Monitoring System - Comprehensive Documentation
 
 @agent: MonitoringMDC
-description: "Comprehensive documentation and management of the MDC (Markdown-driven Configuration) monitoring system, including file watching, automatic updates, and integration with CLAUDE.md"
+description: "Comprehensive documentation and management of the MDC (Markdown-driven Configuration) monitoring system, including Smart Context Optimization, automatic updates, and integration with CLAUDE.md"
 
 ## Purpose & Scope
 
 The MDC Monitoring System is a critical infrastructure component that ensures real-time synchronization between MDC files in `.cursor/rules` and the main `CLAUDE.md` file. This system provides:
 
-- **Real-time file monitoring** for all `.mdc` files
+- **Smart Context Optimization** with domain separation and performance monitoring
 - **Automatic content synchronization** to `CLAUDE.md`
 - **Backup and recovery** mechanisms
 - **Integration** with the CLAUDE.md organization system
 - **Comprehensive logging** and status reporting
+- **Master Orchestration Agent auto-updates**
 
 ## System Architecture
 
 ### Core Components
 
-1. **MDC File Watcher** (`watch_mdc_changes.py`)
-   - Monitors `.cursor/rules` directory for file changes
-   - Triggers updates on create, modify, delete, and move events
-   - Implements cooldown mechanism to prevent rapid-fire updates
-   - Provides real-time status and logging
+1. **Smart Context Optimizer** (`smart_context_optimizer.py`)
+   - Analyzes `.cursor/rules` directory for all `.mdc` files
+   - Implements domain separation (Core, Trading, Monitoring, etc.)
+   - Provides performance monitoring and optimization
+   - Updates CLAUDE.md with smart optimization
+   - Manages context loading and caching
 
-2. **Claude MDC Updater** (`update_claude_mdc.py`)
-   - Reads all MDC files and extracts structured content
-   - Parses agent names, descriptions, and full content
-   - Creates formatted sections for CLAUDE.md
-   - Maintains backup of previous CLAUDE.md versions
-   - Generates comprehensive MDC content summaries
+2. **Enhanced Smart Context Optimizer** (`enhanced_smart_context_optimizer.py`)
+   - Advanced version with thread safety and error recovery
+   - Memory management and file integrity checks
+   - Enhanced logging and monitoring capabilities
+   - Performance dashboard integration
+   - Cleanup and resource management
 
-3. **CLAUDE.md Organization System** (`claude-organize`)
+3. **Master Orchestration Updater** (`update_master_orchestration.py`)
+   - Automatically updates MasterOrchestrationAgent.mdc
+   - Discovers all registered services from database
+   - Implements self-learning service knowledge
+   - Updates dependency mappings and service categories
+
+4. **CLAUDE.md Organization System** (`.claude/` directory)
    - Manages CLAUDE.md file size (keeps under 40k characters)
-   - Creates modular directory structure (`~/.claude/`)
-   - Integrates with MDC monitoring system
+   - Creates modular directory structure with domain contexts
    - Provides backup and archival capabilities
+   - Integrates with Smart Context Optimization
 
 ### File Structure
 
@@ -43,171 +51,246 @@ ZmartBot/
 ├── .cursor/rules/                    # MDC files directory
 │   ├── *.mdc                        # All MDC configuration files
 │   └── services/                    # Service-specific MDC files
+├── .claude/                         # CLAUDE.md organization
+│   ├── contexts/                    # Domain-specific contexts
+│   │   ├── core_context.md         # Core system context
+│   │   ├── trading_context.md      # Trading-related context
+│   │   ├── monitoring_context.md   # Monitoring context
+│   │   ├── orchestration_context.md # Orchestration context
+│   │   ├── services_context.md     # Services context
+│   │   ├── data_context.md         # Data management context
+│   │   ├── backend_context.md      # Backend services context
+│   │   └── frontend_context.md     # Frontend services context
+│   ├── context_cache.json          # Performance cache
+│   └── settings.local.json         # Local settings
 ├── zmart-api/
-│   ├── watch_mdc_changes.py         # File watcher script
-│   ├── update_claude_mdc.py         # Content updater script
-│   └── infra/                       # Infrastructure modules
-└── ~/.claude/                       # CLAUDE.md organization
-    ├── CLAUDE.md                    # Main active context file
-    ├── archive/                     # Historical backups
-    ├── projects/                    # Project-specific details
-    │   └── mdc-files.md            # MDC files documentation
-    └── references/                  # Reusable information
+│   ├── smart_context_optimizer.py  # Main optimizer script
+│   ├── enhanced_smart_context_optimizer.py # Enhanced version
+│   ├── performance_dashboard.py    # Performance monitoring
+│   ├── update_master_orchestration.py # Master orchestration updater
+│   └── enhanced_mdc_monitor.py     # Enhanced MDC monitor (requires watchdog)
+└── CLAUDE.md                        # Main active context file
 ```
 
-## MDC File Format & Standards
+## Smart Context Optimization System
 
-### File Naming Convention
-- **Format**: `[ServiceName].mdc` or `[Category][ServiceName].mdc`
-- **Examples**: `rule_0_mandatory.mdc`, `NewService.mdc`, `MDCAgent.mdc`
-- **Location**: `.cursor/rules/` directory
+### Domain Separation
+The system organizes MDC files into logical domains:
 
-### Content Structure
-Each MDC file should include:
+- **Core**: Essential system files (rules, main, MDCAgent)
+- **Trading**: Trading-related services (alerts, indicators, market data)
+- **Monitoring**: Health checks, logging, performance monitoring
+- **Orchestration**: Service management, orchestration, process control
+- **Services**: Individual service MDC files
+- **Data**: Database, analytics, data management
+- **Backend**: Backend services and APIs
+- **Frontend**: Frontend services and UI components
 
-```markdown
-# [Service/Component Name]
+### Performance Optimization
+- **Smart Context Loading**: Loads only relevant context based on current task
+- **Batch Processing**: Processes multiple files efficiently
+- **Caching**: Maintains performance cache for frequently accessed content
+- **Memory Management**: Optimizes memory usage for large file sets
+- **Thread Safety**: Safe concurrent operations
 
-@agent: [AgentName]
-description: "[Brief description of the agent/service]"
+### Background Agent Process
+- **Automatic Monitoring**: Background agent runs every 5 minutes
+- **File Change Detection**: Monitors all MDC files for changes
+- **Automatic Updates**: Triggers CLAUDE.md and Master Orchestration updates
+- **Stale Detection**: Forces updates if CLAUDE.md is older than 24 hours
+- **Logging**: Comprehensive logging with timestamps
 
-## Purpose & Scope
-[Detailed explanation of what this MDC file governs]
+### Manual Update Process
+- **On-Demand Updates**: Trigger updates when needed
+- **Analysis Mode**: Analyze current context performance
+- **Force Updates**: Override normal update cycles
+- **Performance Monitoring**: Track optimization effectiveness
 
-## [Additional sections as needed]
-```
+## Current MDC Files Inventory
 
-### Current MDC Files Inventory
-
-#### Core System Files
+### Core System Files
 - `rule_0_mandatory.mdc` - Central mandatory rules for ZmartBot
 - `rules.mdc` - Command guardrails and safety policies
 - `MDCAgent.mdc` - MDC documentation generation agent
 - `main.mdc` - Main system configuration
-
-#### Service Integration
 - `NewService.mdc` - New service integration workflow
 - `StopStartCycle.mdc` - Critical start/stop operations
-- `MasterOrchestrationAgent.mdc` - Master orchestration system
-- `ProcessReaper.mdc` - Process management and cleanup
 
-#### Infrastructure
+### Service Integration
+- `MasterOrchestrationAgent.mdc` - Master orchestration system (self-learning)
+- `ProcessReaper.mdc` - Process management and cleanup
+- `zmart-api.mdc` - Main API server documentation
+- `zmart-dashboard.mdc` - Frontend dashboard documentation
+- `test-analytics-service.mdc` - Analytics service documentation
+- `test-websocket-service.mdc` - WebSocket service documentation
+
+### Infrastructure
 - `PortManager.mdc` - Port assignment and management
 - `ServiceDiscovery.mdc` - Service discovery mechanisms
 - `ServiceRegistry.mdc` - Service registration system
 - `BackendDoctorPack.mdc` - Backend health monitoring
+- `update-master-orchestration.mdc` - Master orchestration updater
 
-#### Trading & Alerts
+### Trading & Alerts
 - `WhaleAlerts.mdc` - Whale alert system
 - `MessiAlerts.mdc` - Messi alert service
 - `Pele.mdc` - Pele alert service
 - `Maradona.mdc` - Maradona alert service
 - `LiveAlerts.mdc` - Live alert management
 
-#### Data & Analytics
+### Data & Analytics
 - `market_data_aggregator.mdc` - Market data aggregation
 - `market_data_enhanced_database.mdc` - Enhanced database system
 - `21indicators.mdc` - 21 indicators system
 - `MySymbols.mdc` - Symbol management
+- `MySymbolsService.mdc` - Symbol service documentation
 
-#### Frontend & UI
+### Frontend & UI
 - `frontend.mdc` - Frontend configuration
 - `ControlUI.mdc` - Control UI system
 - `IndicatorCard.mdc` - Indicator card components
 
-## Monitoring System Operation
+### Monitoring & Security
+- `MonitoringMDC.mdc` - This monitoring system documentation
+- `SecurityScanService.mdc` - Security scanning service
+- `HealthCheckService.mdc` - Health check service
+- `SmartContextOptimizer.mdc` - Smart context optimization system
 
-### File Watching Process
+## System Operation
 
-1. **Initialization**
+### Smart Context Optimization Process
+
+1. **Analysis**
    ```bash
    cd /Users/dansidanutz/Desktop/ZmartBot/zmart-api
-   python watch_mdc_changes.py
+   python smart_context_optimizer.py --analyze --project-root /Users/dansidanutz/Desktop/ZmartBot
    ```
 
-2. **Event Detection**
-   - **Created**: New `.mdc` file added
-   - **Modified**: Existing `.mdc` file changed
-   - **Deleted**: `.mdc` file removed
-   - **Moved**: `.mdc` file renamed or relocated
+2. **Update CLAUDE.md**
+   ```bash
+   python smart_context_optimizer.py --update --project-root /Users/dansidanutz/Desktop/ZmartBot
+   ```
 
-3. **Update Triggering**
-   - Cooldown period (2 seconds) prevents rapid updates
-   - Automatic execution of `update_claude_mdc.py`
-   - Real-time status reporting
+3. **Enhanced Optimization**
+   ```bash
+   python enhanced_smart_context_optimizer.py --update --project-root /Users/dansidanutz/Desktop/ZmartBot
+   ```
 
-### Content Update Process
+4. **Performance Monitoring**
+   ```bash
+   python enhanced_smart_context_optimizer.py --performance --project-root /Users/dansidanutz/Desktop/ZmartBot
+   ```
 
-1. **MDC File Reading**
-   - Scan `.cursor/rules` for all `.mdc` files
-   - Parse agent names and descriptions
-   - Extract full content for formatting
-
-2. **CLAUDE.md Integration**
-   - Preserve existing header content
-   - Add comprehensive MDC section
-   - Include summary table and detailed content
-   - Maintain backup of previous version
-
-3. **Content Organization**
-   - Structured sections for each MDC file
-   - Metadata extraction (agent, description, file size)
-   - Formatted markdown output
-
-## Integration with CLAUDE.md Organization
-
-### Automatic Updates
-- MDC changes automatically sync to CLAUDE.md
-- Content is preserved in main CLAUDE.md file
-- Organization system works alongside monitoring
-
-### Size Management
-- CLAUDE.md kept under 40k characters
-- Modular structure in `~/.claude/` directory
-- Historical backups in archive directory
-
-### Coordination
-- `claude-organize` script integrates with MDC monitoring
-- Creates `~/.claude/projects/mdc-files.md` for documentation
-- Provides status reporting for both systems
+### Master Orchestration Integration
+- **Auto-Update Process**: `update_master_orchestration.py` automatically updates MasterOrchestrationAgent.mdc
+- **Service Discovery**: Discovers all registered services from database
+- **Self-Learning**: Master Orchestration Agent learns about new services automatically
+- **Dependency Mapping**: Understands service relationships and dependencies
 
 ## Usage & Commands
 
-### Starting MDC Monitoring
+### Background Agent Management
+```bash
+# Start Background MDC Agent
+./start_background_mdc_agent.sh
+
+# Stop Background MDC Agent
+./stop_background_mdc_agent.sh
+
+# Check agent status
+ps aux | grep background_mdc_agent
+
+# View agent logs
+tail -f zmart-api/background_mdc_agent.log
+```
+
+### Smart Context Optimization
 ```bash
 # Navigate to zmart-api directory
 cd /Users/dansidanutz/Desktop/ZmartBot/zmart-api
 
-# Start file watcher
-python watch_mdc_changes.py
+# Analyze current state
+python smart_context_optimizer.py --analyze --project-root /Users/dansidanutz/Desktop/ZmartBot
 
-# Manual update (if needed)
-python update_claude_mdc.py
+# Update CLAUDE.md
+python smart_context_optimizer.py --update --project-root /Users/dansidanutz/Desktop/ZmartBot
+
+# Enhanced optimization
+python enhanced_smart_context_optimizer.py --update --project-root /Users/dansidanutz/Desktop/ZmartBot
 ```
 
-### Managing CLAUDE.md Organization
+### Performance Dashboard
 ```bash
-# Check current status
-~/.local/bin/claude-organize --status
+# Show performance report
+python enhanced_smart_context_optimizer.py --performance --project-root /Users/dansidanutz/Desktop/ZmartBot
 
-# Force reorganization
-~/.local/bin/claude-organize --force
-
-# Create backup only
-~/.local/bin/claude-organize --backup-only
+# Clean up resources
+python enhanced_smart_context_optimizer.py --cleanup --project-root /Users/dansidanutz/Desktop/ZmartBot
 ```
 
-### Monitoring System Status
+### Master Orchestration Updates
 ```bash
-# Check if monitoring scripts exist
-ls -la /Users/dansidanutz/Desktop/ZmartBot/zmart-api/watch_mdc_changes.py
-ls -la /Users/dansidanutz/Desktop/ZmartBot/zmart-api/update_claude_mdc.py
+# Update Master Orchestration Agent
+python update_master_orchestration.py
 
+# Check current services
+sqlite3 src/data/service_registry.db "SELECT * FROM service_registry;"
+```
+
+### System Status
+```bash
 # Check MDC files count
-find /Users/dansidanutz/Desktop/ZmartBot/.cursor/rules -name "*.mdc" | wc -l
+find .cursor/rules -name "*.mdc" | wc -l
 
 # Check CLAUDE.md size
-wc -c ~/.claude/CLAUDE.md
+wc -c CLAUDE.md
+
+# Check domain contexts
+ls -la .claude/contexts/
+
+# Check last update time
+stat -f "%Sm %N" -t "%Y-%m-%d %H:%M:%S" CLAUDE.md
+```
+
+## Current Issues & Fixes
+
+### Issue: CLAUDE.md Not Updating
+**Problem**: CLAUDE.md last updated on 2025-08-24T22:36:44, but new MDC files created after that.
+
+**Solution**: Manual update with correct project root
+```bash
+cd /Users/dansidanutz/Desktop/ZmartBot/zmart-api
+python smart_context_optimizer.py --update --project-root /Users/dansidanutz/Desktop/ZmartBot
+```
+
+### Issue: Domain Contexts Stale
+**Problem**: Domain context files not updated with new services.
+
+**Solution**: Force domain update
+```bash
+python smart_context_optimizer.py --analyze --project-root /Users/dansidanutz/Desktop/ZmartBot
+python smart_context_optimizer.py --update --project-root /Users/dansidanutz/Desktop/ZmartBot
+```
+
+### Issue: Performance Issues
+**Problem**: System becoming slow with many MDC files.
+
+**Solution**: Use enhanced optimizer
+```bash
+python enhanced_smart_context_optimizer.py --update --project-root /Users/dansidanutz/Desktop/ZmartBot
+python enhanced_smart_context_optimizer.py --performance --project-root /Users/dansidanutz/Desktop/ZmartBot
+```
+
+### Issue: Real-time Monitoring
+**Problem**: No automatic file watching (requires watchdog library).
+
+**Solution**: Manual updates or install watchdog
+```bash
+# Install watchdog for real-time monitoring
+pip install watchdog
+
+# Then use enhanced_mdc_monitor.py
+python enhanced_mdc_monitor.py
 ```
 
 ## Error Handling & Recovery
@@ -215,7 +298,7 @@ wc -c ~/.claude/CLAUDE.md
 ### Common Issues
 
 1. **File Not Found Errors**
-   - Verify paths in monitoring scripts
+   - Verify project root path is correct
    - Check file permissions
    - Ensure directories exist
 
@@ -231,23 +314,27 @@ wc -c ~/.claude/CLAUDE.md
 
 ### Recovery Procedures
 
-1. **Backup Restoration**
+1. **System Restart**
    ```bash
-   # Restore from backup
-   cp /Users/dansidanutz/Desktop/ZmartBot/CLAUDE_BACKUP.md ~/.claude/CLAUDE.md
+   # Stop any running processes
+   pkill -f smart_context_optimizer
+   pkill -f enhanced_smart_context_optimizer
+   
+   # Restart optimization
+   python smart_context_optimizer.py --update --project-root /Users/dansidanutz/Desktop/ZmartBot
    ```
 
 2. **Manual Update**
    ```bash
    # Force manual update
-   cd /Users/dansidanutz/Desktop/ZmartBot/zmart-api
-   python update_claude_mdc.py
+   python smart_context_optimizer.py --update --project-root /Users/dansidanutz/Desktop/ZmartBot
    ```
 
-3. **System Reset**
+3. **Cache Clear**
    ```bash
-   # Reorganize CLAUDE.md
-   ~/.local/bin/claude-organize --force
+   # Clear performance cache
+   rm .claude/context_cache.json
+   python smart_context_optimizer.py --analyze --project-root /Users/dansidanutz/Desktop/ZmartBot
    ```
 
 ## Security & Best Practices
@@ -263,7 +350,7 @@ wc -c ~/.claude/CLAUDE.md
 - Content size monitored and reported
 
 ### System Monitoring
-- Real-time status reporting
+- Manual status checking
 - Error logging and notification
 - Performance monitoring for large files
 
@@ -275,18 +362,19 @@ wc -c ~/.claude/CLAUDE.md
 - CLAUDE.md target: < 40KB
 
 ### Update Frequency
-- Cooldown period: 2 seconds between updates
+- Manual updates when needed
 - Batch processing for multiple changes
 - Efficient content parsing and formatting
 
 ### Resource Usage
-- Minimal CPU usage for file watching
+- Minimal CPU usage for file processing
 - Efficient memory usage for content processing
 - Optimized file I/O operations
 
 ## Future Enhancements
 
 ### Planned Features
+- Real-time file monitoring (with watchdog)
 - Web-based monitoring dashboard
 - Email notifications for critical changes
 - Advanced content validation
@@ -301,7 +389,7 @@ wc -c ~/.claude/CLAUDE.md
 ## Troubleshooting Guide
 
 ### Monitoring Not Working
-1. Check if `watchdog` library is installed
+1. Check if project root path is correct
 2. Verify file paths and permissions
 3. Check for Python environment issues
 4. Review error logs and output
@@ -309,13 +397,13 @@ wc -c ~/.claude/CLAUDE.md
 ### Content Not Updating
 1. Verify MDC file format
 2. Check CLAUDE.md write permissions
-3. Review update script output
+3. Review optimization script output
 4. Validate file paths and structure
 
 ### Performance Issues
 1. Monitor file sizes and update frequency
 2. Check system resources
-3. Review cooldown settings
+3. Use enhanced optimizer
 4. Optimize content processing
 
 ## Maintenance & Support
@@ -323,22 +411,22 @@ wc -c ~/.claude/CLAUDE.md
 ### Regular Maintenance
 - Monitor file sizes and growth
 - Review and clean backup files
-- Update monitoring scripts as needed
+- Update optimization scripts as needed
 - Validate MDC file formats
 
 ### Support Procedures
-- Check system status with `--status` flag
+- Check system status with `--analyze` flag
 - Review error logs and output
 - Validate file paths and permissions
-- Test monitoring system functionality
+- Test optimization system functionality
 
 ---
 
-**Last Updated**: 2025-08-24
-**Version**: 1.0.0
+**Last Updated**: 2025-08-25
+**Version**: 2.1.0
 **Maintainer**: ZmartBot Development Team
-**Integration**: MDC Monitoring System + CLAUDE.md Organization
+**Integration**: Smart Context Optimization + CLAUDE.md Organization + Master Orchestration
 description:
 globs:
-alwaysApply: false
+alwaysApply: true
 ---

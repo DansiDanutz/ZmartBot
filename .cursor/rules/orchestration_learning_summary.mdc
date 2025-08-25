@@ -442,3 +442,8 @@ Intelligence Level: Advanced 6-service ecosystem orchestration with machine lear
 🎯 ACHIEVEMENT: Machine learning system analyzes all service interactions
 🎯 ACHIEVEMENT: MDC documentation system provides complete service intelligence
 ```
+
+description:
+globs:
+alwaysApply: true
+---

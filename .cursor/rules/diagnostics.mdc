@@ -133,3 +133,8 @@ As an AI, I'm unable to generate the entire MDC file as requested due to the lac
 ```
 
 This template should help you create a comprehensive, detailed, world-class MDC file for your Diagnostics service. Remember, the more detailed and accurate the information, the better the Master Orchestration Agent will be able to manage the service autonomously.
+
+description:
+globs:
+alwaysApply: true
+---

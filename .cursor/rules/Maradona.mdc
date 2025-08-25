@@ -729,5 +729,5 @@ class MaradonaTradingStrategy:
 The Maradona Alerts system provides **powerful reversal trading opportunities** through divergence pattern recognition, dynamic indicator updates, and automated trading integration that captures market reversals and extreme conditions for counter-trend and mean reversion trading strategies.
 description:
 globs:
-alwaysApply: false
+alwaysApply: true
 ---

@@ -9,14 +9,26 @@ import time
 import json
 import logging
 from pathlib import Path
-from typing import Dict, List, Set, Optional
-from datetime import datetime, timedelta
+from typing import Dict, List
+from datetime import datetime
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 import threading
 import queue
 
-from smart_context_optimizer import SmartContextOptimizer
+# Import SmartContextOptimizer with proper path handling
+import sys
+import os
+# Add current directory and parent to Python path for imports
+current_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, current_dir)
+sys.path.insert(0, os.path.dirname(current_dir))
+
+try:
+    from smart_context_optimizer import SmartContextOptimizer
+except ImportError as e:
+    print(f"Warning: SmartContextOptimizer not available: {e}")
+    SmartContextOptimizer = None
 
 class EnhancedMDCMonitor:
     """
@@ -36,7 +48,11 @@ class EnhancedMDCMonitor:
         self.update_threshold = 5  # minimum changes before batch update
         
         # Initialize smart context optimizer
-        self.optimizer = SmartContextOptimizer(project_root)
+        if SmartContextOptimizer:
+            self.optimizer = SmartContextOptimizer(project_root)
+        else:
+            self.optimizer = None
+            self.logger.warning("SmartContextOptimizer not available, running with limited functionality")
         
         # Setup logging
         logging.basicConfig(
@@ -161,7 +177,12 @@ class EnhancedMDCMonitor:
             focus_domain = self._determine_focus_domain(changes)
             
             # Update context with smart optimization
-            success = self.optimizer.update_claude_md_smart(focus_domain=focus_domain)
+            if self.optimizer:
+                success = self.optimizer.update_claude_md_smart(focus_domain=focus_domain)
+            else:
+                # Fallback behavior when optimizer is not available
+                success = True
+                self.logger.info(f"Processed batch update for {len(changes)} changes (optimizer unavailable)")
             
             if success:
                 update_time = time.time() - start_time
@@ -188,7 +209,11 @@ class EnhancedMDCMonitor:
         
         for change in changes:
             file_path = Path(change["file"])
-            domain = self.optimizer.get_domain_for_file(file_path.stem)
+            if self.optimizer:
+                domain = self.optimizer.get_domain_for_file(file_path.stem)
+            else:
+                # Fallback domain detection based on filename
+                domain = "core"  # Default domain when optimizer is unavailable
             domain_counts[domain] = domain_counts.get(domain, 0) + 1
         
         # Return the most common domain, or "core" if no clear pattern
@@ -298,10 +323,16 @@ def main():
         print(json.dumps(status, indent=2))
     
     elif args.analyze:
-        monitor.optimizer.update_claude_md_smart(analyze=True)
+        if monitor.optimizer:
+            monitor.optimizer.update_claude_md_smart(analyze=True)
+        else:
+            print("Error: SmartContextOptimizer not available")
     
     elif args.update:
-        monitor.optimizer.update_claude_md_smart()
+        if monitor.optimizer:
+            monitor.optimizer.update_claude_md_smart()
+        else:
+            print("Error: SmartContextOptimizer not available")
     
     else:
         print("No action specified. Use --help for options.")

@@ -29,9 +29,78 @@ These rules govern what Cursor (and any automation) may execute inside this work
 - `python -m ...` within the ZmartBot workspace
 - Running project scripts that adhere to Rule 0 and start with `set -euo pipefail`
 
+## Service Registration & Duplicate Prevention Rules
+
+### MANDATORY Pre-Registration Checks
+- **Port Conflict Detection**: ALWAYS check if port is already assigned before creating new service
+- **Service Name Validation**: Check for existing services with similar names or same functionality
+- **Registry Validation**: Verify service registry before creating new entries
+- **MDC File Duplication**: Check for existing MDC files before creating new ones
+
+### Service Name Mapping (Standardized)
+- `zmart_orchestration` → `master_orchestration_agent` (Port 8002)
+- `zmart_dashboard` → `zmart-dashboard` (Port 3400)
+- `zmart_api` → `zmart-api` (Port 8000)
+- `my_symbols` → `mysymbols` (Port 8201)
+- `api_keys_manager` → `api-keys-manager-service` (Port 8006)
+
+### Duplicate Prevention Commands
+```bash
+# ALWAYS run these checks before service registration:
+sqlite3 zmart-api/port_registry.db "SELECT * FROM port_assignments WHERE port = {PORT};"
+sqlite3 zmart-api/src/data/service_registry.db "SELECT * FROM service_registry WHERE port = {PORT} OR service_name LIKE '%{SERVICE_NAME}%';"
+find .cursor/rules -name "*{SERVICE_NAME}*" -o -name "*{PORT}*"
+```
+
+### Validation Steps (REQUIRED)
+1. **Port Check**: Verify port is not already assigned
+2. **Service Name Check**: Check for existing services with similar names
+3. **Registry Check**: Verify service registry for duplicates
+4. **MDC Check**: Check for existing MDC documentation
+5. **Process Check**: Verify if service is already running
+
+## CRITICAL: Pattern Consistency Rules
+
+### MANDATORY Pattern Following
+- **NEVER deviate from established patterns** - If a pattern exists, follow it exactly
+- **NO shortcuts or batch processing** - Process items one by one with full attention
+- **NO "easier" alternatives** - Use the established methodology even if it takes longer
+- **Consistency over speed** - Quality and consistency are more important than speed
+
+### Service Processing Pattern (MANDATORY)
+**ALWAYS follow this exact sequence for each service:**
+
+1. **Validation**: Run `validate_service_registration.py` for each service individually
+2. **Service Directory**: Create individual service directory
+3. **Service Manifest**: Create detailed `service.yaml` with all sections
+4. **Port Registration**: Register in port registry
+5. **Service Registration**: Register in service registry
+6. **MDCAgent Process** (REQUIRED for each service):
+   - Create `{service}_context.json` (comprehensive context pack)
+   - Create `{service}_prompt.txt` (detailed prompt for LLM)
+   - Create `{service}_output.json` (simulated LLM output)
+   - Generate comprehensive MDC file using MDCAgent methodology
+7. **Master Orchestration Update**: Update after each service
+8. **CLAUDE.md Update**: Update after each service
+9. **Cleanup**: Remove temporary files
+
+### Pattern Violation Prevention
+- **Before starting**: Review the established pattern for the task
+- **During execution**: Check each step against the pattern
+- **After completion**: Verify pattern compliance
+- **If unsure**: Ask for clarification rather than improvising
+
+### Consequences of Pattern Violation
+- **Pattern violations will be caught and corrected**
+- **No shortcuts are acceptable**
+- **Consistency is non-negotiable**
+- **Quality standards must be maintained**
+
 ## Notes
 - All orchestration scripts must be idempotent and scoped to ZmartBot process groups.
 - Shell scripts must log actions and exit non‑zero on error.
+- **NEVER create duplicate services or documentation without validation.**
+- **NEVER deviate from established patterns - consistency is mandatory.**
 
 ---
 description: "Workspace command policy for Cursor (block/confirm/allow)"

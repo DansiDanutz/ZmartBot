@@ -443,5 +443,5 @@ CREATE TABLE port_assignments (
 This orchestration process ensures that ZmartBot starts consistently with proper port management and service coordination across all startup/shutdown cycles.
 description:
 globs:
-alwaysApply: false
+alwaysApply: true
 ---

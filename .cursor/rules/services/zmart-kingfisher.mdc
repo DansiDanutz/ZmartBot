@@ -1,0 +1,414 @@
+# zmart-kingfisher.mdc
+> Type: internal_api | Version: 1.0.0 | Owner: @team-kingfisher | Port: 0 (pending Port Manager)
+
+## Overview
+Kingfisher is a production‑grade, event‑aware **internal API + automation** module that ingests Kingfisher Telegram images in real time, classifies and deduplicates them, performs computer‑vision driven liquidation/RSI/heatmap analysis, integrates live market prices, and generates professional, institutional‑quality reports.  
+It implements a **6‑step automation pipeline**, a **multi‑agent** coordination layer, **12+ API routes**, and a **PostgreSQL** schema for clusters and market analysis.
+
+**Module location**
+```
+/Users/dansidanutz/Desktop/ZmartBot/kingfisher-module/
+```
+
+**Directory highlights**
+```
+kingfisher-module/
+├── KingfisherLibrary/...
+└── backend/
+    ├── King-Scripts/                # 6-step pipeline + orchestrator
+    ├── src/
+    │   ├── agents/                  # main + QA + sub-agents (liq/heatmap/RSI)
+    │   ├── services/                # master_agent, image_processing, reports, airtable, telegram, workflow_orchestrator
+    │   ├── routes/                  # automated_reports, images, liquidation, master_summary, telegram
+    │   └── database/kingfisher_database.py
+    ├── real_telegram_bot.py
+    └── requirements.txt
+```
+
+**6‑step automation**
+1) **STEP1** monitor+download images →  
+2) (STEP2 sorting integrated in STEP4) →  
+3) **STEP3** duplicate removal (MD5) →  
+4) **STEP4** analysis + report creation →  
+5) **STEP5** variants (symbol update, clusters, final accurate, real‑price) →  
+6) **STEP6** professional reports (enhanced + generate).
+
+## Architecture & Integration
+- **Service Type:** internal_api
+- **Dependencies:** zmart-registry (8610), config service (via registry), PostgreSQL, Redis (cache), RabbitMQ (events), Telegram API, Airtable API, OpenAI API (ChatGPT-5/GPT-4), OTel collector (Jaeger), Prometheus, Grafana
+- **Env Vars:** `DB_URL`, `REDIS_URL`, `RABBIT_URL`, `TELEGRAM_BOT_TOKEN`, `AIRTABLE_API_KEY`, `AIRTABLE_BASE_ID`, `OPENAI_API_KEY`, `SERVICE_TOKEN`, `OTEL_EXPORTER_OTLP_ENDPOINT`, `KING_MAX_WORKERS`, `KING_QUEUE_MAXSIZE`, `KING_OPENAI_MAX_QPS`
+- **Lifecycle:**  
+  - start (automation): `python backend/King-Scripts/RUN_ALL_STEPS_CONTINUOUS.py`  
+  - start (dev API): `python backend/run_dev.py`  
+  - stop: `pkill -f RUN_ALL_STEPS_CONTINUOUS.py`  
+  - migrate: *(handled by repo migrations when present)*
+
+### ChatGPT-5/GPT-4 AI Integration
+**Enhanced with OpenAI API for professional trading analysis:**
+- **Professional Report Generation**: 8573+ character institutional-grade analysis using GPT-4
+- **Image Classification**: AI-powered telegram image sorting with computer vision + NLP
+- **Technical Analysis Enhancement**: Advanced market insights and predictive analysis
+- **Multi-Agent Coordination**: AI orchestration of 5 specialized agents via Master Agent
+- **Real-time Decision Making**: AI-assisted trading recommendations and risk assessment
+- **Symbol Recognition**: Intelligent extraction and validation of trading symbols
+- **Market Sentiment Analysis**: Advanced sentiment scoring with confidence metrics
+
+### Data model (PostgreSQL)
+Two core tables—**liquidation_clusters** and **market_analysis**—persist analysis outputs (see `src/database/kingfisher_database.py`). Types and fields are designed for flexible JSONB storage of analysis data.
+
+```sql
+-- Enhanced schema with AI analysis fields
+CREATE TABLE kingfisher.liquidation_clusters (
+    id SERIAL PRIMARY KEY,
+    symbol VARCHAR(20),
+    cluster_type VARCHAR(50),  -- 'support', 'resistance'
+    price_level DECIMAL,       -- Cluster price level
+    volume DECIMAL,            -- Liquidation volume
+    confidence DECIMAL,        -- AI analysis confidence (0-100)
+    ai_sentiment VARCHAR(20),  -- AI-derived sentiment
+    timestamp TIMESTAMP,       -- Data timestamp
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE kingfisher.market_analysis (
+    id SERIAL PRIMARY KEY,
+    symbol VARCHAR(20),
+    analysis_type VARCHAR(50), -- 'heatmap', 'liquidation_map', 'ai_analysis'
+    data JSONB,                -- Flexible analysis data + AI insights
+    score DECIMAL,             -- Overall score (0-100)
+    sentiment VARCHAR(20),     -- 'bullish', 'bearish', 'neutral'
+    risk_level VARCHAR(20),    -- 'low', 'medium', 'high'
+    ai_confidence DECIMAL,     -- AI analysis confidence
+    ai_recommendations TEXT,   -- GPT-4 generated recommendations
+    timestamp TIMESTAMP,
+    created_at TIMESTAMP DEFAULT NOW()
+);
+```
+
+## API Endpoints (Version: v1)
+**All routes now under `/api/v1/*` - Legacy paths remain with deprecation warnings**
+
+### Automated Reports
+- **POST** `/api/v1/automated-reports/start-automation`  
+  - Summary: Start end‑to‑end pipeline run with idempotency protection.  
+  - Auth Required: Yes (SERVICE_TOKEN + analysis.write role)
+  - Headers: `Idempotency-Key` (required), `X-Request-ID` (optional)
+  - Request: body `{ "mode": "continuous" | "one-shot" }`  
+  - Responses: `200 { started: true, idempotent?: true }`
+
+- **POST** `/automated-reports/add-job`  
+  - Summary: Enqueue a custom analysis/report job with AI enhancement.  
+  - Auth Required: Yes  
+  - Request: body `{ symbol, priority?, options?, ai_analysis?: boolean }`  
+  - Responses: `202 { job_id }`
+
+- **POST** `/automated-reports/generate-immediate`  
+  - Summary: Synchronous generate of a professional AI-enhanced report.  
+  - Auth Required: Yes  
+  - Request: body `{ symbol, timeframes?, include_images?, ai_depth?: 'basic'|'enhanced'|'institutional' }`  
+  - Responses: `200 { report_id, content, ai_insights, confidence_score }`
+
+### Image Processing (AI-Enhanced)
+- **POST** `/images/upload`  
+  - Summary: Upload image for AI-powered classification and analysis.  
+  - Auth Required: Yes  
+  - Request: multipart `file`  
+  - Responses: `200 { image_id, ai_classification, confidence }`
+
+- **GET** `/images/analyze/{image_id}`  
+  - Summary: Analyze uploaded image (CV + OCR + AI classification + GPT-4 insights).  
+  - Auth Required: Yes  
+  - Responses: `200 { classes, features, score, ai_insights, symbol_extracted, trading_recommendation }`
+
+- **POST** `/images/batch-process`  
+  - Summary: Batch analyze images with AI classification and deduplication.  
+  - Auth Required: Yes  
+  - Request: body `{ directory?, filters?, ai_enabled?: boolean }`  
+  - Responses: `202 { batch_id, estimated_processing_time }`
+
+### Liquidation Analysis (AI-Powered)
+- **GET** `/liquidation/clusters/{symbol}`  
+  - Summary: Get latest AI-analyzed clusters with confidence scores.  
+  - Auth Required: Yes  
+  - Responses: `200 { clusters: [...], ai_analysis, market_sentiment, risk_assessment }`
+
+- **POST** `/liquidation/analyze`  
+  - Summary: Run AI-enhanced liquidation analysis on demand.  
+  - Auth Required: Yes  
+  - Request: body `{ symbol, window?, thresholds?, ai_depth?: 'standard'|'deep' }`  
+  - Responses: `200 { result, ai_insights, trading_signals, confidence_metrics }`
+
+- **GET** `/liquidation/heatmap/{symbol}`  
+  - Summary: Return AI-computed liquidation heatmap with predictive analysis.  
+  - Auth Required: Yes  
+  - Responses: `200 { heatmap, ai_predictions, risk_zones, optimal_entry_exit }`
+
+### Master Summary (AI-Orchestrated)
+- **GET** `/master-summary/complete/{symbol}`  
+  - Summary: Full institutional report via 5-agent AI coordination + GPT-4 synthesis.  
+  - Auth Required: Yes  
+  - Responses: `200 { report_id, summary, agent_consensus, ai_recommendation, executive_summary }`
+
+- **POST** `/master-summary/generate`  
+  - Summary: Generate AI-coordinated summary for symbol/timeframe with multi-agent analysis.  
+  - Auth Required: Yes  
+  - Request: body `{ symbol, timeframes, ai_agents?: ['classification', 'market_data', 'liquidation', 'technical', 'risk'] }`  
+  - Responses: `200 { report_id, agent_results, master_synthesis }`
+
+- **GET** `/master-summary/statistics`  
+  - Summary: Return module statistics/KPIs including AI performance metrics.  
+  - Auth Required: Yes  
+  - Responses: `200 { metrics, ai_accuracy, processing_times, model_performance }`
+
+### Telegram Integration (AI-Enhanced)
+- **POST** `/telegram/start-monitoring`  
+  - Summary: Start AI-powered bot monitoring of @KingFisherAutomation with intelligent filtering.  
+  - Auth Required: Yes  
+  - Responses: `200 { started: true, ai_filters_enabled: true }`
+
+- **GET** `/telegram/status`  
+  - Summary: Bot status, last processed message, and AI classification stats.  
+  - Auth Required: Yes  
+  - Responses: `200 { running, last_seen, ai_processed_count, classification_accuracy }`
+
+- **POST** `/telegram/process-image`  
+  - Summary: Force‑process Telegram image with full AI analysis pipeline.  
+  - Auth Required: Yes  
+  - Request: body `{ url, force_ai_analysis?: boolean }`  
+  - Responses: `200 { image_id, result, ai_classification, trading_signals }`
+
+### AI Analysis (New)
+- **POST** `/ai/analyze-symbol`  
+  - Summary: Direct ChatGPT-5/GPT-4 analysis of symbol with current market data.  
+  - Auth Required: Yes  
+  - Request: body `{ symbol, context?, model?: 'gpt-4'|'gpt-3.5-turbo' }`  
+  - Responses: `200 { analysis, recommendations, confidence, risk_assessment }`
+
+- **POST** `/ai/generate-report`  
+  - Summary: Generate institutional-grade trading report using AI.  
+  - Auth Required: Yes  
+  - Request: body `{ symbol, data_points, report_type?: 'executive'|'technical'|'risk' }`  
+  - Responses: `200 { report_id, content, word_count, confidence_score }`
+
+- **GET** `/ai/model-status`  
+  - Summary: Check OpenAI API status and model availability.  
+  - Auth Required: Yes  
+  - Responses: `200 { available_models, rate_limits, usage_stats }`
+
+> **Note:** All endpoints enforce internal **SERVICE_TOKEN** (JWT/opaque) via gateway or auth middleware.
+
+## Health & Readiness
+- Liveness: `/health` — returns `{"status":"ok","uptime_seconds":...,"ai_status":"available"}`  
+- Readiness: `/ready` — **Hard deps**: Postgres, Redis, RabbitMQ, Config Service. **Soft deps**: Telegram, OpenAI (failures degrade features but don't fail readiness)
+  ```json
+  {
+    "status":"ready",
+    "hard_dependencies":{"db":"ok","redis":"ok","mq":"ok","config":"ok"},
+    "soft_dependencies":{"telegram":"warn","openai":"ok"}
+  }
+  ```
+- Timeouts: startup_grace=15s, http_timeout=2s, ai_timeout=30s
+
+## Observability
+- Metrics: `/metrics` (Prometheus scrape) including comprehensive metrics:
+  - `kingfisher_images_downloaded_total{source}` - Images downloaded by source
+  - `kingfisher_images_deduplicated_total` - Duplicate images removed
+  - `kingfisher_analysis_duration_seconds{step}` - Analysis duration histogram by step
+  - `kingfisher_reports_generated_total{format}` - Reports generated by format
+  - `kingfisher_openai_tokens_total{model}` - OpenAI token consumption by model
+  - `kingfisher_pipeline_failures_total{step,reason}` - Pipeline failures by step/reason
+  - `kingfisher_ai_requests_total` - Total AI API calls
+  - `kingfisher_ai_latency_seconds` - AI processing latency histogram
+  - `kingfisher_classification_accuracy` - Image classification accuracy
+  - `rabbitmq_queue_depth{queue}` - Queue depth monitoring
+- Logs: JSONL with request IDs (`X-Request-ID`) + AI correlation IDs + idempotency tracking
+- Tracing: OpenTelemetry → OTLP → Jaeger (service graph includes AI analysis + report flow)  
+- Dashboards: Grafana panels for:
+  - Request rate, error rate, p95 latency
+  - RabbitMQ depth and event flow
+  - Image processing pipeline metrics
+  - AI model performance and token usage
+  - Multi-agent coordination metrics
+  - Report quality scores and SLO tracking
+
+## Events (RabbitMQ)
+**Publisher uses transactional outbox; consumers are idempotent via inbox table**
+
+### Events Published
+- `kingfisher.image.downloaded.v1` - Image successfully downloaded from Telegram
+- `kingfisher.image.deduplicated.v1` - Duplicate image detected and removed
+- `kingfisher.analysis.completed.v1` - Analysis pipeline completed for symbol
+- `kingfisher.report.generated.v1` - Professional report generated
+
+### Events Consumed
+- `market.price_tick.v1` - Real-time price updates for enhanced analysis (optional)
+
+## Multi-Agent AI Architecture
+**5 Specialized Agents + Master Orchestrator:**
+
+### Master Agent (`src/services/master_agent.py`)
+- **Role**: Coordinates all specialized agents and synthesizes final analysis
+- **AI Integration**: Uses GPT-4 for intelligent coordination and decision weighting
+- **Capabilities**: Data collection, confidence weighting, report synthesis, conflict resolution
+
+### Specialized Sub-Agents (`src/agents/sub_agents/`)
+1. **Image Classification Agent** - Computer vision + AI-powered image categorization
+2. **Market Data Agent** - Real-time market integration with AI trend analysis  
+3. **Liquidation Analysis Agent** - Advanced liquidation detection with predictive AI
+4. **Technical Analysis Agent** - TA pattern recognition enhanced with AI insights
+5. **Risk Assessment Agent** - Comprehensive AI-powered risk scoring
+
+**Agent Coordination Flow:**
+```
+Telegram Image → Image Classification Agent → Market Data Agent → 
+Liquidation Analysis Agent → Technical Analysis Agent → Risk Assessment Agent → 
+Master Agent (GPT-4 Synthesis) → Professional Report (8573+ chars)
+```
+
+## Performance & SLO (AI-Enhanced)
+- Baseline p95 (ms): **15000** end‑to‑end full workflow (image→AI analysis→report)  
+- **AI-Specific Targets:**
+  - Image analysis: <2s (including AI classification)
+  - Agent coordination: <5s (including GPT-4 synthesis)
+  - Report generation: <3s (GPT-4 institutional report)
+  - Multi-agent consensus: <8s
+  - AI model response: <10s (95th percentile)
+- **Quality Metrics:**
+  - Classification accuracy: >95%
+  - Report confidence score: >85%
+  - Agent consensus rate: >90%
+
+## Failure Modes & Runbooks
+- **telegram-rate-limit** — Symptoms: 429/slow fetch; Remediation: exponential backoff, jitter, pause monitoring 60s, resume.  
+- **image-dup-surge** — Symptoms: high I/O, slow dedup; Remediation: batch MD5, cap concurrency, move to temp FS, back‑pressure queue.  
+- **db-connection** — Symptoms: connection pool exhaustion; Remediation: raise pool size modestly, circuit‑break writes, retry with jitter, alert if >60s.  
+- **rabbitmq-down** — Symptoms: publish/consume fails; Remediation: buffer in outbox, retry publisher, alert; consumers pause and resume on broker up.  
+- **openai-rate-limit** — Symptoms: 429/timeouts in AI analysis; Remediation: adaptive throttle, cache AI results, fall back to lighter model, queue non-urgent requests, implement exponential backoff.  
+- **openai-api-down** — Symptoms: OpenAI service unavailable; Remediation: fallback to cached analysis, disable AI features gracefully, alert ops team, retry with circuit breaker.
+- **ai-low-confidence** — Symptoms: AI confidence scores <70%; Remediation: increase context data, use ensemble methods, flag for manual review, adjust model parameters.
+- **agent-consensus-failure** — Symptoms: Multi-agent disagreement >threshold; Remediation: increase data quality, re-weight agent contributions, manual intervention for critical symbols.
+- **airtable-4xx/5xx** — Symptoms: sync errors; Remediation: retry+DLQ, reconcile job after recovery.
+
+## AI Model Configuration
+- **Primary Model**: GPT-4 (for institutional reports and complex analysis)
+- **Fallback Model**: GPT-3.5-turbo (for basic classification and simple analysis)
+- **Model Mapping**: ChatGPT-5 requests → GPT-4 (latest available)
+- **Token Limits**: 
+  - GPT-4: 8K context, 2K completion
+  - GPT-3.5-turbo: 4K context, 1K completion
+- **Rate Limits**: Adaptive based on OpenAI tier
+- **Cost Management**: Token usage tracking and budget alerts
+
+## Orchestration & Ordering
+- Basic Integration: **Enabled** (added to start/stop graph)  
+- Master Agent Linked: **Yes** (Master Orchestration Agent @8002 consumes module health and KPIs)  
+- AI Dependencies: OpenAI API must be available before enabling AI features
+- Ordering Hints:  
+  - `zmart-registry → zmart-config → postgres → redis → rabbitmq → openai-validation → zmart-kingfisher`  
+  - After readiness, enable consumers/publishers and AI analysis.
+
+**StopStartCycle conformance**
+- STOP gate → AI model graceful shutdown → snapshot → Process Reaper scoped cleanup → Registry registration → MDC generation → Orchestration add → start‑only‑this‑service → wait `/ready` → AI model validation → smoke tests → activation.
+
+## Rollback
+- Snapshot required: **Yes** (including AI model state and cached results)
+- Playbook: `orchestrator.isolate(zmart-kingfisher)` → `snapshot.restore(latest-success)` → re‑start → verify `/ready` → AI model reconnection → re‑enable consumers.
+
+## Load Balancing
+- Enabled: **Internal only** (service pool `internal`)  
+- Pool: `kingfisher-internal` (sticky by `X-Request-ID` optional)
+- AI Load Balancing: Distribute AI requests across available models and rate limits
+
+## Security & Compliance
+- **API Key Security**: OpenAI API keys encrypted at rest using Fernet encryption
+- **Data Privacy**: No sensitive trading data sent to external AI models without encryption
+- **Access Control**: All AI endpoints require SERVICE_TOKEN authentication
+- **Audit Trail**: All AI requests logged with correlation IDs for compliance
+- **Rate Limiting**: Configurable limits to prevent API abuse and cost overruns
+
+## Known Issues
+- **AI Token Consumption**: High token usage during peak analysis periods (monitoring implemented)
+- **Model Latency**: GPT-4 responses can occasionally exceed 10s (fallback configured)
+
+## Database Optimizations & Hardening
+**Performance indices and data quality constraints:**
+
+```sql
+-- Performance indices for frequent queries
+create index if not exists idx_liq_clusters_symbol_ts
+  on kingfisher.liquidation_clusters(symbol, timestamp desc);
+create index if not exists idx_market_analysis_symbol_ts
+  on kingfisher.market_analysis(symbol, timestamp desc);
+
+-- Data quality constraints
+alter table kingfisher.liquidation_clusters
+  add constraint chk_confidence_0_1 check (confidence between 0 and 1);
+alter table kingfisher.market_analysis
+  add constraint chk_ai_confidence_0_1 check (ai_confidence between 0 and 1);
+
+-- Transactional outbox for event reliability
+create table if not exists kingfisher.events_outbox (
+    id SERIAL PRIMARY KEY,
+    event_type VARCHAR(100) NOT NULL,
+    payload JSONB NOT NULL,
+    published_at TIMESTAMP,
+    created_at TIMESTAMP DEFAULT NOW()
+);
+```
+
+## Enhanced Duplicate Detection
+**STEP-3 improvements beyond MD5:**
+- **Perceptual hashing** (pHash/dHash) with configurable Hamming threshold (default: 5)
+- **MD5 retained** as fast pre-filter for exact duplicates
+- **Near-duplicate detection** catches images with minor pixel differences/overlays
+
+```python
+# Implementation approach
+from PIL import Image
+import imagehash
+
+def is_near_duplicate(img_a_path, img_b_path, threshold=5):
+    h1 = imagehash.phash(Image.open(img_a_path))
+    h2 = imagehash.phash(Image.open(img_b_path))
+    return (h1 - h2) <= threshold
+```
+
+## STEP-5 Plugin Architecture
+**Normalized plugin pipeline replacing 4 script variants:**
+- **Single entry point**: `backend/King-Scripts/step5_runner.py`
+- **Plugin system**:
+  - `plugins/symbol_update.py` - Symbol data updates
+  - `plugins/extract_liq_clusters.py` - Liquidation cluster extraction  
+  - `plugins/finalize.py` - Final processing steps
+  - `plugins/real_market_price.py` - Real-time price integration
+- **Config-driven**: Execution order controlled by environment-specific config
+- **Context passing**: Each plugin implements `run(context) -> context`
+
+## Security & Auth Hardening
+- **Role-based access control**: `analysis.read`, `analysis.write`, `admin`
+- **Request size limits**: Image uploads capped at 10MB
+- **EXIF stripping**: Metadata sanitization on image ingest
+- **SERVICE_TOKEN enforcement**: All endpoints require internal JWT/opaque token
+- **Idempotency protection**: 24h Redis-backed key storage
+- **API versioning**: All routes under `/api/v1/*` with legacy deprecation
+
+## Concurrency & Backpressure
+**Bounded resources and rate limiting:**
+- **Worker pool**: `KING_MAX_WORKERS` (default: 4)
+- **Queue limits**: `KING_QUEUE_MAXSIZE` (default: 100)  
+- **OpenAI rate limiting**: `KING_OPENAI_MAX_QPS` (default: 2)
+- **Circuit breakers**: Applied to OpenAI and Telegram APIs
+- **Graceful degradation**: Soft dependency failure handling
+
+## Storage & Artifacts Management
+- **Structured storage**: `data/images/{yyyy}/{mm}/{dd}/` hierarchy
+- **TTL policies**: Automatic cleanup of temporary artifacts
+- **Production isolation**: `test_images/` excluded from prod workflows
+- **MinIO/S3 ready**: Configurable backend storage support
+
+## Changelog
+- **1.1.0** (2025-08-25): **SURGICAL IMPROVEMENTS** - HTTP semantics fix, perceptual hashing, plugin architecture, transactional outbox, enhanced security, concurrency controls, database optimization
+- **1.0.0** (2025-08-25): Initial production MDC; full 6‑step pipeline, multi‑agent, routes, DB schema, observability, ChatGPT-5/GPT-4 integration.
+
+---
+*Generated for Kingfisher by MDCAgent‑compatible template on 2025-08-25; enhanced with ChatGPT-5/GPT-4 AI integration and surgical improvements for production-grade reliability, security, and performance.*

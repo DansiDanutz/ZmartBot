@@ -1,0 +1,189 @@
+# zmart-notification.mdc
+> Purpose: ZmartBot Notification Service providing multi-channel notification and alert management.
+
+## Service Overview
+**zmart_notification** is a comprehensive notification service that provides multi-channel notifications, alert management, message templating, and delivery tracking for the ZmartBot trading system.
+
+## Architecture
+**Type**: Backend Service (FastAPI-based)
+**Port**: 8008
+**Language**: Python 3.11+
+**Framework**: FastAPI, Celery, Redis
+**Database**: PostgreSQL (notification data), Redis (queue)
+**Compute**: High-performance notification processing
+
+### Core Components
+- **Notification Engine**: Core notification processing engine
+- **Channel Manager**: Multi-channel notification delivery
+- **Template Engine**: Dynamic message templating
+- **Queue Manager**: Asynchronous notification processing
+- **Delivery Tracker**: Notification delivery tracking
+- **Notification API**: RESTful API for notification operations
+- **Alert Manager**: Alert management and escalation
+
+## API Endpoints
+
+### Health & Status
+- `GET /health` - Service health check
+- `GET /ready` - Service readiness check
+- `GET /metrics` - Prometheus metrics
+
+### Notification Endpoints
+- `POST /api/v1/notifications/send` - Send notification
+- `GET /api/v1/notifications/templates` - Get notification templates
+- `GET /api/v1/notifications/history` - Get notification history
+- `POST /api/v1/notifications/batch` - Send batch notifications
+- `GET /api/v1/notifications/status` - Get notification status
+- `POST /api/v1/notifications/schedule` - Schedule notification
+
+### Channel Endpoints
+- `GET /api/v1/channels/status` - Get channel status
+- `POST /api/v1/channels/test` - Test channel connectivity
+- `GET /api/v1/channels/config` - Get channel configuration
+- `POST /api/v1/channels/config` - Update channel configuration
+
+### Alert Endpoints
+- `POST /api/v1/alerts/create` - Create alert
+- `GET /api/v1/alerts/list` - List alerts
+- `POST /api/v1/alerts/acknowledge` - Acknowledge alert
+- `POST /api/v1/alerts/escalate` - Escalate alert
+- `GET /api/v1/alerts/history` - Get alert history
+
+### Template Endpoints
+- `GET /api/v1/templates/list` - List notification templates
+- `POST /api/v1/templates/create` - Create template
+- `PUT /api/v1/templates/update` - Update template
+- `DELETE /api/v1/templates/delete` - Delete template
+
+## Notification Features
+
+### Multi-Channel Support
+- **Email**: SMTP-based email notifications
+- **SMS**: SMS gateway integration
+- **Telegram**: Telegram bot notifications
+- **Webhook**: HTTP webhook notifications
+- **Push**: Mobile push notifications
+- **Slack**: Slack channel notifications
+- **Discord**: Discord webhook notifications
+
+### Notification Types
+- **Trading Alerts**: Trading signal notifications
+- **System Alerts**: System status notifications
+- **Risk Alerts**: Risk management notifications
+- **Performance Reports**: Performance summary notifications
+- **Market Alerts**: Market condition notifications
+- **Error Alerts**: System error notifications
+
+### Template Engine
+- **Dynamic Templates**: Variable substitution in templates
+- **Multi-language**: Multi-language template support
+- **Rich Content**: HTML and markdown support
+- **Conditional Logic**: Conditional template rendering
+- **Template Variables**: Dynamic data insertion
+- **Template Inheritance**: Template hierarchy support
+
+### Queue Management
+- **Asynchronous Processing**: Non-blocking notification processing
+- **Priority Queuing**: Priority-based notification queuing
+- **Retry Logic**: Automatic retry for failed deliveries
+- **Rate Limiting**: Channel-specific rate limiting
+- **Batch Processing**: Efficient batch notification processing
+- **Dead Letter Queue**: Failed notification handling
+
+### Delivery Tracking
+- **Delivery Status**: Real-time delivery status tracking
+- **Read Receipts**: Notification read confirmation
+- **Delivery Analytics**: Delivery success rate analytics
+- **Bounce Handling**: Email bounce processing
+- **Opt-out Management**: User opt-out handling
+- **Delivery Reports**: Comprehensive delivery reports
+
+### Alert Management
+- **Alert Creation**: Automated alert generation
+- **Alert Escalation**: Multi-level alert escalation
+- **Alert Acknowledgment**: Alert acknowledgment tracking
+- **Alert History**: Complete alert history
+- **Alert Rules**: Configurable alert rules
+- **Alert Suppression**: Alert suppression rules
+
+## Data Sources
+- **System Events**: System-generated events and alerts
+- **Trading Data**: Trading signals and performance data
+- **Market Data**: Market condition alerts
+- **User Preferences**: User notification preferences
+- **Template Data**: Notification template data
+- **Channel Data**: Channel configuration and status
+
+## Configuration
+- **Environment Variables**: API keys, channel credentials
+- **Channel Settings**: Channel-specific configuration
+- **Template Settings**: Template engine configuration
+- **Queue Settings**: Queue processing configuration
+- **Rate Limiting**: Rate limiting configuration
+
+## Monitoring
+- **Health Checks**: Automated health monitoring
+- **Performance Metrics**: Notification processing performance
+- **Error Monitoring**: Notification error tracking
+- **Resource Monitoring**: CPU, memory, queue usage
+
+## Security
+- **Authentication**: Required for all endpoints
+- **Authorization**: Role-based access control
+- **Data Encryption**: All data encrypted in transit and at rest
+- **Audit Logging**: Comprehensive notification audit trail
+
+## Performance
+- **Caching**: Redis-based caching for templates
+- **Async Processing**: Asynchronous notification processing
+- **Scaling**: Horizontal scaling capabilities
+- **Load Balancing**: Request distribution across instances
+
+## Dependencies
+- **zmart-api** (Port 8000) - Required for system integration
+- **zmart-analytics** (Port 8007) - Required for analytics alerts
+- **master-orchestration-agent** (Port 8002) - Required for orchestration
+- **Database**: PostgreSQL for notification data storage
+- **Queue**: Redis for notification queuing
+
+## Orchestration
+- **Service Discovery**: Automatic service registration
+- **Health Monitoring**: Integrated health checks
+- **Dependency Management**: Proper dependency resolution
+- **Scaling**: Automated scaling based on demand
+
+## Rollback
+- **Data Backup**: Automatic notification data backup
+- **Configuration Backup**: Versioned configuration management
+- **Snapshot Recovery**: Point-in-time data recovery
+- **Service Rollback**: Service configuration rollback
+
+## Load Balancing
+- **Request Distribution**: Load balancing across instances
+- **Session Management**: Proper session handling
+- **Resource Management**: Efficient resource allocation
+- **Performance Monitoring**: Real-time performance tracking
+
+## Known Issues
+- **Channel Failures**: External channel service failures
+- **Rate Limiting**: Channel rate limiting impact
+- **Template Processing**: Complex template processing delays
+- **Workarounds**: Implemented retry logic and monitoring
+
+## Status
+- **Operational Status**: ✅ **ACTIVE**
+- **Implementation Completeness**: 95%
+- **Performance**: Optimized for high-throughput notifications
+- **Reliability**: High availability with failover support
+
+## Changelog
+- **Version 1.0.0**: Initial notification service with comprehensive features
+- **Performance Optimization**: Enhanced async processing and queuing
+- **Security Enhancement**: Improved authentication and encryption
+- **Monitoring**: Advanced monitoring and alerting capabilities
+
+---
+
+description: ZmartBot Notification Service Documentation
+globs:
+alwaysApply: true

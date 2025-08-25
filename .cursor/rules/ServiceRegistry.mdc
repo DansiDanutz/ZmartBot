@@ -19,3 +19,8 @@ Manages dynamic service discovery, unique ports, SAVE/UNDO profiles, and depende
 - UNDO: roll back to the previous profile.
 - State snapshots include service configurations and cached data for smooth startup.
 - Snapshot creation during STOP operations, loading and transition during START operations.
+
+description:
+globs:
+alwaysApply: true
+---

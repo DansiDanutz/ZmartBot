@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1"></script>
+    <style>
+      .slide-container {
+        width: 1280px;
+        min-height: 720px;
+        background: #0F172A;
+        color: #E2E8F0;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        padding: 40px;
+        position: relative;
+        overflow: hidden;
+      }
+      .title {
+        color: #F8FAFC;
+        font-size: 36px;
+        font-weight: 700;
+        margin-bottom: 20px;
+      }
+      .subtitle {
+        color: #E2E8F0;
+        font-size: 24px;
+        font-weight: 500;
+        margin-bottom: 20px;
+      }
+      .content {
+        font-size: 20px;
+        line-height: 1.6;
+      }
+      .accent {
+        color: #3B82F6;
+      }
+      .accent-green {
+        color: #10B981;
+      }
+      .architecture-image {
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        max-width: 100%;
+        height: auto;
+        margin-bottom: 30px;
+      }
+      .tech-stack {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-top: 20px;
+      }
+      .tech-badge {
+        background: rgba(30, 41, 59, 0.7);
+        border-radius: 20px;
+        padding: 8px 16px;
+        font-size: 16px;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        border: 1px solid rgba(59, 130, 246, 0.3);
+      }
+      .tech-icon {
+        margin-right: 8px;
+        color: #3B82F6;
+      }
+      .layer-box {
+        background: rgba(30, 41, 59, 0.7);
+        border-radius: 12px;
+        padding: 15px;
+        margin-bottom: 15px;
+        border-left: 4px solid #3B82F6;
+      }
+      .layer-title {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: #F8FAFC;
+        display: flex;
+        align-items: center;
+      }
+      .layer-icon {
+        margin-right: 10px;
+        color: #3B82F6;
+      }
+      .glow {
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(59, 130, 246, 0.2) 0%, rgba(16, 185, 129, 0.1) 50%, rgba(15, 23, 42, 0) 70%);
+        filter: blur(50px);
+        z-index: 0;
+      }
+      .glow-1 {
+        top: -100px;
+        right: -100px;
+      }
+      .glow-2 {
+        bottom: -100px;
+        left: -100px;
+      }
+      .z-10 {
+        z-index: 10;
+        position: relative;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="slide-container">
+      <!-- Background glows -->
+      <div class="glow glow-1"></div>
+      <div class="glow glow-2"></div>
+      
+      <!-- Content -->
+      <div class="z-10">
+        <h1 class="title">Technical Architecture & Design</h1>
+        <p class="content mb-4">
+          The Zmart platform follows a modern microservices architecture with clear separation of concerns across multiple layers.
+        </p>
+        
+        <img src="/home/ubuntu/zmart-presentation/images/system_architecture.png" alt="System Architecture Diagram" class="architecture-image">
+        
+        <div class="grid grid-cols-2 gap-6">
+          <div>
+            <div class="layer-box">
+              <h3 class="layer-title">
+                <i class="fas fa-desktop layer-icon"></i>Frontend Layer
+              </h3>
+              <p>React-based UI with Tailwind CSS, real-time data visualization, and responsive design for desktop and mobile.</p>
+            </div>
+            
+            <div class="layer-box">
+              <h3 class="layer-title">
+                <i class="fas fa-server layer-icon"></i>Backend Services
+              </h3>
+              <p>Node.js/Python microservices, event-driven architecture, and RESTful APIs with WebSocket support.</p>
+            </div>
+          </div>
+          
+          <div>
+            <div class="layer-box">
+              <h3 class="layer-title">
+                <i class="fas fa-database layer-icon"></i>Data Layer
+              </h3>
+              <p>PostgreSQL for relational data, InfluxDB for time-series, Redis for caching, and RabbitMQ for messaging.</p>
+            </div>
+            
+            <div class="layer-box">
+              <h3 class="layer-title">
+                <i class="fas fa-shield-alt layer-icon"></i>Security & Compliance
+              </h3>
+              <p>Multi-factor authentication, role-based access control, end-to-end encryption, and comprehensive audit logging.</p>
+            </div>
+          </div>
+        </div>
+        
+        <h2 class="subtitle mt-6">Technology Stack</h2>
+        <div class="tech-stack">
+          <span class="tech-badge"><i class="fab fa-react tech-icon"></i>React</span>
+          <span class="tech-badge"><i class="fab fa-node-js tech-icon"></i>Node.js</span>
+          <span class="tech-badge"><i class="fab fa-python tech-icon"></i>Python</span>
+          <span class="tech-badge"><i class="fas fa-database tech-icon"></i>PostgreSQL</span>
+          <span class="tech-badge"><i class="fas fa-database tech-icon"></i>InfluxDB</span>
+          <span class="tech-badge"><i class="fas fa-server tech-icon"></i>Redis</span>
+          <span class="tech-badge"><i class="fas fa-exchange-alt tech-icon"></i>RabbitMQ</span>
+          <span class="tech-badge"><i class="fab fa-docker tech-icon"></i>Docker</span>
+          <span class="tech-badge"><i class="fas fa-dharmachakra tech-icon"></i>Kubernetes</span>
+          <span class="tech-badge"><i class="fab fa-ethereum tech-icon"></i>Web3</span>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+

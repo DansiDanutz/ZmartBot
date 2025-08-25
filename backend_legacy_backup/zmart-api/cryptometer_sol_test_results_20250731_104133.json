@@ -1,0 +1,249 @@
+{
+  "test_suite": "Cryptometer SOL/USDT Comprehensive Test",
+  "symbol": "SOL/USDT",
+  "timestamp": "2025-07-31T10:41:33.564574",
+  "duration": 276.036632,
+  "summary": {
+    "total_tests": 5,
+    "successful_tests": 3,
+    "failed_tests": 2,
+    "success_rate": 60.0,
+    "total_processing_time": 275.8671786785126
+  },
+  "test_results": [
+    {
+      "test_name": "Unified Cryptometer System",
+      "success": false,
+      "error": "unsupported format string passed to NoneType.__format__",
+      "processing_time": 21.20087504386902
+    },
+    {
+      "test_name": "Multi-Model AI Analysis",
+      "success": true,
+      "processing_time": 215.34100365638733,
+      "primary_model": "gpt-4o-mini",
+      "models_used": 4,
+      "aggregate_confidence": 0.7875,
+      "available_models": 5,
+      "fallback_active": false,
+      "model_comparisons": 5,
+      "technical_data": {
+        "current_price": 2901.619301775742,
+        "trend_direction": "NEUTRAL",
+        "volatility": 0.01703707879873204,
+        "momentum_score": 0.0,
+        "liquidation_levels": {
+          "long_liquidation": 2466.3764065093806,
+          "short_liquidation": 3336.8621970421027,
+          "major_support": 2611.457371598168,
+          "major_resistance": 3191.7812319533164
+        },
+        "support_resistance": {
+          "support": [
+            2876.107920503892,
+            2922.4851928000617
+          ],
+          "resistance": [
+            2981.8990455351754,
+            3091.880703422472
+          ]
+        }
+      },
+      "details": {
+        "total_processing_time": 138.242397,
+        "model_availability": {
+          "gpt-4o-mini": true,
+          "deepseek-coder": true,
+          "deepseek-r1-distill-llama": true,
+          "phi-3": true,
+          "phi-4": true
+        },
+        "primary_analysis_preview": "# SOL/USDT/USDT Historical-Enhanced Technical Analysis Report\n\n## Executive Summary\n\nBased on comprehensive historical pattern analysis with none data maturity, SOL/USDT/USDT shows a combined reliabil..."
+      }
+    },
+    {
+      "test_name": "Historical Pattern Analysis",
+      "success": false,
+      "error": "unsupported format string passed to NoneType.__format__",
+      "processing_time": 21.146739959716797
+    },
+    {
+      "test_name": "Calibrated Scoring System",
+      "success": true,
+      "processing_time": 1.0849659442901611,
+      "kingfisher_score": 75.0,
+      "cryptometer_score": 50.0,
+      "riskmetric_score": 65.0,
+      "components_available": 3,
+      "details": {
+        "kingfisher_confidence": 0.5,
+        "cryptometer_confidence": 0.0,
+        "riskmetric_confidence": 0.4,
+        "kingfisher_direction": "NEUTRAL",
+        "cryptometer_direction": "NEUTRAL",
+        "riskmetric_direction": "NEUTRAL"
+      }
+    },
+    {
+      "test_name": "Detailed Endpoint Analysis",
+      "success": true,
+      "processing_time": 17.093594074249268,
+      "total_endpoints": 17,
+      "successful_endpoints": 0,
+      "failed_endpoints": 17,
+      "success_rate": 0.0,
+      "calibrated_score": 0.0,
+      "confidence": 0.0,
+      "direction": "NEUTRAL",
+      "analysis_summary": "No successful endpoint analysis",
+      "details": {
+        "endpoint_breakdown": [
+          {
+            "endpoint": "coinlist",
+            "success": false,
+            "score": null,
+            "confidence": null,
+            "patterns": 0,
+            "error": "HTTP 403"
+          },
+          {
+            "endpoint": "tickerlist",
+            "success": false,
+            "score": null,
+            "confidence": null,
+            "patterns": 0,
+            "error": "HTTP 403"
+          },
+          {
+            "endpoint": "ticker",
+            "success": false,
+            "score": null,
+            "confidence": null,
+            "patterns": 0,
+            "error": "HTTP 403"
+          },
+          {
+            "endpoint": "cryptocurrency_info",
+            "success": false,
+            "score": null,
+            "confidence": null,
+            "patterns": 0,
+            "error": "HTTP 403"
+          },
+          {
+            "endpoint": "coin_info",
+            "success": false,
+            "score": null,
+            "confidence": null,
+            "patterns": 0,
+            "error": "HTTP 403"
+          },
+          {
+            "endpoint": "tickerlist_pro",
+            "success": false,
+            "score": null,
+            "confidence": null,
+            "patterns": 0,
+            "error": "HTTP 403"
+          },
+          {
+            "endpoint": "ai_screener",
+            "success": false,
+            "score": null,
+            "confidence": null,
+            "patterns": 0,
+            "error": "HTTP 403"
+          },
+          {
+            "endpoint": "ohlcv",
+            "success": false,
+            "score": null,
+            "confidence": null,
+            "patterns": 0,
+            "error": "HTTP 403"
+          },
+          {
+            "endpoint": "24h_trade_volume_v2",
+            "success": false,
+            "score": null,
+            "confidence": null,
+            "patterns": 0,
+            "error": "HTTP 403"
+          },
+          {
+            "endpoint": "ls_ratio",
+            "success": false,
+            "score": null,
+            "confidence": null,
+            "patterns": 0,
+            "error": "HTTP 403"
+          },
+          {
+            "endpoint": "liquidation_data_v2",
+            "success": false,
+            "score": null,
+            "confidence": null,
+            "patterns": 0,
+            "error": "HTTP 403"
+          },
+          {
+            "endpoint": "trend_indicator_v3",
+            "success": false,
+            "score": null,
+            "confidence": null,
+            "patterns": 0,
+            "error": "HTTP 403"
+          },
+          {
+            "endpoint": "rapid_movements",
+            "success": false,
+            "score": null,
+            "confidence": null,
+            "patterns": 0,
+            "error": "HTTP 403"
+          },
+          {
+            "endpoint": "forex_rates",
+            "success": false,
+            "score": null,
+            "confidence": null,
+            "patterns": 0,
+            "error": "HTTP 403"
+          },
+          {
+            "endpoint": "ai_screener_analysis",
+            "success": false,
+            "score": null,
+            "confidence": null,
+            "patterns": 0,
+            "error": "HTTP 403"
+          },
+          {
+            "endpoint": "large_trades_activity",
+            "success": false,
+            "score": null,
+            "confidence": null,
+            "patterns": 0,
+            "error": "HTTP 403"
+          },
+          {
+            "endpoint": "xtrades",
+            "success": false,
+            "score": null,
+            "confidence": null,
+            "patterns": 0,
+            "error": "HTTP 403"
+          }
+        ],
+        "top_performing_endpoints": []
+      }
+    }
+  ],
+  "system_capabilities": {
+    "unified_system": false,
+    "multi_model_ai": true,
+    "historical_analysis": false,
+    "calibrated_scoring": true,
+    "endpoint_analysis": true
+  }
+}

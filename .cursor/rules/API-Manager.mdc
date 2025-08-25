@@ -306,5 +306,5 @@ The API Manager system is the **backbone of ZmartBot's external integrations**, 
 This system ensures that ZmartBot can reliably access all required external services for successful trading operations while maintaining security and performance standards.
 description:
 globs:
-alwaysApply: false
+alwaysApply: true
 ---

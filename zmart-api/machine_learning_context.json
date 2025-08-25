@@ -1,0 +1,192 @@
+{
+  "service_name": "zmart_machine_learning",
+  "service_type": "backend",
+  "port": 8014,
+  "description": "Advanced machine learning system for ZmartBot trading with predictive models, pattern recognition, and automated strategy generation",
+  "context": {
+    "service_manifest": {
+      "name": "zmart_machine_learning",
+      "version": "1.0.0",
+      "kind": "backend",
+      "description": "Advanced machine learning system for ZmartBot trading with predictive models, pattern recognition, and automated strategy generation",
+      "owner": "zmart-team",
+      "maintainer": "zmart-admin"
+    },
+    "lifecycle": {
+      "startup_timeout": "60s",
+      "shutdown_timeout": "30s",
+      "health_check_interval": "20s",
+      "readiness_timeout": "120s"
+    },
+    "dependencies": [
+      "zmart-api",
+      "zmart_technical_analysis",
+      "zmart_risk_management",
+      "zmart_data_warehouse",
+      "zmart_backtesting"
+    ],
+    "health": {
+      "liveness_path": "/health",
+      "readiness_path": "/ready",
+      "startup_probe": {
+        "path": "/startup",
+        "initial_delay": "15s",
+        "period": "20s",
+        "timeout": "15s",
+        "failure_threshold": 3
+      }
+    },
+    "observability": {
+      "metrics_path": "/metrics",
+      "logs_format": "json",
+      "log_level": "INFO",
+      "tracing_enabled": true,
+      "profiling_enabled": true
+    },
+    "security": {
+      "service_token_required": true,
+      "rate_limiting": {
+        "requests_per_minute": 300,
+        "burst_size": 30
+      }
+    },
+    "orchestration": {
+      "auto_start": true,
+      "restart_policy": "always",
+      "max_restarts": 3,
+      "restart_delay": "20s"
+    },
+    "performance": {
+      "memory_limit": "4GB",
+      "cpu_limit": "2.0",
+      "connection_pool_size": 150,
+      "request_timeout": "600s"
+    },
+    "failure_modes": [
+      {
+        "name": "model_training_failed",
+        "symptoms": "ML model training errors or timeouts",
+        "remediation": "Check training data, restart training process"
+      },
+      {
+        "name": "prediction_service_failed",
+        "symptoms": "Prediction service errors or high latency",
+        "remediation": "Check model availability, restart prediction service"
+      },
+      {
+        "name": "data_pipeline_failed",
+        "symptoms": "Data preprocessing or feature engineering errors",
+        "remediation": "Check data quality, restart data pipeline"
+      }
+    ],
+    "rollback": {
+      "snapshot_required": true,
+      "rollback_strategy": "immediate",
+      "data_consistency_check": true
+    },
+    "load_balancing": {
+      "enabled": false,
+      "pool": null
+    },
+    "known_issues": [
+      {
+        "issue": "Long model training times for complex models",
+        "status": "monitoring",
+        "workaround": "Implement model versioning and incremental training"
+      }
+    ],
+    "changelog": [
+      {
+        "version": "1.0.0",
+        "date": "2025-08-25",
+        "changes": [
+          "Initial machine learning system implementation",
+          "Predictive model development and deployment",
+          "Pattern recognition and feature engineering",
+          "Automated strategy generation",
+          "Model performance monitoring and optimization"
+        ]
+      }
+    ]
+  },
+  "ml_features": [
+    "Predictive model development and deployment",
+    "Pattern recognition and feature engineering",
+    "Automated strategy generation and optimization",
+    "Real-time prediction and inference",
+    "Model performance monitoring and evaluation",
+    "Ensemble learning and model combination",
+    "Deep learning for market prediction",
+    "Natural language processing for sentiment analysis"
+  ],
+  "ml_models": [
+    "Time Series Models: ARIMA, SARIMA, Prophet for price prediction",
+    "Regression Models: Linear, Ridge, Lasso for trend prediction",
+    "Classification Models: Random Forest, SVM, Neural Networks for signal classification",
+    "Clustering Models: K-means, DBSCAN for market regime detection",
+    "Deep Learning Models: LSTM, GRU, Transformer for sequence prediction",
+    "Ensemble Models: Stacking, Boosting, Bagging for improved performance",
+    "Reinforcement Learning: Q-learning, DQN for strategy optimization",
+    "Natural Language Processing: BERT, GPT for sentiment analysis"
+  ],
+  "feature_engineering": [
+    "Technical Indicators: RSI, MACD, Bollinger Bands, Moving Averages",
+    "Price Features: Returns, volatility, momentum, mean reversion",
+    "Volume Features: Volume profile, VWAP, volume-weighted indicators",
+    "Market Microstructure: Bid-ask spread, order flow, market depth",
+    "Economic Features: Interest rates, inflation, GDP, employment data",
+    "Sentiment Features: News sentiment, social media sentiment, fear/greed index",
+    "Cross-Asset Features: Correlation, cointegration, relative strength",
+    "Temporal Features: Time of day, day of week, seasonal patterns"
+  ],
+  "prediction_tasks": [
+    "Price Direction Prediction: Binary classification of price movement",
+    "Price Level Prediction: Regression for specific price targets",
+    "Volatility Prediction: Forecasting market volatility",
+    "Volume Prediction: Predicting trading volume patterns",
+    "Market Regime Detection: Identifying bull/bear/sideways markets",
+    "Risk Prediction: Forecasting Value at Risk and drawdowns",
+    "Signal Generation: Generating buy/sell/hold signals",
+    "Portfolio Optimization: Optimal asset allocation and rebalancing"
+  ],
+  "model_evaluation": [
+    "Accuracy Metrics: Precision, recall, F1-score for classification",
+    "Regression Metrics: MSE, MAE, R-squared for regression",
+    "Financial Metrics: Sharpe ratio, maximum drawdown, profit factor",
+    "Cross-Validation: Time series cross-validation for robustness",
+    "Backtesting: Historical performance evaluation",
+    "Out-of-Sample Testing: Performance on unseen data",
+    "Model Interpretability: Feature importance, SHAP values",
+    "Model Stability: Performance consistency over time"
+  ],
+  "automation_features": [
+    "Automated Feature Selection: Statistical and ML-based feature selection",
+    "Hyperparameter Optimization: Grid search, Bayesian optimization",
+    "Model Selection: Automated model comparison and selection",
+    "Ensemble Generation: Automatic ensemble creation and optimization",
+    "Strategy Generation: Automated trading strategy creation",
+    "Risk Management: Automated risk assessment and position sizing",
+    "Performance Monitoring: Real-time model performance tracking",
+    "Model Retraining: Automated model retraining and deployment"
+  ],
+  "integration_points": [
+    "zmart-api for trading data and model deployment",
+    "zmart_technical_analysis for technical indicator features",
+    "zmart_risk_management for risk metrics and limits",
+    "zmart_data_warehouse for historical data and feature storage",
+    "zmart_backtesting for model performance evaluation",
+    "External data providers for market and economic data",
+    "ML frameworks and libraries (TensorFlow, PyTorch, Scikit-learn)",
+    "Model serving platforms and deployment tools"
+  ],
+  "ml_workflow": [
+    "Data Collection: Gather historical and real-time market data",
+    "Data Preprocessing: Clean, normalize, and prepare data",
+    "Feature Engineering: Create and select relevant features",
+    "Model Development: Train and validate machine learning models",
+    "Model Evaluation: Assess model performance and robustness",
+    "Model Deployment: Deploy models for real-time prediction",
+    "Performance Monitoring: Track model performance and drift",
+    "Model Maintenance: Retrain and update models as needed"
+  ]
+}

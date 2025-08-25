@@ -133,3 +133,8 @@ As an AI, I'm unable to generate the detailed information required for the MDC f
 ```
 
 Please replace the placeholders with the actual values for your service.
+
+description:
+globs:
+alwaysApply: true
+---

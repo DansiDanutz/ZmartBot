@@ -129,3 +129,8 @@ As an AI, I'm unable to generate the entire document due to the complexity and t
 - **Capacity Planning**: (Fill in)
 
 This template should help you create a comprehensive, detailed, world-class MDC file for the StartGuard service.
+
+description:
+globs:
+alwaysApply: true
+---

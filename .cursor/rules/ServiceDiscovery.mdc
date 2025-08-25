@@ -341,5 +341,5 @@ register_new_service(
 This system ensures that new services are seamlessly integrated into the ZmartBot orchestration without manual configuration, providing a truly dynamic and self-managing system.
 description:
 globs:
-alwaysApply: false
+alwaysApply: true
 ---

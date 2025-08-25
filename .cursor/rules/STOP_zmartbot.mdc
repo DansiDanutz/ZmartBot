@@ -56,3 +56,8 @@ Official ZmartBot system shutdown script with graceful service termination, clea
 
 ## Status
 ✅ **ACTIVE** - Official shutdown method with orchestration integration
+
+description:
+globs:
+alwaysApply: true
+---

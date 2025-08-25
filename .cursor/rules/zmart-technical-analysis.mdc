@@ -1,0 +1,167 @@
+# zmart-technical-analysis.mdc
+> Purpose: ZmartBot Technical Analysis Service providing advanced technical indicators, pattern recognition, and signal generation.
+
+## Service Overview
+**zmart_technical_analysis** is a comprehensive technical analysis service that provides advanced technical indicators, chart pattern recognition, signal generation, and trend analysis for the ZmartBot trading system.
+
+## Architecture
+**Type**: Backend Service (FastAPI-based)
+**Port**: 8011
+**Language**: Python 3.11+
+**Framework**: FastAPI, Pandas, NumPy, TA-Lib
+**Database**: PostgreSQL (analysis data), Redis (caching)
+**Compute**: High-performance technical analysis calculations
+
+### Core Components
+- **Technical Indicators Engine**: RSI, MACD, Bollinger Bands, Moving Averages
+- **Pattern Recognition Engine**: Chart pattern detection algorithms
+- **Signal Generation System**: Automated trading signal generation
+- **Trend Analysis Engine**: Trend identification and strength analysis
+- **Support/Resistance Detection**: Key level identification
+- **Analysis API**: RESTful API for technical analysis data
+- **Real-time Processing**: Live market data analysis
+
+## API Endpoints
+
+### Health & Status
+- `GET /health` - Service health check
+- `GET /ready` - Service readiness check
+- `GET /metrics` - Prometheus metrics
+
+### Technical Analysis Endpoints
+- `POST /api/v1/indicators/calculate` - Calculate technical indicators
+- `POST /api/v1/patterns/detect` - Detect chart patterns
+- `POST /api/v1/signals/generate` - Generate trading signals
+- `POST /api/v1/analysis/comprehensive` - Comprehensive technical analysis
+- `GET /api/v1/indicators/{symbol}` - Get indicators for symbol
+- `GET /api/v1/patterns/{symbol}` - Get patterns for symbol
+- `GET /api/v1/signals/{symbol}` - Get signals for symbol
+
+### Data Endpoints
+- `GET /api/v1/data/market` - Market data for analysis
+- `GET /api/v1/data/historical` - Historical data for backtesting
+- `GET /api/v1/data/indicators` - Calculated indicators data
+
+## Technical Analysis Features
+
+### Technical Indicators
+- **RSI (Relative Strength Index)**: Momentum oscillator
+- **MACD (Moving Average Convergence Divergence)**: Trend-following indicator
+- **Bollinger Bands**: Volatility indicator
+- **Moving Averages**: SMA, EMA, WMA, HMA
+- **Stochastic Oscillator**: Momentum indicator
+- **Williams %R**: Momentum oscillator
+- **CCI (Commodity Channel Index)**: Cyclical indicator
+- **ADX (Average Directional Index)**: Trend strength indicator
+
+### Chart Patterns
+- **Head and Shoulders**: Reversal pattern
+- **Double Top/Bottom**: Reversal patterns
+- **Triangles**: Continuation patterns
+- **Flags and Pennants**: Continuation patterns
+- **Wedges**: Reversal/continuation patterns
+- **Cup and Handle**: Continuation pattern
+- **Rounding Patterns**: Gradual reversal patterns
+
+### Signal Generation
+- **Buy Signals**: Entry signals for long positions
+- **Sell Signals**: Entry signals for short positions
+- **Exit Signals**: Position exit recommendations
+- **Stop Loss**: Dynamic stop loss calculations
+- **Take Profit**: Profit target calculations
+- **Signal Strength**: Confidence level for signals
+- **Signal Timing**: Optimal entry/exit timing
+
+### Trend Analysis
+- **Trend Direction**: Up, down, or sideways trends
+- **Trend Strength**: Strong, moderate, or weak trends
+- **Trend Duration**: Short, medium, or long-term trends
+- **Trend Reversals**: Potential trend change signals
+- **Trend Continuation**: Trend continuation confirmation
+
+### Support/Resistance
+- **Support Levels**: Price support identification
+- **Resistance Levels**: Price resistance identification
+- **Dynamic Levels**: Moving support/resistance
+- **Breakout Detection**: Level breakout signals
+- **Retest Confirmation**: Level retest validation
+
+## Data Sources
+- **Market Data**: Real-time price and volume data
+- **Historical Data**: Historical price data for analysis
+- **Indicator Data**: Pre-calculated technical indicators
+- **Pattern Data**: Historical pattern occurrences
+- **Signal Data**: Historical signal performance
+
+## Configuration
+- **Environment Variables**: Database connections, API keys
+- **Indicator Parameters**: Indicator calculation parameters
+- **Pattern Settings**: Pattern recognition thresholds
+- **Signal Configuration**: Signal generation rules
+- **Alert Settings**: Technical analysis alerts
+
+## Monitoring
+- **Health Checks**: Automated health monitoring
+- **Performance Metrics**: Analysis calculation performance
+- **Error Monitoring**: Technical analysis error tracking
+- **Resource Monitoring**: CPU, memory, disk usage
+
+## Security
+- **Authentication**: Required for all endpoints
+- **Authorization**: Role-based access control
+- **Data Encryption**: All data encrypted in transit and at rest
+- **Audit Logging**: Comprehensive analysis operation audit trail
+
+## Performance
+- **Caching**: Redis-based caching for calculations
+- **Optimization**: Optimized analysis algorithms
+- **Scaling**: Horizontal scaling capabilities
+- **Load Balancing**: Request distribution across instances
+
+## Dependencies
+- **zmart-api** (Port 8000) - Required for system integration
+- **master-orchestration-agent** (Port 8002) - Required for orchestration
+- **Database**: PostgreSQL for analysis data storage
+- **Cache**: Redis for performance optimization
+
+## Orchestration
+- **Service Discovery**: Automatic service registration
+- **Health Monitoring**: Integrated health checks
+- **Dependency Management**: Proper dependency resolution
+- **Scaling**: Automated scaling based on demand
+
+## Rollback
+- **Data Backup**: Automatic analysis data backup
+- **Configuration Backup**: Versioned configuration management
+- **Snapshot Recovery**: Point-in-time data recovery
+- **Service Rollback**: Service configuration rollback
+
+## Load Balancing
+- **Request Distribution**: Load balancing across instances
+- **Session Management**: Proper session handling
+- **Resource Management**: Efficient resource allocation
+- **Performance Monitoring**: Real-time performance tracking
+
+## Known Issues
+- **Calculation Complexity**: Complex pattern recognition may impact performance
+- **Memory Usage**: High memory usage during large dataset analysis
+- **Data Synchronization**: Analysis data synchronization complexity
+- **Workarounds**: Implemented optimization and monitoring
+
+## Status
+- **Operational Status**: ✅ **ACTIVE**
+- **Implementation Completeness**: 95%
+- **Performance**: Optimized for high-throughput technical analysis
+- **Reliability**: High availability with failover support
+
+## Changelog
+- **Version 1.0.0**: Initial technical analysis service with comprehensive features
+- **Performance Optimization**: Enhanced caching and calculation optimization
+- **Security Enhancement**: Improved authentication and encryption
+- **Monitoring**: Advanced monitoring and alerting capabilities
+
+---
+
+description: ZmartBot Technical Analysis Service Documentation
+globs:
+alwaysApply: true

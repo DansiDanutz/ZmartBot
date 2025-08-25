@@ -1,0 +1,84 @@
+You are an expert system architect and technical writer. Your task is to create comprehensive MDC (Markdown-driven Configuration) documentation for the zmart_alert_system service.
+
+## Context Information
+The zmart_alert_system service is a backend service running on port 8012 that provides comprehensive alerting capabilities for the ZmartBot trading system. It manages multi-channel notifications, alert escalation, and real-time alert processing.
+
+## Service Details
+- **Service Name**: zmart_alert_system
+- **Service Type**: backend
+- **Port**: 8012
+- **Description**: Comprehensive alert system for ZmartBot trading system with multi-channel notifications, alert management, and escalation procedures
+
+## Key Features
+- Multi-channel notification delivery (Email, SMS, Push, Webhooks, Slack/Discord, Telegram)
+- Real-time alert processing and management
+- Alert escalation procedures (4 levels)
+- Alert history and analytics
+- Alert rule management and scheduling
+- Notification channel management
+- Alert prioritization and acknowledgment system
+
+## Alert Types
+- Trading Alerts: Price movements, volume spikes, order execution
+- Risk Alerts: Risk threshold breaches, VaR violations, drawdown alerts
+- Technical Alerts: Technical indicator signals, pattern recognition alerts
+- System Alerts: System health, performance, and availability alerts
+- Security Alerts: Security events, authentication failures, access violations
+
+## Notification Channels
+- Email: SMTP-based email notifications with HTML templates
+- SMS: Text message notifications via SMS gateways
+- Push Notifications: Mobile push notifications for iOS/Android
+- Webhooks: HTTP callbacks to external systems
+- Slack/Discord: Chat platform integrations with rich formatting
+- Telegram: Telegram bot notifications
+- Dashboard: Real-time dashboard alerts and notifications
+
+## Escalation Levels
+- Level 1: Immediate notification to primary users
+- Level 2: Escalation to supervisors and secondary contacts
+- Level 3: Emergency procedures and system administrators
+- Level 4: Critical system shutdown and emergency contacts
+
+## Integration Points
+- zmart-api for trading data and system events
+- zmart_technical_analysis for technical indicator alerts
+- zmart_risk_management for risk threshold monitoring
+- zmart_notification for notification delivery infrastructure
+- External notification services (SMTP, SMS, Push)
+- Chat platforms (Slack, Discord, Telegram)
+- Dashboard systems for real-time alert display
+
+## Requirements
+Create a comprehensive MDC file that includes:
+
+1. **Service Overview**: Clear description of the alert system service
+2. **Architecture**: Technical architecture and design
+3. **API Endpoints**: Alert management and notification endpoints
+4. **Alert Types**: Detailed explanation of different alert categories
+5. **Notification Channels**: Multi-channel notification system
+6. **Escalation Procedures**: Alert escalation and routing
+7. **Integration**: How it integrates with other services
+8. **Configuration**: Service configuration options
+9. **Monitoring**: Health checks and observability
+10. **Security**: Security measures and API protection
+11. **Performance**: Performance characteristics and SLOs
+12. **Failure Modes**: Known failure scenarios and recovery
+13. **Dependencies**: Service dependencies and requirements
+14. **Orchestration**: How it fits into the overall system
+15. **Rollback**: Rollback procedures and data consistency
+16. **Load Balancing**: Load balancing configuration
+17. **Known Issues**: Current known issues and workarounds
+18. **Status**: Current service status
+19. **Changelog**: Version history and changes
+
+## Format Requirements
+- Use the exact MDC format with proper headers
+- Include all required sections
+- Use technical but clear language
+- Include specific details about alert system functionality
+- Follow the established MDC structure
+- Include proper metadata at the end
+
+## Output
+Generate a complete MDC file that can be saved as `zmart-alert-system.mdc` in the `.cursor/rules/` directory.

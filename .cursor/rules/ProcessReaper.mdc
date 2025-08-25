@@ -108,3 +108,8 @@
 - **Scaling considerations**: Vertical scaling based on system load
 - **Monitoring requirements**: Monitoring of CPU, memory, and network usage
 - **Disaster recovery procedures**: Restore from backup, restart service
+
+description:
+globs:
+alwaysApply: true
+---

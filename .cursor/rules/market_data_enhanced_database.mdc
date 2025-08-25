@@ -351,3 +351,8 @@ EXPLAIN QUERY PLAN SELECT * FROM rsi_data WHERE symbol = 'BTCUSDT';
 - **Archive Strategy**: Future consideration for very old data
 
 This database represents the **historical memory** of the ZmartBot ecosystem, designed to accumulate intelligence and become more valuable over time as the repository grows with additional symbols and richer datasets.
+
+description:
+globs:
+alwaysApply: true
+---

@@ -88,3 +88,8 @@ exit 1
 * `/ready` returns 200; smoke tests pass
 * Snapshot baseline updated
 * Orchestrator shows the service in the active graph
+
+description:
+globs:
+alwaysApply: true
+---

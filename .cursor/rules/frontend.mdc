@@ -341,3 +341,8 @@ The Frontend service can handle a large number of users and real-time updates. T
 - ✅ Cross-platform compatibility
 
 The Professional Dashboard on port 3400 is the comprehensive, feature-rich frontend that provides traders with all the tools and information needed for successful trading operations in the ZmartBot platform.
+
+description:
+globs:
+alwaysApply: true
+---

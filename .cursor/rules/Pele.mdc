@@ -719,5 +719,5 @@ class PeleTradingStrategy:
 The Pele Alerts system provides **powerful trend-following opportunities** through strong pattern recognition, dynamic indicator updates, and automated trading integration that captures sustained momentum and trend continuations for medium to long-term trading strategies.
 description:
 globs:
-alwaysApply: false
+alwaysApply: true
 ---

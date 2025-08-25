@@ -1,0 +1,59 @@
+{
+  "summary": {
+    "total_tests": 8,
+    "passed_tests": 8,
+    "failed_tests": 0,
+    "success_rate": 100.0
+  },
+  "detailed_results": [
+    {
+      "test_name": "Database Initialization",
+      "success": true,
+      "details": "Database initialized with comprehensive schema",
+      "timestamp": "2025-08-04T04:05:58.526530"
+    },
+    {
+      "test_name": "Data Source Status",
+      "success": true,
+      "details": "Retrieved 0 source statuses",
+      "timestamp": "2025-08-04T04:05:58.527106"
+    },
+    {
+      "test_name": "Crypto Risk Data Save",
+      "success": true,
+      "details": "Risk indicators saved successfully",
+      "timestamp": "2025-08-04T04:05:58.529399"
+    },
+    {
+      "test_name": "Screener Data Save",
+      "success": true,
+      "details": "Screener data saved successfully",
+      "timestamp": "2025-08-04T04:05:58.530564"
+    },
+    {
+      "test_name": "Data Retrieval",
+      "success": true,
+      "details": "Retrieved 1 risk records, 3 screener records",
+      "timestamp": "2025-08-04T04:05:58.530903"
+    },
+    {
+      "test_name": "AI Insights Save",
+      "success": true,
+      "details": "AI insight saved successfully",
+      "timestamp": "2025-08-04T04:05:58.532187"
+    },
+    {
+      "test_name": "Dominance Data Save",
+      "success": true,
+      "details": "Dominance data saved successfully",
+      "timestamp": "2025-08-04T04:05:58.533513"
+    },
+    {
+      "test_name": "Mock Data Integration",
+      "success": true,
+      "details": "All mock data types working: insights=1, dominance=1",
+      "timestamp": "2025-08-04T04:05:58.534264"
+    }
+  ],
+  "timestamp": "2025-08-04T04:05:58.534621"
+}

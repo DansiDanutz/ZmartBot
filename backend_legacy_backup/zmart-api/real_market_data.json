@@ -1,0 +1,32 @@
+{
+  "timestamp": "2025-08-06T12:13:09.051043",
+  "date": "August 06, 2025",
+  "prices": {
+    "BTC": 113951,
+    "ETH": 3623.29,
+    "SOL": 163.23,
+    "ADA": 0.723317
+  },
+  "risk_values": {
+    "BTC": {
+      "price": 113951,
+      "risk": 0.5798320257939116,
+      "zone": "NEUTRAL"
+    },
+    "ETH": {
+      "price": 3623.29,
+      "risk": 0.6577790942247844,
+      "zone": "LATE BULL"
+    },
+    "SOL": {
+      "price": 163.23,
+      "risk": 0.5578602123046718,
+      "zone": "NEUTRAL"
+    },
+    "ADA": {
+      "price": 0.723317,
+      "risk": 0.4729632101299558,
+      "zone": "NEUTRAL"
+    }
+  }
+}

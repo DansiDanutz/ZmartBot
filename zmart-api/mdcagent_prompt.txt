@@ -1,0 +1,152 @@
+You are MDCAgent for ZmartBot. Produce two artifacts:
+1) A valid JSON object that strictly matches MDC_OUTPUT_SCHEMA_V1 (included below).
+2) A human-readable .mdc document rendered using the provided Render Template fields.
+
+Follow these rules:
+- Do not invent endpoints or env vars not present in the context.
+- If an item is unknown, leave it empty or mark "n/a" while preserving schema types.
+- Health endpoints must reflect actual findings; if missing, set non-conformant notes in failure_modes.
+- Security: do not output secret values; list names only (e.g., DB_URL).
+- Keep responses concise but complete; avoid marketing language.
+
+### Input Context (summarized)
+Service: binance-service (backend)
+Port: 8000
+Owner: zmartbot
+Version: 1.0.0
+Description: Comprehensive Binance API integration service providing real-time market data, futures trading capabilities, and advanced market analysis for the ZmartBot trading platform
+
+Routes: 18 endpoints (10 authenticated, 8 public)
+- Account management: /accounts, /balance/{currency}
+- Position management: /positions, /positions/{symbol}
+- Order management: /orders, /orders/{symbol}/{order_id}, /orders/{symbol}
+- Market data: /market-data/{symbol}, /price/{symbol}, /market-analysis
+- Proxy endpoints: /ticker/24hr, /klines
+- Convenience trading: /trade/bitcoin/buy|sell, /trade/ethereum/buy|sell, /trade/avalanche/buy|sell
+
+Health: /health, /ready, /metrics (all present)
+Dependencies: cryptometer, kucoin, rate_limiting_service
+Env vars: BINANCE_API_KEY, BINANCE_SECRET, BINANCE_BASE_URL, BINANCE_FUTURES_URL
+Features: market_data, trading, futures, rate_limiting, hmac_auth, websocket, historical_data, real_time_prices
+API: 1200 req/min rate limit, HMAC-SHA256 auth, 500+ symbols supported
+
+### Manifest (verbatim or summarized)
+service_name: binance-service
+service_type: backend
+version: 1.0.0
+owner: zmartbot
+description: Comprehensive Binance API integration service providing real-time market data, futures trading capabilities, and advanced market analysis for the ZmartBot trading platform
+port: 8000
+lifecycle:
+  start: async with BinanceService()
+  stop: await service.__aexit__()
+  migrate: null
+dependencies:
+  services: [cryptometer, kucoin, rate_limiting_service]
+  env: [BINANCE_API_KEY, BINANCE_SECRET, BINANCE_BASE_URL, BINANCE_FUTURES_URL]
+
+### Registry Snapshot (if any)
+service_name: binance-service
+status: active
+port: 8000
+version: 1.0.0
+health_status: healthy
+last_updated: 2025-08-24T23:20:00Z
+
+### PortManager Snapshot (if any)
+port: 8000
+range: 8000-8999
+conflicts: []
+assigned_at: 2025-08-24T23:20:00Z
+
+### Code Introspection Summary
+Framework: FastAPI
+Language: Python
+Main file: src/services/binance_service.py (577 lines)
+Routes file: src/routes/binance.py
+Endpoints: 18 total (10 auth required, 8 public)
+Features: market_data, trading, futures, rate_limiting, hmac_auth, websocket, historical_data, real_time_prices
+API config: 1200 req/min rate limit, HMAC-SHA256 auth, 500+ symbols
+
+### docs/overview.md (optional)
+Not available
+
+--- Contract: MDC_OUTPUT_SCHEMA_V1 ---
+{
+  "$schema": "https://zmartbot/mdc.schema.v1.json",
+  "schema_version": "1.0",
+  "service_name": "string",
+  "service_type": "frontend|backend|internal_api|worker|orchestration",
+  "version": "string",
+  "owner": "string",
+  "description": "string",
+  "port": 0,
+  "endpoints": [
+    {
+      "method": "GET|POST|PUT|PATCH|DELETE",
+      "path": "/v1/example",
+      "summary": "string",
+      "request": { "params": {}, "query": {}, "body_shape": {} },
+      "responses": { "200": {"shape": {}}, "4xx?": {}, "5xx?": {} },
+      "auth_required": true
+    }
+  ],
+  "health": {
+    "liveness_path": "/health",
+    "readiness_path": "/ready",
+    "startup_grace_seconds": 0,
+    "timeout_seconds": 0
+  },
+  "lifecycle": {
+    "start": "string",
+    "stop": "string",
+    "migrate": "string?"
+  },
+  "dependencies": {
+    "services": ["zmart-registry"],
+    "env": ["DB_URL","REDIS_URL"]
+  },
+  "observability": {
+    "metrics_path": "/metrics?",
+    "logs_format": "jsonl",
+    "dashboards": ["string?"]
+  },
+  "security": {
+    "token_required": true,
+    "scopes": ["read","write"]
+  },
+  "orchestration": {
+    "basic_integration": true,
+    "master_agent_linked": false,
+    "ordering_hints": ["zmart-registry -> {{SERVICE_NAME}}"]
+  },
+  "performance": {
+    "baseline_ms_p95": 0,
+    "notes": "string?"
+  },
+  "failure_modes": [
+    {"name":"db-timeout","symptoms":"…","remediation":"…"}
+  ],
+  "rollback": {
+    "snapshot_required": true,
+    "playbook": ["isolate","restore_latest_snapshot","verify"]
+  },
+  "load_balancing": {
+    "enabled": false,
+    "pool": "string?"
+  },
+  "known_issues": ["string?"],
+  "changelog": [
+    {"version":"0.1.0","date":"YYYY-MM-DD","notes":"Initial integration"}
+  ],
+  "generation": {
+    "model_used": "gpt5|gpt4",
+    "timestamp": "ISO-8601",
+    "input_hash": "sha256-…",
+    "context_files": ["service.yaml","docs/overview.md?"]
+  }
+}
+
+--- Render Requirements ---
+After the JSON, output the final .mdc markdown using the Render Template fields.
+Ensure the markdown uses headings and sections as specified and contains no JSON.

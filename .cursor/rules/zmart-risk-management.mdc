@@ -1,0 +1,153 @@
+# zmart-risk-management.mdc
+> Purpose: ZmartBot Risk Management Service providing advanced risk assessment, portfolio monitoring, and risk limits management.
+
+## Service Overview
+**zmart_risk_management** is a comprehensive risk management service that provides advanced risk assessment, portfolio monitoring, VaR calculations, stress testing, and dynamic risk limits management for the ZmartBot trading system.
+
+## Architecture
+**Type**: Backend Service (FastAPI-based)
+**Port**: 8010
+**Language**: Python 3.11+
+**Framework**: FastAPI, Pandas, NumPy, SciPy
+**Database**: PostgreSQL (risk data), Redis (caching)
+**Compute**: High-performance risk calculations
+
+### Core Components
+- **Portfolio Risk Assessment**: Comprehensive portfolio risk analysis
+- **Position Risk Monitoring**: Real-time position risk tracking
+- **VaR Calculations**: Value at Risk calculations with multiple methodologies
+- **Stress Testing**: Portfolio stress testing scenarios
+- **Risk Limits Management**: Dynamic risk limits enforcement
+- **Risk Analytics Engine**: Advanced risk analytics and reporting
+- **Alert System**: Real-time risk alerts and notifications
+
+## API Endpoints
+
+### Health & Status
+- `GET /health` - Service health check
+- `GET /ready` - Service readiness check
+- `GET /metrics` - Prometheus metrics
+
+### Risk Management Endpoints
+- `POST /api/v1/risk/assessment` - Risk assessment endpoint
+- `GET /api/v1/risk/metrics` - Risk metrics endpoint
+- `GET /api/v1/risk/alerts` - Risk alerts endpoint
+- `POST /api/v1/risk/limits` - Risk limits management
+- `GET /api/v1/risk/portfolio` - Portfolio risk analysis
+- `POST /api/v1/risk/stress-test` - Stress testing scenarios
+- `GET /api/v1/risk/historical` - Historical risk data
+
+### Data Endpoints
+- `GET /api/v1/data/market-risk` - Market risk data
+- `GET /api/v1/data/portfolio-risk` - Portfolio risk data
+- `GET /api/v1/data/position-risk` - Position risk data
+
+## Risk Management Features
+
+### Portfolio Risk Assessment
+- **Comprehensive Analysis**: Multi-factor portfolio risk analysis
+- **Correlation Analysis**: Asset correlation studies
+- **Concentration Risk**: Position concentration analysis
+- **Liquidity Risk**: Liquidity risk assessment
+
+### Position Risk Monitoring
+- **Real-time Tracking**: Live position risk monitoring
+- **Risk Metrics**: Position-level risk metrics
+- **Alert System**: Risk threshold alerts
+- **Historical Analysis**: Position risk history
+
+### VaR Calculations
+- **Historical VaR**: Historical simulation VaR
+- **Parametric VaR**: Parametric VaR calculations
+- **Monte Carlo VaR**: Monte Carlo simulation VaR
+- **Conditional VaR**: Expected shortfall calculations
+
+### Stress Testing
+- **Scenario Analysis**: Custom stress scenarios
+- **Historical Scenarios**: Historical crisis scenarios
+- **Monte Carlo Stress**: Monte Carlo stress testing
+- **Sensitivity Analysis**: Parameter sensitivity testing
+
+### Risk Limits Management
+- **Dynamic Limits**: Real-time limit adjustments
+- **Position Limits**: Position size limits
+- **Portfolio Limits**: Portfolio-level limits
+- **Risk Budgeting**: Risk budget allocation
+
+## Data Sources
+- **Market Data**: Real-time market feeds and historical data
+- **Portfolio Data**: Trading execution and position data
+- **Risk Data**: Historical risk metrics and scenarios
+- **External APIs**: Third-party risk data sources
+
+## Configuration
+- **Environment Variables**: Database connections, API keys
+- **Risk Parameters**: VaR confidence levels, time horizons
+- **Limit Settings**: Risk limit thresholds and rules
+- **Alert Configuration**: Risk alert thresholds and channels
+
+## Monitoring
+- **Health Checks**: Automated health monitoring
+- **Performance Metrics**: Risk calculation performance
+- **Error Monitoring**: Risk calculation error tracking
+- **Resource Monitoring**: CPU, memory, disk usage
+
+## Security
+- **Authentication**: Required for all endpoints
+- **Authorization**: Role-based access control
+- **Data Encryption**: All data encrypted in transit and at rest
+- **Audit Logging**: Comprehensive risk operation audit trail
+
+## Performance
+- **Caching**: Redis-based caching for risk calculations
+- **Optimization**: Optimized risk calculation algorithms
+- **Scaling**: Horizontal scaling capabilities
+- **Load Balancing**: Request distribution across instances
+
+## Dependencies
+- **zmart-api** (Port 8000) - Required for system integration
+- **master-orchestration-agent** (Port 8002) - Required for orchestration
+- **Database**: PostgreSQL for risk data storage
+- **Cache**: Redis for performance optimization
+
+## Orchestration
+- **Service Discovery**: Automatic service registration
+- **Health Monitoring**: Integrated health checks
+- **Dependency Management**: Proper dependency resolution
+- **Scaling**: Automated scaling based on demand
+
+## Rollback
+- **Data Backup**: Automatic risk data backup
+- **Configuration Backup**: Versioned configuration management
+- **Snapshot Recovery**: Point-in-time data recovery
+- **Service Rollback**: Service configuration rollback
+
+## Load Balancing
+- **Request Distribution**: Load balancing across instances
+- **Session Management**: Proper session handling
+- **Resource Management**: Efficient resource allocation
+- **Performance Monitoring**: Real-time performance tracking
+
+## Known Issues
+- **Calculation Complexity**: Complex risk calculations may impact performance
+- **Memory Usage**: High memory usage during large portfolio analysis
+- **Data Synchronization**: Risk data synchronization complexity
+- **Workarounds**: Implemented optimization and monitoring
+
+## Status
+- **Operational Status**: ✅ **ACTIVE**
+- **Implementation Completeness**: 95%
+- **Performance**: Optimized for high-throughput risk calculations
+- **Reliability**: High availability with failover support
+
+## Changelog
+- **Version 1.0.0**: Initial risk management service with comprehensive features
+- **Performance Optimization**: Enhanced caching and calculation optimization
+- **Security Enhancement**: Improved authentication and encryption
+- **Monitoring**: Advanced monitoring and alerting capabilities
+
+---
+
+description: ZmartBot Risk Management Service Documentation
+globs:
+alwaysApply: true

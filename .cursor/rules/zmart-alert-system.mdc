@@ -1,0 +1,172 @@
+# zmart-alert-system.mdc
+> Purpose: ZmartBot Alert System providing multi-channel notifications, alert management, and escalation procedures.
+
+## Service Overview
+**zmart_alert_system** is a comprehensive alert system that provides multi-channel notifications, alert management, escalation procedures, and alert history tracking for the ZmartBot trading system.
+
+## Architecture
+**Type**: Backend Service (FastAPI-based)
+**Port**: 8012
+**Language**: Python 3.11+
+**Framework**: FastAPI, Celery, Redis
+**Database**: PostgreSQL (alert data), Redis (queue)
+**Compute**: High-performance alert processing
+
+### Core Components
+- **Multi-channel Notifications**: Email, SMS, Telegram, Webhook
+- **Alert Management**: Create, configure, and manage alerts
+- **Alert History**: Comprehensive alert history tracking
+- **Alert Escalation**: Automatic alert escalation procedures
+- **Alert Templates**: Predefined alert templates
+- **Alert Processing Engine**: Real-time alert processing
+- **Notification API**: RESTful API for alert management
+
+## API Endpoints
+
+### Health & Status
+- `GET /health` - Service health check
+- `GET /ready` - Service readiness check
+- `GET /metrics` - Prometheus metrics
+
+### Alert Management Endpoints
+- `POST /api/v1/alerts/create` - Create new alert
+- `POST /api/v1/alerts/send` - Send alert notification
+- `POST /api/v1/alerts/configure` - Configure alert settings
+- `GET /api/v1/alerts/history` - Get alert history
+- `GET /api/v1/alerts/active` - Get active alerts
+- `PUT /api/v1/alerts/{id}` - Update alert
+- `DELETE /api/v1/alerts/{id}` - Delete alert
+
+### Notification Endpoints
+- `POST /api/v1/notifications/email` - Send email notification
+- `POST /api/v1/notifications/sms` - Send SMS notification
+- `POST /api/v1/notifications/telegram` - Send Telegram notification
+- `POST /api/v1/notifications/webhook` - Send webhook notification
+
+### Configuration Endpoints
+- `GET /api/v1/config/channels` - Get notification channels
+- `POST /api/v1/config/channels` - Configure notification channels
+- `GET /api/v1/config/templates` - Get alert templates
+- `POST /api/v1/config/templates` - Create alert templates
+
+## Alert System Features
+
+### Multi-channel Notifications
+- **Email Notifications**: SMTP-based email alerts
+- **SMS Notifications**: SMS gateway integration
+- **Telegram Notifications**: Telegram bot integration
+- **Webhook Notifications**: HTTP webhook delivery
+- **Push Notifications**: Mobile push notifications
+- **Slack Notifications**: Slack channel integration
+
+### Alert Management
+- **Alert Creation**: Dynamic alert creation
+- **Alert Configuration**: Flexible alert settings
+- **Alert Scheduling**: Scheduled alert delivery
+- **Alert Prioritization**: Priority-based alert handling
+- **Alert Grouping**: Group related alerts
+- **Alert Suppression**: Temporary alert suppression
+
+### Alert History
+- **Comprehensive Tracking**: Complete alert history
+- **Search and Filter**: Advanced search capabilities
+- **Analytics**: Alert performance analytics
+- **Export**: Alert history export
+- **Retention**: Configurable data retention
+- **Audit Trail**: Complete audit trail
+
+### Alert Escalation
+- **Automatic Escalation**: Time-based escalation
+- **Escalation Rules**: Configurable escalation rules
+- **Escalation Levels**: Multiple escalation levels
+- **Escalation Notifications**: Escalation alerts
+- **Escalation Tracking**: Escalation history
+- **Escalation Resolution**: Escalation resolution tracking
+
+### Alert Templates
+- **Predefined Templates**: Standard alert templates
+- **Custom Templates**: User-defined templates
+- **Template Variables**: Dynamic template variables
+- **Template Categories**: Organized template categories
+- **Template Versioning**: Template version control
+- **Template Sharing**: Template sharing capabilities
+
+## Data Sources
+- **Trading Alerts**: Real-time trading notifications
+- **System Alerts**: Operational system alerts
+- **Risk Alerts**: Risk management alerts
+- **Performance Alerts**: Performance monitoring alerts
+- **Security Alerts**: Security event alerts
+
+## Configuration
+- **Environment Variables**: Database connections, API keys
+- **Notification Settings**: Channel configuration
+- **Alert Rules**: Alert condition rules
+- **Escalation Settings**: Escalation configuration
+- **Template Settings**: Template configuration
+
+## Monitoring
+- **Health Checks**: Automated health monitoring
+- **Performance Metrics**: Alert processing performance
+- **Error Monitoring**: Alert delivery error tracking
+- **Resource Monitoring**: CPU, memory, disk usage
+
+## Security
+- **Authentication**: Required for all endpoints
+- **Authorization**: Role-based access control
+- **Data Encryption**: All data encrypted in transit and at rest
+- **Audit Logging**: Comprehensive alert operation audit trail
+
+## Performance
+- **Caching**: Redis-based caching for alert data
+- **Queue Processing**: Asynchronous alert processing
+- **Scaling**: Horizontal scaling capabilities
+- **Load Balancing**: Request distribution across instances
+
+## Dependencies
+- **zmart-api** (Port 8000) - Required for system integration
+- **master-orchestration-agent** (Port 8002) - Required for orchestration
+- **Database**: PostgreSQL for alert data storage
+- **Queue**: Redis for alert processing queue
+
+## Orchestration
+- **Service Discovery**: Automatic service registration
+- **Health Monitoring**: Integrated health checks
+- **Dependency Management**: Proper dependency resolution
+- **Scaling**: Automated scaling based on demand
+
+## Rollback
+- **Data Backup**: Automatic alert data backup
+- **Configuration Backup**: Versioned configuration management
+- **Snapshot Recovery**: Point-in-time data recovery
+- **Service Rollback**: Service configuration rollback
+
+## Load Balancing
+- **Request Distribution**: Load balancing across instances
+- **Session Management**: Proper session handling
+- **Resource Management**: Efficient resource allocation
+- **Performance Monitoring**: Real-time performance tracking
+
+## Known Issues
+- **High Alert Volume**: High alert volume during market volatility
+- **Delivery Latency**: Notification delivery latency
+- **Channel Failures**: Notification channel failures
+- **Workarounds**: Implemented throttling and failover
+
+## Status
+- **Operational Status**: ✅ **ACTIVE**
+- **Implementation Completeness**: 95%
+- **Performance**: Optimized for high-throughput alert processing
+- **Reliability**: High availability with failover support
+
+## Changelog
+- **Version 1.0.0**: Initial alert system with comprehensive features
+- **Performance Optimization**: Enhanced queue processing and caching
+- **Security Enhancement**: Improved authentication and encryption
+- **Monitoring**: Advanced monitoring and alerting capabilities
+
+---
+
+description: ZmartBot Alert System Documentation
+globs:
+alwaysApply: true

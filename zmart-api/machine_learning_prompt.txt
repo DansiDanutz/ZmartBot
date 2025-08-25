@@ -1,0 +1,126 @@
+You are an expert system architect and technical writer. Your task is to create comprehensive MDC (Markdown-driven Configuration) documentation for the zmart_machine_learning service.
+
+## Context Information
+The zmart_machine_learning service is a backend service running on port 8014 that provides advanced machine learning capabilities for the ZmartBot trading system. It manages predictive models, pattern recognition, feature engineering, and automated strategy generation.
+
+## Service Details
+- **Service Name**: zmart_machine_learning
+- **Service Type**: backend
+- **Port**: 8014
+- **Description**: Advanced machine learning system for ZmartBot trading with predictive models, pattern recognition, and automated strategy generation
+
+## Key Features
+- Predictive model development and deployment
+- Pattern recognition and feature engineering
+- Automated strategy generation and optimization
+- Real-time prediction and inference
+- Model performance monitoring and evaluation
+- Ensemble learning and model combination
+- Deep learning for market prediction
+- Natural language processing for sentiment analysis
+
+## ML Models
+- Time Series Models: ARIMA, SARIMA, Prophet for price prediction
+- Regression Models: Linear, Ridge, Lasso for trend prediction
+- Classification Models: Random Forest, SVM, Neural Networks for signal classification
+- Clustering Models: K-means, DBSCAN for market regime detection
+- Deep Learning Models: LSTM, GRU, Transformer for sequence prediction
+- Ensemble Models: Stacking, Boosting, Bagging for improved performance
+- Reinforcement Learning: Q-learning, DQN for strategy optimization
+- Natural Language Processing: BERT, GPT for sentiment analysis
+
+## Feature Engineering
+- Technical Indicators: RSI, MACD, Bollinger Bands, Moving Averages
+- Price Features: Returns, volatility, momentum, mean reversion
+- Volume Features: Volume profile, VWAP, volume-weighted indicators
+- Market Microstructure: Bid-ask spread, order flow, market depth
+- Economic Features: Interest rates, inflation, GDP, employment data
+- Sentiment Features: News sentiment, social media sentiment, fear/greed index
+- Cross-Asset Features: Correlation, cointegration, relative strength
+- Temporal Features: Time of day, day of week, seasonal patterns
+
+## Prediction Tasks
+- Price Direction Prediction: Binary classification of price movement
+- Price Level Prediction: Regression for specific price targets
+- Volatility Prediction: Forecasting market volatility
+- Volume Prediction: Predicting trading volume patterns
+- Market Regime Detection: Identifying bull/bear/sideways markets
+- Risk Prediction: Forecasting Value at Risk and drawdowns
+- Signal Generation: Generating buy/sell/hold signals
+- Portfolio Optimization: Optimal asset allocation and rebalancing
+
+## Model Evaluation
+- Accuracy Metrics: Precision, recall, F1-score for classification
+- Regression Metrics: MSE, MAE, R-squared for regression
+- Financial Metrics: Sharpe ratio, maximum drawdown, profit factor
+- Cross-Validation: Time series cross-validation for robustness
+- Backtesting: Historical performance evaluation
+- Out-of-Sample Testing: Performance on unseen data
+- Model Interpretability: Feature importance, SHAP values
+- Model Stability: Performance consistency over time
+
+## Automation Features
+- Automated Feature Selection: Statistical and ML-based feature selection
+- Hyperparameter Optimization: Grid search, Bayesian optimization
+- Model Selection: Automated model comparison and selection
+- Ensemble Generation: Automatic ensemble creation and optimization
+- Strategy Generation: Automated trading strategy creation
+- Risk Management: Automated risk assessment and position sizing
+- Performance Monitoring: Real-time model performance tracking
+- Model Retraining: Automated model retraining and deployment
+
+## Integration Points
+- zmart-api for trading data and model deployment
+- zmart_technical_analysis for technical indicator features
+- zmart_risk_management for risk metrics and limits
+- zmart_data_warehouse for historical data and feature storage
+- zmart_backtesting for model performance evaluation
+- External data providers for market and economic data
+- ML frameworks and libraries (TensorFlow, PyTorch, Scikit-learn)
+- Model serving platforms and deployment tools
+
+## ML Workflow
+1. Data Collection: Gather historical and real-time market data
+2. Data Preprocessing: Clean, normalize, and prepare data
+3. Feature Engineering: Create and select relevant features
+4. Model Development: Train and validate machine learning models
+5. Model Evaluation: Assess model performance and robustness
+6. Model Deployment: Deploy models for real-time prediction
+7. Performance Monitoring: Track model performance and drift
+8. Model Maintenance: Retrain and update models as needed
+
+## Requirements
+Create a comprehensive MDC file that includes:
+
+1. **Service Overview**: Clear description of the machine learning system service
+2. **Architecture**: Technical architecture and design
+3. **API Endpoints**: ML model and prediction endpoints
+4. **ML Models**: Different types of machine learning models
+5. **Feature Engineering**: Feature creation and selection processes
+6. **Prediction Tasks**: Various prediction and classification tasks
+7. **Model Evaluation**: Performance evaluation and validation
+8. **Automation**: Automated ML processes and workflows
+9. **Integration**: How it integrates with other services
+10. **Configuration**: Service configuration options
+11. **Monitoring**: Health checks and observability
+12. **Security**: Security measures and API protection
+13. **Performance**: Performance characteristics and SLOs
+14. **Failure Modes**: Known failure scenarios and recovery
+15. **Dependencies**: Service dependencies and requirements
+16. **Orchestration**: How it fits into the overall system
+17. **Rollback**: Rollback procedures and data consistency
+18. **Load Balancing**: Load balancing configuration
+19. **Known Issues**: Current known issues and workarounds
+20. **Status**: Current service status
+21. **Changelog**: Version history and changes
+
+## Format Requirements
+- Use the exact MDC format with proper headers
+- Include all required sections
+- Use technical but clear language
+- Include specific details about machine learning functionality
+- Follow the established MDC structure
+- Include proper metadata at the end
+
+## Output
+Generate a complete MDC file that can be saved as `zmart-machine-learning.mdc` in the `.cursor/rules/` directory.

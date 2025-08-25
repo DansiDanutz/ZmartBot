@@ -1,0 +1,163 @@
+# update-master-orchestration.mdc
+> Type: utility | Version: 1.0.0 | Owner: zmartbot | Port: n/a
+
+## Overview
+Auto-update utility for Master Orchestration Agent MDC file with self-learning service knowledge, providing automated database connectivity, service categorization, and dependency mapping generation.
+
+## Architecture & Integration
+- **Service Type:** utility
+- **Dependencies:** None (standalone utility)
+- **Env Vars:** None required
+- **Lifecycle:** start=`python3 update_master_orchestration.py` | stop=`n/a` | migrate=`n/a`
+
+## Core Functionality
+
+### Primary Purpose
+Automatically update MasterOrchestrationAgent.mdc with current service registry knowledge from the database.
+
+### Key Features
+- **Database Connectivity**: Connect to service_registry.db and query all registered services
+- **Service Categorization**: Automatically categorize services by type (backend, frontend, worker, etc.)
+- **Dependency Mapping**: Generate dependency relationships between services
+- **MDC File Management**: Read, update, and write MasterOrchestrationAgent.mdc file
+- **Timestamp Tracking**: Maintain accurate update timestamps
+- **Changelog Updates**: Automatically update changelog with service count
+
+### Automation
+- **Trigger**: Manual execution or post-service-registration
+- **Frequency**: On-demand
+- **Scope**: Single MDC file update
+
+## Technical Implementation
+
+### Class Structure
+```python
+class MasterOrchestrationUpdater:
+    - get_all_services()      # Query database for all services
+    - categorize_services()   # Group services by type
+    - generate_dependency_mapping()  # Create dependency relationships
+    - update_mdc_file()       # Update MDC file content
+```
+
+### Data Flow
+1. Connect to service_registry.db
+2. Query all registered services
+3. Categorize services by type
+4. Generate dependency mappings
+5. Read current MDC file
+6. Replace service knowledge section
+7. Update changelog
+8. Write updated content
+
+### Libraries Used
+- **sqlite3**: Database connectivity
+- **json**: Data serialization
+- **re**: Regular expressions for content replacement
+- **datetime**: Timestamp generation
+- **pathlib**: File path management
+
+## Integration Points
+
+### Input Sources
+- **service_registry.db**: SQLite database with service information
+- **MasterOrchestrationAgent.mdc**: Current MDC file to update
+
+### Output Destinations
+- **MasterOrchestrationAgent.mdc**: Updated MDC file with current service knowledge
+- **Console Output**: Status messages and service count
+
+## Usage & Execution
+
+### Command
+```bash
+cd zmart-api
+python3 update_master_orchestration.py
+```
+
+### Location
+- **File**: `zmart-api/update_master_orchestration.py`
+- **Execution**: `zmart-api/` directory
+- **Permissions**: Read access to database, write access to MDC file
+
+### Expected Output
+```
+✅ Master Orchestration Agent MDC updated with X services
+📅 Last updated: YYYY-MM-DDTHH:MM:SSZ
+🎯 Master Orchestration Agent self-learning knowledge updated successfully!
+```
+
+## Error Handling
+
+### Database Errors
+- Graceful handling of SQLite connection issues
+- Fallback behavior when database is unavailable
+- Clear error messages for troubleshooting
+
+### File Errors
+- Check for MDC file existence before operations
+- Validate file permissions and accessibility
+- Handle file read/write errors gracefully
+
+### Content Errors
+- Regex pattern matching for content replacement
+- Fallback to insertion if replacement fails
+- Validation of content structure
+
+## Monitoring & Success Indicators
+
+### Success Indicators
+- Console output showing service count
+- Timestamp in MDC file updated
+- No error messages during execution
+- Successful content replacement
+
+### Failure Indicators
+- Database connection errors
+- File not found errors
+- Content replacement failures
+- Permission denied errors
+
+## Health & Readiness
+- **Liveness**: N/A (utility script)
+- **Readiness**: N/A (utility script)
+- **Timeouts**: N/A (utility script)
+
+## Observability
+- **Metrics**: Console output with service count
+- **Logs**: Standard output/error streams
+- **Dashboards**: N/A (utility script)
+
+## Orchestration & Ordering
+- **Basic Integration**: N/A (standalone utility)
+- **Master Agent Linked**: Yes (updates Master Orchestration Agent)
+- **Ordering Hints**: Can be called after any service registration
+
+## Performance & SLO (Initial)
+- **Baseline p95 (ms)**: < 1000 (utility script)
+- **Notes**: Fast execution with database queries and file operations
+
+## Failure Modes & Runbooks
+- **database-connection-failed** — Symptoms: Cannot connect to service registry database — Remediation: Check database file existence, verify permissions, restart utility
+- **file-access-error** — Symptoms: Cannot read or write MDC file — Remediation: Check file permissions, verify file path, ensure write access
+- **content-replacement-failed** — Symptoms: MDC file content not updated properly — Remediation: Check regex patterns, validate file structure, manual verification
+
+## Rollback
+- **Snapshot required**: No (utility script)
+- **Playbook**: N/A (utility script)
+
+## Load Balancing
+- **Enabled**: No (utility script)
+- **Pool**: N/A (utility script)
+
+## Known Issues
+- None recorded
+
+## Changelog
+- 1.0.0 (2025-08-24): Initial utility for auto-updating Master Orchestration Agent MDC
+
+---
+*Generated by MDCAgent (gpt5) on 2025-08-24T23:55:00Z; input sha256-stu901vwx234; context: update_master_orchestration_context.json, mdcagent_prompt.txt.*
+description:
+globs:
+alwaysApply: true
+---

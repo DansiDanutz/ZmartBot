@@ -1,0 +1,162 @@
+{
+  "service_name": "zmart_alert_system",
+  "service_type": "backend",
+  "port": 8012,
+  "description": "Comprehensive alert system for ZmartBot trading system with multi-channel notifications, alert management, and escalation procedures",
+  "context": {
+    "service_manifest": {
+      "name": "zmart_alert_system",
+      "version": "1.0.0",
+      "kind": "backend",
+      "description": "Comprehensive alert system for ZmartBot trading system with multi-channel notifications, alert management, and escalation procedures",
+      "owner": "zmart-team",
+      "maintainer": "zmart-admin"
+    },
+    "lifecycle": {
+      "startup_timeout": "30s",
+      "shutdown_timeout": "15s",
+      "health_check_interval": "10s",
+      "readiness_timeout": "60s"
+    },
+    "dependencies": [
+      "zmart-api",
+      "zmart_technical_analysis",
+      "zmart_risk_management",
+      "zmart_notification"
+    ],
+    "health": {
+      "liveness_path": "/health",
+      "readiness_path": "/ready",
+      "startup_probe": {
+        "path": "/startup",
+        "initial_delay": "5s",
+        "period": "10s",
+        "timeout": "5s",
+        "failure_threshold": 3
+      }
+    },
+    "observability": {
+      "metrics_path": "/metrics",
+      "logs_format": "json",
+      "log_level": "INFO",
+      "tracing_enabled": true,
+      "profiling_enabled": false
+    },
+    "security": {
+      "service_token_required": true,
+      "rate_limiting": {
+        "requests_per_minute": 1000,
+        "burst_size": 100
+      }
+    },
+    "orchestration": {
+      "auto_start": true,
+      "restart_policy": "always",
+      "max_restarts": 5,
+      "restart_delay": "10s"
+    },
+    "performance": {
+      "memory_limit": "512MB",
+      "cpu_limit": "0.5",
+      "connection_pool_size": 50,
+      "request_timeout": "30s"
+    },
+    "failure_modes": [
+      {
+        "name": "notification_delivery_failed",
+        "symptoms": "Alerts not being delivered to users",
+        "remediation": "Check notification channels, restart alert service"
+      },
+      {
+        "name": "alert_processing_failed",
+        "symptoms": "Alert processing errors",
+        "remediation": "Check alert rules, restart processing engine"
+      },
+      {
+        "name": "escalation_failed",
+        "symptoms": "Alert escalation not working",
+        "remediation": "Check escalation rules, restart escalation engine"
+      }
+    ],
+    "rollback": {
+      "snapshot_required": true,
+      "rollback_strategy": "immediate",
+      "data_consistency_check": true
+    },
+    "load_balancing": {
+      "enabled": false,
+      "pool": null
+    },
+    "known_issues": [
+      {
+        "issue": "High alert volume during market volatility",
+        "status": "monitoring",
+        "workaround": "Implement alert throttling and prioritization"
+      }
+    ],
+    "changelog": [
+      {
+        "version": "1.0.0",
+        "date": "2025-08-25",
+        "changes": [
+          "Initial alert system implementation",
+          "Multi-channel notification system",
+          "Alert management and escalation",
+          "Real-time alert processing",
+          "Alert history and analytics"
+        ]
+      }
+    ]
+  },
+  "alert_system_features": [
+    "Multi-channel notification delivery",
+    "Real-time alert processing",
+    "Alert escalation procedures",
+    "Alert history and analytics",
+    "Alert rule management",
+    "Notification channel management",
+    "Alert prioritization",
+    "Alert acknowledgment system"
+  ],
+  "alert_types": [
+    "Trading Alerts: Price movements, volume spikes, order execution",
+    "Risk Alerts: Risk threshold breaches, VaR violations, drawdown alerts",
+    "Technical Alerts: Technical indicator signals, pattern recognition alerts",
+    "System Alerts: System health, performance, and availability alerts",
+    "Security Alerts: Security events, authentication failures, access violations"
+  ],
+  "notification_channels": [
+    "Email: SMTP-based email notifications with HTML templates",
+    "SMS: Text message notifications via SMS gateways",
+    "Push Notifications: Mobile push notifications for iOS/Android",
+    "Webhooks: HTTP callbacks to external systems",
+    "Slack/Discord: Chat platform integrations with rich formatting",
+    "Telegram: Telegram bot notifications",
+    "Dashboard: Real-time dashboard alerts and notifications"
+  ],
+  "escalation_levels": [
+    "Level 1: Immediate notification to primary users",
+    "Level 2: Escalation to supervisors and secondary contacts",
+    "Level 3: Emergency procedures and system administrators",
+    "Level 4: Critical system shutdown and emergency contacts"
+  ],
+  "integration_points": [
+    "zmart-api for trading data and system events",
+    "zmart_technical_analysis for technical indicator alerts",
+    "zmart_risk_management for risk threshold monitoring",
+    "zmart_notification for notification delivery infrastructure",
+    "External notification services (SMTP, SMS, Push)",
+    "Chat platforms (Slack, Discord, Telegram)",
+    "Dashboard systems for real-time alert display"
+  ],
+  "alert_management_features": [
+    "Alert creation and configuration",
+    "Alert acknowledgment and resolution",
+    "Alert escalation and routing",
+    "Alert history and audit trail",
+    "Alert performance analytics",
+    "Alert rule management and scheduling",
+    "Alert template management",
+    "Alert delivery confirmation and retry logic"
+  ]
+}

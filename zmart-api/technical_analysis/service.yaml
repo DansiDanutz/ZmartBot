@@ -1,0 +1,104 @@
+name: zmart_technical_analysis
+version: "1.0.0"
+description: "ZmartBot Technical Analysis Service - Advanced technical indicators and pattern recognition"
+type: backend
+port: 8011
+status: active
+
+# Service Configuration
+config:
+  environment: production
+  debug: false
+  host: "127.0.0.1"
+  port: 8011
+
+# Health & Readiness
+health:
+  endpoint: "/health"
+  readiness_endpoint: "/ready"
+  timeout: 30s
+  interval: 10s
+
+# Dependencies
+dependencies:
+  - name: "zmart-api"
+    port: 8000
+    required: true
+  - name: "master-orchestration-agent"
+    port: 8002
+    required: true
+
+# API Endpoints
+endpoints:
+  - path: "/health"
+    method: "GET"
+    description: "Health check endpoint"
+  - path: "/ready"
+    method: "GET"
+    description: "Readiness check endpoint"
+  - path: "/api/v1/indicators/calculate"
+    method: "POST"
+    description: "Calculate technical indicators"
+  - path: "/api/v1/patterns/detect"
+    method: "POST"
+    description: "Detect chart patterns"
+  - path: "/api/v1/signals/generate"
+    method: "POST"
+    description: "Generate trading signals"
+  - path: "/api/v1/analysis/comprehensive"
+    method: "POST"
+    description: "Comprehensive technical analysis"
+
+# Technical Analysis Features
+analysis_features:
+  - name: "Technical Indicators"
+    description: "RSI, MACD, Bollinger Bands, Moving Averages"
+    status: "active"
+  - name: "Chart Patterns"
+    description: "Head and shoulders, triangles, flags"
+    status: "active"
+  - name: "Signal Generation"
+    description: "Automated trading signal generation"
+    status: "active"
+  - name: "Trend Analysis"
+    description: "Trend identification and strength analysis"
+    status: "active"
+  - name: "Support/Resistance"
+    description: "Support and resistance level detection"
+    status: "active"
+
+# Data Sources
+data_sources:
+  - name: "Market Data"
+    type: "real-time"
+    status: "active"
+  - name: "Historical Data"
+    type: "analytics"
+    status: "active"
+  - name: "Indicator Data"
+    type: "calculated"
+    status: "active"
+
+# Monitoring
+monitoring:
+  metrics: "/metrics"
+  dashboard: "/dashboard"
+  alerts: "/alerts"
+
+# Security
+security:
+  authentication: "required"
+  authorization: "role-based"
+  encryption: "enabled"
+
+# Performance
+performance:
+  caching: "enabled"
+  optimization: "active"
+  scaling: "horizontal"
+
+# Rollback
+rollback:
+  snapshots: "enabled"
+  data_backup: "automatic"
+  configuration: "versioned"

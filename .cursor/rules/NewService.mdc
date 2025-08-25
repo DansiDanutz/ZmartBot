@@ -39,7 +39,70 @@ curl -fsS "http://localhost:$PORT/ready"  | jq .
 
 ## Phase 2 — Discovery & Port Assignment
 
-### Step 2 — Service Discovery Agent Detection
+### Step 2 — MANDATORY Duplicate Prevention Checks
+
+**CRITICAL: Before any service registration, perform these checks:**
+
+```bash
+# 1. Port Conflict Detection
+sqlite3 zmart-api/port_registry.db "SELECT * FROM port_assignments WHERE port = {PORT};"
+
+# 2. Service Name Validation (check for similar names)
+sqlite3 zmart-api/src/data/service_registry.db "SELECT * FROM service_registry WHERE service_name LIKE '%{SERVICE_NAME}%' OR port = {PORT};"
+
+# 3. MDC File Duplication Check
+find .cursor/rules -name "*{SERVICE_NAME}*" -o -name "*{PORT}*"
+
+# 4. Process Check (if service is running)
+ps aux | grep -i "{SERVICE_NAME}" | grep -v grep
+```
+
+**Service Name Mapping (Standardized):**
+- `zmart_orchestration` → `master_orchestration_agent` (Port 8002)
+- `zmart_dashboard` → `zmart-dashboard` (Port 3400)
+- `zmart_api` → `zmart-api` (Port 8000)
+- `my_symbols` → `mysymbols` (Port 8201)
+- `api_keys_manager` → `api-keys-manager-service` (Port 8006)
+
+**If ANY of these checks return results:**
+- **STOP** the registration process
+- **Verify** if it's the same service with different naming
+- **Use existing** service instead of creating duplicate
+- **Update** existing service if needed
+
+**Automated Validation (Recommended):**
+```bash
+# Run validation script before service registration
+python3 zmart-api/validate_service_registration.py {SERVICE_NAME} {PORT}
+
+# Only proceed if validation passes (exit code 0)
+if [ $? -eq 0 ]; then
+    echo "✅ Validation passed, proceeding with registration"
+else
+    echo "❌ Validation failed, stopping registration"
+    exit 1
+fi
+```
+
+## CRITICAL: Pattern Consistency Requirements
+
+### MANDATORY Service Processing Pattern
+**NEVER deviate from this established pattern:**
+
+1. **Individual Processing**: Process ONE service at a time
+2. **Full MDCAgent Process**: Use complete MDCAgent methodology for each service
+3. **Comprehensive Documentation**: Create detailed MDC files with all sections
+4. **Step-by-Step Updates**: Update Master Orchestration and CLAUDE.md after each service
+5. **No Batch Processing**: Avoid shortcuts or batch operations
+6. **Quality Over Speed**: Maintain consistency even if it takes longer
+
+### Pattern Violation Prevention
+- **Review pattern before starting**
+- **Check compliance during execution**
+- **Verify quality after completion**
+- **Ask for clarification if unsure**
+
+### Step 3 — Service Discovery Agent Detection
 
 **Mechanism**
 
@@ -347,3 +410,8 @@ pathlib.Path('.cursor/rules/StopStartCycle.mdc').write_text(
 print("StopStartCycle.mdc updated")
 PY
 ```
+
+description:
+globs:
+alwaysApply: true
+---

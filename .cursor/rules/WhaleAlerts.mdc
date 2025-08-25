@@ -922,5 +922,5 @@ class WhaleTradingStrategy:
 The Whale Flow Alerts system provides **powerful institutional following opportunities** through large money movement recognition, dynamic indicator updates, and automated trading integration that captures smart money activity for following institutional players and large market movers.
 description:
 globs:
-alwaysApply: false
+alwaysApply: true
 ---

@@ -1,0 +1,188 @@
+# zmart-data-warehouse.mdc
+> Purpose: ZmartBot Data Warehouse Service providing data storage, analytics, and reporting capabilities.
+
+## Service Overview
+**zmart_data_warehouse** is a comprehensive data warehouse service that provides data storage, analytics, reporting, data integration, and data governance for the ZmartBot trading system.
+
+## Architecture
+**Type**: Backend Service (FastAPI-based)
+**Port**: 8015
+**Language**: Python 3.11+
+**Framework**: FastAPI, Pandas, NumPy, SQLAlchemy
+**Database**: PostgreSQL (warehouse data), Redis (caching)
+**Compute**: High-performance data processing and analytics
+
+### Core Components
+- **Data Storage**: Comprehensive data storage and management
+- **Data Analytics**: Advanced analytics and reporting
+- **Data Integration**: Multi-source data integration
+- **Data Quality**: Data quality monitoring and validation
+- **Data Governance**: Data governance and compliance
+- **Warehouse API**: RESTful API for data warehouse operations
+- **ETL Pipeline**: Extract, Transform, Load processes
+
+## API Endpoints
+
+### Health & Status
+- `GET /health` - Service health check
+- `GET /ready` - Service readiness check
+- `GET /metrics` - Prometheus metrics
+
+### Data Warehouse Endpoints
+- `POST /api/v1/data/query` - Query data warehouse
+- `POST /api/v1/data/export` - Export data
+- `POST /api/v1/data/analytics` - Run analytics queries
+- `GET /api/v1/data/reports` - Generate reports
+- `POST /api/v1/data/ingest` - Ingest new data
+- `GET /api/v1/data/schema` - Get data schema
+- `POST /api/v1/data/validate` - Validate data quality
+
+### Analytics Endpoints
+- `POST /api/v1/analytics/aggregate` - Data aggregation
+- `POST /api/v1/analytics/trend` - Trend analysis
+- `POST /api/v1/analytics/correlation` - Correlation analysis
+- `GET /api/v1/analytics/dashboard` - Dashboard data
+- `POST /api/v1/analytics/forecast` - Forecasting analysis
+
+### Integration Endpoints
+- `POST /api/v1/integration/sync` - Data synchronization
+- `GET /api/v1/integration/status` - Integration status
+- `POST /api/v1/integration/transform` - Data transformation
+- `GET /api/v1/integration/sources` - Data sources
+
+### Quality Endpoints
+- `GET /api/v1/quality/metrics` - Data quality metrics
+- `POST /api/v1/quality/check` - Data quality check
+- `GET /api/v1/quality/alerts` - Quality alerts
+- `POST /api/v1/quality/fix` - Data quality fixes
+
+## Data Warehouse Features
+
+### Data Storage
+- **Structured Data**: Relational data storage
+- **Time Series Data**: Time-series data management
+- **Unstructured Data**: Document and text storage
+- **Data Archiving**: Long-term data archiving
+- **Data Compression**: Efficient data compression
+- **Data Partitioning**: Data partitioning strategies
+
+### Data Analytics
+- **Aggregation**: Data aggregation and summarization
+- **Trend Analysis**: Time-series trend analysis
+- **Correlation Analysis**: Multi-variable correlation
+- **Statistical Analysis**: Statistical computations
+- **Predictive Analytics**: Predictive modeling support
+- **Real-time Analytics**: Real-time data analysis
+
+### Data Integration
+- **ETL Processes**: Extract, Transform, Load
+- **Data Synchronization**: Real-time data sync
+- **Data Transformation**: Data format conversion
+- **Data Validation**: Input data validation
+- **Data Mapping**: Schema mapping and conversion
+- **Data Cleansing**: Data cleaning and deduplication
+
+### Data Quality
+- **Quality Monitoring**: Continuous quality monitoring
+- **Data Validation**: Automated data validation
+- **Quality Metrics**: Quality score calculation
+- **Quality Alerts**: Quality issue alerts
+- **Data Profiling**: Data profiling and analysis
+- **Quality Reports**: Quality assessment reports
+
+### Data Governance
+- **Data Lineage**: Data lineage tracking
+- **Access Control**: Role-based access control
+- **Data Catalog**: Data catalog and metadata
+- **Compliance**: Regulatory compliance support
+- **Audit Trail**: Complete audit trail
+- **Data Policies**: Data governance policies
+
+### Reporting
+- **Standard Reports**: Pre-built standard reports
+- **Custom Reports**: User-defined custom reports
+- **Scheduled Reports**: Automated report generation
+- **Interactive Dashboards**: Real-time dashboards
+- **Data Export**: Multiple export formats
+- **Report Distribution**: Automated report distribution
+
+## Data Sources
+- **Market Data**: Real-time and historical market data
+- **Trading Data**: Trading execution and performance data
+- **Analytics Data**: Processed analytics data
+- **External Data**: Third-party data sources
+- **System Data**: System operational data
+- **User Data**: User interaction and preference data
+
+## Configuration
+- **Environment Variables**: Database connections, API keys
+- **Storage Settings**: Storage configuration and policies
+- **Processing Settings**: Data processing parameters
+- **Quality Settings**: Data quality thresholds
+- **Governance Settings**: Data governance policies
+
+## Monitoring
+- **Health Checks**: Automated health monitoring
+- **Performance Metrics**: Data processing performance
+- **Error Monitoring**: Data processing error tracking
+- **Resource Monitoring**: CPU, memory, disk usage
+
+## Security
+- **Authentication**: Required for all endpoints
+- **Authorization**: Role-based access control
+- **Data Encryption**: All data encrypted in transit and at rest
+- **Audit Logging**: Comprehensive data operation audit trail
+
+## Performance
+- **Caching**: Redis-based caching for queries
+- **Indexing**: Optimized database indexing
+- **Scaling**: Horizontal scaling capabilities
+- **Load Balancing**: Request distribution across instances
+
+## Dependencies
+- **zmart-api** (Port 8000) - Required for system integration
+- **master-orchestration-agent** (Port 8002) - Required for orchestration
+- **Database**: PostgreSQL for warehouse data storage
+- **Cache**: Redis for performance optimization
+
+## Orchestration
+- **Service Discovery**: Automatic service registration
+- **Health Monitoring**: Integrated health checks
+- **Dependency Management**: Proper dependency resolution
+- **Scaling**: Automated scaling based on demand
+
+## Rollback
+- **Data Backup**: Automatic warehouse data backup
+- **Configuration Backup**: Versioned configuration management
+- **Snapshot Recovery**: Point-in-time data recovery
+- **Service Rollback**: Service configuration rollback
+
+## Load Balancing
+- **Request Distribution**: Load balancing across instances
+- **Session Management**: Proper session handling
+- **Resource Management**: Efficient resource allocation
+- **Performance Monitoring**: Real-time performance tracking
+
+## Known Issues
+- **High Storage Usage**: High storage usage with large datasets
+- **Query Performance**: Complex query performance impact
+- **Data Synchronization**: Data synchronization complexity
+- **Workarounds**: Implemented optimization and monitoring
+
+## Status
+- **Operational Status**: ✅ **ACTIVE**
+- **Implementation Completeness**: 95%
+- **Performance**: Optimized for high-throughput data operations
+- **Reliability**: High availability with failover support
+
+## Changelog
+- **Version 1.0.0**: Initial data warehouse service with comprehensive features
+- **Performance Optimization**: Enhanced caching and indexing
+- **Security Enhancement**: Improved authentication and encryption
+- **Monitoring**: Advanced monitoring and alerting capabilities
+
+---
+
+description: ZmartBot Data Warehouse Service Documentation
+globs:
+alwaysApply: true

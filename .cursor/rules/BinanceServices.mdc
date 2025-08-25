@@ -1,0 +1,265 @@
+# binance-service.mdc
+> Type: backend | Version: 1.0.0 | Owner: zmartbot | Port: 8000
+
+## Overview
+Comprehensive Binance API integration service providing real-time market data, futures trading capabilities, and advanced market analysis for the ZmartBot trading platform
+
+## Architecture & Integration
+- **Service Type:** backend
+- **Dependencies:** cryptometer, kucoin, rate_limiting_service
+- **Env Vars:** BINANCE_API_KEY, BINANCE_SECRET, BINANCE_BASE_URL, BINANCE_FUTURES_URL
+- **Lifecycle:** start=`async with BinanceService()` | stop=`await service.__aexit__()`
+
+## API Endpoints
+
+### GET /api/v1/binance/accounts
+- Summary: Get Binance account information and balances
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: `{"account": "object"}`
+  - 401: `{"error": "string"}`
+  - 429: `{"error": "string"}`
+
+### GET /api/v1/binance/balance/{currency}
+- Summary: Get specific currency balance
+- Auth Required: Yes
+- Request:
+  - Params: `{"currency": "string"}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: `{"balance": "object"}`
+  - 404: `{"error": "string"}`
+
+### GET /api/v1/binance/positions
+- Summary: Get all current futures positions
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: `{"positions": "array"}`
+  - 401: `{"error": "string"}`
+
+### GET /api/v1/binance/positions/{symbol}
+- Summary: Get position for specific symbol
+- Auth Required: Yes
+- Request:
+  - Params: `{"symbol": "string"}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: `{"position": "object"}`
+  - 404: `{"error": "string"}`
+
+### POST /api/v1/binance/orders
+- Summary: Place new futures order
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{"symbol": "string", "side": "string", "quantity": "float", "order_type": "string", "price": "float?", "leverage": "int?"}`
+- Responses:
+  - 200: `{"order": "object"}`
+  - 400: `{"error": "string"}`
+  - 401: `{"error": "string"}`
+
+### DELETE /api/v1/binance/orders/{symbol}/{order_id}
+- Summary: Cancel existing order
+- Auth Required: Yes
+- Request:
+  - Params: `{"symbol": "string", "order_id": "string"}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: `{"result": "object"}`
+  - 404: `{"error": "string"}`
+
+### GET /api/v1/binance/orders/{symbol}
+- Summary: Get orders for specific symbol
+- Auth Required: Yes
+- Request:
+  - Params: `{"symbol": "string"}`
+  - Query: `{"status": "string"}`
+  - Body: `{}`
+- Responses:
+  - 200: `{"orders": "array"}`
+  - 404: `{"error": "string"}`
+
+### GET /api/v1/binance/market-data/{symbol}
+- Summary: Get comprehensive market data for symbol
+- Auth Required: No
+- Request:
+  - Params: `{"symbol": "string"}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: `{"market_data": "object"}`
+  - 404: `{"error": "string"}`
+
+### GET /api/v1/binance/price/{symbol}
+- Summary: Get current price for symbol
+- Auth Required: No
+- Request:
+  - Params: `{"symbol": "string"}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: `{"price": "float"}`
+  - 404: `{"error": "string"}`
+
+### GET /api/v1/binance/market-analysis
+- Summary: Get market analysis for multiple symbols
+- Auth Required: No
+- Request:
+  - Params: `{}`
+  - Query: `{"symbols": "string"}`
+  - Body: `{}`
+- Responses:
+  - 200: `{"analysis": "object"}`
+  - 400: `{"error": "string"}`
+
+### GET /api/v1/binance/ticker/24hr
+- Summary: Get 24-hour ticker data (proxy endpoint)
+- Auth Required: No
+- Request:
+  - Params: `{}`
+  - Query: `{"symbol": "string"}`
+  - Body: `{}`
+- Responses:
+  - 200: `{"ticker": "object"}`
+  - 400: `{"error": "string"}`
+
+### GET /api/v1/binance/klines
+- Summary: Get historical kline/candlestick data (proxy endpoint)
+- Auth Required: No
+- Request:
+  - Params: `{}`
+  - Query: `{"symbol": "string", "interval": "string", "limit": "int"}`
+  - Body: `{}`
+- Responses:
+  - 200: `{"klines": "array"}`
+  - 400: `{"error": "string"}`
+
+### POST /api/v1/binance/trade/bitcoin/buy
+- Summary: Convenience endpoint to buy Bitcoin futures
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{"quantity": "float", "leverage": "int"}`
+- Responses:
+  - 200: `{"order": "object"}`
+  - 400: `{"error": "string"}`
+
+### POST /api/v1/binance/trade/bitcoin/sell
+- Summary: Convenience endpoint to sell Bitcoin futures
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{"quantity": "float", "leverage": "int"}`
+- Responses:
+  - 200: `{"order": "object"}`
+  - 400: `{"error": "string"}`
+
+### POST /api/v1/binance/trade/ethereum/buy
+- Summary: Convenience endpoint to buy Ethereum futures
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{"quantity": "float", "leverage": "int"}`
+- Responses:
+  - 200: `{"order": "object"}`
+  - 400: `{"error": "string"}`
+
+### POST /api/v1/binance/trade/ethereum/sell
+- Summary: Convenience endpoint to sell Ethereum futures
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{"quantity": "float", "leverage": "int"}`
+- Responses:
+  - 200: `{"order": "object"}`
+  - 400: `{"error": "string"}`
+
+### POST /api/v1/binance/trade/avalanche/buy
+- Summary: Convenience endpoint to buy Avalanche futures
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{"quantity": "float", "leverage": "int"}`
+- Responses:
+  - 200: `{"order": "object"}`
+  - 400: `{"error": "string"}`
+
+### POST /api/v1/binance/trade/avalanche/sell
+- Summary: Convenience endpoint to sell Avalanche futures
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{"quantity": "float", "leverage": "int"}`
+- Responses:
+  - 200: `{"order": "object"}`
+  - 400: `{"error": "string"}`
+
+## Health & Readiness
+- Liveness: `/health`
+- Readiness: `/ready`
+- Timeouts: startup_grace=30s, http_timeout=30s
+
+## Observability
+- Metrics: /metrics
+- Logs: format=jsonl
+- Dashboards: Binance API Performance, Trading Metrics
+
+## Orchestration & Ordering
+- Basic Integration: Enabled
+- Master Agent Linked: Yes
+- Ordering Hints: rate_limiting_service -> binance-service ; cryptometer -> binance-service
+
+## Performance & SLO (Initial)
+- Baseline p95 (ms): 150
+- Notes: 1200 requests per minute rate limit, sub-second response times for market data
+
+## Failure Modes & Runbooks
+- **rate-limit-exceeded** — Symptoms: 429 responses, trading delays — Remediation: Implement exponential backoff, reduce request frequency
+- **api-authentication-failed** — Symptoms: 401 responses, service unavailable — Remediation: Verify API keys, check HMAC signature generation
+- **network-timeout** — Symptoms: Request timeouts, connection errors — Remediation: Check network connectivity, increase timeout values
+- **symbol-not-found** — Symptoms: 404 responses for valid symbols — Remediation: Verify symbol format conversion, check exchange availability
+
+## Rollback
+- Snapshot required: Yes
+- Playbook: isolate → restore_latest_snapshot → verify → reactivate
+
+## Load Balancing
+- Enabled: Yes
+- Pool: market_data_pool
+
+## Known Issues
+Symbol format conversion between KuCoin (BTC-USDT) and Binance (BTCUSDT) requires careful handling
+Rate limiting must be strictly enforced to avoid API bans
+Futures trading requires proper leverage setting before order placement
+
+## Changelog
+- 1.0.0 (2025-08-24): Initial comprehensive integration with full trading capabilities
+- 0.9.0 (2025-07-31): Enhanced implementation with HMAC authentication and rate limiting
+- 0.8.0 (2025-07-15): Basic market data integration and price verification
+- 0.7.0 (2025-07-01): Initial Binance API integration for price data
+
+---
+*Generated by MDCAgent (gpt4) on 2025-08-24T23:25:00Z; input sha256-abc123def456; context: binance_service_output.json, mdcagent_prompt.txt.*
+
+description:
+globs:
+alwaysApply: true
+---

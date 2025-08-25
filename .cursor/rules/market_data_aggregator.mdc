@@ -282,3 +282,8 @@ MySymbols DB (10 symbols) → Informs → Market Data Aggregator (10+ growing sy
 - **Ecosystem Foundation**: Core intelligence service for entire trading platform
 
 This Market Data Aggregator Service is the foundational intelligence layer of the entire ZmartBot ecosystem, providing real-time market data combined with comprehensive technical analysis and growing historical intelligence that becomes more valuable over time.
+
+description:
+globs:
+alwaysApply: true
+---

@@ -861,5 +861,5 @@ CREATE TABLE alert_patterns (
 The Live Alerts system provides **comprehensive real-time monitoring** of all technical indicators, with instant notifications, visual card updates, and complete database integration that maintains the integrity and accuracy of the 21-indicators system.
 description:
 globs:
-alwaysApply: false
+alwaysApply: true
 ---

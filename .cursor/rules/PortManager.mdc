@@ -484,5 +484,5 @@ This PortManager process ensures that new services can be added to the running Z
 - Log: "✅ State screenshot captured"
 description:
 globs:
-alwaysApply: false
+alwaysApply: true
 ---

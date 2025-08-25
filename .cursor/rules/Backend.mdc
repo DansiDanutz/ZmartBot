@@ -251,5 +251,5 @@ The **official backend** of the ZmartBot project is the **FastAPI Server** runni
 The FastAPI Backend on port 8000 is the robust, scalable, and secure core of the ZmartBot platform, providing all the necessary APIs, data processing, and business logic for comprehensive trading operations.
 description:
 globs:
-alwaysApply: false
+alwaysApply: true
 ---

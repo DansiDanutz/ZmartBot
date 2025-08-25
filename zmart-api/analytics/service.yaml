@@ -1,0 +1,17 @@
+name: zmart_analytics
+version: "1.0.0"
+description: "ZmartBot Analytics Service - Advanced analytics and reporting"
+type: backend
+port: 8007
+status: active
+host: 127.0.0.1
+startup_command: "python3 analytics_server.py --port 8007"
+stop_command: "pkill -f analytics_server"
+dependencies:
+  - zmart-api
+  - my-symbols-extended-service
+health_endpoint: "/health"
+ready_endpoint: "/ready"
+metrics_endpoint: "/metrics"
+created_at: "2025-08-24T21:49:27"
+updated_at: "2025-08-25T01:04:17"

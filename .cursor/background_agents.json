@@ -1,0 +1,23 @@
+{
+  "background_agents": [
+    {
+      "name": "MDC Background Agent",
+      "description": "Automatically monitors and updates MDC files and CLAUDE.md",
+      "command": "python3",
+      "args": ["zmart-api/background_mdc_agent.py"],
+      "cwd": "/Users/dansidanutz/Desktop/ZmartBot",
+      "enabled": true,
+      "auto_restart": true,
+      "restart_delay": 30,
+      "log_file": "zmart-api/background_mdc_agent.log",
+      "environment": {
+        "PYTHONPATH": "/Users/dansidanutz/Desktop/ZmartBot/zmart-api"
+      }
+    }
+  ],
+  "settings": {
+    "check_interval": 300,
+    "max_restarts": 5,
+    "log_level": "INFO"
+  }
+}

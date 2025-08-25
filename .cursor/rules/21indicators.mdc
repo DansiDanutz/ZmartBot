@@ -1145,5 +1145,5 @@ POST /api/v1/mysymbols/{symbol}/indicators/update/batch
 The 21 Technical Indicators system provides comprehensive technical analysis capabilities with real-time calculations, multiple timeframes, and extensive API access for all trading operations in the ZmartBot platform.
 description:
 globs:
-alwaysApply: false
+alwaysApply: true
 ---

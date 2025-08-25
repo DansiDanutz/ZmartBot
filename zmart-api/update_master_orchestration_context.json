@@ -1,0 +1,85 @@
+{
+  "service_name": "update-master-orchestration",
+  "service_type": "utility",
+  "version": "1.0.0",
+  "owner": "zmartbot",
+  "description": "Auto-update utility for Master Orchestration Agent MDC file with self-learning service knowledge",
+  "port": null,
+  "file_path": "zmart-api/update_master_orchestration.py",
+  "dependencies": {
+    "services": [],
+    "databases": ["zmart-api/src/data/service_registry.db"],
+    "files": [".cursor/rules/MasterOrchestrationAgent.mdc"]
+  },
+  "functionality": {
+    "primary_purpose": "Automatically update MasterOrchestrationAgent.mdc with current service registry knowledge",
+    "key_features": [
+      "Database connectivity to service registry",
+      "Service categorization by type",
+      "Dependency mapping generation",
+      "MDC file content replacement",
+      "Timestamp tracking",
+      "Changelog updates"
+    ],
+    "automation": {
+      "trigger": "Manual execution or post-service-registration",
+      "frequency": "On-demand",
+      "scope": "Single MDC file update"
+    }
+  },
+  "technical_details": {
+    "language": "Python 3",
+    "libraries": ["sqlite3", "json", "re", "datetime", "pathlib"],
+    "architecture": {
+      "class": "MasterOrchestrationUpdater",
+      "methods": [
+        "get_all_services()",
+        "categorize_services()",
+        "generate_dependency_mapping()",
+        "update_mdc_file()"
+      ]
+    },
+    "data_flow": [
+      "Connect to service_registry.db",
+      "Query all registered services",
+      "Categorize services by type",
+      "Generate dependency mappings",
+      "Read current MDC file",
+      "Replace service knowledge section",
+      "Update changelog",
+      "Write updated content"
+    ]
+  },
+  "integration_points": {
+    "input": {
+      "service_registry_db": "SQLite database with service information",
+      "master_orchestration_mdc": "Current MDC file to update"
+    },
+    "output": {
+      "updated_mdc_file": "MasterOrchestrationAgent.mdc with current service knowledge",
+      "console_output": "Status messages and service count"
+    }
+  },
+  "error_handling": {
+    "database_errors": "Graceful handling of SQLite connection issues",
+    "file_errors": "Check for MDC file existence before operations",
+    "content_errors": "Regex pattern matching for content replacement"
+  },
+  "usage": {
+    "command": "python3 update_master_orchestration.py",
+    "location": "zmart-api/ directory",
+    "permissions": "Read access to database, write access to MDC file"
+  },
+  "monitoring": {
+    "success_indicators": [
+      "Console output showing service count",
+      "Timestamp in MDC file updated",
+      "No error messages"
+    ],
+    "failure_indicators": [
+      "Database connection errors",
+      "File not found errors",
+      "Content replacement failures"
+    ]
+  }
+}

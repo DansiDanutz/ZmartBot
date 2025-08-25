@@ -1,0 +1,186 @@
+# test-analytics-service.mdc
+> Type: backend | Version: 1.0.0 | Owner: zmartbot | Port: 8003
+
+## Overview
+ZmartBot analytics service providing data analysis, metrics processing, and performance insights with comprehensive data processing and metric calculations.
+
+## Architecture & Integration
+- **Service Type:** backend
+- **Dependencies:** zmart-api
+- **Env Vars:** ANALYTICS_TOKEN, DATABASE_URL
+- **Lifecycle:** start=`python3 analytics_server.py --port 8003` | stop=`pkill -f analytics_server` | migrate=`n/a`
+
+## API Endpoints
+
+### GET /health
+- Summary: Analytics service health check
+- Auth Required: No
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: Health status
+  - 503: Service unavailable
+
+### GET /ready
+- Summary: Analytics service readiness check
+- Auth Required: No
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: Ready status
+  - 503: Not ready
+
+### GET /api/analytics/status
+- Summary: Get analytics system status
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: Analytics status information
+  - 401: Authentication required
+
+### GET /api/analytics/metrics
+- Summary: Get processed metrics data
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{"timeframe": "string", "metric_type": "string"}`
+  - Body: `{}`
+- Responses:
+  - 200: Metrics data
+  - 400: Invalid parameters
+  - 401: Authentication required
+
+### POST /api/analytics/process
+- Summary: Process new analytics data
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{"data": "object", "analysis_type": "string"}`
+- Responses:
+  - 200: Processing initiated successfully
+  - 400: Invalid data format
+  - 401: Authentication required
+
+### GET /api/analytics/reports
+- Summary: Get analytics reports
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{"report_type": "string", "date_range": "string"}`
+  - Body: `{}`
+- Responses:
+  - 200: Analytics reports
+  - 400: Invalid parameters
+  - 401: Authentication required
+
+### POST /api/analytics/reports/generate
+- Summary: Generate new analytics report
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{"report_type": "string", "parameters": "object"}`
+- Responses:
+  - 200: Report generation initiated
+  - 400: Invalid report parameters
+  - 401: Authentication required
+
+### GET /api/analytics/performance
+- Summary: Get performance analytics
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{"service": "string", "metric": "string"}`
+  - Body: `{}`
+- Responses:
+  - 200: Performance data
+  - 400: Invalid parameters
+  - 401: Authentication required
+
+### GET /api/analytics/trends
+- Summary: Get trend analysis data
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{"trend_type": "string", "period": "string"}`
+  - Body: `{}`
+- Responses:
+  - 200: Trend analysis data
+  - 400: Invalid parameters
+  - 401: Authentication required
+
+### POST /api/analytics/alerts
+- Summary: Set up analytics alerts
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{"alert_type": "string", "threshold": "float", "condition": "string"}`
+- Responses:
+  - 200: Alert configured successfully
+  - 400: Invalid alert parameters
+  - 401: Authentication required
+
+### GET /api/analytics/dashboard
+- Summary: Get analytics dashboard data
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: Dashboard data
+  - 401: Authentication required
+
+## Health & Readiness
+- Liveness: `/health`
+- Readiness: `/ready`
+- Timeouts: startup_grace=25s, http_timeout=40s
+
+## Observability
+- Metrics: `/metrics`
+- Logs: format=jsonl
+- Dashboards: Analytics Performance, Data Processing Metrics
+
+## Orchestration & Ordering
+- Basic Integration: Enabled
+- Master Agent Linked: Yes
+- Ordering Hints: zmart-api → test-analytics-service
+
+## Performance & SLO (Initial)
+- Baseline p95 (ms): 200
+- Notes: Analytics service with data processing and metric calculations
+
+## Failure Modes & Runbooks
+- **database-connection-failed** — Symptoms: Cannot connect to database, analytics data unavailable — Remediation: Check database connectivity, restart analytics service
+- **data-processing-error** — Symptoms: Analytics calculations failing, incorrect metrics — Remediation: Check data integrity, validate calculations, restart service
+- **memory-overflow** — Symptoms: High memory usage, service becoming unresponsive — Remediation: Monitor memory usage, optimize data processing, restart service
+
+## Rollback
+- Snapshot required: Yes
+- Playbook: isolate → restore_latest_snapshot → verify → reactivate
+
+## Load Balancing
+- Enabled: Yes
+- Pool: analytics_pool
+
+## Known Issues
+- None recorded
+
+## Changelog
+- 1.0.0 (2025-08-24): Initial analytics service with data processing capabilities
+
+---
+*Generated by MDCAgent (gpt5) on 2025-08-24T23:50:00Z; input sha256-pqr678stu901; context: service.yaml, test_analytics_context.json.*
+description:
+globs:
+alwaysApply: true
+---

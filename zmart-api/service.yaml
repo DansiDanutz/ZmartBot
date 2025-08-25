@@ -1,0 +1,65 @@
+service_name: zmart-api
+service_type: backend
+version: 1.0.0
+owner: zmartbot
+description: "ZmartBot main API server providing trading, market data, and system management endpoints"
+port: 8000
+
+lifecycle:
+  start: "python3 start_backend_safe.py"
+  stop: "pkill -f start_backend_safe"
+  migrate: null
+
+dependencies:
+  services: ["rate_limiting_service", "cryptometer", "kucoin", "binance"]
+  env: ["BINANCE_API_KEY", "BINANCE_SECRET", "KUCOIN_API_KEY", "KUCOIN_SECRET", "CRYPTOMETER_API_KEY"]
+
+health:
+  liveness_path: "/health"
+  readiness_path: "/ready"
+  startup_grace_seconds: 30
+  timeout_seconds: 30
+
+observability:
+  metrics_path: "/metrics"
+  logs_format: "jsonl"
+  dashboards: ["API Performance", "Trading Metrics"]
+
+security:
+  token_required: true
+  scopes: ["read", "write", "admin"]
+
+orchestration:
+  basic_integration: true
+  master_agent_linked: true
+  ordering_hints: ["rate_limiting_service -> zmart-api"]
+
+performance:
+  baseline_ms_p95: 200
+  notes: "Handles all API requests with rate limiting and caching"
+
+failure_modes:
+  - name: "rate-limit-exceeded"
+    symptoms: "429 responses, API delays"
+    remediation: "Implement exponential backoff, reduce request frequency"
+  - name: "database-connection-failed"
+    symptoms: "Database errors, service unavailable"
+    remediation: "Check database connectivity, restart service"
+  - name: "memory-exhaustion"
+    symptoms: "High memory usage, service crashes"
+    remediation: "Monitor memory usage, implement cleanup"
+
+rollback:
+  snapshot_required: true
+  playbook: ["isolate", "restore_latest_snapshot", "verify", "reactivate"]
+
+load_balancing:
+  enabled: true
+  pool: "api_pool"
+
+known_issues: []
+
+changelog:
+  - version: "1.0.0"
+    date: "2025-08-24"
+    notes: "Initial comprehensive API server with all trading endpoints"

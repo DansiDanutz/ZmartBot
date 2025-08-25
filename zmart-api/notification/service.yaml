@@ -1,0 +1,17 @@
+name: zmart_notification
+version: "1.0.0"
+description: "ZmartBot Notification Service - Multi-channel notification system"
+type: backend
+port: 8008
+status: active
+host: 127.0.0.1
+startup_command: "python3 notification_server.py --port 8008"
+stop_command: "pkill -f notification_server"
+dependencies:
+  - zmart-api
+  - zmart-analytics
+health_endpoint: "/health"
+ready_endpoint: "/ready"
+metrics_endpoint: "/metrics"
+created_at: "2025-08-24T21:51:19"
+updated_at: "2025-08-25T01:06:37"

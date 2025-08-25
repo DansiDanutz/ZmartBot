@@ -1,0 +1,105 @@
+{
+  "datacenter": "diana-dc1",
+  "data_dir": "/consul/data",
+  "log_level": "INFO",
+  "server": true,
+  "bootstrap_expect": 1,
+  "bind_addr": "0.0.0.0",
+  "client_addr": "0.0.0.0",
+  "retry_join": ["diana-consul"],
+  "ui_config": {
+    "enabled": true
+  },
+  "connect": {
+    "enabled": true
+  },
+  "ports": {
+    "grpc": 8502
+  },
+  "acl": {
+    "enabled": false,
+    "default_policy": "allow"
+  },
+  "performance": {
+    "raft_multiplier": 1
+  },
+  "services": [
+    {
+      "id": "diana-platform",
+      "name": "diana-platform",
+      "tags": ["platform", "core"],
+      "port": 8000,
+      "check": {
+        "http": "http://host.docker.internal:8000/health",
+        "interval": "30s",
+        "timeout": "10s"
+      }
+    },
+    {
+      "id": "dashboard-service",
+      "name": "dashboard-service", 
+      "tags": ["frontend", "dashboard"],
+      "port": 3400,
+      "check": {
+        "http": "http://host.docker.internal:3400/health",
+        "interval": "30s",
+        "timeout": "10s"
+      }
+    },
+    {
+      "id": "binance-service",
+      "name": "binance-service",
+      "tags": ["trading", "exchange"],
+      "port": 8001,
+      "check": {
+        "http": "http://host.docker.internal:8001/health",
+        "interval": "30s",
+        "timeout": "10s"
+      }
+    },
+    {
+      "id": "kucoin-service", 
+      "name": "kucoin-service",
+      "tags": ["trading", "exchange"],
+      "port": 8002,
+      "check": {
+        "http": "http://host.docker.internal:8002/health",
+        "interval": "30s", 
+        "timeout": "10s"
+      }
+    },
+    {
+      "id": "orchestration-agent",
+      "name": "orchestration-agent",
+      "tags": ["agent", "orchestration"],
+      "port": 8010,
+      "check": {
+        "http": "http://host.docker.internal:8010/health",
+        "interval": "30s",
+        "timeout": "10s"
+      }
+    },
+    {
+      "id": "scoring-agent",
+      "name": "scoring-agent", 
+      "tags": ["agent", "scoring"],
+      "port": 8011,
+      "check": {
+        "http": "http://host.docker.internal:8011/health",
+        "interval": "30s",
+        "timeout": "10s"
+      }
+    },
+    {
+      "id": "risk-guard-agent",
+      "name": "risk-guard-agent",
+      "tags": ["agent", "risk"],
+      "port": 8012,
+      "check": {
+        "http": "http://host.docker.internal:8012/health",
+        "interval": "30s",
+        "timeout": "10s"
+      }
+    }
+  ]
+}

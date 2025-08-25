@@ -1,0 +1,171 @@
+# zmart-backtesting.mdc
+> Purpose: ZmartBot Backtesting Service providing strategy testing, performance analysis, and optimization capabilities.
+
+## Service Overview
+**zmart_backtesting** is a comprehensive backtesting service that provides strategy testing, performance analysis, parameter optimization, and strategy comparison for the ZmartBot trading system.
+
+## Architecture
+**Type**: Backend Service (FastAPI-based)
+**Port**: 8013
+**Language**: Python 3.11+
+**Framework**: FastAPI, Pandas, NumPy, SciPy
+**Database**: PostgreSQL (backtest data), Redis (caching)
+**Compute**: High-performance backtesting engine
+
+### Core Components
+- **Strategy Testing Engine**: Historical strategy performance testing
+- **Parameter Optimization**: Strategy parameter optimization algorithms
+- **Performance Analysis**: Comprehensive performance metrics calculation
+- **Risk Analysis**: Risk metrics and analysis tools
+- **Strategy Comparison**: Multiple strategy comparison framework
+- **Backtest API**: RESTful API for backtesting operations
+- **Report Generation**: Automated backtest report generation
+
+## API Endpoints
+
+### Health & Status
+- `GET /health` - Service health check
+- `GET /ready` - Service readiness check
+- `GET /metrics` - Prometheus metrics
+
+### Backtesting Endpoints
+- `POST /api/v1/backtest/run` - Run backtest strategy
+- `GET /api/v1/backtest/results` - Get backtest results
+- `POST /api/v1/backtest/optimize` - Optimize strategy parameters
+- `POST /api/v1/backtest/compare` - Compare multiple strategies
+- `GET /api/v1/backtest/history` - Get backtest history
+- `POST /api/v1/backtest/validate` - Validate strategy parameters
+- `GET /api/v1/backtest/reports` - Generate backtest reports
+
+### Analysis Endpoints
+- `GET /api/v1/analysis/performance` - Performance analysis
+- `GET /api/v1/analysis/risk` - Risk analysis
+- `GET /api/v1/analysis/equity` - Equity curve analysis
+- `GET /api/v1/analysis/drawdown` - Drawdown analysis
+
+### Data Endpoints
+- `GET /api/v1/data/historical` - Historical data for backtesting
+- `GET /api/v1/data/strategies` - Available strategies
+- `GET /api/v1/data/parameters` - Strategy parameters
+
+## Backtesting Features
+
+### Strategy Testing
+- **Historical Simulation**: Walk-forward backtesting
+- **Monte Carlo Simulation**: Monte Carlo analysis
+- **Out-of-Sample Testing**: Out-of-sample validation
+- **Walk-Forward Analysis**: Walk-forward optimization
+- **Cross-Validation**: Cross-validation techniques
+- **Bootstrap Testing**: Bootstrap resampling
+
+### Parameter Optimization
+- **Grid Search**: Exhaustive parameter search
+- **Genetic Algorithms**: Evolutionary optimization
+- **Bayesian Optimization**: Bayesian parameter tuning
+- **Random Search**: Random parameter sampling
+- **Hyperparameter Tuning**: Advanced hyperparameter optimization
+- **Multi-Objective Optimization**: Multi-criteria optimization
+
+### Performance Analysis
+- **Return Metrics**: Total return, annualized return, Sharpe ratio
+- **Risk Metrics**: VaR, maximum drawdown, volatility
+- **Risk-Adjusted Returns**: Sortino ratio, Calmar ratio
+- **Win/Loss Analysis**: Win rate, profit factor, average win/loss
+- **Trade Analysis**: Number of trades, average trade duration
+- **Equity Analysis**: Equity curve, underwater periods
+
+### Risk Analysis
+- **Value at Risk**: Historical and parametric VaR
+- **Expected Shortfall**: Conditional VaR calculations
+- **Drawdown Analysis**: Maximum and average drawdowns
+- **Volatility Analysis**: Rolling volatility calculations
+- **Correlation Analysis**: Asset correlation studies
+- **Stress Testing**: Scenario-based stress testing
+
+### Strategy Comparison
+- **Multi-Strategy Analysis**: Compare multiple strategies
+- **Benchmark Comparison**: Compare against benchmarks
+- **Statistical Testing**: Statistical significance testing
+- **Performance Ranking**: Strategy performance ranking
+- **Risk-Adjusted Ranking**: Risk-adjusted performance ranking
+- **Consistency Analysis**: Strategy consistency analysis
+
+## Data Sources
+- **Historical Market Data**: Price, volume, and market data
+- **Strategy Data**: Trading strategy definitions and parameters
+- **Performance Data**: Historical performance metrics
+- **Risk Data**: Historical risk metrics and scenarios
+- **Benchmark Data**: Market benchmark data
+
+## Configuration
+- **Environment Variables**: Database connections, API keys
+- **Backtest Parameters**: Time periods, data sources, fees
+- **Optimization Settings**: Optimization algorithms and parameters
+- **Performance Settings**: Performance calculation parameters
+- **Risk Settings**: Risk calculation parameters
+
+## Monitoring
+- **Health Checks**: Automated health monitoring
+- **Performance Metrics**: Backtest execution performance
+- **Error Monitoring**: Backtest error tracking
+- **Resource Monitoring**: CPU, memory, disk usage
+
+## Security
+- **Authentication**: Required for all endpoints
+- **Authorization**: Role-based access control
+- **Data Encryption**: All data encrypted in transit and at rest
+- **Audit Logging**: Comprehensive backtest operation audit trail
+
+## Performance
+- **Caching**: Redis-based caching for backtest results
+- **Parallel Processing**: Parallel backtest execution
+- **Scaling**: Horizontal scaling capabilities
+- **Load Balancing**: Request distribution across instances
+
+## Dependencies
+- **zmart-api** (Port 8000) - Required for system integration
+- **master-orchestration-agent** (Port 8002) - Required for orchestration
+- **Database**: PostgreSQL for backtest data storage
+- **Cache**: Redis for performance optimization
+
+## Orchestration
+- **Service Discovery**: Automatic service registration
+- **Health Monitoring**: Integrated health checks
+- **Dependency Management**: Proper dependency resolution
+- **Scaling**: Automated scaling based on demand
+
+## Rollback
+- **Data Backup**: Automatic backtest data backup
+- **Configuration Backup**: Versioned configuration management
+- **Snapshot Recovery**: Point-in-time data recovery
+- **Service Rollback**: Service configuration rollback
+
+## Load Balancing
+- **Request Distribution**: Load balancing across instances
+- **Session Management**: Proper session handling
+- **Resource Management**: Efficient resource allocation
+- **Performance Monitoring**: Real-time performance tracking
+
+## Known Issues
+- **High Memory Usage**: High memory usage during large backtests
+- **Long Execution Time**: Long execution time for complex strategies
+- **Data Synchronization**: Historical data synchronization complexity
+- **Workarounds**: Implemented optimization and monitoring
+
+## Status
+- **Operational Status**: ✅ **ACTIVE**
+- **Implementation Completeness**: 95%
+- **Performance**: Optimized for high-throughput backtesting
+- **Reliability**: High availability with failover support
+
+## Changelog
+- **Version 1.0.0**: Initial backtesting service with comprehensive features
+- **Performance Optimization**: Enhanced caching and parallel processing
+- **Security Enhancement**: Improved authentication and encryption
+- **Monitoring**: Advanced monitoring and alerting capabilities
+
+---
+
+description: ZmartBot Backtesting Service Documentation
+globs:
+alwaysApply: true

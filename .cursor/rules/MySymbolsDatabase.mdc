@@ -1021,5 +1021,5 @@ The API-based access ensures **secure, controlled, and validated** access to the
 The MySymbolsDatabase serves as the **single source of truth** for all trading symbol data, ensuring that only the selected 10 symbols are actively traded and monitored with comprehensive market data, technical indicators, and alert history.
 description:
 globs:
-alwaysApply: false
+alwaysApply: true
 ---

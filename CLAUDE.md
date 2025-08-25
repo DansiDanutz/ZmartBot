@@ -2,9 +2,9 @@
 
 ## 🎯 System Overview
 
-**Last Updated**: 2025-08-24T22:36:44.569709
+**Last Updated**: 2025-08-25T05:31:04.022586
 **Focus Domain**: Core
-**Total MDC Files**: 42
+**Total MDC Files**: 67
 **Current Task**: General Development
 
 ## 🚨 CRITICAL RULES (Always Active)
@@ -103,7 +103,7 @@ Core requirements that MUST be satisfied before any development work can proceed
 ## 📚 Available Contexts
 
 - **Core**: 3 files (see .claude/contexts/core_context.md)
-- **Trading**: 5 files (see .claude/contexts/trading_context.md)
+- **Trading**: 6 files (see .claude/contexts/trading_context.md)
 - **Monitoring**: 3 files (see .claude/contexts/monitoring_context.md)
 - **Orchestration**: 3 files (see .claude/contexts/orchestration_context.md)
 - **Services**: 5 files (see .claude/contexts/services_context.md)
@@ -124,4 +124,4 @@ This file is automatically optimized for performance. Full context available in:
 - `.cursor/rules/` - Full MDC files
 - Context updates every 30 seconds
 
-**Generated**: 2025-08-24T22:36:44.569733
+**Generated**: 2025-08-25T05:31:04.022701

@@ -230,5 +230,5 @@ alwaysApply: true
 ---
 description:
 globs:
-alwaysApply: false
+alwaysApply: true
 ---

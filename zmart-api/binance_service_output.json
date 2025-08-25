@@ -1,0 +1,236 @@
+{
+  "$schema": "https://zmartbot/mdc.schema.v1.json",
+  "schema_version": "1.0",
+  "service_name": "binance-service",
+  "service_type": "backend",
+  "version": "1.0.0",
+  "owner": "zmartbot",
+  "description": "Comprehensive Binance API integration service providing real-time market data, futures trading capabilities, and advanced market analysis for the ZmartBot trading platform",
+  "port": 8000,
+  "endpoints": [
+    {
+      "method": "GET",
+      "path": "/api/v1/binance/accounts",
+      "summary": "Get Binance account information and balances",
+      "request": { "params": {}, "query": {}, "body_shape": {} },
+      "responses": { "200": {"shape": {"account": "object"}}, "401": {"shape": {"error": "string"}}, "429": {"shape": {"error": "string"}} },
+      "auth_required": true
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/binance/balance/{currency}",
+      "summary": "Get specific currency balance",
+      "request": { "params": {"currency": "string"}, "query": {}, "body_shape": {} },
+      "responses": { "200": {"shape": {"balance": "object"}}, "404": {"shape": {"error": "string"}} },
+      "auth_required": true
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/binance/positions",
+      "summary": "Get all current futures positions",
+      "request": { "params": {}, "query": {}, "body_shape": {} },
+      "responses": { "200": {"shape": {"positions": "array"}}, "401": {"shape": {"error": "string"}} },
+      "auth_required": true
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/binance/positions/{symbol}",
+      "summary": "Get position for specific symbol",
+      "request": { "params": {"symbol": "string"}, "query": {}, "body_shape": {} },
+      "responses": { "200": {"shape": {"position": "object"}}, "404": {"shape": {"error": "string"}} },
+      "auth_required": true
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/binance/orders",
+      "summary": "Place new futures order",
+      "request": { "params": {}, "query": {}, "body_shape": {"symbol": "string", "side": "string", "quantity": "float", "order_type": "string", "price": "float?", "leverage": "int?"} },
+      "responses": { "200": {"shape": {"order": "object"}}, "400": {"shape": {"error": "string"}}, "401": {"shape": {"error": "string"}} },
+      "auth_required": true
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v1/binance/orders/{symbol}/{order_id}",
+      "summary": "Cancel existing order",
+      "request": { "params": {"symbol": "string", "order_id": "string"}, "query": {}, "body_shape": {} },
+      "responses": { "200": {"shape": {"result": "object"}}, "404": {"shape": {"error": "string"}} },
+      "auth_required": true
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/binance/orders/{symbol}",
+      "summary": "Get orders for specific symbol",
+      "request": { "params": {"symbol": "string"}, "query": {"status": "string"}, "body_shape": {} },
+      "responses": { "200": {"shape": {"orders": "array"}}, "404": {"shape": {"error": "string"}} },
+      "auth_required": true
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/binance/market-data/{symbol}",
+      "summary": "Get comprehensive market data for symbol",
+      "request": { "params": {"symbol": "string"}, "query": {}, "body_shape": {} },
+      "responses": { "200": {"shape": {"market_data": "object"}}, "404": {"shape": {"error": "string"}} },
+      "auth_required": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/binance/price/{symbol}",
+      "summary": "Get current price for symbol",
+      "request": { "params": {"symbol": "string"}, "query": {}, "body_shape": {} },
+      "responses": { "200": {"shape": {"price": "float"}}, "404": {"shape": {"error": "string"}} },
+      "auth_required": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/binance/market-analysis",
+      "summary": "Get market analysis for multiple symbols",
+      "request": { "params": {}, "query": {"symbols": "string"}, "body_shape": {} },
+      "responses": { "200": {"shape": {"analysis": "object"}}, "400": {"shape": {"error": "string"}} },
+      "auth_required": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/binance/ticker/24hr",
+      "summary": "Get 24-hour ticker data (proxy endpoint)",
+      "request": { "params": {}, "query": {"symbol": "string"}, "body_shape": {} },
+      "responses": { "200": {"shape": {"ticker": "object"}}, "400": {"shape": {"error": "string"}} },
+      "auth_required": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/binance/klines",
+      "summary": "Get historical kline/candlestick data (proxy endpoint)",
+      "request": { "params": {}, "query": {"symbol": "string", "interval": "string", "limit": "int"}, "body_shape": {} },
+      "responses": { "200": {"shape": {"klines": "array"}}, "400": {"shape": {"error": "string"}} },
+      "auth_required": false
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/binance/trade/bitcoin/buy",
+      "summary": "Convenience endpoint to buy Bitcoin futures",
+      "request": { "params": {}, "query": {}, "body_shape": {"quantity": "float", "leverage": "int"} },
+      "responses": { "200": {"shape": {"order": "object"}}, "400": {"shape": {"error": "string"}} },
+      "auth_required": true
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/binance/trade/bitcoin/sell",
+      "summary": "Convenience endpoint to sell Bitcoin futures",
+      "request": { "params": {}, "query": {}, "body_shape": {"quantity": "float", "leverage": "int"} },
+      "responses": { "200": {"shape": {"order": "object"}}, "400": {"shape": {"error": "string"}} },
+      "auth_required": true
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/binance/trade/ethereum/buy",
+      "summary": "Convenience endpoint to buy Ethereum futures",
+      "request": { "params": {}, "query": {}, "body_shape": {"quantity": "float", "leverage": "int"} },
+      "responses": { "200": {"shape": {"order": "object"}}, "400": {"shape": {"error": "string"}} },
+      "auth_required": true
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/binance/trade/ethereum/sell",
+      "summary": "Convenience endpoint to sell Ethereum futures",
+      "request": { "params": {}, "query": {}, "body_shape": {"quantity": "float", "leverage": "int"} },
+      "responses": { "200": {"shape": {"order": "object"}}, "400": {"shape": {"error": "string"}} },
+      "auth_required": true
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/binance/trade/avalanche/buy",
+      "summary": "Convenience endpoint to buy Avalanche futures",
+      "request": { "params": {}, "query": {}, "body_shape": {"quantity": "float", "leverage": "int"} },
+      "responses": { "200": {"shape": {"order": "object"}}, "400": {"shape": {"error": "string"}} },
+      "auth_required": true
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/binance/trade/avalanche/sell",
+      "summary": "Convenience endpoint to sell Avalanche futures",
+      "request": { "params": {}, "query": {}, "body_shape": {"quantity": "float", "leverage": "int"} },
+      "responses": { "200": {"shape": {"order": "object"}}, "400": {"shape": {"error": "string"}} },
+      "auth_required": true
+    }
+  ],
+  "health": {
+    "liveness_path": "/health",
+    "readiness_path": "/ready",
+    "startup_grace_seconds": 30,
+    "timeout_seconds": 30
+  },
+  "lifecycle": {
+    "start": "async with BinanceService()",
+    "stop": "await service.__aexit__()",
+    "migrate": null
+  },
+  "dependencies": {
+    "services": ["cryptometer", "kucoin", "rate_limiting_service"],
+    "env": ["BINANCE_API_KEY", "BINANCE_SECRET", "BINANCE_BASE_URL", "BINANCE_FUTURES_URL"]
+  },
+  "observability": {
+    "metrics_path": "/metrics",
+    "logs_format": "jsonl",
+    "dashboards": ["Binance API Performance", "Trading Metrics"]
+  },
+  "security": {
+    "token_required": true,
+    "scopes": ["read", "write"]
+  },
+  "orchestration": {
+    "basic_integration": true,
+    "master_agent_linked": true,
+    "ordering_hints": ["rate_limiting_service -> binance-service", "cryptometer -> binance-service"]
+  },
+  "performance": {
+    "baseline_ms_p95": 150,
+    "notes": "1200 requests per minute rate limit, sub-second response times for market data"
+  },
+  "failure_modes": [
+    {
+      "name": "rate-limit-exceeded",
+      "symptoms": "429 responses, trading delays",
+      "remediation": "Implement exponential backoff, reduce request frequency"
+    },
+    {
+      "name": "api-authentication-failed",
+      "symptoms": "401 responses, service unavailable",
+      "remediation": "Verify API keys, check HMAC signature generation"
+    },
+    {
+      "name": "network-timeout",
+      "symptoms": "Request timeouts, connection errors",
+      "remediation": "Check network connectivity, increase timeout values"
+    },
+    {
+      "name": "symbol-not-found",
+      "symptoms": "404 responses for valid symbols",
+      "remediation": "Verify symbol format conversion, check exchange availability"
+    }
+  ],
+  "rollback": {
+    "snapshot_required": true,
+    "playbook": ["isolate", "restore_latest_snapshot", "verify", "reactivate"]
+  },
+  "load_balancing": {
+    "enabled": true,
+    "pool": "market_data_pool"
+  },
+  "known_issues": [
+    "Symbol format conversion between KuCoin (BTC-USDT) and Binance (BTCUSDT) requires careful handling",
+    "Rate limiting must be strictly enforced to avoid API bans",
+    "Futures trading requires proper leverage setting before order placement"
+  ],
+  "changelog": [
+    {"version": "1.0.0", "date": "2025-08-24", "notes": "Initial comprehensive integration with full trading capabilities"},
+    {"version": "0.9.0", "date": "2025-07-31", "notes": "Enhanced implementation with HMAC authentication and rate limiting"},
+    {"version": "0.8.0", "date": "2025-07-15", "notes": "Basic market data integration and price verification"},
+    {"version": "0.7.0", "date": "2025-07-01", "notes": "Initial Binance API integration for price data"}
+  ],
+  "generation": {
+    "model_used": "gpt5",
+    "timestamp": "2025-08-24T23:25:00Z",
+    "input_hash": "sha256-abc123def456",
+    "context_files": ["binance_service_context.json", "mdcagent_prompt.txt"]
+  }
+}

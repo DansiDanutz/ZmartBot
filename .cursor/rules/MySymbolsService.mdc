@@ -63,3 +63,8 @@ My Symbols service manages the core portfolio database, symbol tracking, and por
 
 ## Status
 ✅ **ACTIVE** - Core portfolio management service with comprehensive database functionality
+
+description:
+globs:
+alwaysApply: true
+---

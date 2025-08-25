@@ -500,5 +500,5 @@ The PortManagerDatabase is the central registry that ensures all ZmartBot servic
 - Snapshot loading and transition to live data during START operations
 description:
 globs:
-alwaysApply: false
+alwaysApply: true
 ---

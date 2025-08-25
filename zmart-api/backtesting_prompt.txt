@@ -1,0 +1,121 @@
+You are an expert system architect and technical writer. Your task is to create comprehensive MDC (Markdown-driven Configuration) documentation for the zmart_backtesting service.
+
+## Context Information
+The zmart_backtesting service is a backend service running on port 8013 that provides comprehensive backtesting capabilities for the ZmartBot trading system. It manages historical data analysis, strategy performance evaluation, risk metrics calculation, and strategy optimization.
+
+## Service Details
+- **Service Name**: zmart_backtesting
+- **Service Type**: backend
+- **Port**: 8013
+- **Description**: Comprehensive backtesting system for ZmartBot trading strategies with historical data analysis, performance metrics, and strategy optimization
+
+## Key Features
+- Historical data analysis and processing
+- Strategy performance evaluation and benchmarking
+- Risk metrics calculation and analysis
+- Strategy optimization and parameter tuning
+- Walk-forward analysis and validation
+- Monte Carlo simulation and stress testing
+- Portfolio backtesting and optimization
+- Performance comparison and reporting
+
+## Backtesting Methodologies
+- Walk-Forward Analysis: Out-of-sample testing with rolling windows
+- Monte Carlo Simulation: Random sampling for robustness testing
+- Cross-Validation: K-fold validation for strategy reliability
+- Bootstrap Analysis: Resampling for statistical significance
+- Stress Testing: Extreme market condition simulation
+- Scenario Analysis: Different market scenario testing
+
+## Performance Metrics
+- Total Return: Overall strategy performance
+- Sharpe Ratio: Risk-adjusted returns
+- Maximum Drawdown: Largest peak-to-trough decline
+- Calmar Ratio: Return to maximum drawdown ratio
+- Sortino Ratio: Downside risk-adjusted returns
+- Information Ratio: Excess return to tracking error
+- Win Rate: Percentage of profitable trades
+- Profit Factor: Gross profit to gross loss ratio
+- Average Trade: Mean profit/loss per trade
+- Risk of Ruin: Probability of account depletion
+
+## Risk Metrics
+- Value at Risk (VaR): Potential loss at confidence level
+- Expected Shortfall: Average loss beyond VaR
+- Volatility: Standard deviation of returns
+- Beta: Market correlation and sensitivity
+- Correlation: Strategy correlation with benchmarks
+- Skewness: Return distribution asymmetry
+- Kurtosis: Return distribution tail behavior
+- Downside Deviation: Negative return volatility
+
+## Optimization Algorithms
+- Genetic Algorithm: Evolutionary strategy optimization
+- Particle Swarm Optimization: Swarm intelligence optimization
+- Bayesian Optimization: Probabilistic parameter tuning
+- Grid Search: Exhaustive parameter search
+- Random Search: Stochastic parameter exploration
+- Simulated Annealing: Global optimization with local search
+
+## Data Requirements
+- Historical Price Data: OHLCV data for all symbols
+- Market Data: Volume, bid/ask spreads, market depth
+- Economic Data: Interest rates, inflation, GDP
+- News Data: Market sentiment and news events
+- Technical Indicators: Pre-calculated technical indicators
+- Risk Metrics: Historical volatility and correlation data
+
+## Integration Points
+- zmart-api for trading data and strategy execution
+- zmart_technical_analysis for technical indicator calculations
+- zmart_risk_management for risk metrics and limits
+- zmart_data_warehouse for historical data storage and retrieval
+- External data providers for market and economic data
+- Strategy development frameworks and libraries
+- Performance visualization and reporting tools
+
+## Backtesting Workflow
+1. Strategy Definition: Define trading rules and parameters
+2. Data Preparation: Load and validate historical data
+3. Backtest Execution: Run strategy on historical data
+4. Performance Analysis: Calculate metrics and analyze results
+5. Risk Assessment: Evaluate risk metrics and drawdowns
+6. Optimization: Tune parameters for better performance
+7. Validation: Out-of-sample testing and walk-forward analysis
+8. Reporting: Generate comprehensive performance reports
+
+## Requirements
+Create a comprehensive MDC file that includes:
+
+1. **Service Overview**: Clear description of the backtesting system service
+2. **Architecture**: Technical architecture and design
+3. **API Endpoints**: Backtesting and analysis endpoints
+4. **Backtesting Methodologies**: Different testing approaches
+5. **Performance Metrics**: Comprehensive performance evaluation metrics
+6. **Risk Metrics**: Risk assessment and analysis metrics
+7. **Optimization**: Strategy optimization algorithms and processes
+8. **Data Management**: Historical data handling and requirements
+9. **Integration**: How it integrates with other services
+10. **Configuration**: Service configuration options
+11. **Monitoring**: Health checks and observability
+12. **Security**: Security measures and API protection
+13. **Performance**: Performance characteristics and SLOs
+14. **Failure Modes**: Known failure scenarios and recovery
+15. **Dependencies**: Service dependencies and requirements
+16. **Orchestration**: How it fits into the overall system
+17. **Rollback**: Rollback procedures and data consistency
+18. **Load Balancing**: Load balancing configuration
+19. **Known Issues**: Current known issues and workarounds
+20. **Status**: Current service status
+21. **Changelog**: Version history and changes
+
+## Format Requirements
+- Use the exact MDC format with proper headers
+- Include all required sections
+- Use technical but clear language
+- Include specific details about backtesting functionality
+- Follow the established MDC structure
+- Include proper metadata at the end
+
+## Output
+Generate a complete MDC file that can be saved as `zmart-backtesting.mdc` in the `.cursor/rules/` directory.

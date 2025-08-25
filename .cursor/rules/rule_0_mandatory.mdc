@@ -202,3 +202,8 @@ Core requirements that MUST be satisfied before any development work can proceed
 - Last updated: 2025-08-24
 - Validation: Required for all ZmartBot development
 - Enforcement: Automated via CI/CD pipeline
+
+description:
+globs:
+alwaysApply: true
+---

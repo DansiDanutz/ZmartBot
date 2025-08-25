@@ -399,5 +399,5 @@ const updateIndicatorCards = async () => {
 The Indicator Card system provides **comprehensive visual feedback** for all technical analysis, enabling traders to make informed decisions based on real-time data, color-coded signals, and calculated win rate ratios.
 description:
 globs:
-alwaysApply: false
+alwaysApply: true
 ---

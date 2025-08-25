@@ -63,3 +63,8 @@ KuCoin API integration service for trading operations, account management, and r
 
 ## Status
 ✅ **ACTIVE** - Core trading platform integration with comprehensive functionality
+
+description:
+globs:
+alwaysApply: true
+---

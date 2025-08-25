@@ -1,0 +1,65 @@
+service_name: my-symbols-extended-service
+service_type: backend
+version: 1.0.0
+owner: zmartbot
+description: "ZmartBot extended symbols service providing advanced symbol management, portfolio tracking, and extended market data analysis"
+port: 8005
+
+lifecycle:
+  start: "python3 symbols_extended_server.py --port 8005"
+  stop: "pkill -f symbols_extended_server"
+  migrate: null
+
+dependencies:
+  services: ["zmart-api", "mysymbols"]
+  env: ["SYMBOLS_EXTENDED_TOKEN", "DATABASE_URL", "SYMBOLS_API_KEY"]
+
+health:
+  liveness_path: "/health"
+  readiness_path: "/ready"
+  startup_grace_seconds: 30
+  timeout_seconds: 45
+
+observability:
+  metrics_path: "/metrics"
+  logs_format: "jsonl"
+  dashboards: ["Symbols Extended Performance", "Portfolio Analytics"]
+
+security:
+  token_required: true
+  scopes: ["symbols", "portfolio", "analytics"]
+
+orchestration:
+  basic_integration: true
+  master_agent_linked: true
+  ordering_hints: ["zmart-api -> my-symbols-extended-service", "mysymbols -> my-symbols-extended-service"]
+
+performance:
+  baseline_ms_p95: 250
+  notes: "Extended symbols service with portfolio analytics and market data processing"
+
+failure_modes:
+  - name: "database-connection-failed"
+    symptoms: "Cannot connect to symbols database, portfolio data unavailable"
+    remediation: "Check database connectivity, restart symbols extended service"
+  - name: "symbol-sync-failed"
+    symptoms: "Symbol synchronization failing, outdated symbol data"
+    remediation: "Check symbol API connectivity, restart service, verify API keys"
+  - name: "portfolio-calculation-error"
+    symptoms: "Portfolio calculations incorrect, performance metrics wrong"
+    remediation: "Check calculation algorithms, validate data integrity, restart service"
+
+rollback:
+  snapshot_required: true
+  playbook: ["isolate", "restore_latest_snapshot", "verify", "reactivate"]
+
+load_balancing:
+  enabled: true
+  pool: "symbols_extended_pool"
+
+known_issues: []
+
+changelog:
+  - version: "1.0.0"
+    date: "2025-08-24"
+    notes: "Initial extended symbols service with portfolio analytics"

@@ -509,6 +509,6 @@ python3 professional_dashboard_server.py &
 - Report any snapshot-related issues to system logs
 description:
 globs:
-alwaysApply: false
+alwaysApply: true
 ---
 # Test update Sun Aug 24 01:22:52 EEST 2025

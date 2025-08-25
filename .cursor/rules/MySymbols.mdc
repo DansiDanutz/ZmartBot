@@ -686,5 +686,5 @@ def monitor_symbol_change_impact(symbol, action):
 The MySymbols system ensures that only the most suitable symbols from Binance and KuCoin Futures markets are traded, with comprehensive monitoring, alerting, and data management for optimal trading performance. **All symbol changes are dynamically coordinated across the entire system architecture to maintain consistency and functionality.**
 description:
 globs:
-alwaysApply: false
+alwaysApply: true
 ---

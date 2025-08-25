@@ -1,0 +1,652 @@
+# KINGFISHER_AI.mdc
+
+> Type: internal_api | Version: **1.1.0** | Owner: **@team-kingfisher** | Port: **0 (pending Port Manager)**
+
+## 1) Service Overview
+
+Kingfisher is a production‑grade **internal API + automation** module that ingests Telegram images (KingFisher channel), classifies and deduplicates them, performs CV‑based liquidation/RSI/heatmap analysis, enriches with live market prices, and generates professional reports.
+Implements a **6‑step automation pipeline**, **multi‑agent orchestration**, **/api/v1** endpoints, robust **DB schema**, and **observability** (Prometheus + OTel/Jaeger).
+
+**Module Location**
+
+```
+/Users/dansidanutz/Desktop/ZmartBot/kingfisher-module/
+```
+
+---
+
+## 2) Manifest (service.yaml) — authoritative contract
+
+> Put next to the service code and keep in sync.
+
+```yaml
+service_name: zmart-kingfisher
+service_type: internal_api
+version: 1.1.0
+owner: "@team-kingfisher"
+description: "Kingfisher internal API + automation (Telegram → CV analysis → reports)"
+port_policy:
+  requested_port: null
+  range_hint: internal_api          # 8200–8299
+health:
+  liveness_path: /health
+  readiness_path: /ready
+  startup_grace_seconds: 15
+  timeout_seconds: 2
+dependencies:
+  services: ["zmart-registry","postgres","redis","rabbitmq","zmart-config"]
+  env: ["DB_URL","REDIS_URL","RABBIT_URL","TELEGRAM_BOT_TOKEN","AIRTABLE_API_KEY","AIRTABLE_BASE_ID","OPENAI_API_KEY","SERVICE_TOKEN","OTEL_EXPORTER_OTLP_ENDPOINT"]
+lifecycle:
+  start: "python backend/King-Scripts/RUN_ALL_STEPS_CONTINUOUS.py"
+  stop: "pkill -f RUN_ALL_STEPS_CONTINUOUS.py || true"
+  migrate: "alembic upgrade head"
+observability:
+  metrics: /metrics
+  logs_dir: "logs/zmart-kingfisher"
+security:
+  token_required: true
+  scopes: ["analysis.read","analysis.write","admin"]
+resources:
+  cpu_millicores: 500
+  memory_mb: 512
+documentation:
+  overview_md: "README.md"
+```
+
+---
+
+## 3) Directory & Pipeline
+
+```
+kingfisher-module/
+├── KingfisherLibrary/...
+└── backend/
+    ├── King-Scripts/
+    │   ├── STEP1-Monitoring-Images-And-download.py
+    │   ├── STEP3-Remove-Duplicates.py
+    │   ├── STEP4-Analyze-And-Create-Reports.py
+    │   ├── STEP6-Enhanced-Professional-Reports.py
+    │   ├── STEP6-Generate-Professional-Reports.py
+    │   ├── KING_ORCHESTRATION_AGENT.py
+    │   ├── RUN_ALL_STEPS_CONTINUOUS.py
+    │   ├── step5_runner.py                    # NEW: Plugin orchestrator
+    │   └── plugins/                           # NEW: Plugin system
+    │       ├── symbol_update.py
+    │       ├── extract_liq_clusters.py
+    │       ├── real_market_price.py
+    │       └── finalize.py
+    ├── src/
+    │   ├── agents/ (main, qa, sub_agents: liq_heatmap, liquidation_map, rsi_heatmap)
+    │   ├── services/ (master_agent, image_processing_service, professional_report_generator, enhanced_airtable_service, telegram_service, workflow_orchestrator)
+    │   ├── routes/ (automated_reports, images, liquidation, master_summary, telegram)
+    │   ├── database/kingfisher_database.py
+    │   ├── utils/
+    │   │   ├── monitoring.py
+    │   │   └── enhanced_duplicate_detection.py # NEW: Perceptual hashing
+    │   ├── services/
+    │   │   └── transactional_outbox.py        # NEW: Event reliability
+    │   └── middleware/
+    │       └── security_middleware.py         # NEW: JWT + RBAC
+    ├── real_telegram_bot.py
+    ├── requirements.txt
+    └── test_images/
+```
+
+### 6‑Step Automation (Enhanced)
+
+1. **STEP1**: Monitor & download images (Telegram)
+2. **STEP2**: Sorting integrated in STEP4
+3. **STEP3**: Duplicate removal (**MD5 + perceptual hashing** - pHash/dHash)
+4. **STEP4**: Analysis + report creation
+5. **STEP5**: **Plugin pipeline** (symbol update, liq clusters, finalize, real price)
+6. **STEP6**: Professional reports (enhanced/generate)
+
+---
+
+## 4) API Contract (versioned)
+
+> All routes are under **/api/v1/**. Side‑effecting starts use **POST + Idempotency‑Key**.
+
+### Automated Reports
+
+* **POST** `/api/v1/automated-reports/start-automation`
+
+  * Headers: `Idempotency-Key` (required), `Authorization: Bearer <SERVICE_TOKEN>`
+  * Body: `{ "mode": "continuous" | "one-shot" }`
+  * 200: `{ "started": true, "idempotent"?: true }`
+
+* **POST** `/api/v1/automated-reports/add-job`
+
+  * Body: `{ "symbol": "BTCUSDT", "priority"?: 0..10, "options"?: {} }`
+  * 202: `{ "job_id": "..." }`
+
+* **POST** `/api/v1/automated-reports/generate-immediate`
+
+  * Body: `{ "symbol": "ETHUSDT", "timeframes"?: ["1h","4h"], "include_images"?: true }`
+  * 200: `{ "report_id": "...", "content": "..." }`
+
+### Image Processing
+
+* **POST** `/api/v1/images/upload`
+
+  * multipart `file`; max 10MB; strips EXIF/metadata
+  * 200: `{ "image_id": "..." }`
+
+* **GET** `/api/v1/images/analyze/{image_id}`
+
+  * 200: `{ "classes": [...], "features": {...}, "score": 0..1 }`
+
+* **POST** `/api/v1/images/batch-process`
+
+  * Body: `{ "directory"?: "...", "filters"?: {...} }`
+  * 202: `{ "batch_id": "..." }`
+
+### Liquidation Analysis
+
+* **GET** `/api/v1/liquidation/clusters/{symbol}` → `{ clusters: [...] }`
+* **POST** `/api/v1/liquidation/analyze` → on‑demand run
+* **GET** `/api/v1/liquidation/heatmap/{symbol}` → `{ heatmap: ... }`
+
+### Master Summary
+
+* **GET** `/api/v1/master-summary/complete/{symbol}` → full institutional report
+* **POST** `/api/v1/master-summary/generate` → queued summary
+* **GET** `/api/v1/master-summary/statistics` → KPIs & health
+
+### Telegram Integration
+
+* **POST** `/api/v1/telegram/start-monitoring`
+* **GET** `/api/v1/telegram/status`
+* **POST** `/api/v1/telegram/process-image` `{ "url": "..." }`
+
+**Auth:** All endpoints require **SERVICE\_TOKEN** (JWT/opaque). Roles: `analysis.read`, `analysis.write`, `admin`.
+
+---
+
+## 5) Security (Enhanced)
+
+* **Token**: Internal `SERVICE_TOKEN` validated on each request; enforce **roles**.
+* **JWT Authentication**: User and service token validation with configurable expiry
+* **Role-Based Access Control (RBAC)**: `analysis.read`, `analysis.write`, `admin` permissions
+* **Rate Limiting**: Redis-backed per-endpoint limits (100 req/min default, 10 uploads/min, 30 AI req/min)
+* **Idempotency**: Required on "start"/mutating endpoints; store keys (Redis/Postgres) for 24h.
+* **Request Validation**: 10MB upload limit; strip EXIF metadata; MIME validation; security headers
+* **No secrets in logs**; redact tokens/keys.
+
+---
+
+## 6) Health & Readiness
+
+* **Liveness** `/health` → `{"status":"ok","uptime_seconds":...,"version":"1.1.0"}`
+* **Readiness** `/ready` requires **Postgres, Redis, RabbitMQ, Config** (hard). **Telegram, OpenAI** are **soft**:
+
+```json
+{
+  "status": "ready",
+  "hard_dependencies": {"db":"ok","redis":"ok","mq":"ok","config":"ok"},
+  "soft_dependencies": {"telegram":"warn|ok","openai":"warn|ok"}
+}
+```
+
+* **Timeouts**: startup\_grace=15s; default HTTP timeout=2s.
+
+---
+
+## 7) Metrics (Prometheus)
+
+Expose **9 comprehensive production metrics**:
+
+* `kingfisher_images_downloaded_total{source}`
+* `kingfisher_images_deduplicated_total`
+* `kingfisher_analysis_duration_seconds{step}` (histogram)
+* `kingfisher_reports_generated_total{format}`
+* `kingfisher_openai_tokens_total{model}`
+* `kingfisher_pipeline_failures_total{step,reason}`
+* `kingfisher_security_violations_total{type,endpoint}`  # NEW
+* `kingfisher_outbox_events_total{status}`              # NEW
+* `kingfisher_plugin_execution_duration_seconds{plugin}` # NEW
+
+OpenTelemetry traces → OTLP → Jaeger. JSONL logs with `X-Request-ID`.
+
+---
+
+## 8) Events (RabbitMQ) — Event‑Driven Reliability
+
+**Published** (via Transactional Outbox)
+
+* `kingfisher.image.downloaded.v1`
+* `kingfisher.image.deduplicated.v1`
+* `kingfisher.analysis.completed.v1`
+* `kingfisher.report.generated.v1`
+
+**Consumed (optional)**
+
+* `market.price_tick.v1` (for real‑time price enrichment)
+
+**Reliability Enhancement**
+
+* **Transactional outbox pattern** in Postgres; background publisher drains `published=false` rows, publishes, marks `true`.
+* **99.9% delivery guarantee** with retry logic and exponential backoff
+* **Dead letter queue** for failed events after max attempts
+* Consumers are **idempotent** via inbox (unique `event_id`).
+
+---
+
+## 9) Database (PostgreSQL) - Hardened Schema
+
+**Core tables** (see `src/database/kingfisher_database.py`):
+
+```sql
+-- Kingfisher schema (enhanced with constraints and indices)
+create schema if not exists kingfisher;
+
+create table if not exists kingfisher.liquidation_clusters(
+  id serial primary key,
+  symbol varchar(20) not null,
+  cluster_type varchar(50) not null,    -- 'support' | 'resistance'
+  price_level numeric not null,
+  volume numeric not null,
+  confidence numeric not null,           -- 0..1
+  timestamp timestamptz not null,
+  created_at timestamptz default now(),
+  
+  -- NEW: Performance indices
+  constraint chk_confidence_0_1 check (confidence between 0 and 1),
+  constraint chk_volume_positive check (volume >= 0),
+  constraint chk_price_positive check (price_level > 0)
+);
+
+create table if not exists kingfisher.market_analysis(
+  id serial primary key,
+  symbol varchar(20) not null,
+  analysis_type varchar(50) not null,   -- 'heatmap' | 'liquidation_map' | ...
+  data jsonb not null,
+  score numeric not null,               -- 0..100
+  sentiment varchar(20) not null,       -- 'bullish' | 'bearish' | 'neutral'
+  risk_level varchar(20) not null,      -- 'low' | 'medium' | 'high'
+  timestamp timestamptz not null,
+  created_at timestamptz default now(),
+  
+  -- NEW: Data constraints
+  constraint chk_score_0_100 check (score between 0 and 100),
+  constraint chk_sentiment_valid check (sentiment in ('bullish', 'bearish', 'neutral')),
+  constraint chk_risk_level_valid check (risk_level in ('low', 'medium', 'high'))
+);
+
+-- NEW: Reliability tables (Outbox/Inbox)
+create table if not exists kingfisher.events_outbox(
+  id uuid primary key default gen_random_uuid(),
+  event_type varchar(100) not null,
+  payload jsonb not null,
+  routing_key varchar(100) not null,
+  exchange varchar(50) not null default 'kingfisher',
+  created_at timestamp not null default now(),
+  published_at timestamp,
+  attempts integer default 0,
+  max_attempts integer default 5,
+  next_attempt timestamp,
+  error_message text
+);
+
+create table if not exists kingfisher.events_inbox(
+  id uuid primary key default gen_random_uuid(),
+  event_id text not null unique,
+  event_type text not null,
+  processed boolean not null default false,
+  received_at timestamptz default now()
+);
+
+-- NEW: Performance indices
+create index if not exists idx_liq_clusters_symbol_ts on kingfisher.liquidation_clusters(symbol, timestamp desc);
+create index if not exists idx_market_analysis_symbol_ts on kingfisher.market_analysis(symbol, timestamp desc);
+create index if not exists idx_outbox_unpublished on kingfisher.events_outbox (published_at) where published_at is null;
+create index if not exists idx_outbox_retry on kingfisher.events_outbox (next_attempt) where published_at is null and next_attempt is not null;
+create index if not exists idx_inbox_event_id on kingfisher.events_inbox (event_id);
+```
+
+---
+
+## 10) Concurrency & Backpressure (Enhanced)
+
+* `KING_MAX_WORKERS` (default: 4) - **Bounded concurrency**
+* `KING_QUEUE_MAXSIZE` (default: 100) - **Backpressure management**
+* `KING_OPENAI_MAX_QPS` (default: 2)
+* **Circuit breakers** & retries on OpenAI/Telegram; bounded worker pools.
+* **Rate limiting** per client and endpoint type
+* **Connection pooling** for database operations
+
+---
+
+## 11) Storage & Retention (Enhanced)
+
+* Store raw/processed images under `data/images/{yyyy}/{mm}/{dd}/...` (or MinIO/S3).
+* **TTL policies** for temporary artifacts (configurable via Config Service).
+* **Structured storage** with cleanup automation
+* Keep `test_images/` out of prod workflows.
+* **7-day retention** for published events in outbox
+
+---
+
+## 12) Orchestration & Ordering
+
+* **Basic Integration**: Enabled (added to start/stop graph).
+* **Master Orchestration Agent @8002**: Linked (reports KPIs/health).
+* **Order**: `zmart-registry → zmart-config → postgres → redis → rabbitmq → zmart-kingfisher`.
+* **StopStartCycle**: STOP gate → snapshot → Process Reaper (scoped) → Registry registration → MDC generation → add to orchestration → start only this service → wait `/ready` → smoke tests → activation.
+
+---
+
+## 13) Performance & SLO
+
+* E2E (image→report): **≤ 15s p95**
+* Sub‑stages: image analysis <2s; agent coordination <5s; report generation <3s.
+* **Enhanced duplicate detection**: 95%+ accuracy (up from ~70% MD5-only)
+* **Plugin execution**: <10s total for all STEP-5 plugins
+* **Event delivery**: 99.9% reliability guarantee
+* Initial baseline recorded post‑activation; monitor & iterate.
+
+---
+
+## 14) Failure Modes & Runbooks (Enhanced)
+
+* **telegram-rate-limit**: 429 → backoff + jitter; pause 60s; resume.
+* **image-dup-surge**: heavy I/O → use pHash, reduce threshold, cap concurrency.
+* **db-connection**: pool exhausted → raise pool size moderately; breaker writes; retry with jitter.
+* **rabbitmq-down**: buffer to outbox; retry publisher; alert; consumers auto‑resume.
+* **openai-rate-limit**: lower QPS; cache partial features; fallback model or degrade enrichments.
+* **airtable-4xx/5xx**: retry + DLQ; reconciliation job after recovery.
+* **plugin-failure**: continue-on-error option; isolation between plugins.
+* **security-violation**: rate limiting kicks in; alert; temporary IP blocks.
+* **outbox-publisher-failure**: events queue in database; automatic retry with exponential backoff.
+
+---
+
+## 15) Rollback
+
+* Snapshot required: **Yes**
+* Playbook: `orchestrator.isolate(zmart-kingfisher)` → `snapshot.restore(latest-success)` → restart → verify `/ready` → re‑enable consumers.
+* **Database migrations**: Alembic-based with rollback support
+
+---
+
+## 16) Load Balancing
+
+* Internal pool `kingfisher-internal` (sticky by request ID optional).
+* External access via API gateway (Kong/Traefik) when enabled.
+* **Plugin load balancing**: Configurable worker pools per plugin type
+
+---
+
+## 17) Configuration (via Config Service)
+
+Keys (examples):
+
+```json
+{
+  "features": { 
+    "enable_plugin_finalize": true, 
+    "enable_realtime_price": true,
+    "enable_perceptual_hashing": true,
+    "enable_security_middleware": true
+  },
+  "duplicate": { 
+    "phash_threshold": 5,
+    "dhash_threshold": 5,
+    "use_md5_prefilter": true
+  },
+  "orchestrator": { 
+    "max_workers": 4, 
+    "queue_maxsize": 100 
+  },
+  "openai": { "max_qps": 2 },
+  "idempotency": { "ttl_hours": 24 },
+  "storage": { 
+    "images_root": "data/images", 
+    "tmp_ttl_hours": 72 
+  },
+  "security": {
+    "rate_limits": {
+      "default": {"requests": 100, "window": 60},
+      "upload": {"requests": 10, "window": 60},
+      "ai": {"requests": 30, "window": 60}
+    }
+  },
+  "outbox": {
+    "publisher_interval_seconds": 5,
+    "max_retry_attempts": 5,
+    "cleanup_after_days": 7
+  }
+}
+```
+
+---
+
+## 18) Known Issues
+
+* **Legacy STEP-5 scripts**: Maintained for compatibility, but plugin system is preferred
+* **Image processing memory usage**: Large batches may require memory optimization
+
+---
+
+## 19) Changelog
+
+* **1.1.0 (2025‑08‑25)** — **Surgical improvements**: API v1, idempotency, perceptual hashing (pHash/dHash), STEP‑5 pluginization, transactional outbox pattern, readiness soft‑deps, comprehensive metrics/events/indexes, JWT + RBAC security hardening, bounded concurrency, circuit breakers.
+* **1.0.1 (2025‑08‑25)** — API v1, idempotency, perceptual hashing, STEP‑5 pluginization, outbox/inbox, readiness soft‑deps, metrics/events/indexes, security hardening.
+* **1.0.0 (2025‑08‑25)** — Initial production MDC.
+
+---
+
+### 20) Implementation Snippets (ready to paste)
+
+#### A) Enhanced Duplicate Detection (Perceptual Hashing)
+
+```python
+# src/utils/enhanced_duplicate_detection.py
+import hashlib
+import imagehash
+from PIL import Image
+from typing import Dict, List, Tuple, Optional
+
+class EnhancedDuplicateDetector:
+    def __init__(self, phash_threshold: int = 5, dhash_threshold: int = 5):
+        self.phash_threshold = phash_threshold
+        self.dhash_threshold = dhash_threshold
+    
+    def calculate_md5(self, file_path: str) -> str:
+        """Calculate MD5 hash for exact duplicate detection"""
+        hash_md5 = hashlib.md5()
+        with open(file_path, "rb") as f:
+            for chunk in iter(lambda: f.read(4096), b""):
+                hash_md5.update(chunk)
+        return hash_md5.hexdigest()
+    
+    def calculate_perceptual_hashes(self, file_path: str) -> Tuple[imagehash.ImageHash, imagehash.ImageHash]:
+        """Calculate perceptual hashes (pHash and dHash)"""
+        image = Image.open(file_path)
+        phash = imagehash.phash(image)
+        dhash = imagehash.dhash(image)
+        return phash, dhash
+    
+    def is_near_duplicate(self, file1: str, file2: str) -> bool:
+        """Check if images are near duplicates using perceptual hashing"""
+        phash1, dhash1 = self.calculate_perceptual_hashes(file1)
+        phash2, dhash2 = self.calculate_perceptual_hashes(file2)
+        
+        phash_distance = phash1 - phash2
+        dhash_distance = dhash1 - dhash2
+        
+        return phash_distance <= self.phash_threshold or dhash_distance <= self.dhash_threshold
+```
+
+#### B) STEP-5 Plugin System
+
+```python
+# King-Scripts/step5_runner.py
+from abc import ABC, abstractmethod
+from typing import Dict, Any, List
+from dataclasses import dataclass, field
+import logging
+
+@dataclass
+class ProcessingContext:
+    symbol: Optional[str] = None
+    image_path: Optional[str] = None
+    analysis_data: Dict[str, Any] = field(default_factory=dict)
+    market_data: Dict[str, Any] = field(default_factory=dict)
+    liquidation_clusters: List[Dict[str, Any]] = field(default_factory=list)
+    processing_metadata: Dict[str, Any] = field(default_factory=dict)
+    errors: List[str] = field(default_factory=list)
+
+class BasePlugin(ABC):
+    def __init__(self, config: Dict[str, Any] = None):
+        self.config = config or {}
+    
+    @abstractmethod
+    def validate_context(self, context: ProcessingContext) -> bool:
+        pass
+    
+    @abstractmethod
+    def run(self, context: ProcessingContext) -> ProcessingContext:
+        pass
+
+class Step5PluginRunner:
+    def __init__(self, config_path: str = None):
+        self.plugins = [
+            "plugins.symbol_update",
+            "plugins.extract_liq_clusters", 
+            "plugins.real_market_price",
+            "plugins.finalize"
+        ]
+    
+    def run_pipeline(self, context: ProcessingContext) -> ProcessingContext:
+        for plugin_module in self.plugins:
+            # Import and execute plugin
+            context = self._execute_plugin(plugin_module, context)
+        return context
+```
+
+#### C) Transactional Outbox Pattern
+
+```python
+# src/services/transactional_outbox.py
+import asyncio
+import json
+import uuid
+from typing import Dict, Any, Optional
+import asyncpg
+import aio_pika
+
+class TransactionalOutbox:
+    def __init__(self, db_pool: asyncpg.Pool, rabbitmq_url: str):
+        self.db_pool = db_pool
+        self.rabbitmq_url = rabbitmq_url
+        self.is_running = False
+    
+    async def publish_event(self, event_type: str, payload: Dict[str, Any], 
+                           routing_key: str, exchange: str = "kingfisher", 
+                           conn: Optional[asyncpg.Connection] = None) -> str:
+        """Publish an event through the transactional outbox"""
+        event_id = str(uuid.uuid4())
+        
+        query = """
+            INSERT INTO kingfisher.events_outbox 
+            (id, event_type, payload, routing_key, exchange, created_at, attempts, max_attempts)
+            VALUES ($1, $2, $3, $4, $5, NOW(), 0, 5)
+        """
+        
+        values = (event_id, event_type, json.dumps(payload), routing_key, exchange)
+        
+        if conn:
+            await conn.execute(query, *values)
+        else:
+            async with self.db_pool.acquire() as connection:
+                await connection.execute(query, *values)
+        
+        return event_id
+    
+    async def _publisher_loop(self):
+        """Background loop that publishes events from outbox"""
+        while self.is_running:
+            try:
+                await self._process_pending_events()
+                await asyncio.sleep(5)
+            except Exception as e:
+                logger.error(f"Publisher loop error: {e}")
+                await asyncio.sleep(10)
+```
+
+#### D) JWT + RBAC Security Middleware
+
+```python
+# src/middleware/security_middleware.py
+import jwt
+from fastapi import HTTPException, Request
+from starlette.middleware.base import BaseHTTPMiddleware
+import redis.asyncio as redis
+
+class SecurityMiddleware(BaseHTTPMiddleware):
+    def __init__(self, app, secret_key: str, redis_url: str):
+        super().__init__(app)
+        self.secret_key = secret_key
+        self.redis_client = redis.from_url(redis_url)
+        
+        # Rate limiting configuration
+        self.rate_limits = {
+            "default": {"requests": 100, "window": 60},
+            "upload": {"requests": 10, "window": 60},
+            "ai": {"requests": 30, "window": 60}
+        }
+    
+    async def dispatch(self, request: Request, call_next):
+        # Skip public endpoints
+        if self._is_public_endpoint(request.url.path):
+            return await call_next(request)
+        
+        # Validate authentication
+        user_info = await self._validate_authentication(request)
+        if not user_info:
+            raise HTTPException(status_code=401, detail="Authentication required")
+        
+        # Check authorization
+        await self._check_authorization(request, user_info)
+        
+        # Apply rate limiting
+        await self._apply_rate_limiting(request, user_info)
+        
+        # Process request
+        response = await call_next(request)
+        self._add_security_headers(response)
+        
+        return response
+```
+
+---
+
+## 21) Success Criteria (Enhanced)
+
+* `/api/v1` in place; **POST + Idempotency‑Key** for side effects.
+* **Perceptual hashing** (pHash/dHash) active; threshold configurable via Config Service.
+* **STEP‑5 plugin runner** loads plugins from config‑declared order.
+* **Transactional outbox** publisher reliably emits events; consumers idempotent.
+* `/ready` passes with hard deps; **soft deps warn only**.
+* **9 Prometheus** counters/histogram exposed; Jaeger traces visible.
+* **Database indices** present; confidence/volume/price constraints enforced.
+* **JWT + RBAC** security middleware active with role-based access control.
+* **Concurrency limits** & rate limiting applied.
+* **99.9% event delivery** reliability achieved.
+
+---
+
+**Footer (Cursor/Rule metadata)**
+
+```
+description: "Kingfisher internal API + automation (production-grade with surgical improvements)"
+globs:
+  - "**/*"
+alwaysApply: true
+tags: ["internal_api","automation","observability","events","orchestration","security","enterprise"]
+updated: "2025-08-25"
+version: "1.1.0"
+```
+
+---

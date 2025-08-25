@@ -63,3 +63,8 @@ Cryptometer API integration service providing real-time market data, technical i
 
 ## Status
 ✅ **ACTIVE** - Core market data service with comprehensive API integration
+
+description:
+globs:
+alwaysApply: true
+---
