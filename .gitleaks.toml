@@ -52,6 +52,7 @@ tags = ["exclude", "zmartbot"]
 description = "ZmartBot Allowlist"
 paths = [
     ".*\\.md$",
+    ".*\\.mdc$",
     ".*\\.txt$",
     ".*\\.json$",
     ".*\\.yml$",
