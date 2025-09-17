@@ -1,0 +1,185 @@
+[
+  {
+    "symbol": "BTC",
+    "price": 115876.88,
+    "risk_value": 0.558,
+    "risk_zone": "Mid Risk",
+    "source": "intothecryptoverse",
+    "timestamp": "2025-09-14T16:00:00Z"
+  },
+  {
+    "symbol": "BTC",
+    "price": 172397.08,
+    "risk_value": 0.675,
+    "table": "Key Risks",
+    "source": "intothecryptoverse"
+  },
+  {
+    "symbol": "BTC",
+    "price": 177706.08,
+    "risk_value": 0.68,
+    "table": "Key Risks",
+    "source": "intothecryptoverse"
+  },
+  {
+    "symbol": "BTC",
+    "price": 183265.08,
+    "risk_value": 0.685,
+    "table": "Key Risks",
+    "source": "intothecryptoverse"
+  },
+  {
+    "symbol": "BTC",
+    "price": 189089.08,
+    "risk_value": 0.69,
+    "table": "Key Risks",
+    "source": "intothecryptoverse"
+  },
+  {
+    "symbol": "BTC",
+    "price": 195195.08,
+    "risk_value": 0.695,
+    "table": "Key Risks",
+    "source": "intothecryptoverse"
+  },
+  {
+    "symbol": "BTC",
+    "price": 183876.08,
+    "risk_value": 0.555,
+    "table": "Key Risks",
+    "source": "intothecryptoverse"
+  },
+  {
+    "symbol": "BTC",
+    "price": 118618.88,
+    "risk_value": 0.56,
+    "table": "Key Risks",
+    "source": "intothecryptoverse"
+  },
+  {
+    "symbol": "BTC",
+    "price": 121476.08,
+    "risk_value": 0.565,
+    "table": "Key Risks",
+    "source": "intothecryptoverse"
+  },
+  {
+    "symbol": "BTC",
+    "price": 124477.08,
+    "risk_value": 0.57,
+    "table": "Key Risks",
+    "source": "intothecryptoverse"
+  },
+  {
+    "symbol": "BTC",
+    "price": 127631.08,
+    "risk_value": 0.575,
+    "table": "Key Risks",
+    "source": "intothecryptoverse"
+  },
+  {
+    "symbol": "BTC",
+    "price": 118376.88,
+    "risk_value": 0.58,
+    "table": "Key Risks",
+    "source": "intothecryptoverse"
+  },
+  {
+    "symbol": "BTC",
+    "price": 139375.08,
+    "risk_value": 0.605,
+    "table": "Key Risks",
+    "source": "intothecryptoverse"
+  },
+  {
+    "symbol": "BTC",
+    "price": 147620.08,
+    "risk_value": 0.62,
+    "table": "Key Risks",
+    "source": "intothecryptoverse"
+  },
+  {
+    "symbol": "BTC",
+    "price": 156646.08,
+    "risk_value": 0.635,
+    "table": "Key Risks",
+    "source": "intothecryptoverse"
+  },
+  {
+    "symbol": "ETH",
+    "price": 4637,
+    "risk_value": 0.452,
+    "table": "Fiat Risks",
+    "source": "intothecryptoverse"
+  },
+  {
+    "symbol": "SOL",
+    "price": 238.88,
+    "risk_value": 0.511,
+    "table": "Fiat Risks",
+    "source": "intothecryptoverse"
+  },
+  {
+    "symbol": "ADA",
+    "price": 1.18,
+    "risk_value": 0.482,
+    "table": "Fiat Risks",
+    "source": "intothecryptoverse"
+  },
+  {
+    "symbol": "AVAX",
+    "price": 56.88,
+    "risk_value": 0.511,
+    "table": "Fiat Risks",
+    "source": "intothecryptoverse"
+  },
+  {
+    "symbol": "DOT",
+    "price": 10.88,
+    "risk_value": 0.452,
+    "table": "Fiat Risks",
+    "source": "intothecryptoverse"
+  },
+  {
+    "symbol": "MATIC",
+    "price": 0.887,
+    "risk_value": 0.547,
+    "table": "Fiat Risks",
+    "source": "intothecryptoverse"
+  },
+  {
+    "symbol": "LINK",
+    "price": 25.88,
+    "risk_value": 0.565,
+    "table": "Fiat Risks",
+    "source": "intothecryptoverse"
+  },
+  {
+    "symbol": "UNI",
+    "price": 15.88,
+    "risk_value": 0.508,
+    "table": "Fiat Risks",
+    "source": "intothecryptoverse"
+  },
+  {
+    "symbol": "ATOM",
+    "price": 10.88,
+    "risk_value": 0.43,
+    "table": "Fiat Risks",
+    "source": "intothecryptoverse"
+  },
+  {
+    "symbol": "FTM",
+    "price": 1.388,
+    "risk_value": 0.612,
+    "table": "Fiat Risks",
+    "source": "intothecryptoverse"
+  },
+  {
+    "symbol": "ALGO",
+    "price": 0.498,
+    "risk_value": 0.627,
+    "table": "Fiat Risks",
+    "source": "intothecryptoverse"
+  }
+]

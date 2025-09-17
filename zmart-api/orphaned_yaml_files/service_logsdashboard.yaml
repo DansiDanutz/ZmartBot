@@ -1,0 +1,30 @@
+service_name: logsdashboard
+service_type: frontend
+version: 1.0.0
+owner: zmartbot
+description: Ultimate log intelligence dashboard - ServiceLog integration
+port: 3100
+passport_id: ZMBT-LOG-20250831-N8O9P1
+status: ACTIVE
+registered_at: '2025-08-31'
+health_url: http://localhost:3100/health
+start_cmd: python3 logsdashboard_server.py --port 3100
+stop_cmd: pkill -f 'logsdashboard_server.py'
+dependencies:
+- zmart-api
+tags:
+- frontend
+- logsdashboard
+lifecycle:
+  startup_grace_seconds: 30
+  shutdown_timeout_seconds: 15
+  health_check_interval: 30
+monitoring:
+  metrics_endpoint: /metrics
+  logs_path: logs/logsdashboard.log
+  dashboard_url: http://localhost:3100/dashboard
+security:
+  cors_enabled: true
+  token_required: false
+  scopes:
+  - frontend

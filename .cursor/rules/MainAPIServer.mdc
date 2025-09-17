@@ -1,0 +1,296 @@
+# 🚀 Main API Server - Zmart Trading Bot Platform Core
+> Type: backend | Version: 1.0.0 | Owner: zmartbot | Port: 8000
+
+
+## Purpose
+FastAPI-based core API server for the Zmart Trading Bot Platform, providing comprehensive trading capabilities, AI-powered signal processing, orchestration management, and complete cryptocurrency trading infrastructure with advanced security and monitoring.
+
+## Description
+FastAPI-based core API server for the Zmart Trading Bot Platform, providing comprehensive trading...
+
+## Overview
+ZmartBot Main API Server serving as the central backend hub for all trading operations, AI analysis, real-time market data, orchestration control, and comprehensive trading platform functionality with enterprise-grade security and performance.
+
+## Critical Functions
+- **Comprehensive Trading Platform**: Complete cryptocurrency trading infrastructure
+- **AI-Powered Signal Processing**: Advanced signal analysis and trading recommendations
+- **Orchestration Management**: Central orchestration agent coordination and lifecycle management
+- **Real-time Market Data**: Live market data feeds, WebSocket connections, and price monitoring
+- **Advanced Security**: Enterprise-grade security with rate limiting, CORS, and trusted host management
+- **Database Orchestration**: Complete database lifecycle and connection management
+- **Position Lifecycle Management**: Advanced position monitoring and lifecycle orchestration
+- **Multi-Exchange Integration**: Binance, KuCoin, and other exchange integrations
+- **Comprehensive API Coverage**: 40+ API route modules with specialized trading functionality
+
+## Architecture & Integration
+- **Service Type:** backend
+- **Dependencies:** Database systems, External APIs (Binance, etc.), Orchestration agents
+- **Env Vars:** HOST, PORT, DEBUG, CORS_ORIGINS, ALLOWED_HOSTS, Database URLs
+- **Lifecycle:** start=`uvicorn main:app --host 0.0.0.0 --port 8000` | stop=`pkill -f main:app` | migrate=`alembic upgrade head`
+
+## Architecture Components
+- **FastAPI Core**: High-performance async API framework with comprehensive middleware stack
+- **Security Layer**: Multi-layered security with headers, rate limiting, CORS, and trusted hosts
+- **Database Layer**: Advanced database management with connection pooling and lifecycle management
+- **Orchestration Layer**: Central orchestration agent integration and management
+- **WebSocket Layer**: Real-time communication for live data feeds and notifications
+- **Exception Handling**: Comprehensive error handling with structured error responses
+- **Middleware Stack**: Logging, security headers, CORS, trusted hosts, and rate limiting
+
+## Key Features
+- **Advanced Trading Capabilities**: Complete trading infrastructure with position management
+- **AI-Powered Analysis**: Multi-model AI analysis, sentiment processing, and signal generation
+- **Real-time Data Processing**: Live market data, WebSocket feeds, and real-time analytics
+- **Comprehensive Security**: Enterprise security with rate limiting, CORS, and header management
+- **Database Orchestration**: Advanced database lifecycle management and optimization
+- **Multi-Exchange Support**: Binance, KuCoin, and extensible exchange integration
+- **Scalable Architecture**: Async processing with connection pooling and optimization
+- **Monitoring & Observability**: Comprehensive health checks, metrics, and logging
+
+## API Route Modules (40+ Modules)
+### Core Infrastructure
+- **Health**: `/api/v1/health` - Comprehensive health monitoring
+- **Additional Health**: `/api/v1/additional-health` - Extended health checks
+- **Authentication**: `/api/v1/auth` - User authentication and authorization
+- **Monitoring**: `/api/v1/monitoring` - System monitoring and metrics
+
+### Trading & Signals
+- **Trading**: `/api/v1/trading` - Core trading operations and management
+- **Signals**: `/api/v1/signals` - Trading signal processing and analysis
+- **Additional Signals**: `/api/v1/additional-signals` - Extended signal processing
+- **Unified Trading**: Advanced unified trading system
+- **Position Management**: Comprehensive position lifecycle management
+- **Vault Trading**: Vault-based trading system with advanced features
+- **Vault Management**: Complete vault management infrastructure
+- **Trading Center**: Trading center with 80% win rate filtering
+
+### AI & Analysis
+- **AI Analysis**: `/api/v1/ai-analysis` - Core AI analysis capabilities
+- **Learning AI Analysis**: `/api/v1/learning-ai-analysis` - Advanced learning AI systems
+- **Historical Analysis**: `/api/v1/historical-analysis` - Historical data analysis
+- **Multi-Model Analysis**: `/api/v1/multi-model-analysis` - Multi-model AI processing
+- **Professional Analysis**: `/api/v1/professional-analysis` - Professional-grade analysis
+- **Unified Analysis**: `/api/v1/unified` - Ultimate unified analysis agent
+- **Master Pattern Analysis**: Advanced pattern recognition and analysis
+- **Sentiment Analysis**: Grok-X powered sentiment analysis
+
+### Market Data & Exchanges
+- **Market Data**: Real-time market data aggregation and processing
+- **Binance**: `/api/v1/binance` - Binance exchange integration
+- **Real-time Prices**: Live price feeds and monitoring
+- **Futures Symbols**: Futures trading symbol management
+- **Cryptometer**: Market sentiment and cryptocurrency analysis
+- **Unified Cryptometer**: `/api/v1/unified-cryptometer` - Advanced market analysis
+
+### Risk Management & Scoring
+- **RiskMetric**: Benjamin Cowen RiskMetric implementation
+- **Coefficient**: DBI Coefficient calculations and analysis
+- **Risk Bands**: Advanced risk band analysis and management
+- **Unified Scoring**: Comprehensive scoring system integration
+- **RiskMatrix Grid**: Complete Google Sheets integration for risk management
+- **RiskMetric Monitoring**: Real-time risk metric monitoring and alerting
+
+### Symbols & Data Management
+- **My Symbols**: `/api/v1/my-symbols` - Personal symbol management
+- **Symbols**: Comprehensive symbols database management
+- **Symbol Price History**: `/api/v1/symbol-price-history` - Historical price data management
+- **Score Tracking**: Advanced score tracking and database management
+
+### Advanced Features
+- **Agents**: `/api/v1/agents` - AI agent management and orchestration
+- **WebSocket**: Real-time WebSocket connections for live data
+- **WebSocket Risk**: Real-time risk monitoring via WebSocket
+- **Charting**: `/api/v1/charting` - Advanced charting capabilities
+- **Explainability**: `/api/v1/explainability` - AI explainability features
+- **Analytics**: `/api/v1/analytics` - Comprehensive analytics processing
+- **Blockchain**: `/api/v1/blockchain` - Blockchain integration and analysis
+- **Grok-X**: `/api/v1/grok-x` - Advanced Grok-X integration
+
+### Alert & Notification Systems
+- **ChatGPT Alerts**: AI-powered alert generation system
+- **Alerts**: Professional trading alert management
+- **Signal Center**: Unified signal processing and management center
+
+### Quality Assurance & Updates
+- **Cryptometer QA**: High-quality cryptometer data validation
+- **Unified QA**: Master teacher agent for quality assurance
+- **Daily Updater**: `/api/v1/daily-updater` - Automated daily data updates
+
+## Core API Endpoints
+
+### GET /health
+- Summary: Main API server health check
+- Auth Required: No
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: Health status with service info, version, and timestamp
+  - 503: Service unavailable
+
+### Application Lifespan Management
+- **Startup Sequence**: Database initialization → Monitoring setup → Orchestration agent startup → Position orchestrator initialization
+- **Shutdown Sequence**: Position orchestrator shutdown → Orchestration agent cleanup → Database connection cleanup
+- **Health Monitoring**: Continuous health checks for all subsystems
+- **Error Recovery**: Graceful error handling with system recovery capabilities
+
+## Security Features
+- **Security Headers Middleware**: Comprehensive security headers for all responses
+- **Rate Limiting**: Advanced rate limiting with configurable thresholds
+- **CORS Management**: Secure cross-origin resource sharing configuration
+- **Trusted Host Middleware**: Host validation and security enforcement
+- **Request/Response Logging**: Comprehensive request and response logging
+- **Exception Handling**: Structured error responses with security considerations
+
+## Database Integration
+- **Connection Management**: Advanced database connection pooling and lifecycle management
+- **Multi-Database Support**: Support for multiple database systems and configurations
+- **Connection Monitoring**: Real-time database connection health monitoring
+- **Automatic Recovery**: Database connection recovery and failover capabilities
+- **Performance Optimization**: Query optimization and connection pool tuning
+
+## Orchestration Agent Integration
+- **Central Orchestration**: Integration with master orchestration agent
+- **Service Lifecycle**: Complete service lifecycle management through orchestration
+- **Health Monitoring**: Orchestration-based health monitoring and alerting
+- **Automatic Recovery**: Orchestration-driven automatic service recovery
+- **Dependency Management**: Service dependency resolution and management
+
+## Position Lifecycle Orchestrator
+- **Position Monitoring**: Continuous position lifecycle monitoring
+- **Automated Management**: Automated position management and optimization
+- **Risk Management**: Position-based risk management and alerting
+- **Performance Tracking**: Position performance monitoring and analysis
+- **Lifecycle Events**: Complete position lifecycle event tracking
+
+## WebSocket Integration
+- **Real-time Data**: Live market data feeds via WebSocket connections
+- **Risk Monitoring**: Real-time risk monitoring and alerting
+- **Position Updates**: Live position updates and notifications
+- **Market Alerts**: Real-time market alert delivery
+- **Client Notifications**: Comprehensive client notification system
+
+
+## Triggers
+- **API endpoint requests**
+- **Database events**
+- **Workflow transitions**
+
+## Health & Readiness
+- Liveness: `/health`
+- Readiness: Complete startup sequence validation
+- Timeouts: startup_grace=60s, http_timeout=30s
+- Health Monitoring: Multi-layer health checks including database, orchestration, and external services
+
+## Observability
+- Metrics: Comprehensive API metrics, database performance, orchestration status
+- Logs: Structured logging with request/response tracking and error analysis
+- Dashboards: API Performance, Trading Analytics, Risk Management, System Health
+- Alerting: Real-time alerting for system health and trading events
+
+## Performance Optimization
+- **Async Processing**: Full async/await implementation for optimal performance
+- **Connection Pooling**: Database and external API connection pooling
+- **Caching Strategy**: Intelligent caching for frequently accessed data
+- **Resource Management**: Efficient resource allocation and cleanup
+- **Load Balancing**: Prepared for horizontal scaling and load distribution
+
+## Error Handling & Recovery
+- **Structured Error Responses**: Consistent error response format across all endpoints
+- **Graceful Degradation**: Service continues operation with reduced functionality during failures
+- **Automatic Recovery**: Self-healing capabilities for common failure scenarios
+- **Error Tracking**: Comprehensive error logging and analysis
+- **Circuit Breaker**: Protection against cascading failures
+
+## Integration Points
+- **External Exchanges**: Binance, KuCoin, and extensible exchange integration
+- **Database Systems**: Multi-database support with connection management
+- **AI Services**: Integration with multiple AI analysis services
+- **Orchestration System**: Central orchestration agent coordination
+- **WebSocket Clients**: Real-time client communication and data delivery
+- **Alert Systems**: Integration with multiple alert and notification systems
+
+## Configuration Management
+- **Environment Variables**: Comprehensive environment-based configuration
+- **Security Settings**: Configurable security parameters and policies
+- **Database Configuration**: Multi-database configuration with failover
+- **API Rate Limits**: Configurable rate limiting per endpoint
+- **CORS Settings**: Flexible CORS configuration for frontend integration
+- **Logging Configuration**: Configurable logging levels and destinations
+
+## Orchestration & Ordering
+- Basic Integration: Enabled
+- Master Agent Linked: Yes
+- Ordering Hints: database → main-api → orchestration-agents
+- Startup Dependencies: Database systems, external API connectivity
+
+## Performance & SLO
+- Baseline p95 (ms): 100
+- Database Query Performance: <50ms
+- External API Calls: <1000ms
+- WebSocket Response: <10ms
+- Notes: High-performance trading API with comprehensive feature set
+
+## Failure Modes & Runbooks
+- **database-connection-failed** — Symptoms: Database errors, connection timeouts — Remediation: Check database connectivity, restart connections, verify credentials
+- **orchestration-agent-failed** — Symptoms: Orchestration errors, service management issues — Remediation: Restart orchestration agent, verify service registry, check dependencies
+- **external-api-timeout** — Symptoms: Exchange API timeouts, data feed interruption — Remediation: Check external API status, verify credentials, implement fallback data sources
+- **position-orchestrator-failed** — Symptoms: Position management errors, lifecycle issues — Remediation: Restart position orchestrator, verify database connections, check position data integrity
+- **websocket-connection-lost** — Symptoms: Real-time data interruption, client disconnections — Remediation: Restart WebSocket service, check network connectivity, verify client connections
+
+## Rollback
+- Snapshot required: Yes (Database state)
+- Playbook: stop_services → restore_database_snapshot → restart_services → verify_functionality → update_orchestration
+
+## Load Balancing
+- Enabled: Prepared for horizontal scaling
+- Pool: Single instance with scaling capability
+- Strategy: Round-robin with health checks
+
+## Status
+✅ **ACTIVE** - Core trading platform API with comprehensive functionality and enterprise-grade features
+
+## Changelog
+- 1.0.0 (2025-08-25): Complete main API server with 40+ route modules, orchestration integration, and comprehensive trading platform functionality
+
+
+
+
+## Service Connections & Dependencies
+
+### Current Active Connections
+- **port-8000** ✅ **ACTIVE** - network connection
+- ****** ✅ **ACTIVE** - dependency connection
+- **External** ✅ **ACTIVE** - dependency connection
+- **etc.** ✅ **ACTIVE** - dependency connection
+- **Orchestration** ✅ **ACTIVE** - dependency connection
+- **Database** ✅ **ACTIVE** - dependency connection
+- **external** ✅ **ACTIVE** - dependency connection
+
+### Potential Connections
+- **market_data_enhanced_database** ⏳ **POTENTIAL** - High-potential integration between MainAPIServer and market_data_enhanced_database - Strong synergy opportunity (Confidence: 100%)
+- **21indicatorsDatabase** ⏳ **POTENTIAL** - High-potential integration between MainAPIServer and 21indicatorsDatabase - Strong synergy opportunity (Confidence: 100%)
+- **MySymbolsDatabase** ⏳ **POTENTIAL** - High-potential integration between MainAPIServer and MySymbolsDatabase - Strong synergy opportunity (Confidence: 100%)
+- **api-keys-manager-service** ⏳ **POTENTIAL** - High-potential integration between MainAPIServer and api-keys-manager-service - Strong synergy opportunity (Confidence: 100%)
+- **kingfisher-api** ⏳ **POTENTIAL** - High-potential integration between MainAPIServer and kingfisher-api - Strong synergy opportunity (Confidence: 100%)
+
+### Priority Connections
+- **optimization-target-4** 🔥 **PRIORITY #4** - Top #4 priority for system optimization - Score: 1.90 - Score: 1.00
+  - **Optimization Impact**: 0.90
+  - **Priority Score**: 0.50
+
+### Connection Summary
+- **Current Active**: 7
+- **Potential**: 5  
+- **Priority**: 1
+- **Total Discovered**: 13
+- **Last Discovery Scan**: Auto-updated on system initialization
+- **Discovery Method**: Multi-phase automated analysis with diamond pattern extraction
+- **Update Policy**: Real-time updates during workflow execution
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Database connectivity**
+- ✅ **Health endpoint implementation**
+- ✅ **Master Orchestration integration**

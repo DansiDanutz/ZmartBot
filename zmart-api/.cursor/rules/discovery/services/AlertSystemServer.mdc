@@ -1,0 +1,368 @@
+# Alertsystemserver - Merged MDC Configuration
+
+## 🔗 Merged from 2 duplicate files
+**Merged Files**: AlertSystemServer.mdc, alert_system_server.mdc
+**Merge Date**: 2025-08-27 10:39:58
+**Primary Source**: AlertSystemServer.mdc
+
+## 📋 Primary Configuration
+# Alertsystemserver - Merged MDC Configuration
+
+## 🔗 Merged from 2 duplicate files
+**Merged Files**: AlertSystemServer.mdc, alert_system_server.mdc
+**Merge Date**: 2025-08-26 09:03:52
+**Primary Source**: AlertSystemServer.mdc
+
+## 📋 Primary Configuration
+# AlertSystemServer.mdc
+
+## Purpose
+Real-time alerting and notification service for ZmartBot trading system, providing comprehensive alert management and monitoring capabilities.
+
+## Core Functions
+- **Alert Management**: Create, list, and manage trading alerts
+- **System Monitoring**: Health checks and observability endpoints
+- **Real-time Notifications**: Process and distribute alerts across the system
+- **Performance Tracking**: Monitor alert success rates and delivery metrics
+
+## Service Architecture
+- **Service Name**: zmart-alert-system
+- **Default Port**: 8012
+- **Host**: 127.0.0.1
+- **Protocol**: HTTP/FastAPI
+- **Version**: 1.0.0
+
+## API Endpoints
+
+### Health & Monitoring
+- `GET /health` - Liveness probe endpoint
+- `GET /ready` - Readiness probe endpoint  
+- `GET /metrics` - Service metrics and observability data
+
+### Alert System Operations
+- `GET /api/v1/alerts/system/status` - Get alert system status
+- `GET /api/v1/alerts/system/list` - List all active alerts
+- `POST /api/v1/alerts/system/create` - Create new alert
+
+## Key Features
+- **CORS Support**: Full cross-origin request support
+- **Alert Types**: Price alerts, technical alerts, volume alerts
+- **Status Tracking**: Active/inactive alert status management
+- **Performance Metrics**: Success rate monitoring (95% target)
+- **Real-time Processing**: Immediate alert creation and processing
+
+## Dependencies
+- FastAPI for web framework
+- uvicorn for ASGI server
+- Standard logging infrastructure
+- ZmartBot core system integration
+
+## Service Registry Integration
+- **Service ID**: zmart-alert-system
+- **Health Check**: /health endpoint
+- **Metrics Export**: /metrics endpoint
+- **Auto-discovery**: Kubernetes service discovery compatible
+
+## Configuration
+```python
+SERVICE_CONFIG = {
+    "name": "zmart-alert-system",
+    "port": 8012,
+    "host": "127.0.0.1",
+    "version": "1.0.0"
+}
+```
+
+## Monitoring & Observability
+- **Active Alerts**: Current count of active alerts
+- **Alerts Sent**: Total alerts processed
+- **Success Rate**: Alert delivery success percentage
+- **Health Status**: Service availability monitoring
+
+
+
+## Service Connections & Dependencies
+
+### Current Active Connections
+- **unknown** ✅ **ACTIVE** - Service connection
+- **unknown** ✅ **ACTIVE** - Service connection
+- **unknown** ✅ **ACTIVE** - Service connection
+- **unknown** ✅ **ACTIVE** - Service connection
+- **unknown** ✅ **ACTIVE** - Service connection
+- **unknown** ✅ **ACTIVE** - Service connection
+- **unknown** ✅ **ACTIVE** - Service connection
+- **unknown** ✅ **ACTIVE** - Service connection
+- **unknown** ✅ **ACTIVE** - Service connection
+- **unknown** ✅ **ACTIVE** - Service connection
+- **unknown** ✅ **ACTIVE** - Service connection
+- **unknown** ✅ **ACTIVE** - Service connection
+
+### Potential Connections
+- **zmart-alert-system** ⏳ **POTENTIAL** - High-potential integration between AlertSystemServer and zmart-alert-system - Strong synergy opportunity (Confidence: 100%)
+- **notification_server** ⏳ **POTENTIAL** - High-potential integration between AlertSystemServer and notification_server - Strong synergy opportunity (Confidence: 100%)
+- **MonitoringMDC** ⏳ **POTENTIAL** - High-potential integration between AlertSystemServer and MonitoringMDC - Strong synergy opportunity (Confidence: 100%)
+- **alert_system_server** ⏳ **POTENTIAL** - High-potential integration between AlertSystemServer and alert_system_server - Strong synergy opportunity (Confidence: 100%)
+- **LiveAlerts** ⏳ **POTENTIAL** - High-potential integration between AlertSystemServer and LiveAlerts - Strong synergy opportunity (Confidence: 100%)
+
+### Priority Connections
+*Will be populated automatically during Phase 4 if service qualifies for top 10 priority services*
+
+### Connection Summary
+- **Current Active**: 12
+- **Potential**: 5  
+- **Priority**: 0
+- **Total Discovered**: 12
+- **Last Discovery Scan**: Auto-updated on system initialization
+- **Discovery Method**: Multi-phase automated analysis with diamond pattern extraction
+- **Update Policy**: Real-time updates during workflow execution
+## Error Handling
+- Comprehensive exception handling
+- Service unavailability responses
+- Alert creation failure recovery
+- Health check failure detection
+
+## Usage Example
+```bash
+# Start Alert System Service
+python alert_system_server.py --port 8012 --host 127.0.0.1
+
+# Create price alert
+curl -X POST http://127.0.0.1:8012/api/v1/alerts/system/create \
+  -H "Content-Type: application/json" \
+  -d '{"symbol": "BTCUSDT", "type": "price_alert", "threshold": 70000}'
+```
+
+## Security Features
+- CORS middleware with configurable origins
+- Input validation on alert creation
+- Service-level authentication ready
+- Request logging and audit trails
+
+## Performance Characteristics
+- **Startup Time**: < 5 seconds
+- **Response Time**: < 100ms for health checks
+- **Throughput**: 1000+ alerts/minute capacity
+- **Memory Usage**: < 100MB baseline
+
+## Deployment Requirements
+- Python 3.8+
+- FastAPI framework
+- uvicorn ASGI server
+- Network access to port 8012
+- ZmartBot database connectivity
+
+## 📄 Additional Content from alert_system_server.mdc
+# alert_system_server.mdc
+> Type: backend | Version: 1.0.0 | Owner: zmartbot | Port: 8012
+
+## Purpose
+ZmartBot Alert System Service
+Real-time alerting and notification service
+
+## Overview
+Auto-discovered service managed by MDC-Dashboard system. This service was identified during automated system scanning and requires manual review and enhancement.
+
+## Critical Functions
+- Auto-discovered service functionality (requires manual documentation)
+- Service integration with ZmartBot ecosystem
+
+## Architecture & Integration
+- **Service Type:** backend
+- **Dependencies:** To be determined
+- **Env Vars:** To be determined  
+- **Lifecycle:** start=`python3 /Users/dansidanutz/Desktop/ZmartBot/zmart-api/alert_system/alert_system_server.py.py` | stop=`pkill -f alert_system_server` | migrate=`n/a`
+
+## API Endpoints
+*Endpoints to be documented during manual review*
+
+## Health & Readiness
+- Liveness: To be configured
+- Readiness: To be configured
+- Timeouts: startup_grace=30s, http_timeout=30s
+
+## Observability
+- Metrics: To be configured
+- Logs: format=python-logging
+- Dashboards: To be created
+
+
+
+## Service Connections & Dependencies
+
+### Current Active Connections
+- **unknown** ✅ **ACTIVE** - Service connection
+- **unknown** ✅ **ACTIVE** - Service connection
+- **unknown** ✅ **ACTIVE** - Service connection
+- **unknown** ✅ **ACTIVE** - Service connection
+- **unknown** ✅ **ACTIVE** - Service connection
+- **unknown** ✅ **ACTIVE** - Service connection
+- **unknown** ✅ **ACTIVE** - Service connection
+- **unknown** ✅ **ACTIVE** - Service connection
+- **unknown** ✅ **ACTIVE** - Service connection
+- **unknown** ✅ **ACTIVE** - Service connection
+- **unknown** ✅ **ACTIVE** - Service connection
+- **unknown** ✅ **ACTIVE** - Service connection
+
+### Potential Connections
+- **zmart-alert-system** ⏳ **POTENTIAL** - High-potential integration between AlertSystemServer and zmart-alert-system - Strong synergy opportunity (Confidence: 100%)
+- **notification_server** ⏳ **POTENTIAL** - High-potential integration between AlertSystemServer and notification_server - Strong synergy opportunity (Confidence: 100%)
+- **MonitoringMDC** ⏳ **POTENTIAL** - High-potential integration between AlertSystemServer and MonitoringMDC - Strong synergy opportunity (Confidence: 100%)
+- **alert_system_server** ⏳ **POTENTIAL** - High-potential integration between AlertSystemServer and alert_system_server - Strong synergy opportunity (Confidence: 100%)
+- **LiveAlerts** ⏳ **POTENTIAL** - High-potential integration between AlertSystemServer and LiveAlerts - Strong synergy opportunity (Confidence: 100%)
+
+### Priority Connections
+*Will be populated automatically during Phase 4 if service qualifies for top 10 priority services*
+
+### Connection Summary
+- **Current Active**: 12
+- **Potential**: 5  
+- **Priority**: 0
+- **Total Discovered**: 12
+- **Last Discovery Scan**: Auto-updated on system initialization
+- **Discovery Method**: Multi-phase automated analysis with diamond pattern extraction
+- **Update Policy**: Real-time updates during workflow execution
+## Orchestration & Ordering
+- Basic Integration: Enabled
+- Master Agent Linked: No
+- Ordering Hints: To be determined
+
+## Performance & SLO
+- Baseline p95 (ms): To be measured
+- Notes: Auto-discovered service requiring performance baseline establishment
+
+## Failure Modes & Runbooks
+*To be documented during manual review*
+
+## Rollback
+- Snapshot required: To be determined
+- Playbook: To be determined
+
+## Load Balancing
+- Enabled: To be determined
+- Pool: To be determined
+
+## Known Issues
+- Auto-generated MDC file requiring manual review and enhancement
+- Service functionality and dependencies need documentation
+
+## Changelog
+- 1.0.0 (2025-08-26): Auto-discovered service, MDC file generated by MDC-Dashboard system
+
+---
+*Auto-generated by MDC-Dashboard orphan service discovery on 2025-08-26*
+description: Auto-discovered service requiring manual documentation
+globs: ["/Users/dansidanutz/Desktop/ZmartBot/zmart-api/alert_system/alert_system_server.py"]
+alwaysApply: true
+---
+
+---
+**Merge Summary**: Combined 2 files into unified MDC configuration
+**Generated**: 2025-08-26T09:03:52.860962
+
+## 📄 Additional Content from alert_system_server.mdc
+# alert_system_server.mdc
+> Type: backend | Version: 1.0.0 | Owner: zmartbot | Port: 8012
+
+## Purpose
+ZmartBot Alert System Service
+Real-time alerting and notification service
+
+## Overview
+Auto-discovered service managed by MDC-Dashboard system. This service was identified during automated system scanning and requires manual review and enhancement.
+
+## Critical Functions
+- Auto-discovered service functionality (requires manual documentation)
+- Service integration with ZmartBot ecosystem
+
+## Architecture & Integration
+- **Service Type:** backend
+- **Dependencies:** To be determined
+- **Env Vars:** To be determined  
+- **Lifecycle:** start=`python3 /Users/dansidanutz/Desktop/ZmartBot/zmart-api/alert_system/alert_system_server.py.py` | stop=`pkill -f alert_system_server` | migrate=`n/a`
+
+## API Endpoints
+*Endpoints to be documented during manual review*
+
+## Health & Readiness
+- Liveness: To be configured
+- Readiness: To be configured
+- Timeouts: startup_grace=30s, http_timeout=30s
+
+## Observability
+- Metrics: To be configured
+- Logs: format=python-logging
+- Dashboards: To be created
+
+
+
+## Service Connections & Dependencies
+
+### Current Active Connections
+- **unknown** ✅ **ACTIVE** - Service connection
+- **unknown** ✅ **ACTIVE** - Service connection
+- **unknown** ✅ **ACTIVE** - Service connection
+- **unknown** ✅ **ACTIVE** - Service connection
+- **unknown** ✅ **ACTIVE** - Service connection
+- **unknown** ✅ **ACTIVE** - Service connection
+- **unknown** ✅ **ACTIVE** - Service connection
+- **unknown** ✅ **ACTIVE** - Service connection
+- **unknown** ✅ **ACTIVE** - Service connection
+- **unknown** ✅ **ACTIVE** - Service connection
+- **unknown** ✅ **ACTIVE** - Service connection
+- **unknown** ✅ **ACTIVE** - Service connection
+
+### Potential Connections
+- **zmart-alert-system** ⏳ **POTENTIAL** - High-potential integration between alert_system_server and zmart-alert-system - Strong synergy opportunity (Confidence: 100%)
+- **AlertSystemServer** ⏳ **POTENTIAL** - High-potential integration between alert_system_server and AlertSystemServer - Strong synergy opportunity (Confidence: 100%)
+- **MonitoringMDC** ⏳ **POTENTIAL** - High-potential integration between alert_system_server and MonitoringMDC - Strong synergy opportunity (Confidence: 100%)
+- **LiveAlerts** ⏳ **POTENTIAL** - High-potential integration between alert_system_server and LiveAlerts - Strong synergy opportunity (Confidence: 100%)
+- **notification_server** ⏳ **POTENTIAL** - High-potential integration between alert_system_server and notification_server - Strong synergy opportunity (Confidence: 89%)
+
+### Priority Connections
+*Will be populated automatically during Phase 4 if service qualifies for top 10 priority services*
+
+### Connection Summary
+- **Current Active**: 12
+- **Potential**: 5  
+- **Priority**: 0
+- **Total Discovered**: 12
+- **Last Discovery Scan**: Auto-updated on system initialization
+- **Discovery Method**: Multi-phase automated analysis with diamond pattern extraction
+- **Update Policy**: Real-time updates during workflow execution
+## Orchestration & Ordering
+- Basic Integration: Enabled
+- Master Agent Linked: No
+- Ordering Hints: To be determined
+
+## Performance & SLO
+- Baseline p95 (ms): To be measured
+- Notes: Auto-discovered service requiring performance baseline establishment
+
+## Failure Modes & Runbooks
+*To be documented during manual review*
+
+## Rollback
+- Snapshot required: To be determined
+- Playbook: To be determined
+
+## Load Balancing
+- Enabled: To be determined
+- Pool: To be determined
+
+## Known Issues
+- Auto-generated MDC file requiring manual review and enhancement
+- Service functionality and dependencies need documentation
+
+## Changelog
+- 1.0.0 (2025-08-26): Auto-discovered service, MDC file generated by MDC-Dashboard system
+
+---
+*Auto-generated by MDC-Dashboard orphan service discovery on 2025-08-26*
+description: Auto-discovered service requiring manual documentation
+globs: ["/Users/dansidanutz/Desktop/ZmartBot/zmart-api/alert_system/alert_system_server.py"]
+alwaysApply: true
+---
+
+---
+**Merge Summary**: Combined 2 files into unified MDC configuration
+**Generated**: 2025-08-27T10:39:58.308854

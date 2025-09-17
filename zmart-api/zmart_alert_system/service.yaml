@@ -1,0 +1,19 @@
+endpoints:
+  health: http://127.0.0.1:8012/health
+  metrics: http://127.0.0.1:8012/metrics
+  ready: http://127.0.0.1:8012/ready
+lifecycle:
+  health_check: curl -f http://127.0.0.1:8012/health
+  start_command: null
+  stop_command: pkill -f zmart_alert_system
+metadata:
+  description: Service zmart_alert_system
+  owner: zmartbot
+  version: 1.0.0
+service:
+  level: 3
+  name: zmart_alert_system
+  passport: ZMBT-SRV-20250826-EADCA5
+  port: 8012
+  status: ACTIVE
+  type: backend

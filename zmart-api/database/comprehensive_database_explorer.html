@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZmartBot Comprehensive Database Explorer</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        .main-container {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            height: 100vh;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0f0f0f 100%);
+        }
+
+        /* Sidebar - Dark Mode */
+        .sidebar {
+            background: linear-gradient(180deg, #111111 0%, #1a1a1a 100%);
+            border-right: 1px solid #333333;
+            padding: 20px;
+            overflow-y: auto;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .sidebar-header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #333333;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #1e1e1e, #2a2a2a);
+            border-radius: 12px;
+            padding: 25px 15px;
+        }
+
+        .sidebar-header h1 {
+            font-size: 1.4em;
+            font-weight: 700;
+            background: linear-gradient(45deg, #00d4ff, #5b73ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .sidebar-header .subtitle {
+            font-size: 0.85em;
+            color: #888888;
+            font-weight: 500;
+        }
+
+        .search-container {
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: #1a1a1a;
+            border: 1px solid #333333;
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #00d4ff;
+            box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.2);
+        }
+
+        .database-list {
+            max-height: calc(100vh - 300px);
+            overflow-y: auto;
+        }
+
+        .database-item {
+            background: linear-gradient(135deg, #1e1e1e, #2a2a2a);
+            border: 1px solid #333333;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .database-item:hover {
+            background: linear-gradient(135deg, #2a2a2a, #333333);
+            border-color: #00d4ff;
+            transform: translateX(4px);
+            box-shadow: 0 8px 25px rgba(0, 212, 255, 0.15);
+        }
+
+        .database-item.active {
+            background: linear-gradient(135deg, #00d4ff, #5b73ff);
+            border-color: #00d4ff;
+            box-shadow: 0 12px 30px rgba(0, 212, 255, 0.3);
+            color: #000000;
+        }
+
+        .database-item.active .database-stats {
+            color: #000000;
+        }
+
+        .database-name {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 8px;
+            color: inherit;
+        }
+
+        .database-stats {
+            font-size: 12px;
+            color: #888888;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .database-category {
+            background: rgba(0, 212, 255, 0.2);
+            color: #00d4ff;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #333333;
+        }
+
+        .content-title {
+            font-size: 2em;
+            font-weight: 700;
+            background: linear-gradient(45deg, #00d4ff, #5b73ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .refresh-btn {
+            background: linear-gradient(135deg, #00d4ff, #5b73ff);
+            color: #000000;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .refresh-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 212, 255, 0.3);
+        }
+
+        .database-details {
+            background: linear-gradient(135deg, #1e1e1e, #2a2a2a);
+            border: 1px solid #333333;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .database-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #333333;
+        }
+
+        .database-title {
+            font-size: 1.5em;
+            font-weight: 600;
+            color: #00d4ff;
+        }
+
+        .database-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .meta-item {
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .meta-label {
+            font-size: 12px;
+            color: #888888;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .meta-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: #00d4ff;
+        }
+
+        .tables-section {
+            margin-top: 30px;
+        }
+
+        .section-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #ffffff;
+        }
+
+        .tables-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .table-card {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid #333333;
+            border-radius: 8px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .table-card:hover {
+            border-color: #00d4ff;
+            transform: translateY(-2px);
+        }
+
+        .table-name {
+            font-weight: 600;
+            color: #00d4ff;
+            margin-bottom: 10px;
+        }
+
+        .table-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #888888;
+            margin-bottom: 15px;
+        }
+
+        .table-data {
+            max-height: 200px;
+            overflow-y: auto;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 4px;
+            padding: 10px;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 6px 8px;
+            text-align: left;
+            border-bottom: 1px solid #333333;
+        }
+
+        .data-table th {
+            background: rgba(0, 212, 255, 0.1);
+            color: #00d4ff;
+            font-weight: 600;
+        }
+
+        .data-table tr:hover {
+            background: rgba(0, 212, 255, 0.05);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #888888;
+        }
+
+        .error {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            color: #ff6b6b;
+            margin: 20px 0;
+        }
+
+        .stats-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #1e1e1e, #2a2a2a);
+            border: 1px solid #333333;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2em;
+            font-weight: 700;
+            color: #00d4ff;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #888888;
+            text-transform: uppercase;
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #333333;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00d4ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h1>🗄️ Database Explorer</h1>
+                <p class="subtitle">Comprehensive Database Management</p>
+            </div>
+
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="🔍 Search databases..." id="searchInput">
+            </div>
+
+            <div class="database-list" id="databaseList">
+                <div class="loading">Loading databases...</div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="content-header">
+                <h1 class="content-title">Database Content Explorer</h1>
+                <button class="refresh-btn" onclick="refreshData()">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+            </div>
+
+            <!-- Stats Overview -->
+            <div class="stats-overview" id="statsOverview">
+                <div class="stat-card">
+                    <div class="stat-value" id="totalDatabases">-</div>
+                    <div class="stat-label">Total Databases</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="totalTables">-</div>
+                    <div class="stat-label">Total Tables</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="totalRecords">-</div>
+                    <div class="stat-label">Total Records</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="avgHealth">-</div>
+                    <div class="stat-label">Avg Health</div>
+                </div>
+            </div>
+
+            <!-- Database Details -->
+            <div id="databaseDetails" style="display: none;">
+                <div class="database-details">
+                    <div class="database-header">
+                        <h2 class="database-title" id="selectedDbName">Select a Database</h2>
+                        <div class="database-category" id="selectedDbCategory">-</div>
+                    </div>
+
+                    <div class="database-meta">
+                        <div class="meta-item">
+                            <div class="meta-label">Path</div>
+                            <div class="meta-value" id="selectedDbPath">-</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Size</div>
+                            <div class="meta-value" id="selectedDbSize">-</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Tables</div>
+                            <div class="meta-value" id="selectedDbTables">-</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Records</div>
+                            <div class="meta-value" id="selectedDbRecords">-</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Health</div>
+                            <div class="meta-value" id="selectedDbHealth">-</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Status</div>
+                            <div class="meta-value" id="selectedDbStatus">-</div>
+                        </div>
+                    </div>
+
+                    <div class="tables-section">
+                        <h3 class="section-title">📊 Database Tables & Content</h3>
+                        <div class="tables-grid" id="tablesGrid">
+                            <div class="loading">Select a database to view its tables and content...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Welcome Message -->
+            <div id="welcomeMessage">
+                <div class="database-details">
+                    <h2 class="database-title">Welcome to Database Explorer</h2>
+                    <p style="color: #888888; margin: 20px 0;">
+                        Select a database from the sidebar to view its detailed information, tables, and content.
+                        This explorer provides comprehensive access to all 64 databases in your ZmartBot system.
+                    </p>
+                    <div class="stats-overview">
+                        <div class="stat-card">
+                            <div class="stat-value">64</div>
+                            <div class="stat-label">Databases Available</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">323.1K</div>
+                            <div class="stat-label">Total Records</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">84%</div>
+                            <div class="stat-label">System Health</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let databases = [];
+        let selectedDatabase = null;
+
+        // Initialize the dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            loadDatabases();
+            setupSearch();
+        });
+
+        // Load all databases
+        async function loadDatabases() {
+            try {
+                const response = await fetch('http://127.0.0.1:8900/api/databases');
+                const data = await response.json();
+                databases = data.databases;
+                
+                updateStats(data);
+                renderDatabaseList();
+            } catch (error) {
+                console.error('Error loading databases:', error);
+                document.getElementById('databaseList').innerHTML = 
+                    '<div class="error">Error loading databases. Please check the connection.</div>';
+            }
+        }
+
+        // Update statistics
+        function updateStats(data) {
+            const totalDatabases = data.databases.length;
+            const totalTables = data.databases.reduce((sum, db) => sum + db.table_count, 0);
+            const totalRecords = data.databases.reduce((sum, db) => sum + db.record_count, 0);
+            const avgHealth = Math.round(data.databases.reduce((sum, db) => sum + db.health_score, 0) / totalDatabases);
+
+            document.getElementById('totalDatabases').textContent = totalDatabases;
+            document.getElementById('totalTables').textContent = totalTables.toLocaleString();
+            document.getElementById('totalRecords').textContent = totalRecords.toLocaleString();
+            document.getElementById('avgHealth').textContent = avgHealth + '%';
+        }
+
+        // Render database list
+        function renderDatabaseList(filteredDatabases = null) {
+            const dbList = document.getElementById('databaseList');
+            const databasesToShow = filteredDatabases || databases;
+
+            if (databasesToShow.length === 0) {
+                dbList.innerHTML = '<div class="loading">No databases found</div>';
+                return;
+            }
+
+            dbList.innerHTML = databasesToShow.map(db => `
+                <div class="database-item" onclick="selectDatabase('${db.name}')">
+                    <div class="database-name">${db.name}</div>
+                    <div class="database-stats">
+                        <span>${db.table_count} tables</span>
+                        <span>${db.record_count.toLocaleString()} records</span>
+                    </div>
+                    <div class="database-category">${db.category || 'unknown'}</div>
+                </div>
+            `).join('');
+        }
+
+        // Setup search functionality
+        function setupSearch() {
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                const filteredDatabases = databases.filter(db => 
+                    db.name.toLowerCase().includes(searchTerm) ||
+                    db.category.toLowerCase().includes(searchTerm)
+                );
+                renderDatabaseList(filteredDatabases);
+            });
+        }
+
+        // Select a database
+        async function selectDatabase(dbName) {
+            selectedDatabase = databases.find(db => db.name === dbName);
+            
+            // Update active state
+            document.querySelectorAll('.database-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.target.closest('.database-item').classList.add('active');
+
+            // Update database details
+            updateDatabaseDetails();
+            
+            // Load table content
+            await loadTableContent();
+        }
+
+        // Update database details
+        function updateDatabaseDetails() {
+            if (!selectedDatabase) return;
+
+            document.getElementById('selectedDbName').textContent = selectedDatabase.name;
+            document.getElementById('selectedDbCategory').textContent = selectedDatabase.category || 'unknown';
+            document.getElementById('selectedDbPath').textContent = selectedDatabase.path.split('/').pop();
+            document.getElementById('selectedDbSize').textContent = selectedDatabase.size_mb + ' MB';
+            document.getElementById('selectedDbTables').textContent = selectedDatabase.table_count;
+            document.getElementById('selectedDbRecords').textContent = selectedDatabase.record_count.toLocaleString();
+            document.getElementById('selectedDbHealth').textContent = selectedDatabase.health_score + '%';
+            document.getElementById('selectedDbStatus').textContent = selectedDatabase.status;
+
+            // Show database details
+            document.getElementById('databaseDetails').style.display = 'block';
+            document.getElementById('welcomeMessage').style.display = 'none';
+        }
+
+        // Load table content
+        async function loadTableContent() {
+            if (!selectedDatabase) return;
+
+            const tablesGrid = document.getElementById('tablesGrid');
+            tablesGrid.innerHTML = '<div class="loading">Loading table content...</div>';
+
+            try {
+                // For now, we'll show a placeholder since we need to implement table content loading
+                // This would require additional API endpoints to fetch table data
+                tablesGrid.innerHTML = `
+                    <div class="table-card">
+                        <div class="table-name">📊 Database Content</div>
+                        <div class="table-stats">
+                            <span>${selectedDatabase.table_count} tables</span>
+                            <span>${selectedDatabase.record_count.toLocaleString()} records</span>
+                        </div>
+                        <div class="table-data">
+                            <p style="color: #888888; text-align: center; padding: 20px;">
+                                Table content loading will be implemented with additional API endpoints.<br>
+                                Database: ${selectedDatabase.name}<br>
+                                Path: ${selectedDatabase.path}<br>
+                                Category: ${selectedDatabase.category}<br>
+                                Health Score: ${selectedDatabase.health_score}%
+                            </p>
+                        </div>
+                    </div>
+                `;
+            } catch (error) {
+                console.error('Error loading table content:', error);
+                tablesGrid.innerHTML = '<div class="error">Error loading table content</div>';
+            }
+        }
+
+        // Refresh data
+        function refreshData() {
+            loadDatabases();
+            if (selectedDatabase) {
+                selectDatabase(selectedDatabase.name);
+            }
+        }
+
+        // Auto-refresh every 30 seconds
+        setInterval(refreshData, 30000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+service_name: optimization_claude_server
+service_type: optimization
+version: 1.0.0
+owner: zmartbot
+description: Claude optimization server (corrected passport)
+port: 8081
+passport_id: ZMBT-OPT-20250831-F5G6H7
+status: ACTIVE
+registered_at: '2025-08-31'
+health_url: http://localhost:8081/health
+start_cmd: python3 optimization_claude_server_server.py --port 8081
+stop_cmd: pkill -f 'optimization_claude_server_server.py'
+dependencies:
+- zmart-api
+tags:
+- optimization
+- optimization_claude_server
+lifecycle:
+  startup_grace_seconds: 30
+  shutdown_timeout_seconds: 15
+  health_check_interval: 30
+monitoring:
+  metrics_endpoint: /metrics
+  logs_path: logs/optimization_claude_server.log
+  dashboard_url: http://localhost:8081/dashboard
+security:
+  cors_enabled: true
+  token_required: false
+  scopes:
+  - optimization

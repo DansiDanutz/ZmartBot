@@ -1,0 +1,30 @@
+service_name: test-analytics-service
+service_type: backend
+version: 1.0.0
+owner: zmartbot
+description: Test analytics service
+port: 8003
+passport_id: ZMBT-SRV-20250826-11C2AA
+status: ACTIVE
+registered_at: '2025-08-31'
+health_url: http://localhost:8003/health
+start_cmd: python3 test_analytics_service_server.py --port 8003
+stop_cmd: pkill -f 'test_analytics_service_server.py'
+dependencies:
+- zmart-api
+tags:
+- backend
+- test-analytics-service
+lifecycle:
+  startup_grace_seconds: 30
+  shutdown_timeout_seconds: 15
+  health_check_interval: 30
+monitoring:
+  metrics_endpoint: /metrics
+  logs_path: logs/test-analytics-service.log
+  dashboard_url: http://localhost:8003/dashboard
+security:
+  cors_enabled: true
+  token_required: false
+  scopes:
+  - backend

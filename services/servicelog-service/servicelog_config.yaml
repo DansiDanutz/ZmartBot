@@ -1,0 +1,123 @@
+# ServiceLog Configuration
+# Intelligent Log Analysis & Advice System for ZmartBot
+
+servicelog:
+  core:
+    port: 8750
+    websocket_port: 8751
+    workers: 4
+    log_level: INFO
+    
+  database:
+    # SQLite for development, PostgreSQL recommended for production
+    path: "./data/servicelog.db"
+    
+    # Redis for caching (optional)
+    redis:
+      host: localhost
+      port: 6379
+      database: 0
+      password: null
+      
+  log_agents:
+    error_agent:
+      enabled: true
+      pattern_threshold: 5          # Minimum occurrences to trigger advice
+      confidence_threshold: 0.7     # Minimum confidence to generate advice
+      patterns:
+        - "connection\\s+(failed|refused|timeout)"
+        - "database\\s+(error|exception|timeout)"
+        - "out\\s+of\\s+memory"
+        - "authentication\\s+(failed|denied)"
+        - "permission\\s+denied"
+        
+    performance_agent:
+      enabled: true
+      response_time_threshold: 5000  # ms
+      cpu_threshold: 80              # %
+      memory_threshold: 85           # %
+      
+    security_agent:
+      enabled: false                 # Will be implemented in future version
+      threat_patterns: 
+        - "sql_injection"
+        - "xss_attack"
+        - "auth_bypass"
+      alert_threshold: 1
+      
+    compliance_agent:
+      enabled: false                 # Will be implemented in future version
+      regulations: ["GDPR", "PCI_DSS"]
+      scan_interval: 3600
+
+  advice_queue:
+    max_size: 10000
+    retention_days: 90
+    auto_resolve_threshold: 30       # Auto-resolve after 30 days if no activity
+    escalation_threshold: 24         # Escalate after 24 hours
+
+  monitoring:
+    metrics_interval: 60             # seconds
+    health_check_interval: 30        # seconds
+    alert_channels: ["log", "console"]  # Can add "email", "slack", "webhook"
+    
+  security:
+    api_key_required: false          # Set to true in production
+    rate_limiting: 1000              # requests per minute
+    encryption_enabled: false       # Enable for sensitive data
+
+# ZmartBot Service Integration
+zmartbot_services:
+  # Core services to monitor
+  core_services:
+    - name: "zmart-api"
+      port: 8000
+      criticality: "CORE"
+      health_endpoint: "http://localhost:8000/health"
+      log_sources: ["/var/log/zmart-api.log"]
+      
+    - name: "master-orchestration-agent"
+      port: 8002
+      criticality: "CORE"
+      health_endpoint: "http://localhost:8002/health"
+      log_sources: ["/var/log/orchestration.log"]
+      
+    - name: "zmart-dashboard"
+      port: 3400
+      criticality: "CORE"
+      health_endpoint: "http://localhost:3400/health"
+      log_sources: ["/var/log/dashboard.log"]
+      
+  # Exchange services
+  exchange_services:
+    - name: "binance"
+      port: 8303
+      criticality: "EXCHANGE"
+      
+    - name: "kucoin"
+      port: 8302
+      criticality: "EXCHANGE"
+      
+  # Analytics services
+  analytics_services:
+    - name: "zmart-analytics"
+      port: 8007
+      criticality: "ANALYTICS"
+      
+    - name: "zmart_technical_analysis"
+      port: 8011
+      criticality: "ANALYTICS"
+
+# Alert contacts for escalation
+alert_contacts:
+  level_1:
+    - email: "ops-team@zmartbot.com"
+    - slack: "#servicelog-alerts"
+    
+  level_2:
+    - email: "backend-team@zmartbot.com"
+    - email: "db-admin@zmartbot.com"
+    
+  level_3:
+    - email: "eng-manager@zmartbot.com"
+    - phone: "+1-555-0123"  # PagerDuty integration

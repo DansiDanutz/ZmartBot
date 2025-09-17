@@ -1,0 +1,33 @@
+{
+  "timestamp": "2025-09-17T02:48:47.726438",
+  "status": "SUCCESS",
+  "symbols_scraped": 25,
+  "symbols": [
+    "BTC",
+    "ETH",
+    "BNB",
+    "ADA",
+    "XRP",
+    "SOL",
+    "AVAX",
+    "DOT",
+    "MATIC",
+    "DOGE",
+    "LINK",
+    "LTC",
+    "ATOM",
+    "XLM",
+    "HBAR",
+    "TRX",
+    "VET",
+    "XMR",
+    "MKR",
+    "XTZ",
+    "AAVE",
+    "RNDR",
+    "SUI",
+    "STX",
+    "SEI"
+  ],
+  "total_risk_points": 1025
+}

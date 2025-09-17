@@ -1,0 +1,85 @@
+name: zmart_alert_system
+version: 1.0.0
+description: ZmartBot Alert System - Multi-channel notification and alert management
+type: backend
+port: 8012
+status: active
+config:
+  environment: production
+  debug: false
+  host: 127.0.0.1
+  port: 8012
+health:
+  endpoint: /health
+  readiness_endpoint: /ready
+  timeout: 30s
+  interval: 10s
+dependencies:
+- name: zmart-api
+  port: 8000
+  required: true
+- name: master-orchestration-agent
+  port: 8002
+  required: true
+endpoints:
+- path: /health
+  method: GET
+  description: Health check endpoint
+- path: /ready
+  method: GET
+  description: Readiness check endpoint
+- path: /api/v1/alerts/create
+  method: POST
+  description: Create new alert
+- path: /api/v1/alerts/send
+  method: POST
+  description: Send alert notification
+- path: /api/v1/alerts/configure
+  method: POST
+  description: Configure alert settings
+- path: /api/v1/alerts/history
+  method: GET
+  description: Get alert history
+alert_features:
+- name: Multi-channel Notifications
+  description: Email, SMS, Telegram, Webhook
+  status: active
+- name: Alert Management
+  description: Create, configure, and manage alerts
+  status: active
+- name: Alert History
+  description: Comprehensive alert history tracking
+  status: active
+- name: Alert Escalation
+  description: Automatic alert escalation
+  status: active
+- name: Alert Templates
+  description: Predefined alert templates
+  status: active
+data_sources:
+- name: Trading Alerts
+  type: real-time
+  status: active
+- name: System Alerts
+  type: operational
+  status: active
+- name: Risk Alerts
+  type: analytics
+  status: active
+monitoring:
+  metrics: /metrics
+  dashboard: /dashboard
+  alerts: /alerts
+security:
+  authentication: required
+  authorization: role-based
+  encryption: enabled
+performance:
+  caching: enabled
+  optimization: active
+  scaling: horizontal
+rollback:
+  snapshots: enabled
+  data_backup: automatic
+  configuration: versioned
+service_name: zmart-alert-system

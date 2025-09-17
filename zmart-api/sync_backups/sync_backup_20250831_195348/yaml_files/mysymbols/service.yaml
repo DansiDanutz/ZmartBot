@@ -1,0 +1,99 @@
+service_name: mysymbols
+service_type: internal_api
+port: 8201
+description: "Internal API service for managing trading symbols and portfolio data"
+
+# Lifecycle Management
+lifecycle:
+  start: "python3 mysymbols_server.py --port 8201"
+  stop: "pkill -f mysymbols_server.py"
+  restart: "pkill -f mysymbols_server.py && sleep 2 && python3 mysymbols_server.py --port 8201"
+  health_check: "curl -f http://localhost:8201/health"
+
+# Dependencies
+dependencies:
+  - name: "zmart_api"
+    type: "required"
+    port: 8000
+  - name: "port-manager-service"
+    type: "required"
+    port: 8610
+  - name: "api_keys_manager_service"
+    type: "required"
+    port: 8006
+
+# Health and Monitoring
+health:
+  endpoint: "/health"
+  readiness_endpoint: "/ready"
+  liveness_path: "/health"
+  readiness_path: "/ready"
+  timeout: 30
+  interval: 60
+
+# Observability
+observability:
+  metrics_endpoint: "/metrics"
+  logs_level: "INFO"
+  tracing_enabled: true
+  prometheus_metrics: true
+
+# Security
+security:
+  api_key_required: false
+  rate_limiting: true
+  ssl_required: false
+  cors_enabled: true
+
+# Orchestration Hints
+orchestration:
+  startup_order: 3
+  dependency_wait_time: 10
+  health_check_retries: 3
+  graceful_shutdown_timeout: 30
+
+# Performance
+performance:
+  max_connections: 50
+  request_timeout: 30
+  memory_limit: "256MB"
+  cpu_limit: "0.3"
+
+# Failure Modes
+failure_modes:
+  - name: "Database Connection Failure"
+    action: "restart_service"
+    max_retries: 3
+  - name: "Memory Exhaustion"
+    action: "restart_service"
+    threshold: 1
+  - name: "High Response Time"
+    action: "circuit_breaker"
+    threshold: 5
+
+# Rollback Strategy
+rollback:
+  automatic: true
+  health_check_failure_threshold: 3
+  rollback_timeout: 60
+
+# Load Balancing
+load_balancing:
+  enabled: false
+  algorithm: "round_robin"
+  health_check_path: "/health"
+
+# Known Issues
+known_issues:
+  - issue: "Database file locking on concurrent access"
+    impact: "Temporary service unavailability"
+    mitigation: "Implement connection pooling"
+  - issue: "Large symbol list processing"
+    impact: "Increased response times"
+    mitigation: "Implement pagination and caching"
+
+# Changelog
+changelog:
+  - version: "1.0.0"
+    date: "2025-08-26"
+    notes: "Initial mysymbols service implementation for internal symbol management"

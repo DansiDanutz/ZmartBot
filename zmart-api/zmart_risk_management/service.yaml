@@ -1,0 +1,19 @@
+endpoints:
+  health: http://127.0.0.1:8010/health
+  metrics: http://127.0.0.1:8010/metrics
+  ready: http://127.0.0.1:8010/ready
+lifecycle:
+  health_check: curl -f http://127.0.0.1:8010/health
+  start_command: null
+  stop_command: pkill -f zmart_risk_management
+metadata:
+  description: Service zmart_risk_management
+  owner: zmartbot
+  version: 1.0.0
+service:
+  level: 3
+  name: zmart_risk_management
+  passport: ZMBT-SRV-20250826-D05686
+  port: 8010
+  status: ACTIVE
+  type: backend

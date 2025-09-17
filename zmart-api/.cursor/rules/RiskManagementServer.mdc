@@ -1,0 +1,317 @@
+# RiskManagementServer.mdc
+
+## 🤖 MCP (Model Context Protocol) Integration
+
+### **MCP Server Pairing**
+**Status**: ✅ **ACTIVE** - Risk Management Server MCP Integration
+**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
+**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
+**Integration Type**: Multi-MCP Service Integration
+
+### **MCP Integration Features**
+- **Claude Code Integration**: AI-powered risk management and optimization
+- **Memory Gateway**: Persistent risk management state and metadata
+- **UI Automation**: Automated risk management monitoring and health checks
+- **Figma Integration**: Risk management dashboard design and UI management
+- **Supabase Integration**: Cloud-based risk management analytics and reporting
+
+### **MCP Integration Benefits**
+- **Enhanced Risk Management**: AI-powered risk analysis and optimization
+- **Persistent State**: Cross-session risk management state and configuration management
+- **Automated Monitoring**: Real-time risk management health and performance tracking
+- **Visual Dashboard**: Interactive risk management and testing interface
+- **Cloud Analytics**: Comprehensive risk management usage and performance analytics
+
+### **MCP Usage Examples**
+```bash
+# Health check via MCP
+curl -X GET "http://127.0.0.1:8000/risk-management/health"
+
+# Risk management operation via MCP
+curl -X POST "http://127.0.0.1:8000/risk-management/assess" -d '{"portfolio": "all", "action": "analyze"}'
+```
+
+### **MCP Status**
+- **Claude Code**: ✅ Active - AI-powered risk management
+- **ByteRover**: ✅ Active - Persistent risk management state management
+- **UI TARS**: ✅ Active - Automated risk management monitoring
+- **Figma**: ✅ Active - Risk management dashboard design
+- **Supabase**: ✅ Active - Cloud-based risk management analytics
+
+---
+
+## Summary
+ZmartBot Risk Management Service - Comprehensive risk assessment and management system providing portfolio risk analysis, position risk evaluation, and risk-based trading recommendations.
+
+## Purpose
+- **Risk Assessment**: Calculate and monitor risk metrics for individual symbols and portfolio
+- **Portfolio Risk Management**: Comprehensive portfolio risk analysis and diversification monitoring
+- **Risk Alerts**: Generate risk-based alerts and recommendations
+- **Trading Safety**: Ensure trading operations stay within acceptable risk parameters
+
+## Description
+- **Risk Assessment**: Calculate and monitor risk metrics for individual symbols and portfolio
+- ...
+
+## Key Functions
+
+### Core Risk Operations
+- **Symbol Risk Assessment**: Individual symbol risk analysis and scoring
+- **Portfolio Risk Analysis**: Overall portfolio risk evaluation and monitoring
+- **Risk Metric Calculation**: VaR, Sharpe ratio, volatility, and drawdown analysis
+- **Risk Recommendations**: Actionable risk management suggestions
+
+### Risk Metrics
+- **Volatility Analysis**: Price volatility measurement and trend analysis
+- **Value at Risk (VaR)**: 95% confidence VaR calculation
+- **Maximum Drawdown**: Historical maximum drawdown analysis
+- **Sharpe Ratio**: Risk-adjusted return performance measurement
+- **Risk Score**: Composite risk scoring from 0-1 scale
+
+### Portfolio Metrics
+- **Total Portfolio Risk**: Aggregate portfolio risk assessment
+- **Diversification Score**: Portfolio diversification effectiveness
+- **Correlation Risk**: Inter-asset correlation risk analysis
+- **Concentration Risk**: Position concentration risk evaluation
+
+## Technical Implementation
+
+### Service Configuration
+- **Service Name**: `zmart-risk-management`
+- **Default Port**: `8010`
+- **Host**: `127.0.0.1`
+- **Framework**: FastAPI with advanced risk calculation algorithms
+
+### API Endpoints
+
+#### Risk Assessment
+- **Symbol Risk**: `GET /api/v1/risk/assessment/{symbol}` - Individual symbol risk analysis
+- **Portfolio Risk**: `GET /api/v1/risk/portfolio` - Complete portfolio risk assessment
+
+#### Health & Monitoring
+- **Health Check**: `GET /health` - Service health and availability
+- **Readiness Check**: `GET /ready` - Service readiness validation
+- **Metrics**: `GET /metrics` - Risk service operational metrics
+
+### Risk Calculation Engine
+
+#### Symbol Risk Metrics
+- **Volatility**: 0.025 (2.5% typical daily volatility)
+- **VaR 95%**: 0.035 (3.5% worst-case daily loss)
+- **Max Drawdown**: 0.08 (8% maximum historical decline)
+- **Sharpe Ratio**: 1.85 (risk-adjusted performance)
+- **Risk Score**: 0.15 (15% overall risk level)
+
+#### Portfolio Risk Components
+- **Total Risk**: 0.12 (12% portfolio risk level)
+- **Diversification Score**: 0.75 (75% diversification effectiveness)
+- **Correlation Risk**: 0.25 (25% correlation-based risk)
+- **Concentration Risk**: 0.30 (30% position concentration risk)
+
+## Risk Assessment Framework
+
+### Risk Level Classifications
+- **LOW**: Risk score 0.0-0.33 (Conservative trading appropriate)
+- **MEDIUM**: Risk score 0.34-0.66 (Moderate risk management required)
+- **HIGH**: Risk score 0.67-1.0 (Aggressive risk management necessary)
+
+### Risk Recommendations
+- **Monitoring Recommendations**: "Monitor volatility closely"
+- **Position Sizing**: "Consider position sizing adjustments"
+- **Risk Controls**: "Set stop-loss orders for protection"
+- **Diversification**: "Improve portfolio diversification"
+
+### Risk Alerts
+- **High Concentration**: Portfolio concentration exceeding safe levels
+- **High Correlation**: Assets showing dangerous correlation levels
+- **Volatility Spikes**: Unusual volatility requiring attention
+- **Drawdown Limits**: Approaching maximum acceptable drawdown
+
+## Performance Characteristics
+
+### Calculation Speed
+- **Real-time Processing**: Sub-second risk metric calculations
+- **Batch Processing**: Efficient portfolio-wide risk assessment
+- **Concurrent Analysis**: Multiple symbol simultaneous analysis
+- **Historical Analysis**: Fast historical risk pattern analysis
+
+### Accuracy & Reliability
+- **Statistical Models**: Proven statistical risk models
+- **Historical Validation**: Back-tested risk predictions
+- **Real-time Updates**: Continuous risk monitoring
+- **Model Validation**: Regular risk model performance validation
+
+## Integration Points
+
+### Data Sources
+- **Market Data**: Real-time price and volume data integration
+- **Historical Data**: Historical price data for risk calculations
+- **Portfolio Data**: Current position and allocation information
+- **Technical Indicators**: Technical analysis data integration
+
+### Service Dependencies
+- **Data Warehouse**: Historical data for risk calculations
+- **Technical Analysis**: Technical indicator integration
+- **Portfolio Management**: Position and allocation data
+- **Alert System**: Risk-based alert generation
+
+## Configuration
+
+### Environment Variables
+```bash
+RISK_MANAGEMENT_PORT=8010
+RISK_MANAGEMENT_HOST=127.0.0.1
+RISK_CALCULATION_ENGINE=statistical
+VAR_CONFIDENCE_LEVEL=0.95
+MAX_PORTFOLIO_RISK=0.20
+```
+
+### Risk Parameters
+```python
+RISK_THRESHOLDS = {
+    "low_risk": 0.33,
+    "medium_risk": 0.66,
+    "high_risk": 1.0,
+    "max_drawdown": 0.15,
+    "min_sharpe_ratio": 1.0
+}
+```
+
+## Risk Monitoring & Alerting
+
+### Continuous Monitoring
+- **Real-time Risk**: Continuous portfolio risk monitoring
+- **Threshold Alerts**: Automatic alerts when risk limits exceeded
+- **Risk Degradation**: Early warning for deteriorating risk profiles
+- **Market Risk Events**: Detection of market-wide risk events
+
+### Alert Types
+- **Position Risk**: Individual position risk alerts
+- **Portfolio Risk**: Overall portfolio risk warnings
+- **Correlation Alerts**: Dangerous correlation level notifications
+- **Volatility Alerts**: Unusual volatility spike notifications
+
+### Risk Reporting
+- **Daily Risk Reports**: Comprehensive daily risk assessment
+- **Risk Trend Analysis**: Risk metric trend reporting
+- **Risk Attribution**: Risk source identification and analysis
+- **Performance Attribution**: Risk-adjusted performance analysis
+
+## Security & Compliance
+
+### Risk Data Security
+- **Secure Calculations**: Protected risk calculation processes
+- **Data Privacy**: Confidential trading data protection
+- **Audit Trail**: Complete risk assessment audit logging
+- **Access Control**: Authorized access to risk data
+
+### Compliance Features
+- **Risk Limits**: Configurable risk limit enforcement
+- **Regulatory Compliance**: Adherence to risk management regulations
+- **Documentation**: Comprehensive risk methodology documentation
+- **Validation**: Independent risk model validation
+
+## Operational Guidelines
+
+### Deployment
+- **Production Ready**: Enterprise-grade deployment capabilities
+- **Scalability**: Horizontal scaling for large portfolios
+- **High Availability**: Fault-tolerant risk monitoring
+- **Disaster Recovery**: Risk data backup and recovery
+
+### Monitoring
+- **Service Health**: Continuous service health monitoring
+- **Calculation Accuracy**: Risk calculation accuracy monitoring
+- **Performance Metrics**: Risk service performance tracking
+- **Alert Delivery**: Risk alert delivery monitoring
+
+### Maintenance
+- **Model Updates**: Regular risk model updates and calibration
+- **Parameter Tuning**: Risk parameter optimization
+- **Historical Analysis**: Historical risk model validation
+- **Performance Review**: Regular risk assessment performance review
+
+## Error Handling & Recovery
+
+### Calculation Errors
+- **Data Validation**: Input data validation and cleansing
+- **Calculation Fallbacks**: Alternative calculation methods
+- **Error Logging**: Comprehensive error logging and reporting
+- **Manual Override**: Manual risk assessment capabilities
+
+### System Recovery
+- **Service Restart**: Automatic service recovery
+- **Data Recovery**: Risk data backup and restoration
+- **Alert Recovery**: Risk alert system recovery
+- **Monitoring Recovery**: Risk monitoring system restoration
+
+## API Usage Examples
+
+### Get Symbol Risk Assessment
+```bash
+curl http://localhost:8010/api/v1/risk/assessment/BTCUSDT
+```
+
+### Get Portfolio Risk Analysis
+```bash
+curl http://localhost:8010/api/v1/risk/portfolio
+```
+
+### Monitor Service Health
+```bash
+curl http://localhost:8010/health
+curl http://localhost:8010/ready
+curl http://localhost:8010/metrics
+```
+
+## Command Line Usage
+```bash
+# Start with default settings
+python risk_management_server.py
+
+# Custom port and host
+python risk_management_server.py --port 8010 --host 0.0.0.0
+
+# Production deployment
+uvicorn risk_management_server:app --host 0.0.0.0 --port 8010 --workers 2
+```
+
+## Advanced Features
+
+### Risk Modeling
+- **Monte Carlo Simulation**: Probabilistic risk assessment
+- **Stress Testing**: Portfolio stress testing capabilities
+- **Scenario Analysis**: What-if risk scenario analysis
+- **Correlation Modeling**: Dynamic correlation risk modeling
+
+### Risk Optimization
+- **Portfolio Optimization**: Risk-optimized portfolio construction
+- **Risk Budgeting**: Risk budget allocation and monitoring
+- **Dynamic Hedging**: Automated risk hedging strategies
+- **Risk-Parity**: Risk-parity portfolio construction
+
+## Future Enhancements
+
+### Planned Features
+- **Machine Learning**: ML-based risk prediction models
+- **Real-time Streaming**: Real-time risk metric streaming
+- **Advanced Analytics**: Sophisticated risk analytics
+- **Risk Visualization**: Interactive risk visualization dashboards
+
+### Integration Improvements
+- **External Data**: Integration with external risk data providers
+- **Regulatory Reporting**: Automated regulatory risk reporting
+- **Third-party Risk**: Third-party risk assessment integration
+- **Cloud Risk Services**: Cloud-based risk calculation services
+
+This service is critical for maintaining safe and controlled trading operations while maximizing risk-adjusted returns in the ZmartBot ecosystem.
+
+## Triggers
+- **API endpoint requests**
+- **Health check requests**
+
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Complete MDC documentation**
+- ✅ **Health endpoint implementation**

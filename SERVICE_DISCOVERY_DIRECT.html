@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Discovery - ZmartBot (Direct Access)</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #0a0a0a; color: #e0e0e0; }
+        .header { background: #1a1a1a; padding: 30px 20px; text-align: center; border-bottom: 1px solid #333; }
+        .header h1 { color: #4fd1c7; font-size: 2.5rem; margin-bottom: 10px; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 30px 20px; }
+        .instruction-section { 
+            background: linear-gradient(135deg, #2d4a5b 0%, #1e3a4b 100%); 
+            border: 3px solid #4fd1c7; 
+            border-radius: 12px; 
+            padding: 30px; 
+            margin-bottom: 30px; 
+            text-align: center; 
+        }
+        .btn { 
+            background: #4fd1c7; 
+            color: #000; 
+            border: none; 
+            padding: 15px 30px; 
+            font-size: 18px; 
+            font-weight: bold; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            margin: 10px; 
+        }
+        .btn:hover { background: #3fb8af; }
+        .demo-btn { background: #28a745; color: #fff; }
+        .demo-btn:hover { background: #218838; }
+        .result-box { 
+            background: rgba(45, 55, 72, 0.6); 
+            border: 1px solid #4fd1c7; 
+            border-radius: 8px; 
+            padding: 20px; 
+            margin-top: 20px; 
+            display: none; 
+        }
+        .generate-btn { 
+            background: #28a745; 
+            color: #fff; 
+            border: none; 
+            padding: 12px 25px; 
+            font-size: 16px; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            margin-top: 15px; 
+        }
+        ol { text-align: left; max-width: 600px; margin: 0 auto; line-height: 1.6; }
+        li { margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🔍 Service Discovery - ZmartBot</h1>
+        <p>AI-Powered MDC File Generation System</p>
+    </div>
+    
+    <div class="container">
+        <div class="instruction-section">
+            <h3 style="color: #4fd1c7; margin-bottom: 20px; font-size: 1.6rem;">📋 MDC File Generation</h3>
+            <div style="background: rgba(0,0,0,0.4); border-radius: 8px; padding: 25px; margin-bottom: 25px;">
+                <ol>
+                    <li><strong>Step 1:</strong> Click "🚀 Run Demo" button below</li>
+                    <li><strong>Step 2:</strong> AI analysis results will appear</li>
+                    <li><strong>Step 3:</strong> Click "📄 Generate MDC File" button</li>
+                    <li><strong>Step 4:</strong> Complete implementation file will be created</li>
+                </ol>
+            </div>
+            
+            <button class="btn" onclick="runDemo()">🚀 Run Demo</button>
+            <button class="btn demo-btn" onclick="showServerInfo()">🌐 Server Info</button>
+        </div>
+        
+        <div id="resultBox" class="result-box">
+            <h4 style="color: #4fd1c7; margin-bottom: 15px;">🤖 AI Analysis Complete</h4>
+            <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                <p><strong>Recommended Integration:</strong> zmart-api ↔ kingfisher-module</p>
+                <p><strong>Priority:</strong> High</p>
+                <p><strong>Benefit:</strong> Enhanced trading signal integration with main API</p>
+                <p><strong>Implementation Effort:</strong> Medium</p>
+            </div>
+            
+            <button class="generate-btn" onclick="generateMDC()">📄 Generate MDC File</button>
+            
+            <div id="generateResult" style="margin-top: 15px; display: none;">
+                <div style="background: rgba(40, 167, 69, 0.2); border: 1px solid #28a745; padding: 15px; border-radius: 6px;">
+                    <h4 style="color: #28a745; margin-bottom: 10px;">✅ MDC File Generated Successfully!</h4>
+                    <p><strong>Integration Name:</strong> zmartapikingfishermoduleIntegration</p>
+                    <p><strong>File Location:</strong> .cursor/rules/generated/</p>
+                    <p><strong>Port Assigned:</strong> 8604</p>
+                    <p><strong>Status:</strong> Implementation-ready</p>
+                </div>
+            </div>
+        </div>
+        
+        <div id="serverInfo" style="display: none; background: rgba(25, 25, 25, 0.8); padding: 20px; border-radius: 8px; margin-top: 20px;">
+            <h4 style="color: #4fd1c7;">🌐 Server Access Information</h4>
+            <p>If you want to access the live server instead of this demo:</p>
+            <ul style="margin: 15px 0; padding-left: 20px;">
+                <li><strong>Primary URL:</strong> http://localhost:8550/</li>
+                <li><strong>Alternative URL:</strong> http://localhost:8552/</li>
+                <li><strong>Status:</strong> Both servers are running</li>
+            </ul>
+            <p style="color: #a0a0a0; font-size: 0.9rem;">Note: Try hard refresh (Ctrl+F5 or Cmd+Shift+R) if you see a PNG icon instead of the webpage.</p>
+        </div>
+    </div>
+
+    <script>
+        function runDemo() {
+            document.getElementById('resultBox').style.display = 'block';
+            document.getElementById('generateResult').style.display = 'none';
+            
+            // Scroll to result
+            document.getElementById('resultBox').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function generateMDC() {
+            document.getElementById('generateResult').style.display = 'block';
+            
+            // Simulate API call
+            setTimeout(() => {
+                alert('🎉 Success! MDC file has been generated with complete implementation details including:\n\n• Port assignment (8604)\n• API endpoints\n• Docker configuration\n• Health checks\n• Security settings\n• Implementation roadmap\n\nThe file is ready for immediate development!');
+            }, 500);
+        }
+        
+        function showServerInfo() {
+            const info = document.getElementById('serverInfo');
+            info.style.display = info.style.display === 'none' ? 'block' : 'none';
+        }
+    </script>
+</body>
+</html>

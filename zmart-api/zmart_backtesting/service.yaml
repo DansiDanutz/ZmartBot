@@ -1,0 +1,19 @@
+endpoints:
+  health: http://127.0.0.1:8013/health
+  metrics: http://127.0.0.1:8013/metrics
+  ready: http://127.0.0.1:8013/ready
+lifecycle:
+  health_check: curl -f http://127.0.0.1:8013/health
+  start_command: null
+  stop_command: pkill -f zmart_backtesting
+metadata:
+  description: Service zmart_backtesting
+  owner: zmartbot
+  version: 1.0.0
+service:
+  level: 3
+  name: zmart_backtesting
+  passport: ZMBT-ENG-20250826-FB4140
+  port: 8013
+  status: ACTIVE
+  type: backend

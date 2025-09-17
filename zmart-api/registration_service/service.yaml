@@ -1,0 +1,19 @@
+endpoints:
+  health: http://127.0.0.1:8902/health
+  metrics: http://127.0.0.1:8902/metrics
+  ready: http://127.0.0.1:8902/ready
+lifecycle:
+  health_check: curl -f http://127.0.0.1:8902/health
+  start_command: null
+  stop_command: pkill -f registration-service
+metadata:
+  description: Service registration-service
+  owner: zmartbot
+  version: 1.0.0
+service:
+  level: 2
+  name: registration-service
+  passport: ZMBT-BACKEND-20250828-061012
+  port: 8902
+  status: ACTIVE
+  type: backend

@@ -1,1 +1,0 @@
-Full step-by-step instructions from earlier conversation.

@@ -1,0 +1,226 @@
+# TradingStrategy.mdc
+> Type: trading | Version: 1.0.0 | Owner: zmartbot | Port: None | Status: ACTIVE
+
+## Purpose
+Progressive BUY Trading Strategy with Kingfisher Liquidation Cluster Integration and Vault-Based Position Management - implementing advanced position scaling with intelligent margin management for maximum profitability while controlling risk.
+
+## Overview
+Advanced cryptocurrency trading strategy that uses progressive position sizing with decreasing leverage, integrated with Kingfisher AI liquidation cluster analysis. The strategy manages up to 2 positions per vault, with each position capable of utilizing up to 45% of vault bankroll through strategic scaling and margin addition.
+
+## 🎯 Core Trading Strategy Components
+
+### Position Scaling Progression
+**Sequential Entry Strategy with Decreasing Leverage:**
+
+1. **Initial Entry (Stage 1)**
+   - **Size**: 2% of vault balance
+   - **Leverage**: 20X
+   - **Trigger**: BUY signal confirmation
+   - **Position Size**: 2% × 20X = 40% exposure
+   - **Take Profit**: 175% of total margin invested
+
+2. **First Double-Up (Stage 2)**
+   - **Size**: 4% of vault balance  
+   - **Leverage**: 10X
+   - **Position Size**: 4% × 10X = 40% exposure
+   - **Cumulative Margin**: 2% + 4% = 6%
+   - **New TP**: 175% of 6% total margin
+
+3. **Second Double-Up (Stage 3)**
+   - **Size**: 8% of vault balance
+   - **Leverage**: 5X  
+   - **Position Size**: 8% × 5X = 40% exposure
+   - **Cumulative Margin**: 2% + 4% + 8% = 14%
+   - **New TP**: 175% of 14% total margin
+
+4. **Third Double-Up (Stage 4)**
+   - **Size**: 16% of vault balance
+   - **Leverage**: 2X
+   - **Position Size**: 16% × 2X = 32% exposure  
+   - **Cumulative Margin**: 2% + 4% + 8% + 16% = 30%
+   - **New TP**: 175% of 30% total margin
+
+5. **Margin Addition (Stage 5)**
+   - **Size**: 15% of vault balance
+   - **Leverage**: 0X (Pure Margin)
+   - **Purpose**: Liquidation protection
+   - **Total Margin**: 30% + 15% = 45% of vault balance
+
+### 📊 Bankroll Management Mathematics
+
+**Per Position Maximum Investment:**
+- Progressive Scaling: 2% + 4% + 8% + 16% = **30% of bankroll**
+- Margin Addition: **15% of bankroll**
+- **Total per position: 45% of bankroll**
+
+**Per Vault Capacity:**
+- Maximum positions per vault: **2 positions**
+- Theoretical maximum usage: 45% × 2 = **90% of bankroll**
+- Recommended maximum usage: **80% of bankroll** (safety buffer)
+
+## 🔥 Double-Up Trigger Conditions
+
+### Primary Trigger Options
+
+**Option 1: Position Liquidation Proximity**
+- **Trigger**: 80% of total margin lost
+- **Logic**: When unrealized loss reaches 80% of invested margin
+- **Action**: Execute next stage double-up immediately
+- **Risk Management**: Aggressive defense of position
+
+**Option 2: Kingfisher Liquidation Cluster Analysis**
+- **Prerequisite**: Position liquidation price analysis relative to clusters
+- **Trigger Conditions**:
+  - Current price hits liquidation cluster (within 0.2%)
+  - AND position liquidation price is BETWEEN clusters
+  - OR position liquidation price is BEFORE clusters (higher risk)
+- **Action**: Double-up exactly at cluster trigger point
+- **Intelligence**: Uses market structure for optimal entry timing
+
+### Liquidation Cluster Positioning Logic
+
+**Cluster Relationship Analysis:**
+```
+Current Price: $50,000
+First Cluster: $48,000 (closer to current price)
+Second Cluster: $46,000 (further from current price)
+Position Liquidation: $47,000
+
+Analysis: liquidation_between_clusters = TRUE
+Action: Double-up when price hits $48,000 cluster
+```
+
+**Three Possible Liquidation Positions:**
+1. **BEFORE clusters**: `liquidation_price > first_cluster.price_level`
+2. **BETWEEN clusters**: `first_cluster.price_level >= liquidation_price > second_cluster.price_level` ✅
+3. **AFTER clusters**: `liquidation_price <= second_cluster.price_level`
+
+**Double-Up Execution**: Only when liquidation is BETWEEN or BEFORE clusters
+
+## ⚙️ Technical Implementation
+
+### Position Recalculation After Each Double-Up
+
+**Weighted Average Entry Price:**
+```python
+new_entry = (old_position_size * old_entry + new_position_size * current_price) / total_position_size
+```
+
+**New Liquidation Price:**
+```python
+effective_leverage = total_position_size / total_margin_invested
+liquidation_distance = 1 / effective_leverage * 0.95
+new_liquidation_price = weighted_avg_entry * (1 - liquidation_distance)
+```
+
+**Take Profit Recalculation:**
+```python
+tp_target = total_margin_invested * 1.75  # Always 175% of TOTAL margin
+profit_needed = tp_target - total_margin_invested
+price_move_percentage = profit_needed / total_position_size
+new_tp_price = weighted_avg_entry * (1 + price_move_percentage)
+```
+
+### Exit Strategy
+
+**First Take Profit (175% Rule):**
+- **Trigger**: Price reaches 175% profit target of total margin
+- **Action**: Close 50% of position
+- **Margin Return**: 50% of invested margin returned to vault
+- **Activation**: Trailing stop system (2% trailing)
+
+**Final Exit Conditions:**
+1. **Upper Cluster Hit**: Close remaining 50% at resistance cluster
+2. **Trailing Stop**: 2% trailing stop after first TP triggered
+3. **Manual Override**: Emergency exit conditions
+
+## 🛡️ Risk Management Features
+
+### Vault-Based Position Limits
+- **Maximum positions per vault**: 2
+- **Maximum margin per position**: 45% of vault balance
+- **Total vault utilization**: 90% maximum (45% × 2)
+- **Safety buffer**: 10% always available
+
+### Liquidation Protection
+- **Proximity Alert**: Within 1% of liquidation price
+- **Auto Margin Addition**: 15% of vault balance added as pure margin
+- **Recalculation**: New liquidation price calculated with added margin
+- **One-time Protection**: Margin addition only triggered once per position
+
+### Position Sizing Validation
+- **Balance Check**: Each stage validates sufficient vault balance
+- **Progressive Increase**: Each stage doubles previous margin commitment
+- **Leverage Decrease**: Risk decreases as position size increases
+- **Cluster Integration**: Market structure confirms optimal timing
+
+## 🔄 Integration Points
+
+### Kingfisher AI Service
+- **Cluster Data**: Real-time liquidation cluster analysis
+- **Price Levels**: Above and below current price clusters
+- **Strength Metrics**: Cluster volume and strength ratings
+- **Update Frequency**: Continuous cluster position monitoring
+
+### Vault Management System
+- **Balance Tracking**: Real-time available/reserved balance monitoring
+- **Position Limits**: Automated enforcement of 2-position maximum
+- **Margin Allocation**: Dynamic margin reservation and release
+- **Performance Tracking**: Per-vault profitability analysis
+
+### Take Profit & Trailing System
+- **175% Rule**: Consistent profit target across all scaling stages
+- **Partial Closure**: 50% position closure at first TP
+- **Trailing Activation**: 2% trailing stop post-TP
+- **Cluster Exits**: Upper resistance cluster recognition
+
+## 📈 Strategy Advantages
+
+### Capital Efficiency
+- **Progressive Scaling**: Optimal risk-adjusted position sizing
+- **Decreasing Leverage**: Risk reduction as investment increases
+- **Margin Optimization**: Strategic use of available capital
+- **Dual Position Capacity**: Diversification across 2 simultaneous trades
+
+### Market Intelligence
+- **Cluster Integration**: Uses market structure for timing
+- **Liquidation Analysis**: Positions relative to market liquidity
+- **Dynamic Adjustment**: Real-time recalculation of parameters
+- **Risk-Aware Doubling**: Only doubles in favorable conditions
+
+### Risk Control
+- **Defined Maximum Risk**: 45% per position, 90% per vault
+- **Automated Protection**: Margin addition prevents liquidation
+- **Progressive Defense**: Multiple layers of position protection
+- **Intelligent Exits**: Market-structure-aware exit timing
+
+## 🎯 Success Metrics
+
+### Performance Targets
+- **Win Rate**: Enhanced through intelligent doubling
+- **Profit Factor**: 175% minimum return on invested margin
+- **Maximum Drawdown**: Limited to 45% per position
+- **Capital Utilization**: 80-90% of available vault balance
+
+### Monitoring Parameters
+- **Cluster Accuracy**: Kingfisher cluster hit rate
+- **Double-Up Success**: Percentage of successful scaling events
+- **Liquidation Avoidance**: Margin addition effectiveness
+- **Vault Efficiency**: Multi-position performance correlation
+
+## Implementation Status
+- **Status**: ACTIVE
+- **Code Location**: `/src/services/vault_position_manager.py`
+- **Integration**: Kingfisher AI, Vault Management, Position Tracking
+- **Testing**: Production-ready with comprehensive logging
+- **Monitoring**: Real-time performance and risk metrics
+
+## Critical Notes
+- **Maximum 2 positions per vault** ensures risk diversification
+- **45% maximum per position** prevents over-concentration  
+- **90% total vault capacity** with 10% safety buffer
+- **Kingfisher integration** provides market intelligence advantage
+- **Progressive scaling** optimizes risk-reward ratio throughout position lifecycle
+
+---
+

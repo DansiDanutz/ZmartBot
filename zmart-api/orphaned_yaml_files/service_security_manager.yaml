@@ -1,0 +1,30 @@
+service_name: security_manager
+service_type: security
+version: 1.0.0
+owner: zmartbot
+description: Security service - API key management (corrected passport)
+port: 8893
+passport_id: ZMBT-SEC-20250831-N5O6P7
+status: ACTIVE
+registered_at: '2025-08-31'
+health_url: http://localhost:8893/health
+start_cmd: python3 security_manager_server.py --port 8893
+stop_cmd: pkill -f 'security_manager_server.py'
+dependencies:
+- zmart-api
+tags:
+- security
+- security_manager
+lifecycle:
+  startup_grace_seconds: 30
+  shutdown_timeout_seconds: 15
+  health_check_interval: 30
+monitoring:
+  metrics_endpoint: /metrics
+  logs_path: logs/security_manager.log
+  dashboard_url: http://localhost:8893/dashboard
+security:
+  cors_enabled: true
+  token_required: false
+  scopes:
+  - security

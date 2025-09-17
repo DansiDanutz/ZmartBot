@@ -1,3 +1,8 @@
+
+## Description
+Core service component of the ZmartBot ecosystem providing essential functionality.
+
+
 # MAXIMUM UPGRADE: ProcessReaper.mdc
 
 ## Service Overview
@@ -112,4 +117,19 @@
 description:
 globs:
 alwaysApply: true
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Database connectivity**
+- ✅ **Complete MDC documentation**
+- ✅ **Health endpoint implementation**
+- ✅ **Master Orchestration integration**
+
+
 ---
+
+
+## Triggers
+- **API endpoint requests**
+- **Database events**
+- **Health check requests**

@@ -17,7 +17,7 @@ NC='\033[0m' # No Color
 
 # Configuration
 PROJECT_ROOT="/Users/dansidanutz/Desktop/ZmartBot"
-BACKEND_DIR="$PROJECT_ROOT/project/backend/api"
+BACKEND_DIR="$PROJECT_ROOT/zmart-api"
 API_PORT=8000
 DASHBOARD_PORT=3400
 FORBIDDEN_PORT=5173
@@ -134,35 +134,42 @@ kill_port $DASHBOARD_PORT
 
 echo -e "${GREEN}✅ Cleanup completed${NC}"
 
-echo -e "${BLUE}📋 STEP 3: Start Backend API Server${NC}"
-echo "=========================================="
+echo -e "${BLUE}📋 STEP 3: Start All Services via Orchestration${NC}"
+echo "====================================================="
 
-# Start backend API server
-echo -e "${YELLOW}🚀 Starting Backend API Server on port $API_PORT...${NC}"
-nohup python3 run_dev.py > api_server.log 2>&1 &
-API_PID=$!
-echo -e "${GREEN}✅ Backend API Server started (PID: $API_PID)${NC}"
+# Use orchestrationstart script to start all services
+echo -e "${YELLOW}🚀 Starting all ZmartBot services via orchestration...${NC}"
+ORCHESTRATION_SCRIPT="$PROJECT_ROOT/zmart-api/infra/orchestration/orchestrationstart.sh"
+
+if [ ! -f "$ORCHESTRATION_SCRIPT" ]; then
+    echo -e "${RED}❌ Orchestration script not found: $ORCHESTRATION_SCRIPT${NC}"
+    exit 1
+fi
+
+# Start all services using orchestration
+if ! bash "$ORCHESTRATION_SCRIPT" start; then
+    echo -e "${RED}❌ Failed to start services via orchestration${NC}"
+    exit 1
+fi
+
+echo -e "${GREEN}✅ All services started via orchestration${NC}"
+
+# Get PIDs for core services
+API_PID=$(pgrep -f "run_dev.py" | head -1)
+DASHBOARD_PID=$(pgrep -f "professional_dashboard_server.py" | head -1)
+
+echo -e "${BLUE}📋 STEP 4: Verify Core Services${NC}"
+echo "====================================="
 
 # Verify backend server is running
 if ! verify_server $API_PORT "Backend API Server"; then
     echo -e "${RED}❌ Backend API Server failed to start${NC}"
-    echo -e "${YELLOW}📋 Check api_server.log for details${NC}"
     exit 1
 fi
-
-echo -e "${BLUE}📋 STEP 4: Start Frontend Dashboard Server${NC}"
-echo "================================================"
-
-# Start frontend dashboard server
-echo -e "${YELLOW}🚀 Starting Frontend Dashboard Server on port $DASHBOARD_PORT...${NC}"
-nohup python3 professional_dashboard_server.py > dashboard.log 2>&1 &
-DASHBOARD_PID=$!
-echo -e "${GREEN}✅ Frontend Dashboard Server started (PID: $DASHBOARD_PID)${NC}"
 
 # Verify dashboard server is running
 if ! verify_server $DASHBOARD_PORT "Frontend Dashboard Server"; then
     echo -e "${RED}❌ Frontend Dashboard Server failed to start${NC}"
-    echo -e "${YELLOW}📋 Check dashboard.log for details${NC}"
     exit 1
 fi
 
@@ -196,11 +203,16 @@ echo "================================="
 # Display final status
 echo -e "${GREEN}🎉 ZMARTBOT SYSTEM STARTED SUCCESSFULLY!${NC}"
 echo ""
-echo -e "${BLUE}📊 SERVER STATUS:${NC}"
-echo "=================="
+echo -e "${BLUE}📊 CORE SERVICES STATUS:${NC}"
+echo "========================="
 echo -e "${GREEN}✅ Backend API Server:${NC} Port $API_PORT (PID: $API_PID)"
 echo -e "${GREEN}✅ Frontend Dashboard:${NC} Port $DASHBOARD_PORT (PID: $DASHBOARD_PID)"
 echo -e "${GREEN}✅ Port 5173:${NC} COMPLETELY CLEAN (no processes)"
+echo ""
+echo -e "${BLUE}📊 ALL SERVICES STATUS:${NC}"
+echo "========================"
+# Show status of all services via orchestration
+bash "$ORCHESTRATION_SCRIPT" status
 echo ""
 
 echo -e "${BLUE}🌐 ACCESS URLs:${NC}"

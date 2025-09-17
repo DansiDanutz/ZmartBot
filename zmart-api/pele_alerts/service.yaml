@@ -1,0 +1,19 @@
+endpoints:
+  health: http://127.0.0.1:8215/health
+  metrics: http://127.0.0.1:8215/metrics
+  ready: http://127.0.0.1:8215/ready
+lifecycle:
+  health_check: curl -f http://127.0.0.1:8215/health
+  start_command: python3 pele_alerts_server.py
+  stop_command: pkill -f pele-alerts
+metadata:
+  description: Pele Trend Continuation Alerts
+  owner: zmartbot
+  version: 1.0.0
+service:
+  level: 3
+  name: pele-alerts
+  passport: ZMBT-ALT-20250831-950779
+  port: 8215
+  status: ACTIVE
+  type: backend

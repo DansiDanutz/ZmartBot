@@ -1,0 +1,30 @@
+service_name: ziva_agent
+service_type: integrity
+version: 1.0.0
+owner: zmartbot
+description: ZIVA - ZmartBot Integrity Violation Agent
+port: 8930
+passport_id: ZMBT-ZIVA-20250830-BB8394
+status: ACTIVE
+registered_at: '2025-08-31'
+health_url: http://localhost:8930/health
+start_cmd: python3 ziva_agent_server.py --port 8930
+stop_cmd: pkill -f 'ziva_agent_server.py'
+dependencies:
+- zmart-api
+tags:
+- integrity
+- ziva_agent
+lifecycle:
+  startup_grace_seconds: 30
+  shutdown_timeout_seconds: 15
+  health_check_interval: 30
+monitoring:
+  metrics_endpoint: /metrics
+  logs_path: logs/ziva_agent.log
+  dashboard_url: http://localhost:8930/dashboard
+security:
+  cors_enabled: true
+  token_required: false
+  scopes:
+  - integrity

@@ -1,0 +1,19 @@
+endpoints:
+  health: http://127.0.0.1:8897/health
+  metrics: http://127.0.0.1:8897/metrics
+  ready: http://127.0.0.1:8897/ready
+lifecycle:
+  health_check: curl -f http://127.0.0.1:8897/health
+  start_command: null
+  stop_command: pkill -f YAMLGovernanceService
+metadata:
+  description: Service YAMLGovernanceService
+  owner: zmartbot
+  version: 1.0.0
+service:
+  level: 2
+  name: YAMLGovernanceService
+  passport: ZMBT-SRV-20250831-62008F
+  port: 8897
+  status: ACTIVE
+  type: backend

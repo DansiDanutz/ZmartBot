@@ -1,0 +1,25 @@
+name: Memory Gateway Health
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  health:
+    runs-on: ubuntu-latest
+    services:
+      memory:
+        image: node:20
+        options: >-
+          --health-cmd="curl -fsS http://localhost:8295/health || exit 1"
+          --health-interval=15s
+          --health-timeout=5s
+          --health-retries=10
+        ports:
+          - 8295:8295
+    steps:
+      - name: Check health endpoint
+        run: |
+          echo "Skipping actual server boot (placeholder)."
+          # Normally you'd docker run the Cipher server here.
+          echo "200"

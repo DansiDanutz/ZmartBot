@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚡ ZmartBot Professional Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .hover-scale { transition: transform 0.3s ease; }
+        .hover-scale:hover { transform: scale(1.05); }
+    </style>
+</head>
+<body>
+    <div class="min-h-screen p-6">
+        <!-- Header -->
+        <div class="mb-8">
+            <h1 class="text-5xl font-bold text-white mb-2">⚡ ZmartBot Professional Dashboard</h1>
+            <p class="text-slate-300 text-xl">Advanced Trading Intelligence Platform</p>
+        </div>
+
+        <!-- Stats Cards Row -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- Portfolio Card -->
+            <div class="bg-gradient-to-br from-emerald-500 to-emerald-600 p-6 rounded-2xl shadow-2xl text-white hover-scale">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-emerald-100 text-sm font-medium mb-1">Portfolio Value</p>
+                        <p class="text-3xl font-bold mb-1">$12,847.32</p>
+                        <p class="text-emerald-100 text-sm">+3.2% today</p>
+                    </div>
+                    <div class="bg-white/20 p-3 rounded-xl">
+                        <span class="text-2xl">💰</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Trades -->
+            <div class="bg-gradient-to-br from-blue-500 to-blue-600 p-6 rounded-2xl shadow-2xl text-white hover-scale">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-blue-100 text-sm font-medium mb-1">Active Trades</p>
+                        <p class="text-3xl font-bold mb-1">7</p>
+                        <p class="text-blue-100 text-sm">5 profitable</p>
+                    </div>
+                    <div class="bg-white/20 p-3 rounded-xl">
+                        <span class="text-2xl">📈</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Win Rate -->
+            <div class="bg-gradient-to-br from-purple-500 to-purple-600 p-6 rounded-2xl shadow-2xl text-white hover-scale">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-purple-100 text-sm font-medium mb-1">Win Rate</p>
+                        <p class="text-3xl font-bold mb-1">78.4%</p>
+                        <p class="text-purple-100 text-sm">Last 30 days</p>
+                    </div>
+                    <div class="bg-white/20 p-3 rounded-xl">
+                        <span class="text-2xl">🎯</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Insights -->
+            <div class="bg-gradient-to-br from-orange-500 to-orange-600 p-6 rounded-2xl shadow-2xl text-white hover-scale">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-orange-100 text-sm font-medium mb-1">AI Insights</p>
+                        <p class="text-3xl font-bold mb-1">23</p>
+                        <p class="text-orange-100 text-sm">This week</p>
+                    </div>
+                    <div class="bg-white/20 p-3 rounded-xl">
+                        <span class="text-2xl">🤖</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Section -->
+        <div class="glass rounded-2xl p-6 mb-8">
+            <h2 class="text-2xl font-bold text-white mb-4">💬 Zmarty AI Chat</h2>
+            <div id="chatMessages" class="bg-slate-800/50 rounded-xl p-4 h-64 overflow-y-auto mb-4">
+                <div class="mb-4 p-3 bg-purple-600/20 rounded-xl">
+                    <p class="text-white">🤖 <strong>Zmarty:</strong> Hello! I am connected to KuCoin (port 8302), Binance (port 8303), and Trading Orchestration (port 8200). How can I help you today?</p>
+                </div>
+            </div>
+            
+            <div class="flex space-x-4">
+                <input 
+                    id="chatInput" 
+                    type="text" 
+                    placeholder="Ask about market trends, portfolio analysis..."
+                    class="flex-1 bg-slate-700 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    onkeypress="if(event.key==='Enter') sendMessage()"
+                />
+                <button 
+                    onclick="sendMessage()"
+                    class="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-3 rounded-xl font-medium hover:from-blue-700 hover:to-blue-800 transition-all">
+                    Send 🚀
+                </button>
+            </div>
+        </div>
+
+        <!-- System Status -->
+        <div class="glass rounded-2xl p-6">
+            <h2 class="text-2xl font-bold text-white mb-4">🚀 System Status</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="bg-green-600/20 p-4 rounded-xl border border-green-500/30">
+                    <p class="text-green-400 font-medium">KuCoin API</p>
+                    <p class="text-white">✅ Connected</p>
+                </div>
+                <div class="bg-green-600/20 p-4 rounded-xl border border-green-500/30">
+                    <p class="text-green-400 font-medium">Binance API</p>
+                    <p class="text-white">✅ Connected</p>
+                </div>
+                <div class="bg-blue-600/20 p-4 rounded-xl border border-blue-500/30">
+                    <p class="text-blue-400 font-medium">Trading AI</p>
+                    <p class="text-white">⚡ Active</p>
+                </div>
+                <div class="bg-purple-600/20 p-4 rounded-xl border border-purple-500/30">
+                    <p class="text-purple-400 font-medium">Zmarty AI</p>
+                    <p class="text-white">🤖 Ready</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let messageCount = 1;
+        
+        function sendMessage() {
+            const input = document.getElementById("chatInput");
+            const message = input.value.trim();
+            if (!message) return;
+            
+            const chatMessages = document.getElementById("chatMessages");
+            messageCount++;
+            
+            // Add user message
+            const userMsg = document.createElement("div");
+            userMsg.className = "mb-4 p-3 bg-blue-600/20 rounded-xl ml-12";
+            userMsg.innerHTML = `<p class="text-white"><strong>You:</strong> ${message}</p>`;
+            chatMessages.appendChild(userMsg);
+            
+            input.value = "";
+            
+            // Add AI response
+            setTimeout(() => {
+                const aiMsg = document.createElement("div");
+                aiMsg.className = "mb-4 p-3 bg-purple-600/20 rounded-xl mr-12";
+                
+                const responses = [
+                    `🤖 <strong>Zmarty:</strong> I am analyzing "${message}" across KuCoin and Binance. Current market data shows strong opportunities. Let me provide detailed insights.`,
+                    `🤖 <strong>Zmarty:</strong> Great question about "${message}"! Based on your Trading Orchestration data, I see promising patterns. Would you like a full analysis?`,
+                    `🤖 <strong>Zmarty:</strong> Regarding "${message}" - your portfolio performance (78.4% win rate) suggests this aligns with successful strategies. Shall I generate a report?`
+                ];
+                
+                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                aiMsg.innerHTML = `<p class="text-white">${randomResponse}</p>`;
+                chatMessages.appendChild(aiMsg);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }, 1000);
+            
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+    </script>
+</body>
+</html>

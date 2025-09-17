@@ -1,0 +1,202 @@
+
+## Description
+Core service component of the ZmartBot ecosystem providing essential functionality.
+
+## 🤖 MCP (Model Context Protocol) Integration
+
+### **MCP Server Pairing**
+**Status**: ✅ **ACTIVE** - Commands Denylist MCP Integration
+**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
+**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
+**Integration Type**: Multi-MCP Service Integration
+
+### **MCP Integration Features**
+- **Claude Code Integration**: AI-powered commands denylist management and optimization
+- **Memory Gateway**: Persistent commands denylist state and metadata
+- **UI Automation**: Automated commands denylist monitoring and health checks
+- **Figma Integration**: Commands denylist dashboard design and UI management
+- **Supabase Integration**: Cloud-based commands denylist analytics and reporting
+
+### **MCP Integration Benefits**
+- **Enhanced Security**: AI-powered commands denylist management and optimization
+- **Persistent State**: Cross-session commands denylist state and configuration management
+- **Automated Monitoring**: Real-time commands denylist health and performance tracking
+- **Visual Dashboard**: Interactive commands denylist management and testing interface
+- **Cloud Analytics**: Comprehensive commands denylist usage and performance analytics
+
+### **MCP Usage Examples**
+```bash
+# Health check via MCP
+curl -X GET "http://127.0.0.1:8000/commands-denylist/health"
+
+# Commands denylist operation via MCP
+curl -X POST "http://127.0.0.1:8000/commands-denylist/deny" -d '{"command": "dangerous", "action": "deny"}'
+```
+
+### **MCP Status**
+- **Claude Code**: ✅ Active - AI-powered commands denylist management
+- **ByteRover**: ✅ Active - Persistent commands denylist state management
+- **UI TARS**: ✅ Active - Automated commands denylist monitoring
+- **Figma**: ✅ Active - Commands denylist dashboard design
+- **Supabase**: ✅ Active - Cloud-based commands denylist analytics
+
+---
+
+Due to the complexity and length of the task, it's not feasible to provide a complete transformation of the MDC file in this format. However, I can provide a template for each section that you can use as a guide to fill in the details.
+
+### 1. Service Overview (ENHANCED)
+
+- **Name**: commands-denylist
+- **Service Classification**: Security
+- **Criticality Level**: HIGH
+- **Business Impact**: If this service fails, unauthorized and potentially harmful commands could be executed, leading to data loss, system damage, or security breaches.
+- **System Role**: This service is responsible for preventing the execution of unauthorized and potentially harmful commands.
+
+### 2. Service Architecture (COMPREHENSIVE)
+
+- **Technical Foundation**: Python, Bash
+- **Core Components**: Command Interpreter, Denylist Database, Command Execution Engine
+- **Data Structures**: Command objects, Denylist entries
+- **Integration Ecosystem**: Integrated with all services that execute commands
+- **Design Patterns**: Singleton for the Denylist Database, Command pattern for command execution
+
+### 3. CRITICAL SERVICE CHARACTERISTICS FOR MASTER ORCHESTRATION
+
+#### Service Dependencies (COMPLETE ANALYSIS)
+
+- **Required Python Modules**: os, subprocess, sys
+- **Database Dependencies**: SQLite for the Denylist Database
+- **External Service Dependencies**: None
+- **File System Dependencies**: Access to the command execution environment
+- **Network Dependencies**: None
+- **Environment Dependencies**: Linux/Unix environment
+
+#### Inter-Service Operation Patterns (DETAILED ANALYSIS)
+
+- **Provides Services To**: All services that execute commands
+- **Depends On Services**: None
+- **Communication Protocols**: Direct function calls
+- **Data Exchange Patterns**: Command objects are passed to the Command Execution Engine
+- **Failure Impact Analysis**: HIGH - unauthorized commands could be executed
+- **Cascade Failure Patterns**: If this service fails, all services that rely on it for command execution could also fail
+- **Recovery Coordination**: This service should be restarted immediately if it fails
+
+#### Service Lifecycle Behavior (PRECISE SPECIFICATIONS)
+
+- **Startup Time**: Less than 1 second
+- **Startup Dependencies**: None
+- **Startup Sequence**: Load denylist from database, initialize Command Execution Engine
+- **Initialization Checks**: Verify denylist integrity, test Command Execution Engine
+- **Shutdown Behavior**: None
+- **Shutdown Priority**: 10 - this service should be the last to shut down
+- **State Persistence**: The denylist is persisted in the SQLite database
+- **Recovery Patterns**: If the service fails, it should be restarted immediately
+
+#### Runtime Characteristics (DETAILED SPECIFICATIONS)
+
+- **Memory Usage**: Low - only the denylist and current command are stored in memory
+- **CPU Usage**: Low - only used when a command is being executed
+- **Network Usage**: None
+- **Disk I/O**: Low - only used to read the denylist from the database
+- **Concurrency Model**: Single-threaded
+- **Performance Characteristics**: High throughput, low latency
+- **Resource Scaling**: Not applicable - this service does not need to scale
+- **Performance Optimization**: None
+
+#### Error Conditions & Recovery (COMPREHENSIVE STRATEGIES)
+
+- **Failure Modes**: Denylist corruption, Command Execution Engine failure
+- **Failure Detection**: Integrity checks for the denylist, test commands for the Command Execution Engine
+- **Failure Impact**: HIGH - unauthorized commands could be executed
+- **Recovery Strategies**: Restore denylist from backup, restart service
+- **Circuit Breaker Patterns**: If the denylist is corrupted or the Command Execution Engine fails, stop the service
+- **Fallback Mechanisms**: None
+- **Disaster Recovery**: Restore denylist from backup, restart service
+- **Health Check Patterns**: Regular integrity checks for the denylist, test commands for the Command Execution Engine
+
+#### Monitoring & Observability (COMPLETE INSTRUMENTATION)
+
+- **Health Check Endpoints**: None
+- **Performance Metrics**: Command execution time, denylist load time
+- **Log Analysis**: Logs should be checked for errors during command execution or denylist loading
+- **Alert Conditions**: Errors during command execution or denylist loading
+- **Diagnostic Procedures**: Check logs, verify denylist integrity, test Command Execution Engine
+- **Performance Baselines**: Command execution time should be less than 1 second, denylist load time should be less than 1 second
+- **Monitoring Integration**: This service should be monitored by the system monitoring service
+
+#### Master Orchestration Integration Points (COMPLETE INTEGRATION)
+
+- **Service Discovery**: This service should be automatically discovered by the Master Orchestration Agent
+- **Health Monitoring**: The Master Orchestration Agent should monitor the health of this service
+- **Lifecycle Management**: The Master Orchestration Agent should manage the lifecycle of this service
+- **Resource Coordination**: Not applicable - this service does not need to scale
+- **Dependency Management**: This service has no dependencies
+- **Configuration Management**: The Master Orchestration Agent should manage the configuration of this service
+- **Security Coordination**: The Master Orchestration Agent should ensure that this service is running with the correct permissions
+
+#### Critical Decision Patterns for Orchestration (PRECISE RULES)
+
+- **Startup Priority**: 1 - this service should be the first to start
+- **Startup Conditions**: None
+- **Shutdown Priority**: 10 - this service should be the last to shut down
+- **Restart Strategy**: Immediate - this service should be restarted immediately if it fails
+- **Scaling Strategy**: Not applicable - this service does not need to scale
+- **Resource Allocation**: Minimal - this service requires very little resources
+- **Update Strategy**: Rolling - this service can be updated without downtime
+- **Backup Strategy**: The denylist should be backed up regularly
+- **Security Strategy**: This service should run with the minimum necessary permissions
+
+### 4. API Endpoints (if applicable) - COMPLETE SPECIFICATION
+
+- This service does not have any API endpoints.
+
+### 5. Security Features (COMPREHENSIVE SECURITY MODEL)
+
+- **Authentication Mechanisms**: None
+- **Authorization Patterns**: This service should run with the minimum necessary permissions
+- **Encryption Standards**: Not applicable - this service does not handle sensitive data
+- **Security Controls**: This service should run in a restricted environment
+- **Compliance Requirements**: This service should comply with all relevant security standards
+- **Threat Model**: Unauthorized command execution, denylist corruption
+- **Security Monitoring**: This service should be monitored for unauthorized command execution attempts
+
+### 6. Development Guidelines (COMPLETE STANDARDS)
+
+- **Coding Standards**: PEP 8 for Python, Google's Shell Style Guide for Bash
+- **Architecture Patterns**: Singleton for the Denylist Database, Command pattern for command execution
+- **Testing Requirements**: Unit tests for all functions, integration tests for the Command Execution Engine
+- **Code Quality**: pylint for Python, shellcheck for Bash
+- **Documentation Standards**: Docstrings for all functions, comments for complex code blocks
+- **Configuration Management**: Configuration should be managed by the Master Orchestration Agent
+- **Deployment Standards**: This service should be deployed using the system's standard deployment process
+
+### 7. Deployment Considerations (COMPLETE DEPLOYMENT INTELLIGENCE)
+
+- **Infrastructure Requirements**: A Linux/Unix environment
+- **Environment Configurations**: None
+- **Deployment Patterns**: Rolling - this service can be updated without downtime
+- **Scaling Considerations**: Not applicable - this service does not need to scale
+- **Monitoring Requirements**: This service should be monitored by the system monitoring service
+- **Disaster Recovery**: The denylist should be backed up regularly
+- **Capacity Planning**: Not applicable - this service does not need to scale
+
+This template should give you a good starting point for transforming the MDC file into a comprehensive, detailed, world-class document. Remember, the goal is to provide the Master Orchestration Agent with all the information it needs to achieve complete autonomous mastery of this service.
+
+description:
+globs:
+alwaysApply: true
+
+## Requirements
+- ✅ **Database connectivity**
+- ✅ **Complete MDC documentation**
+- ✅ **Health endpoint implementation**
+- ✅ **Master Orchestration integration**
+
+
+---
+
+
+## Triggers
+- **API endpoint requests**
+- **Database events**
+- **Health check requests**

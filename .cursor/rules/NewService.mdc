@@ -1,5 +1,60 @@
+
+## Description
+Core service component of the ZmartBot ecosystem providing essential functionality.
+
+
 # NewService.mdc
 > Purpose: Single source of truth to integrate any new service into ZmartBot — deterministically, safely, and repeatably.
+
+## 🚨 **MANDATORY ZMARTBOT SERVICE ARCHITECTURE WORKFLOW**
+
+### **CRITICAL WORKFLOW RULES (FORBIDDEN TO IGNORE)**
+
+**🚨 NO EXCUSES - SYSTEM WILL CRASH IF RULES ARE BROKEN**
+
+#### **Rule 1: Service Definition**
+- **ANY .py file = SERVICE**: Every Python file represents a service
+- **MANDATORY MDC**: Every .py file MUST have an associated MDC file
+- **SERVICE COUNTING**: All .py files are counted as services in the system
+
+#### **Rule 2: Port Assignment (Port Manager)**
+- **MANDATORY PORT**: Any service trying to connect with other services MUST receive a port from Port Manager
+- **PORT DATABASE**: Port Manager assigns a FREE port different from stored ports in database
+- **CONFLICT RESOLUTION**: If port conflict detected, Port Manager automatically assigns new port
+- **PERSISTENCE**: Port assignment is persisted and cannot be changed without proper workflow
+
+#### **Rule 3: Passport Assignment (Integration Gate)**
+- **PASSPORT REQUIRED**: Service MUST receive a passport to be integrated into system
+- **MDC PREREQUISITE**: Passport is ONLY accepted if the .py service has an associated MDC file
+- **UNIQUE IDENTITY**: Each passport provides unique service identity and tracking
+- **SYSTEM ACCESS**: Without passport, service cannot access system resources
+
+#### **Rule 4: Registration Process (Final Stage)**
+- **IMPLEMENTATION COMPLETE**: Service implementation must be done and tested
+- **STRICT WORKFLOW**: Registration follows mandatory steps documented in StopStartCycle and NewService MDC files
+- **SUCCESS VERIFICATION**: Only proceed if all steps are successful
+- **FINAL STATUS**: Successful registration upgrades service to "REGISTERED" status
+
+#### **Rule 5: Registered Service Requirements**
+- **AUTOMATIC STARTUP**: All registered services MUST start when system starts
+- **ORCHESTRATION INTEGRATION**: Services must be assigned to Master Orchestration Agent
+- **SAFE LEARNING**: Services must integrate with Master Orchestration Agent's safe learning system
+- **CERTIFICATION**: All registered services MUST receive a certificate from Certification Service
+
+#### **Rule 6: System Protection**
+- **PROTECTION TRIGGER**: After registration completion, Protection Service is automatically triggered
+- **DELETION PREVENTION**: Protection Service prevents registered services from being deleted
+- **SYSTEM INTEGRITY**: Protection ensures system architecture integrity
+
+### **CRITICAL WARNING: SERVICE COUNTING ISSUES**
+
+**⚠️ IMPORTANT**: The "Registered Services" count on the MDC Dashboard and throughout the system depends on **Step 6C - Master Orchestration Agent Update**. 
+
+**🚨 ROOT CAUSE**: Previous counting discrepancies were caused by services being registered in passport registry but **NOT** being added to Master Orchestration Agent. This step is **ABSOLUTELY CRITICAL** for accurate service counting.
+
+**✅ SOLUTION**: The registration process now automatically includes Master Orchestration Agent updates, but **YOU MUST VERIFY** that Step 6C is completed successfully.
+
+**🔍 VERIFICATION**: Always run `check_service_counts()` after registration to ensure accuracy.
 
 ## Scope
 This rule governs the end-to-end lifecycle from **development** to **production activation**:
@@ -12,6 +67,15 @@ This rule governs the end-to-end lifecycle from **development** to **production 
 - `{{PORT_MANAGER_DB}}` = `/Users/dansidanutz/Desktop/ZmartBot/infra/port_manager.db`
 - `{{SNAPSHOT_DIR}}` = `/Users/dansidanutz/Desktop/ZmartBot/infra/snapshots`
 - `{{LOG_DIR}}` = `/Users/dansidanutz/Desktop/ZmartBot/logs/{{SERVICE_NAME}}`
+
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Database connectivity**
+- ✅ **Valid service passport**
+- ✅ **Complete MDC documentation**
+- ✅ **Health endpoint implementation**
+
 
 ---
 
@@ -34,6 +98,15 @@ PORT=8000 python -m services.{{module}} --port $PORT &
 curl -fsS "http://localhost:$PORT/health" | jq .
 curl -fsS "http://localhost:$PORT/ready"  | jq .
 ```
+
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Database connectivity**
+- ✅ **Valid service passport**
+- ✅ **Complete MDC documentation**
+- ✅ **Health endpoint implementation**
+
 
 ---
 
@@ -70,6 +143,20 @@ ps aux | grep -i "{SERVICE_NAME}" | grep -v grep
 - **Use existing** service instead of creating duplicate
 - **Update** existing service if needed
 
+**CRITICAL: Passport Protection Check**
+```bash
+# Check if service has passport protection
+sqlite3 /Users/dansidanutz/Desktop/ZmartBot/data/passport_registry.db "SELECT passport_id FROM passport_registry WHERE service_name = '{SERVICE_NAME}';"
+```
+
+**If Passport ID Found:**
+- **NEVER DELETE** the service or any related files
+- **NEVER DELETE** passport registry entries
+- **NEVER DELETE** MDC files for passport-protected services
+- **NEVER DELETE** configuration files for passport services
+- **ONLY UPDATE** or **MODIFY** existing passport-protected services
+- **CREATE BACKUP** before any modifications
+
 **Automated Validation (Recommended):**
 ```bash
 # Run validation script before service registration
@@ -82,6 +169,12 @@ else
     echo "❌ Validation failed, stopping registration"
     exit 1
 fi
+
+# MANDATORY: Use automated service registration system
+python3 zmart-api/service_registration_automation.py register {SERVICE_NAME} {PORT} {SERVICE_TYPE}
+
+# Verify orchestration integration
+python3 zmart-api/service_registration_automation.py status
 ```
 
 ## CRITICAL: Pattern Consistency Requirements
@@ -155,6 +248,15 @@ create table if not exists events(
 );
 ```
 
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Database connectivity**
+- ✅ **Valid service passport**
+- ✅ **Complete MDC documentation**
+- ✅ **Health endpoint implementation**
+
+
 ---
 
 ## Phase 3 — Integration Control Gate
@@ -199,6 +301,65 @@ python -m infra.registry_client.register \
   --port-db "{{PORT_MANAGER_DB}}"
 ```
 
+### Step 4.1 — Passport Service Registration (port 8620) **MANDATORY**
+
+**Action**: Issue unique Passport ID for approved service and register in Passport Service.
+
+**Purpose**: Every approved service MUST receive a unique Passport ID for identity management, tracking, and orchestration integration.
+
+**Passport ID Format**: `ZMBT-{TYPE}-{DATE}-{HASH}` (e.g., `ZMBT-SRV-20250826-A1B2C3`)
+
+**Service Type Classification**:
+- **SRV**: Backend Services (AlertSystemServer, AnalyticsServer, etc.)
+- **AGT**: Orchestration Agents (MasterOrchestrationAgent, MDCAgent, etc.)
+- **API**: API Services (MainAPIServer, API-Manager, etc.)
+- **ENG**: Processing Engines (TradingEngine, RiskEngine, etc.)
+- **BOT**: Bot Services (TradingBot, MonitoringBot, etc.)
+
+**Automation**
+
+```bash
+# Register service with Passport Service for Passport ID assignment
+curl -X POST "http://localhost:8620/api/passport/register" \
+  -H "Authorization: Bearer passport-admin-token" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "service_name": "{{SERVICE_NAME}}",
+    "service_type": "{{SERVICE_TYPE}}",
+    "port": {{PORT}},
+    "health_endpoint": "/health",
+    "description": "{{DESCRIPTION}}",
+    "version": "{{VERSION}}",
+    "dependencies": {{DEPENDENCIES}},
+    "tags": {{TAGS}},
+    "metadata": {{METADATA}}
+  }'
+
+# Alternative: Direct database registration (if API unavailable)
+sqlite3 /Users/dansidanutz/Desktop/ZmartBot/data/passport_registry.db \
+  "INSERT INTO passport_registry (
+    passport_id, service_name, service_type, port, status, 
+    registered_at, activated_at, description, metadata, created_by
+  ) VALUES (
+    'ZMBT-{{TYPE}}-$(date +%Y%m%d)-$(openssl rand -hex 3 | tr '[:lower:]' '[:upper:]')',
+    '{{SERVICE_NAME}}', '{{SERVICE_TYPE}}', {{PORT}}, 'ACTIVE',
+    datetime('now'), datetime('now'), '{{DESCRIPTION}}', '{{METADATA}}', 'system'
+  );"
+
+# Verify Passport ID assignment
+curl -s "http://localhost:8620/api/passport/services/{{SERVICE_NAME}}" | jq '.passport_id'
+```
+
+**Passport Service Integration Benefits**:
+- ✅ **Unique Identity**: Each service receives collision-resistant identifier
+- ✅ **Lifecycle Tracking**: Complete registration history and audit trail
+- ✅ **Orchestration Integration**: Master Orchestration uses Passport IDs for service coordination
+- ✅ **Security Management**: Service authentication and authorization tracking
+- ✅ **Discovery Service**: Centralized service lookup and metadata management
+- ✅ **Migration Support**: Legacy service migration and Passport ID assignment
+
+**CRITICAL**: Service registration is NOT complete until Passport ID is assigned. Services without Passport IDs will NOT be recognized by Master Orchestration Agent.
+
 ### Step 5 — MDC Documentation Generation (AI)
 
 **Action**: MDC Agent analyzes code + manifest and generates `.mdc` into `.cursor/rules/services/{{SERVICE_NAME}}.mdc`.
@@ -223,6 +384,63 @@ python -m infra.mdc_agent.generate \
 ```bash
 bash infra/orchestration/orchestrationstart.sh add "{{SERVICE_NAME}}"
 ```
+
+### Step 6B — Automated Service Registration (MANDATORY)
+
+**Action**: Use the automated service registration system to update orchestration startup.
+
+**CRITICAL**: This step is MANDATORY and ensures all registered services are included in the system startup process.
+
+**Automation**
+
+```bash
+# MANDATORY: Register service with automated system
+python3 zmart-api/service_registration_automation.py register {{SERVICE_NAME}} {{PORT}} {{SERVICE_TYPE}}
+
+# Verify orchestration sync
+python3 zmart-api/service_registration_automation.py status
+
+# Sync all services if needed
+python3 zmart-api/service_registration_automation.py sync
+```
+
+**Benefits**:
+- ✅ **Automatic Orchestration Update**: Service automatically added to startup order
+- ✅ **Directory Mapping**: Service directory paths automatically configured
+- ✅ **Startup Commands**: Service startup commands automatically added
+- ✅ **Backup Protection**: Orchestration script backed up before changes
+- ✅ **Consistency**: Ensures all registered services are in startup process
+- ✅ **Validation**: Verifies service is properly integrated
+
+### Step 6C — Master Orchestration Agent Update (MANDATORY)
+
+**Action**: Update the Master Orchestration Agent to include the newly registered service.
+
+**🚨 CRITICAL IMPORTANCE**: This step is **ABSOLUTELY MANDATORY** and **CRITICAL** to ensure the service is counted correctly in the system. **FAILURE TO COMPLETE THIS STEP WILL CAUSE THE "REGISTERED SERVICES" COUNT TO BE INCORRECT** on the MDC Dashboard and throughout the system.
+
+**⚠️ ROOT CAUSE OF COUNTING ISSUES**: The primary reason why "Registered Services" counts were incorrect was because this step was missing from the registration process. Services were being registered in passport registry but not added to Master Orchestration Agent, causing count discrepancies.
+
+**Automation**
+
+```bash
+# MANDATORY: Update Master Orchestration Agent
+python3 zmart-api/service_registration_automation.py update_master_agent {{SERVICE_NAME}} {{PORT}} {{SERVICE_TYPE}}
+
+# Verify Master Orchestration Agent sync
+python3 zmart-api/service_registration_automation.py verify_master_agent
+
+# Check service count accuracy
+python3 zmart-api/service_registration_automation.py check_counts
+```
+
+**Benefits**:
+- ✅ **Automatic Count Update**: Service automatically added to Master Orchestration Agent
+- ✅ **Passport ID Integration**: Service passport ID automatically included
+- ✅ **Service Count Accuracy**: Ensures registered services count is correct
+- ✅ **System Consistency**: Maintains synchronization between all orchestration files
+- ✅ **Validation**: Verifies service is properly counted and listed
+- ✅ **Dashboard Accuracy**: Prevents incorrect counts on MDC Dashboard
+- ✅ **Future Prevention**: Eliminates the root cause of counting discrepancies
 
 ### Step 7 — Health & Readiness Verification
 
@@ -249,6 +467,15 @@ python -m infra.snapshot.update-baseline --service "{{SERVICE_NAME}}"
 
 <!-- END:StopStartCycle -->
 
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Database connectivity**
+- ✅ **Valid service passport**
+- ✅ **Complete MDC documentation**
+- ✅ **Health endpoint implementation**
+
+
 ---
 
 ## Phase 4 — Advanced Orchestration (Master Agent @ 8002)
@@ -263,6 +490,15 @@ python -m infra.snapshot.update-baseline --service "{{SERVICE_NAME}}"
 ```bash
 python -m infra.master_agent.link --service "{{SERVICE_NAME}}" --agent "http://localhost:8002"
 ```
+
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Database connectivity**
+- ✅ **Valid service passport**
+- ✅ **Complete MDC documentation**
+- ✅ **Health endpoint implementation**
+
 
 ---
 
@@ -291,20 +527,46 @@ python -m infra.deps.sync --service "{{SERVICE_NAME}}"
 python -m infra.lb.configure --service "{{SERVICE_NAME}}"
 ```
 
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Database connectivity**
+- ✅ **Valid service passport**
+- ✅ **Complete MDC documentation**
+- ✅ **Health endpoint implementation**
+
+
 ---
 
 ## Phase 6 — Integration Success Verification (Checklist)
 
 1. ✅ `/health` and `/ready` pass consistently
 2. ✅ Registered in Registry (8610) with correct metadata
-3. ✅ Service `.mdc` generated and stored
-4. ✅ Port assignment persisted and conflict-free
-5. ✅ Dependencies mapped and validated
-6. ✅ Master Orchestration recognizes & coordinates
-7. ✅ Snapshot Manager includes the service in baselines
-8. ✅ Orchestration start/stop is correct and ordered
-9. ✅ Monitoring active; baseline recorded
-10. ✅ Learning phase initiated (if opted)
+3. ✅ **Passport ID assigned** and registered in Passport Service (8620) - **🚨 CRITICAL MANDATORY**
+4. ✅ **Port assignment verified** and persisted - **🚨 CRITICAL MANDATORY**
+5. ✅ **Orchestration integration completed** - **🚨 CRITICAL MANDATORY**
+6. ✅ **Master Orchestration Agent updated** with service and passport ID - **🚨 CRITICAL MANDATORY**
+7. ✅ **System Protection Service protection active** - **🚨 CRITICAL MANDATORY**
+8. ✅ **Service count accuracy verified** in Master Orchestration Agent - **🚨 CRITICAL MANDATORY**
+9. ✅ **Count verification passed** using `check_service_counts()` - **🚨 CRITICAL MANDATORY**
+10. ✅ **Certificate generated** via Certification Service - **🚨 CRITICAL MANDATORY**
+11. ✅ **MDC documentation complete** - **🚨 CRITICAL MANDATORY**
+12. ✅ Service `.mdc` generated and stored
+13. ✅ Dependencies mapped and validated
+14. ✅ Snapshot Manager includes the service in baselines
+15. ✅ Orchestration start/stop is correct and ordered
+16. ✅ Monitoring active; baseline recorded
+17. ✅ Passport Service authentication and identity verification working
+18. ✅ Learning phase initiated (if opted)
+
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Database connectivity**
+- ✅ **Valid service passport**
+- ✅ **Complete MDC documentation**
+- ✅ **Health endpoint implementation**
+
 
 ---
 
@@ -342,6 +604,15 @@ echo "STOP gate completed."
 
 * Polls `http://localhost:$PORT/ready` until `200` or timeout.
 
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Database connectivity**
+- ✅ **Valid service passport**
+- ✅ **Complete MDC documentation**
+- ✅ **Health endpoint implementation**
+
+
 ---
 
 ## Contract for Service Health Endpoints
@@ -360,6 +631,15 @@ echo "STOP gate completed."
 
 **HTTP 200** is mandatory for healthy/ready. Timeouts are treated as failure.
 
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Database connectivity**
+- ✅ **Valid service passport**
+- ✅ **Complete MDC documentation**
+- ✅ **Health endpoint implementation**
+
+
 ---
 
 ## Governance / Security Notes
@@ -374,6 +654,15 @@ export SERVICE_TOKEN="$(python -m infra.registry_client.issue_token --service {{
 exec python -m services.{{module}} --port $PORT
 ```
 
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Database connectivity**
+- ✅ **Valid service passport**
+- ✅ **Complete MDC documentation**
+- ✅ **Health endpoint implementation**
+
+
 ---
 
 ## Failure & Rollback Playbook
@@ -384,6 +673,15 @@ exec python -m services.{{module}} --port $PORT
 ```
 python -m infra.snapshot.restore --latest-success
 ```
+
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Database connectivity**
+- ✅ **Valid service passport**
+- ✅ **Complete MDC documentation**
+- ✅ **Health endpoint implementation**
+
 
 ---
 
@@ -414,4 +712,19 @@ PY
 description:
 globs:
 alwaysApply: true
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Database connectivity**
+- ✅ **Valid service passport**
+- ✅ **Complete MDC documentation**
+- ✅ **Health endpoint implementation**
+
+
 ---
+
+
+## Triggers
+- **API endpoint requests**
+- **File system changes**
+- **Database events**

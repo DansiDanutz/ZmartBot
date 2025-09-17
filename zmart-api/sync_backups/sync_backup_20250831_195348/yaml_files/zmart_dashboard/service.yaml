@@ -1,0 +1,16 @@
+service_name: zmart-dashboard
+service_type: frontend
+port: 3400
+description: "ZmartBot Dashboard Interface"
+status: ACTIVE
+passport_id: ZMBT-SRV-20250826-5E1452
+registered_at: "2025-08-26"
+health_url: "http://localhost:3400/health"
+start_cmd: "python3 professional_dashboard_server.py --port 3400"
+stop_cmd: "pkill -f 'professional_dashboard_server.py'"
+dependencies:
+  - zmart-api
+tags:
+  - dashboard
+  - frontend
+  - interface

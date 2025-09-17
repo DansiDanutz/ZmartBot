@@ -1,0 +1,82 @@
+---
+# ⚽ Maradona Alerts Service - Level 3 Certified
+apiVersion: zmartbot/v1
+kind: Service
+metadata:
+  name: maradona-alerts
+  namespace: zmartbot-alerts
+  labels:
+    app: maradona-alerts
+    tier: level3-certified
+    category: alert-system
+    owner: zmartbot
+spec:
+  service:
+    name: maradona-alerts
+    port: 8016
+    type: backend
+    protocol: HTTP
+    certification_level: 3
+    passport_id: ZMBT-ALT-20250831-FA44D3
+    python_file: maradona_alerts_server.py
+    
+  endpoints:
+    health: /health
+    alerts: /api/alerts
+    status: /api/status
+    
+  runtime:
+    startup_timeout: 30s
+    health_check_interval: 60s
+    restart_policy: always
+    
+  deployment:
+    replicas: 1
+    resources:
+      cpu: "100m"
+      memory: "128Mi"
+    env:
+      - name: PORT
+        value: "8016"
+      - name: LOG_LEVEL
+        value: "INFO"
+        
+  monitoring:
+    enabled: true
+    metrics_port: 9016
+    alerts:
+      - name: service-down
+        condition: "up == 0"
+        severity: critical
+      - name: high-latency
+        condition: "response_time > 1000"
+        severity: warning
+
+  security:
+    network_policies:
+      - allow_from: ["zmartbot-core", "zmartbot-orchestration"]
+      - deny_all: false
+    secrets:
+      - name: alerts-config
+        type: Opaque
+
+  integration:
+    dependencies:
+      - zmartapi-server:8000
+      - database-service:8900
+    provides:
+      - maradona-level-alerts
+      - trading-alerts
+      
+  backup:
+    enabled: true
+    retention_days: 30
+    schedule: "0 2 * * *"
+
+status:
+  phase: Running
+  certification:
+    level: 3
+    issued_date: "2025-08-31"
+    expiry_date: "2026-08-31"
+    authority: zmartbot-system

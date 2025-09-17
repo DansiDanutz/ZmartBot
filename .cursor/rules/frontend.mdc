@@ -1,3 +1,8 @@
+
+## Description
+Core service component of the ZmartBot ecosystem providing essential functionality.
+
+
 # Service Overview
 
 ## Name
@@ -345,4 +350,18 @@ The Professional Dashboard on port 3400 is the comprehensive, feature-rich front
 description:
 globs:
 alwaysApply: true
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Database connectivity**
+- ✅ **Health endpoint implementation**
+- ✅ **Master Orchestration integration**
+
+
 ---
+
+
+## Triggers
+- **API endpoint requests**
+- **Database events**
+- **Health check requests**

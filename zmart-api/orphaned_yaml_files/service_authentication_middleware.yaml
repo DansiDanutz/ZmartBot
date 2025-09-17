@@ -1,0 +1,30 @@
+service_name: authentication_middleware
+service_type: security
+version: 1.0.0
+owner: zmartbot
+description: JWT authentication middleware (corrected passport)
+port: 8894
+passport_id: ZMBT-SEC-20250831-Q8R9S1
+status: ACTIVE
+registered_at: '2025-08-31'
+health_url: http://localhost:8894/health
+start_cmd: python3 authentication_middleware_server.py --port 8894
+stop_cmd: pkill -f 'authentication_middleware_server.py'
+dependencies:
+- zmart-api
+tags:
+- security
+- authentication_middleware
+lifecycle:
+  startup_grace_seconds: 30
+  shutdown_timeout_seconds: 15
+  health_check_interval: 30
+monitoring:
+  metrics_endpoint: /metrics
+  logs_path: logs/authentication_middleware.log
+  dashboard_url: http://localhost:8894/dashboard
+security:
+  cors_enabled: true
+  token_required: false
+  scopes:
+  - security

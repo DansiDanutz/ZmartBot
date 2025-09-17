@@ -1,0 +1,33 @@
+{
+  "symbol": "XRP",
+  "symbol_name": "Ripple",
+  "birth_date": "2013-08-04",
+  "current_date": "2025-09-14",
+  "total_days": 4424,
+  "actual_age_days": 4424,
+  "risk_bands": {
+    "0.0-0.1": 132,
+    "0.1-0.2": 442,
+    "0.2-0.3": 575,
+    "0.3-0.4": 707,
+    "0.4-0.5": 884,
+    "0.5-0.6": 973,
+    "0.6-0.7": 575,
+    "0.7-0.8": 309,
+    "0.8-0.9": 176,
+    "0.9-1.0": 88
+  },
+  "current_risk_band": "0.5-0.6",
+  "confidence_level": 7,
+  "data_type": "estimated",
+  "0.0-0.1_percentage": 2.98,
+  "0.1-0.2_percentage": 9.99,
+  "0.2-0.3_percentage": 13.0,
+  "0.3-0.4_percentage": 15.98,
+  "0.4-0.5_percentage": 19.98,
+  "0.5-0.6_percentage": 21.99,
+  "0.6-0.7_percentage": 13.0,
+  "0.7-0.8_percentage": 6.98,
+  "0.8-0.9_percentage": 3.98,
+  "0.9-1.0_percentage": 1.99
+}

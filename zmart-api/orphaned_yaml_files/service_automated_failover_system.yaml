@@ -1,0 +1,30 @@
+service_name: automated_failover_system
+service_type: infrastructure
+version: 1.0.0
+owner: zmartbot
+description: Automated failover system (corrected passport)
+port: 8896
+passport_id: ZMBT-INF-20250831-I8J9K1
+status: ACTIVE
+registered_at: '2025-08-31'
+health_url: http://localhost:8896/health
+start_cmd: python3 automated_failover_system_server.py --port 8896
+stop_cmd: pkill -f 'automated_failover_system_server.py'
+dependencies:
+- zmart-api
+tags:
+- infrastructure
+- automated_failover_system
+lifecycle:
+  startup_grace_seconds: 30
+  shutdown_timeout_seconds: 15
+  health_check_interval: 30
+monitoring:
+  metrics_endpoint: /metrics
+  logs_path: logs/automated_failover_system.log
+  dashboard_url: http://localhost:8896/dashboard
+security:
+  cors_enabled: true
+  token_required: false
+  scopes:
+  - infrastructure

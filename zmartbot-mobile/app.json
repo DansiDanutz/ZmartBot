@@ -1,0 +1,51 @@
+{
+  "expo": {
+    "name": "zmartbot-mobile",
+    "slug": "zmartbot",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "zmartbot",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": false,
+    "splash": {
+      "image": "./assets/images/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0B0E11"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.zmartbot.zmartbotmobile",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#0B0E11"
+      },
+      "edgeToEdgeEnabled": true,
+      "package": "com.zmartbot.zmartbotmobile",
+      "versionCode": 1
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      "sentry-expo"
+    ],
+    "updates": {
+      "enabled": false
+    },
+    "extra": {
+      "EXPO_PUBLIC_FOUNDATION_API_URL": "http://192.168.1.166:8000",
+      "router": {},
+      "eas": {
+        "projectId": "c6a4348e-bdba-415a-b39f-f8d0a2e39ec7"
+      }
+    }
+  }
+}

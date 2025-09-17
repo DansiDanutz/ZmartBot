@@ -1,0 +1,397 @@
+# zmartbot-mobile-app.mdc
+> Type: mobile-frontend | Version: 1.0.0 | Owner: zmartbot | Status: Production Ready | Level: 1
+
+## Purpose
+React Native Expo mobile application for ZmartBot trading platform, providing professional Binance-style cryptocurrency trading interface with AI-powered chat, market analysis, DeFi pool management, and real-time trading insights.
+
+## Description
+ZmartBot Mobile App is a sophisticated React Native application built with Expo framework, featuring a modern dark-themed UI inspired by Binance design patterns. The app serves as the primary mobile interface for the ZmartBot cryptocurrency trading ecosystem, offering comprehensive trading tools, AI-powered market analysis, portfolio management, and real-time market data visualization.
+
+## Overview
+The mobile application provides traders with a comprehensive suite of tools including:
+- AI-powered trading assistant with natural language processing
+- Real-time market insights and technical analysis
+- DeFi liquidity pool management with risk assessment
+- Live trading alerts and notifications
+- Portfolio tracking and performance analytics
+- Professional charting and market data visualization
+
+## Critical Functions
+
+### 🤖 AI Trading Assistant
+- **Natural Language Chat**: Conversational AI interface for trading queries
+- **Market Analysis**: Real-time AI-powered market sentiment and trend analysis
+- **Trading Suggestions**: AI-generated trading recommendations with confidence scores
+- **Risk Assessment**: Automated portfolio risk analysis and alerts
+- **Quick Actions**: Pre-built action buttons for common trading tasks
+
+### 📊 Market Intelligence
+- **Real-Time Data**: Live market data from multiple cryptocurrency exchanges
+- **Technical Analysis**: Advanced charting with multiple timeframes and indicators
+- **Market Sentiment**: Aggregated sentiment analysis from social media and news
+- **Price Predictions**: AI-powered price prediction models with confidence intervals
+- **Volatility Metrics**: Real-time volatility analysis and risk scoring
+
+### 🏊 DeFi Pool Management
+- **Liquidity Positions**: Track and manage DeFi liquidity pool positions
+- **Yield Optimization**: Automated yield farming strategy recommendations
+- **Impermanent Loss**: Real-time impermanent loss calculations and alerts
+- **Risk Scoring**: Comprehensive risk assessment for DeFi protocols
+- **APY Tracking**: Historical and projected APY performance analysis
+
+### 🔔 Alert System
+- **Price Alerts**: Customizable price movement notifications
+- **Portfolio Alerts**: Portfolio performance and rebalancing notifications
+- **Risk Alerts**: Automated risk threshold breach notifications
+- **Market Alerts**: Breaking news and market event notifications
+- **DeFi Alerts**: Liquidity pool and yield farming opportunity alerts
+
+### 📈 Portfolio Analytics
+- **Performance Tracking**: Comprehensive portfolio performance analytics
+- **Asset Allocation**: Visual asset allocation and diversification analysis
+- **P&L Tracking**: Detailed profit and loss tracking with tax reporting
+- **Benchmark Comparison**: Portfolio performance vs market benchmarks
+- **Historical Analysis**: Long-term portfolio performance trends
+
+### 🎯 Trading History
+- **Transaction History**: Complete trading transaction log with filters
+- **Performance Analytics**: Trade performance analysis and statistics
+- **Strategy Analysis**: Trading strategy effectiveness tracking
+- **Cost Analysis**: Trading fees and cost optimization insights
+- **Export Features**: Data export for tax reporting and analysis
+
+## Architecture & Integration
+
+### **Technology Stack**
+- **Frontend Framework**: React Native 0.79.5
+- **Development Platform**: Expo SDK 53.0.0
+- **Styling**: NativeWind (Tailwind CSS) with Binance Dark Theme
+- **State Management**: Zustand for global state
+- **HTTP Client**: Axios with React Query for API management
+- **Navigation**: Expo Router with tab-based navigation
+- **Animations**: React Native Reanimated with custom animations
+- **Build System**: EAS (Expo Application Services)
+
+### **Project Structure**
+```
+zmartbot-mobile/
+├── app/                          # Main application screens
+│   ├── (tabs)/                   # Tab-based navigation screens
+│   │   ├── _layout.tsx          # Tab navigation layout
+│   │   ├── chat.tsx             # AI Chat Assistant screen
+│   │   ├── markets.tsx          # Market Analysis screen
+│   │   ├── pools.tsx            # DeFi Pools screen
+│   │   ├── alerts.tsx           # Alerts & Notifications screen
+│   │   ├── credits.tsx          # Credits & Billing screen
+│   │   └── history.tsx          # Trading History screen
+│   ├── _layout.tsx              # Root application layout
+│   └── modal.tsx                # Modal screens
+├── src/                         # Source code modules
+│   ├── api/                     # API integration layer
+│   ├── components/              # Reusable UI components
+│   ├── hooks/                   # Custom React hooks
+│   ├── utils/                   # Utility functions
+│   └── types/                   # TypeScript type definitions
+├── assets/                      # Static assets (images, fonts)
+├── credentials.json             # Local build credentials
+├── eas.json                     # EAS build configuration
+├── app.json                     # Expo app configuration
+├── tailwind.config.js           # Tailwind CSS configuration
+├── metro.config.js              # Metro bundler configuration
+├── babel.config.js              # Babel transpilation configuration
+└── global.css                  # Global CSS styles
+```
+
+### **Service Type**: mobile-frontend
+### **Dependencies**: 
+- **Backend API**: ZmartBot Main API Server (port 8000)
+- **Real-time Data**: WebSocket connections for live market data
+- **Authentication**: JWT-based authentication with refresh tokens
+- **Push Notifications**: Expo Push Notifications service
+- **Analytics**: Custom analytics for user behavior tracking
+
+### **Environment Variables**
+```bash
+EXPO_PUBLIC_FOUNDATION_API_URL=http://192.168.1.166:8000
+```
+
+### **Lifecycle Management**
+- **Development**: `npx expo start --clear` | Starts Metro bundler with cleared cache
+- **Build Preview**: `npx eas-cli@latest workflow:run create-production-builds.yml` | Creates standalone APK
+- **Build Production**: `npx eas build --platform android --profile production` | Production build
+- **Stop Development**: `Ctrl+C` or kill Metro process
+- **Clear Cache**: `npx expo r -c` | Reset Metro cache and restart
+
+## API Integration
+
+### **Backend Endpoints**
+- **Base URL**: `http://192.168.1.166:8000`
+- **Authentication**: `/api/auth/login`, `/api/auth/refresh`
+- **Market Data**: `/api/market/symbols`, `/api/market/prices`
+- **Portfolio**: `/api/portfolio/positions`, `/api/portfolio/history`
+- **AI Chat**: `/api/chat/message`, `/api/chat/suggestions`
+- **DeFi Pools**: `/api/defi/pools`, `/api/defi/positions`
+- **Alerts**: `/api/alerts/create`, `/api/alerts/list`
+
+### **WebSocket Connections**
+- **Market Data**: Real-time price updates and market events
+- **Portfolio Updates**: Live portfolio value and position changes
+- **Alerts**: Real-time alert notifications and system messages
+- **Chat**: AI chat responses and typing indicators
+
+## UI/UX Design System
+
+### **Binance Dark Theme**
+```css
+Colors:
+- bg-primary: #0B0E11 (Deep black background)
+- bg-secondary: #1E2026 (Dark gray secondary background)
+- bg-tertiary: #2B2F36 (Lighter dark gray for cards)
+- text-primary: #EAECEF (High contrast white text)
+- text-secondary: #B7BDC6 (Secondary text)
+- success: #0ECB81 (Green for positive values)
+- danger: #F6465D (Red for negative values)
+- warning: #F0B90B (Yellow for warnings)
+```
+
+### **Component Design Patterns**
+- **Card System**: Gradient backgrounds with border styling
+- **Animated Interactions**: Spring animations for user feedback
+- **Professional Typography**: Monospace fonts for numeric data
+- **Data Visualization**: Color-coded metrics and progress bars
+- **Responsive Layout**: Optimized for various screen sizes
+
+### **Navigation Structure**
+```
+Tab Navigation (6 tabs):
+├── 💬 Chat - AI Trading Assistant
+├── 📊 Markets - Market Analysis & Insights  
+├── 🏊 Pools - DeFi Liquidity Pool Management
+├── 🔔 Alerts - Trading Alerts & Notifications
+├── 💳 Credits - Account Credits & Billing
+└── 📈 History - Trading History & Analytics
+```
+
+## Build Configuration
+
+### **EAS Configuration (eas.json)**
+```json
+{
+  "cli": { "version": ">= 12.4.0", "appVersionSource": "local" },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "android": { "credentialsSource": "local" }
+    },
+    "preview": {
+      "distribution": "internal",
+      "android": { "credentialsSource": "local" }
+    },
+    "production": {}
+  }
+}
+```
+
+### **App Configuration (app.json)**
+```json
+{
+  "expo": {
+    "name": "zmartbot-mobile",
+    "slug": "zmartbot",
+    "version": "1.0.0",
+    "android": {
+      "package": "com.zmartbot.zmartbotmobile",
+      "versionCode": 1
+    },
+    "ios": {
+      "bundleIdentifier": "com.zmartbot.zmartbotmobile"
+    }
+  }
+}
+```
+
+### **Local Credentials (credentials.json)**
+```json
+{
+  "android": {
+    "keystore": {
+      "keystorePath": "./android/release-key.keystore",
+      "keystorePassword": "zmartbot123",
+      "keyAlias": "zmartbot-key-alias",
+      "keyPassword": "zmartbot123"
+    }
+  }
+}
+```
+
+## Health & Readiness
+
+### **Development Health Checks**
+- **Metro Bundler**: `http://localhost:8081` - Metro development server status
+- **Expo DevTools**: `http://localhost:19002` - Expo development interface
+- **TypeScript**: `npx tsc --noEmit` - Type checking validation
+- **ESLint**: `npx expo lint` - Code quality validation
+
+### **Build Health Checks**
+- **Dependencies**: `npm audit` - Security vulnerability scanning
+- **Bundle Size**: Monitor APK size and optimization
+- **Performance**: React Native Performance monitoring
+- **Crash Reporting**: Expo crash analytics and error tracking
+
+### **Timeouts & Limits**
+- **Metro Startup**: 60s grace period for development server
+- **API Requests**: 30s timeout for HTTP requests
+- **WebSocket**: 5s reconnection interval, 3 retry attempts
+- **Build Time**: ~10-15 minutes for Android builds
+
+## Security & Compliance
+
+### **Data Security**
+- **API Keys**: Stored in environment variables, never in code
+- **User Data**: Encrypted storage using Expo SecureStore
+- **Network**: TLS 1.3 for all API communications
+- **Authentication**: JWT tokens with automatic refresh
+- **Biometric**: Optional biometric authentication for app access
+
+### **Privacy Compliance**
+- **Data Collection**: Minimal data collection with user consent
+- **Analytics**: Anonymous usage analytics only
+- **Crash Reports**: Automatic crash reporting with opt-out option
+- **User Control**: Full data export and deletion capabilities
+
+### **Build Security**
+- **Code Signing**: Android APK signing with release keystore
+- **Certificate Pinning**: SSL certificate pinning for API endpoints
+- **Obfuscation**: Code obfuscation for production builds
+- **Supply Chain**: Dependency scanning and vulnerability monitoring
+
+## Deployment & Distribution
+
+### **Build Profiles**
+1. **Development**: 
+   - Target: Internal testing with Metro dependency
+   - Features: Debug tools, hot reload, development warnings
+   - Distribution: Local device installation via Expo Go
+
+2. **Preview**: 
+   - Target: Stakeholder review and testing
+   - Features: Standalone APK without Metro dependency
+   - Distribution: Internal distribution via EAS
+
+3. **Production**: 
+   - Target: Public app store release
+   - Features: Optimized, minified, production-ready
+   - Distribution: Google Play Store, Apple App Store
+
+### **Release Process**
+1. **Development Testing**: Local testing with `npx expo start`
+2. **Preview Build**: `npx eas-cli@latest workflow:run create-production-builds.yml`
+3. **Quality Assurance**: Internal testing of preview build
+4. **Production Build**: `npx eas build --platform all --profile production`
+5. **Store Submission**: App store submission and review process
+
+### **Monitoring & Analytics**
+- **User Analytics**: Custom event tracking for user behavior
+- **Performance Monitoring**: React Native performance metrics
+- **Crash Analytics**: Automatic crash detection and reporting
+- **Usage Metrics**: Feature usage and engagement analytics
+- **Business Intelligence**: Trading activity and revenue analytics
+
+## Performance Optimization
+
+### **Bundle Optimization**
+- **Tree Shaking**: Unused code elimination
+- **Code Splitting**: Lazy loading of heavy components
+- **Asset Optimization**: Image compression and lazy loading
+- **Font Optimization**: Custom font loading strategies
+
+### **Runtime Performance**
+- **Memory Management**: Efficient component lifecycle management
+- **List Optimization**: FlatList for large data sets
+- **Image Caching**: Intelligent image caching strategies
+- **Network Optimization**: Request batching and caching
+
+### **Battery Optimization**
+- **Background Processing**: Minimal background task execution
+- **WebSocket Management**: Efficient connection management
+- **Location Services**: Battery-aware location tracking
+- **Push Notifications**: Optimized notification strategies
+
+## Troubleshooting & Support
+
+### **Common Issues & Solutions**
+
+1. **Metro Bundler Errors**
+   - **Issue**: "Unable to load script" or Metro connection errors
+   - **Solution**: Clear Metro cache with `npx expo start --clear`
+   - **Prevention**: Use standalone builds for production testing
+
+2. **Build Failures**
+   - **Issue**: EAS build errors with dependency conflicts
+   - **Solution**: Use `npx expo install --fix` and `--legacy-peer-deps`
+   - **Prevention**: Keep dependencies aligned with Expo SDK version
+
+3. **NativeWind Configuration**
+   - **Issue**: Tailwind CSS styles not working
+   - **Solution**: Ensure `presets: [require("nativewind/preset")]` in tailwind.config.js
+   - **Prevention**: Verify both tailwind.config.js and metro.config.js setup
+
+4. **API Connection Issues**
+   - **Issue**: Network requests failing or timeouts
+   - **Solution**: Verify API URL in environment variables
+   - **Prevention**: Test API connectivity before builds
+
+### **Debug Commands**
+```bash
+# Clear all caches and restart
+npx expo start --clear
+
+# Check project health
+npx expo-doctor
+
+# Validate TypeScript
+npx tsc --noEmit
+
+# Check dependencies
+npx expo install --check
+
+# View build logs
+npx eas-cli@latest build:list --platform android
+```
+
+### **Support Resources**
+- **Documentation**: Expo documentation and React Native guides
+- **Community**: Expo Discord and React Native forums
+- **Issues**: GitHub issues for bug reports and feature requests
+- **Monitoring**: EAS dashboard for build and deployment monitoring
+
+## Integration Points
+
+### **ZmartBot Ecosystem Integration**
+- **Main API Server**: Primary backend integration on port 8000
+- **WebSocket Service**: Real-time data streaming
+- **Authentication Service**: JWT-based user authentication
+- **Analytics Service**: User behavior and trading analytics
+- **Push Notification Service**: Real-time alert delivery
+
+### **External Integrations**
+- **Cryptocurrency Exchanges**: Binance, KuCoin API integration
+- **Market Data Providers**: Real-time price and market data
+- **DeFi Protocols**: Uniswap, Aave, Curve protocol integration
+- **News APIs**: Cryptocurrency news and sentiment data
+- **Social Media**: Twitter, Reddit sentiment analysis
+
+### **Future Integration Roadmap**
+- **Apple Pay/Google Pay**: Fiat payment integration
+- **Hardware Wallets**: Ledger, Trezor device support
+- **Advanced Trading**: Futures and options trading
+- **Social Trading**: Copy trading and social features
+- **AI Enhancements**: Advanced machine learning models
+
+---
+
+**Generated**: 2025-09-01T22:33:00.000Z
+**Build Status**: ✅ Production Ready
+**Last Updated**: Mobile app successfully building and deploying
+**Maintainer**: ZmartBot Development Team

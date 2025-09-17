@@ -1,0 +1,6 @@
+import random
+async def get_price(symbol: str) -> float:
+    base = 2400.0 if symbol.upper()=="ETH" else 60000.0
+    return round(base + random.uniform(-50, 50), 2)
+async def get_funding_and_oi(symbol: str) -> dict:
+    return {"funding":"-", "oi_trend":"flat"}

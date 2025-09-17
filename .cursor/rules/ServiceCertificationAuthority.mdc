@@ -1,0 +1,143 @@
+# ServiceCertificationAuthority.mdc
+> Type: authority | Version: 1.0.0 | Owner: zmartbot | Port: 8901 | Level: 3
+
+
+## Purpose
+Service Certification Authority - The authoritative Level 3 certification system for ZmartBot services that implements comprehensive service evaluation, quality assurance, and certification management with CERT credential issuance for services meeting the highest production standards.
+
+## Description
+Production-grade certification authority providing comprehensive Level 3 service certification including security auditing, performance validation, compliance checking, documentation verification, and reliability assessment. Issues CERT credentials for services meeting stringent quality and operational requirements.
+
+## Overview
+Advanced certification authority serving as the single source of truth for service quality and compliance within the ZmartBot ecosystem. Manages the complete certification lifecycle from initial assessment through ongoing monitoring and renewal for Level 3 certified services.
+
+## Critical Functions
+- **Comprehensive Auditing**: Six-category evaluation system (Documentation, Security, Monitoring, Reliability, Performance, Compliance)
+- **CERT Credential Issuance**: Official certification credentials with expiration tracking
+- **Level 3 Registry**: Dedicated registry for certified services with enhanced monitoring
+- **Automated Assessment**: Intelligent scoring system with 90% threshold for certification
+- **Continuous Monitoring**: Ongoing compliance monitoring and renewal management
+- **Evidence Collection**: Detailed audit trails and requirement validation
+
+## Architecture & Integration
+- **Service Type:** authority
+- **Dependencies:** sqlite3, flask, requests, pathlib, json
+- **Databases:** 
+  - `certifications/service_certifications.db` (certification tracking)
+  - `certifications/level3_service_registry.db` (certified services registry)
+- **Integration:** Integrates with GOODDatabase.db for service discovery
+- **Lifecycle:** start=`python3 service_certification_authority.py --service --port 8901` | stop=`pkill -f service_certification_authority`
+
+## Level 3 Certification Requirements
+
+### Documentation (Required)
+- **MDC File**: Comprehensive MDC documentation with full specifications
+- **API Documentation**: Complete API endpoint documentation
+- **Deployment Guide**: Detailed deployment and configuration guides
+
+### Security (Required)
+- **Authentication**: Proper authentication mechanisms implemented
+- **Authorization**: Role-based access control systems
+- **Encryption**: Sensitive data encryption standards
+- **Audit Logging**: Comprehensive security audit trails
+
+### Monitoring (Required)
+- **Health Checks**: Functional health and readiness endpoints
+- **Metrics**: Prometheus-compatible metrics exposure
+- **Alerting**: Proactive alerting capabilities
+- **Logging**: Structured logging with proper levels
+
+### Reliability (Required)
+- **Uptime**: 99.9% uptime demonstration over 30-day period
+- **Error Handling**: Comprehensive error handling and recovery
+- **Graceful Shutdown**: Proper shutdown procedures
+- **Data Backup**: Automated backup and recovery strategies
+
+### Performance (Required)
+- **Response Time**: <100ms average response time requirement
+- **Throughput**: Demonstrated load capacity handling
+- **Resource Usage**: Efficient resource utilization
+- **Scalability**: Horizontal scaling capability
+
+### Compliance (Required)
+- **Standards**: ZmartBot architectural standards compliance
+- **Testing**: >80% test coverage requirement
+- **CI/CD**: Automated continuous integration/deployment
+- **Code Quality**: All linting and quality checks passing
+
+## API Endpoints
+- `GET /health` - Certification authority health status
+- `GET /api/certify/<service_name>` - Initiate Level 3 certification process
+- `GET /api/audit/<service_name>` - Run comprehensive service audit
+- `GET /api/level3-services` - List all Level 3 certified services
+- `GET /api/requirements` - Get Level 3 certification requirements
+- `GET /api/status/<service_name>` - Get service certification status
+
+## Database Schema
+
+**Certification Tracking:**
+- `service_certifications` - Certification records and status tracking
+- `certification_audits` - Detailed audit results and evidence
+- `level3_requirements` - Certification requirement definitions
+
+**Level 3 Registry:**
+- `level3_services` - Certified services with full metadata
+- `certification_history` - Certification action history and audit trail
+
+## Certification Process
+1. **Initiation**: Service certification request with initial validation
+2. **Comprehensive Audit**: Six-category evaluation with scoring
+3. **Evidence Collection**: Automated and manual evidence gathering
+4. **Scoring Assessment**: Weighted scoring with 90% threshold
+5. **Certificate Issuance**: CERT credential generation with expiry
+6. **Registry Addition**: Addition to Level 3 certified services registry
+7. **Ongoing Monitoring**: Continuous compliance and renewal management
+
+## Health & Readiness
+- **Liveness:** `GET /health` - Authority operational status
+- **Readiness:** Database connectivity and certification system status
+- **Monitoring:** Continuous monitoring of certification database integrity
+- **Timeouts:** startup_grace=45s, audit_timeout=300s, certification_timeout=600s
+
+## Performance Metrics
+- **Audit Capacity:** Support for 100+ services with comprehensive evaluation
+- **Certification Time:** Complete certification cycle in under 10 minutes
+- **Registry Performance:** <50ms query response for certified services
+- **Database Efficiency:** Optimized certification data storage and retrieval
+
+## Security & Compliance
+- **Authority Access:** Localhost-only access for certification operations
+- **Audit Integrity:** Tamper-proof audit trails and evidence storage
+- **Certificate Security:** Secure certificate generation and validation
+- **Data Protection:** Encryption of sensitive certification data
+
+## Integration Points
+- **GOODDatabase:** Primary service discovery and information source
+- **Orchestration:** Integration with system startup and monitoring
+- **Service Registry:** Coordination with existing service registration
+- **Monitoring Systems:** Integration with health and performance monitoring
+
+## Deployment Notes
+- **Status:** AUTHORITY - Certification authority system
+- **Passport:** SERVICE-CERT-AUTHORITY-8901-L3
+- **Owner:** zmartbot-system
+- **Priority:** CRITICAL - Essential for service quality assurance
+- **Scaling:** Single authoritative instance for certification integrity
+
+## Certificate Management
+- **Validity Period:** 1-year certificate validity with renewal requirements
+- **Renewal Process:** Quarterly audits with annual full re-certification
+- **Revocation:** Capability to revoke certificates for non-compliance
+- **Tracking:** Complete certificate lifecycle tracking and management
+
+## Error Handling
+- **Audit Failures:** Detailed failure reporting with remediation guidance
+- **Database Errors:** Robust error handling with data consistency protection
+- **Service Communication:** Graceful handling of service connectivity issues
+- **Certificate Issues:** Comprehensive certificate validation and error reporting
+
+## Monitoring & Alerts
+- **Certification Status:** Real-time certification status monitoring
+- **Audit Performance:** Audit timing and success rate tracking
+- **Certificate Expiry:** Proactive certificate renewal alerting
+- **System Health:** Comprehensive authority system health monitoring

@@ -1,0 +1,19 @@
+endpoints:
+  health: http://127.0.0.1:8304/health
+  metrics: http://127.0.0.1:8304/metrics
+  ready: http://127.0.0.1:8304/ready
+lifecycle:
+  health_check: curl -f http://127.0.0.1:8304/health
+  start_command: null
+  stop_command: pkill -f binance-worker
+metadata:
+  description: Binance Worker Service
+  owner: zmartbot
+  version: 1.0.0
+service:
+  level: 2
+  name: binance-worker
+  passport: ZMBT-SRV-20250828-5C8742
+  port: 8304
+  status: ACTIVE
+  type: worker

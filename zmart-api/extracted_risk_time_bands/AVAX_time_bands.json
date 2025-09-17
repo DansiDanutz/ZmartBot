@@ -1,0 +1,33 @@
+{
+  "symbol": "AVAX",
+  "symbol_name": "Avalanche",
+  "birth_date": "2020-09-21",
+  "current_date": "2025-09-14",
+  "total_days": 1819,
+  "actual_age_days": 1819,
+  "risk_bands": {
+    "0.0-0.1": 54,
+    "0.1-0.2": 181,
+    "0.2-0.3": 236,
+    "0.3-0.4": 291,
+    "0.4-0.5": 363,
+    "0.5-0.6": 400,
+    "0.6-0.7": 236,
+    "0.7-0.8": 127,
+    "0.8-0.9": 72,
+    "0.9-1.0": 36
+  },
+  "current_risk_band": "0.5-0.6",
+  "confidence_level": 7,
+  "data_type": "estimated",
+  "0.0-0.1_percentage": 2.97,
+  "0.1-0.2_percentage": 9.95,
+  "0.2-0.3_percentage": 12.97,
+  "0.3-0.4_percentage": 16.0,
+  "0.4-0.5_percentage": 19.96,
+  "0.5-0.6_percentage": 21.99,
+  "0.6-0.7_percentage": 12.97,
+  "0.7-0.8_percentage": 6.98,
+  "0.8-0.9_percentage": 3.96,
+  "0.9-1.0_percentage": 1.98
+}

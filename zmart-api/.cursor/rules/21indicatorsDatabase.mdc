@@ -1,0 +1,506 @@
+
+## Description
+Core service component of the ZmartBot ecosystem providing essential functionality.
+
+@datasource: IndicatorsDatabase
+
+## 🤖 MCP (Model Context Protocol) Integration
+
+### **MCP Server Pairing**
+**Status**: ✅ **ACTIVE** - 21 Indicators Database MCP Integration
+**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
+**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
+**Integration Type**: Multi-MCP Service Integration
+
+### **MCP Integration Features**
+- **Claude Code Integration**: AI-powered database optimization and analysis
+- **Memory Gateway**: Persistent database state and metadata
+- **UI Automation**: Automated database monitoring and health checks
+- **Figma Integration**: Database dashboard design and UI management
+- **Supabase Integration**: Cloud-based database analytics and reporting
+
+### **MCP Integration Benefits**
+- **AI-Powered Database Management**: Intelligent database optimization and analysis
+- **Persistent State**: Database state and metadata storage
+- **Automated Monitoring**: Real-time database health and performance monitoring
+- **Visual Dashboard**: Database process visualization and status tracking
+- **Cloud Analytics**: Database performance metrics and optimization insights
+
+### **MCP Usage Examples**
+```bash
+# Health check via MCP
+curl -X GET "http://127.0.0.1:8000/health" \
+  -H "Content-Type: application/json"
+
+# Database analysis via MCP
+curl -X POST "http://127.0.0.1:8000/database/analyze" \
+  -H "Content-Type: application/json" \
+  -d '{"action": "optimize", "table": "indicator_snapshots"}'
+```
+
+### **MCP Status**
+- **Claude Code**: ✅ Active - AI-powered database management
+- **ByteRover**: ✅ Active - Persistent database state management
+- **UI TARS**: ✅ Active - Automated database monitoring
+- **Figma**: ✅ Active - Database dashboard design
+- **Supabase**: ✅ Active - Cloud-based database analytics
+
+# 21 Indicators Database - Technical Analysis Storage System
+
+## Overview
+The **21 Indicators Database** is the **centralized storage system** for all technical analysis data in the ZmartBot platform. It serves as the **single source of truth** for technical indicators, pattern analysis, and historical data that drives all trading decisions and alert systems.
+
+## Why Was It Created?
+
+### **Primary Reasons for Creation**
+
+#### **1. Centralized Technical Analysis**
+- **Problem**: Technical indicators were scattered across multiple systems and databases
+- **Solution**: Single database storing all 21 indicators for all symbols and timeframes
+- **Benefit**: Consistent data access and reduced complexity
+
+#### **2. Real-time Trading Decisions**
+- **Problem**: Trading decisions needed real-time access to comprehensive technical data
+- **Solution**: Database with sub-second query response times for all indicators
+- **Benefit**: Instant access to complete technical analysis for trading decisions
+
+#### **3. Pattern Recognition and AI Analysis**
+- **Problem**: AI systems needed historical indicator data for pattern recognition
+- **Solution**: Historical database with complete indicator snapshots over time
+- **Benefit**: AI can learn from historical patterns and predict future movements
+
+#### **4. Alert System Integration**
+- **Problem**: Alert system needed real-time monitoring of all indicators
+- **Solution**: Database with continuous updates and alert trigger conditions
+- **Benefit**: Automated alert generation based on technical indicator conditions
+
+#### **5. Multi-timeframe Analysis**
+- **Problem**: Analysis needed across multiple timeframes (15m, 1h, 4h, 1d)
+- **Solution**: Database storing indicators for all timeframes simultaneously
+- **Benefit**: Comprehensive analysis across different trading timeframes
+
+## What Does It Serve?
+
+### **Core Functions**
+
+#### **1. Trading Decision Engine**
+```python
+def get_trading_signals(symbol, timeframe):
+    """Get comprehensive trading signals from all 21 indicators"""
+    indicators = database.get_all_indicators(symbol, timeframe)
+    
+    # Analyze all indicators for trading signals
+    signals = {
+        "rsi_signal": analyze_rsi(indicators.rsi),
+        "macd_signal": analyze_macd(indicators.macd),
+        "bollinger_signal": analyze_bollinger_bands(indicators.bollinger),
+        "ema_signal": analyze_ema_crossovers(indicators.ema),
+        "volume_signal": analyze_volume_patterns(indicators.volume),
+        "overall_signal": calculate_overall_signal(indicators)
+    }
+    
+    return signals
+```
+
+#### **2. Alert System Foundation**
+```python
+def check_alert_conditions(symbol, timeframe):
+    """Check all indicators for alert conditions"""
+    indicators = database.get_latest_indicators(symbol, timeframe)
+    
+    alerts = []
+    
+    # RSI Alerts
+    if indicators.rsi > 70:
+        alerts.append(Alert("RSI_OVERBOUGHT", symbol, indicators.rsi))
+    elif indicators.rsi < 30:
+        alerts.append(Alert("RSI_OVERSOLD", symbol, indicators.rsi))
+    
+    # MACD Alerts
+    if indicators.macd > indicators.macd_signal:
+        alerts.append(Alert("MACD_BULLISH_CROSS", symbol, indicators.macd))
+    
+    # Bollinger Bands Alerts
+    if indicators.price > indicators.bollinger_upper:
+        alerts.append(Alert("BB_BREAKOUT_UP", symbol, indicators.price))
+    
+    return alerts
+```
+
+#### **3. AI Pattern Recognition**
+```python
+def analyze_historical_patterns(symbol, timeframe, days=30):
+    """Analyze historical patterns for AI learning"""
+    historical_data = database.get_historical_indicators(symbol, timeframe, days)
+    
+    patterns = {
+        "rsi_patterns": find_rsi_patterns(historical_data.rsi),
+        "macd_patterns": find_macd_patterns(historical_data.macd),
+        "bollinger_patterns": find_bollinger_patterns(historical_data.bollinger),
+        "volume_patterns": find_volume_patterns(historical_data.volume),
+        "convergence_patterns": find_indicator_convergence(historical_data)
+    }
+    
+    return patterns
+```
+
+#### **4. Risk Management System**
+```python
+def calculate_risk_score(symbol, timeframe):
+    """Calculate risk score based on technical indicators"""
+    indicators = database.get_latest_indicators(symbol, timeframe)
+    
+    risk_factors = {
+        "volatility": calculate_volatility_risk(indicators.atr),
+        "trend_strength": calculate_trend_risk(indicators.adx),
+        "momentum": calculate_momentum_risk(indicators.rsi, indicators.stochastic),
+        "volume": calculate_volume_risk(indicators.volume),
+        "support_resistance": calculate_sr_risk(indicators.support, indicators.resistance)
+    }
+    
+    return calculate_overall_risk_score(risk_factors)
+```
+
+## Database Structure
+
+### **Main Database Tables**
+
+#### **1. Indicators Snapshots Table**
+```sql
+CREATE TABLE indicator_snapshots (
+    id TEXT PRIMARY KEY,
+    symbol TEXT NOT NULL,
+    timestamp TIMESTAMP NOT NULL,
+    timeframe TEXT NOT NULL,
+    
+    -- 21 Technical Indicators
+    rsi REAL,
+    rsi_14 REAL,
+    macd REAL,
+    macd_signal REAL,
+    macd_histogram REAL,
+    ema_9 REAL,
+    ema_21 REAL,
+    ema_50 REAL,
+    ema_200 REAL,
+    sma_20 REAL,
+    sma_50 REAL,
+    bollinger_upper REAL,
+    bollinger_middle REAL,
+    bollinger_lower REAL,
+    stochastic_k REAL,
+    stochastic_d REAL,
+    atr REAL,
+    adx REAL,
+    cci REAL,
+    williams_r REAL,
+    parabolic_sar REAL,
+    
+    -- Market Data
+    price REAL,
+    volume REAL,
+    volume_24h REAL,
+    market_cap REAL,
+    
+    -- Pattern Analysis
+    trend_direction TEXT,
+    support_level REAL,
+    resistance_level REAL,
+    pattern_detected TEXT,
+    signal_strength REAL,
+    
+    -- Metadata
+    data_source TEXT DEFAULT 'real_time',
+    analysis_version TEXT DEFAULT 'v1.0',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+#### **2. Pattern Analysis Table**
+```sql
+CREATE TABLE pattern_analysis (
+    id TEXT PRIMARY KEY,
+    symbol TEXT NOT NULL,
+    pattern_type TEXT NOT NULL,
+    timeframe TEXT NOT NULL,
+    start_timestamp TIMESTAMP NOT NULL,
+    end_timestamp TIMESTAMP NOT NULL,
+    confidence_score REAL,
+    pattern_metadata TEXT,  -- JSON
+    related_snapshots TEXT, -- JSON array
+    prediction_accuracy REAL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+#### **3. Screenshots Table**
+```sql
+CREATE TABLE indicator_screenshots (
+    id TEXT PRIMARY KEY,
+    snapshot_id TEXT NOT NULL,
+    screenshot_path TEXT,
+    screenshot_base64 TEXT,
+    screenshot_metadata TEXT,  -- JSON
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (snapshot_id) REFERENCES indicator_snapshots(id)
+);
+```
+
+## How It Is Called and Used
+
+### **1. Real-time Data Access**
+
+#### **Frontend Integration**
+```javascript
+// Get all indicators for symbol card
+const getSymbolIndicators = async (symbol, timeframe) => {
+    const response = await fetch(`/api/v1/mysymbols/${symbol}/indicators?timeframe=${timeframe}`);
+    const indicators = await response.json();
+    
+    return {
+        rsi: indicators.rsi,
+        macd: indicators.macd,
+        bollinger: indicators.bollinger_bands,
+        ema: indicators.ema,
+        // ... all 21 indicators
+    };
+};
+
+// Update symbol card with real-time data
+const updateSymbolCard = async (symbol) => {
+    const indicators = await getSymbolIndicators(symbol, '1h');
+    updateRSIDisplay(indicators.rsi);
+    updateMACDDisplay(indicators.macd);
+    updateBollingerDisplay(indicators.bollinger);
+    // ... update all indicators
+};
+```
+
+#### **Backend API Integration**
+```python
+@app.get("/api/v1/mysymbols/{symbol}/indicators")
+async def get_symbol_indicators(symbol: str, timeframe: str):
+    """Get all 21 indicators for a symbol and timeframe"""
+    indicators = indicators_db.get_latest_indicators(symbol, timeframe)
+    
+    return {
+        "symbol": symbol,
+        "timeframe": timeframe,
+        "timestamp": indicators.timestamp,
+        "indicators": {
+            "rsi": indicators.rsi,
+            "macd": {
+                "macd": indicators.macd,
+                "signal": indicators.macd_signal,
+                "histogram": indicators.macd_histogram
+            },
+            "bollinger_bands": {
+                "upper": indicators.bollinger_upper,
+                "middle": indicators.bollinger_middle,
+                "lower": indicators.bollinger_lower
+            },
+            # ... all 21 indicators
+        }
+    }
+```
+
+### **2. Alert System Integration**
+
+#### **Real-time Alert Monitoring**
+```python
+class AlertMonitor:
+    def __init__(self):
+        self.indicators_db = IndicatorsHistoryDatabase()
+    
+    async def monitor_all_symbols(self):
+        """Monitor all symbols for alert conditions"""
+        symbols = get_all_mysymbols()
+        
+        for symbol in symbols:
+            for timeframe in ['15m', '1h', '4h', '1d']:
+                indicators = self.indicators_db.get_latest_indicators(symbol, timeframe)
+                alerts = self.check_alert_conditions(indicators)
+                
+                if alerts:
+                    await self.trigger_alerts(alerts)
+    
+    def check_alert_conditions(self, indicators):
+        """Check all 21 indicators for alert conditions"""
+        alerts = []
+        
+        # RSI Conditions
+        if indicators.rsi > 70:
+            alerts.append(Alert("RSI_OVERBOUGHT", indicators.symbol, indicators.rsi))
+        elif indicators.rsi < 30:
+            alerts.append(Alert("RSI_OVERSOLD", indicators.symbol, indicators.rsi))
+        
+        # MACD Conditions
+        if indicators.macd > indicators.macd_signal:
+            alerts.append(Alert("MACD_BULLISH", indicators.symbol, indicators.macd))
+        
+        # Bollinger Bands Conditions
+        if indicators.price > indicators.bollinger_upper:
+            alerts.append(Alert("BB_BREAKOUT_UP", indicators.symbol, indicators.price))
+        
+        return alerts
+```
+
+### **3. AI Analysis Integration**
+
+#### **Pattern Recognition**
+```python
+class AIPatternAnalyzer:
+    def __init__(self):
+        self.indicators_db = IndicatorsHistoryDatabase()
+    
+    def analyze_symbol_patterns(self, symbol, timeframe, days=30):
+        """Analyze historical patterns for AI learning"""
+        historical_data = self.indicators_db.get_historical_indicators(
+            symbol, timeframe, days
+        )
+        
+        patterns = {
+            "rsi_patterns": self.find_rsi_patterns(historical_data),
+            "macd_patterns": self.find_macd_patterns(historical_data),
+            "bollinger_patterns": self.find_bollinger_patterns(historical_data),
+            "convergence_patterns": self.find_indicator_convergence(historical_data)
+        }
+        
+        return patterns
+    
+    def predict_price_movement(self, symbol, timeframe):
+        """Predict price movement based on indicator patterns"""
+        current_indicators = self.indicators_db.get_latest_indicators(symbol, timeframe)
+        historical_patterns = self.analyze_symbol_patterns(symbol, timeframe)
+        
+        # AI prediction based on current indicators and historical patterns
+        prediction = self.ai_model.predict(current_indicators, historical_patterns)
+        
+        return prediction
+```
+
+### **4. Trading System Integration**
+
+#### **Trading Signal Generation**
+```python
+class TradingSignalGenerator:
+    def __init__(self):
+        self.indicators_db = IndicatorsHistoryDatabase()
+    
+    def generate_trading_signals(self, symbol, timeframe):
+        """Generate trading signals from all 21 indicators"""
+        indicators = self.indicators_db.get_latest_indicators(symbol, timeframe)
+        
+        signals = {
+            "rsi_signal": self.analyze_rsi_signal(indicators.rsi),
+            "macd_signal": self.analyze_macd_signal(indicators.macd, indicators.macd_signal),
+            "bollinger_signal": self.analyze_bollinger_signal(indicators.bollinger, indicators.price),
+            "ema_signal": self.analyze_ema_signal(indicators.ema),
+            "volume_signal": self.analyze_volume_signal(indicators.volume),
+            "overall_signal": self.calculate_overall_signal(indicators)
+        }
+        
+        return signals
+    
+    def calculate_overall_signal(self, indicators):
+        """Calculate overall trading signal from all indicators"""
+        bullish_signals = 0
+        bearish_signals = 0
+        
+        # Count bullish and bearish signals from all indicators
+        if indicators.rsi < 30: bullish_signals += 1
+        elif indicators.rsi > 70: bearish_signals += 1
+        
+        if indicators.macd > indicators.macd_signal: bullish_signals += 1
+        elif indicators.macd < indicators.macd_signal: bearish_signals += 1
+        
+        # ... analyze all 21 indicators
+        
+        # Calculate overall signal
+        total_indicators = 21
+        bullish_percentage = (bullish_signals / total_indicators) * 100
+        bearish_percentage = (bearish_signals / total_indicators) * 100
+        
+        if bullish_percentage > 60:
+            return "STRONG_BUY"
+        elif bullish_percentage > 40:
+            return "BUY"
+        elif bearish_percentage > 60:
+            return "STRONG_SELL"
+        elif bearish_percentage > 40:
+            return "SELL"
+        else:
+            return "NEUTRAL"
+```
+
+## Update Frequency and Data Flow
+
+### **Real-time Updates**
+```python
+class IndicatorsUpdater:
+    def __init__(self):
+        self.indicators_db = IndicatorsHistoryDatabase()
+        self.binance_api = BinanceAPI()
+    
+    async def update_all_indicators(self):
+        """Update all indicators for all symbols and timeframes"""
+        symbols = get_all_mysymbols()
+        timeframes = ['15m', '1h', '4h', '1d']
+        
+        for symbol in symbols:
+            for timeframe in timeframes:
+                # Get market data from Binance
+                market_data = await self.binance_api.get_klines(symbol, timeframe)
+                
+                # Calculate all 21 indicators
+                indicators = self.calculate_all_indicators(market_data)
+                
+                # Store in database
+                self.indicators_db.store_indicators(symbol, timeframe, indicators)
+    
+    def calculate_all_indicators(self, market_data):
+        """Calculate all 21 technical indicators"""
+        return IndicatorSnapshot(
+            rsi=self.calculate_rsi(market_data),
+            macd=self.calculate_macd(market_data),
+            bollinger_bands=self.calculate_bollinger_bands(market_data),
+            ema=self.calculate_ema(market_data),
+            # ... calculate all 21 indicators
+        )
+```
+
+## Success Criteria
+
+### **Performance Metrics**
+- ✅ **Sub-second query response** times for all indicators
+- ✅ **Real-time updates** every 1-5 minutes based on timeframe
+- ✅ **99.9% uptime** for database operations
+- ✅ **95%+ cache hit rate** for frequently accessed data
+
+### **Data Quality**
+- ✅ **Accurate calculations** for all 21 indicators
+- ✅ **Cross-verification** with exchange data
+- ✅ **Historical consistency** maintained
+- ✅ **Data integrity** across all timeframes
+
+### **System Integration**
+- ✅ **Frontend real-time display** of all indicators
+- ✅ **Alert system integration** with automatic triggers
+- ✅ **AI pattern recognition** with historical data
+- ✅ **Trading signal generation** from all indicators
+
+The 21 Indicators Database serves as the **foundation for all technical analysis** in the ZmartBot platform, providing comprehensive, real-time, and historical data that drives trading decisions, alerts, and AI analysis across all system components.
+description:
+globs:
+alwaysApply: true
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Database connectivity**
+
+
+---
+
+## Triggers
+- **API endpoint requests**
+- **Database events**

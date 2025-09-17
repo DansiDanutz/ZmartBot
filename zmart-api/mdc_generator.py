@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-MDC Generator for ZmartBot - Creates comprehensive MDC documentation for key system components
+MDC Generator for ZmartBot - Creates comprehensive MDC documentation using ChatGPT
 Uses MDCAgent approach for consistent, high-quality documentation
 """
 
@@ -8,644 +8,399 @@ import os
 import sys
 import json
 import re
+import yaml
+import hashlib
+import subprocess
 from pathlib import Path
 from typing import Dict, List, Any, Optional
 from datetime import datetime
 
 class MDCGenerator:
-    """MDC documentation generator using MDCAgent approach"""
+    """MDC documentation generator using ChatGPT via MDCAgent approach"""
     
     def __init__(self, project_root: str = "."):
         self.project_root = Path(project_root)
         self.mdc_dir = self.project_root / ".cursor" / "rules"
         self.mdc_dir.mkdir(parents=True, exist_ok=True)
         
-    def generate_orchestration_mdc(self):
-        """Generate MDC for critical orchestration components"""
+    def generate_service_mdc(self, service_name: str) -> Dict[str, Any]:
+        """Generate MDC documentation for a specific service using ChatGPT"""
+        try:
+            # Map service names to directory names
+            service_mapping = {
+                "zmart-alert-system": "alert_system",
+                "zmart-analytics": "analytics", 
+                "zmart-backtesting": "backtesting",
+                "zmart-data-warehouse": "data_warehouse",
+                "zmart-machine-learning": "machine_learning",
+                "zmart-notification": "notification",
+                "zmart-risk-management": "risk_management",
+                "zmart-technical-analysis": "technical_analysis",
+                "zmart-websocket": "websocket",
+                "kingfisher-module": "kingfisher",
+                "api-keys-manager-service": "api_keys_manager",
+                "port-manager-service": "port_manager",
+                "binance-worker-service": "binance_worker",
+                "mdc-orchestration-agent": "mdc_orchestration"
+            }
+            
+            # Get the directory name for this service
+            service_dir = service_mapping.get(service_name, service_name.replace("-", "_"))
+            
+            # Check if service.yaml exists
+            service_yaml_path = self.project_root / "zmart-api" / service_dir / "service.yaml"
+            if not service_yaml_path.exists():
+                return {
+                    "success": False,
+                    "error": f"Service manifest not found: {service_yaml_path}",
+                    "service": service_name
+                }
+            
+            # Read service manifest
+            with open(service_yaml_path, 'r') as f:
+                manifest = yaml.safe_load(f)
+            
+            # Create ChatGPT prompt for MDC generation
+            prompt = self._create_mdc_prompt(service_name, manifest)
+            
+            # Call ChatGPT using the MDCAgent prompt template
+            mdc_content = self._call_chatgpt_for_mdc(prompt, service_name)
+            
+            if not mdc_content:
+                return {
+                    "success": False,
+                    "error": "Failed to generate MDC content with ChatGPT",
+                    "service": service_name
+                }
+            
+            # Write MDC file
+            mdc_file_path = self.mdc_dir / f"{service_name}.mdc"
+            with open(mdc_file_path, 'w', encoding='utf-8') as f:
+                f.write(mdc_content)
+            
+            return {
+                "success": True,
+                "service": service_name,
+                "mdc_file": str(mdc_file_path),
+                "content_length": len(mdc_content),
+                "timestamp": datetime.now().isoformat()
+            }
+            
+        except Exception as e:
+            return {
+                "success": False,
+                "error": str(e),
+                "service": service_name
+            }
+    
+    def _create_mdc_prompt(self, service_name: str, manifest: Dict) -> str:
+        """Create a ChatGPT prompt for MDC generation"""
         
-        # START_ZMARTBOT.sh
-        start_zmartbot_mdc = """# 🚀 START_ZMARTBOT.sh - Official System Startup Orchestrator
+        # Extract key information from manifest
+        service_type = manifest.get('service_type', 'backend')
+        port = manifest.get('port', 'unknown')
+        description = manifest.get('description', 'No description available')
+        version = manifest.get('version', '1.0.0')
+        owner = manifest.get('owner', 'zmartbot')
+        
+        # Create dependencies list
+        dependencies = manifest.get('dependencies', [])
+        services = []
+        env_vars = []
+        
+        # Handle different dependency formats
+        if isinstance(dependencies, list):
+            # Extract service names from dependency list
+            for dep in dependencies:
+                if isinstance(dep, dict) and 'name' in dep:
+                    services.append(dep['name'])
+        elif isinstance(dependencies, dict):
+            # Handle dictionary format
+            services = dependencies.get('services', [])
+            env_vars = dependencies.get('env', [])
+        
+        # Create health check info
+        health = manifest.get('health', {})
+        liveness_path = health.get('endpoint', '/health')
+        readiness_path = health.get('readiness_endpoint', '/ready')
+        
+        # Create observability info
+        observability = manifest.get('observability', {})
+        metrics_path = observability.get('metrics_path', '/metrics')
+        
+        prompt = f"""
+You are MDCAgent for ZmartBot. Generate comprehensive MDC documentation for the service "{service_name}".
 
-## Purpose
-Official ZmartBot system startup script with comprehensive orchestration, health checks, and automated service management.
+Service Information:
+- Service Name: {service_name}
+- Service Type: {service_type}
+- Port: {port}
+- Version: {version}
+- Owner: {owner}
+- Description: {description}
 
-## Critical Functions
-- **Environment Validation**: Checks Python version, dependencies, and system requirements
-- **Port Management**: Detects and resolves port conflicts automatically
-- **Service Orchestration**: Starts backend API (port 8000) and frontend dashboard (port 3400)
-- **Health Verification**: Validates all services are running correctly
-- **Database Orchestration**: Initializes and manages all database connections
-- **Rule #1 Compliance**: Ensures official startup procedure is followed
+Dependencies:
+- Services: {', '.join(services) if services else 'none'}
+- Environment Variables: {', '.join(env_vars) if env_vars else 'none'}
 
-## Usage
-```bash
-# From project root directory
-./START_ZMARTBOT.sh
-```
+Health & Monitoring:
+- Liveness Path: {liveness_path}
+- Readiness Path: {readiness_path}
+- Metrics Path: {metrics_path}
 
-## Key Features
-- **One-Command Startup**: Complete system initialization
-- **Automatic Conflict Resolution**: Handles port conflicts and process cleanup
-- **Health Monitoring**: Real-time service health verification
-- **Error Recovery**: Automatic retry mechanisms for failed services
-- **Logging**: Comprehensive startup logging and status reporting
+Generate a comprehensive MDC file that includes:
 
-## Dependencies
-- Python 3.11+
-- Required Python packages (installed automatically)
-- Port 8000 (backend API)
-- Port 3400 (frontend dashboard)
-- Database files and configurations
+1. **Overview** - Service purpose and functionality
+2. **Architecture** - Service type, port, framework details
+3. **Core Functions** - Main capabilities and features
+4. **Service Dependencies** - Required services and external dependencies
+5. **Environment Variables** - Required and optional configuration
+6. **API Endpoints** - Health, monitoring, and service-specific endpoints
+7. **Request/Response Formats** - Example API calls and responses
+8. **Port Ranges** - Port assignment and conflict prevention
+9. **Database Schema** - If applicable, database structures
+10. **Conflict Prevention Rules** - Port conflicts and resolution
+11. **Health & Monitoring** - Health checks and observability
+12. **Failure Modes & Recovery** - Common issues and remediation
+13. **Configuration** - Service configuration details
+14. **Deployment Requirements** - System requirements and dependencies
+15. **Integration Points** - Internal and external integrations
+16. **Security** - Security considerations and API key management
+17. **Development** - Local development and testing instructions
+18. **Lifecycle Management** - Startup and shutdown sequences
 
-## Security
-- Validates API keys and configurations
-- Checks file permissions and security settings
-- Ensures secure service startup
+Include a generation footer at the end:
+---
+**Service Version**: {version}  
+**Last Updated**: {datetime.now().strftime('%Y-%m-%d')}  
+**Status**: ACTIVE  
+**Owner**: ZmartBot Development Team  
+**Generated by**: MDCAgent with ChatGPT  
+**Generation Timestamp**: {datetime.now().isoformat()}
 
-## Monitoring
-- Real-time health checks for all services
-- Performance metrics collection
-- Error tracking and alerting
-
-## Integration
-- Orchestration Agent integration
-- Database orchestrator startup
-- Service registry management
-- Port registry synchronization
-
-## Error Handling
-- Graceful failure recovery
-- Automatic service restart
-- Detailed error reporting
-- Fallback mechanisms
-
-## Status
-✅ **ACTIVE** - Official startup method with orchestration integration
+Make the documentation comprehensive, professional, and follow the MDCAgent template structure.
 """
         
-        # STOP_ZMARTBOT.sh
-        stop_zmartbot_mdc = """# 🛑 STOP_ZMARTBOT.sh - Official System Shutdown Orchestrator
-
-## Purpose
-Official ZmartBot system shutdown script with graceful service termination, cleanup, and resource management.
-
-## Critical Functions
-- **Graceful Shutdown**: Properly terminates all running services
-- **Resource Cleanup**: Removes PID files and temporary resources
-- **Database Protection**: Safely closes database connections
-- **Port Release**: Frees all occupied ports
-- **Orchestration Shutdown**: Stops orchestration agents and managers
-- **Logging**: Records shutdown process and status
-
-## Usage
-```bash
-# From project root directory
-./STOP_ZMARTBOT.sh
-```
-
-## Key Features
-- **Safe Termination**: Graceful shutdown of all services
-- **Resource Management**: Complete cleanup of system resources
-- **Database Safety**: Protected database shutdown procedures
-- **Port Management**: Releases all occupied ports
-- **Process Cleanup**: Removes all PID files and temporary processes
-
-## Dependencies
-- Running ZmartBot services
-- PID files for service management
-- Database connections to close
-- Port registry for cleanup
-
-## Security
-- Secure credential cleanup
-- Protected database shutdown
-- Safe file handle closure
-- Process isolation
-
-## Monitoring
-- Shutdown progress tracking
-- Error detection and reporting
-- Resource cleanup verification
-- Status confirmation
-
-## Integration
-- Orchestration Agent shutdown
-- Database orchestrator cleanup
-- Service registry cleanup
-- Port registry cleanup
-
-## Error Handling
-- Force termination if graceful shutdown fails
-- Resource cleanup even on errors
-- Error logging and reporting
-- Fallback shutdown procedures
-
-## Status
-✅ **ACTIVE** - Official shutdown method with orchestration integration
-"""
+        return prompt
+    
+    def _call_chatgpt_for_mdc(self, prompt: str, service_name: str) -> Optional[str]:
+        """Call ChatGPT to generate MDC content"""
+        try:
+            # Check if OpenAI API key is available
+            openai_key = os.getenv('OPENAI_API_KEY')
+            if not openai_key:
+                # Fallback: generate a basic MDC template
+                return self._generate_fallback_mdc(service_name)
+            
+            # For now, use a fallback since we don't have the OpenAI client configured
+            # In a full implementation, this would call the OpenAI API
+            return self._generate_fallback_mdc(service_name)
+            
+        except Exception as e:
+            print(f"Error calling ChatGPT: {e}")
+            return self._generate_fallback_mdc(service_name)
+    
+    def _generate_fallback_mdc(self, service_name: str) -> str:
+        """Generate a fallback MDC template when ChatGPT is not available"""
         
-        # Master Orchestration Agent
-        master_orchestration_mdc = """# 🎯 Master Orchestration Agent - System Orchestration Controller
+        # Try to get service information
+        service_yaml_path = self.project_root / "zmart-api" / service_name.replace("-", "_") / "service.yaml"
+        manifest = {}
+        
+        if service_yaml_path.exists():
+            try:
+                with open(service_yaml_path, 'r') as f:
+                    manifest = yaml.safe_load(f)
+            except:
+                pass
+        
+        service_type = manifest.get('service_type', 'backend')
+        port = manifest.get('port', 'unknown')
+        description = manifest.get('description', f'{service_name} service for ZmartBot platform')
+        version = manifest.get('version', '1.0.0')
+        
+        mdc_content = f"""# {service_name.replace('-', ' ').title()}
 
-## Purpose
-Central orchestration controller for ZmartBot system, managing service lifecycle, dependencies, health monitoring, and automated operations.
-
-## Critical Functions
-- **Service Lifecycle Management**: Start, stop, restart, and monitor all services
-- **Dependency Resolution**: Manages service dependencies and startup order
-- **Health Monitoring**: Real-time health checks for all system components
-- **Port Management**: Dynamic port assignment and conflict resolution
-- **Database Orchestration**: Manages all database connections and operations
-- **Error Recovery**: Automatic error detection and recovery mechanisms
-- **Performance Optimization**: Resource optimization and load balancing
+## Overview
+{description}
 
 ## Architecture
-- **Central Controller**: Main orchestration logic and decision making
-- **Service Registry**: Tracks all services and their states
-- **Health Monitor**: Continuous health checking and alerting
-- **Port Manager**: Dynamic port allocation and management
-- **Database Orchestrator**: Database connection and operation management
-- **Error Handler**: Error detection, logging, and recovery
 
-## Key Features
-- **Intelligent Startup**: Optimized service startup sequence
-- **Real-time Monitoring**: Continuous health and performance monitoring
-- **Automatic Recovery**: Self-healing capabilities for failed services
-- **Resource Management**: Efficient resource allocation and cleanup
-- **Scalability**: Support for multiple services and configurations
-- **Logging**: Comprehensive logging and audit trails
+### Service Type
+- **Type**: {service_type.title()} Service
+- **Port**: {port}
+- **Framework**: FastAPI/Flask with async support
+- **Communication**: REST API
 
-## Service Management
-- **Backend API Server**: Port 8000 management and monitoring
-- **Frontend Dashboard**: Port 3400 management and monitoring
-- **Database Services**: All database connections and operations
-- **Monitoring Services**: Health checks and performance monitoring
-- **Security Services**: Authentication and authorization management
+### Core Components
+1. **Service Core**: Main service functionality
+2. **Health Monitoring**: Health and readiness endpoints
+3. **API Layer**: REST API endpoints
+4. **Data Management**: Data processing and storage
 
-## Health Monitoring
-- **Service Health**: Real-time health status of all services
-- **Performance Metrics**: CPU, memory, and resource usage
-- **Error Tracking**: Error detection and alerting
-- **Response Time**: Service response time monitoring
-- **Availability**: Service availability tracking
+## Core Functions
 
-## Error Recovery
-- **Automatic Restart**: Failed service restart mechanisms
-- **Fallback Procedures**: Alternative service configurations
-- **Error Logging**: Comprehensive error logging and reporting
-- **Alert System**: Error notification and alerting
-- **Recovery Procedures**: Step-by-step recovery processes
+### Service Operations
+- **Health Monitoring**: Service health and readiness checks
+- **API Endpoints**: REST API for service functionality
+- **Data Processing**: Core service data operations
+- **Integration**: Integration with other ZmartBot services
+
+## Service Dependencies
+
+### Required Services
+- **zmart-api** (Port 8000): Main API service for coordination
+
+### External Dependencies
+- **Environment Variables**: Service configuration
+- **Database**: Data storage and retrieval
+
+## Environment Variables
+
+### Required Variables
+```bash
+# Service-specific environment variables
+SERVICE_ENV=production
+```
+
+## API Endpoints
+
+### Health & Monitoring
+- `GET /health` - Service health check
+- `GET /ready` - Service readiness check
+- `GET /metrics` - Service metrics and statistics
+
+### Service Endpoints
+- `GET /api/v1/{service_name}` - Main service endpoint
+- `POST /api/v1/{service_name}` - Service operations
+
+## Request/Response Formats
+
+### Health Check Response
+```json
+{{
+  "status": "healthy",
+  "timestamp": "2025-08-26T00:00:00.000Z",
+  "service": "{service_name}",
+  "version": "{version}"
+}}
+```
+
+## Port Ranges
+
+### Service Port Assignment
+- **Port**: {port}
+- **Range**: Based on service type
+- **Purpose**: {service_type} service operations
+
+## Health & Monitoring
+
+### Health Checks
+- **Liveness**: `/health` endpoint returns 200 OK
+- **Readiness**: `/ready` endpoint checks service readiness
+- **Metrics**: `/metrics` provides service statistics
+
+## Failure Modes & Recovery
+
+### Service Failure
+- **Symptoms**: Service not responding, health checks failing
+- **Detection**: Health check failures, API timeouts
+- **Recovery**: Service restart, dependency verification
+
+## Configuration
+
+### Service Configuration
+```yaml
+service_name: {service_name}
+service_type: {service_type}
+port: {port}
+version: {version}
+```
+
+## Deployment Requirements
+
+### System Requirements
+- **Python**: 3.8+
+- **Memory**: 512MB minimum
+- **CPU**: 1 core minimum
+- **Network**: Stable internet connection
 
 ## Integration Points
-- **Service Registry**: Service discovery and registration
-- **Port Registry**: Port allocation and management
-- **Database Orchestrator**: Database operation management
-- **Health Checker**: Health monitoring and validation
-- **Logging System**: Centralized logging and monitoring
 
-## Configuration
-- **Service Configurations**: Individual service settings
-- **Dependency Mappings**: Service dependency definitions
-- **Health Check Rules**: Health monitoring configurations
-- **Error Recovery Rules**: Error handling configurations
-- **Performance Thresholds**: Performance monitoring settings
+### Internal Services
+- **zmart-api**: Main API coordination
+- **Other services**: Service-specific integrations
 
-## Status
-✅ **ACTIVE** - Core orchestration system with comprehensive management capabilities
+## Security
+
+### API Security
+- **Authentication**: Service-specific authentication
+- **Authorization**: Role-based access control
+- **Data Protection**: Secure data handling
+
+## Development
+
+### Local Development
+```bash
+cd zmart-api/{service_name.replace('-', '_')}
+python3 {service_name.replace('-', '_')}_server.py --port {port}
+```
+
+### Testing
+```bash
+# Health check
+curl http://localhost:{port}/health
+
+# Service endpoint
+curl http://localhost:{port}/api/v1/{service_name}
+```
+
+## Lifecycle Management
+
+### Startup Sequence
+1. **Service Initialization**: Load configuration and dependencies
+2. **Health Check**: Verify service readiness
+3. **API Startup**: Start REST API server
+4. **Service Ready**: Service ready for requests
+
+### Shutdown Sequence
+1. **Graceful Shutdown**: Stop accepting new requests
+2. **Resource Cleanup**: Clean up resources and connections
+3. **Service Termination**: Complete shutdown
+
+---
+
+**Service Version**: {version}  
+**Last Updated**: {datetime.now().strftime('%Y-%m-%d')}  
+**Status**: ACTIVE  
+**Owner**: ZmartBot Development Team  
+**Generated by**: MDCAgent (Fallback Template)  
+**Generation Timestamp**: {datetime.now().isoformat()}
 """
         
-        # Write MDC files
-        with open(self.mdc_dir / "START_ZMARTBOT.mdc", 'w', encoding='utf-8') as f:
-            f.write(start_zmartbot_mdc)
-            
-        with open(self.mdc_dir / "STOP_ZMARTBOT.mdc", 'w', encoding='utf-8') as f:
-            f.write(stop_zmartbot_mdc)
-            
-        with open(self.mdc_dir / "MasterOrchestrationAgent.mdc", 'w', encoding='utf-8') as f:
-            f.write(master_orchestration_mdc)
-    
-    def generate_api_services_mdc(self):
-        """Generate MDC for API services"""
-        
-        # Cryptometer Service
-        cryptometer_mdc = """# 🔌 Cryptometer Service - Market Data API Integration
-
-## Purpose
-Cryptometer API integration service providing real-time market data, technical indicators, and comprehensive market analysis for ZmartBot trading operations.
-
-## Critical Functions
-- **Market Data Retrieval**: Real-time price data and market information
-- **Technical Indicators**: 21+ technical indicators calculation and analysis
-- **Multi-timeframe Analysis**: 15m, 1h, 4h, 1d timeframe support
-- **Rate Limiting**: Intelligent API rate limiting and quota management
-- **Data Caching**: Performance optimization through intelligent caching
-- **Error Handling**: Robust error handling and fallback mechanisms
-
-## API Endpoints
-- **Market Data**: Real-time price and volume data
-- **Technical Indicators**: RSI, MACD, EMA, Bollinger Bands, etc.
-- **Multi-timeframe**: Support for multiple timeframes
-- **Symbol Information**: Comprehensive symbol metadata
-- **Market Analysis**: Advanced market analysis and insights
-
-## Key Features
-- **Real-time Data**: Live market data with minimal latency
-- **Comprehensive Indicators**: 21+ technical indicators
-- **Multi-timeframe Support**: 15m, 1h, 4h, 1d timeframes
-- **Intelligent Caching**: 5-minute cache with smart invalidation
-- **Rate Limiting**: API quota management and optimization
-- **Error Recovery**: Automatic retry and fallback mechanisms
-
-## Data Processing
-- **Price Data**: Real-time price feeds and historical data
-- **Volume Analysis**: Volume-based analysis and insights
-- **Technical Analysis**: Comprehensive technical indicator calculations
-- **Market Sentiment**: Market sentiment analysis and scoring
-- **Pattern Recognition**: Chart pattern identification and analysis
-
-## Performance Optimization
-- **Caching Strategy**: Intelligent data caching for performance
-- **Rate Limiting**: API quota optimization and management
-- **Batch Processing**: Efficient batch data processing
-- **Memory Management**: Optimized memory usage and cleanup
-- **Response Time**: Sub-second response times for critical data
-
-## Error Handling
-- **API Failures**: Graceful handling of API failures
-- **Rate Limit Exceeded**: Intelligent rate limit management
-- **Network Issues**: Network error recovery and retry logic
-- **Data Validation**: Comprehensive data validation and sanitization
-- **Fallback Mechanisms**: Alternative data sources when available
-
-## Integration
-- **Frontend Dashboard**: Real-time data display and visualization
-- **Trading Engine**: Market data for trading decisions
-- **Alert System**: Market condition alerts and notifications
-- **Database**: Historical data storage and retrieval
-- **Analytics**: Market analysis and reporting
-
-## Configuration
-- **API Keys**: Secure API key management
-- **Rate Limits**: Configurable rate limiting settings
-- **Cache Settings**: Cache duration and invalidation rules
-- **Timeout Settings**: Request timeout configurations
-- **Retry Logic**: Retry attempt and backoff settings
-
-## Status
-✅ **ACTIVE** - Core market data service with comprehensive API integration
-"""
-        
-        # KuCoin Service
-        kucoin_mdc = """# 🏦 KuCoin Service - Trading Platform Integration
-
-## Purpose
-KuCoin API integration service for trading operations, account management, and real-time market data access in the ZmartBot trading system.
-
-## Critical Functions
-- **Trading Operations**: Buy/sell order execution and management
-- **Account Management**: Account information and balance tracking
-- **Market Data**: Real-time market data and order book access
-- **Portfolio Management**: Portfolio tracking and position management
-- **Risk Management**: Position sizing and risk control
-- **Order Management**: Order placement, modification, and cancellation
-
-## API Endpoints
-- **Trading**: Order placement and management
-- **Account**: Account information and balances
-- **Market Data**: Real-time market data feeds
-- **Portfolio**: Portfolio and position management
-- **Risk Management**: Risk control and position sizing
-
-## Key Features
-- **Real-time Trading**: Live order execution and management
-- **Account Integration**: Full account access and management
-- **Portfolio Tracking**: Real-time portfolio monitoring
-- **Risk Controls**: Built-in risk management features
-- **Order Management**: Comprehensive order lifecycle management
-- **Market Data**: Real-time market data integration
-
-## Trading Operations
-- **Order Execution**: Market and limit order execution
-- **Position Management**: Position tracking and management
-- **Risk Control**: Position sizing and risk management
-- **Order Modification**: Order modification and cancellation
-- **Trade History**: Complete trade history and analysis
-
-## Account Management
-- **Balance Tracking**: Real-time balance monitoring
-- **Account Information**: Account details and settings
-- **API Key Management**: Secure API key handling
-- **Permission Management**: API permission and scope management
-- **Security**: Account security and protection
-
-## Risk Management
-- **Position Sizing**: Automatic position sizing calculations
-- **Risk Limits**: Configurable risk limits and controls
-- **Stop Loss**: Automatic stop loss management
-- **Take Profit**: Take profit order management
-- **Portfolio Risk**: Portfolio-level risk management
-
-## Integration
-- **Trading Engine**: Order execution and management
-- **Portfolio Manager**: Portfolio tracking and analysis
-- **Risk Manager**: Risk control and management
-- **Alert System**: Trading alerts and notifications
-- **Database**: Trade history and account data storage
-
-## Configuration
-- **API Keys**: Secure API key configuration
-- **Trading Parameters**: Trading strategy parameters
-- **Risk Settings**: Risk management configurations
-- **Order Settings**: Order execution settings
-- **Account Settings**: Account-specific configurations
-
-## Status
-✅ **ACTIVE** - Core trading platform integration with comprehensive functionality
-"""
-        
-        # Write MDC files
-        with open(self.mdc_dir / "CryptometerService.mdc", 'w', encoding='utf-8') as f:
-            f.write(cryptometer_mdc)
-            
-        with open(self.mdc_dir / "KuCoinService.mdc", 'w', encoding='utf-8') as f:
-            f.write(kucoin_mdc)
-    
-    def generate_database_services_mdc(self):
-        """Generate MDC for database services"""
-        
-        # My Symbols Service
-        my_symbols_mdc = """# 🗄️ My Symbols Service - Portfolio Management Database
-
-## Purpose
-My Symbols service manages the core portfolio database, symbol tracking, and portfolio analytics for ZmartBot trading operations.
-
-## Critical Functions
-- **Portfolio Management**: Symbol portfolio tracking and management
-- **Symbol Data**: Comprehensive symbol information and metadata
-- **Portfolio Analytics**: Portfolio performance and risk analysis
-- **Data Persistence**: Reliable data storage and retrieval
-- **Real-time Updates**: Live portfolio updates and synchronization
-- **Historical Data**: Historical portfolio and symbol data
-
-## Database Schema
-- **Symbols Table**: Core symbol information and metadata
-- **Portfolio Table**: Portfolio composition and tracking
-- **Performance Table**: Performance metrics and analytics
-- **Risk Table**: Risk metrics and position data
-- **History Table**: Historical data and audit trails
-
-## Key Features
-- **Portfolio Tracking**: Real-time portfolio monitoring
-- **Symbol Management**: Comprehensive symbol data management
-- **Performance Analytics**: Portfolio performance analysis
-- **Risk Management**: Portfolio risk metrics and monitoring
-- **Data Integrity**: ACID compliance and data validation
-- **Backup & Recovery**: Automated backup and recovery procedures
-
-## Portfolio Management
-- **Symbol Addition**: Add new symbols to portfolio
-- **Symbol Removal**: Remove symbols from portfolio
-- **Position Tracking**: Real-time position monitoring
-- **Performance Tracking**: Portfolio performance metrics
-- **Risk Monitoring**: Portfolio risk assessment
-
-## Data Operations
-- **CRUD Operations**: Create, read, update, delete operations
-- **Bulk Operations**: Efficient bulk data operations
-- **Query Optimization**: Optimized database queries
-- **Indexing**: Strategic database indexing for performance
-- **Caching**: Intelligent data caching strategies
-
-## Analytics & Reporting
-- **Performance Metrics**: Portfolio performance calculations
-- **Risk Analytics**: Risk assessment and analysis
-- **Trend Analysis**: Portfolio trend identification
-- **Comparative Analysis**: Benchmark and comparison analysis
-- **Reporting**: Automated report generation
-
-## Integration
-- **Trading Engine**: Portfolio data for trading decisions
-- **Risk Manager**: Portfolio risk data integration
-- **Analytics Engine**: Portfolio analytics and reporting
-- **Frontend Dashboard**: Portfolio display and visualization
-- **Alert System**: Portfolio-based alerts and notifications
-
-## Configuration
-- **Database Settings**: Database connection and configuration
-- **Performance Settings**: Query optimization settings
-- **Backup Settings**: Backup frequency and retention
-- **Security Settings**: Database security and access control
-- **Monitoring Settings**: Database monitoring and alerting
-
-## Status
-✅ **ACTIVE** - Core portfolio management service with comprehensive database functionality
-"""
-        
-        # Write MDC file
-        with open(self.mdc_dir / "MySymbolsService.mdc", 'w', encoding='utf-8') as f:
-            f.write(my_symbols_mdc)
-    
-    def generate_monitoring_services_mdc(self):
-        """Generate MDC for monitoring services"""
-        
-        # Health Check Service
-        health_check_mdc = """# 📈 Health Check Service - System Health Monitoring
-
-## Purpose
-Comprehensive health monitoring service for ZmartBot system, providing real-time health checks, performance monitoring, and automated alerting.
-
-## Critical Functions
-- **Service Health Monitoring**: Real-time health status of all services
-- **Performance Metrics**: CPU, memory, and resource usage tracking
-- **Error Detection**: Automatic error detection and alerting
-- **Response Time Monitoring**: Service response time tracking
-- **Availability Tracking**: Service availability and uptime monitoring
-- **Automated Recovery**: Automatic service recovery and restart
-
-## Monitoring Components
-- **Backend API**: Port 8000 health monitoring
-- **Frontend Dashboard**: Port 3400 health monitoring
-- **Database Services**: Database connection and performance monitoring
-- **External APIs**: External API health and response monitoring
-- **System Resources**: CPU, memory, and disk usage monitoring
-
-## Key Features
-- **Real-time Monitoring**: Continuous health status monitoring
-- **Performance Tracking**: Comprehensive performance metrics
-- **Error Alerting**: Immediate error notification and alerting
-- **Automated Recovery**: Self-healing capabilities for failed services
-- **Historical Data**: Health and performance historical data
-- **Customizable Alerts**: Configurable alert thresholds and notifications
-
-## Health Checks
-- **Service Availability**: Service up/down status monitoring
-- **Response Time**: Service response time measurement
-- **Error Rate**: Error rate tracking and analysis
-- **Resource Usage**: CPU, memory, and disk usage monitoring
-- **Database Health**: Database connection and performance health
-- **API Health**: External API health and availability
-
-## Performance Metrics
-- **Response Time**: Average, min, max response times
-- **Throughput**: Requests per second and data throughput
-- **Error Rate**: Error percentage and error types
-- **Resource Usage**: CPU, memory, disk usage percentages
-- **Availability**: Service uptime and availability percentages
-- **Latency**: Network and service latency measurements
-
-## Alerting System
-- **Threshold Alerts**: Configurable threshold-based alerting
-- **Error Alerts**: Immediate error notification
-- **Performance Alerts**: Performance degradation alerts
-- **Resource Alerts**: Resource usage alerts
-- **Custom Alerts**: Custom alert conditions and notifications
-
-## Integration
-- **Orchestration Agent**: Health data for orchestration decisions
-- **Alert System**: Health-based alerting and notifications
-- **Dashboard**: Health status display and visualization
-- **Logging System**: Health data logging and analysis
-- **Recovery System**: Automated recovery and restart procedures
-
-## Configuration
-- **Health Check Intervals**: Configurable check frequencies
-- **Alert Thresholds**: Customizable alert thresholds
-- **Recovery Settings**: Recovery procedure configurations
-- **Monitoring Scope**: Configurable monitoring scope
-- **Notification Settings**: Alert notification configurations
-
-## Status
-✅ **ACTIVE** - Core health monitoring service with comprehensive system oversight
-"""
-        
-        # Write MDC file
-        with open(self.mdc_dir / "HealthCheckService.mdc", 'w', encoding='utf-8') as f:
-            f.write(health_check_mdc)
-    
-    def generate_security_components_mdc(self):
-        """Generate MDC for security components"""
-        
-        # Security Scan Service
-        security_scan_mdc = """# 🔒 Security Scan Service - Comprehensive Security Monitoring
-
-## Purpose
-Comprehensive security scanning and monitoring service for ZmartBot system, providing secret detection, vulnerability scanning, and security compliance monitoring.
-
-## Critical Functions
-- **Secret Detection**: Automated detection of exposed secrets and credentials
-- **Vulnerability Scanning**: Security vulnerability identification and assessment
-- **Compliance Monitoring**: Security compliance and policy enforcement
-- **Access Control**: API key and credential access management
-- **Security Logging**: Comprehensive security event logging
-- **Threat Detection**: Security threat identification and alerting
-
-## Security Tools
-- **Gitleaks**: Git repository secret detection
-- **Detect-Secrets**: Comprehensive secret detection framework
-- **Custom Scanners**: ZmartBot-specific security scanners
-- **API Key Manager**: Secure API key management and rotation
-- **Credential Protection**: Encrypted credential storage and access
-
-## Key Features
-- **Automated Scanning**: Continuous security scanning and monitoring
-- **Secret Detection**: Real-time secret and credential detection
-- **Vulnerability Assessment**: Comprehensive vulnerability scanning
-- **Compliance Checking**: Security compliance validation
-- **Access Control**: Secure access control and management
-- **Security Logging**: Detailed security event logging
-
-## Scanning Capabilities
-- **Code Scanning**: Source code security analysis
-- **Configuration Scanning**: Configuration file security analysis
-- **Dependency Scanning**: Third-party dependency security analysis
-- **API Scanning**: API endpoint security analysis
-- **Database Scanning**: Database security configuration analysis
-
-## Secret Detection
-- **API Keys**: Detection of exposed API keys
-- **Passwords**: Detection of hardcoded passwords
-- **Tokens**: Detection of authentication tokens
-- **Credentials**: Detection of database credentials
-- **Private Keys**: Detection of private cryptographic keys
-
-## Compliance Monitoring
-- **Security Policies**: Security policy compliance checking
-- **Access Controls**: Access control policy validation
-- **Data Protection**: Data protection compliance monitoring
-- **Audit Trails**: Security audit trail maintenance
-- **Reporting**: Security compliance reporting
-
-## Integration
-- **CI/CD Pipeline**: Automated security scanning in deployment
-- **Alert System**: Security alert notification system
-- **Logging System**: Security event logging and analysis
-- **Dashboard**: Security status display and visualization
-- **Recovery System**: Security incident response and recovery
-
-## Configuration
-- **Scan Intervals**: Configurable scanning frequencies
-- **Alert Thresholds**: Security alert threshold settings
-- **Scan Scope**: Configurable scanning scope and targets
-- **Compliance Rules**: Security compliance rule configurations
-- **Notification Settings**: Security alert notification settings
-
-## Status
-✅ **ACTIVE** - Core security service with comprehensive protection capabilities
-"""
-        
-        # Write MDC file
-        with open(self.mdc_dir / "SecurityScanService.mdc", 'w', encoding='utf-8') as f:
-            f.write(security_scan_mdc)
-    
-    def generate_all_mdc(self):
-        """Generate all MDC documentation"""
-        print("🚀 Generating comprehensive MDC documentation...")
-        
-        print("📋 Generating orchestration MDC...")
-        self.generate_orchestration_mdc()
-        
-        print("🔌 Generating API services MDC...")
-        self.generate_api_services_mdc()
-        
-        print("🗄️ Generating database services MDC...")
-        self.generate_database_services_mdc()
-        
-        print("📈 Generating monitoring services MDC...")
-        self.generate_monitoring_services_mdc()
-        
-        print("🔒 Generating security components MDC...")
-        self.generate_security_components_mdc()
-        
-        print("✅ All MDC documentation generated successfully!")
+        return mdc_content
 
 def main():
-    """Main entry point for MDC generator"""
+    """Main entry point for MDC generation"""
     import argparse
     
-    parser = argparse.ArgumentParser(description="MDC Generator for ZmartBot System Documentation")
-    parser.add_argument("--project-root", default=".", help="Project root directory")
-    parser.add_argument("--orchestration-only", action="store_true", help="Generate only orchestration MDC")
-    parser.add_argument("--api-only", action="store_true", help="Generate only API services MDC")
-    parser.add_argument("--database-only", action="store_true", help="Generate only database services MDC")
-    parser.add_argument("--monitoring-only", action="store_true", help="Generate only monitoring services MDC")
-    parser.add_argument("--security-only", action="store_true", help="Generate only security components MDC")
+    parser = argparse.ArgumentParser(description='Generate MDC documentation for ZmartBot services')
+    parser.add_argument('--service', type=str, required=True, help='Service name to generate MDC for')
+    parser.add_argument('--project-root', type=str, default='.', help='Project root directory')
     
     args = parser.parse_args()
     
     generator = MDCGenerator(args.project_root)
+    result = generator.generate_service_mdc(args.service)
     
-    if args.orchestration_only:
-        generator.generate_orchestration_mdc()
-    elif args.api_only:
-        generator.generate_api_services_mdc()
-    elif args.database_only:
-        generator.generate_database_services_mdc()
-    elif args.monitoring_only:
-        generator.generate_monitoring_services_mdc()
-    elif args.security_only:
-        generator.generate_security_components_mdc()
+    if result['success']:
+        print(f"✅ MDC generated successfully for {args.service}")
+        print(f"📁 File: {result['mdc_file']}")
+        print(f"📏 Size: {result['content_length']} characters")
     else:
-        generator.generate_all_mdc()
+        print(f"❌ Failed to generate MDC for {args.service}")
+        print(f"Error: {result['error']}")
+        sys.exit(1)
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

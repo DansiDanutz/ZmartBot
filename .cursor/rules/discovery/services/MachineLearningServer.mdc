@@ -1,0 +1,445 @@
+# Machinelearningserver - Merged MDC Configuration
+
+## 🔗 Merged from 2 duplicate files
+**Merged Files**: MachineLearningServer.mdc, machine_learning_server.mdc
+**Merge Date**: 2025-08-27 10:39:58
+**Primary Source**: MachineLearningServer.mdc
+
+## 📋 Primary Configuration
+# Machinelearningserver - Merged MDC Configuration
+
+## 🔗 Merged from 2 duplicate files
+**Merged Files**: MachineLearningServer.mdc, machine_learning_server.mdc
+**Merge Date**: 2025-08-26 09:03:52
+**Primary Source**: MachineLearningServer.mdc
+
+## 📋 Primary Configuration
+# MachineLearningServer.mdc
+
+## Summary
+ZmartBot Machine Learning Service - Advanced predictive modeling, pattern recognition, and automated trading strategy development using machine learning algorithms and feature engineering.
+
+## Purpose
+- **Predictive Modeling**: Price prediction, trend analysis, and volatility forecasting
+- **Pattern Recognition**: Technical pattern detection and classification
+- **Feature Engineering**: Automated feature extraction and selection from market data
+- **Model Management**: Training, evaluation, optimization, and deployment of ML models
+
+## Key Functions
+
+### Core ML Operations
+- **Model Training**: Train various ML models with historical and real-time data
+- **Prediction Generation**: Generate price, trend, and volatility predictions
+- **Pattern Detection**: Identify technical patterns and market signals
+- **Feature Processing**: Extract and select relevant features for model training
+
+### Model Types
+- **Price Prediction**: Neural networks for price forecasting (85% accuracy)
+- **Trend Prediction**: Classification models for trend direction (78% accuracy)
+- **Volatility Prediction**: Time series models for volatility forecasting (82% accuracy)
+- **Sentiment Analysis**: NLP models for market sentiment analysis (91% accuracy)
+
+### Pattern Recognition
+- **Technical Patterns**: Head & shoulders, double top, triangles, flags
+- **Price Patterns**: Breakouts, consolidation, reversal, continuation
+- **Volume Patterns**: Volume spikes, declines, divergence analysis
+
+## Technical Implementation
+
+### Service Configuration
+- **Service Name**: `zmart-machine-learning`
+- **Default Port**: `8014`
+- **Host**: `127.0.0.1`
+- **Framework**: FastAPI with async/await and numpy integration
+
+### API Endpoints
+
+#### Model Management
+- **Predictions**: `POST /api/v1/ml/predict` - Generate ML predictions
+- **Training**: `POST /api/v1/ml/train` - Train models with new data
+- **Evaluation**: `POST /api/v1/ml/evaluate` - Evaluate model performance
+- **Model List**: `GET /api/v1/ml/models` - List available models
+- **Deployment**: `POST /api/v1/ml/deploy` - Deploy trained models
+- **Performance**: `GET /api/v1/ml/performance` - Get model performance metrics
+- **Optimization**: `POST /api/v1/ml/optimize` - Hyperparameter optimization
+
+#### Feature Engineering
+- **Feature Extraction**: `POST /api/v1/features/extract` - Extract features from data
+- **Feature Selection**: `POST /api/v1/features/select` - Select important features
+- **Feature Importance**: `GET /api/v1/features/importance` - Get feature rankings
+
+#### Pattern Recognition
+- **Pattern Detection**: `POST /api/v1/patterns/detect` - Detect patterns in data
+- **Pattern Types**: `GET /api/v1/patterns/types` - Get available pattern types
+- **Pattern Classification**: `POST /api/v1/patterns/classify` - Classify patterns
+- **Pattern Confidence**: `GET /api/v1/patterns/confidence` - Get confidence metrics
+
+#### Data Management
+- **Training Data**: `GET /api/v1/data/training` - Access training datasets
+- **Validation Data**: `GET /api/v1/data/validation` - Access validation datasets
+- **Data Preprocessing**: `POST /api/v1/data/preprocess` - Preprocess data
+- **Data Statistics**: `GET /api/v1/data/statistics` - Get data statistics
+
+### Model Architecture
+- **Feature Count**: 15 technical and market features
+- **Training Data**: 10,000 samples across multiple symbols
+- **Validation Data**: 2,000 samples for model validation
+- **Timeframe**: 1-hour intervals with date range 2024-2025
+
+## Machine Learning Pipeline
+
+### Data Processing
+- **Normalization**: Data normalization and feature scaling
+- **Outlier Removal**: Statistical outlier detection and removal
+- **Missing Values**: Handling and imputation of missing data
+- **Feature Engineering**: Technical indicator computation and feature creation
+
+### Model Training
+- **Supervised Learning**: Price and trend prediction models
+- **Unsupervised Learning**: Pattern discovery and anomaly detection
+- **Reinforcement Learning**: Strategy optimization and decision making
+- **Ensemble Methods**: Model combination for improved accuracy
+
+### Feature Engineering
+- **Technical Features**: RSI, MACD, Bollinger Bands, EMA
+- **Market Features**: Volume, price momentum, volatility metrics
+- **Sentiment Features**: News sentiment, social media sentiment
+- **Time Series Features**: Lag features, rolling statistics
+
+### Model Evaluation
+- **Accuracy Metrics**: Precision, recall, F1-score
+- **Trading Metrics**: Sharpe ratio, maximum drawdown
+- **Cross-validation**: Time series cross-validation
+- **Backtesting**: Historical performance validation
+
+## Performance Characteristics
+
+### Model Performance
+- **Overall Accuracy**: 84% average across all models
+- **Best Model**: Sentiment Analysis (91% accuracy)
+- **Prediction Volume**: 1,500 total predictions made
+- **Success Rate**: 1,260 successful predictions (84%)
+
+### Feature Importance Rankings
+- **RSI**: 0.95 (highest importance)
+- **MACD**: 0.88
+- **Volume**: 0.82
+- **Price Momentum**: 0.78
+- **Bollinger Bands**: 0.75
+- **EMA**: 0.72
+
+### Pattern Detection Confidence
+- **Volume Patterns**: 92% confidence
+- **Technical Patterns**: 85% confidence
+- **Price Patterns**: 78% confidence
+
+## Integration Points
+
+### Data Sources
+- **Market Data**: Real-time price and volume feeds
+- **Historical Data**: Data warehouse integration
+- **News Feeds**: Sentiment analysis data sources
+- **Social Media**: Social sentiment data integration
+
+### Service Dependencies
+- **Data Warehouse**: Training and validation data
+- **Technical Analysis**: Technical indicator computation
+- **Risk Management**: Risk-adjusted model evaluation
+- **Alert System**: Model-based alert generation
+
+## Configuration
+
+### Environment Variables
+```bash
+ML_SERVICE_PORT=8014
+ML_SERVICE_HOST=127.0.0.1
+MODEL_STORAGE_PATH=/models
+TRAINING_DATA_PATH=/data/training
+VALIDATION_DATA_PATH=/data/validation
+```
+
+### Model Parameters
+- **Learning Rate**: 0.001
+- **Batch Size**: 32
+- **Epochs**: 100
+- **Validation Split**: 0.2
+
+## Security & Compliance
+
+### Model Security
+- **Model Versioning**: Secure model version control
+- **Access Control**: API authentication and authorization
+- **Audit Trail**: Model training and prediction logging
+- **Data Privacy**: Sensitive data handling and protection
+
+### Deployment Security
+- **Container Security**: Secure containerized deployment
+- **Network Security**: Encrypted API communications
+- **Resource Limits**: CPU/memory resource constraints
+- **Input Validation**: Malicious input detection and prevention
+
+## Operational Guidelines
+
+### Model Lifecycle
+- **Development**: Model development and validation
+- **Testing**: A/B testing and performance evaluation
+- **Deployment**: Production model deployment
+- **Monitoring**: Performance monitoring and alerting
+- **Retirement**: Model deprecation and replacement
+
+### Performance Monitoring
+- **Prediction Accuracy**: Real-time accuracy tracking
+- **Model Drift**: Data drift and concept drift detection
+- **Resource Usage**: CPU, memory, and GPU utilization
+- **Response Times**: API response time monitoring
+
+### Maintenance Procedures
+- **Regular Retraining**: Scheduled model retraining
+- **Feature Updates**: New feature integration
+- **Hyperparameter Tuning**: Performance optimization
+- **Model Updates**: Algorithm improvements and updates
+
+## Error Handling & Recovery
+
+### Common Issues
+- **Training Failures**: Model training convergence issues
+- **Prediction Errors**: Invalid input or model errors
+- **Resource Exhaustion**: Memory or compute limitations
+- **Data Quality**: Poor quality training data
+
+### Recovery Strategies
+- **Model Fallback**: Fallback to previous model versions
+- **Error Logging**: Comprehensive error tracking
+- **Automatic Retry**: Retry logic for transient failures
+- **Manual Intervention**: Alert-based manual intervention
+
+## API Usage Examples
+
+### Make Prediction
+```bash
+curl -X POST http://localhost:8014/api/v1/ml/predict \
+  -H "Content-Type: application/json" \
+  -d '{"symbol": "BTCUSDT", "model_type": "price_prediction"}'
+```
+
+### Train Model
+```bash
+curl -X POST http://localhost:8014/api/v1/ml/train \
+  -H "Content-Type: application/json" \
+  -d '{"model_type": "trend_prediction", "training_data": {...}}'
+```
+
+### Detect Patterns
+```bash
+curl -X POST http://localhost:8014/api/v1/patterns/detect \
+  -H "Content-Type: application/json" \
+  -d '{"symbol": "ETHUSDT", "data": {...}}'
+```
+
+## Command Line Usage
+```bash
+# Start with default settings
+python machine_learning_server.py
+
+# Custom configuration
+python machine_learning_server.py --port 8014 --host 0.0.0.0
+
+# Production deployment
+uvicorn machine_learning_server:app --host 0.0.0.0 --port 8014 --workers 2
+```
+
+This service provides the core AI/ML capabilities for ZmartBot, enabling intelligent trading decisions through advanced predictive modeling and pattern recognition.
+
+## 📄 Additional Content from machine_learning_server.mdc
+# machine_learning_server.mdc
+> Type: backend | Version: 1.0.0 | Owner: zmartbot | Port: 8014
+
+## Purpose
+Liveness probe endpoint
+
+## Overview
+Auto-discovered service managed by MDC-Dashboard system. This service was identified during automated system scanning and requires manual review and enhancement.
+
+## Critical Functions
+- Auto-discovered service functionality (requires manual documentation)
+- Service integration with ZmartBot ecosystem
+
+## Architecture & Integration
+- **Service Type:** backend
+- **Dependencies:** To be determined
+- **Env Vars:** To be determined  
+- **Lifecycle:** start=`python3 /Users/dansidanutz/Desktop/ZmartBot/zmart-api/system_backups/initial_startup_backup/system_backups/initial_startup_backup/machine_learning/machine_learning_server.py.py` | stop=`pkill -f machine_learning_server` | migrate=`n/a`
+
+## API Endpoints
+*Endpoints to be documented during manual review*
+
+## Health & Readiness
+- Liveness: To be configured
+- Readiness: To be configured
+- Timeouts: startup_grace=30s, http_timeout=30s
+
+## Observability
+- Metrics: To be configured
+- Logs: format=python-logging
+- Dashboards: To be created
+
+
+
+## Service Connections & Dependencies
+
+### Current Active Connections
+- **port-8014** ✅ **ACTIVE** - network connection
+- ****** ✅ **ACTIVE** - dependency connection
+
+### Potential Connections
+- **notification_server** ⏳ **POTENTIAL** - High-potential integration between MachineLearningServer and notification_server - Strong synergy opportunity (Confidence: 80%)
+- **PortManagerService** ⏳ **POTENTIAL** - High-potential integration between MachineLearningServer and PortManagerService - Strong synergy opportunity (Confidence: 80%)
+- **START_zmartbot** ⏳ **POTENTIAL** - High-potential integration between MachineLearningServer and START_zmartbot - Strong synergy opportunity (Confidence: 80%)
+- **my-symbols-extended-service** ⏳ **POTENTIAL** - High-potential integration between MachineLearningServer and my-symbols-extended-service - Strong synergy opportunity (Confidence: 80%)
+- **kucoin_server** ⏳ **POTENTIAL** - High-potential integration between MachineLearningServer and kucoin_server - Strong synergy opportunity (Confidence: 80%)
+
+### Priority Connections
+*Will be populated automatically during Phase 4 if service qualifies for top 10 priority services*
+
+### Connection Summary
+- **Current Active**: 2
+- **Potential**: 5  
+- **Priority**: 0
+- **Total Discovered**: 2
+- **Last Discovery Scan**: Auto-updated on system initialization
+- **Discovery Method**: Multi-phase automated analysis with diamond pattern extraction
+- **Update Policy**: Real-time updates during workflow execution
+## Orchestration & Ordering
+- Basic Integration: Enabled
+- Master Agent Linked: No
+- Ordering Hints: To be determined
+
+## Performance & SLO
+- Baseline p95 (ms): To be measured
+- Notes: Auto-discovered service requiring performance baseline establishment
+
+## Failure Modes & Runbooks
+*To be documented during manual review*
+
+## Rollback
+- Snapshot required: To be determined
+- Playbook: To be determined
+
+## Load Balancing
+- Enabled: To be determined
+- Pool: To be determined
+
+## Known Issues
+- Auto-generated MDC file requiring manual review and enhancement
+- Service functionality and dependencies need documentation
+
+## Changelog
+- 1.0.0 (2025-08-26): Auto-discovered service, MDC file generated by MDC-Dashboard system
+
+---
+*Auto-generated by MDC-Dashboard orphan service discovery on 2025-08-26*
+description: Auto-discovered service requiring manual documentation
+globs: ["/Users/dansidanutz/Desktop/ZmartBot/zmart-api/system_backups/initial_startup_backup/system_backups/initial_startup_backup/machine_learning/machine_learning_server.py"]
+alwaysApply: true
+---
+
+---
+**Merge Summary**: Combined 2 files into unified MDC configuration
+**Generated**: 2025-08-26T09:03:52.865556
+
+## 📄 Additional Content from machine_learning_server.mdc
+# machine_learning_server.mdc
+> Type: backend | Version: 1.0.0 | Owner: zmartbot | Port: 8014
+
+## Purpose
+Liveness probe endpoint
+
+## Overview
+Auto-discovered service managed by MDC-Dashboard system. This service was identified during automated system scanning and requires manual review and enhancement.
+
+## Critical Functions
+- Auto-discovered service functionality (requires manual documentation)
+- Service integration with ZmartBot ecosystem
+
+## Architecture & Integration
+- **Service Type:** backend
+- **Dependencies:** To be determined
+- **Env Vars:** To be determined  
+- **Lifecycle:** start=`python3 /Users/dansidanutz/Desktop/ZmartBot/zmart-api/system_backups/initial_startup_backup/system_backups/initial_startup_backup/machine_learning/machine_learning_server.py.py` | stop=`pkill -f machine_learning_server` | migrate=`n/a`
+
+## API Endpoints
+*Endpoints to be documented during manual review*
+
+## Health & Readiness
+- Liveness: To be configured
+- Readiness: To be configured
+- Timeouts: startup_grace=30s, http_timeout=30s
+
+## Observability
+- Metrics: To be configured
+- Logs: format=python-logging
+- Dashboards: To be created
+
+
+
+## Service Connections & Dependencies
+
+### Current Active Connections
+- **port-8014** ✅ **ACTIVE** - network connection
+- ****** ✅ **ACTIVE** - dependency connection
+
+### Potential Connections
+- **notification_server** ⏳ **POTENTIAL** - Moderate integration opportunity between machine_learning_server and notification_server - Consider for future development (Confidence: 70%)
+- **PortManagerService** ⏳ **POTENTIAL** - Moderate integration opportunity between machine_learning_server and PortManagerService - Consider for future development (Confidence: 70%)
+- **my-symbols-extended-service** ⏳ **POTENTIAL** - Moderate integration opportunity between machine_learning_server and my-symbols-extended-service - Consider for future development (Confidence: 70%)
+- **kucoin_server** ⏳ **POTENTIAL** - Moderate integration opportunity between machine_learning_server and kucoin_server - Consider for future development (Confidence: 70%)
+- **update-master-orchestration** ⏳ **POTENTIAL** - Moderate integration opportunity between machine_learning_server and update-master-orchestration - Consider for future development (Confidence: 70%)
+
+### Priority Connections
+*Will be populated automatically during Phase 4 if service qualifies for top 10 priority services*
+
+### Connection Summary
+- **Current Active**: 2
+- **Potential**: 5  
+- **Priority**: 0
+- **Total Discovered**: 2
+- **Last Discovery Scan**: Auto-updated on system initialization
+- **Discovery Method**: Multi-phase automated analysis with diamond pattern extraction
+- **Update Policy**: Real-time updates during workflow execution
+## Orchestration & Ordering
+- Basic Integration: Enabled
+- Master Agent Linked: No
+- Ordering Hints: To be determined
+
+## Performance & SLO
+- Baseline p95 (ms): To be measured
+- Notes: Auto-discovered service requiring performance baseline establishment
+
+## Failure Modes & Runbooks
+*To be documented during manual review*
+
+## Rollback
+- Snapshot required: To be determined
+- Playbook: To be determined
+
+## Load Balancing
+- Enabled: To be determined
+- Pool: To be determined
+
+## Known Issues
+- Auto-generated MDC file requiring manual review and enhancement
+- Service functionality and dependencies need documentation
+
+## Changelog
+- 1.0.0 (2025-08-26): Auto-discovered service, MDC file generated by MDC-Dashboard system
+
+---
+*Auto-generated by MDC-Dashboard orphan service discovery on 2025-08-26*
+description: Auto-discovered service requiring manual documentation
+globs: ["/Users/dansidanutz/Desktop/ZmartBot/zmart-api/system_backups/initial_startup_backup/system_backups/initial_startup_backup/machine_learning/machine_learning_server.py"]
+alwaysApply: true
+---
+
+---
+**Merge Summary**: Combined 2 files into unified MDC configuration
+**Generated**: 2025-08-27T10:39:58.313901

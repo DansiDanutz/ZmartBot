@@ -1,7 +1,11 @@
 # 🔒 Security Scan Service - Comprehensive Security Monitoring
 
+
 ## Purpose
 Comprehensive security scanning and monitoring service for ZmartBot system, providing secret detection, vulnerability scanning, and security compliance monitoring.
+
+## Description
+Comprehensive security scanning and monitoring service for ZmartBot system, providing secret dete...
 
 ## Critical Functions
 - **Secret Detection**: Automated detection of exposed secrets and credentials
@@ -67,4 +71,15 @@ Comprehensive security scanning and monitoring service for ZmartBot system, prov
 description:
 globs:
 alwaysApply: true
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Database connectivity**
+
+
 ---
+
+
+## Triggers
+- **API endpoint requests**
+- **Database events**

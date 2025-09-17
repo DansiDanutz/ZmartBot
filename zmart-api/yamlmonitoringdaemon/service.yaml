@@ -1,0 +1,19 @@
+endpoints:
+  health: http://127.0.0.1:8899/health
+  metrics: http://127.0.0.1:8899/metrics
+  ready: http://127.0.0.1:8899/ready
+lifecycle:
+  health_check: curl -f http://127.0.0.1:8899/health
+  start_command: null
+  stop_command: pkill -f YAMLMonitoringDaemon
+metadata:
+  description: Service YAMLMonitoringDaemon
+  owner: zmartbot
+  version: 1.0.0
+service:
+  level: 2
+  name: YAMLMonitoringDaemon
+  passport: ZMBT-SRV-20250831-0366A5
+  port: 8899
+  status: ACTIVE
+  type: backend

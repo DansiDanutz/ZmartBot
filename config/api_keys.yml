@@ -1,9 +1,9 @@
 api_configs:
   openai:
-    api_key: gAAAAABoq7IRg3v4L5xj1RHF3jty8TQfiDu6lHAmY-RqsyAfqtKdcmeDqSdZ8rDbNuAgYCEjDWs7o5XPY_cALSVoaQ6dUszfkSVZ7BYuBXQPojiw8xy9F7uE1xBgAIa49OYF_YaC5cpJtU4NhgmOBUWZZvaSF6GMUVHKDDJqYM2JUlwcA3wX4Umk4ylvyMwQCkqV2dduPRTlJe4nXS-i_k7oH6oi7C-6O6WAsLWuxbcYDnaf7gE0VlJcE6QdTBALlH4422TAmOTepiLw8-vO8nbF7kjzfrvljfACk_AX37Yf3JgbYELQjCw=
+    api_key: gAAAAABorQ5dm276-Quqeffirjic3Il0egY2F39MVmVQQbF1wNfRl7u5AUPsim2pzGq4uEwXo6RVlZe0Byc0ydjellk7nZ5VMrnpvUfEzln-rqcE0pVA1A9RHoiz0dlCy2ehaH2zazeNrWuKAiaPHjb5NhZ1bqH2thj5MW5KiX10SCKckoRvSxy-c5771pY8y_3RRt1k34uw7lIUauiL2X9_koGkwK3TS5q7fI33cdLtWotba86qo-e9iQO091QAJusLWEip1R1BVeCAyWy4aXMIXzaG836c9CnqvYDaCqL_YbVEcvtz3fg=
     base_url: https://api.openai.com/v1
-    created_at: '2025-08-25T03:45:05.246283'
-    description: OpenAI API for ChatGPT-5/GPT-4 trading analysis
+    created_at: '2025-08-26T04:31:09.752991'
+    description: OpenAI API for ChatGPT-5/GPT-4 trading analysis and MDC enhancement
     is_active: true
     last_used: null
     passphrase: null
@@ -13,6 +13,6 @@ api_configs:
     usage_count: 0
 exchange_configs: {}
 metadata:
-  created_at: '2025-08-25T03:45:05.246317'
+  created_at: '2025-08-26T04:31:09.753023'
   encrypted: true
   version: '1.0'

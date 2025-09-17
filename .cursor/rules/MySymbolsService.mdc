@@ -1,7 +1,11 @@
 # 🗄️ My Symbols Service - Portfolio Management Database
 
+
 ## Purpose
 My Symbols service manages the core portfolio database, symbol tracking, and portfolio analytics for ZmartBot trading operations.
+
+## Description
+My Symbols service manages the core portfolio database, symbol tracking, and portfolio analytics ...
 
 ## Critical Functions
 - **Portfolio Management**: Symbol portfolio tracking and management
@@ -67,4 +71,14 @@ My Symbols service manages the core portfolio database, symbol tracking, and por
 description:
 globs:
 alwaysApply: true
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Database connectivity**
+
+
 ---
+
+
+## Triggers
+- **Database events**

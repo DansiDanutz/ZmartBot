@@ -1,0 +1,30 @@
+service_name: port-guard
+service_type: infrastructure
+version: 1.0.0
+owner: zmartbot
+description: Port guard service
+port: 8998
+passport_id: ZMBT-PGD-20250831-V5W6X7
+status: ACTIVE
+registered_at: '2025-08-31'
+health_url: http://localhost:8998/health
+start_cmd: python3 port_guard_server.py --port 8998
+stop_cmd: pkill -f 'port_guard_server.py'
+dependencies:
+- zmart-api
+tags:
+- infrastructure
+- port-guard
+lifecycle:
+  startup_grace_seconds: 30
+  shutdown_timeout_seconds: 15
+  health_check_interval: 30
+monitoring:
+  metrics_endpoint: /metrics
+  logs_path: logs/port-guard.log
+  dashboard_url: http://localhost:8998/dashboard
+security:
+  cors_enabled: true
+  token_required: false
+  scopes:
+  - infrastructure

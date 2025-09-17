@@ -1,7 +1,11 @@
 # 📈 Health Check Service - System Health Monitoring
 
+
 ## Purpose
 Comprehensive health monitoring service for ZmartBot system, providing real-time health checks, performance monitoring, and automated alerting.
+
+## Description
+Comprehensive health monitoring service for ZmartBot system, providing real-time health checks, p...
 
 ## Critical Functions
 - **Service Health Monitoring**: Real-time health status of all services
@@ -69,4 +73,18 @@ Comprehensive health monitoring service for ZmartBot system, providing real-time
 description:
 globs:
 alwaysApply: true
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Database connectivity**
+- ✅ **Health endpoint implementation**
+- ✅ **Master Orchestration integration**
+
+
 ---
+
+
+## Triggers
+- **API endpoint requests**
+- **Database events**
+- **Health check requests**

@@ -2,59 +2,33 @@
 
 ## ProcessReaper
 **File**: .cursor/rules/ProcessReaper.mdc
-**Relevance**: 30
-**Size**: 7480 bytes
+**Relevance**: 0
+**Size**: 7869 bytes
 
-**Content**:
-```
-# MAXIMUM UPGRADE: ProcessReaper.mdc
-
-## Service Overview
-- **Name**: ProcessReaper
-- **Port**: Dynamic (Assigned by Port Manager)
-- **Type**: Security and Cleanup Agent
-- **Description**: ProcessReaper is a critical security and cleanup script that acts as the system's "immune system" for the ZmartBot project. It identifies, analyzes, and eliminates virus scripts, conflicting processes, and malicious code that are detected by the Port Manager or Master Orchestration Agent.
-- **Service Classification**: Security
-- **Business Impact**: If ProcessReaper fails, the system is exposed to potential security threats, including virus scripts, unauthorized processes, and conflicting code. This could lead to system instability, data corruption, and unauthorized access to sensitive data.
-
-## Service Architecture
-- **Key Features**: Virus Script Detection & Elimination, Process Conflict Resolution, Port Conflict Cleanup, System Integrity Protection
-- **Supported Operations**: Threat detection, threat analysis, threat elimination, conflict resolution, system integrity protection
-- **Integration Ecosystem**: ProcessReaper is integrated with the Port Manager and Master Orchestration Agent for threat detection and elimination. It also interacts with the system security for implementing security protocols and maintaining system integrity.
-
-## CRITICAL SERVICE CHARACTERISTICS FOR MASTER ORCHESTRATION
-
-### Service Dependencies
-- **Required Modules**: Python's os, sys, subprocess, and shutil modules
-- **Database Dependencies**: SQLite for logging and reporting
-- **External Service Dependencies**: None
-- **File System Dependencies**: Configuration files in /etc/doctor_kill, quarantine directory in /tmp/zmartbot_quarantine
-- **Network Dependencies**: Dynamic port assigned by Port Manager
-
-### Inter-Service Operation Patterns
-- **Provides Services To**: Master Orchestration Agent, Port Manager
-- **Depends On Services**: Port Manager, Master Orchestration Agent
-- **Communication Patterns**
-```
+**Summary**: ## Description | Core service component of the ZmartBot ecosystem providing essential functionality. | # MAXIMUM UPGRADE: ProcessReaper.mdc | - **Name**: ProcessReaper
+**Compressed**: 
 
 ---
 
 ## MonitoringMDC
 **File**: .cursor/rules/MonitoringMDC.mdc
-**Relevance**: 30
-**Size**: 14489 bytes
+**Relevance**: 0
+**Size**: 15070 bytes
 
-**Summary**: # MDC Monitoring System - Comprehensive Documentation @agent: MonitoringMDC
+**Summary**: # MDC Monitoring System - Comprehensive Documentation | ## Purpose & Scope | @agent: MonitoringMDC
 
 ---
 
 ## diagnostics
 **File**: .cursor/rules/diagnostics.mdc
-**Relevance**: 30
-**Size**: 3862 bytes
+**Relevance**: 0
+**Size**: 4220 bytes
 
-**Content**:
-```
+**Content**: 
+## Description
+Core service component of the ZmartBot ecosystem providing essential functionality.
+
+
 As an AI, I'm unable to generate the entire MDC file as requested due to the lack of specific information about the service. However, I can provide a template based on the requirements you've provided. You can fill in the details as per your service's specifics.
 
 ```markdown
@@ -74,60 +48,59 @@ As an AI, I'm unable to generate the entire MDC file as requested due to the lac
 - **Integration Ecosystem**: 
 - **Design Patterns**: 
 
-## 3. Critical Service Characteristics for Master Orchestration
+## ...
 
-### Service Dependencies
-- **Required Python Modules**: 
-- **Database Dependencies**: 
-- **External Service Dependencies**: 
-- **File System Dependencies**: 
-- **Network Dependencies**: 
-- **Environment Dependencies**: 
+---
 
-### Inter-Service Operation Patterns
-- **Provides Services To**: 
-- **Depends On Services**: 
-- **Communication Protocols**: 
-- **Data Exchange Patterns**: 
-- **Failure Impact Analysis**: 
-- **Cascade Failure Patterns**: 
-- **Recovery Coordination**: 
+## integration-MonitoringMDC-ServiceDiscovery
+**File**: .cursor/rules/integration/winners/integration-MonitoringMDC-ServiceDiscovery.mdc
+**Relevance**: 0
+**Size**: 3929 bytes
 
-### Service Lifecycle Behavior
-- **Startup Time**: 
-- **Startup Dependencies**: 
-- **Startup Sequence**: 
-- **Initialization Checks**: 
-- **Shutdown Behavior**: 
-- **Shutdown Priority**: 
-- **State Persistence**: 
-- **Recovery Patterns**: 
+**Content**: # integration-MonitoringMDC-ServiceDiscovery.mdc
+> Type: integration | Version: 1.0.0 | Owner: zmartbot | Components: MonitoringMDC + ServiceDiscovery
+> Winner: Selected from automated analysis (Score: 92)
 
-### Runtime Characteristics
-- **Memory Usage**: 
-- **CPU Usage**: 
-- **Network Usage**: 
-- **Disk I/O**: 
-- **Concurrency Model**: 
-- **Performance Characteristics**: 
-- **Resource Scaling**: 
-- **Performance Optimization**: 
+## Purpose
+The integration of MonitoringMDC and ServiceDiscovery is highly recommended. While the implementation complexity is medium, the potential benefits in terms of improved system reliability, performance, and reduced maintenance costs make it a worthwhile investment.
 
-### Error Conditions & Recovery
-- **Failure Modes**: 
-- **Failure Detection**: 
-- **Failure Impact**: 
-- **Recovery Strategies**: 
-- **Circuit Breaker Patterns**: 
-- **Fallback Mechanisms**: 
-- **Disaster Recovery**: 
-- **Health Check Patterns**: 
+## Integration Analysis
+**Score**: 92/100
+**Complexity**: Medium
+**Pattern**: Event-driven integration would work best here. This pattern allows the services to react to changes in real time, which is crucial for both monitoring and service discovery. The MonitoringMDC service could emit events when changes are detected in the MDC files, and the ServiceDiscovery service could listen for these events to update its service registry and port assignments.
 
-### Monitoring & Observability
-- **Health Check Endpoints**: 
-- **Performance Metrics**: 
-- *
-```
+## Key Benefits
+- Real-time synchronization between services, improving system reliability and performance
+- Automated service discovery and port assignment, reducing manual configuration and potential errors
+- Enhanced monitoring and logging capabilities, providing insights into system health and performance
+
+## ...
+
+---
+
+## integration-API-Manager-MonitoringMDC
+**File**: .cursor/rules/discovery/integrations/winners/integration-API-Manager-MonitoringMDC.mdc
+**Relevance**: 0
+**Size**: 3790 bytes
+
+**Content**: # integration-API-Manager-MonitoringMDC.mdc
+> Type: integration | Version: 1.0.0 | Owner: zmartbot | Components: API-Manager + MonitoringMDC
+> Winner: Selected from automated analysis (Score: 90)
+
+## Purpose
+The integration of API Manager and MDC Monitoring System would significantly enhance the security, data synchronization, and reliability of the cryptocurrency trading platform. Despite the medium complexity, the potential benefits make this integration highly recommended.
+
+## Integration Analysis
+**Score**: 90/100
+**Complexity**: Medium
+**Pattern**: Broker Integration Pattern would be suitable, where a central broker would facilitate communication between the two services, ensuring data consistency and handling any potential failures.
+
+## Key Benefits
+- Enhanced Security: The API Manager's robust security features would complement the MDC Monitoring System's comprehensive logging and status reporting, providing a secure and transparent environment for cryptocurrency trading.
+- Real-time Data Synchronization: The integration would allow real-time data from the API Manager to be monitored and logged by the MDC Monitoring System, ensuring accurate and up-to-date information for trading decisions.
+- Improved System Reliability: The failover management and error handling capabilities of the API Manager, combined with the backup and recovery mechanisms of the MDC Monitoring System, would significantly enhance the overall system reliability.
+
+## ...
 
 ---
 

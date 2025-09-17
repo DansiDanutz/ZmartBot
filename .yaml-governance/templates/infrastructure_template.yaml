@@ -1,0 +1,25 @@
+service_name: '[SERVICE_NAME]'
+service_type: infrastructure
+version: 1.0.0
+owner: zmartbot
+description: '[SERVICE_DESCRIPTION]'
+port: '[PORT]'
+passport_id: '[PASSPORT_ID]'
+status: ACTIVE
+registered_at: '[DATE]'
+health_url: http://localhost:[PORT]/health
+start_cmd: python3 [SERVICE_NAME].py --port [PORT]
+stop_cmd: pkill -f '[SERVICE_NAME].py'
+dependencies:
+- zmart-api
+tags:
+- infrastructure
+- '[SERVICE_NAME]'
+infrastructure_config:
+  critical_service: true
+  auto_restart: true
+  monitoring_priority: high
+lifecycle:
+  startup_grace_seconds: 60
+  shutdown_timeout_seconds: 30
+  health_check_interval: 10

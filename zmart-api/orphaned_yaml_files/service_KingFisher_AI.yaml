@@ -1,0 +1,30 @@
+service_name: KingFisher_AI
+service_type: backend
+version: 1.0.0
+owner: zmartbot
+description: KingFisher AI (port changed from 8098)
+port: 8108
+passport_id: ZMBT-AI-20250831-A8B9C1
+status: ACTIVE
+registered_at: '2025-08-31'
+health_url: http://localhost:8108/health
+start_cmd: python3 kingfisher_ai_server.py --port 8108
+stop_cmd: pkill -f 'kingfisher_ai_server.py'
+dependencies:
+- zmart-api
+tags:
+- backend
+- kingfisher_ai
+lifecycle:
+  startup_grace_seconds: 30
+  shutdown_timeout_seconds: 15
+  health_check_interval: 30
+monitoring:
+  metrics_endpoint: /metrics
+  logs_path: logs/kingfisher_ai.log
+  dashboard_url: http://localhost:8108/dashboard
+security:
+  cors_enabled: true
+  token_required: false
+  scopes:
+  - backend

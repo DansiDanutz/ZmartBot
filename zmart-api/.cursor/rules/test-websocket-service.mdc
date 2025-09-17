@@ -1,0 +1,263 @@
+# test-websocket-service.mdc
+> Type: service | Version: 1.0.0 | Owner: zmartbot | Status: ACTIVE | Level: 2 | Port: 8004
+Core service component of the ZmartBot ecosystem providing essential functionality.
+
+## 🤖 MCP (Model Context Protocol) Integration
+
+### **MCP Server Pairing**
+**Status**: ✅ **ACTIVE** - Test WebSocket Service MCP Integration
+**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
+**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
+**Integration Type**: Multi-MCP Service Integration
+
+### **MCP Integration Features**
+- **Claude Code Integration**: AI-powered test WebSocket service optimization and analysis
+- **Memory Gateway**: Persistent test WebSocket service state and metadata
+- **UI Automation**: Automated test WebSocket service monitoring and health checks
+- **Figma Integration**: Test WebSocket service dashboard design and UI management
+- **Supabase Integration**: Cloud-based test WebSocket service analytics and reporting
+
+### **MCP Integration Benefits**
+- **Enhanced WebSocket**: AI-powered test WebSocket service optimization and analysis
+- **Persistent State**: Cross-session test WebSocket service state and configuration management
+- **Automated Monitoring**: Real-time test WebSocket service health and performance tracking
+- **Visual Dashboard**: Interactive test WebSocket service management and testing interface
+- **Cloud Analytics**: Comprehensive test WebSocket service usage and performance analytics
+
+### **MCP Usage Examples**
+```bash
+# Health check via MCP
+curl -X GET "http://127.0.0.1:8004/health"
+
+# Test WebSocket service operation via MCP
+curl -X POST "http://127.0.0.1:8004/websocket" -d '{"action": "test_connection"}'
+```
+
+### **MCP Status**
+- **Claude Code**: ✅ Active - AI-powered test WebSocket service optimization
+- **ByteRover**: ✅ Active - Persistent test WebSocket service state management
+- **UI TARS**: ✅ Active - Automated test WebSocket service monitoring
+- **Figma**: ✅ Active - Test WebSocket service dashboard design
+- **Supabase**: ✅ Active - Cloud-based test WebSocket service analytics
+
+---
+
+# test-websocket-service.mdc
+> Type: backend | Version: 1.0.0 | Owner: zmartbot | Port: 8004
+
+## Overview
+ZmartBot WebSocket service providing real-time data streaming, live updates, and bidirectional communication with low latency and high performance.
+
+## Architecture & Integration
+- **Service Type:** backend
+- **Dependencies:** zmart-api
+- **Env Vars:** WEBSOCKET_TOKEN, REDIS_URL
+- **Lifecycle:** start=`python3 websocket/websocket_server.py --port 8004` | stop=`pkill -f websocket_server` | migrate=`n/a`
+
+## API Endpoints
+
+### GET /health
+- Summary: WebSocket service health check
+- Auth Required: No
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: Health status
+  - 503: Service unavailable
+
+### GET /ready
+- Summary: WebSocket service readiness check
+- Auth Required: No
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: Ready status
+  - 503: Not ready
+
+### GET /api/websocket/status
+- Summary: Get WebSocket service status
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: WebSocket status information
+  - 401: Authentication required
+
+### GET /api/websocket/connections
+- Summary: Get active WebSocket connections
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: Active connections list
+  - 401: Authentication required
+
+### POST /api/websocket/broadcast
+- Summary: Broadcast message to all connected clients
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{"message": "string", "channel": "string"}`
+- Responses:
+  - 200: Message broadcast successfully
+  - 400: Invalid message format
+  - 401: Authentication required
+
+### POST /api/websocket/send/{client_id}
+- Summary: Send message to specific client
+- Auth Required: Yes
+- Request:
+  - Params: `{"client_id": "string"}`
+  - Query: `{}`
+  - Body: `{"message": "string"}`
+- Responses:
+  - 200: Message sent successfully
+  - 400: Invalid message format
+  - 401: Authentication required
+  - 404: Client not found
+
+### GET /api/websocket/channels
+- Summary: Get available WebSocket channels
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: Available channels list
+  - 401: Authentication required
+
+### POST /api/websocket/channels/{channel_name}/subscribe
+- Summary: Subscribe to a WebSocket channel
+- Auth Required: Yes
+- Request:
+  - Params: `{"channel_name": "string"}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: Successfully subscribed
+  - 400: Invalid channel name
+  - 401: Authentication required
+
+### POST /api/websocket/channels/{channel_name}/unsubscribe
+- Summary: Unsubscribe from a WebSocket channel
+- Auth Required: Yes
+- Request:
+  - Params: `{"channel_name": "string"}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: Successfully unsubscribed
+  - 400: Invalid channel name
+  - 401: Authentication required
+
+### WebSocket /ws
+- Summary: WebSocket connection endpoint
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{"token": "string"}`
+  - Body: `{}`
+- Responses:
+  - 101: WebSocket connection established
+  - 401: Authentication required
+
+### WebSocket /ws/{channel}
+- Summary: WebSocket connection for specific channel
+- Auth Required: Yes
+- Request:
+  - Params: `{"channel": "string"}`
+  - Query: `{"token": "string"}`
+  - Body: `{}`
+- Responses:
+  - 101: WebSocket connection established
+  - 401: Authentication required
+  - 404: Channel not found
+
+
+## Triggers
+- **API endpoint requests**
+- **Workflow transitions**
+- **Health check requests**
+
+## Health & Readiness
+- Liveness: `/health`
+- Readiness: `/ready`
+- Timeouts: startup_grace=20s, http_timeout=35s
+
+## Observability
+- Metrics: `/metrics`
+- Logs: format=jsonl
+- Dashboards: WebSocket Performance, Connection Metrics
+
+## Orchestration & Ordering
+- Basic Integration: Enabled
+- Master Agent Linked: Yes
+- Ordering Hints: zmart-api → test-websocket-service
+
+## Performance & SLO (Initial)
+- Baseline p95 (ms): 50
+- Notes: WebSocket service with real-time data streaming and low latency
+
+## Failure Modes & Runbooks
+- **connection-overflow** — Symptoms: Too many WebSocket connections, service becoming unresponsive — Remediation: Implement connection limits, restart WebSocket service
+- **data-stream-failure** — Symptoms: Real-time data streams not working, clients disconnected — Remediation: Check data sources, restart WebSocket service
+- **memory-leak** — Symptoms: High memory usage, WebSocket connections not cleaned up — Remediation: Monitor memory usage, implement connection cleanup, restart service
+
+## Rollback
+- Snapshot required: Yes
+- Playbook: isolate → restore_latest_snapshot → verify → reactivate
+
+## Load Balancing
+- Enabled: Yes
+- Pool: websocket_pool
+
+## Known Issues
+- None recorded
+
+## Changelog
+- 1.0.0 (2025-08-24): Initial WebSocket service with real-time data streaming
+
+
+
+
+## Service Connections & Dependencies
+
+### Current Active Connections
+- **port-8004** ✅ **ACTIVE** - network connection
+- ****** ✅ **ACTIVE** - dependency connection
+
+### Potential Connections
+- **PortManagerService** ⏳ **POTENTIAL** - High-potential integration between test-websocket-service and PortManagerService - Strong synergy opportunity (Confidence: 100%)
+- **my-symbols-extended-service** ⏳ **POTENTIAL** - High-potential integration between test-websocket-service and my-symbols-extended-service - Strong synergy opportunity (Confidence: 100%)
+- **PortManager** ⏳ **POTENTIAL** - High-potential integration between test-websocket-service and PortManager - Strong synergy opportunity (Confidence: 100%)
+- **ServiceDiscovery** ⏳ **POTENTIAL** - High-potential integration between test-websocket-service and ServiceDiscovery - Strong synergy opportunity (Confidence: 100%)
+- **binance-worker-service** ⏳ **POTENTIAL** - High-potential integration between test-websocket-service and binance-worker-service - Strong synergy opportunity (Confidence: 100%)
+
+### Priority Connections
+*Will be populated automatically during Phase 4 if service qualifies for top 10 priority services*
+
+### Connection Summary
+- **Current Active**: 2
+- **Potential**: 5  
+- **Priority**: 0
+- **Total Discovered**: 2
+- **Last Discovery Scan**: Auto-updated on system initialization
+- **Discovery Method**: Multi-phase automated analysis with diamond pattern extraction
+- **Update Policy**: Real-time updates during workflow execution
+
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Complete MDC documentation**
+- ✅ **Health endpoint implementation**
+- ✅ **Master Orchestration integration**

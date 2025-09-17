@@ -1,0 +1,21 @@
+{
+  "agent": "cryptometer_background",
+  "status": "completed",
+  "last_update": "2025-09-17T03:24:12.830184",
+  "next_update": "2025-09-18T03:24:12.830188",
+  "session_count": 1,
+  "update_interval_hours": 24,
+  "running": true,
+  "pid": 41511,
+  "session_data": {
+    "started_at": "2025-09-17T03:24:00.271356",
+    "symbols_attempted": 25,
+    "symbols_successful": 25,
+    "symbols_failed": 0,
+    "errors": [],
+    "total_endpoints_called": 0,
+    "total_data_points": 0,
+    "completed_at": "2025-09-17T03:24:12.828266",
+    "duration_minutes": 0.20928183333333333
+  }
+}

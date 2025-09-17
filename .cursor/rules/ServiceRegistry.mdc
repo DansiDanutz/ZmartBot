@@ -1,7 +1,59 @@
+
+## Description
+Core service component of the ZmartBot ecosystem providing essential functionality.
+
 @agent: ServiceRegistryAgent
+
 
 # Service Registry – Control Plane
 Manages dynamic service discovery, unique ports, SAVE/UNDO profiles, and dependency-ordered startup.
+
+## 🚨 **MANDATORY ZMARTBOT SERVICE ARCHITECTURE WORKFLOW**
+
+### **CRITICAL WORKFLOW RULES (FORBIDDEN TO IGNORE)**
+
+**🚨 NO EXCUSES - SYSTEM WILL CRASH IF RULES ARE BROKEN**
+
+#### **Rule 1: Service Definition**
+- **ANY .py file = SERVICE**: Every Python file represents a service
+- **MANDATORY MDC**: Every .py file MUST have an associated MDC file
+- **SERVICE COUNTING**: All .py files are counted as services in the system
+
+#### **Rule 2: Port Assignment (Port Manager)**
+- **MANDATORY PORT**: Any service trying to connect with other services MUST receive a port from Port Manager
+- **PORT DATABASE**: Port Manager assigns a FREE port different from stored ports in database
+- **CONFLICT RESOLUTION**: If port conflict detected, Port Manager automatically assigns new port
+- **PERSISTENCE**: Port assignment is persisted and cannot be changed without proper workflow
+
+#### **Rule 3: Passport Assignment (Integration Gate)**
+- **PASSPORT REQUIRED**: Service MUST receive a passport to be integrated into system
+- **MDC PREREQUISITE**: Passport is ONLY accepted if the .py service has an associated MDC file
+- **UNIQUE IDENTITY**: Each passport provides unique service identity and tracking
+- **SYSTEM ACCESS**: Without passport, service cannot access system resources
+
+#### **Rule 4: Registration Process (Final Stage)**
+- **IMPLEMENTATION COMPLETE**: Service implementation must be done and tested
+- **STRICT WORKFLOW**: Registration follows mandatory steps documented in StopStartCycle and NewService MDC files
+- **SUCCESS VERIFICATION**: Only proceed if all steps are successful
+- **FINAL STATUS**: Successful registration upgrades service to "REGISTERED" status
+
+#### **Rule 5: Registered Service Requirements**
+- **AUTOMATIC STARTUP**: All registered services MUST start when system starts
+- **ORCHESTRATION INTEGRATION**: Services must be assigned to Master Orchestration Agent
+- **SAFE LEARNING**: Services must integrate with Master Orchestration Agent's safe learning system
+- **CERTIFICATION**: All registered services MUST receive a certificate from Certification Service
+
+#### **Rule 6: System Protection**
+- **PROTECTION TRIGGER**: After registration completion, Protection Service is automatically triggered
+- **DELETION PREVENTION**: Protection Service prevents registered services from being deleted
+- **SYSTEM INTEGRITY**: Protection ensures system architecture integrity
+
+### **SERVICE REGISTRY RESPONSIBILITIES**
+- **SERVICE REGISTRATION**: Service Registry manages registration of all services
+- **PORT UNIQUENESS**: Service Registry enforces unique port assignments
+- **PROFILE MANAGEMENT**: Service Registry manages SAVE/UNDO profiles
+- **DEPENDENCY ORDERING**: Service Registry manages dependency-ordered startup
+- **WORKFLOW ENFORCEMENT**: Service Registry enforces the mandatory workflow rules
 
 ## Endpoints (on 127.0.0.1:8610)
 - GET /services
@@ -23,4 +75,19 @@ Manages dynamic service discovery, unique ports, SAVE/UNDO profiles, and depende
 description:
 globs:
 alwaysApply: true
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Database connectivity**
+- ✅ **Valid service passport**
+- ✅ **Complete MDC documentation**
+- ✅ **Master Orchestration integration**
+
+
 ---
+
+
+## Triggers
+- **API endpoint requests**
+- **Database events**
+- **Workflow transitions**

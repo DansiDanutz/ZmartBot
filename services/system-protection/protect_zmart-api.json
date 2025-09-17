@@ -1,0 +1,7 @@
+{
+  "service_name": "zmart-api",
+  "protection_level": "full",
+  "certification_date": "2025-08-28T20:37:34.659214",
+  "auto_protect": true,
+  "triggered_by": "certification_service"
+}

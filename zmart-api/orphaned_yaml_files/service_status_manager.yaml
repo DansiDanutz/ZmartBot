@@ -1,0 +1,30 @@
+service_name: status_manager
+service_type: orchestration
+version: 1.0.0
+owner: zmartbot
+description: MDC file status synchronization (corrected passport)
+port: 8892
+passport_id: ZMBT-ORC-20250831-Z8A9B1
+status: ACTIVE
+registered_at: '2025-08-31'
+health_url: http://localhost:8892/health
+start_cmd: python3 status_manager_server.py --port 8892
+stop_cmd: pkill -f 'status_manager_server.py'
+dependencies:
+- zmart-api
+tags:
+- orchestration
+- status_manager
+lifecycle:
+  startup_grace_seconds: 30
+  shutdown_timeout_seconds: 15
+  health_check_interval: 30
+monitoring:
+  metrics_endpoint: /metrics
+  logs_path: logs/status_manager.log
+  dashboard_url: http://localhost:8892/dashboard
+security:
+  cors_enabled: true
+  token_required: false
+  scopes:
+  - orchestration

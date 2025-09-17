@@ -1,0 +1,16 @@
+service_name: test-service
+service_type: backend
+port: 8301
+description: "Testing and validation service"
+status: ACTIVE
+passport_id: ZMBT-SRV-20250826-97C6AB
+registered_at: "2025-08-26"
+health_url: "http://localhost:8301/health"
+start_cmd: "python3 test_service.py"
+stop_cmd: "pkill -f 'test_service.py'"
+dependencies:
+  - zmart-api
+tags:
+  - testing
+  - validation
+  - backend

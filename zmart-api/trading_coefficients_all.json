@@ -1,0 +1,1561 @@
+{
+  "generated_at": "2025-09-16T20:23:26.732401",
+  "methodology": {
+    "description": "Inverse rarity-based coefficients",
+    "most_common": 1.0,
+    "rarest": 1.6,
+    "formula": "coefficient = 1.60 - ((days - min_days) * 0.60 / (max_days - min_days))"
+  },
+  "symbols": {
+    "AAVE": {
+      "0.0-0.1": {
+        "days": 54,
+        "percentage": 2.99,
+        "coefficient": 1.57,
+        "rarity_rank": 2
+      },
+      "0.1-0.2": {
+        "days": 180,
+        "percentage": 9.96,
+        "coefficient": 1.361,
+        "rarity_rank": 5
+      },
+      "0.2-0.3": {
+        "days": 235,
+        "percentage": 13.0,
+        "coefficient": 1.269,
+        "rarity_rank": 6
+      },
+      "0.3-0.4": {
+        "days": 289,
+        "percentage": 15.98,
+        "coefficient": 1.18,
+        "rarity_rank": 8
+      },
+      "0.4-0.5": {
+        "days": 361,
+        "percentage": 19.97,
+        "coefficient": 1.06,
+        "rarity_rank": 9
+      },
+      "0.5-0.6": {
+        "days": 397,
+        "percentage": 21.96,
+        "coefficient": 1.0,
+        "rarity_rank": 10
+      },
+      "0.6-0.7": {
+        "days": 235,
+        "percentage": 13.0,
+        "coefficient": 1.269,
+        "rarity_rank": 6
+      },
+      "0.7-0.8": {
+        "days": 126,
+        "percentage": 6.97,
+        "coefficient": 1.45,
+        "rarity_rank": 4
+      },
+      "0.8-0.9": {
+        "days": 72,
+        "percentage": 3.98,
+        "coefficient": 1.54,
+        "rarity_rank": 3
+      },
+      "0.9-1.0": {
+        "days": 36,
+        "percentage": 1.99,
+        "coefficient": 1.6,
+        "rarity_rank": 1
+      }
+    },
+    "ADA": {
+      "0.0-0.1": {
+        "days": 87,
+        "percentage": 2.99,
+        "coefficient": 1.57,
+        "rarity_rank": 2
+      },
+      "0.1-0.2": {
+        "days": 290,
+        "percentage": 9.98,
+        "coefficient": 1.36,
+        "rarity_rank": 5
+      },
+      "0.2-0.3": {
+        "days": 377,
+        "percentage": 12.97,
+        "coefficient": 1.271,
+        "rarity_rank": 6
+      },
+      "0.3-0.4": {
+        "days": 465,
+        "percentage": 16.0,
+        "coefficient": 1.18,
+        "rarity_rank": 8
+      },
+      "0.4-0.5": {
+        "days": 581,
+        "percentage": 19.99,
+        "coefficient": 1.06,
+        "rarity_rank": 9
+      },
+      "0.5-0.6": {
+        "days": 639,
+        "percentage": 21.98,
+        "coefficient": 1.0,
+        "rarity_rank": 10
+      },
+      "0.6-0.7": {
+        "days": 377,
+        "percentage": 12.97,
+        "coefficient": 1.271,
+        "rarity_rank": 6
+      },
+      "0.7-0.8": {
+        "days": 203,
+        "percentage": 6.98,
+        "coefficient": 1.45,
+        "rarity_rank": 4
+      },
+      "0.8-0.9": {
+        "days": 116,
+        "percentage": 3.99,
+        "coefficient": 1.54,
+        "rarity_rank": 3
+      },
+      "0.9-1.0": {
+        "days": 58,
+        "percentage": 2.0,
+        "coefficient": 1.6,
+        "rarity_rank": 1
+      }
+    },
+    "ALGO": {
+      "0.0-0.1": {
+        "days": 68,
+        "percentage": 2.98,
+        "coefficient": 1.57,
+        "rarity_rank": 2
+      },
+      "0.1-0.2": {
+        "days": 227,
+        "percentage": 9.96,
+        "coefficient": 1.361,
+        "rarity_rank": 5
+      },
+      "0.2-0.3": {
+        "days": 296,
+        "percentage": 12.99,
+        "coefficient": 1.27,
+        "rarity_rank": 6
+      },
+      "0.3-0.4": {
+        "days": 364,
+        "percentage": 15.97,
+        "coefficient": 1.18,
+        "rarity_rank": 8
+      },
+      "0.4-0.5": {
+        "days": 455,
+        "percentage": 19.96,
+        "coefficient": 1.061,
+        "rarity_rank": 9
+      },
+      "0.5-0.6": {
+        "days": 501,
+        "percentage": 21.98,
+        "coefficient": 1.0,
+        "rarity_rank": 10
+      },
+      "0.6-0.7": {
+        "days": 296,
+        "percentage": 12.99,
+        "coefficient": 1.27,
+        "rarity_rank": 6
+      },
+      "0.7-0.8": {
+        "days": 159,
+        "percentage": 6.98,
+        "coefficient": 1.45,
+        "rarity_rank": 4
+      },
+      "0.8-0.9": {
+        "days": 91,
+        "percentage": 3.99,
+        "coefficient": 1.539,
+        "rarity_rank": 3
+      },
+      "0.9-1.0": {
+        "days": 45,
+        "percentage": 1.97,
+        "coefficient": 1.6,
+        "rarity_rank": 1
+      }
+    },
+    "ATOM": {
+      "0.0-0.1": {
+        "days": 71,
+        "percentage": 2.99,
+        "coefficient": 1.57,
+        "rarity_rank": 2
+      },
+      "0.1-0.2": {
+        "days": 237,
+        "percentage": 9.97,
+        "coefficient": 1.36,
+        "rarity_rank": 5
+      },
+      "0.2-0.3": {
+        "days": 308,
+        "percentage": 12.96,
+        "coefficient": 1.27,
+        "rarity_rank": 6
+      },
+      "0.3-0.4": {
+        "days": 380,
+        "percentage": 15.99,
+        "coefficient": 1.179,
+        "rarity_rank": 8
+      },
+      "0.4-0.5": {
+        "days": 475,
+        "percentage": 19.99,
+        "coefficient": 1.059,
+        "rarity_rank": 9
+      },
+      "0.5-0.6": {
+        "days": 522,
+        "percentage": 21.97,
+        "coefficient": 1.0,
+        "rarity_rank": 10
+      },
+      "0.6-0.7": {
+        "days": 308,
+        "percentage": 12.96,
+        "coefficient": 1.27,
+        "rarity_rank": 6
+      },
+      "0.7-0.8": {
+        "days": 166,
+        "percentage": 6.99,
+        "coefficient": 1.45,
+        "rarity_rank": 4
+      },
+      "0.8-0.9": {
+        "days": 95,
+        "percentage": 4.0,
+        "coefficient": 1.539,
+        "rarity_rank": 3
+      },
+      "0.9-1.0": {
+        "days": 47,
+        "percentage": 1.98,
+        "coefficient": 1.6,
+        "rarity_rank": 1
+      }
+    },
+    "AVAX": {
+      "0.0-0.1": {
+        "days": 54,
+        "percentage": 2.97,
+        "coefficient": 1.57,
+        "rarity_rank": 2
+      },
+      "0.1-0.2": {
+        "days": 181,
+        "percentage": 9.95,
+        "coefficient": 1.361,
+        "rarity_rank": 5
+      },
+      "0.2-0.3": {
+        "days": 236,
+        "percentage": 12.97,
+        "coefficient": 1.27,
+        "rarity_rank": 6
+      },
+      "0.3-0.4": {
+        "days": 291,
+        "percentage": 16.0,
+        "coefficient": 1.18,
+        "rarity_rank": 8
+      },
+      "0.4-0.5": {
+        "days": 363,
+        "percentage": 19.96,
+        "coefficient": 1.061,
+        "rarity_rank": 9
+      },
+      "0.5-0.6": {
+        "days": 400,
+        "percentage": 21.99,
+        "coefficient": 1.0,
+        "rarity_rank": 10
+      },
+      "0.6-0.7": {
+        "days": 236,
+        "percentage": 12.97,
+        "coefficient": 1.27,
+        "rarity_rank": 6
+      },
+      "0.7-0.8": {
+        "days": 127,
+        "percentage": 6.98,
+        "coefficient": 1.45,
+        "rarity_rank": 4
+      },
+      "0.8-0.9": {
+        "days": 72,
+        "percentage": 3.96,
+        "coefficient": 1.541,
+        "rarity_rank": 3
+      },
+      "0.9-1.0": {
+        "days": 36,
+        "percentage": 1.98,
+        "coefficient": 1.6,
+        "rarity_rank": 1
+      }
+    },
+    "BNB": {
+      "0.0-0.1": {
+        "days": 89,
+        "percentage": 2.98,
+        "coefficient": 1.57,
+        "rarity_rank": 2
+      },
+      "0.1-0.2": {
+        "days": 298,
+        "percentage": 9.99,
+        "coefficient": 1.36,
+        "rarity_rank": 5
+      },
+      "0.2-0.3": {
+        "days": 387,
+        "percentage": 12.97,
+        "coefficient": 1.27,
+        "rarity_rank": 6
+      },
+      "0.3-0.4": {
+        "days": 477,
+        "percentage": 15.99,
+        "coefficient": 1.18,
+        "rarity_rank": 8
+      },
+      "0.4-0.5": {
+        "days": 596,
+        "percentage": 19.97,
+        "coefficient": 1.06,
+        "rarity_rank": 9
+      },
+      "0.5-0.6": {
+        "days": 656,
+        "percentage": 21.98,
+        "coefficient": 1.0,
+        "rarity_rank": 10
+      },
+      "0.6-0.7": {
+        "days": 387,
+        "percentage": 12.97,
+        "coefficient": 1.27,
+        "rarity_rank": 6
+      },
+      "0.7-0.8": {
+        "days": 208,
+        "percentage": 6.97,
+        "coefficient": 1.45,
+        "rarity_rank": 4
+      },
+      "0.8-0.9": {
+        "days": 119,
+        "percentage": 3.99,
+        "coefficient": 1.54,
+        "rarity_rank": 3
+      },
+      "0.9-1.0": {
+        "days": 59,
+        "percentage": 1.98,
+        "coefficient": 1.6,
+        "rarity_rank": 1
+      }
+    },
+    "BTC": {
+      "0.0-0.1": {
+        "days": 175,
+        "percentage": 3.25,
+        "coefficient": 1.551,
+        "rarity_rank": 2
+      },
+      "0.1-0.2": {
+        "days": 550,
+        "percentage": 10.21,
+        "coefficient": 1.345,
+        "rarity_rank": 5
+      },
+      "0.2-0.3": {
+        "days": 680,
+        "percentage": 12.63,
+        "coefficient": 1.274,
+        "rarity_rank": 6
+      },
+      "0.3-0.4": {
+        "days": 850,
+        "percentage": 15.78,
+        "coefficient": 1.181,
+        "rarity_rank": 8
+      },
+      "0.4-0.5": {
+        "days": 1100,
+        "percentage": 20.43,
+        "coefficient": 1.044,
+        "rarity_rank": 9
+      },
+      "0.5-0.6": {
+        "days": 1180,
+        "percentage": 21.91,
+        "coefficient": 1.0,
+        "rarity_rank": 10
+      },
+      "0.6-0.7": {
+        "days": 700,
+        "percentage": 13.0,
+        "coefficient": 1.263,
+        "rarity_rank": 7
+      },
+      "0.7-0.8": {
+        "days": 380,
+        "percentage": 7.06,
+        "coefficient": 1.438,
+        "rarity_rank": 4
+      },
+      "0.8-0.9": {
+        "days": 200,
+        "percentage": 3.71,
+        "coefficient": 1.537,
+        "rarity_rank": 3
+      },
+      "0.9-1.0": {
+        "days": 85,
+        "percentage": 1.58,
+        "coefficient": 1.6,
+        "rarity_rank": 1
+      }
+    },
+    "DOGE": {
+      "0.0-0.1": {
+        "days": 129,
+        "percentage": 3.0,
+        "coefficient": 1.57,
+        "rarity_rank": 2
+      },
+      "0.1-0.2": {
+        "days": 430,
+        "percentage": 10.0,
+        "coefficient": 1.36,
+        "rarity_rank": 5
+      },
+      "0.2-0.3": {
+        "days": 559,
+        "percentage": 13.0,
+        "coefficient": 1.27,
+        "rarity_rank": 6
+      },
+      "0.3-0.4": {
+        "days": 688,
+        "percentage": 16.0,
+        "coefficient": 1.18,
+        "rarity_rank": 8
+      },
+      "0.4-0.5": {
+        "days": 860,
+        "percentage": 20.0,
+        "coefficient": 1.06,
+        "rarity_rank": 9
+      },
+      "0.5-0.6": {
+        "days": 946,
+        "percentage": 22.0,
+        "coefficient": 1.0,
+        "rarity_rank": 10
+      },
+      "0.6-0.7": {
+        "days": 559,
+        "percentage": 13.0,
+        "coefficient": 1.27,
+        "rarity_rank": 6
+      },
+      "0.7-0.8": {
+        "days": 301,
+        "percentage": 7.0,
+        "coefficient": 1.45,
+        "rarity_rank": 4
+      },
+      "0.8-0.9": {
+        "days": 172,
+        "percentage": 4.0,
+        "coefficient": 1.54,
+        "rarity_rank": 3
+      },
+      "0.9-1.0": {
+        "days": 86,
+        "percentage": 2.0,
+        "coefficient": 1.6,
+        "rarity_rank": 1
+      }
+    },
+    "DOT": {
+      "0.0-0.1": {
+        "days": 55,
+        "percentage": 2.97,
+        "coefficient": 1.571,
+        "rarity_rank": 2
+      },
+      "0.1-0.2": {
+        "days": 185,
+        "percentage": 9.99,
+        "coefficient": 1.36,
+        "rarity_rank": 5
+      },
+      "0.2-0.3": {
+        "days": 240,
+        "percentage": 12.96,
+        "coefficient": 1.271,
+        "rarity_rank": 6
+      },
+      "0.3-0.4": {
+        "days": 296,
+        "percentage": 15.98,
+        "coefficient": 1.18,
+        "rarity_rank": 8
+      },
+      "0.4-0.5": {
+        "days": 370,
+        "percentage": 19.98,
+        "coefficient": 1.06,
+        "rarity_rank": 9
+      },
+      "0.5-0.6": {
+        "days": 407,
+        "percentage": 21.98,
+        "coefficient": 1.0,
+        "rarity_rank": 10
+      },
+      "0.6-0.7": {
+        "days": 240,
+        "percentage": 12.96,
+        "coefficient": 1.271,
+        "rarity_rank": 6
+      },
+      "0.7-0.8": {
+        "days": 129,
+        "percentage": 6.97,
+        "coefficient": 1.451,
+        "rarity_rank": 4
+      },
+      "0.8-0.9": {
+        "days": 74,
+        "percentage": 4.0,
+        "coefficient": 1.54,
+        "rarity_rank": 3
+      },
+      "0.9-1.0": {
+        "days": 37,
+        "percentage": 2.0,
+        "coefficient": 1.6,
+        "rarity_rank": 1
+      }
+    },
+    "ETH": {
+      "0.0-0.1": {
+        "days": 110,
+        "percentage": 2.97,
+        "coefficient": 1.57,
+        "rarity_rank": 2
+      },
+      "0.1-0.2": {
+        "days": 369,
+        "percentage": 9.98,
+        "coefficient": 1.36,
+        "rarity_rank": 5
+      },
+      "0.2-0.3": {
+        "days": 480,
+        "percentage": 12.98,
+        "coefficient": 1.27,
+        "rarity_rank": 6
+      },
+      "0.3-0.4": {
+        "days": 591,
+        "percentage": 15.98,
+        "coefficient": 1.18,
+        "rarity_rank": 8
+      },
+      "0.4-0.5": {
+        "days": 739,
+        "percentage": 19.98,
+        "coefficient": 1.06,
+        "rarity_rank": 9
+      },
+      "0.5-0.6": {
+        "days": 813,
+        "percentage": 21.98,
+        "coefficient": 1.0,
+        "rarity_rank": 10
+      },
+      "0.6-0.7": {
+        "days": 480,
+        "percentage": 12.98,
+        "coefficient": 1.27,
+        "rarity_rank": 6
+      },
+      "0.7-0.8": {
+        "days": 258,
+        "percentage": 6.97,
+        "coefficient": 1.45,
+        "rarity_rank": 4
+      },
+      "0.8-0.9": {
+        "days": 147,
+        "percentage": 3.97,
+        "coefficient": 1.54,
+        "rarity_rank": 3
+      },
+      "0.9-1.0": {
+        "days": 73,
+        "percentage": 1.97,
+        "coefficient": 1.6,
+        "rarity_rank": 1
+      }
+    },
+    "HBAR": {
+      "0.0-0.1": {
+        "days": 65,
+        "percentage": 2.97,
+        "coefficient": 1.57,
+        "rarity_rank": 2
+      },
+      "0.1-0.2": {
+        "days": 218,
+        "percentage": 9.96,
+        "coefficient": 1.36,
+        "rarity_rank": 5
+      },
+      "0.2-0.3": {
+        "days": 284,
+        "percentage": 12.97,
+        "coefficient": 1.27,
+        "rarity_rank": 6
+      },
+      "0.3-0.4": {
+        "days": 350,
+        "percentage": 15.99,
+        "coefficient": 1.179,
+        "rarity_rank": 8
+      },
+      "0.4-0.5": {
+        "days": 437,
+        "percentage": 19.96,
+        "coefficient": 1.06,
+        "rarity_rank": 9
+      },
+      "0.5-0.6": {
+        "days": 481,
+        "percentage": 21.97,
+        "coefficient": 1.0,
+        "rarity_rank": 10
+      },
+      "0.6-0.7": {
+        "days": 284,
+        "percentage": 12.97,
+        "coefficient": 1.27,
+        "rarity_rank": 6
+      },
+      "0.7-0.8": {
+        "days": 153,
+        "percentage": 6.99,
+        "coefficient": 1.449,
+        "rarity_rank": 4
+      },
+      "0.8-0.9": {
+        "days": 87,
+        "percentage": 3.97,
+        "coefficient": 1.54,
+        "rarity_rank": 3
+      },
+      "0.9-1.0": {
+        "days": 43,
+        "percentage": 1.96,
+        "coefficient": 1.6,
+        "rarity_rank": 1
+      }
+    },
+    "LINK": {
+      "0.0-0.1": {
+        "days": 87,
+        "percentage": 2.98,
+        "coefficient": 1.57,
+        "rarity_rank": 2
+      },
+      "0.1-0.2": {
+        "days": 291,
+        "percentage": 9.98,
+        "coefficient": 1.36,
+        "rarity_rank": 5
+      },
+      "0.2-0.3": {
+        "days": 379,
+        "percentage": 12.99,
+        "coefficient": 1.27,
+        "rarity_rank": 6
+      },
+      "0.3-0.4": {
+        "days": 466,
+        "percentage": 15.98,
+        "coefficient": 1.18,
+        "rarity_rank": 8
+      },
+      "0.4-0.5": {
+        "days": 583,
+        "percentage": 19.99,
+        "coefficient": 1.06,
+        "rarity_rank": 9
+      },
+      "0.5-0.6": {
+        "days": 641,
+        "percentage": 21.97,
+        "coefficient": 1.0,
+        "rarity_rank": 10
+      },
+      "0.6-0.7": {
+        "days": 379,
+        "percentage": 12.99,
+        "coefficient": 1.27,
+        "rarity_rank": 6
+      },
+      "0.7-0.8": {
+        "days": 204,
+        "percentage": 6.99,
+        "coefficient": 1.45,
+        "rarity_rank": 4
+      },
+      "0.8-0.9": {
+        "days": 116,
+        "percentage": 3.98,
+        "coefficient": 1.54,
+        "rarity_rank": 3
+      },
+      "0.9-1.0": {
+        "days": 58,
+        "percentage": 1.99,
+        "coefficient": 1.6,
+        "rarity_rank": 1
+      }
+    },
+    "LTC": {
+      "0.0-0.1": {
+        "days": 152,
+        "percentage": 2.99,
+        "coefficient": 1.57,
+        "rarity_rank": 2
+      },
+      "0.1-0.2": {
+        "days": 509,
+        "percentage": 10.0,
+        "coefficient": 1.36,
+        "rarity_rank": 5
+      },
+      "0.2-0.3": {
+        "days": 661,
+        "percentage": 12.98,
+        "coefficient": 1.27,
+        "rarity_rank": 6
+      },
+      "0.3-0.4": {
+        "days": 814,
+        "percentage": 15.99,
+        "coefficient": 1.18,
+        "rarity_rank": 8
+      },
+      "0.4-0.5": {
+        "days": 1018,
+        "percentage": 20.0,
+        "coefficient": 1.06,
+        "rarity_rank": 9
+      },
+      "0.5-0.6": {
+        "days": 1120,
+        "percentage": 22.0,
+        "coefficient": 1.0,
+        "rarity_rank": 10
+      },
+      "0.6-0.7": {
+        "days": 661,
+        "percentage": 12.98,
+        "coefficient": 1.27,
+        "rarity_rank": 6
+      },
+      "0.7-0.8": {
+        "days": 356,
+        "percentage": 6.99,
+        "coefficient": 1.45,
+        "rarity_rank": 4
+      },
+      "0.8-0.9": {
+        "days": 203,
+        "percentage": 3.99,
+        "coefficient": 1.54,
+        "rarity_rank": 3
+      },
+      "0.9-1.0": {
+        "days": 101,
+        "percentage": 1.98,
+        "coefficient": 1.6,
+        "rarity_rank": 1
+      }
+    },
+    "MKR": {
+      "0.0-0.1": {
+        "days": 85,
+        "percentage": 2.98,
+        "coefficient": 1.571,
+        "rarity_rank": 2
+      },
+      "0.1-0.2": {
+        "days": 285,
+        "percentage": 10.0,
+        "coefficient": 1.36,
+        "rarity_rank": 5
+      },
+      "0.2-0.3": {
+        "days": 370,
+        "percentage": 12.98,
+        "coefficient": 1.271,
+        "rarity_rank": 6
+      },
+      "0.3-0.4": {
+        "days": 456,
+        "percentage": 16.0,
+        "coefficient": 1.18,
+        "rarity_rank": 8
+      },
+      "0.4-0.5": {
+        "days": 570,
+        "percentage": 20.0,
+        "coefficient": 1.06,
+        "rarity_rank": 9
+      },
+      "0.5-0.6": {
+        "days": 627,
+        "percentage": 22.0,
+        "coefficient": 1.0,
+        "rarity_rank": 10
+      },
+      "0.6-0.7": {
+        "days": 370,
+        "percentage": 12.98,
+        "coefficient": 1.271,
+        "rarity_rank": 6
+      },
+      "0.7-0.8": {
+        "days": 199,
+        "percentage": 6.98,
+        "coefficient": 1.451,
+        "rarity_rank": 4
+      },
+      "0.8-0.9": {
+        "days": 114,
+        "percentage": 4.0,
+        "coefficient": 1.54,
+        "rarity_rank": 3
+      },
+      "0.9-1.0": {
+        "days": 57,
+        "percentage": 2.0,
+        "coefficient": 1.6,
+        "rarity_rank": 1
+      }
+    },
+    "RENDER": {
+      "0.0-0.1": {
+        "days": 51,
+        "percentage": 2.96,
+        "coefficient": 1.57,
+        "rarity_rank": 2
+      },
+      "0.1-0.2": {
+        "days": 172,
+        "percentage": 9.99,
+        "coefficient": 1.359,
+        "rarity_rank": 5
+      },
+      "0.2-0.3": {
+        "days": 223,
+        "percentage": 12.96,
+        "coefficient": 1.27,
+        "rarity_rank": 6
+      },
+      "0.3-0.4": {
+        "days": 275,
+        "percentage": 15.98,
+        "coefficient": 1.18,
+        "rarity_rank": 8
+      },
+      "0.4-0.5": {
+        "days": 344,
+        "percentage": 19.99,
+        "coefficient": 1.059,
+        "rarity_rank": 9
+      },
+      "0.5-0.6": {
+        "days": 378,
+        "percentage": 21.96,
+        "coefficient": 1.0,
+        "rarity_rank": 10
+      },
+      "0.6-0.7": {
+        "days": 223,
+        "percentage": 12.96,
+        "coefficient": 1.27,
+        "rarity_rank": 6
+      },
+      "0.7-0.8": {
+        "days": 120,
+        "percentage": 6.97,
+        "coefficient": 1.45,
+        "rarity_rank": 4
+      },
+      "0.8-0.9": {
+        "days": 68,
+        "percentage": 3.95,
+        "coefficient": 1.541,
+        "rarity_rank": 3
+      },
+      "0.9-1.0": {
+        "days": 34,
+        "percentage": 1.98,
+        "coefficient": 1.6,
+        "rarity_rank": 1
+      }
+    },
+    "SHIB": {
+      "0.0-0.1": {
+        "days": 56,
+        "percentage": 2.99,
+        "coefficient": 1.57,
+        "rarity_rank": 2
+      },
+      "0.1-0.2": {
+        "days": 187,
+        "percentage": 10.0,
+        "coefficient": 1.359,
+        "rarity_rank": 5
+      },
+      "0.2-0.3": {
+        "days": 243,
+        "percentage": 12.99,
+        "coefficient": 1.27,
+        "rarity_rank": 6
+      },
+      "0.3-0.4": {
+        "days": 299,
+        "percentage": 15.99,
+        "coefficient": 1.18,
+        "rarity_rank": 8
+      },
+      "0.4-0.5": {
+        "days": 374,
+        "percentage": 20.0,
+        "coefficient": 1.059,
+        "rarity_rank": 9
+      },
+      "0.5-0.6": {
+        "days": 411,
+        "percentage": 21.98,
+        "coefficient": 1.0,
+        "rarity_rank": 10
+      },
+      "0.6-0.7": {
+        "days": 243,
+        "percentage": 12.99,
+        "coefficient": 1.27,
+        "rarity_rank": 6
+      },
+      "0.7-0.8": {
+        "days": 130,
+        "percentage": 6.95,
+        "coefficient": 1.451,
+        "rarity_rank": 4
+      },
+      "0.8-0.9": {
+        "days": 74,
+        "percentage": 3.96,
+        "coefficient": 1.541,
+        "rarity_rank": 3
+      },
+      "0.9-1.0": {
+        "days": 37,
+        "percentage": 1.98,
+        "coefficient": 1.6,
+        "rarity_rank": 1
+      }
+    },
+    "SOL": {
+      "0.0-0.1": {
+        "days": 60,
+        "percentage": 2.99,
+        "coefficient": 1.57,
+        "rarity_rank": 2
+      },
+      "0.1-0.2": {
+        "days": 200,
+        "percentage": 9.96,
+        "coefficient": 1.361,
+        "rarity_rank": 5
+      },
+      "0.2-0.3": {
+        "days": 261,
+        "percentage": 13.0,
+        "coefficient": 1.269,
+        "rarity_rank": 6
+      },
+      "0.3-0.4": {
+        "days": 321,
+        "percentage": 15.99,
+        "coefficient": 1.18,
+        "rarity_rank": 8
+      },
+      "0.4-0.5": {
+        "days": 401,
+        "percentage": 19.97,
+        "coefficient": 1.06,
+        "rarity_rank": 9
+      },
+      "0.5-0.6": {
+        "days": 441,
+        "percentage": 21.96,
+        "coefficient": 1.0,
+        "rarity_rank": 10
+      },
+      "0.6-0.7": {
+        "days": 261,
+        "percentage": 13.0,
+        "coefficient": 1.269,
+        "rarity_rank": 6
+      },
+      "0.7-0.8": {
+        "days": 140,
+        "percentage": 6.97,
+        "coefficient": 1.45,
+        "rarity_rank": 4
+      },
+      "0.8-0.9": {
+        "days": 80,
+        "percentage": 3.98,
+        "coefficient": 1.54,
+        "rarity_rank": 3
+      },
+      "0.9-1.0": {
+        "days": 40,
+        "percentage": 1.99,
+        "coefficient": 1.6,
+        "rarity_rank": 1
+      }
+    },
+    "SUI": {
+      "0.0-0.1": {
+        "days": 25,
+        "percentage": 2.89,
+        "coefficient": 1.572,
+        "rarity_rank": 2
+      },
+      "0.1-0.2": {
+        "days": 86,
+        "percentage": 9.94,
+        "coefficient": 1.361,
+        "rarity_rank": 5
+      },
+      "0.2-0.3": {
+        "days": 112,
+        "percentage": 12.95,
+        "coefficient": 1.271,
+        "rarity_rank": 6
+      },
+      "0.3-0.4": {
+        "days": 138,
+        "percentage": 15.95,
+        "coefficient": 1.18,
+        "rarity_rank": 8
+      },
+      "0.4-0.5": {
+        "days": 173,
+        "percentage": 20.0,
+        "coefficient": 1.059,
+        "rarity_rank": 9
+      },
+      "0.5-0.6": {
+        "days": 190,
+        "percentage": 21.97,
+        "coefficient": 1.0,
+        "rarity_rank": 10
+      },
+      "0.6-0.7": {
+        "days": 112,
+        "percentage": 12.95,
+        "coefficient": 1.271,
+        "rarity_rank": 6
+      },
+      "0.7-0.8": {
+        "days": 60,
+        "percentage": 6.94,
+        "coefficient": 1.451,
+        "rarity_rank": 4
+      },
+      "0.8-0.9": {
+        "days": 34,
+        "percentage": 3.93,
+        "coefficient": 1.541,
+        "rarity_rank": 3
+      },
+      "0.9-1.0": {
+        "days": 17,
+        "percentage": 1.97,
+        "coefficient": 1.6,
+        "rarity_rank": 1
+      }
+    },
+    "TON": {
+      "0.0-0.1": {
+        "days": 46,
+        "percentage": 2.94,
+        "coefficient": 1.571,
+        "rarity_rank": 2
+      },
+      "0.1-0.2": {
+        "days": 156,
+        "percentage": 9.96,
+        "coefficient": 1.36,
+        "rarity_rank": 5
+      },
+      "0.2-0.3": {
+        "days": 203,
+        "percentage": 12.96,
+        "coefficient": 1.27,
+        "rarity_rank": 6
+      },
+      "0.3-0.4": {
+        "days": 250,
+        "percentage": 15.96,
+        "coefficient": 1.18,
+        "rarity_rank": 8
+      },
+      "0.4-0.5": {
+        "days": 313,
+        "percentage": 19.99,
+        "coefficient": 1.059,
+        "rarity_rank": 9
+      },
+      "0.5-0.6": {
+        "days": 344,
+        "percentage": 21.97,
+        "coefficient": 1.0,
+        "rarity_rank": 10
+      },
+      "0.6-0.7": {
+        "days": 203,
+        "percentage": 12.96,
+        "coefficient": 1.27,
+        "rarity_rank": 6
+      },
+      "0.7-0.8": {
+        "days": 109,
+        "percentage": 6.96,
+        "coefficient": 1.45,
+        "rarity_rank": 4
+      },
+      "0.8-0.9": {
+        "days": 62,
+        "percentage": 3.96,
+        "coefficient": 1.541,
+        "rarity_rank": 3
+      },
+      "0.9-1.0": {
+        "days": 31,
+        "percentage": 1.98,
+        "coefficient": 1.6,
+        "rarity_rank": 1
+      }
+    },
+    "TRX": {
+      "0.0-0.1": {
+        "days": 88,
+        "percentage": 2.99,
+        "coefficient": 1.569,
+        "rarity_rank": 2
+      },
+      "0.1-0.2": {
+        "days": 293,
+        "percentage": 9.97,
+        "coefficient": 1.36,
+        "rarity_rank": 5
+      },
+      "0.2-0.3": {
+        "days": 382,
+        "percentage": 13.0,
+        "coefficient": 1.269,
+        "rarity_rank": 6
+      },
+      "0.3-0.4": {
+        "days": 470,
+        "percentage": 15.99,
+        "coefficient": 1.18,
+        "rarity_rank": 8
+      },
+      "0.4-0.5": {
+        "days": 587,
+        "percentage": 19.97,
+        "coefficient": 1.06,
+        "rarity_rank": 9
+      },
+      "0.5-0.6": {
+        "days": 646,
+        "percentage": 21.98,
+        "coefficient": 1.0,
+        "rarity_rank": 10
+      },
+      "0.6-0.7": {
+        "days": 382,
+        "percentage": 13.0,
+        "coefficient": 1.269,
+        "rarity_rank": 6
+      },
+      "0.7-0.8": {
+        "days": 205,
+        "percentage": 6.98,
+        "coefficient": 1.45,
+        "rarity_rank": 4
+      },
+      "0.8-0.9": {
+        "days": 117,
+        "percentage": 3.98,
+        "coefficient": 1.54,
+        "rarity_rank": 3
+      },
+      "0.9-1.0": {
+        "days": 58,
+        "percentage": 1.97,
+        "coefficient": 1.6,
+        "rarity_rank": 1
+      }
+    },
+    "VET": {
+      "0.0-0.1": {
+        "days": 88,
+        "percentage": 2.98,
+        "coefficient": 1.569,
+        "rarity_rank": 2
+      },
+      "0.1-0.2": {
+        "days": 294,
+        "percentage": 9.97,
+        "coefficient": 1.36,
+        "rarity_rank": 5
+      },
+      "0.2-0.3": {
+        "days": 383,
+        "percentage": 12.99,
+        "coefficient": 1.269,
+        "rarity_rank": 6
+      },
+      "0.3-0.4": {
+        "days": 471,
+        "percentage": 15.97,
+        "coefficient": 1.18,
+        "rarity_rank": 8
+      },
+      "0.4-0.5": {
+        "days": 589,
+        "percentage": 19.97,
+        "coefficient": 1.06,
+        "rarity_rank": 9
+      },
+      "0.5-0.6": {
+        "days": 648,
+        "percentage": 21.97,
+        "coefficient": 1.0,
+        "rarity_rank": 10
+      },
+      "0.6-0.7": {
+        "days": 383,
+        "percentage": 12.99,
+        "coefficient": 1.269,
+        "rarity_rank": 6
+      },
+      "0.7-0.8": {
+        "days": 206,
+        "percentage": 6.99,
+        "coefficient": 1.449,
+        "rarity_rank": 4
+      },
+      "0.8-0.9": {
+        "days": 117,
+        "percentage": 3.97,
+        "coefficient": 1.54,
+        "rarity_rank": 3
+      },
+      "0.9-1.0": {
+        "days": 58,
+        "percentage": 1.97,
+        "coefficient": 1.6,
+        "rarity_rank": 1
+      }
+    },
+    "XLM": {
+      "0.0-0.1": {
+        "days": 121,
+        "percentage": 2.98,
+        "coefficient": 1.57,
+        "rarity_rank": 2
+      },
+      "0.1-0.2": {
+        "days": 406,
+        "percentage": 9.99,
+        "coefficient": 1.36,
+        "rarity_rank": 5
+      },
+      "0.2-0.3": {
+        "days": 528,
+        "percentage": 13.0,
+        "coefficient": 1.27,
+        "rarity_rank": 6
+      },
+      "0.3-0.4": {
+        "days": 650,
+        "percentage": 16.0,
+        "coefficient": 1.18,
+        "rarity_rank": 8
+      },
+      "0.4-0.5": {
+        "days": 812,
+        "percentage": 19.99,
+        "coefficient": 1.06,
+        "rarity_rank": 9
+      },
+      "0.5-0.6": {
+        "days": 893,
+        "percentage": 21.98,
+        "coefficient": 1.0,
+        "rarity_rank": 10
+      },
+      "0.6-0.7": {
+        "days": 528,
+        "percentage": 13.0,
+        "coefficient": 1.27,
+        "rarity_rank": 6
+      },
+      "0.7-0.8": {
+        "days": 284,
+        "percentage": 6.99,
+        "coefficient": 1.45,
+        "rarity_rank": 4
+      },
+      "0.8-0.9": {
+        "days": 162,
+        "percentage": 3.99,
+        "coefficient": 1.54,
+        "rarity_rank": 3
+      },
+      "0.9-1.0": {
+        "days": 81,
+        "percentage": 1.99,
+        "coefficient": 1.6,
+        "rarity_rank": 1
+      }
+    },
+    "XMR": {
+      "0.0-0.1": {
+        "days": 125,
+        "percentage": 3.0,
+        "coefficient": 1.57,
+        "rarity_rank": 2
+      },
+      "0.1-0.2": {
+        "days": 416,
+        "percentage": 9.98,
+        "coefficient": 1.36,
+        "rarity_rank": 5
+      },
+      "0.2-0.3": {
+        "days": 541,
+        "percentage": 12.98,
+        "coefficient": 1.27,
+        "rarity_rank": 6
+      },
+      "0.3-0.4": {
+        "days": 666,
+        "percentage": 15.98,
+        "coefficient": 1.18,
+        "rarity_rank": 8
+      },
+      "0.4-0.5": {
+        "days": 833,
+        "percentage": 19.99,
+        "coefficient": 1.06,
+        "rarity_rank": 9
+      },
+      "0.5-0.6": {
+        "days": 916,
+        "percentage": 21.98,
+        "coefficient": 1.0,
+        "rarity_rank": 10
+      },
+      "0.6-0.7": {
+        "days": 541,
+        "percentage": 12.98,
+        "coefficient": 1.27,
+        "rarity_rank": 6
+      },
+      "0.7-0.8": {
+        "days": 291,
+        "percentage": 6.98,
+        "coefficient": 1.45,
+        "rarity_rank": 4
+      },
+      "0.8-0.9": {
+        "days": 166,
+        "percentage": 3.98,
+        "coefficient": 1.54,
+        "rarity_rank": 3
+      },
+      "0.9-1.0": {
+        "days": 83,
+        "percentage": 1.99,
+        "coefficient": 1.6,
+        "rarity_rank": 1
+      }
+    },
+    "XRP": {
+      "0.0-0.1": {
+        "days": 132,
+        "percentage": 2.98,
+        "coefficient": 1.57,
+        "rarity_rank": 2
+      },
+      "0.1-0.2": {
+        "days": 442,
+        "percentage": 9.99,
+        "coefficient": 1.36,
+        "rarity_rank": 5
+      },
+      "0.2-0.3": {
+        "days": 575,
+        "percentage": 13.0,
+        "coefficient": 1.27,
+        "rarity_rank": 6
+      },
+      "0.3-0.4": {
+        "days": 707,
+        "percentage": 15.98,
+        "coefficient": 1.18,
+        "rarity_rank": 8
+      },
+      "0.4-0.5": {
+        "days": 884,
+        "percentage": 19.98,
+        "coefficient": 1.06,
+        "rarity_rank": 9
+      },
+      "0.5-0.6": {
+        "days": 973,
+        "percentage": 21.99,
+        "coefficient": 1.0,
+        "rarity_rank": 10
+      },
+      "0.6-0.7": {
+        "days": 575,
+        "percentage": 13.0,
+        "coefficient": 1.27,
+        "rarity_rank": 6
+      },
+      "0.7-0.8": {
+        "days": 309,
+        "percentage": 6.98,
+        "coefficient": 1.45,
+        "rarity_rank": 4
+      },
+      "0.8-0.9": {
+        "days": 176,
+        "percentage": 3.98,
+        "coefficient": 1.54,
+        "rarity_rank": 3
+      },
+      "0.9-1.0": {
+        "days": 88,
+        "percentage": 1.99,
+        "coefficient": 1.6,
+        "rarity_rank": 1
+      }
+    },
+    "XTZ": {
+      "0.0-0.1": {
+        "days": 78,
+        "percentage": 2.96,
+        "coefficient": 1.57,
+        "rarity_rank": 2
+      },
+      "0.1-0.2": {
+        "days": 263,
+        "percentage": 9.99,
+        "coefficient": 1.36,
+        "rarity_rank": 5
+      },
+      "0.2-0.3": {
+        "days": 342,
+        "percentage": 12.99,
+        "coefficient": 1.27,
+        "rarity_rank": 6
+      },
+      "0.3-0.4": {
+        "days": 421,
+        "percentage": 15.99,
+        "coefficient": 1.18,
+        "rarity_rank": 8
+      },
+      "0.4-0.5": {
+        "days": 526,
+        "percentage": 19.98,
+        "coefficient": 1.06,
+        "rarity_rank": 9
+      },
+      "0.5-0.6": {
+        "days": 579,
+        "percentage": 21.99,
+        "coefficient": 1.0,
+        "rarity_rank": 10
+      },
+      "0.6-0.7": {
+        "days": 342,
+        "percentage": 12.99,
+        "coefficient": 1.27,
+        "rarity_rank": 6
+      },
+      "0.7-0.8": {
+        "days": 184,
+        "percentage": 6.99,
+        "coefficient": 1.45,
+        "rarity_rank": 4
+      },
+      "0.8-0.9": {
+        "days": 105,
+        "percentage": 3.99,
+        "coefficient": 1.54,
+        "rarity_rank": 3
+      },
+      "0.9-1.0": {
+        "days": 52,
+        "percentage": 1.97,
+        "coefficient": 1.6,
+        "rarity_rank": 1
+      }
+    }
+  }
+}

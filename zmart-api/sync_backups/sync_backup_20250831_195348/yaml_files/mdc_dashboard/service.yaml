@@ -1,0 +1,18 @@
+service_name: mdc-dashboard
+service_type: frontend
+port: 8090
+description: "MDC documentation and management dashboard"
+status: ACTIVE
+passport_id: ""
+registered_at: "2025-08-26"
+health_url: "http://localhost:8090/health"
+start_cmd: "python3 mdc_dashboard.py"
+stop_cmd: "pkill -f 'mdc_dashboard.py'"
+dependencies:
+  - mdc-orchestration-agent
+tags:
+  - frontend
+  - mdc
+  - documentation
+
+

@@ -1,0 +1,33 @@
+{
+  "symbol": "XTZ",
+  "symbol_name": "Tezos",
+  "birth_date": "2018-06-30",
+  "current_date": "2025-09-14",
+  "total_days": 2633,
+  "actual_age_days": 2633,
+  "risk_bands": {
+    "0.0-0.1": 78,
+    "0.1-0.2": 263,
+    "0.2-0.3": 342,
+    "0.3-0.4": 421,
+    "0.4-0.5": 526,
+    "0.5-0.6": 579,
+    "0.6-0.7": 342,
+    "0.7-0.8": 184,
+    "0.8-0.9": 105,
+    "0.9-1.0": 52
+  },
+  "current_risk_band": "0.5-0.6",
+  "confidence_level": 7,
+  "data_type": "estimated",
+  "0.0-0.1_percentage": 2.96,
+  "0.1-0.2_percentage": 9.99,
+  "0.2-0.3_percentage": 12.99,
+  "0.3-0.4_percentage": 15.99,
+  "0.4-0.5_percentage": 19.98,
+  "0.5-0.6_percentage": 21.99,
+  "0.6-0.7_percentage": 12.99,
+  "0.7-0.8_percentage": 6.99,
+  "0.8-0.9_percentage": 3.99,
+  "0.9-1.0_percentage": 1.97
+}

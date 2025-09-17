@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZmartBot Advanced Database Visualizations</title>
+    
+    <!-- External Libraries -->
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <script src="https://unpkg.com/gridstack/dist/gridstack-all.js"></script>
+    <link href="https://unpkg.com/gridstack/dist/gridstack.min.css" rel="stylesheet"/>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #333;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: rgba(255,255,255,0.95);
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .header h1 {
+            text-align: center;
+            color: #1e3c72;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn.active {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+        }
+
+        .dashboard-container {
+            padding: 20px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .grid-stack {
+            background: transparent;
+        }
+
+        .grid-stack-item-content {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .grid-stack-item-content:hover {
+            transform: translateY(-5px);
+        }
+
+        .widget-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1e3c72;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 250px;
+            margin: 15px 0;
+        }
+
+        .metric-card {
+            text-align: center;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 10px;
+            margin: 10px 0;
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 8px 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+            font-size: 0.9rem;
+        }
+
+        .data-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #1e3c72;
+        }
+
+        .data-table tr:hover {
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .status-excellent { background: #4caf50; }
+        .status-good { background: #8bc34a; }
+        .status-fair { background: #ff9800; }
+        .status-poor { background: #f44336; }
+
+        .health-score {
+            font-weight: bold;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .error {
+            background: #ffebee;
+            border: 1px solid #ffcdd2;
+            color: #c62828;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+
+        .success {
+            background: #e8f5e8;
+            border: 1px solid #c8e6c9;
+            color: #2e7d32;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+
+        .visualization-selector {
+            background: rgba(255,255,255,0.9);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .viz-option {
+            background: #fff;
+            border: 2px solid #667eea;
+            color: #667eea;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .viz-option:hover, .viz-option.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .real-time-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #4caf50;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+            margin-right: 5px;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.1); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .custom-query-panel {
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .query-input {
+            width: 100%;
+            min-height: 120px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            resize: vertical;
+        }
+
+        .query-templates {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .template-btn {
+            background: #e3f2fd;
+            color: #1976d2;
+            border: 1px solid #90caf9;
+            padding: 6px 12px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .template-btn:hover {
+            background: #1976d2;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎯 ZmartBot Advanced Database Visualizations</h1>
+        <div class="controls">
+            <button class="btn" onclick="refreshAllData()">🔄 Refresh All</button>
+            <button class="btn" onclick="toggleRealTime()">📡 Real-time Mode</button>
+            <button class="btn" onclick="exportDashboard()">💾 Export Dashboard</button>
+            <button class="btn" onclick="toggleCustomQuery()">🔍 Custom Query</button>
+            <button class="btn" onclick="resetLayout()">🎛️ Reset Layout</button>
+        </div>
+    </div>
+
+    <!-- Custom Query Panel -->
+    <div class="custom-query-panel" id="customQueryPanel">
+        <h3>🔍 Custom SQL Query Visualizer</h3>
+        <div class="query-templates">
+            <div class="template-btn" onclick="loadTemplate('health_overview')">Health Overview</div>
+            <div class="template-btn" onclick="loadTemplate('service_lifecycle')">Service Lifecycle</div>
+            <div class="template-btn" onclick="loadTemplate('sync_performance')">Sync Performance</div>
+            <div class="template-btn" onclick="loadTemplate('category_analysis')">Category Analysis</div>
+            <div class="template-btn" onclick="loadTemplate('top_performers')">Top Performers</div>
+        </div>
+        <textarea id="customQuery" class="query-input" placeholder="Enter your custom SQL query here..."></textarea>
+        <div style="margin-top: 15px;">
+            <button class="btn" onclick="executeCustomQuery()">▶️ Execute Query</button>
+            <button class="btn" onclick="visualizeQuery()">📊 Visualize Results</button>
+        </div>
+        <div id="customQueryResults"></div>
+    </div>
+
+    <!-- Visualization Type Selector -->
+    <div class="visualization-selector">
+        <strong>Visualization Modes:</strong>
+        <div class="viz-option active" onclick="setVisualizationMode('dashboard')" data-mode="dashboard">📊 Dashboard</div>
+        <div class="viz-option" onclick="setVisualizationMode('metrics')" data-mode="metrics">📈 Metrics</div>
+        <div class="viz-option" onclick="setVisualizationMode('lifecycle')" data-mode="lifecycle">🔄 Lifecycle</div>
+        <div class="viz-option" onclick="setVisualizationMode('performance')" data-mode="performance">⚡ Performance</div>
+        <div class="viz-option" onclick="setVisualizationMode('custom')" data-mode="custom">🎨 Custom</div>
+    </div>
+
+    <div class="dashboard-container">
+        <div class="grid-stack" id="mainGrid">
+            <!-- Widgets will be dynamically added here -->
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const SUPABASE_URL = 'https://asjtxrmftmutcsnqgidy.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFzanR4cm1mdG11dGNzbnFnaWR5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk1Nzc4NjgsImV4cCI6MjA2NTE1Mzg2OH0.ScIz31CxgxC2Knya-oHtMw5GQ7QL4QUHky-cEUdqpFM';
+        const DATABASE_SERVICE_URL = 'http://127.0.0.1:8900';
+
+        // Initialize
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        let gridStack;
+        let charts = {};
+        let realTimeMode = false;
+        let currentMode = 'dashboard';
+        let dashboardData = {};
+
+        // SQL Query Templates
+        const queryTemplates = {
+            health_overview: `SELECT * FROM database_health_overview ORDER BY health_score DESC;`,
+            service_lifecycle: `SELECT * FROM service_lifecycle_stats ORDER BY service_level;`,
+            sync_performance: `SELECT * FROM sync_performance_timeline WHERE sync_timestamp > NOW() - INTERVAL '7 days';`,
+            category_analysis: `SELECT * FROM category_analysis ORDER BY database_count DESC;`,
+            top_performers: `SELECT * FROM top_performers WHERE overall_score < 10 ORDER BY overall_score;`
+        };
+
+        // Initialize Dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeGridStack();
+            initializeDashboard();
+            setInterval(() => {
+                if (realTimeMode) refreshAllData();
+            }, 30000);
+        });
+
+        function initializeGridStack() {
+            gridStack = GridStack.init({
+                cellHeight: 80,
+                animate: true,
+                resizable: { handles: 'e,se,s,sw,w' },
+                draggable: { handle: '.widget-title' }
+            });
+        }
+
+        async function initializeDashboard() {
+            await loadDashboardMode();
+        }
+
+        async function loadDashboardMode() {
+            clearGrid();
+            
+            // Add core dashboard widgets
+            addWidget('health-overview', '📊 Database Health Overview', 6, 4, createHealthOverviewWidget);
+            addWidget('category-distribution', '🔄 Category Distribution', 6, 4, createCategoryDistributionWidget);
+            addWidget('service-lifecycle', '🎯 Service Lifecycle Status', 12, 3, createServiceLifecycleWidget);
+            addWidget('sync-status', '☁️ Sync Status Monitor', 6, 3, createSyncStatusWidget);
+            addWidget('performance-metrics', '⚡ Performance Metrics', 6, 3, createPerformanceMetricsWidget);
+            addWidget('top-databases', '🏆 Top Performing Databases', 12, 4, createTopDatabasesWidget);
+            
+            await refreshAllData();
+        }
+
+        async function loadMetricsMode() {
+            clearGrid();
+            
+            // Add metrics-focused widgets
+            addWidget('key-metrics', '📈 Key Metrics', 12, 2, createKeyMetricsWidget);
+            addWidget('health-distribution', '📊 Health Distribution', 6, 4, createHealthDistributionChart);
+            addWidget('size-analysis', '💾 Size Analysis', 6, 4, createSizeAnalysisChart);
+            addWidget('trend-analysis', '📈 Trend Analysis', 12, 4, createTrendAnalysisChart);
+            
+            await refreshAllData();
+        }
+
+        async function loadLifecycleMode() {
+            clearGrid();
+            
+            // Add service lifecycle widgets
+            addWidget('lifecycle-overview', '🔄 Service Lifecycle Overview', 12, 3, createLifecycleOverviewWidget);
+            addWidget('discovery-services', '🔍 Discovery Services', 4, 4, createDiscoveryServicesWidget);
+            addWidget('passport-services', '🎫 Passport Services', 4, 4, createPassportServicesWidget);
+            addWidget('certified-services', '🏆 Certified Services', 4, 4, createCertifiedServicesWidget);
+            addWidget('lifecycle-flow', '🌊 Lifecycle Flow', 12, 4, createLifecycleFlowWidget);
+            
+            await refreshAllData();
+        }
+
+        async function loadPerformanceMode() {
+            clearGrid();
+            
+            // Add performance-focused widgets
+            addWidget('sync-performance', '⚡ Sync Performance', 6, 4, createSyncPerformanceChart);
+            addWidget('database-efficiency', '🎯 Database Efficiency', 6, 4, createDatabaseEfficiencyChart);
+            addWidget('resource-usage', '💻 Resource Usage', 6, 3, createResourceUsageWidget);
+            addWidget('performance-alerts', '🚨 Performance Alerts', 6, 3, createPerformanceAlertsWidget);
+            addWidget('optimization-suggestions', '💡 Optimization Suggestions', 12, 4, createOptimizationSuggestionsWidget);
+            
+            await refreshAllData();
+        }
+
+        function addWidget(id, title, width, height, contentCreator) {
+            const widget = gridStack.addWidget(`
+                <div class="grid-stack-item-content">
+                    <div class="widget-title">${title} <span class="real-time-indicator"></span></div>
+                    <div id="${id}-content" class="widget-content">
+                        <div class="loading">Loading...</div>
+                    </div>
+                </div>
+            `, {w: width, h: height, id: id});
+            
+            // Store the content creator for later use
+            widget.contentCreator = contentCreator;
+        }
+
+        function clearGrid() {
+            gridStack.removeAll();
+            // Clear any existing charts
+            Object.values(charts).forEach(chart => {
+                if (chart && chart.destroy) chart.destroy();
+            });
+            charts = {};
+        }
+
+        async function refreshAllData() {
+            try {
+                // Get data from both sources
+                const [localData, cloudData] = await Promise.all([
+                    fetchLocalData(),
+                    fetchCloudData()
+                ]);
+
+                dashboardData = { local: localData, cloud: cloudData };
+                
+                // Update all widgets based on current mode
+                const widgets = document.querySelectorAll('.grid-stack-item');
+                widgets.forEach(async (widget) => {
+                    const contentCreator = widget.contentCreator;
+                    if (contentCreator) {
+                        const contentDiv = widget.querySelector('.widget-content');
+                        await contentCreator(contentDiv);
+                    }
+                });
+                
+            } catch (error) {
+                console.error('Error refreshing data:', error);
+                showError('Failed to refresh data: ' + error.message);
+            }
+        }
+
+        async function fetchLocalData() {
+            try {
+                const response = await fetch(`${DATABASE_SERVICE_URL}/api/system/overview`);
+                return response.ok ? await response.json() : null;
+            } catch (error) {
+                console.error('Local data fetch failed:', error);
+                return null;
+            }
+        }
+
+        async function fetchCloudData() {
+            try {
+                const { data, error } = await supabase
+                    .from('database_registry')
+                    .select('*')
+                    .order('updated_at', { ascending: false });
+                
+                return error ? [] : data;
+            } catch (error) {
+                console.error('Cloud data fetch failed:', error);
+                return [];
+            }
+        }
+
+        // Widget Content Creators
+        async function createHealthOverviewWidget(container) {
+            if (!dashboardData.cloud || dashboardData.cloud.length === 0) {
+                container.innerHTML = '<div class="loading">No cloud data available</div>';
+                return;
+            }
+
+            const healthDistribution = {
+                'Excellent': 0, 'Good': 0, 'Fair': 0, 'Poor': 0
+            };
+
+            dashboardData.cloud.forEach(db => {
+                const score = db.health_score || 0;
+                if (score >= 90) healthDistribution.Excellent++;
+                else if (score >= 75) healthDistribution.Good++;
+                else if (score >= 50) healthDistribution.Fair++;
+                else healthDistribution.Poor++;
+            });
+
+            const chartId = 'healthOverviewChart';
+            container.innerHTML = `<div class="chart-container"><canvas id="${chartId}"></canvas></div>`;
+            
+            const ctx = document.getElementById(chartId).getContext('2d');
+            charts[chartId] = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(healthDistribution),
+                    datasets: [{
+                        data: Object.values(healthDistribution),
+                        backgroundColor: ['#4caf50', '#8bc34a', '#ff9800', '#f44336']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
+                }
+            });
+        }
+
+        async function createCategoryDistributionWidget(container) {
+            if (!dashboardData.cloud || dashboardData.cloud.length === 0) {
+                container.innerHTML = '<div class="loading">No cloud data available</div>';
+                return;
+            }
+
+            const categoryCount = {};
+            dashboardData.cloud.forEach(db => {
+                const category = db.category || 'unknown';
+                categoryCount[category] = (categoryCount[category] || 0) + 1;
+            });
+
+            const chartId = 'categoryDistributionChart';
+            container.innerHTML = `<div class="chart-container"><canvas id="${chartId}"></canvas></div>`;
+            
+            const ctx = document.getElementById(chartId).getContext('2d');
+            const colors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'];
+            
+            charts[chartId] = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(categoryCount),
+                    datasets: [{
+                        data: Object.values(categoryCount),
+                        backgroundColor: colors.slice(0, Object.keys(categoryCount).length)
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'right' }
+                    }
+                }
+            });
+        }
+
+        async function createServiceLifecycleWidget(container) {
+            const serviceData = dashboardData.local?.service_lifecycle || {};
+            
+            container.innerHTML = `
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
+                    <div class="metric-card">
+                        <div class="metric-value">${serviceData.discovery_services || 0}</div>
+                        <div class="metric-label">🔍 Discovery Level</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">${serviceData.passport_services || 0}</div>
+                        <div class="metric-label">🎫 Passport Level</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">${serviceData.registered_services || 0}</div>
+                        <div class="metric-label">🏆 Certified Level</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function createSyncStatusWidget(container) {
+            if (!dashboardData.cloud) {
+                container.innerHTML = '<div class="loading">No sync data available</div>';
+                return;
+            }
+
+            const recentSyncs = dashboardData.cloud.filter(db => {
+                const lastSync = new Date(db.updated_at || db.created_at);
+                const hourAgo = new Date(Date.now() - 60 * 60 * 1000);
+                return lastSync > hourAgo;
+            }).length;
+
+            const totalDatabases = dashboardData.cloud.length;
+            const syncPercentage = totalDatabases > 0 ? Math.round((recentSyncs / totalDatabases) * 100) : 0;
+
+            container.innerHTML = `
+                <div class="metric-card">
+                    <div class="metric-value">${syncPercentage}%</div>
+                    <div class="metric-label">Sync Coverage (Last Hour)</div>
+                </div>
+                <div style="margin-top: 15px;">
+                    <strong>Recent Activity:</strong>
+                    <div style="margin-top: 10px;">
+                        📊 ${recentSyncs} databases synced recently<br>
+                        💾 ${totalDatabases} total databases<br>
+                        ⏰ Last update: ${new Date().toLocaleTimeString()}
+                    </div>
+                </div>
+            `;
+        }
+
+        async function createPerformanceMetricsWidget(container) {
+            const stats = dashboardData.local?.database_statistics || {};
+            
+            container.innerHTML = `
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
+                    <div class="metric-card" style="background: linear-gradient(135deg, #4caf50, #45a049);">
+                        <div class="metric-value">${(stats.total_size_mb || 0).toFixed(1)}</div>
+                        <div class="metric-label">Total Size (MB)</div>
+                    </div>
+                    <div class="metric-card" style="background: linear-gradient(135deg, #2196f3, #1976d2);">
+                        <div class="metric-value">${(stats.total_records || 0).toLocaleString()}</div>
+                        <div class="metric-label">Total Records</div>
+                    </div>
+                    <div class="metric-card" style="background: linear-gradient(135deg, #ff9800, #f57c00);">
+                        <div class="metric-value">${stats.total_tables || 0}</div>
+                        <div class="metric-label">Total Tables</div>
+                    </div>
+                    <div class="metric-card" style="background: linear-gradient(135deg, #9c27b0, #7b1fa2);">
+                        <div class="metric-value">${(stats.average_health || 0).toFixed(1)}%</div>
+                        <div class="metric-label">Average Health</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function createTopDatabasesWidget(container) {
+            if (!dashboardData.cloud || dashboardData.cloud.length === 0) {
+                container.innerHTML = '<div class="loading">No database data available</div>';
+                return;
+            }
+
+            // Sort by health score and get top 10
+            const topDatabases = dashboardData.cloud
+                .sort((a, b) => (b.health_score || 0) - (a.health_score || 0))
+                .slice(0, 10);
+
+            let tableHtml = `
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Database</th>
+                            <th>Category</th>
+                            <th>Health</th>
+                            <th>Records</th>
+                            <th>Size (MB)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            topDatabases.forEach(db => {
+                const healthClass = getHealthStatusClass(db.health_score || 0);
+                const sizeMB = db.size_bytes ? (db.size_bytes / (1024 * 1024)).toFixed(2) : '0';
+                
+                tableHtml += `
+                    <tr>
+                        <td><strong>${db.name}</strong></td>
+                        <td><span style="background: #e3f2fd; padding: 2px 8px; border-radius: 10px; font-size: 12px;">${db.category || 'unknown'}</span></td>
+                        <td><span class="status-indicator ${healthClass}"></span>${(db.health_score || 0).toFixed(1)}%</td>
+                        <td>${(db.row_count || 0).toLocaleString()}</td>
+                        <td>${sizeMB}</td>
+                    </tr>
+                `;
+            });
+
+            tableHtml += '</tbody></table>';
+            container.innerHTML = tableHtml;
+        }
+
+        // Utility Functions
+        function getHealthStatusClass(score) {
+            if (score >= 90) return 'status-excellent';
+            if (score >= 75) return 'status-good';
+            if (score >= 50) return 'status-fair';
+            return 'status-poor';
+        }
+
+        function setVisualizationMode(mode) {
+            // Update active button
+            document.querySelectorAll('.viz-option').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`[data-mode="${mode}"]`).classList.add('active');
+            
+            currentMode = mode;
+            
+            // Load the appropriate mode
+            switch (mode) {
+                case 'dashboard':
+                    loadDashboardMode();
+                    break;
+                case 'metrics':
+                    loadMetricsMode();
+                    break;
+                case 'lifecycle':
+                    loadLifecycleMode();
+                    break;
+                case 'performance':
+                    loadPerformanceMode();
+                    break;
+                case 'custom':
+                    toggleCustomQuery();
+                    break;
+            }
+        }
+
+        function toggleRealTime() {
+            realTimeMode = !realTimeMode;
+            const btn = event.target;
+            btn.classList.toggle('active');
+            
+            if (realTimeMode) {
+                btn.textContent = '📡 Real-time: ON';
+                showSuccess('Real-time mode enabled - dashboard will refresh every 30 seconds');
+            } else {
+                btn.textContent = '📡 Real-time Mode';
+                showSuccess('Real-time mode disabled');
+            }
+        }
+
+        function toggleCustomQuery() {
+            const panel = document.getElementById('customQueryPanel');
+            panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function loadTemplate(templateName) {
+            const query = queryTemplates[templateName];
+            if (query) {
+                document.getElementById('customQuery').value = query;
+            }
+        }
+
+        async function executeCustomQuery() {
+            const query = document.getElementById('customQuery').value.trim();
+            if (!query) {
+                showError('Please enter a SQL query');
+                return;
+            }
+
+            try {
+                const { data, error } = await supabase.rpc('exec_sql', { query: query });
+                
+                if (error) throw error;
+                
+                const resultsDiv = document.getElementById('customQueryResults');
+                if (data && data.length > 0) {
+                    // Create table from results
+                    let tableHtml = '<table class="data-table"><thead><tr>';
+                    Object.keys(data[0]).forEach(key => {
+                        tableHtml += `<th>${key}</th>`;
+                    });
+                    tableHtml += '</tr></thead><tbody>';
+                    
+                    data.slice(0, 100).forEach(row => { // Limit to 100 rows
+                        tableHtml += '<tr>';
+                        Object.values(row).forEach(value => {
+                            tableHtml += `<td>${value || ''}</td>`;
+                        });
+                        tableHtml += '</tr>';
+                    });
+                    tableHtml += '</tbody></table>';
+                    
+                    resultsDiv.innerHTML = `
+                        <h4>Query Results (${data.length} rows)</h4>
+                        ${tableHtml}
+                    `;
+                } else {
+                    resultsDiv.innerHTML = '<div class="success">Query executed successfully (no results)</div>';
+                }
+                
+            } catch (error) {
+                console.error('Query execution error:', error);
+                showError('Query failed: ' + error.message);
+            }
+        }
+
+        function resetLayout() {
+            if (confirm('Reset the current layout? This will restore the default widget positions.')) {
+                initializeDashboard();
+                showSuccess('Layout reset to default');
+            }
+        }
+
+        function exportDashboard() {
+            const dashboardState = {
+                mode: currentMode,
+                realTimeMode: realTimeMode,
+                timestamp: new Date().toISOString(),
+                data: dashboardData
+            };
+            
+            const blob = new Blob([JSON.stringify(dashboardState, null, 2)], 
+                { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `zmartbot-dashboard-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function showError(message) {
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error';
+            errorDiv.textContent = message;
+            errorDiv.style.position = 'fixed';
+            errorDiv.style.top = '20px';
+            errorDiv.style.right = '20px';
+            errorDiv.style.zIndex = '9999';
+            document.body.appendChild(errorDiv);
+            
+            setTimeout(() => errorDiv.remove(), 5000);
+        }
+
+        function showSuccess(message) {
+            const successDiv = document.createElement('div');
+            successDiv.className = 'success';
+            successDiv.textContent = message;
+            successDiv.style.position = 'fixed';
+            successDiv.style.top = '20px';
+            successDiv.style.right = '20px';
+            successDiv.style.zIndex = '9999';
+            document.body.appendChild(successDiv);
+            
+            setTimeout(() => successDiv.remove(), 3000);
+        }
+    </script>
+</body>
+</html>

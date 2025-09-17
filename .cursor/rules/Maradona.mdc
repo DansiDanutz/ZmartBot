@@ -1,3 +1,8 @@
+
+## Description
+Core service component of the ZmartBot ecosystem providing essential functionality.
+
+
 # Maradona Alerts - Reversal and Divergence Pattern System
 
 ## Overview
@@ -730,4 +735,15 @@ The Maradona Alerts system provides **powerful reversal trading opportunities** 
 description:
 globs:
 alwaysApply: true
+
+## Requirements
+- ✅ **Unique port assignment**
+
+
 ---
+
+
+## Triggers
+- **System initialization**
+- **External requests**
+- **Scheduled tasks**

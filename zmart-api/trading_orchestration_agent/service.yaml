@@ -1,0 +1,30 @@
+service_name: trading-orchestration-agent
+service_type: trading_intelligence
+version: 1.0.0
+owner: zmartbot
+description: Level 3 trading orchestration agent (corrected passport)
+port: 8200
+passport_id: ZMBT-TRD-20250831-L2M3N4
+status: ACTIVE
+registered_at: '2025-08-31'
+health_url: http://localhost:8200/health
+start_cmd: python3 trading_orchestration_agent_server.py --port 8200
+stop_cmd: pkill -f 'trading_orchestration_agent_server.py'
+dependencies:
+- zmart-api
+tags:
+- trading_intelligence
+- trading-orchestration-agent
+lifecycle:
+  startup_grace_seconds: 30
+  shutdown_timeout_seconds: 15
+  health_check_interval: 30
+monitoring:
+  metrics_endpoint: /metrics
+  logs_path: logs/trading-orchestration-agent.log
+  dashboard_url: http://localhost:8200/dashboard
+security:
+  cors_enabled: true
+  token_required: false
+  scopes:
+  - trading_intelligence

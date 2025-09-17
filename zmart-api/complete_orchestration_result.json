@@ -1,0 +1,107 @@
+{
+  "symbol": "ETH",
+  "timestamp": "2025-09-14T14:38:42.007676",
+  "price": 4637.58,
+  "riskmetric": {
+    "risk_value": 0.7775087133907669,
+    "risk_band": "0.7-0.8",
+    "score": 84.3703906571664,
+    "signal": "STRONG SELL",
+    "win_rate": 0.25
+  },
+  "kingfisher": {
+    "symbol": "ETH",
+    "current_price": 4637.58,
+    "timeframe": "4h",
+    "liquidation_clusters": {
+      "below_price": [
+        {
+          "price_level": 3250,
+          "volume": 45000000,
+          "strength": "HIGH",
+          "type": "LONG"
+        },
+        {
+          "price_level": 3100,
+          "volume": 82000000,
+          "strength": "EXTREME",
+          "type": "LONG"
+        },
+        {
+          "price_level": 2950,
+          "volume": 35000000,
+          "strength": "MEDIUM",
+          "type": "LONG"
+        }
+      ],
+      "above_price": [
+        {
+          "price_level": 3650,
+          "volume": 25000000,
+          "strength": "MEDIUM",
+          "type": "SHORT"
+        },
+        {
+          "price_level": 3800,
+          "volume": 55000000,
+          "strength": "HIGH",
+          "type": "SHORT"
+        }
+      ],
+      "total_long_liquidation_volume": 162000000,
+      "total_short_liquidation_volume": 80000000
+    },
+    "analysis": {
+      "market_pressure": "BEARISH - High long liquidation risk",
+      "recommendation": "Consider SHORT positions or wait",
+      "nearest_cluster_below": {
+        "price_level": 3250,
+        "volume": 45000000,
+        "strength": "HIGH",
+        "type": "LONG"
+      },
+      "nearest_cluster_above": {
+        "price_level": 3650,
+        "volume": 25000000,
+        "strength": "MEDIUM",
+        "type": "SHORT"
+      },
+      "cluster_density": "HIGH"
+    },
+    "ai_confidence": 88.5,
+    "timestamp": "2025-09-14T14:38:42.419472"
+  },
+  "cryptometer": {
+    "score": 72,
+    "sentiment": "bullish",
+    "volume_trend": "increasing"
+  },
+  "patterns": [
+    "ascending_triangle",
+    "bullish_flag"
+  ],
+  "grok_sentiment": {
+    "sentiment_score": 50,
+    "sentiment": "NEUTRAL",
+    "analysis": "Unable to fetch real-time sentiment",
+    "source": "X/Twitter via Grok"
+  },
+  "master_score": {
+    "scores": {
+      "riskmetric": 20,
+      "kingfisher": 60,
+      "cryptometer": 72,
+      "patterns": 70,
+      "grok": 50
+    },
+    "weights": {
+      "riskmetric": 0.35,
+      "cryptometer": 0.2,
+      "grok": 0.2,
+      "patterns": 0.15,
+      "kingfisher": 0.1
+    },
+    "total": 47.9,
+    "recommendation": "HOLD"
+  }
+}

@@ -1,0 +1,19 @@
+service_name: service-dashboard
+service_type: frontend
+port: 3000
+description: "Service monitoring and management dashboard"
+status: ACTIVE
+passport_id: ZMBT-FRE-20250826-D347BE
+registered_at: "2025-08-26"
+health_url: "http://localhost:3000/health"
+start_cmd: "python3 service_dashboard.py"
+stop_cmd: "pkill -f 'service_dashboard.py'"
+dependencies:
+  - zmart-api
+  - master-orchestration-agent
+tags:
+  - frontend
+  - dashboard
+  - monitoring
+
+

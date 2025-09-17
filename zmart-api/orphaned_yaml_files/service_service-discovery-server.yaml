@@ -1,0 +1,30 @@
+service_name: service-discovery-server
+service_type: orchestration
+version: 1.0.0
+owner: zmartbot
+description: Service discovery server
+port: 8781
+passport_id: ZMBT-SDS-20250831-S2T3U4
+status: ACTIVE
+registered_at: '2025-08-31'
+health_url: http://localhost:8781/health
+start_cmd: python3 service_discovery_server_server.py --port 8780
+stop_cmd: pkill -f 'service_discovery_server_server.py'
+dependencies:
+- zmart-api
+tags:
+- orchestration
+- service-discovery-server
+lifecycle:
+  startup_grace_seconds: 30
+  shutdown_timeout_seconds: 15
+  health_check_interval: 30
+monitoring:
+  metrics_endpoint: /metrics
+  logs_path: logs/service-discovery-server.log
+  dashboard_url: http://localhost:8780/dashboard
+security:
+  cors_enabled: true
+  token_required: false
+  scopes:
+  - orchestration

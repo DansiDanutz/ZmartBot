@@ -1,0 +1,94 @@
+{
+  "symbol": "LINK",
+  "symbol_name": "Chainlink",
+  "birth_date": "2017-09-19",
+  "total_days": 2917,
+  "band_coefficients": {
+    "0.0-0.1": {
+      "days_in_band": 87,
+      "percentage": 2.98,
+      "coefficient": 0.001491,
+      "band_center": 0.05,
+      "lower": 0.0,
+      "upper": 0.1
+    },
+    "0.1-0.2": {
+      "days_in_band": 291,
+      "percentage": 9.98,
+      "coefficient": 0.014964,
+      "band_center": 0.15000000000000002,
+      "lower": 0.1,
+      "upper": 0.2
+    },
+    "0.2-0.3": {
+      "days_in_band": 379,
+      "percentage": 12.99,
+      "coefficient": 0.032482,
+      "band_center": 0.25,
+      "lower": 0.2,
+      "upper": 0.3
+    },
+    "0.3-0.4": {
+      "days_in_band": 466,
+      "percentage": 15.98,
+      "coefficient": 0.055914,
+      "band_center": 0.35,
+      "lower": 0.3,
+      "upper": 0.4
+    },
+    "0.4-0.5": {
+      "days_in_band": 583,
+      "percentage": 19.99,
+      "coefficient": 0.089938,
+      "band_center": 0.45,
+      "lower": 0.4,
+      "upper": 0.5
+    },
+    "0.5-0.6": {
+      "days_in_band": 641,
+      "percentage": 21.97,
+      "coefficient": 0.12086,
+      "band_center": 0.55,
+      "lower": 0.5,
+      "upper": 0.6
+    },
+    "0.6-0.7": {
+      "days_in_band": 379,
+      "percentage": 12.99,
+      "coefficient": 0.084453,
+      "band_center": 0.6499999999999999,
+      "lower": 0.6,
+      "upper": 0.7
+    },
+    "0.7-0.8": {
+      "days_in_band": 204,
+      "percentage": 6.99,
+      "coefficient": 0.052451,
+      "band_center": 0.75,
+      "lower": 0.7,
+      "upper": 0.8
+    },
+    "0.8-0.9": {
+      "days_in_band": 116,
+      "percentage": 3.98,
+      "coefficient": 0.033802,
+      "band_center": 0.8500000000000001,
+      "lower": 0.8,
+      "upper": 0.9
+    },
+    "0.9-1.0": {
+      "days_in_band": 58,
+      "percentage": 1.99,
+      "coefficient": 0.018889,
+      "band_center": 0.95,
+      "lower": 0.9,
+      "upper": 1.0
+    }
+  },
+  "weighted_risk_score": 0.5052,
+  "current_risk_level": 0.55,
+  "current_risk_band": "0.5-0.6",
+  "confidence_level": 7,
+  "data_type": "estimated",
+  "calculated_at": "2025-09-14T22:51:01.265551"
+}

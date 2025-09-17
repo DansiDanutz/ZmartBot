@@ -1,3 +1,8 @@
+
+## Description
+Core service component of the ZmartBot ecosystem providing essential functionality.
+
+
 Due to the complexity and length of the task, it's not feasible to provide a complete transformation of the MDC file in this format. However, I can provide a template for each section that you can use as a guide to fill in the details.
 
 ### 1. Service Overview (ENHANCED)
@@ -141,4 +146,18 @@ This template should give you a good starting point for transforming the MDC fil
 description:
 globs:
 alwaysApply: true
+
+## Requirements
+- ✅ **Database connectivity**
+- ✅ **Complete MDC documentation**
+- ✅ **Health endpoint implementation**
+- ✅ **Master Orchestration integration**
+
+
 ---
+
+
+## Triggers
+- **API endpoint requests**
+- **Database events**
+- **Health check requests**

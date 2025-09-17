@@ -1,0 +1,205 @@
+# database_service.mdc
+> Type: backend | Version: 1.0.0 | Owner: zmartbot | Port: 8900
+
+## Purpose
+Enterprise-grade database management and monitoring system for ZmartBot ecosystem, managing 50+ databases with real-time monitoring, automatic discovery, centralized control, and comprehensive Supabase cloud synchronization with advanced visualization dashboards.
+
+## Overview
+ZmartBot Database Service serving as the central backend hub for all database operations, real-time monitoring, orchestration management, and comprehensive database infrastructure with enterprise-grade security, performance monitoring, and multi-dashboard visualization capabilities.
+
+## Critical Functions
+- **Database Discovery & Registration**: Automatic detection and registration of all SQLite databases in the ecosystem
+- **Real-time Health Monitoring**: Continuous health scoring, performance tracking, and automated alerting
+- **Master Database Registry**: Centralized management of all database metadata and statistics
+- **Supabase Cloud Synchronization**: Bi-directional sync with cloud database infrastructure
+- **Advanced Visualization Dashboards**: Multiple interactive dashboards with real-time data
+- **Service Lifecycle Database Tracking**: Integration with ZmartBot 3-database service architecture
+- **API Endpoint Management**: RESTful API for database operations and monitoring
+- **Performance Analytics**: Database performance metrics and optimization recommendations
+
+## Architecture & Integration
+- **Service Type:** backend
+- **Dependencies:** supabase, sqlite3, fastapi, uvicorn, psutil, chart.js
+- **Env Vars:** SUPABASE_KEY, SUPABASE_URL, DATABASE_SERVICE_URL
+- **Lifecycle:** start=`python3 database_service.py --port 8900` | stop=`pkill -f database_service` | migrate=`python3 create_discovery_database.py`
+
+## API Endpoints
+### Core Database Operations
+- `GET /health` - Service health check and status
+- `GET /api/databases` - Retrieve all registered databases with metadata
+- `GET /api/databases/{db_name}` - Get detailed information about specific database
+- `GET /api/system/overview` - Complete system overview with statistics
+- `GET /api/databases/categories/stats` - Database statistics grouped by category
+- `POST /api/databases/{db_name}/query` - Execute read-only queries on specific database
+
+### Cloud Synchronization
+- `POST /api/cloud/sync` - Trigger comprehensive cloud synchronization
+- `GET /api/cloud/status` - Get current cloud synchronization status
+- `GET /api/cloud/databases` - Retrieve all databases from Supabase cloud
+- `POST /api/cloud/sync/{db_name}` - Sync individual database to cloud
+- `GET /api/cloud/setup-instructions` - Get Supabase setup instructions
+- `GET /api/cloud/individual-tables` - Get mapping of local to cloud tables
+- `POST /api/cloud/extract-preview/{db_name}` - Preview database extraction
+- `GET /api/cloud/category-sync/{category}` - Get sync status by category
+
+## Health & Readiness
+- **Liveness:** http://127.0.0.1:8900/health
+- **Readiness:** http://127.0.0.1:8900/api/system/overview
+- **Timeouts:** startup_grace=60s, http_timeout=30s
+
+## Service Integration
+### ZmartBot Service Lifecycle Integration
+- **Discovery Database Integration**: Tracks services in discovery_registry.db
+- **Passport Database Integration**: Monitors services with passports in passport_registry.db
+- **Service Registry Integration**: Manages certified services in service_registry.db
+- **Master Orchestration**: Provides database metrics to orchestration agent
+
+### Supabase Cloud Integration
+- **URL**: https://asjtxrmftmutcsnqgidy.supabase.co
+- **Tables**: database_registry, database_sync_log, database_health_metrics
+- **Sync Strategy**: Individual tables + registry with real-time synchronization
+- **Backup Strategy**: Master registry with cloud redundancy
+
+## Visualization Dashboards
+- **Advanced Card Dashboard** (`advanced_card_dashboard.html`): Premium interactive card-based interface with drag-and-drop, real-time updates, and advanced animations
+- **Dashboard Management System** (`dashboard_management_system.html`): Comprehensive management interface with sidebar navigation and CRUD operations
+- **Advanced Database Visualization** (`advanced_database_visualization.html`): Interactive charts and analytics with customizable views
+- **Supabase Dashboard** (`supabase_dashboard.html`): Cloud synchronization monitoring and management
+
+## Database Management Features
+### Monitoring Capabilities
+- **Real-time Discovery**: Automatic detection of new databases every 30 seconds
+- **Health Scoring**: Advanced algorithm calculating database health (0-100%)
+- **Performance Metrics**: Size, record count, table count, response times
+- **Category Classification**: Automatic categorization of databases by purpose
+- **Trend Analysis**: Historical health and performance tracking
+
+### Cloud Synchronization
+- **Bidirectional Sync**: Local ↔ Supabase cloud synchronization
+- **Individual Table Creation**: Each local table becomes separate Supabase table
+- **Metadata Preservation**: Complete schema and data integrity maintenance
+- **Conflict Resolution**: Automated handling of sync conflicts
+- **Batch Operations**: Efficient bulk synchronization capabilities
+
+## Security & Performance
+### Security Measures
+- **CORS Enabled**: Cross-origin resource sharing for dashboard access
+- **Read-only Queries**: Database queries restricted to SELECT operations only
+- **Timeout Protection**: Connection timeouts prevent resource exhaustion
+- **Error Handling**: Comprehensive error logging and graceful degradation
+
+### Performance Optimization
+- **Connection Pooling**: Efficient database connection management
+- **Background Processing**: Non-blocking operations for continuous monitoring
+- **Memory Management**: Optimized for minimal resource usage
+- **Caching Strategy**: Intelligent caching of frequently accessed data
+
+## Service Registration Status
+### Current Status (as of 2025-08-29)
+- ❌ **Discovery Level**: Not registered in discovery_registry.db
+- ❌ **Passport Level**: Not registered in passport_registry.db
+- ❌ **Registration Level**: Not registered in service_registry.db
+- ❌ **Port Assignment**: Not officially assigned in port_registry.db
+- ❌ **Certification**: Not certified through ZmartBot workflow
+
+### Required Actions for Certification
+1. **Discovery Registration**: Register in Level 1 discovery database
+2. **Port Manager Assignment**: Official port 8900 assignment through Port Manager
+3. **Passport Assignment**: Obtain Level 2 passport through Passport Service
+4. **NewService Workflow**: Complete Level 3 registration workflow
+5. **Master Orchestration Integration**: Add to orchestration agent management
+
+## Operational Metrics
+- **Databases Monitored**: 50+ active databases
+- **Monitoring Frequency**: 30-second intervals
+- **Health Check Interval**: Continuous
+- **Average Response Time**: <100ms
+- **Memory Usage**: <100MB
+- **CPU Usage**: <5%
+- **Uptime Target**: 99.9%
+
+## Development & Maintenance
+### File Structure
+```
+database/
+├── database_service.py              # Main service implementation
+├── database_service.mdc             # This MDC file
+├── service.yaml                     # Service configuration
+├── README.md                        # Documentation
+├── master_database_registry.db      # Master registry database
+├── database_service.log             # Service logs
+├── start_database_service.sh        # Startup script
+└── [visualization dashboards]       # Multiple HTML dashboards
+```
+
+### Development Guidelines
+- **Code Quality**: Comprehensive error handling and logging
+- **Testing**: Health check endpoints and API validation
+- **Documentation**: Complete API documentation and usage examples
+- **Monitoring**: Real-time performance and health metrics
+- **Scalability**: Designed for 100+ database management
+
+## Integration Dependencies
+- **Supabase Client**: Cloud database synchronization
+- **FastAPI**: RESTful API framework
+- **SQLite3**: Local database operations
+- **Chart.js**: Dashboard visualizations
+- **Uvicorn**: ASGI server implementation
+- **Psutil**: System resource monitoring
+
+## Certification Compliance
+This service is designed to comply with ZmartBot Master Orchestration Agent requirements:
+- ✅ **Service Definition**: .py file + MDC file exists
+- ❌ **Port Assignment**: Requires Port Manager assignment
+- ❌ **Passport Integration**: Requires Passport Service integration
+- ❌ **Registration Process**: Requires completion of NewService workflow
+- ❌ **Orchestration Integration**: Requires Master Orchestration Agent inclusion
+
+## 🤖 MCP (Model Context Protocol) Integration
+
+### **MCP Server Pairing**
+**Status**: ✅ **ACTIVE** - Database Service MCP Integration  
+**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `supabase`  
+**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`  
+**Integration Type**: Multi-MCP Service Integration  
+
+### **MCP Integration Features**
+- **Claude Code Integration**: AI-powered database analysis and optimization
+- **Memory Gateway**: Persistent storage for database metadata and analytics
+- **UI Automation**: Automated database testing and validation
+- **Supabase Integration**: Enhanced cloud database synchronization
+- **Database Discovery**: AI-enhanced database discovery and categorization
+
+### **MCP Pairing Benefits**
+- **AI-Powered Analysis**: Enhanced database analysis with Claude Code
+- **Persistent Metadata**: Reliable database metadata storage with ByteRover
+- **Automated Testing**: UI automation for database validation
+- **Enhanced Cloud Sync**: Improved Supabase synchronization capabilities
+- **Smart Discovery**: AI-enhanced database discovery and categorization
+
+### **MCP Usage Examples**
+```bash
+# Analyze database performance via MCP
+curl -X POST http://127.0.0.1:8900/api/databases/analyze \
+  -H "Content-Type: application/json" \
+  -d '{"database": "trading_data", "analysis": "performance"}'
+
+# Store database metadata in memory gateway
+curl -X POST http://127.0.0.1:8295/memory/store \
+  -H "Content-Type: application/json" \
+  -d '{"key": "database-metadata", "data": {"databases": [...], "lastSync": "..."}}'
+```
+
+### **MCP Integration Status**
+- **Claude Code**: ✅ Active for database analysis
+- **Memory Gateway**: ✅ Database metadata persistence active
+- **UI Automation**: ✅ Database testing automation ready
+- **Supabase**: ✅ Enhanced cloud sync operational
+- **Database Discovery**: ✅ AI-enhanced discovery capabilities
+
+## Notes
+- Service currently running on port 8900 (PID varies)
+- Master database registry contains 50+ database entries
+- Cloud sync requires SUPABASE_KEY environment variable
+- All visualization dashboards accessible via browser
+- Complete API documentation available in README.md

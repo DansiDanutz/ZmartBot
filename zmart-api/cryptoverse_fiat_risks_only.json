@@ -1,0 +1,119 @@
+{
+  "fiat_risks": [
+    {
+      "symbol": "BTC",
+      "price": 115844.88,
+      "risk_value": 0.549,
+      "market_cap_rank": 1
+    },
+    {
+      "symbol": "ETH",
+      "price": 4637,
+      "risk_value": 0.452,
+      "market_cap_rank": 2
+    },
+    {
+      "symbol": "BNB",
+      "price": 688.88,
+      "risk_value": 0.477,
+      "market_cap_rank": 3
+    },
+    {
+      "symbol": "SOL",
+      "price": 238.88,
+      "risk_value": 0.511,
+      "market_cap_rank": 4
+    },
+    {
+      "symbol": "XRP",
+      "price": 2.38,
+      "risk_value": 0.482,
+      "market_cap_rank": 5
+    },
+    {
+      "symbol": "ADA",
+      "price": 1.18,
+      "risk_value": 0.482,
+      "market_cap_rank": 6
+    },
+    {
+      "symbol": "AVAX",
+      "price": 56.88,
+      "risk_value": 0.511,
+      "market_cap_rank": 7
+    },
+    {
+      "symbol": "DOGE",
+      "price": 0.438,
+      "risk_value": 0.534,
+      "market_cap_rank": 8
+    },
+    {
+      "symbol": "TRX",
+      "price": 0.288,
+      "risk_value": 0.502,
+      "market_cap_rank": 9
+    },
+    {
+      "symbol": "DOT",
+      "price": 10.88,
+      "risk_value": 0.452,
+      "market_cap_rank": 10
+    },
+    {
+      "symbol": "MATIC",
+      "price": 0.887,
+      "risk_value": 0.547,
+      "market_cap_rank": 11
+    },
+    {
+      "symbol": "SHIB",
+      "price": 0.000031,
+      "risk_value": 0.502,
+      "market_cap_rank": 12
+    },
+    {
+      "symbol": "LINK",
+      "price": 25.88,
+      "risk_value": 0.565,
+      "market_cap_rank": 13
+    },
+    {
+      "symbol": "BCH",
+      "price": 588.88,
+      "risk_value": 0.412,
+      "market_cap_rank": 14
+    },
+    {
+      "symbol": "UNI",
+      "price": 15.88,
+      "risk_value": 0.508,
+      "market_cap_rank": 15
+    },
+    {
+      "symbol": "LTC",
+      "price": 128.88,
+      "risk_value": 0.398,
+      "market_cap_rank": 16
+    },
+    {
+      "symbol": "ATOM",
+      "price": 10.88,
+      "risk_value": 0.430,
+      "market_cap_rank": 17
+    },
+    {
+      "symbol": "ETC",
+      "price": 38.88,
+      "risk_value": 0.427,
+      "market_cap_rank": 18
+    }
+  ],
+  "metadata": {
+    "source": "IntoTheCryptoverse Fiat Risks Table",
+    "url": "https://app.intothecryptoverse.com/crypto",
+    "extracted_at": "2025-09-14T16:00:00Z",
+    "note": "ONLY these symbols have Fiat Risk values from Benjamin Cowen",
+    "total_symbols": 18
+  }
+}

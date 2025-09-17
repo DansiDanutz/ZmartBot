@@ -1,0 +1,94 @@
+{
+  "symbol": "DOGE",
+  "symbol_name": "Dogecoin",
+  "birth_date": "2013-12-06",
+  "total_days": 4300,
+  "band_coefficients": {
+    "0.0-0.1": {
+      "days_in_band": 129,
+      "percentage": 3.0,
+      "coefficient": 0.0015,
+      "band_center": 0.05,
+      "lower": 0.0,
+      "upper": 0.1
+    },
+    "0.1-0.2": {
+      "days_in_band": 430,
+      "percentage": 10.0,
+      "coefficient": 0.015,
+      "band_center": 0.15000000000000002,
+      "lower": 0.1,
+      "upper": 0.2
+    },
+    "0.2-0.3": {
+      "days_in_band": 559,
+      "percentage": 13.0,
+      "coefficient": 0.0325,
+      "band_center": 0.25,
+      "lower": 0.2,
+      "upper": 0.3
+    },
+    "0.3-0.4": {
+      "days_in_band": 688,
+      "percentage": 16.0,
+      "coefficient": 0.056,
+      "band_center": 0.35,
+      "lower": 0.3,
+      "upper": 0.4
+    },
+    "0.4-0.5": {
+      "days_in_band": 860,
+      "percentage": 20.0,
+      "coefficient": 0.09,
+      "band_center": 0.45,
+      "lower": 0.4,
+      "upper": 0.5
+    },
+    "0.5-0.6": {
+      "days_in_band": 946,
+      "percentage": 22.0,
+      "coefficient": 0.121,
+      "band_center": 0.55,
+      "lower": 0.5,
+      "upper": 0.6
+    },
+    "0.6-0.7": {
+      "days_in_band": 559,
+      "percentage": 13.0,
+      "coefficient": 0.0845,
+      "band_center": 0.6499999999999999,
+      "lower": 0.6,
+      "upper": 0.7
+    },
+    "0.7-0.8": {
+      "days_in_band": 301,
+      "percentage": 7.0,
+      "coefficient": 0.0525,
+      "band_center": 0.75,
+      "lower": 0.7,
+      "upper": 0.8
+    },
+    "0.8-0.9": {
+      "days_in_band": 172,
+      "percentage": 4.0,
+      "coefficient": 0.034,
+      "band_center": 0.8500000000000001,
+      "lower": 0.8,
+      "upper": 0.9
+    },
+    "0.9-1.0": {
+      "days_in_band": 86,
+      "percentage": 2.0,
+      "coefficient": 0.019,
+      "band_center": 0.95,
+      "lower": 0.9,
+      "upper": 1.0
+    }
+  },
+  "weighted_risk_score": 0.506,
+  "current_risk_level": 0.55,
+  "current_risk_band": "0.5-0.6",
+  "confidence_level": 7,
+  "data_type": "estimated",
+  "calculated_at": "2025-09-14T22:51:01.264866"
+}

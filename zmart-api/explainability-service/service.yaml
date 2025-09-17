@@ -1,0 +1,16 @@
+service_name: explainability-service
+service_type: backend
+port: 8025
+description: "ZmartBot Explainability Service"
+status: ACTIVE
+passport_id: ZMBT-SRV-20250828-D32189
+registered_at: "2025-08-28"
+health_url: "http://localhost:8025/health"
+start_cmd: "python3 explainability_service.py"
+stop_cmd: "pkill -f 'explainability_service.py'"
+dependencies:
+  - zmart-api
+tags:
+  - explainability
+  - backend
+  - ai

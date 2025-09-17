@@ -1,0 +1,369 @@
+@agent: APIHandler
+
+## 🤖 MCP (Model Context Protocol) Integration
+
+### **MCP Server Pairing**
+**Status**: ✅ **ACTIVE** - API Manager MCP Integration
+**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
+**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
+**Integration Type**: Multi-MCP Service Integration
+
+### **MCP Integration Features**
+- **Claude Code Integration**: AI-powered API management and optimization
+- **Memory Gateway**: Persistent API state and metadata
+- **UI Automation**: Automated API monitoring and health checks
+- **Figma Integration**: API management dashboard design and UI management
+- **Supabase Integration**: Cloud-based API analytics and reporting
+
+### **MCP Integration Benefits**
+- **AI-Powered API Management**: Intelligent API optimization and analysis
+- **Persistent State**: API state and metadata storage
+- **Automated Monitoring**: Real-time API health and performance monitoring
+- **Visual Dashboard**: API process visualization and status tracking
+- **Cloud Analytics**: API performance metrics and optimization insights
+
+### **MCP Usage Examples**
+```bash
+# Health check via MCP
+curl -X GET "http://127.0.0.1:8000/health" \
+  -H "Content-Type: application/json"
+
+# API management via MCP
+curl -X POST "http://127.0.0.1:8000/api/manager" \
+  -H "Content-Type: application/json" \
+  -d '{"action": "optimize", "service": "kucoin"}'
+```
+
+### **MCP Status**
+- **Claude Code**: ✅ Active - AI-powered API management
+- **ByteRover**: ✅ Active - Persistent API state management
+- **UI TARS**: ✅ Active - Automated API monitoring
+- **Figma**: ✅ Active - API management dashboard design
+- **Supabase**: ✅ Active - Cloud-based API analytics
+
+---
+
+# API Manager - External Service Integration System
+
+## Overview
+The API Manager system in ZmartBot is a comprehensive suite of managers that handle all external service integrations, API key management, and real-time data connections. This system ensures secure, efficient, and reliable communication with multiple external services critical for trading operations.
+
+## Why We Need API Managers
+
+### 🔐 Security Requirements
+- **Encrypted Storage**: All API keys are encrypted using Fernet encryption
+- **Access Control**: Centralized management prevents credential exposure
+- **Usage Tracking**: Monitor API usage to prevent abuse and track costs
+- **Secure Permissions**: File-level security with restricted access (0o600)
+
+### 🎯 Trading System Dependencies
+- **Real-Time Data**: Multiple exchanges provide live market data
+- **Analysis Services**: External APIs provide technical analysis and risk metrics
+- **Blockchain Data**: Multiple blockchain networks for on-chain analysis
+- **AI Services**: OpenAI integration for advanced market analysis
+
+### 🔄 System Reliability
+- **Failover Management**: Multiple API keys for redundancy
+- **Rate Limiting**: Prevent API quota exhaustion
+- **Connection Management**: Robust WebSocket connections with auto-reconnect
+- **Error Handling**: Graceful degradation when services are unavailable
+
+## API Managers in ZmartBot
+
+### 1. API Keys Manager (`src/config/api_keys_manager.py`)
+
+#### Purpose
+Centralized, secure management of all external service API keys and configurations.
+
+#### Key Features
+- **Encryption**: Fernet-based encryption for all sensitive credentials
+- **Service Management**: 10+ external services with individual configurations
+- **Exchange Configs**: Separate management for trading exchange credentials
+- **Usage Analytics**: Track API usage, last used timestamps, usage counts
+- **Health Monitoring**: Service availability and performance tracking
+
+#### Managed Services
+```python
+# External APIs
+- CoinMarketCap: Crypto market data and rankings
+- CoinGecko: Alternative crypto data source
+- Binance: Trading exchange API
+- KuCoin: Trading exchange API
+- Cryptometer: Analysis API (k77U187e08zGf4I3SLz3sYzTEyM2KNoJ9i1N4xg2)
+- OpenAI: AI-powered market analysis
+- Ethereum: Blockchain data and analytics
+- Polygon: Layer 2 blockchain data
+- BSC: Binance Smart Chain data
+- Solana: Solana blockchain analytics
+
+# Trading Exchanges
+- Binance (Production + Testnet)
+- KuCoin (Production + Sandbox)
+```
+
+#### Security Features
+```python
+# Encryption
+- Fernet encryption for all API keys
+- Secure key storage with restricted permissions
+- Automatic key rotation capabilities
+
+# Access Control
+- Service-level activation/deactivation
+- Usage tracking and monitoring
+- Rate limit enforcement
+```
+
+### 2. KuCoin API Manager (`kucoin_api_manager.py`)
+
+#### Purpose
+Specialized manager for multiple KuCoin API configurations with task-based selection.
+
+#### Key Features
+- **Multi-Account Management**: TradeZ API + Main API configurations
+- **Task-Based Selection**: Automatically selects best API for specific tasks
+- **Balance Tracking**: Real-time account balance monitoring
+- **Position Management**: Track open positions across accounts
+- **Database Integration**: PostgreSQL for usage analytics
+
+#### Account Configurations
+```python
+# TradeZ API (Testing/Monitoring)
+- Balance: 120.01 USDT
+- Use: monitoring, small_trades, testing
+- Max Position: 100 USDT
+
+# Main Trading API (Production)
+- Balance: 11,350.57 USDT
+- Use: production, large_trades, positions
+- Max Position: 1,000 USDT
+```
+
+#### Task Selection Logic
+```python
+def select_api_for_task(task: str) -> str:
+    if task in ["test", "monitor", "small_trade"]:
+        return "tradez"  # Use TradeZ for testing
+    elif task in ["production", "large_trade", "close_position"]:
+        return "main"    # Use Main API for production
+    else:
+        # Default to higher balance
+        return "main" if main_balance > tradez_balance else "tradez"
+```
+
+### 3. WebSocket Manager (`src/services/websocket_service.py`)
+
+#### Purpose
+Manages real-time WebSocket connections for live market data and alerts.
+
+#### Key Features
+- **Multi-Source Connections**: KuCoin, Binance, Cryptometer WebSockets
+- **Real-Time Data**: Live price feeds, market updates, trading signals
+- **Auto-Reconnect**: Exponential backoff reconnection strategy
+- **Message Queues**: Separate queues for each data source
+- **Health Monitoring**: Connection status and performance tracking
+
+#### WebSocket Endpoints
+```python
+# KuCoin WebSocket
+- URL: wss://ws-api.kucoin.com/endpoint
+- Token URL: https://api.kucoin.com/api/v1/bullet-public
+- Features: Real-time trading data, order book updates
+
+# Binance WebSocket
+- URL: wss://stream.binance.com:9443/ws/
+- Features: Live price feeds, market depth, trade streams
+
+# Cryptometer WebSocket
+- Features: Real-time analysis updates, alert notifications
+```
+
+#### Message Processing
+```python
+@dataclass
+class WebSocketMessage:
+    source: str              # Data source (kucoin, binance, cryptometer)
+    message_type: str        # Message type (price, trade, alert)
+    data: Dict[str, Any]     # Message payload
+    timestamp: float         # Message timestamp
+    confidence: Optional[float] = None  # AI confidence score
+```
+
+### 4. Port Manager (`src/utils/port_manager.py`)
+
+#### Purpose
+Manages port allocations and prevents service conflicts.
+
+#### Key Features
+- **Service Isolation**: Ensures unique ports for all services
+- **Conflict Prevention**: Prevents port conflicts between services
+- **Configuration Management**: Default ports for all system components
+- **Dynamic Assignment**: Automatic port assignment when conflicts occur
+
+#### Managed Services
+```python
+# Core Services
+- zmart_api: 8000 (Main FastAPI backend)
+- frontend: 5173 (Vite React frontend)
+
+# Databases
+- postgresql: 5432 (Primary database)
+- redis: 6379 (Cache and sessions)
+- influxdb: 8086 (Time-series metrics)
+
+# Message Queue
+- rabbitmq: 5672 (Message broker)
+- rabbitmq_management: 15672 (Management UI)
+
+# Monitoring & Visualization
+- grafana: 3000 (Metrics dashboard)
+- prometheus: 9090 (Metrics collection)
+```
+
+## Description
+Centralized, secure management of all external service API keys and configurations.
+
+## Integration with Trading System
+
+### 1. Real-Time Data Flow
+```
+External APIs → API Keys Manager → WebSocket Manager → Trading System
+     ↓              ↓                    ↓              ↓
+Market Data → Secure Access → Live Feeds → Trading Decisions
+```
+
+### 2. Trading Operations
+```
+KuCoin API Manager → Task Selection → Exchange Connection → Trade Execution
+       ↓                ↓                ↓                ↓
+Account Balance → Best API Choice → Secure Connection → Position Management
+```
+
+### 3. System Monitoring
+```
+API Keys Manager → Health Check → Service Status → Master Orchestration
+       ↓              ↓              ↓              ↓
+Service Health → Availability → Performance → System Coordination
+```
+
+## Critical Dependencies
+
+### Trading System Requirements
+- **Live Market Data**: Required for real-time trading decisions
+- **Technical Analysis**: External APIs provide advanced indicators
+- **Risk Management**: Multiple data sources for risk assessment
+- **Position Management**: Exchange APIs for trade execution
+
+### System Architecture
+- **Microservices**: Each manager handles specific service types
+- **Fault Tolerance**: Multiple API keys and failover mechanisms
+- **Scalability**: Modular design allows easy service addition
+- **Security**: Encrypted credentials and access control
+
+## Configuration Management
+
+### Environment Variables
+```bash
+# API Configuration
+CRYPTOMETER_API_KEY=k77U187e08zGf4I3SLz3sYzTEyM2KNoJ9i1N4xg2
+KUCOIN_API_KEY=your_kucoin_key
+BINANCE_API_KEY=your_binance_key
+
+# Service Ports
+PORT=8000
+VITE_PORT=5173
+DB_PORT=5432
+REDIS_PORT=6379
+```
+
+### Configuration Files
+```yaml
+# api_keys.yml
+api_configs:
+  cryptometer:
+    service_name: cryptometer
+    api_key: encrypted_key_here
+    base_url: https://api.cryptometer.io
+    rate_limit: 100
+    is_active: true
+
+exchange_configs:
+  kucoin:
+    name: kucoin
+    api_key: encrypted_key_here
+    secret_key: encrypted_secret_here
+    passphrase: encrypted_passphrase_here
+    sandbox: false
+    rate_limit: 1800
+```
+
+## Error Handling & Recovery
+
+### API Failures
+- **Graceful Degradation**: System continues with available services
+- **Retry Logic**: Exponential backoff for failed requests
+- **Fallback Services**: Alternative data sources when primary fails
+- **Alert System**: Notifications when services are down
+
+### Security Incidents
+- **Key Rotation**: Automatic API key rotation capabilities
+- **Access Revocation**: Immediate service deactivation
+- **Audit Logging**: Complete access and usage logging
+- **Incident Response**: Automated security incident handling
+
+## Performance Optimization
+
+### Caching Strategy
+- **API Response Caching**: Reduce redundant API calls
+- **Connection Pooling**: Reuse HTTP connections
+- **Rate Limit Management**: Optimize API usage patterns
+- **Data Compression**: Minimize bandwidth usage
+
+### Monitoring & Analytics
+- **Usage Metrics**: Track API consumption and costs
+- **Performance Monitoring**: Response times and error rates
+- **Health Checks**: Regular service availability testing
+- **Capacity Planning**: Predict API usage growth
+
+## Future Enhancements
+
+### Planned Features
+- **API Key Rotation**: Automated key rotation for security
+- **Load Balancing**: Distribute requests across multiple keys
+- **Advanced Analytics**: Machine learning for usage optimization
+- **Multi-Region Support**: Geographic distribution for latency
+
+### Integration Roadmap
+- **Additional Exchanges**: Support for more trading platforms
+- **Advanced APIs**: Integration with more analysis services
+- **Blockchain APIs**: Enhanced on-chain data integration
+- **AI Services**: Expanded AI-powered analysis capabilities
+
+## Conclusion
+
+The API Manager system is the **backbone of ZmartBot's external integrations**, providing:
+
+1. **Security**: Encrypted, secure management of all API credentials
+2. **Reliability**: Robust error handling and failover mechanisms
+3. **Scalability**: Modular design for easy service addition
+4. **Performance**: Optimized caching and connection management
+5. **Monitoring**: Comprehensive health and usage tracking
+
+This system ensures that ZmartBot can reliably access all required external services for successful trading operations while maintaining security and performance standards.
+description:
+globs:
+alwaysApply: true
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Database connectivity**
+- ✅ **Health endpoint implementation**
+- ✅ **Master Orchestration integration**
+
+
+---
+
+## Triggers
+- **API endpoint requests**
+- **Database events**
+- **Health check requests**

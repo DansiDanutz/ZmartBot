@@ -1,5 +1,6 @@
 @agent: APIHandler
 
+
 # API Manager - External Service Integration System
 
 ## Overview
@@ -177,6 +178,9 @@ Manages port allocations and prevents service conflicts.
 - prometheus: 9090 (Metrics collection)
 ```
 
+## Description
+Centralized, secure management of all external service API keys and configurations.
+
 ## Integration with Trading System
 
 ### 1. Real-Time Data Flow
@@ -307,4 +311,17 @@ This system ensures that ZmartBot can reliably access all required external serv
 description:
 globs:
 alwaysApply: true
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Database connectivity**
+- ✅ **Health endpoint implementation**
+- ✅ **Master Orchestration integration**
+
+
 ---
+
+## Triggers
+- **API endpoint requests**
+- **Database events**
+- **Health check requests**

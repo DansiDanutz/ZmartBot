@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chart.js Debug Test</title>
+</head>
+<body>
+    <h1>Chart.js Loading Debug</h1>
+    <div id="debug-output"></div>
+    
+    <script>
+        const debugDiv = document.getElementById('debug-output');
+        
+        function log(message) {
+            debugDiv.innerHTML += '<p>' + message + '</p>';
+            console.log(message);
+        }
+        
+        log('🚀 Starting Chart.js loading test...');
+        
+        // Test multiple CDN sources
+        const chartSources = [
+            'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js',
+            'https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js',
+            'https://unpkg.com/chart.js@3.9.1/dist/chart.min.js'
+        ];
+        
+        let currentIndex = 0;
+        
+        function loadChart() {
+            if (currentIndex >= chartSources.length) {
+                log('❌ All Chart.js sources failed to load');
+                return;
+            }
+            
+            const url = chartSources[currentIndex];
+            log(`⏳ Trying to load Chart.js from: ${url}`);
+            
+            const script = document.createElement('script');
+            script.src = url;
+            
+            script.onload = () => {
+                log(`✅ Script loaded from: ${url}`);
+                if (typeof Chart !== 'undefined') {
+                    log(`🎉 Chart.js is available! Version: ${Chart.version || 'unknown'}`);
+                    
+                    // Test creating a chart
+                    try {
+                        const canvas = document.createElement('canvas');
+                        canvas.width = 400;
+                        canvas.height = 200;
+                        document.body.appendChild(canvas);
+                        
+                        const ctx = canvas.getContext('2d');
+                        const chart = new Chart(ctx, {
+                            type: 'line',
+                            data: {
+                                labels: ['A', 'B', 'C'],
+                                datasets: [{
+                                    label: 'Test',
+                                    data: [1, 2, 3],
+                                    borderColor: '#3B82F6'
+                                }]
+                            },
+                            options: {
+                                responsive: false,
+                                plugins: {
+                                    title: {
+                                        display: true,
+                                        text: 'Test Chart'
+                                    }
+                                }
+                            }
+                        });
+                        
+                        log('🎨 Chart created successfully!');
+                    } catch (error) {
+                        log('❌ Chart creation failed: ' + error.message);
+                    }
+                } else {
+                    log(`⚠️ Script loaded but Chart not available from: ${url}`);
+                    currentIndex++;
+                    loadChart();
+                }
+            };
+            
+            script.onerror = () => {
+                log(`❌ Failed to load script from: ${url}`);
+                currentIndex++;
+                loadChart();
+            };
+            
+            document.head.appendChild(script);
+        }
+        
+        loadChart();
+    </script>
+</body>
+</html>

@@ -1,0 +1,1393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZmartBot MDC Dashboard</title>
+    <link rel="stylesheet" href="/MDC-dashboard/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <i class="fas fa-robot header-icon"></i>
+                <h1>ZmartBot MDC Dashboard</h1>
+                <span class="version">v1.0.0</span>
+            </div>
+            <div class="header-right">
+                <div class="search-container">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" id="searchInput" placeholder="Search MDC files..." class="search-input">
+                </div>
+                <button class="btn btn-primary" onclick="refreshDashboard()">
+                    <i class="fas fa-sync-alt"></i>
+                    Refresh
+                </button>
+                <div class="connection-status" id="connectionStatus">
+                    <i class="fas fa-circle status-indicator"></i>
+                    <span>Connected</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <button class="nav-btn active" data-section="overview" onclick="switchSection('overview')">
+                <i class="fas fa-tachometer-alt"></i>
+                Overview
+            </button>
+            <button class="nav-btn" data-section="files" onclick="switchSection('files')">
+                <i class="fas fa-file-code"></i>
+                MDC Files
+            </button>
+            <button class="nav-btn" data-section="connections" onclick="switchSection('connections')">
+                <i class="fas fa-project-diagram"></i>
+                Connections
+            </button>
+            <button class="nav-btn" data-section="generator" onclick="switchSection('generator')">
+                <i class="fas fa-magic"></i>
+                Generator
+            </button>
+            <button class="nav-btn" data-section="analytics" onclick="switchSection('analytics')">
+                <i class="fas fa-chart-line"></i>
+                Analytics
+            </button>
+            <button class="nav-btn" data-section="logs" onclick="switchSection('logs')">
+                <i class="fas fa-clipboard-list"></i>
+                Logs
+            </button>
+            <button class="nav-btn" data-section="settings" onclick="switchSection('settings')">
+                <i class="fas fa-cog"></i>
+                Settings
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        
+        <!-- Overview Section -->
+        <section id="overview" class="section active">
+            <div class="section-header">
+                <h2><i class="fas fa-tachometer-alt"></i> System Overview</h2>
+                <p>Real-time monitoring and management of your MDC ecosystem</p>
+            </div>
+
+            <!-- 🚀 SPECTACULAR MDC SCAN CARDS - HORIZONTAL LAYOUT -->
+            <div class="mdc-scan-horizontal-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+                
+                <!-- 📊 Scan Controls Card -->
+                <div class="mdc-scan-card" style="background: linear-gradient(135deg, 
+                    rgba(79, 209, 199, 0.1), 
+                    rgba(79, 209, 199, 0.05)); 
+                    border: 1px solid rgba(79, 209, 199, 0.3); 
+                    border-radius: 16px; 
+                    padding: 1.5rem; 
+                    backdrop-filter: blur(20px); 
+                    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);">
+                    
+                    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem;">
+                        <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #4fd1c7, #667eea); 
+                                    border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-search" style="color: white; font-size: 1rem;"></i>
+                        </div>
+                        <div>
+                            <h3 style="margin: 0; font-size: 1rem; color: var(--primary-color); font-weight: 700;">
+                                MDC Scanner
+                            </h3>
+                            <p style="margin: 0; font-size: 0.8rem; color: var(--text-muted);">
+                                System Control
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <p style="margin-bottom: 0.75rem; color: var(--text-color); font-size: 0.85rem; line-height: 1.4;">
+                        <i class="fas fa-clock" style="color: var(--primary-color); margin-right: 0.5rem;"></i> 
+                        Auto-scan every 4 hours
+                    </p>
+                    <p style="margin-bottom: 1.25rem; color: var(--text-muted); font-size: 0.75rem;">
+                        Next: <span id="nextScanTime" style="color: var(--primary-color);">Calculating...</span>
+                    </p>
+                    
+                    <div style="display: flex; gap: 0.5rem;">
+                        <div style="flex: 1;">
+                            <button class="btn btn-primary" onclick="performMDCScan(false)" id="mdcScanBtn" 
+                                    style="width: 100%; padding: 0.75rem; font-size: 0.8rem; border-radius: 10px;">
+                                <i class="fas fa-search"></i> Scan
+                            </button>
+                            <p style="margin: 0.25rem 0 0 0; font-size: 0.65rem; color: var(--text-muted); text-align: center; line-height: 1.2;">
+                                Discover files, analyze connections,<br>map service dependencies
+                            </p>
+                        </div>
+                        <div style="flex: 1;">
+                            <button class="btn btn-accent" onclick="performContextOptimization()" id="contextOptimizeBtn" 
+                                    style="width: 100%; padding: 0.75rem; font-size: 0.8rem; border-radius: 10px;">
+                                <i class="fas fa-cog"></i> Optimize
+                            </button>
+                            <p style="margin: 0.25rem 0 0 0; font-size: 0.65rem; color: var(--text-muted); text-align: center; line-height: 1.2;">
+                                Smart CLAUDE.md optimization,<br>adaptive scheduling
+                            </p>
+                        </div>
+                        <button class="btn btn-secondary" onclick="updateScanStatusDisplay()" 
+                                style="padding: 0.75rem; border-radius: 10px; min-width: auto;">
+                            <i class="fas fa-sync"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 📈 Scan Results Card -->
+                <div class="mdc-results-card" style="background: linear-gradient(135deg, 
+                    rgba(102, 126, 234, 0.1), 
+                    rgba(102, 126, 234, 0.05)); 
+                    border: 1px solid rgba(102, 126, 234, 0.3); 
+                    border-radius: 16px; 
+                    padding: 1.5rem; 
+                    backdrop-filter: blur(20px); 
+                    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);">
+                    
+                    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem;">
+                        <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #667eea, #764ba2); 
+                                    border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-chart-line" style="color: white; font-size: 1rem;"></i>
+                        </div>
+                        <div>
+                            <h3 style="margin: 0; font-size: 1rem; color: #667eea; font-weight: 700;">
+                                System Status
+                            </h3>
+                            <p style="margin: 0; font-size: 0.8rem; color: var(--text-muted);">
+                                Live Metrics
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div id="scanResults" style="background: rgba(102, 126, 234, 0.05); 
+                                                 padding: 1rem; 
+                                                 border-radius: 12px; 
+                                                 border: 1px solid rgba(102, 126, 234, 0.2);
+                                                 min-height: 80px;
+                                                 display: flex;
+                                                 align-items: center;
+                                                 justify-content: center;">
+                        <div style="text-align: center; color: var(--text-muted);">
+                            <div style="width: 32px; height: 32px; margin: 0 auto 0.5rem; 
+                                        background: linear-gradient(135deg, #667eea, #764ba2); 
+                                        border-radius: 50%; 
+                                        display: flex; align-items: center; justify-content: center;
+                                        animation: pulse 2s infinite;">
+                                <i class="fas fa-chart-line" style="color: white; font-size: 0.9rem;"></i>
+                            </div>
+                            <span style="font-size: 0.8rem;">Loading metrics...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-file-code"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="totalMdcFiles">0</h3>
+                        <p>MDC Files</p>
+                    </div>
+                    <div class="stat-trend positive">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>+2</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-project-diagram"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="totalConnections">0</h3>
+                        <p>Connections</p>
+                    </div>
+                    <div class="stat-trend positive">
+                        <i class="fas fa-arrow-up"></i>
+                        <span id="connectionTrend">+0</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-microchip"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="activeServices">0</h3>
+                        <p>Active Services</p>
+                    </div>
+                    <div class="stat-trend neutral">
+                        <i class="fas fa-minus"></i>
+                        <span>0</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card clickable-stat-card" onclick="toggleUpdateHistory()">
+                    <div class="stat-icon">
+                        <i class="fas fa-server"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="lastUpdate">0</h3>
+                        <p>Registered Services</p>
+                    </div>
+                    <div class="stat-trend">
+                        <i class="fas fa-chevron-down" id="updateHistoryArrow"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <h3><i class="fas fa-bolt"></i> Quick Actions</h3>
+                <div class="actions-grid">
+                    <button class="action-card" onclick="generateAllDocs()">
+                        <div class="action-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="action-content">
+                            <h4>Generate All Docs</h4>
+                            <p>Create MDC files for services that don't have them yet. Never overwrites existing files.</p>
+                        </div>
+                    </button>
+                    
+                    <button class="action-card" onclick="discoverConnections()">
+                        <div class="action-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <div class="action-content">
+                            <h4>Discover Connections</h4>
+                            <p>Auto-detect service relationships</p>
+                        </div>
+                    </button>
+                    
+                    <button class="action-card" onclick="optimizeContext()">
+                        <div class="action-icon">
+                            <i class="fas fa-compress-arrows-alt"></i>
+                        </div>
+                        <div class="action-content">
+                            <h4>Optimize Context</h4>
+                            <p>Optimize CLAUDE.md for performance</p>
+                        </div>
+                    </button>
+                    
+                    <button class="action-card" onclick="validateSystem()">
+                        <div class="action-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="action-content">
+                            <h4>Validate System</h4>
+                            <p>Check system integrity and health</p>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Generation Summary Cards (initially hidden) -->
+            <div id="generationSummary" class="generation-summary" style="display: none;">
+                <h3><i class="fas fa-chart-bar"></i> Generation Summary</h3>
+                <div class="generation-stats">
+                    <div class="generation-card" id="totalFilesCard">
+                        <div class="generation-icon">
+                            <i class="fas fa-folder"></i>
+                        </div>
+                        <div class="generation-content">
+                            <h4 id="totalFilesCount">0</h4>
+                            <p>Total Files Scanned</p>
+                        </div>
+                    </div>
+                    
+                    <div class="generation-card" id="completedCard">
+                        <div class="generation-icon completed">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="generation-content">
+                            <h4 id="completedCount">0</h4>
+                            <p>Completed (Has MDC)</p>
+                        </div>
+                    </div>
+                    
+                    <div class="generation-card clickable-card" id="pendingCard" onclick="togglePendingServices()">
+                        <div class="generation-icon pending">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="generation-content">
+                            <h4 id="pendingCount">0</h4>
+                            <p>Pending Generation</p>
+                        </div>
+                        <div class="card-arrow">
+                            <i class="fas fa-chevron-down" id="pendingArrow"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pending Services List (initially hidden) -->
+            <div id="pendingServicesList" class="pending-services" style="display: none;">
+                <h3><i class="fas fa-list"></i> Pending Services</h3>
+                <div id="pendingServicesGrid" class="pending-grid">
+                    <!-- Pending service cards will be populated here -->
+                </div>
+            </div>
+
+            <!-- Update History (initially hidden) -->
+            <div id="updateHistory" class="update-history" style="display: none;">
+                <h3><i class="fas fa-history"></i> Update History</h3>
+                <div id="updateHistoryGrid" class="update-history-grid">
+                    <!-- Update history cards will be populated here -->
+                </div>
+            </div>
+
+            <!-- System Health -->
+            <div class="health-panel">
+                <h3><i class="fas fa-heartbeat"></i> System Health</h3>
+                <div class="health-grid">
+                    <div class="health-item">
+                        <div class="health-indicator healthy" id="mdcAgentHealth"></div>
+                        <div class="health-info">
+                            <h4>MDC Agent</h4>
+                            <p id="mdcAgentStatus">Healthy</p>
+                        </div>
+                        <div class="health-actions">
+                            <button class="btn-small btn-secondary" onclick="viewComponentLogs('mdcAgent')">View Logs</button>
+                        </div>
+                    </div>
+                    
+                    <div class="health-item">
+                        <div class="health-indicator healthy" id="connectionAgentHealth"></div>
+                        <div class="health-info">
+                            <h4>Connection Agent</h4>
+                            <p id="connectionAgentStatus">Healthy</p>
+                        </div>
+                        <div class="health-actions">
+                            <button class="btn-small btn-secondary" onclick="viewComponentLogs('connectionAgent')">View Logs</button>
+                        </div>
+                    </div>
+                    
+                    <div class="health-item">
+                        <div class="health-indicator healthy" id="contextOptimizerHealth"></div>
+                        <div class="health-info">
+                            <h4>Context Optimizer</h4>
+                            <p id="contextOptimizerStatus">Healthy</p>
+                        </div>
+                        <div class="health-actions">
+                            <button class="btn-small btn-secondary" onclick="viewComponentLogs('contextOptimizer')">View Logs</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MDC Files Section -->
+        <section id="files" class="section">
+            <div class="section-header">
+                <h2><i class="fas fa-file-code"></i> MDC Files Management</h2>
+                <div class="section-actions">
+                    <select id="categoryFilter" class="filter-select">
+                        <option value="all">All Categories</option>
+                        <option value="core">Core System</option>
+                        <option value="trading">Trading & Alerts</option>
+                        <option value="data">Data & Analytics</option>
+                        <option value="monitoring">Monitoring & Security</option>
+                        <option value="infrastructure">Infrastructure</option>
+                        <option value="frontend">Frontend & UI</option>
+                    </select>
+                    <button class="btn btn-primary" onclick="createNewMDC()">
+                        <i class="fas fa-plus"></i>
+                        New MDC
+                    </button>
+                </div>
+            </div>
+            
+            <div class="mdc-grid" id="mdcGrid">
+                <!-- MDC Cards will be populated here -->
+            </div>
+        </section>
+
+        <!-- Connections Section -->
+        <section id="connections" class="section">
+            <div class="section-header">
+                <h2><i class="fas fa-project-diagram"></i> Service Connections</h2>
+                <div class="section-actions">
+                    <button class="btn btn-secondary" onclick="exportConnections()">
+                        <i class="fas fa-download"></i>
+                        Export
+                    </button>
+                    <button class="btn btn-primary" onclick="refreshConnections()">
+                        <i class="fas fa-sync-alt"></i>
+                        Refresh
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 🚀 Advanced Connection Controls -->
+            <div class="connections-controls">
+                <div class="search-container">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="connectionSearch" placeholder="Search connections, services, or types..." class="search-input">
+                </div>
+                
+                <div class="filter-controls">
+                    <div class="filter-group">
+                        <label>Connection Type:</label>
+                        <select id="connectionTypeFilter" class="filter-select">
+                            <option value="">All Types</option>
+                            <option value="api">API</option>
+                            <option value="database">Database</option>
+                            <option value="messaging">Messaging</option>
+                            <option value="storage">Storage</option>
+                            <option value="auth">Authentication</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>Confidence Level:</label>
+                        <select id="confidenceFilter" class="filter-select">
+                            <option value="">All Levels</option>
+                            <option value="high">High (80%+)</option>
+                            <option value="medium">Medium (50-79%)</option>
+                            <option value="low">Low (<50%)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>Status:</label>
+                        <select id="statusFilter" class="filter-select">
+                            <option value="">All Status</option>
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                            <option value="pending">Pending</option>
+                        </select>
+                    </div>
+                    
+                    <button class="btn btn-secondary btn-small" onclick="clearConnectionFilters()">
+                        <i class="fas fa-times"></i>
+                        Clear
+                    </button>
+                </div>
+                
+                <div class="view-controls">
+                    <button class="btn btn-secondary btn-small active" onclick="toggleConnectionView('list')" id="listViewBtn">
+                        <i class="fas fa-list"></i>
+                        List
+                    </button>
+                    <button class="btn btn-secondary btn-small" onclick="toggleConnectionView('grid')" id="gridViewBtn">
+                        <i class="fas fa-th"></i>
+                        Grid
+                    </button>
+                    <button class="btn btn-secondary btn-small" onclick="toggleConnectionView('graph')" id="graphViewBtn">
+                        <i class="fas fa-project-diagram"></i>
+                        Graph
+                    </button>
+                </div>
+            </div>
+            
+            <div class="connections-container">
+                <div class="connection-graph" id="connectionGraph">
+                    <div class="graph-placeholder">
+                        <i class="fas fa-project-diagram"></i>
+                        <p>Connection graph will be displayed here</p>
+                        <div class="graph-controls">
+                            <button class="btn btn-primary" onclick="generateConnectionGraph()">
+                                <i class="fas fa-project-diagram"></i>
+                                Generate Graph
+                            </button>
+                            <button class="btn btn-secondary" onclick="testAllConnections()">
+                                <i class="fas fa-heartbeat"></i>
+                                Test All
+                            </button>
+                            <button class="btn btn-warning" onclick="restartAllConnections()">
+                                <i class="fas fa-redo"></i>
+                                Restart All
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="connections-list" id="connectionsList">
+                    <h3>Connection Details</h3>
+                    <div class="connection-items">
+                        <!-- Connection items will be populated here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Generator Section -->
+        <section id="generator" class="section">
+            <div class="section-header">
+                <h2><i class="fas fa-magic"></i> MDC Generator</h2>
+                <p>Generate new MDC files using AI-powered analysis</p>
+            </div>
+            
+            <div class="spectacular-generator-container">
+                <!-- 🚀 MDC File Selection Controls -->
+                <div class="mdc-selection-panel">
+                    <div class="selection-header">
+                        <h3><i class="fas fa-file-code"></i> Select MDC File</h3>
+                        <p>Choose an existing MDC file to enhance or create a new one</p>
+                    </div>
+                    
+                    <!-- 🔍 Search Input -->
+                    <div class="mdc-search-container">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="mdcFileSearch" placeholder="Search MDC files..." class="mdc-search-input">
+                        <div class="search-results" id="searchResults"></div>
+                    </div>
+                    
+                    <!-- 📋 Dropdown Selection -->
+                    <div class="mdc-dropdown-container">
+                        <label for="mdcFileSelect"><i class="fas fa-list"></i> MDC Files (Alphabetical)</label>
+                        <select id="mdcFileSelect" class="mdc-dropdown">
+                            <option value="">Select an MDC file...</option>
+                            <!-- Options will be populated dynamically -->
+                        </select>
+                    </div>
+                    
+                    <!-- ✨ Enhancement Options -->
+                    <div class="enhancement-options">
+                        <h4><i class="fas fa-magic"></i> Enhancement Options</h4>
+                        <div class="enhancement-controls">
+                            <div class="enhancement-group">
+                                <label for="enhancementType">Enhancement Type:</label>
+                                <select id="enhancementType" class="enhancement-select">
+                                    <option value="improve_documentation">Improve Documentation</option>
+                                    <option value="add_security_rules">Add Security Rules</option>
+                                    <option value="optimize_performance">Optimize Performance</option>
+                                    <option value="add_monitoring">Add Monitoring</option>
+                                    <option value="enhance_error_handling">Enhance Error Handling</option>
+                                    <option value="add_testing_guidelines">Add Testing Guidelines</option>
+                                    <option value="custom">Custom Enhancement</option>
+                                </select>
+                            </div>
+                            
+                            <div class="enhancement-group" id="customPromptGroup" style="display: none;">
+                                <label for="customPrompt">Custom Enhancement Prompt:</label>
+                                <textarea id="customPrompt" placeholder="Describe what you want to enhance or improve in the MDC file..." class="enhancement-textarea"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 🚀 Action Buttons -->
+                    <div class="generator-actions">
+                        <button class="btn btn-secondary" onclick="resetMDCGenerator()">
+                            <i class="fas fa-undo"></i> Reset
+                        </button>
+                        <button class="btn btn-primary" onclick="generateEnhancedMDC()" id="generateBtn" disabled>
+                            <i class="fas fa-magic"></i>
+                            Generate Enhanced MDC
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 👁 Large Preview Area -->
+                <div class="spectacular-preview-panel">
+                    <div class="preview-header">
+                        <h3><i class="fas fa-eye"></i> MDC File Preview</h3>
+                        <div class="preview-controls">
+                            <button class="btn btn-small btn-secondary" onclick="togglePreviewMode('original')" id="originalPreviewBtn">
+                                <i class="fas fa-file-alt"></i> Original
+                            </button>
+                            <button class="btn btn-small btn-primary" onclick="togglePreviewMode('enhanced')" id="enhancedPreviewBtn">
+                                <i class="fas fa-sparkles"></i> Enhanced
+                            </button>
+                            <button class="btn btn-small btn-secondary" onclick="copyPreviewContent()">
+                                <i class="fas fa-copy"></i> Copy
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="preview-content-large" id="mdcPreviewContent">
+                        <div class="preview-placeholder">
+                            <div class="placeholder-icon">
+                                <i class="fas fa-file-code"></i>
+                            </div>
+                            <h4>Select an MDC File to Preview</h4>
+                            <p>Choose an MDC file from the search or dropdown to see its content and generate enhancements</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 🚀 SPECTACULAR ANALYTICS SECTION -->
+        <section id="analytics" class="section">
+            <div class="section-header">
+                <h2><i class="fas fa-chart-line"></i> Analytics & Insights</h2>
+                <p>Detailed analysis of your MDC ecosystem with real-time intelligence</p>
+            </div>
+            
+            <!-- 📊 Analytics Controls -->
+            <div class="spectacular-analytics-controls">
+                <div class="analytics-filters">
+                    <div class="filter-group">
+                        <label><i class="fas fa-calendar"></i> Time Range:</label>
+                        <select id="analyticsTimeRange" class="analytics-select">
+                            <option value="24h">Last 24 Hours</option>
+                            <option value="7d" selected>Last 7 Days</option>
+                            <option value="30d">Last 30 Days</option>
+                            <option value="90d">Last 90 Days</option>
+                            <option value="all">All Time</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label><i class="fas fa-filter"></i> View Type:</label>
+                        <div class="view-toggle-group">
+                            <button class="view-toggle-btn active" onclick="toggleAnalyticsView('overview')" id="overviewAnalyticsBtn">
+                                <i class="fas fa-chart-pie"></i> Overview
+                            </button>
+                            <button class="view-toggle-btn" onclick="toggleAnalyticsView('detailed')" id="detailedAnalyticsBtn">
+                                <i class="fas fa-chart-bar"></i> Detailed
+                            </button>
+                            <button class="view-toggle-btn" onclick="toggleAnalyticsView('trends')" id="trendsAnalyticsBtn">
+                                <i class="fas fa-chart-line"></i> Trends
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="analytics-actions">
+                    <button class="btn btn-secondary btn-small" onclick="exportAnalytics()">
+                        <i class="fas fa-download"></i> Export
+                    </button>
+                    <button class="btn btn-primary btn-small" onclick="refreshAnalytics()">
+                        <i class="fas fa-sync"></i> Refresh
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 📈 Key Metrics Dashboard -->
+            <div class="key-metrics-dashboard">
+                <div class="metric-card" id="totalFiles">
+                    <div class="metric-icon">
+                        <i class="fas fa-file-code"></i>
+                    </div>
+                    <div class="metric-content">
+                        <div class="metric-value">0</div>
+                        <div class="metric-label">MDC Files</div>
+                        <div class="metric-change positive">
+                            <i class="fas fa-arrow-up"></i> +5.2%
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="metric-card" id="activeConnections">
+                    <div class="metric-icon">
+                        <i class="fas fa-network-wired"></i>
+                    </div>
+                    <div class="metric-content">
+                        <div class="metric-value">0</div>
+                        <div class="metric-label">Active Connections</div>
+                        <div class="metric-change positive">
+                            <i class="fas fa-arrow-up"></i> +12.8%
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="metric-card" id="systemHealth">
+                    <div class="metric-icon">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <div class="metric-content">
+                        <div class="metric-value">98.5%</div>
+                        <div class="metric-label">System Health</div>
+                        <div class="metric-change positive">
+                            <i class="fas fa-arrow-up"></i> +0.3%
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="metric-card" id="updateFrequency">
+                    <div class="metric-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="metric-content">
+                        <div class="metric-value">2.4m</div>
+                        <div class="metric-label">Avg Update Time</div>
+                        <div class="metric-change negative">
+                            <i class="fas fa-arrow-down"></i> -15.2%
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="metric-card" id="totalServices" style="grid-column: 1 / -1; background: linear-gradient(135deg, #667eea, #764ba2);">
+                    <div class="metric-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <div class="metric-content">
+                        <div class="metric-value">46</div>
+                        <div class="metric-label">Total Services</div>
+                        <div style="display: flex; gap: 20px; margin-top: 10px; font-size: 0.9rem;">
+                            <span>🔍 Discovery: <strong>10</strong></span>
+                            <span>🎫 Passport: <strong>17</strong></span>
+                            <span>🏆 Certificate: <strong>19</strong></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 📊 Advanced Analytics Grid -->
+            <div class="spectacular-analytics-grid">
+                <!-- Service Distribution Chart -->
+                <div class="spectacular-analytics-card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-chart-pie"></i> Service Distribution</h3>
+                        <div class="card-actions">
+                            <button class="btn-icon" onclick="fullscreenChart('serviceChart')">
+                                <i class="fas fa-expand"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="serviceChart"></canvas>
+                    </div>
+                    <div class="chart-legend" id="serviceChartLegend"></div>
+                </div>
+                
+                <!-- Connection Types Analysis -->
+                <div class="spectacular-analytics-card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-project-diagram"></i> Connection Types</h3>
+                        <div class="card-actions">
+                            <button class="btn-icon" onclick="fullscreenChart('connectionChart')">
+                                <i class="fas fa-expand"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="connectionChart"></canvas>
+                    </div>
+                    <div class="chart-insights">
+                        <div class="insight-item">
+                            <span class="insight-label">Most Common:</span>
+                            <span class="insight-value">API Connections</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Performance Trends -->
+                <div class="spectacular-analytics-card wide">
+                    <div class="card-header">
+                        <h3><i class="fas fa-chart-line"></i> Performance Trends</h3>
+                        <div class="card-actions">
+                            <button class="btn-icon" onclick="toggleTrendView()">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn-icon" onclick="fullscreenChart('trendsChart')">
+                                <i class="fas fa-expand"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="trendsChart"></canvas>
+                    </div>
+                </div>
+                
+                <!-- File Size Heatmap -->
+                <div class="spectacular-analytics-card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-fire"></i> File Size Heatmap</h3>
+                        <div class="card-actions">
+                            <button class="btn-icon" onclick="fullscreenChart('sizeChart')">
+                                <i class="fas fa-expand"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="sizeChart"></canvas>
+                    </div>
+                    <div class="heatmap-scale">
+                        <span>Small</span>
+                        <div class="scale-bar"></div>
+                        <span>Large</span>
+                    </div>
+                </div>
+                
+                <!-- System Activity Timeline -->
+                <div class="spectacular-analytics-card wide">
+                    <div class="card-header">
+                        <h3><i class="fas fa-history"></i> System Activity Timeline</h3>
+                        <div class="card-actions">
+                            <button class="btn-icon" onclick="toggleTimelineDetail()">
+                                <i class="fas fa-info-circle"></i>
+                            </button>
+                            <button class="btn-icon" onclick="fullscreenChart('timelineChart')">
+                                <i class="fas fa-expand"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="timelineChart"></canvas>
+                    </div>
+                    <div class="timeline-events" id="timelineEvents">
+                        <!-- Timeline events will be populated here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 📋 OPERATION LOGS SECTION -->
+        <section id="logs" class="section">
+            <div class="section-header">
+                <h2><i class="fas fa-clipboard-list"></i> Operation Logs</h2>
+                <p>Real-time operation history and system activity tracking</p>
+            </div>
+            
+            <!-- 🚀 Log Controls -->
+            <div class="spectacular-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-tools"></i> Log Controls</h3>
+                    <div class="card-actions">
+                        <button class="btn btn-secondary" onclick="refreshLogs()">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                        <button class="btn btn-warning" onclick="clearLogs()">
+                            <i class="fas fa-trash"></i> Clear Logs
+                        </button>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div class="logs-info">
+                        <div class="info-item">
+                            <i class="fas fa-list-ol"></i>
+                            <span>Total Logs: <span id="totalLogsCount">0</span></span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-clock"></i>
+                            <span>Last Update: <span id="lastLogUpdate">Never</span></span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-database"></i>
+                            <span>Max Logs: 100</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 📊 Operation Logs Display -->
+            <div class="spectacular-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-history"></i> Recent Operations</h3>
+                    <div class="card-actions">
+                        <select id="logTypeFilter" class="filter-select" onchange="filterLogs()">
+                            <option value="">All Operations</option>
+                            <option value="workflow">Workflow</option>
+                            <option value="scan">System Scan</option>
+                            <option value="context">Context Optimization</option>
+                            <option value="system">System Operations</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div id="logsLoadingIndicator" class="loading-indicator" style="display: none;">
+                        <i class="fas fa-spinner fa-spin"></i> Loading logs...
+                    </div>
+                    
+                    <div id="logsContainer" class="logs-display-container">
+                        <div class="no-data" id="noLogsMessage" style="display: none;">
+                            <i class="fas fa-clipboard"></i>
+                            <h3>No Operation Logs</h3>
+                            <p>No operations have been logged yet. Run some operations to see the history here.</p>
+                        </div>
+                        
+                        <div id="logsList" class="logs-list">
+                            <!-- Logs will be populated here by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 🚀 SPECTACULAR SETTINGS SECTION -->
+        <section id="settings" class="section">
+            <div class="section-header">
+                <h2><i class="fas fa-cog"></i> Settings & Configuration</h2>
+                <p>Customize your MDC Dashboard experience with advanced settings</p>
+            </div>
+            
+            <!-- ⚙️ Settings Navigation -->
+            <div class="spectacular-settings-nav">
+                <button class="settings-nav-btn active" onclick="switchSettingsTab('general')" id="generalSettingsBtn">
+                    <i class="fas fa-sliders-h"></i> General
+                </button>
+                <button class="settings-nav-btn" onclick="switchSettingsTab('appearance')" id="appearanceSettingsBtn">
+                    <i class="fas fa-palette"></i> Appearance
+                </button>
+                <button class="settings-nav-btn" onclick="switchSettingsTab('performance')" id="performanceSettingsBtn">
+                    <i class="fas fa-tachometer-alt"></i> Performance
+                </button>
+                <button class="settings-nav-btn" onclick="switchSettingsTab('security')" id="securitySettingsBtn">
+                    <i class="fas fa-shield-alt"></i> Security
+                </button>
+                <button class="settings-nav-btn" onclick="switchSettingsTab('advanced')" id="advancedSettingsBtn">
+                    <i class="fas fa-code"></i> Advanced
+                </button>
+            </div>
+            
+            <div class="spectacular-settings-container">
+                <!-- 🔧 General Settings Tab -->
+                <div class="settings-tab active" id="generalSettings">
+                    <div class="settings-group">
+                        <div class="group-header">
+                            <h3><i class="fas fa-cog"></i> Core Settings</h3>
+                            <p>Basic dashboard configuration</p>
+                        </div>
+                        
+                        <div class="spectacular-setting-item">
+                            <div class="setting-control">
+                                <label class="spectacular-toggle">
+                                    <input type="checkbox" id="autoRefresh" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="setting-info">
+                                <div class="setting-title">Auto-refresh Dashboard</div>
+                                <div class="setting-description">Automatically refresh data at regular intervals</div>
+                            </div>
+                        </div>
+                        
+                        <div class="spectacular-setting-item">
+                            <div class="setting-info">
+                                <div class="setting-title">Refresh Interval</div>
+                                <div class="setting-description">How often to refresh data (seconds)</div>
+                            </div>
+                            <div class="setting-control">
+                                <div class="number-input-container">
+                                    <input type="number" id="refreshInterval" value="30" min="10" max="300" class="spectacular-number-input">
+                                    <div class="input-suffix">sec</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="spectacular-setting-item">
+                            <div class="setting-info">
+                                <div class="setting-title">Default View</div>
+                                <div class="setting-description">The section to show when opening the dashboard</div>
+                            </div>
+                            <div class="setting-control">
+                                <select id="defaultView" class="spectacular-select">
+                                    <option value="overview">📊 Overview</option>
+                                    <option value="files">📁 MDC Files</option>
+                                    <option value="connections">🔗 Connections</option>
+                                    <option value="generator">⚡ Generator</option>
+                                    <option value="analytics">📈 Analytics</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 🎨 Appearance Settings Tab -->
+                <div class="settings-tab" id="appearanceSettings">
+                    <div class="settings-group">
+                        <div class="group-header">
+                            <h3><i class="fas fa-palette"></i> Visual Theme</h3>
+                            <p>Customize the dashboard appearance</p>
+                        </div>
+                        
+                        <div class="spectacular-setting-item">
+                            <div class="setting-control">
+                                <label class="spectacular-toggle">
+                                    <input type="checkbox" id="compactView">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="setting-info">
+                                <div class="setting-title">Compact View</div>
+                                <div class="setting-description">Reduce spacing for a more condensed layout</div>
+                            </div>
+                        </div>
+                        
+                        <div class="spectacular-setting-item">
+                            <div class="setting-control">
+                                <label class="spectacular-toggle">
+                                    <input type="checkbox" id="showFileSize" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="setting-info">
+                                <div class="setting-title">Show File Sizes</div>
+                                <div class="setting-description">Display file size information in cards</div>
+                            </div>
+                        </div>
+                        
+                        <div class="spectacular-setting-item">
+                            <div class="setting-control">
+                                <label class="spectacular-toggle">
+                                    <input type="checkbox" id="showConnectionCount" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="setting-info">
+                                <div class="setting-title">Show Connection Counts</div>
+                                <div class="setting-description">Display connection statistics in overview</div>
+                            </div>
+                        </div>
+                        
+                        <div class="spectacular-setting-item">
+                            <div class="setting-info">
+                                <div class="setting-title">Animation Level</div>
+                                <div class="setting-description">Control interface animation intensity</div>
+                            </div>
+                            <div class="setting-control">
+                                <select id="animationLevel" class="spectacular-select">
+                                    <option value="none">🚫 None</option>
+                                    <option value="minimal">🎭 Minimal</option>
+                                    <option value="standard" selected>✨ Standard</option>
+                                    <option value="spectacular">🚀 Spectacular</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- ⚡ Performance Settings Tab -->
+                <div class="settings-tab" id="performanceSettings">
+                    <div class="settings-group">
+                        <div class="group-header">
+                            <h3><i class="fas fa-tachometer-alt"></i> Performance Optimization</h3>
+                            <p>Configure performance and resource usage</p>
+                        </div>
+                        
+                        <div class="spectacular-setting-item">
+                            <div class="setting-info">
+                                <div class="setting-title">API Timeout</div>
+                                <div class="setting-description">Maximum time to wait for API responses</div>
+                            </div>
+                            <div class="setting-control">
+                                <div class="number-input-container">
+                                    <input type="number" id="apiTimeout" value="5000" min="1000" max="30000" class="spectacular-number-input">
+                                    <div class="input-suffix">ms</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="spectacular-setting-item">
+                            <div class="setting-control">
+                                <label class="spectacular-toggle">
+                                    <input type="checkbox" id="enableCaching" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="setting-info">
+                                <div class="setting-title">Enable Data Caching</div>
+                                <div class="setting-description">Cache responses to reduce API calls</div>
+                            </div>
+                        </div>
+                        
+                        <div class="spectacular-setting-item">
+                            <div class="setting-info">
+                                <div class="setting-title">Max Concurrent Requests</div>
+                                <div class="setting-description">Limit simultaneous API requests</div>
+                            </div>
+                            <div class="setting-control">
+                                <div class="number-input-container">
+                                    <input type="number" id="maxConcurrentRequests" value="5" min="1" max="20" class="spectacular-number-input">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 🛡️ Security Settings Tab -->
+                <div class="settings-tab" id="securitySettings">
+                    <div class="settings-group">
+                        <div class="group-header">
+                            <h3><i class="fas fa-shield-alt"></i> Security Configuration</h3>
+                            <p>Security and access control settings</p>
+                        </div>
+                        
+                        <div class="spectacular-setting-item readonly">
+                            <div class="setting-info">
+                                <div class="setting-title">MDC Orchestration Agent URL</div>
+                                <div class="setting-description">System service endpoint (read-only)</div>
+                            </div>
+                            <div class="setting-control">
+                                <div class="readonly-input-container">
+                                    <input type="text" id="orchestrationUrl" value="http://localhost:8615" class="spectacular-input-readonly" readonly>
+                                    <div class="readonly-indicator">
+                                        <i class="fas fa-lock"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="spectacular-setting-item">
+                            <div class="setting-control">
+                                <label class="spectacular-toggle">
+                                    <input type="checkbox" id="enableSSL" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="setting-info">
+                                <div class="setting-title">Enable SSL Verification</div>
+                                <div class="setting-description">Verify SSL certificates for secure connections</div>
+                            </div>
+                        </div>
+                        
+                        <div class="spectacular-setting-item">
+                            <div class="setting-info">
+                                <div class="setting-title">Session Timeout</div>
+                                <div class="setting-description">Auto-logout after inactivity</div>
+                            </div>
+                            <div class="setting-control">
+                                <select id="sessionTimeout" class="spectacular-select">
+                                    <option value="15">15 minutes</option>
+                                    <option value="30" selected>30 minutes</option>
+                                    <option value="60">1 hour</option>
+                                    <option value="240">4 hours</option>
+                                    <option value="0">Never</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 💻 Advanced Settings Tab -->
+                <div class="settings-tab" id="advancedSettings">
+                    <div class="settings-group">
+                        <div class="group-header">
+                            <h3><i class="fas fa-code"></i> Advanced Configuration</h3>
+                            <p>Expert-level settings for power users</p>
+                        </div>
+                        
+                        <div class="spectacular-setting-item">
+                            <div class="setting-info">
+                                <div class="setting-title">MDC Directory Path</div>
+                                <div class="setting-description">Location of MDC files on the filesystem</div>
+                            </div>
+                            <div class="setting-control">
+                                <div class="path-input-container">
+                                    <input type="text" id="mdcDirectoryPath" placeholder="/path/to/mdc/files" class="spectacular-path-input">
+                                    <button class="btn-icon" onclick="openDirectoryBrowser()">
+                                        <i class="fas fa-folder-open"></i>
+                                    </button>
+                                    <button class="btn-icon warning" onclick="resetToDefaultPath()">
+                                        <i class="fas fa-undo"></i>
+                                    </button>
+                                    <button class="btn-icon primary" onclick="updateMDCPath()">
+                                        <i class="fas fa-save"></i>
+                                    </button>
+                                </div>
+                                <small class="path-hint">
+                                    Default: /Users/dansidanutz/Desktop/ZmartBot/.cursor/rules
+                                </small>
+                            </div>
+                        </div>
+                        
+                        <div class="spectacular-setting-item">
+                            <div class="setting-control">
+                                <label class="spectacular-toggle">
+                                    <input type="checkbox" id="debugMode">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="setting-info">
+                                <div class="setting-title">Debug Mode</div>
+                                <div class="setting-description">Enable detailed logging and debug information</div>
+                            </div>
+                        </div>
+                        
+                        <div class="spectacular-setting-item">
+                            <div class="setting-info">
+                                <div class="setting-title">Log Level</div>
+                                <div class="setting-description">Set the verbosity of application logs</div>
+                            </div>
+                            <div class="setting-control">
+                                <select id="logLevel" class="spectacular-select">
+                                    <option value="error">🔴 Error Only</option>
+                                    <option value="warn">🟡 Warning</option>
+                                    <option value="info" selected>🔵 Info</option>
+                                    <option value="debug">🟢 Debug</option>
+                                    <option value="trace">🔍 Trace</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 💾 Settings Actions -->
+                <div class="spectacular-settings-actions">
+                    <button class="btn btn-secondary" onclick="resetSettings()">
+                        <i class="fas fa-undo"></i> Reset to Defaults
+                    </button>
+                    <button class="btn btn-warning" onclick="exportSettings()">
+                        <i class="fas fa-download"></i> Export Settings
+                    </button>
+                    <button class="btn btn-info" onclick="importSettings()">
+                        <i class="fas fa-upload"></i> Import Settings
+                    </button>
+                    <button class="btn btn-primary" onclick="saveSettings()">
+                        <i class="fas fa-save"></i> Save Settings
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal for MDC File Details -->
+    <div id="mdcModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">MDC File Details</h3>
+                <button class="modal-close" onclick="closeMDCModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Content will be populated dynamically -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeMDCModal()">Close</button>
+                <button class="btn btn-primary" id="modalActionBtn">Edit</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-spinner">
+            <i class="fas fa-cog fa-spin"></i>
+            <p>Processing...</p>
+        </div>
+    </div>
+
+    <!-- Directory Browser Modal -->
+    <div id="directoryBrowserModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Select Directory</h3>
+                <button class="modal-close" onclick="closeDirectoryBrowser()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="current-path" style="margin-bottom: 1rem; padding: 0.5rem; background: var(--card-bg); border-radius: 4px;">
+                    <strong>Current Path:</strong> <span id="currentBrowsePath">/</span>
+                </div>
+                <div class="directory-list" id="directoryList" style="max-height: 400px; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 4px;">
+                    <!-- Directory items will be populated here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeDirectoryBrowser()">Cancel</button>
+                <button class="btn btn-primary" onclick="selectCurrentDirectory()">Select This Directory</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Validation Results Modal -->
+    <div id="validationResultsModal" class="modal" style="display: none;">
+        <div class="modal-content validation-modal">
+            <div class="modal-header">
+                <h3><i class="fas fa-clipboard-check"></i> System Validation Results</h3>
+                <button class="modal-close" onclick="closeValidationResults()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="validation-summary">
+                    <div class="overall-status">
+                        <div class="status-indicator" id="overallStatusIndicator">
+                            <i class="fas fa-check-circle"></i>
+                            <span id="overallStatusText">HEALTHY</span>
+                        </div>
+                        <div class="validation-timestamp">
+                            Validated: <span id="validationTimestamp">--</span>
+                        </div>
+                    </div>
+                    
+                    <div class="validation-stats">
+                        <div class="stat-item">
+                            <div class="stat-value" id="checksPassedCount">0</div>
+                            <div class="stat-label">Checks Passed</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="totalChecksCount">0</div>
+                            <div class="stat-label">Total Checks</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="issuesFoundCount">0</div>
+                            <div class="stat-label">Issues Found</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="warningsFoundCount">0</div>
+                            <div class="stat-label">Warnings</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="validation-checks" id="validationChecksList">
+                    <!-- Check results will be populated here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeValidationResults()">Close</button>
+                <button class="btn btn-primary" onclick="runValidationAgain()">
+                    <i class="fas fa-redo"></i> Run Again
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Component Logs Modal -->
+    <div id="componentLogsModal" class="modal" style="display: none;">
+        <div class="modal-content logs-modal">
+            <div class="modal-header">
+                <h3><i class="fas fa-file-alt"></i> <span id="logsComponentTitle">Component Logs</span></h3>
+                <button class="modal-close" onclick="closeComponentLogs()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="logs-controls">
+                    <div class="logs-filters">
+                        <select id="logLevelFilter" class="filter-select">
+                            <option value="all">All Levels</option>
+                            <option value="error">Errors</option>
+                            <option value="warning">Warnings</option>
+                            <option value="info">Info</option>
+                            <option value="debug">Debug</option>
+                        </select>
+                        <input type="number" id="logLinesLimit" class="input-field" placeholder="Max lines" value="100" min="10" max="1000" step="10">
+                    </div>
+                    <div class="logs-actions">
+                        <button class="btn btn-secondary" onclick="refreshLogs()">
+                            <i class="fas fa-sync"></i> Refresh
+                        </button>
+                        <button class="btn btn-secondary" onclick="clearLogsDisplay()">
+                            <i class="fas fa-trash"></i> Clear
+                        </button>
+                        <button class="btn btn-secondary" onclick="downloadLogs()">
+                            <i class="fas fa-download"></i> Download
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="logs-status" id="logsStatus">
+                    <i class="fas fa-info-circle"></i> Loading logs...
+                </div>
+                
+                <div class="logs-container" id="logsContainer">
+                    <pre class="logs-content" id="logsContent">
+                        <!-- Logs will be populated here -->
+                    </pre>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeComponentLogs()">Close</button>
+                <button class="btn btn-primary" onclick="refreshLogs()">
+                    <i class="fas fa-sync"></i> Refresh Logs
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container">
+        <!-- Toasts will be added here dynamically -->
+    </div>
+
+    <script src="/MDC-dashboard/script.js"></script>
+</body>
+</html>

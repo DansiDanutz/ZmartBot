@@ -1,0 +1,281 @@
+{
+  "8000": {
+    "service_name": "Main API Server",
+    "port": 8000,
+    "description": "ZmartBot FastAPI backend",
+    "health_endpoint": "/health",
+    "status": "running",
+    "registered_at": "2025-09-14T23:06:30.526731",
+    "last_checked": "2025-09-14T23:06:30.527245"
+  },
+  "8098": {
+    "service_name": "KingFisher AI Server",
+    "port": 8098,
+    "description": "AI-powered trading analysis",
+    "health_endpoint": "/health",
+    "status": "running",
+    "registered_at": "2025-09-14T23:06:30.526756",
+    "last_checked": "2025-09-14T23:06:30.527388"
+  },
+  "8555": {
+    "service_name": "Manus/Simple Webhook",
+    "port": 8555,
+    "description": "Webhook receiver service",
+    "health_endpoint": "/health",
+    "status": "running",
+    "registered_at": "2025-09-14T23:06:30.526761",
+    "last_checked": "2025-09-14T23:06:30.527512"
+  },
+  "8556": {
+    "service_name": "Simple RiskMetric",
+    "port": 8556,
+    "description": "Basic risk calculation service",
+    "health_endpoint": "/api/v1/health",
+    "status": "running",
+    "registered_at": "2025-09-14T23:06:30.526764",
+    "last_checked": "2025-09-14T23:06:30.527607"
+  },
+  "8557": {
+    "service_name": "Enhanced RiskMetric",
+    "port": 8557,
+    "description": "Advanced risk calculation with ML",
+    "health_endpoint": "/api/v1/health",
+    "status": "not_running",
+    "registered_at": "2025-09-14T23:06:30.526768",
+    "last_checked": "2025-09-14T23:06:30.527678"
+  },
+  "8558": {
+    "service_name": "Strategy RiskMetric",
+    "port": 8558,
+    "description": "Strategy-based risk assessment",
+    "health_endpoint": "/api/v1/health",
+    "status": "not_running",
+    "registered_at": "2025-09-14T23:06:30.526771",
+    "last_checked": "2025-09-14T23:06:30.528535"
+  },
+  "8559": {
+    "service_name": "MDC Background Agent",
+    "port": 8559,
+    "description": "MDC file monitoring and updates",
+    "health_endpoint": null,
+    "status": "not_running",
+    "registered_at": "2025-09-14T23:06:30.526775",
+    "last_checked": "2025-09-14T23:06:30.528703"
+  },
+  "8080": {
+    "service_name": "Service Dashboard",
+    "port": 8080,
+    "description": "Service monitoring dashboard",
+    "health_endpoint": "/health",
+    "status": "running",
+    "registered_at": "2025-09-14T23:06:30.526779",
+    "last_checked": "2025-09-14T23:06:30.528976"
+  },
+  "8085": {
+    "service_name": "Port Manager UI",
+    "port": 8085,
+    "description": "Port management interface",
+    "health_endpoint": "/health",
+    "status": "running",
+    "registered_at": "2025-09-14T23:06:30.526782",
+    "last_checked": "2025-09-14T23:06:30.529236"
+  },
+  "8086": {
+    "service_name": "InfluxDB",
+    "port": 8086,
+    "description": "Time-series metrics database",
+    "health_endpoint": "/ping",
+    "status": "running",
+    "registered_at": "2025-09-14T23:06:30.526786",
+    "last_checked": "2025-09-14T23:06:30.529524"
+  },
+  "9090": {
+    "service_name": "Prometheus",
+    "port": 9090,
+    "description": "Metrics collection and alerting",
+    "health_endpoint": "/-/healthy",
+    "status": "not_running",
+    "registered_at": "2025-09-14T23:06:30.526789",
+    "last_checked": "2025-09-14T23:06:30.529675"
+  },
+  "5432": {
+    "service_name": "PostgreSQL",
+    "port": 5432,
+    "description": "Primary relational database",
+    "health_endpoint": null,
+    "status": "running",
+    "registered_at": "2025-09-14T23:06:30.526793",
+    "last_checked": "2025-09-14T23:06:30.529765"
+  },
+  "6379": {
+    "service_name": "Redis",
+    "port": 6379,
+    "description": "Cache and session storage",
+    "health_endpoint": null,
+    "status": "running",
+    "registered_at": "2025-09-14T23:06:30.526797",
+    "last_checked": "2025-09-14T23:06:30.529927"
+  },
+  "5672": {
+    "service_name": "RabbitMQ",
+    "port": 5672,
+    "description": "Message broker",
+    "health_endpoint": null,
+    "status": "not_running",
+    "registered_at": "2025-09-14T23:06:30.526800",
+    "last_checked": "2025-09-14T23:06:30.530868"
+  },
+  "15672": {
+    "service_name": "RabbitMQ Management",
+    "port": 15672,
+    "description": "RabbitMQ management interface",
+    "health_endpoint": "/api/health/checks/alarms",
+    "status": "not_running",
+    "registered_at": "2025-09-14T23:06:30.526804",
+    "last_checked": "2025-09-14T23:06:30.531058"
+  },
+  "5173": {
+    "service_name": "Vite Dev Server",
+    "port": 5173,
+    "description": "React frontend development server",
+    "health_endpoint": null,
+    "status": "not_running",
+    "registered_at": "2025-09-14T23:06:30.526807",
+    "last_checked": "2025-09-14T23:06:30.531555"
+  },
+  "3000": {
+    "service_name": "Grafana",
+    "port": 3000,
+    "description": "Metrics visualization",
+    "health_endpoint": "/api/health",
+    "status": "not_running",
+    "registered_at": "2025-09-14T23:06:30.526811",
+    "last_checked": "2025-09-14T23:06:30.632667"
+  },
+  "8006": {
+    "service_name": "Service 8006",
+    "port": 8006,
+    "description": "Unknown service",
+    "health_endpoint": null,
+    "status": "running",
+    "registered_at": "2025-09-14T23:06:30.526815",
+    "last_checked": "2025-09-14T23:06:30.632884"
+  },
+  "8007": {
+    "service_name": "Service 8007",
+    "port": 8007,
+    "description": "Unknown service",
+    "health_endpoint": null,
+    "status": "running",
+    "registered_at": "2025-09-14T23:06:30.526818",
+    "last_checked": "2025-09-14T23:06:30.632961"
+  },
+  "8008": {
+    "service_name": "Service 8008",
+    "port": 8008,
+    "description": "Unknown service",
+    "health_endpoint": null,
+    "status": "running",
+    "registered_at": "2025-09-14T23:06:30.526822",
+    "last_checked": "2025-09-14T23:06:30.633030"
+  },
+  "8009": {
+    "service_name": "Service 8009",
+    "port": 8009,
+    "description": "Unknown service",
+    "health_endpoint": null,
+    "status": "running",
+    "registered_at": "2025-09-14T23:06:30.526825",
+    "last_checked": "2025-09-14T23:06:30.633081"
+  },
+  "8010": {
+    "service_name": "Service 8010",
+    "port": 8010,
+    "description": "Unknown service",
+    "health_endpoint": null,
+    "status": "running",
+    "registered_at": "2025-09-14T23:06:30.526828",
+    "last_checked": "2025-09-14T23:06:30.633154"
+  },
+  "8012": {
+    "service_name": "Service 8012",
+    "port": 8012,
+    "description": "Unknown service",
+    "health_endpoint": null,
+    "status": "running",
+    "registered_at": "2025-09-14T23:06:30.526833",
+    "last_checked": "2025-09-14T23:06:30.633221"
+  },
+  "8013": {
+    "service_name": "Service 8013",
+    "port": 8013,
+    "description": "Unknown service",
+    "health_endpoint": null,
+    "status": "running",
+    "registered_at": "2025-09-14T23:06:30.526836",
+    "last_checked": "2025-09-14T23:06:30.633284"
+  },
+  "8015": {
+    "service_name": "Service 8015",
+    "port": 8015,
+    "description": "Unknown service",
+    "health_endpoint": null,
+    "status": "running",
+    "registered_at": "2025-09-14T23:06:30.526840",
+    "last_checked": "2025-09-14T23:06:30.633606"
+  },
+  "8016": {
+    "service_name": "Service 8016",
+    "port": 8016,
+    "description": "Unknown service",
+    "health_endpoint": null,
+    "status": "running",
+    "registered_at": "2025-09-14T23:06:30.526843",
+    "last_checked": "2025-09-14T23:06:30.633709"
+  },
+  "8017": {
+    "service_name": "Service 8017",
+    "port": 8017,
+    "description": "Unknown service",
+    "health_endpoint": null,
+    "status": "running",
+    "registered_at": "2025-09-14T23:06:30.526847",
+    "last_checked": "2025-09-14T23:06:30.633785"
+  },
+  "8018": {
+    "service_name": "Service 8018",
+    "port": 8018,
+    "description": "Unknown service",
+    "health_endpoint": null,
+    "status": "running",
+    "registered_at": "2025-09-14T23:06:30.526850",
+    "last_checked": "2025-09-14T23:06:30.633912"
+  },
+  "8019": {
+    "service_name": "Service 8019",
+    "port": 8019,
+    "description": "Unknown service",
+    "health_endpoint": null,
+    "status": "running",
+    "registered_at": "2025-09-14T23:06:30.526854",
+    "last_checked": "2025-09-14T23:06:30.634025"
+  },
+  "8020": {
+    "service_name": "Service 8020",
+    "port": 8020,
+    "description": "Unknown service",
+    "health_endpoint": null,
+    "status": "running",
+    "registered_at": "2025-09-14T23:06:30.526857",
+    "last_checked": "2025-09-14T23:06:30.634136"
+  },
+  "8050": {
+    "service_name": "Service 8050",
+    "port": 8050,
+    "description": "Unknown service",
+    "health_endpoint": null,
+    "status": "running",
+    "registered_at": "2025-09-14T23:06:30.526861",
+    "last_checked": "2025-09-14T23:06:30.634247"
+  }
+}

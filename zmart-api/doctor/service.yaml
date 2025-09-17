@@ -1,0 +1,28 @@
+service_name: doctor-service
+service_type: backend
+port: 8700
+description: "System health monitoring and diagnostic service"
+status: ACTIVE
+passport_id: ZMBT-SRV-20250826-51B6B9
+registered_at: "2025-08-26"
+health_url: "http://localhost:8700/health"
+start_cmd: "python3 doctor.py"
+stop_cmd: "pkill -f 'doctor.py'"
+dependencies:
+  - zmart-api
+  - database
+tags:
+  - monitoring
+  - health
+  - diagnostics
+
+
+
+
+
+
+
+
+
+
+

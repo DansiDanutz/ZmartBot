@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MDC Generation Demo</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            padding: 30px;
+            line-height: 1.6;
+        }
+        
+        .demo-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #1e2832;
+            border-radius: 12px;
+            padding: 30px;
+            border: 1px solid #2d3748;
+        }
+        
+        .btn {
+            background: #4fd1c7;
+            color: #000;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            background: #45b7ab;
+            transform: translateY(-1px);
+        }
+        
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+        
+        .result-box {
+            background: rgba(45, 55, 72, 0.4);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            display: none;
+        }
+        
+        .success-box {
+            background: rgba(40, 167, 69, 0.2);
+            border: 1px solid #28a745;
+            border-radius: 6px;
+            padding: 15px;
+            margin-top: 10px;
+        }
+        
+        h1, h2, h3 {
+            color: #4fd1c7;
+            margin-bottom: 15px;
+        }
+        
+        .step {
+            background: rgba(79, 209, 199, 0.1);
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 3px solid #4fd1c7;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <h1>🤖 MDC Generation Demo</h1>
+        
+        <h2>📍 Service Discovery Dashboard Location</h2>
+        <div class="step">
+            <strong>URL:</strong> <a href="http://localhost:8550" target="_blank" style="color: #4fd1c7;">http://localhost:8550</a><br>
+            <strong>Status:</strong> ✅ Running and Ready
+        </div>
+        
+        <h2>🎯 How to Generate MDC Files</h2>
+        
+        <div class="step">
+            <strong>Step 1:</strong> Open the Service Discovery Dashboard<br>
+            <a href="http://localhost:8550" target="_blank" class="btn">🔗 Open Dashboard</a>
+        </div>
+        
+        <div class="step">
+            <strong>Step 2:</strong> Scroll down to the "🤖 ChatGPT AI Analysis" section
+        </div>
+        
+        <div class="step">
+            <strong>Step 3:</strong> Click the "🧠 Run AI Analysis" button and wait for results
+        </div>
+        
+        <div class="step">
+            <strong>Step 4:</strong> The "📄 Generate MDC File" button will appear below the analysis results
+        </div>
+        
+        <h2>⚡ Quick Demo</h2>
+        <p>Click this button to simulate the MDC generation process:</p>
+        
+        <button class="btn" onclick="demoAnalysis()">🧠 Demo AI Analysis</button>
+        
+        <div id="analysisResult" class="result-box">
+            <h3>🧠 AI Analysis Results</h3>
+            <div style="background: rgba(45, 55, 72, 0.6); padding: 15px; margin: 10px 0; border-radius: 6px; border-left: 3px solid #4fd1c7;">
+                <strong>Connection Recommendation:</strong> AlertSystemServer ↔ KINGFISHER_AI<br>
+                <strong>Compatibility:</strong> 9.5/10<br>
+                <strong>Analysis:</strong> Excellent integration opportunity for AI-powered alert generation with enhanced intelligence capabilities.
+            </div>
+            
+            <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.2);">
+                <h4 style="color: #4fd1c7; margin-bottom: 15px;">📄 Implementation Ready</h4>
+                <p style="color: #a0a0a0; margin-bottom: 15px;">Generate a complete MDC file to begin implementation:</p>
+                <button class="btn btn-success" onclick="generateDemo()">📄 Generate MDC File</button>
+                <div id="mdcResult" style="margin-top: 15px;"></div>
+            </div>
+        </div>
+        
+        <h2>📊 Current Status</h2>
+        <div class="step">
+            <strong>Generated MDC Files:</strong> <span id="fileCount">Loading...</span><br>
+            <button class="btn" onclick="checkFiles()">📁 Check Generated Files</button>
+        </div>
+        
+        <h2>🔧 API Endpoints Available</h2>
+        <div class="step">
+            <strong>Generate MDC:</strong> POST /api/generate-mdc<br>
+            <strong>List Files:</strong> GET /api/generated-files<br>
+            <strong>Health Check:</strong> GET /health
+        </div>
+    </div>
+
+    <script>
+        async function demoAnalysis() {
+            const resultDiv = document.getElementById('analysisResult');
+            resultDiv.style.display = 'block';
+            resultDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        async function generateDemo() {
+            const resultDiv = document.getElementById('mdcResult');
+            resultDiv.innerHTML = '<div style="color: #4fd1c7;">⏳ Generating MDC File...</div>';
+            
+            try {
+                const response = await fetch('/api/generate-mdc', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        service_a: "AlertSystemServer",
+                        service_b: "KINGFISHER_AI",
+                        ai_analysis: "Excellent integration opportunity for AI-powered alert generation with enhanced intelligence capabilities.",
+                        compatibility_score: 9.5,
+                        service_type_a: "api",
+                        service_type_b: "database"
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    resultDiv.innerHTML = `
+                        <div class="success-box">
+                            <h5 style="color: #28a745; margin: 0 0 10px 0;">✅ MDC File Generated Successfully!</h5>
+                            <p style="color: #e0e0e0; margin: 5px 0;"><strong>Integration Name:</strong> ${result.integration_name}</p>
+                            <p style="color: #e0e0e0; margin: 5px 0;"><strong>File Path:</strong> ${result.file_path}</p>
+                            <p style="color: #e0e0e0; margin: 5px 0;"><strong>Generated:</strong> ${new Date(result.generated_at).toLocaleString()}</p>
+                        </div>
+                    `;
+                    checkFiles(); // Update file count
+                } else {
+                    resultDiv.innerHTML = `<div style="color: #dc3545;">❌ Error: ${result.message}</div>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<div style="color: #dc3545;">❌ Error: ${error.message}</div>`;
+            }
+        }
+        
+        async function checkFiles() {
+            try {
+                const response = await fetch('/api/generated-files');
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    document.getElementById('fileCount').textContent = `${result.total_count} files generated`;
+                } else {
+                    document.getElementById('fileCount').textContent = 'Error loading count';
+                }
+            } catch (error) {
+                document.getElementById('fileCount').textContent = 'Error loading count';
+            }
+        }
+        
+        // Load file count on page load
+        document.addEventListener('DOMContentLoaded', checkFiles);
+    </script>
+</body>
+</html>

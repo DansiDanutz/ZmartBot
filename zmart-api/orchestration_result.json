@@ -1,0 +1,77 @@
+{
+  "riskmetric": {
+    "symbol": "ETH",
+    "price": 3500,
+    "risk_value": 0.5554645837537814,
+    "risk_band": "0.5-0.6",
+    "risk_zone": "\ud83d\udfe0 ELEVATED RISK - Caution Zone",
+    "score": 49.15984378153361,
+    "signal": "NEUTRAL",
+    "tradeable": false,
+    "win_rate": 0.45,
+    "recommendation": "NEUTRAL - Medium risk zone"
+  },
+  "kingfisher": {
+    "ai_analysis": {},
+    "strategy_clusters": {
+      "scalp": {
+        "position": "NEUTRAL",
+        "win_rate": "50%",
+        "duration": "5-15min",
+        "target": "0.5-1%",
+        "stop": "0.3%"
+      },
+      "intraday": {
+        "position": "NEUTRAL",
+        "win_rate": "52%",
+        "duration": "1-4hrs",
+        "target": "2-3%",
+        "stop": "1%"
+      },
+      "swing": {
+        "position": "NEUTRAL",
+        "win_rate": "53%",
+        "duration": "2-5days",
+        "target": "5-10%",
+        "stop": "3%"
+      },
+      "primary": "WAIT"
+    },
+    "recommended_strategy": "WAIT"
+  },
+  "cryptometer": {
+    "score": 50,
+    "sentiment": "neutral",
+    "signal": "NEUTRAL"
+  },
+  "patterns": {
+    "patterns_found": [
+      "bullish_flag",
+      "double_top"
+    ],
+    "triggers": [
+      {
+        "pattern": "bullish_flag",
+        "action": "BUY",
+        "confidence": "HIGH"
+      },
+      {
+        "pattern": "double_top",
+        "action": "SELL",
+        "confidence": "HIGH"
+      }
+    ],
+    "has_trigger": true
+  },
+  "final_decision": {
+    "decision": "WAIT",
+    "confidence": "50.0%",
+    "long_score": "50.0",
+    "short_score": "50.0",
+    "strategy": null,
+    "execution_plan": {
+      "action": "No trade",
+      "reason": "Insufficient signals"
+    }
+  }
+}

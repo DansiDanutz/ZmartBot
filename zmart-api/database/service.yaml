@@ -1,0 +1,82 @@
+name: database-service
+description: ZmartBot Master Database Management Service
+version: 1.0.0
+owner: zmartbot
+type: backend
+port: 8900
+category: database
+purpose: 'Enterprise-grade database management and monitoring system for ZmartBot
+  ecosystem.
+
+  Manages 50+ databases with real-time monitoring, automatic discovery, and centralized
+  control.
+
+  Provides comprehensive Supabase cloud synchronization and advanced visualization
+  dashboards.
+
+  '
+overview: 'ZmartBot Database Service serving as the central backend hub for all database
+  operations,
+
+  real-time monitoring, orchestration management, and comprehensive database infrastructure
+
+  with enterprise-grade security and performance.
+
+  '
+architecture:
+  service_type: backend
+  dependencies:
+  - supabase
+  - sqlite3
+  - fastapi
+  environment_variables:
+  - SUPABASE_KEY
+  - SUPABASE_URL
+  lifecycle:
+    start: python3 database_service.py --port 8900
+    stop: pkill -f database_service
+    health_check: curl -f http://127.0.0.1:8900/health
+    migrate: python3 create_discovery_database.py
+api_endpoints:
+- /health: Health check endpoint
+- /api/databases: Get all registered databases
+- /api/system/overview: Complete system overview
+- /api/cloud/sync: Trigger cloud synchronization
+- /api/cloud/status: Get cloud sync status
+- /api/databases/{db_name}: Get specific database info
+- /api/databases/categories/stats: Database statistics by category
+critical_functions:
+- Database discovery and registration
+- Real-time health monitoring
+- Supabase cloud synchronization
+- Master database registry management
+- Advanced visualization dashboards
+- Service lifecycle database tracking
+health_readiness:
+  liveness: http://127.0.0.1:8900/health
+  readiness: http://127.0.0.1:8900/api/system/overview
+  timeouts:
+    startup_grace: 60s
+    http_timeout: 30s
+integration:
+  supabase:
+    url: https://asjtxrmftmutcsnqgidy.supabase.co
+    tables:
+    - database_registry
+    - database_sync_log
+    - database_health_metrics
+visualizations:
+- advanced_card_dashboard.html
+- dashboard_management_system.html
+- advanced_database_visualization.html
+- supabase_dashboard.html
+monitoring:
+  databases_monitored: 50+
+  sync_frequency: 30s
+  health_checks: continuous
+  log_retention: 30d
+security:
+  cors_enabled: true
+  authentication: optional
+  backup_strategy: master_registry
+service_name: database-service

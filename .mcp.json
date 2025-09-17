@@ -1,0 +1,365 @@
+{
+  "mcpServers": {
+    "supabase": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@supabase/mcp-server-supabase@latest",
+        "--read-only",
+        "--project-ref=asjtxrmftmutcsnqgidy"
+      ],
+      "env": {
+        "SUPABASE_ACCESS_TOKEN": "sbp_2fde16944ca746cd956911a6f083b09dd9a9a7a9"
+      },
+      "description": "Supabase MCP Server for database operations and data management"
+    },
+    "zmartbot-mcp": {
+      "command": "python",
+      "args": ["-m", "mcp_server"],
+      "env": {
+        "PYTHONPATH": "./zmart-api/src",
+        "ZMARTBOT_ENV": "development",
+        "MCP_LOG_LEVEL": "INFO"
+      },
+      "cwd": ".",
+      "description": "ZmartBot MCP Server for AI agent orchestration and trading operations"
+    },
+    "zmartbot-agents": {
+      "command": "python",
+      "args": ["zmart-api/mdc_orchestration_agent.py", "--mcp-mode"],
+      "env": {
+        "PYTHONPATH": "./zmart-api/src",
+        "ZMARTBOT_AGENTS_PORT": "8951",
+        "MCP_AGENT_MODE": "true"
+      },
+      "cwd": ".",
+      "description": "ZmartBot Agents MCP interface for direct agent communication"
+    },
+    "browsermcp": {
+      "command": "npx",
+      "args": ["@browsermcp/mcp@latest"],
+      "description": "Browser MCP server for web automation and browser control"
+    },
+    "shadcn": {
+      "command": "npx",
+      "args": ["shadcn@latest", "mcp"],
+      "description": "shadcn MCP server for browsing, searching, and installing UI components from registries"
+    },
+    "firecrawl-mcp": {
+      "command": "npx",
+      "args": ["-y", "firecrawl-mcp"],
+      "env": {
+        "FIRECRAWL_API_KEY": "fc-02de0114eb1e45efbdff4d0d6733de3e"
+      },
+      "description": "Firecrawl MCP server for web scraping, crawling, and content extraction"
+    }
+  },
+  "tools": {
+    "zmartbot_trading": {
+      "description": "Access ZmartBot trading operations and market analysis",
+      "capabilities": [
+        "market_data_access",
+        "trading_signals",
+        "portfolio_management",
+        "risk_analysis"
+      ]
+    },
+    "zmartbot_agents": {
+      "description": "Interact with ZmartBot AI agents and orchestration system",
+      "capabilities": [
+        "agent_status",
+        "task_assignment",
+        "health_monitoring",
+        "performance_metrics"
+      ]
+    },
+    "zmartbot_mdc": {
+      "description": "Access ZmartBot MDC documentation and service discovery",
+      "capabilities": [
+        "service_discovery",
+        "mdc_generation",
+        "documentation_access",
+        "system_architecture"
+      ]
+    },
+    "browser_automation": {
+      "description": "Browser automation and web scraping capabilities",
+      "capabilities": [
+        "web_navigation",
+        "page_screenshots",
+        "element_interaction",
+        "form_filling",
+        "data_extraction"
+      ]
+    },
+    "shadcn_components": {
+      "description": "Browse, search, and install UI components from shadcn registries",
+      "capabilities": [
+        "component_browsing",
+        "component_search",
+        "component_installation",
+        "registry_management",
+        "template_creation"
+      ]
+    },
+    "firecrawl_web_scraping": {
+      "description": "Web scraping, crawling, and content extraction using Firecrawl",
+      "capabilities": [
+        "web_scraping",
+        "batch_scraping",
+        "web_search",
+        "content_extraction",
+        "deep_research",
+        "crawling",
+        "llm_extraction",
+        "llms_txt_generation"
+      ]
+    }
+  },
+  "resources": {
+    "zmartbot_docs": {
+      "uri": "file://./AGENTS.md",
+      "name": "ZmartBot Agent Documentation",
+      "description": "Comprehensive AI agent documentation and orchestration guide",
+      "mimeType": "text/markdown"
+    },
+    "zmartbot_config": {
+      "uri": "file://./CLAUDE.md",
+      "name": "ZmartBot Claude Configuration",
+      "description": "Smart context and system configuration for Claude Code",
+      "mimeType": "text/markdown"
+    },
+    "zmartbot_rules": {
+      "uri": "file://./.cursor/rules/rules.mdc",
+      "name": "ZmartBot System Rules",
+      "description": "Core system rules and architecture guidelines",
+      "mimeType": "text/markdown"
+    },
+    "zmartbot_services": {
+      "uri": "file://./zmart-api/src/routes/agents.py",
+      "name": "ZmartBot Agent Routes",
+      "description": "Agent management API and routing system",
+      "mimeType": "text/python"
+    }
+  },
+  "prompts": {
+    "analyze_trading_opportunity": {
+      "name": "Analyze Trading Opportunity",
+      "description": "Analyze a cryptocurrency trading opportunity using ZmartBot's AI agents",
+      "arguments": [
+        {
+          "name": "symbol",
+          "description": "Cryptocurrency trading pair (e.g., BTCUSDT)",
+          "required": true
+        },
+        {
+          "name": "timeframe",
+          "description": "Analysis timeframe (e.g., 1h, 4h, 1d)",
+          "required": false
+        },
+        {
+          "name": "risk_level",
+          "description": "Risk tolerance level (low, medium, high)",
+          "required": false
+        }
+      ]
+    },
+    "agent_health_check": {
+      "name": "Agent Health Check",
+      "description": "Check the health and status of ZmartBot AI agents",
+      "arguments": [
+        {
+          "name": "agent_type",
+          "description": "Specific agent type to check (or 'all' for all agents)",
+          "required": false
+        },
+        {
+          "name": "detailed",
+          "description": "Include detailed performance metrics",
+          "required": false
+        }
+      ]
+    },
+    "generate_mdc_documentation": {
+      "name": "Generate MDC Documentation",
+      "description": "Generate MDC documentation for a new service or agent",
+      "arguments": [
+        {
+          "name": "service_path",
+          "description": "Path to the service Python file",
+          "required": true
+        },
+        {
+          "name": "service_type",
+          "description": "Type of service (agent, backend, frontend, etc.)",
+          "required": false
+        },
+        {
+          "name": "auto_register",
+          "description": "Automatically register in discovery database",
+          "required": false
+        }
+      ]
+    },
+    "browser_automation": {
+      "name": "Browser Automation",
+      "description": "Automate browser tasks and web interactions",
+      "arguments": [
+        {
+          "name": "action",
+          "description": "Action to perform (navigate, click, fill, screenshot, extract)",
+          "required": true
+        },
+        {
+          "name": "url",
+          "description": "URL to navigate to or interact with",
+          "required": false
+        },
+        {
+          "name": "selector",
+          "description": "CSS selector for element interaction",
+          "required": false
+        },
+        {
+          "name": "data",
+          "description": "Data to fill in forms or extract from pages",
+          "required": false
+        }
+      ]
+    },
+    "shadcn_components": {
+      "name": "shadcn Components",
+      "description": "Browse, search, and install UI components from shadcn registries",
+      "arguments": [
+        {
+          "name": "action",
+          "description": "Action to perform (browse, search, install, list)",
+          "required": true
+        },
+        {
+          "name": "component",
+          "description": "Component name to search for or install",
+          "required": false
+        },
+        {
+          "name": "registry",
+          "description": "Registry to use (default: shadcn/ui)",
+          "required": false
+        },
+        {
+          "name": "path",
+          "description": "Installation path for components",
+          "required": false
+        }
+      ]
+    },
+    "firecrawl_web_scraping": {
+      "name": "Firecrawl Web Scraping",
+      "description": "Scrape, crawl, and extract content from websites using Firecrawl",
+      "arguments": [
+        {
+          "name": "action",
+          "description": "Action to perform (scrape, batch_scrape, search, crawl, extract, research, llms_txt)",
+          "required": true
+        },
+        {
+          "name": "url",
+          "description": "URL to scrape or crawl",
+          "required": false
+        },
+        {
+          "name": "urls",
+          "description": "Array of URLs for batch operations",
+          "required": false
+        },
+        {
+          "name": "query",
+          "description": "Search query or research topic",
+          "required": false
+        },
+        {
+          "name": "options",
+          "description": "Additional options for scraping (formats, onlyMainContent, etc.)",
+          "required": false
+        },
+        {
+          "name": "prompt",
+          "description": "LLM prompt for content extraction",
+          "required": false
+        },
+        {
+          "name": "schema",
+          "description": "JSON schema for structured data extraction",
+          "required": false
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "name": "ZmartBot MCP Configuration",
+    "version": "1.0.0",
+    "description": "Model Context Protocol configuration for ZmartBot AI trading platform",
+    "author": "ZmartBot Development Team",
+    "homepage": "https://github.com/zmartbot/zmartbot",
+    "license": "MIT",
+    "keywords": [
+      "cryptocurrency",
+      "trading",
+      "ai-agents",
+      "mcp",
+      "orchestration",
+      "market-analysis",
+      "browser-automation",
+      "web-scraping",
+      "shadcn",
+      "ui-components",
+      "firecrawl",
+      "content-extraction"
+    ],
+    "capabilities": {
+      "tools": true,
+      "resources": true,
+      "prompts": true,
+      "logging": true
+    },
+    "zmartbot": {
+      "agents_count": 25,
+      "services_count": 42,
+      "mdc_files": 245,
+      "architecture": "microservice-orchestration",
+      "documentation": "./AGENTS.md",
+      "mcp_servers": ["supabase", "zmartbot-mcp", "zmartbot-agents", "browsermcp", "shadcn", "firecrawl-mcp"]
+    }
+  },
+  "logging": {
+    "level": "INFO",
+    "format": "json",
+    "destinations": [
+      {
+        "type": "file",
+        "path": "./zmart-api/logs/mcp.log",
+        "rotation": "daily",
+        "max_size": "10MB"
+      },
+      {
+        "type": "console",
+        "enabled": true
+      }
+    ]
+  },
+  "security": {
+    "allowed_origins": [
+      "localhost",
+      "127.0.0.1",
+      "zmartbot.local"
+    ],
+    "rate_limits": {
+      "requests_per_minute": 1000,
+      "requests_per_hour": 10000
+    },
+    "authentication": {
+      "required": false,
+      "methods": ["api_key", "jwt"]
+    }
+  }
+}

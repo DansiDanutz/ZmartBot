@@ -1,0 +1,68 @@
+service_name: orchestration-start-service
+service_type: orchestration
+version: 1.0.0
+owner: zmartbot
+description: "ZmartBot Orchestration Start Service - Manages all registered services during system startup and shutdown"
+
+port: 8616
+
+lifecycle:
+  start: "bash orchestrationstart.sh start"
+  stop: "bash orchestrationstart.sh stop"
+  restart: "bash orchestrationstart.sh restart"
+  health: "bash orchestrationstart.sh health"
+  status: "bash orchestrationstart.sh status"
+
+dependencies:
+  services: ["zmart-api", "port-manager-service"]
+  env: ["PROJECT_ROOT", "PORT_REGISTRY_PATH"]
+
+health:
+  liveness_path: "/health"
+  readiness_path: "/ready"
+  startup_grace_seconds: 60
+  timeout_seconds: 90
+
+observability:
+  metrics_path: "/metrics"
+  logs_format: "jsonl"
+  dashboards: ["Orchestration Start Performance", "Service Startup Monitoring"]
+
+security:
+  token_required: false
+  scopes: ["orchestration", "service_management"]
+
+orchestration:
+  basic_integration: true
+  master_agent_linked: true
+  ordering_hints: ["orchestration-start-service -> all_services"]
+
+performance:
+  baseline_ms_p95: 5000
+  notes: "Orchestration service with startup coordination for all services"
+
+failure_modes:
+  - name: "startup-sequence-failed"
+    symptoms: "Services not starting in correct order, dependency failures"
+    remediation: "Check service dependencies, verify port availability, restart orchestration"
+  - name: "service-health-check-failed"
+    symptoms: "Services starting but health checks failing"
+    remediation: "Check service configurations, verify endpoints, restart failed services"
+  - name: "port-conflict-detected"
+    symptoms: "Port conflicts during startup, services failing to bind"
+    remediation: "Check port registry, resolve conflicts, restart orchestration"
+
+rollback:
+  snapshot_required: true
+  playbook: ["stop_all_services", "restore_snapshot", "restart_orchestration"]
+
+load_balancing:
+  enabled: false
+  pool: null
+
+known_issues: []
+
+changelog:
+  - version: "1.0.0"
+    date: "2025-08-26"
+    notes: "Initial orchestration start service with comprehensive service management"

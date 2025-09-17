@@ -1,0 +1,7 @@
+{
+  "service_name": "zmart-websocket",
+  "protection_level": "full",
+  "certification_date": "2025-08-28T20:37:34.664449",
+  "auto_protect": true,
+  "triggered_by": "certification_service"
+}

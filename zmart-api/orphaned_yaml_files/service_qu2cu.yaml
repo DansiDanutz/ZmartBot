@@ -1,0 +1,16 @@
+service_name: qu2cu
+service_type: backend
+port: 8014
+description: "Queue to CU service for data processing"
+status: ACTIVE
+passport_id: ZMBT-BACKEND-20250828-061012
+registered_at: "2025-08-28"
+health_url: "http://localhost:8014/health"
+start_cmd: "python3 qu2cu_service.py"
+stop_cmd: "pkill -f 'qu2cu_service.py'"
+dependencies:
+  - zmart-api
+tags:
+  - backend
+  - queue
+  - data-processing

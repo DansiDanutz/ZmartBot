@@ -1,0 +1,3305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZmartBot Professional Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <!-- TradingView Lightweight Charts -->
+    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #1a1a2e;
+            --secondary-color: #16213e;
+            --accent-color: #0f3460;
+            --success-color: #00d4aa;
+            --warning-color: #ffa726;
+            --error-color: #f44336;
+            
+            /* User Management Colors */
+            --role-administrator-bg: #dc3545;
+            --role-administrator-color: #ffffff;
+            --role-trader-bg: #007bff;
+            --role-trader-color: #ffffff;
+            --role-analyst-bg: #28a745;
+            --role-analyst-color: #ffffff;
+            --role-viewer-bg: #6c757d;
+            --role-viewer-color: #ffffff;
+            --role-guest-bg: #ffc107;
+            --role-guest-color: #212529;
+            
+            --status-active-bg: #28a745;
+            --status-active-color: #ffffff;
+            --status-online-bg: #007bff;
+            --status-online-color: #ffffff;
+            --status-inactive-bg: #6c757d;
+            --status-inactive-color: #ffffff;
+            --status-suspended-bg: #dc3545;
+            --status-suspended-color: #ffffff;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --border-color: #2a2a3e;
+            --card-bg: #1e1e2e;
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-success: linear-gradient(135deg, #00d4aa 0%, #00a085 100%);
+            --gradient-warning: linear-gradient(135deg, #ffa726 0%, #ff9800 100%);
+            --gradient-error: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--primary-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .dashboard-container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            grid-template-rows: 60px 1fr;
+            grid-template-areas: 
+                "sidebar header"
+                "sidebar main";
+            min-height: 100vh;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .dashboard-container {
+                grid-template-columns: 1fr;
+                grid-template-rows: 60px auto 1fr;
+                grid-template-areas: 
+                    "header"
+                    "sidebar"
+                    "main";
+            }
+            
+            .sidebar {
+                position: fixed;
+                top: 60px;
+                left: -250px;
+                width: 250px;
+                height: calc(100vh - 60px);
+                z-index: 1000;
+                transition: left 0.3s ease;
+                overflow-y: auto;
+            }
+            
+            .sidebar.open {
+                left: 0;
+            }
+            
+        .sidebar-toggle {
+            display: block;
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 1001;
+            background: var(--accent-color);
+            border: none;
+            color: var(--text-primary);
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+            
+            .header {
+                padding-left: 60px;
+            }
+            
+            .main-content {
+                padding: 10px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            
+            .market-overview {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            
+            .quick-actions {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            
+            .system-status {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            
+            .card {
+                padding: 15px;
+                margin-bottom: 10px;
+            }
+            
+            .card h3 {
+                font-size: 16px;
+                margin-bottom: 10px;
+            }
+            
+            .stat-item {
+                padding: 10px;
+            }
+            
+            .stat-value {
+                font-size: 18px;
+            }
+            
+            .stat-label {
+                font-size: 12px;
+            }
+            
+            .market-item {
+                padding: 10px;
+            }
+            
+            .market-symbol {
+                font-size: 14px;
+            }
+            
+            .market-price {
+                font-size: 16px;
+            }
+            
+            .market-change {
+                font-size: 12px;
+            }
+            
+            .action-btn {
+                padding: 12px 16px;
+                font-size: 14px;
+            }
+            
+            .status-item {
+                padding: 10px;
+            }
+            
+            .status-indicator {
+                width: 8px;
+                height: 8px;
+            }
+            
+            .status-text {
+                font-size: 12px;
+            }
+            
+            .chart-container {
+                height: 200px;
+            }
+            
+            .table-container {
+                overflow-x: auto;
+            }
+            
+            table {
+                font-size: 12px;
+            }
+            
+            th, td {
+                padding: 8px 4px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 10px 60px 10px 60px;
+            }
+            
+            .header h1 {
+                font-size: 18px;
+            }
+            
+            .main-content {
+                padding: 5px;
+            }
+            
+            .card {
+                padding: 10px;
+            }
+            
+            .card h3 {
+                font-size: 14px;
+            }
+            
+            .stat-item {
+                padding: 8px;
+            }
+            
+            .stat-value {
+                font-size: 16px;
+            }
+            
+            .stat-label {
+                font-size: 11px;
+            }
+            
+            .market-item {
+                padding: 8px;
+            }
+            
+            .market-symbol {
+                font-size: 12px;
+            }
+            
+            .market-price {
+                font-size: 14px;
+            }
+            
+            .market-change {
+                font-size: 11px;
+            }
+            
+            .action-btn {
+                padding: 10px 12px;
+                font-size: 12px;
+            }
+            
+            .status-item {
+                padding: 8px;
+            }
+            
+            .status-text {
+                font-size: 11px;
+            }
+            
+            .chart-container {
+                height: 150px;
+            }
+            
+            table {
+                font-size: 11px;
+            }
+            
+            th, td {
+                padding: 6px 2px;
+            }
+        }
+
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .dashboard-container {
+                grid-template-columns: 200px 1fr;
+            }
+            
+            .sidebar {
+                width: 200px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .market-overview {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .quick-actions {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .system-status {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .sidebar-toggle {
+            display: none;
+        }
+
+        /* Header */
+        .header {
+            grid-area: header;
+            background: var(--secondary-color);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--card-bg);
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success-color);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .notification-bell {
+            position: relative;
+            padding: 0.5rem;
+            background: var(--card-bg);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .notification-bell:hover {
+            background: var(--accent-color);
+            transform: scale(1.1);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 12px;
+            height: 12px;
+            background: var(--error-color);
+            border-radius: 50%;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            grid-area: sidebar;
+            background: var(--secondary-color);
+            border-right: 1px solid var(--border-color);
+            padding: 1rem 0;
+            overflow-y: auto;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background: var(--accent-color);
+            color: var(--text-primary);
+            border-left-color: var(--success-color);
+        }
+
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+            opacity: 0.7;
+        }
+
+        /* Main Content */
+        .main-content {
+            grid-area: main;
+            padding: 2rem;
+            overflow-y: auto;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        }
+
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        /* Dashboard Overview */
+        .dashboard-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-primary);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .stat-title {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-icon {
+            width: 24px;
+            height: 24px;
+            opacity: 0.7;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-change {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .change-positive {
+            color: var(--success-color);
+        }
+
+        .change-negative {
+            color: var(--error-color);
+        }
+
+        /* Market Data Grid */
+        .market-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .market-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .market-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .crypto-symbol {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .crypto-price {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .crypto-change {
+            font-size: 0.9rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        /* Charts */
+        .charts-section {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-container {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .chart-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        /* Services Status */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .service-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .service-card.healthy {
+            border-left: 4px solid var(--success-color);
+        }
+
+        .service-card.unhealthy {
+            border-left: 4px solid var(--error-color);
+        }
+
+        .service-name {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .service-port {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .service-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-healthy {
+            background: rgba(0, 212, 170, 0.2);
+            color: var(--success-color);
+        }
+
+        .status-unhealthy {
+            background: rgba(244, 67, 54, 0.2);
+            color: var(--error-color);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .btn-success {
+            background: var(--gradient-success);
+            color: white;
+        }
+
+        .btn-warning {
+            background: var(--gradient-warning);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-theme {
+            background: var(--accent-color);
+            border: 1px solid var(--accent-color);
+            color: var(--text-primary);
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+        }
+
+        .btn-theme:hover {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 212, 170, 0.3);
+        }
+
+        /* Theme System CSS Variables */
+        :root {
+            --primary-color: #1a1a1a;
+            --secondary-color: #2d2d2d;
+            --accent-color: #00d4aa;
+            --accent-hover: #00b894;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --background: #0f0f0f;
+            --card-background: #1a1a1a;
+            --border-color: #333333;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --info-color: #17a2b8;
+        }
+
+        /* Light Theme */
+        [data-theme="light"] {
+            --primary-color: #ffffff;
+            --secondary-color: #f8f9fa;
+            --accent-color: #007bff;
+            --accent-hover: #0056b3;
+            --text-primary: #212529;
+            --text-secondary: #6c757d;
+            --background: #ffffff;
+            --card-background: #f8f9fa;
+            --border-color: #dee2e6;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --info-color: #17a2b8;
+        }
+
+        /* Auto Theme (System Preference) */
+        [data-theme="auto"] {
+            --primary-color: var(--system-primary, #1a1a1a);
+            --secondary-color: var(--system-secondary, #2d2d2d);
+            --accent-color: var(--system-accent, #00d4aa);
+            --accent-hover: var(--system-accent-hover, #00b894);
+            --text-primary: var(--system-text-primary, #ffffff);
+            --text-secondary: var(--system-text-secondary, #b0b0b0);
+            --background: var(--system-background, #0f0f0f);
+            --card-background: var(--system-card-background, #1a1a1a);
+            --border-color: var(--system-border, #333333);
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--success-color);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .dashboard-container {
+                grid-template-columns: 1fr;
+                grid-template-areas: 
+                    "header"
+                    "main";
+            }
+
+            .sidebar {
+                display: none;
+            }
+
+            .main-content {
+                padding: 1rem;
+            }
+
+            .charts-section {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard-overview {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--secondary-color);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-color);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--success-color);
+        }
+
+        /* Backup & Restore Styles */
+        .backup-controls {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .backup-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .backup-stat-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .backup-stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .backup-stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .backup-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
+        }
+
+        .backup-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .backup-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .backup-card-header h3 {
+            margin: 0;
+            color: var(--text-primary);
+        }
+
+        .backup-card-body p {
+            margin: 0.5rem 0;
+            color: var(--text-secondary);
+        }
+
+        .backup-card-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .backup-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .backup-table th,
+        .backup-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .backup-table th {
+            background: var(--bg-secondary);
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .backup-table td {
+            color: var(--text-secondary);
+        }
+
+        .backup-table tr:hover {
+            background: var(--bg-secondary);
+        }
+
+        .backup-cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+
+        .backup-filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .backup-filters input,
+        .backup-filters select {
+            padding: 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background: var(--card-bg);
+            color: var(--text-primary);
+        }
+
+        .backup-filters input:focus,
+        .backup-filters select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .backup-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .backup-actions .btn {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+
+        .backup-actions .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        .backup-status {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .backup-status.completed {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .backup-status.in-progress {
+            background: var(--warning-color);
+            color: white;
+        }
+
+        .backup-status.failed {
+            background: var(--error-color);
+            color: white;
+        }
+
+        .backup-status.pending {
+            background: var(--text-secondary);
+            color: white;
+        }
+
+        .backup-type-badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .backup-size {
+            font-family: monospace;
+            color: var(--text-secondary);
+        }
+
+        .backup-date {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .backup-description {
+            color: var(--text-secondary);
+            font-style: italic;
+            margin-top: 0.5rem;
+        }
+
+        .backup-progress {
+            width: 100%;
+            height: 4px;
+            background: var(--border-color);
+            border-radius: 2px;
+            overflow: hidden;
+            margin: 0.5rem 0;
+        }
+
+        .backup-progress-bar {
+            height: 100%;
+            background: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        .backup-empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-secondary);
+        }
+
+        .backup-empty-state h3 {
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .backup-empty-state p {
+            margin-bottom: 2rem;
+        }
+
+        .backup-schedule {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .backup-schedule h3 {
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .backup-schedule-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .backup-schedule-item:last-child {
+            border-bottom: none;
+        }
+
+        .backup-schedule-info {
+            flex: 1;
+        }
+
+        .backup-schedule-info h4 {
+            margin: 0 0 0.5rem 0;
+            color: var(--text-primary);
+        }
+
+        .backup-schedule-info p {
+            margin: 0;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .backup-schedule-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .backup-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .backup-controls .control-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .backup-filters {
+                flex-direction: column;
+            }
+
+            .backup-filters input,
+            .backup-filters select {
+                width: 100%;
+            }
+
+            .backup-actions {
+                justify-content: center;
+            }
+
+            .backup-cards-container {
+                grid-template-columns: 1fr;
+            }
+
+            .backup-table {
+                font-size: 0.9rem;
+            }
+
+            .backup-table th,
+            .backup-table td {
+                padding: 0.5rem;
+            }
+
+            .backup-card-actions {
+                flex-direction: column;
+            }
+
+            .backup-schedule-item {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 1rem;
+            }
+
+            .backup-schedule-actions {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Mobile Sidebar Toggle Button -->
+    <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+    
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <div class="logo">ZmartBot</div>
+                <div class="status-indicator">
+                    <div class="status-dot"></div>
+                    <span>System Online</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="notification-bell">
+                    🔔
+                    <div class="notification-badge">3</div>
+                </div>
+                <button class="btn btn-theme" id="themeToggle" onclick="toggleTheme()" title="Toggle Theme">
+                    🌙
+                </button>
+                <button class="btn btn-primary" onclick="refreshAllData()">
+                    <span class="loading" id="refreshLoader" style="display: none;"></span>
+                    Refresh Data
+                </button>
+            </div>
+        </header>
+
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <a href="#" class="nav-item active" onclick="showSection('overview')">
+                <span class="nav-icon">📊</span>
+                Dashboard Overview
+            </a>
+            <a href="#" class="nav-item" onclick="showSection('trading')">
+                <span class="nav-icon">💰</span>
+                Trading
+            </a>
+            <a href="#" class="nav-item" onclick="showSection('analysis')">
+                <span class="nav-icon">🧠</span>
+                AI Analysis
+            </a>
+            <a href="#" class="nav-item" onclick="showSection('orchestration')">
+                <span class="nav-icon">⚙️</span>
+                Orchestration
+            </a>
+            <a href="#" class="nav-item" onclick="showSection('services')">
+                <span class="nav-icon">🔧</span>
+                Services
+            </a>
+            <a href="#" class="nav-item" onclick="showSection('security')">
+                <span class="nav-icon">🔒</span>
+                Security
+            </a>
+            <a href="#" class="nav-item" onclick="showSection('analytics')">
+                <span class="nav-icon">📈</span>
+                Analytics
+            </a>
+                        <a href="#" class="nav-item" onclick="showSection('advanced-charts')">
+                            <span class="nav-icon">📊</span>
+                            Advanced Charts
+                        </a>
+                        <a href="#" class="nav-item" onclick="showSection('user-management')">
+                            <span class="nav-icon">👥</span>
+                            User Management
+                        </a>
+                        <a href="#" class="nav-item" onclick="showSection('backup-restore')">
+                            <span class="nav-icon">💾</span>
+                            Backup & Restore
+                        </a>
+            <a href="#" class="nav-item" onclick="showSection('settings')">
+                <span class="nav-icon">⚙️</span>
+                Settings
+            </a>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Overview -->
+            <section id="overview" class="content-section active">
+                <h1 style="margin-bottom: 2rem; font-size: 2rem;">Dashboard Overview</h1>
+                
+                <!-- Key Statistics -->
+                <div class="dashboard-overview">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-title">Total Balance</span>
+                            <span class="stat-icon">💰</span>
+                        </div>
+                        <div class="stat-value" id="totalBalance">$0.00</div>
+                        <div class="stat-change change-positive">
+                            <span>↗</span>
+                            <span id="balanceChange">+0.00%</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-title">Active Positions</span>
+                            <span class="stat-icon">📊</span>
+                        </div>
+                        <div class="stat-value" id="activePositions">0</div>
+                        <div class="stat-change change-positive">
+                            <span>↗</span>
+                            <span id="positionsChange">+0</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-title">Win Rate</span>
+                            <span class="stat-icon">🎯</span>
+                        </div>
+                        <div class="stat-value" id="winRate">0%</div>
+                        <div class="stat-change change-positive">
+                            <span>↗</span>
+                            <span id="winRateChange">+0%</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-title">Daily P&L</span>
+                            <span class="stat-icon">📈</span>
+                        </div>
+                        <div class="stat-value" id="dailyPnL">$0.00</div>
+                        <div class="stat-change change-positive">
+                            <span>↗</span>
+                            <span id="pnlChange">+0.00%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Market Data -->
+                <h2 style="margin-bottom: 1rem;">Live Market Data</h2>
+                <div class="market-grid" id="marketGrid">
+                    <!-- Market data will be populated here -->
+                </div>
+
+                <!-- Charts Section -->
+                <div class="charts-section">
+                    <div class="chart-container">
+                        <div class="chart-title">Portfolio Performance</div>
+                        <canvas id="portfolioChart" width="400" height="200"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <div class="chart-title">System Health</div>
+                        <canvas id="healthChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Trading Section -->
+            <section id="trading" class="content-section">
+                <h1 style="margin-bottom: 2rem;">Trading Dashboard</h1>
+                <div class="dashboard-overview">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-title">Account Balance</span>
+                            <span class="stat-icon">💳</span>
+                        </div>
+                        <div class="stat-value" id="accountBalance">$0.00</div>
+                        <div class="stat-change change-positive">
+                            <span>↗</span>
+                            <span id="accountChange">+0.00%</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-title">Open Orders</span>
+                            <span class="stat-icon">📋</span>
+                        </div>
+                        <div class="stat-value" id="openOrders">0</div>
+                        <div class="stat-change change-positive">
+                            <span>↗</span>
+                            <span id="ordersChange">+0</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-title">Total Trades</span>
+                            <span class="stat-icon">🔄</span>
+                        </div>
+                        <div class="stat-value" id="totalTrades">0</div>
+                        <div class="stat-change change-positive">
+                            <span>↗</span>
+                            <span id="tradesChange">+0</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-title">Risk Level</span>
+                            <span class="stat-icon">⚠️</span>
+                        </div>
+                        <div class="stat-value" id="riskLevel">Low</div>
+                        <div class="stat-change change-positive">
+                            <span>↗</span>
+                            <span id="riskChange">Stable</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- AI Analysis Section -->
+            <section id="analysis" class="content-section">
+                <h1 style="margin-bottom: 2rem;">AI Analysis</h1>
+                <div class="dashboard-overview">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-title">KingFisher Score</span>
+                            <span class="stat-icon">🐟</span>
+                        </div>
+                        <div class="stat-value" id="kingfisherScore">0/100</div>
+                        <div class="stat-change change-positive">
+                            <span>↗</span>
+                            <span id="kfChange">Neutral</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-title">RiskMetric Score</span>
+                            <span class="stat-icon">📊</span>
+                        </div>
+                        <div class="stat-value" id="riskMetricScore">0/100</div>
+                        <div class="stat-change change-positive">
+                            <span>↗</span>
+                            <span id="rmChange">Neutral</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-title">Cryptometer Score</span>
+                            <span class="stat-icon">🔮</span>
+                        </div>
+                        <div class="stat-value" id="cryptometerScore">0/100</div>
+                        <div class="stat-change change-positive">
+                            <span>↗</span>
+                            <span id="cmChange">Neutral</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-title">Overall Score</span>
+                            <span class="stat-icon">🎯</span>
+                        </div>
+                        <div class="stat-value" id="overallScore">0/100</div>
+                        <div class="stat-change change-positive">
+                            <span>↗</span>
+                            <span id="overallChange">Neutral</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Orchestration Section -->
+            <section id="orchestration" class="content-section">
+                <h1 style="margin-bottom: 2rem;">Service Orchestration</h1>
+                <div class="services-grid" id="orchestrationGrid">
+                    <!-- Orchestration services will be populated here -->
+                </div>
+            </section>
+
+            <!-- Services Section -->
+            <section id="services" class="content-section">
+                <h1 style="margin-bottom: 2rem;">System Services</h1>
+                <div class="services-grid" id="servicesGrid">
+                    <!-- Services will be populated here -->
+                </div>
+            </section>
+
+            <!-- Security Section -->
+            <section id="security" class="content-section">
+                <h1 style="margin-bottom: 2rem;">Security Dashboard</h1>
+                <div class="dashboard-overview">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-title">Security Score</span>
+                            <span class="stat-icon">🔒</span>
+                        </div>
+                        <div class="stat-value" id="securityScore">95%</div>
+                        <div class="stat-change change-positive">
+                            <span>↗</span>
+                            <span id="securityChange">Excellent</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-title">Active Threats</span>
+                            <span class="stat-icon">⚠️</span>
+                        </div>
+                        <div class="stat-value" id="activeThreats">0</div>
+                        <div class="stat-change change-positive">
+                            <span>↗</span>
+                            <span id="threatsChange">None</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-title">API Calls Today</span>
+                            <span class="stat-icon">📡</span>
+                        </div>
+                        <div class="stat-value" id="apiCalls">0</div>
+                        <div class="stat-change change-positive">
+                            <span>↗</span>
+                            <span id="apiChange">+0</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-title">Last Backup</span>
+                            <span class="stat-icon">💾</span>
+                        </div>
+                        <div class="stat-value" id="lastBackup">Never</div>
+                        <div class="stat-change change-positive">
+                            <span>↗</span>
+                            <span id="backupChange">Pending</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Analytics Section -->
+            <section id="analytics" class="content-section">
+                <h1 style="margin-bottom: 2rem;">Performance Analytics</h1>
+                <div class="charts-section">
+                    <div class="chart-container">
+                        <div class="chart-title">Trading Performance</div>
+                        <canvas id="tradingChart" width="400" height="200"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <div class="chart-title">System Metrics</div>
+                        <canvas id="metricsChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Advanced Charts Section -->
+            <section id="advanced-charts" class="content-section">
+                <h1 style="margin-bottom: 2rem;">Advanced Trading Charts</h1>
+                
+                <!-- Chart Controls -->
+                <div class="chart-controls" style="margin-bottom: 2rem; display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
+                    <div class="control-group">
+                        <label for="symbolSelect">Symbol:</label>
+                        <select id="symbolSelect" onchange="updateChartSymbol()">
+                            <option value="BTCUSDT">BTC/USDT</option>
+                            <option value="ETHUSDT">ETH/USDT</option>
+                            <option value="ADAUSDT">ADA/USDT</option>
+                            <option value="SOLUSDT">SOL/USDT</option>
+                            <option value="DOTUSDT">DOT/USDT</option>
+                        </select>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="timeframeSelect">Timeframe:</label>
+                        <select id="timeframeSelect" onchange="updateChartTimeframe()">
+                            <option value="1m">1 Minute</option>
+                            <option value="5m">5 Minutes</option>
+                            <option value="15m">15 Minutes</option>
+                            <option value="1h" selected>1 Hour</option>
+                            <option value="4h">4 Hours</option>
+                            <option value="1d">1 Day</option>
+                        </select>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="chartTypeSelect">Chart Type:</label>
+                        <select id="chartTypeSelect" onchange="updateChartType()">
+                            <option value="candlestick" selected>Candlestick</option>
+                            <option value="line">Line</option>
+                            <option value="area">Area</option>
+                            <option value="bar">Bar</option>
+                        </select>
+                    </div>
+                    
+                    <div class="control-group">
+                        <button class="btn btn-primary" onclick="toggleIndicators()">📊 Indicators</button>
+                        <button class="btn btn-secondary" onclick="toggleDrawingTools()">✏️ Drawing Tools</button>
+                        <button class="btn btn-success" onclick="exportChart()">💾 Export</button>
+                    </div>
+                </div>
+                
+                <!-- Main Chart Container -->
+                <div class="advanced-chart-container" style="background: var(--card-background); border-radius: 12px; padding: 1rem; margin-bottom: 2rem; border: 1px solid var(--border-color);">
+                    <div id="advancedTradingChart" style="width: 100%; height: 500px;"></div>
+                </div>
+                
+                <!-- Indicators Panel -->
+                <div id="indicatorsPanel" class="indicators-panel" style="display: none; background: var(--card-background); border-radius: 12px; padding: 1rem; margin-bottom: 2rem; border: 1px solid var(--border-color);">
+                    <h3 style="margin-bottom: 1rem; color: var(--text-primary);">Technical Indicators</h3>
+                    <div class="indicators-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                        <div class="indicator-group">
+                            <h4 style="color: var(--text-secondary); margin-bottom: 0.5rem;">Moving Averages</h4>
+                            <label><input type="checkbox" id="sma20" onchange="toggleIndicator('sma20')"> SMA 20</label>
+                            <label><input type="checkbox" id="sma50" onchange="toggleIndicator('sma50')"> SMA 50</label>
+                            <label><input type="checkbox" id="ema12" onchange="toggleIndicator('ema12')"> EMA 12</label>
+                            <label><input type="checkbox" id="ema26" onchange="toggleIndicator('ema26')"> EMA 26</label>
+                        </div>
+                        
+                        <div class="indicator-group">
+                            <h4 style="color: var(--text-secondary); margin-bottom: 0.5rem;">Momentum</h4>
+                            <label><input type="checkbox" id="rsi" onchange="toggleIndicator('rsi')"> RSI (14)</label>
+                            <label><input type="checkbox" id="macd" onchange="toggleIndicator('macd')"> MACD</label>
+                            <label><input type="checkbox" id="stoch" onchange="toggleIndicator('stoch')"> Stochastic</label>
+                        </div>
+                        
+                        <div class="indicator-group">
+                            <h4 style="color: var(--text-secondary); margin-bottom: 0.5rem;">Volatility</h4>
+                            <label><input type="checkbox" id="bb" onchange="toggleIndicator('bb')"> Bollinger Bands</label>
+                            <label><input type="checkbox" id="atr" onchange="toggleIndicator('atr')"> ATR</label>
+                        </div>
+                        
+                        <div class="indicator-group">
+                            <h4 style="color: var(--text-secondary); margin-bottom: 0.5rem;">Volume</h4>
+                            <label><input type="checkbox" id="volume" onchange="toggleIndicator('volume')"> Volume</label>
+                            <label><input type="checkbox" id="vwap" onchange="toggleIndicator('vwap')"> VWAP</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Drawing Tools Panel -->
+                <div id="drawingToolsPanel" class="drawing-tools-panel" style="display: none; background: var(--card-background); border-radius: 12px; padding: 1rem; margin-bottom: 2rem; border: 1px solid var(--border-color);">
+                    <h3 style="margin-bottom: 1rem; color: var(--text-primary);">Drawing Tools</h3>
+                    <div class="drawing-tools-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
+                        <button class="btn btn-outline" onclick="activateDrawingTool('trendline')">📈 Trend Line</button>
+                        <button class="btn btn-outline" onclick="activateDrawingTool('horizontal')">➖ Horizontal Line</button>
+                        <button class="btn btn-outline" onclick="activateDrawingTool('fibonacci')">🌀 Fibonacci</button>
+                        <button class="btn btn-outline" onclick="activateDrawingTool('rectangle')">⬜ Rectangle</button>
+                        <button class="btn btn-outline" onclick="activateDrawingTool('ellipse')">⭕ Ellipse</button>
+                        <button class="btn btn-outline" onclick="activateDrawingTool('text')">📝 Text</button>
+                        <button class="btn btn-outline" onclick="clearDrawings()">🗑️ Clear All</button>
+                    </div>
+                </div>
+                
+                <!-- Chart Information -->
+                <div class="chart-info" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                    <div class="info-card" style="background: var(--card-background); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color);">
+                        <h4 style="color: var(--text-secondary); margin-bottom: 0.5rem;">Current Price</h4>
+                        <div id="currentPrice" style="font-size: 1.5rem; font-weight: bold; color: var(--accent-color);">$0.00</div>
+                    </div>
+                    <div class="info-card" style="background: var(--card-background); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color);">
+                        <h4 style="color: var(--text-secondary); margin-bottom: 0.5rem;">24h Change</h4>
+                        <div id="priceChange" style="font-size: 1.2rem; font-weight: bold;">+0.00%</div>
+                    </div>
+                    <div class="info-card" style="background: var(--card-background); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color);">
+                        <h4 style="color: var(--text-secondary); margin-bottom: 0.5rem;">Volume</h4>
+                        <div id="volume24h" style="font-size: 1.2rem; font-weight: bold;">0</div>
+                    </div>
+                    <div class="info-card" style="background: var(--card-background); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color);">
+                        <h4 style="color: var(--text-secondary); margin-bottom: 0.5rem;">Market Cap</h4>
+                        <div id="marketCap" style="font-size: 1.2rem; font-weight: bold;">$0</div>
+                    </div>
+                </div>
+                </section>
+
+                <!-- User Management Section -->
+                <section id="user-management" class="content-section">
+                    <h1 style="margin-bottom: 2rem;">User Management</h1>
+                    
+                    <!-- User Management Controls -->
+                    <div class="user-controls" style="margin-bottom: 2rem; display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; justify-content: space-between;">
+                        <div class="control-group" style="display: flex; gap: 1rem; align-items: center;">
+                            <button class="btn btn-primary" onclick="showCreateUserModal()">➕ Add User</button>
+                            <button class="btn btn-secondary" onclick="refreshUsers()">🔄 Refresh</button>
+                            <button class="btn btn-outline" onclick="exportUsers()">📤 Export</button>
+                        </div>
+                        <div class="control-group" style="display: flex; gap: 1rem; align-items: center;">
+                            <input type="text" id="userSearch" placeholder="Search users..." style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px; background: var(--card-background); color: var(--text-primary);" onkeyup="searchUsers()">
+                            <select id="roleFilter" onchange="filterUsersByRole()" style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px; background: var(--card-background); color: var(--text-primary);">
+                                <option value="">All Roles</option>
+                                <option value="Administrator">Administrator</option>
+                                <option value="Trader">Trader</option>
+                                <option value="Analyst">Analyst</option>
+                                <option value="Viewer">Viewer</option>
+                                <option value="Guest">Guest</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Users Statistics -->
+                    <div class="user-stats" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+                        <div class="stat-card" style="background: var(--card-background); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border-color); text-align: center;">
+                            <h3 style="color: var(--text-secondary); margin-bottom: 0.5rem;">Total Users</h3>
+                            <div id="totalUsers" style="font-size: 2rem; font-weight: bold; color: var(--accent-color);">0</div>
+                        </div>
+                        <div class="stat-card" style="background: var(--card-background); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border-color); text-align: center;">
+                            <h3 style="color: var(--text-secondary); margin-bottom: 0.5rem;">Active Users</h3>
+                            <div id="activeUsers" style="font-size: 2rem; font-weight: bold; color: #28a745;">0</div>
+                        </div>
+                        <div class="stat-card" style="background: var(--card-background); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border-color); text-align: center;">
+                            <h3 style="color: var(--text-secondary); margin-bottom: 0.5rem;">Online Now</h3>
+                            <div id="onlineUsers" style="font-size: 2rem; font-weight: bold; color: #007bff;">0</div>
+                        </div>
+                        <div class="stat-card" style="background: var(--card-background); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border-color); text-align: center;">
+                            <h3 style="color: var(--text-secondary); margin-bottom: 0.5rem;">Roles</h3>
+                            <div id="totalRoles" style="font-size: 2rem; font-weight: bold; color: #6f42c1;">5</div>
+                        </div>
+                    </div>
+
+                    <!-- Users Table -->
+                    <div class="users-table-container" style="background: var(--card-background); border-radius: 12px; padding: 1rem; border: 1px solid var(--border-color);">
+                        <div class="table-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                            <h3 style="color: var(--text-primary); margin: 0;">Users</h3>
+                            <div class="table-actions">
+                                <button class="btn btn-sm btn-outline" onclick="toggleUserView('table')">📋 Table</button>
+                                <button class="btn btn-sm btn-outline" onclick="toggleUserView('cards')">🃏 Cards</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Table View -->
+                        <div id="usersTableView" class="users-table-view">
+                            <table class="users-table" style="width: 100%; border-collapse: collapse;">
+                                <thead>
+                                    <tr style="border-bottom: 2px solid var(--border-color);">
+                                        <th style="padding: 1rem; text-align: left; color: var(--text-secondary);">User</th>
+                                        <th style="padding: 1rem; text-align: left; color: var(--text-secondary);">Role</th>
+                                        <th style="padding: 1rem; text-align: left; color: var(--text-secondary);">Status</th>
+                                        <th style="padding: 1rem; text-align: left; color: var(--text-secondary);">Last Login</th>
+                                        <th style="padding: 1rem; text-align: left; color: var(--text-secondary);">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="usersTableBody">
+                                    <!-- Users will be populated here -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Cards View -->
+                        <div id="usersCardsView" class="users-cards-view" style="display: none;">
+                            <div id="usersCardsContainer" class="users-cards-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem;">
+                                <!-- User cards will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Roles and Permissions Panel -->
+                    <div class="roles-permissions-panel" style="margin-top: 2rem; background: var(--card-background); border-radius: 12px; padding: 1rem; border: 1px solid var(--border-color);">
+                        <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                            <h3 style="color: var(--text-primary); margin: 0;">Roles & Permissions</h3>
+                            <button class="btn btn-outline" onclick="toggleRolesPanel()">📋 Manage Roles</button>
+                        </div>
+                        
+                        <div id="rolesContainer" class="roles-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                            <!-- Roles will be populated here -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Backup & Restore Section -->
+                <section id="backup-restore" class="content-section">
+                    <h1 style="margin-bottom: 2rem;">Backup & Restore</h1>
+                    
+                    <!-- Backup Controls -->
+                    <div class="backup-controls" style="margin-bottom: 2rem; display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; justify-content: space-between;">
+                        <div class="control-group" style="display: flex; gap: 1rem; align-items: center;">
+                            <button class="btn btn-primary" onclick="showCreateBackupModal()">➕ Create Backup</button>
+                            <button class="btn btn-secondary" onclick="refreshBackups()">🔄 Refresh</button>
+                            <button class="btn btn-outline" onclick="exportBackups()">📤 Export List</button>
+                        </div>
+                        <div class="search-group" style="display: flex; gap: 1rem; align-items: center;">
+                            <input type="text" id="backupSearch" placeholder="Search backups..." style="padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px;" onkeyup="searchBackups()">
+                            <select id="backupTypeFilter" style="padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px;" onchange="filterBackupsByType()">
+                                <option value="">All Types</option>
+                                <option value="full">Full System</option>
+                                <option value="user_data">User Data</option>
+                                <option value="trading_data">Trading Data</option>
+                                <option value="config">Configuration</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Backup Statistics -->
+                    <div class="backup-stats" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+                        <div class="stat-card" style="background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); text-align: center;">
+                            <div style="font-size: 2rem; font-weight: bold; color: var(--primary-color);" id="totalBackups">0</div>
+                            <div style="color: #666; margin-top: 0.5rem;">Total Backups</div>
+                        </div>
+                        <div class="stat-card" style="background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); text-align: center;">
+                            <div style="font-size: 2rem; font-weight: bold; color: var(--success-color);" id="completedBackups">0</div>
+                            <div style="color: #666; margin-top: 0.5rem;">Completed</div>
+                        </div>
+                        <div class="stat-card" style="background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); text-align: center;">
+                            <div style="font-size: 2rem; font-weight: bold; color: var(--warning-color);" id="totalSize">0 GB</div>
+                            <div style="color: #666; margin-top: 0.5rem;">Total Size</div>
+                        </div>
+                        <div class="stat-card" style="background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); text-align: center;">
+                            <div style="font-size: 2rem; font-weight: bold; color: var(--accent-color);" id="lastBackup">Never</div>
+                            <div style="color: #666; margin-top: 0.5rem;">Last Backup</div>
+                        </div>
+                    </div>
+
+                    <!-- Backup List -->
+                    <div class="backup-list" style="background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); overflow: hidden;">
+                        <div style="padding: 1rem; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center;">
+                            <h3 style="margin: 0;">Available Backups</h3>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <button class="btn btn-sm btn-outline" onclick="toggleBackupView('table')" id="tableViewBtn">📋 Table</button>
+                                <button class="btn btn-sm btn-outline" onclick="toggleBackupView('cards')" id="cardsViewBtn">🃏 Cards</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Table View -->
+                        <div id="backupTableView" style="display: block;">
+                            <table style="width: 100%; border-collapse: collapse;">
+                                <thead style="background: #f8f9fa;">
+                                    <tr>
+                                        <th style="padding: 1rem; text-align: left; border-bottom: 1px solid #eee;">Name</th>
+                                        <th style="padding: 1rem; text-align: left; border-bottom: 1px solid #eee;">Type</th>
+                                        <th style="padding: 1rem; text-align: left; border-bottom: 1px solid #eee;">Size</th>
+                                        <th style="padding: 1rem; text-align: left; border-bottom: 1px solid #eee;">Created</th>
+                                        <th style="padding: 1rem; text-align: left; border-bottom: 1px solid #eee;">Status</th>
+                                        <th style="padding: 1rem; text-align: center; border-bottom: 1px solid #eee;">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="backupTableBody">
+                                    <!-- Backup rows will be populated here -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Cards View -->
+                        <div id="backupCardsView" style="display: none; padding: 1rem;">
+                            <div id="backupCardsContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem;">
+                                <!-- Backup cards will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Settings Section -->
+            <section id="settings" class="content-section">
+                <h1 style="margin-bottom: 2rem;">Settings</h1>
+                <div class="dashboard-overview">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-title">Theme</span>
+                            <span class="stat-icon">🎨</span>
+                        </div>
+                        <div class="stat-value">Dark Mode</div>
+                        <div class="stat-change change-positive">
+                            <span>↗</span>
+                            <span>Active</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-title">Auto Refresh</span>
+                            <span class="stat-icon">🔄</span>
+                        </div>
+                        <div class="stat-value">30s</div>
+                        <div class="stat-change change-positive">
+                            <span>↗</span>
+                            <span>Enabled</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-title">Notifications</span>
+                            <span class="stat-icon">🔔</span>
+                        </div>
+                        <div class="stat-value">On</div>
+                        <div class="stat-change change-positive">
+                            <span>↗</span>
+                            <span>Active</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-title">Data Export</span>
+                            <span class="stat-icon">📤</span>
+                        </div>
+                        <div class="stat-value">Ready</div>
+                        <div class="stat-change change-positive">
+                            <span>↗</span>
+                            <span>Available</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Global variables
+        let portfolioChart, healthChart, tradingChart, advancedTradingChart, metricsChart;
+        let refreshInterval;
+
+        // Global error handler
+        window.addEventListener('error', function(e) {
+            console.error('Global JavaScript error:', e.error);
+            console.error('Error details:', {
+                message: e.message,
+                filename: e.filename,
+                lineno: e.lineno,
+                colno: e.colno,
+                error: e.error
+            });
+        });
+
+        // Unhandled promise rejection handler
+        window.addEventListener('unhandledrejection', function(e) {
+            console.error('Unhandled promise rejection:', e.reason);
+        });
+
+        // Check if required libraries are loaded
+        function checkLibraries() {
+            const libraries = {
+                'Chart.js': typeof Chart !== 'undefined',
+                'LightweightCharts': typeof LightweightCharts !== 'undefined'
+            };
+            
+            const missing = Object.entries(libraries).filter(([name, loaded]) => !loaded);
+            if (missing.length > 0) {
+                console.error('Missing libraries:', missing.map(([name]) => name));
+                return false;
+            }
+            return true;
+        }
+
+        // Wait for libraries to load
+        function waitForLibraries(callback, maxAttempts = 10) {
+            let attempts = 0;
+            const checkInterval = setInterval(() => {
+                attempts++;
+                if (checkLibraries()) {
+                    clearInterval(checkInterval);
+                    callback();
+                } else if (attempts >= maxAttempts) {
+                    clearInterval(checkInterval);
+                    console.error('Failed to load required libraries after', maxAttempts, 'attempts');
+                    // Initialize anyway with error handling
+                    callback();
+                }
+            }, 500);
+        }
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            try {
+                waitForLibraries(() => {
+                    initializeCharts();
+                    loadInitialData();
+                    startAutoRefresh();
+                    initializeMobileNavigation();
+                    initializeThemeSystem();
+                    initializeUserManagement();
+                });
+            } catch (error) {
+                console.error('Dashboard initialization error:', error);
+            }
+        });
+
+        // Mobile Navigation
+        function initializeMobileNavigation() {
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const sidebar = document.querySelector('.sidebar');
+            
+            if (sidebarToggle && sidebar) {
+                sidebarToggle.addEventListener('click', function() {
+                    sidebar.classList.toggle('open');
+                });
+                
+                // Close sidebar when clicking outside on mobile
+                document.addEventListener('click', function(event) {
+                    if (window.innerWidth <= 768) {
+                        if (!sidebar.contains(event.target) && !sidebarToggle.contains(event.target)) {
+                            sidebar.classList.remove('open');
+                        }
+                    }
+                });
+                
+                // Handle window resize
+                window.addEventListener('resize', function() {
+                    if (window.innerWidth > 768) {
+                        sidebar.classList.remove('open');
+                    }
+                });
+            }
+        }
+
+        // Theme Management Functions
+        let currentTheme = 'dark';
+
+        function toggleTheme() {
+            const themes = ['dark', 'light', 'auto'];
+            const currentIndex = themes.indexOf(currentTheme);
+            const nextIndex = (currentIndex + 1) % themes.length;
+            const newTheme = themes[nextIndex];
+            
+            setTheme(newTheme);
+        }
+
+        function setTheme(theme) {
+            currentTheme = theme;
+            document.documentElement.setAttribute('data-theme', theme);
+            
+            // Update theme toggle button icon
+            const themeToggle = document.getElementById('themeToggle');
+            if (themeToggle) {
+                const icons = {
+                    'dark': '🌙',
+                    'light': '☀️',
+                    'auto': '🔄'
+                };
+                themeToggle.textContent = icons[theme];
+                themeToggle.title = `Current: ${theme.charAt(0).toUpperCase() + theme.slice(1)} Mode`;
+            }
+            
+            // Save theme preference
+            saveThemePreference(theme);
+            
+            // Update UI elements to reflect theme
+            updateThemeElements();
+        }
+
+        function saveThemePreference(theme) {
+            try {
+                const preferences = {
+                    theme: theme,
+                    accent_color: getComputedStyle(document.documentElement).getPropertyValue('--accent-color').trim(),
+                    font_size: getComputedStyle(document.documentElement).getPropertyValue('font-size') || '14px',
+                    layout_density: 'normal',
+                    auto_switch: theme === 'auto',
+                    high_contrast: false,
+                    reduced_motion: false,
+                    custom_css: ''
+                };
+                
+                fetch('/api/theme/update', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(preferences)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Theme preferences saved:', data);
+                })
+                .catch(error => {
+                    console.error('Error saving theme preferences:', error);
+                });
+            } catch (error) {
+                console.error('Error saving theme preference:', error);
+            }
+        }
+
+        function loadThemePreference() {
+            try {
+                fetch('/api/theme/preferences')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.user_preferences && data.user_preferences.theme) {
+                        setTheme(data.user_preferences.theme);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading theme preferences:', error);
+                    // Default to dark theme
+                    setTheme('dark');
+                });
+            } catch (error) {
+                console.error('Error loading theme preference:', error);
+                setTheme('dark');
+            }
+        }
+
+        function updateThemeElements() {
+            // Update any theme-specific elements
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                card.style.backgroundColor = 'var(--card-background)';
+                card.style.color = 'var(--text-primary)';
+                card.style.borderColor = 'var(--border-color)';
+            });
+            
+            // Update buttons
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(button => {
+                if (button.classList.contains('btn-primary')) {
+                    button.style.background = 'var(--accent-color)';
+                    button.style.borderColor = 'var(--accent-color)';
+                }
+            });
+        }
+
+        function initializeThemeSystem() {
+            // Load saved theme preference
+            loadThemePreference();
+            
+            // Listen for system theme changes (for auto theme)
+            if (window.matchMedia) {
+                const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+                mediaQuery.addListener((e) => {
+                    if (currentTheme === 'auto') {
+                        updateThemeElements();
+                    }
+                });
+            }
+        }
+
+        // User Management Functions
+        let usersData = [];
+        let rolesData = [];
+        let currentUserView = 'table';
+
+        function initializeUserManagement() {
+            loadUsers();
+            loadRoles();
+            updateUserStats();
+        }
+
+        async function loadUsers() {
+            try {
+                const response = await fetch('/api/users');
+                const data = await response.json();
+                usersData = data.users || [];
+                renderUsers();
+                updateUserStats();
+            } catch (error) {
+                console.error('Error loading users:', error);
+                showNotification('Error loading users', 'error');
+            }
+        }
+
+        async function loadRoles() {
+            try {
+                const response = await fetch('/api/roles');
+                const data = await response.json();
+                rolesData = data.roles || [];
+                renderRoles();
+            } catch (error) {
+                console.error('Error loading roles:', error);
+            }
+        }
+
+        function renderUsers() {
+            renderUsersTable();
+            renderUsersCards();
+        }
+
+        function renderUsersTable() {
+            const tbody = document.getElementById('usersTableBody');
+            if (!tbody) return;
+
+            tbody.innerHTML = usersData.map(user => `
+                <tr style="border-bottom: 1px solid var(--border-color);">
+                    <td style="padding: 1rem;">
+                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                            <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--accent-color), #6f42c1); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                                ${user.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                            </div>
+                            <div>
+                                <div style="font-weight: 600; color: var(--text-primary);">${user.name}</div>
+                                <div style="font-size: 0.875rem; color: var(--text-secondary);">${user.email}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td style="padding: 1rem;">
+                        <span class="role-badge role-${user.role.toLowerCase()}" style="padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.875rem; font-weight: 500; background: var(--role-${user.role.toLowerCase()}-bg); color: var(--role-${user.role.toLowerCase()}-color);">
+                            ${user.role}
+                        </span>
+                    </td>
+                    <td style="padding: 1rem;">
+                        <span class="status-badge status-${user.status.toLowerCase()}" style="padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.875rem; font-weight: 500; background: var(--status-${user.status.toLowerCase()}-bg); color: var(--status-${user.status.toLowerCase()}-color);">
+                            ${user.status}
+                        </span>
+                    </td>
+                    <td style="padding: 1rem; color: var(--text-secondary);">
+                        ${user.lastLogin ? new Date(user.lastLogin).toLocaleDateString() : 'Never'}
+                    </td>
+                    <td style="padding: 1rem;">
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button class="btn btn-sm btn-outline" onclick="viewUser('${user.id}')" title="View Details">👁️</button>
+                            <button class="btn btn-sm btn-outline" onclick="editUser('${user.id}')" title="Edit User">✏️</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteUser('${user.id}')" title="Delete User">🗑️</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function renderUsersCards() {
+            const container = document.getElementById('usersCardsContainer');
+            if (!container) return;
+
+            container.innerHTML = usersData.map(user => `
+                <div class="user-card" style="background: var(--card-background); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem;">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <div style="width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, var(--accent-color), #6f42c1); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 1.25rem;">
+                            ${user.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                        </div>
+                        <div>
+                            <h4 style="margin: 0; color: var(--text-primary);">${user.name}</h4>
+                            <p style="margin: 0; color: var(--text-secondary); font-size: 0.875rem;">${user.email}</p>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+                        <span class="role-badge role-${user.role.toLowerCase()}" style="padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.875rem; font-weight: 500; background: var(--role-${user.role.toLowerCase()}-bg); color: var(--role-${user.role.toLowerCase()}-color);">
+                            ${user.role}
+                        </span>
+                        <span class="status-badge status-${user.status.toLowerCase()}" style="padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.875rem; font-weight: 500; background: var(--status-${user.status.toLowerCase()}-bg); color: var(--status-${user.status.toLowerCase()}-color);">
+                            ${user.status}
+                        </span>
+                    </div>
+                    <div style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 1rem;">
+                        Last Login: ${user.lastLogin ? new Date(user.lastLogin).toLocaleDateString() : 'Never'}
+                    </div>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <button class="btn btn-sm btn-outline" onclick="viewUser('${user.id}')" style="flex: 1;">View</button>
+                        <button class="btn btn-sm btn-outline" onclick="editUser('${user.id}')" style="flex: 1;">Edit</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteUser('${user.id}')">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderRoles() {
+            const container = document.getElementById('rolesContainer');
+            if (!container) return;
+
+            container.innerHTML = rolesData.map(role => `
+                <div class="role-card" style="background: var(--card-background); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem;">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <div style="width: 40px; height: 40px; border-radius: 8px; background: linear-gradient(135deg, var(--accent-color), #6f42c1); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                            ${role.name.charAt(0)}
+                        </div>
+                        <div>
+                            <h4 style="margin: 0; color: var(--text-primary);">${role.name}</h4>
+                            <p style="margin: 0; color: var(--text-secondary); font-size: 0.875rem;">${role.description}</p>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <div style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.5rem;">Permissions:</div>
+                        <div style="display: flex; flex-wrap: wrap; gap: 0.25rem;">
+                            ${role.permissions.map(permission => `
+                                <span style="padding: 0.125rem 0.5rem; background: var(--accent-color); color: white; border-radius: 12px; font-size: 0.75rem;">
+                                    ${permission}
+                                </span>
+                            `).join('')}
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <button class="btn btn-sm btn-outline" onclick="editRole('${role.name}')" style="flex: 1;">Edit</button>
+                        <button class="btn btn-sm btn-outline" onclick="viewRoleDetails('${role.name}')" style="flex: 1;">Details</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateUserStats() {
+            const totalUsers = usersData.length;
+            const activeUsers = usersData.filter(user => user.status === 'Active').length;
+            const onlineUsers = usersData.filter(user => user.status === 'Online').length;
+
+            document.getElementById('totalUsers').textContent = totalUsers;
+            document.getElementById('activeUsers').textContent = activeUsers;
+            document.getElementById('onlineUsers').textContent = onlineUsers;
+        }
+
+        function toggleUserView(view) {
+            currentUserView = view;
+            const tableView = document.getElementById('usersTableView');
+            const cardsView = document.getElementById('usersCardsView');
+
+            if (view === 'table') {
+                tableView.style.display = 'block';
+                cardsView.style.display = 'none';
+            } else {
+                tableView.style.display = 'none';
+                cardsView.style.display = 'block';
+            }
+        }
+
+        function searchUsers() {
+            const searchTerm = document.getElementById('userSearch').value.toLowerCase();
+            const filteredUsers = usersData.filter(user => 
+                user.name.toLowerCase().includes(searchTerm) ||
+                user.email.toLowerCase().includes(searchTerm) ||
+                user.role.toLowerCase().includes(searchTerm)
+            );
+            
+            // Temporarily replace usersData with filtered results
+            const originalUsers = usersData;
+            usersData = filteredUsers;
+            renderUsers();
+            usersData = originalUsers;
+        }
+
+        function filterUsersByRole() {
+            const roleFilter = document.getElementById('roleFilter').value;
+            if (!roleFilter) {
+                renderUsers();
+                return;
+            }
+
+            const filteredUsers = usersData.filter(user => user.role === roleFilter);
+            const originalUsers = usersData;
+            usersData = filteredUsers;
+            renderUsers();
+            usersData = originalUsers;
+        }
+
+        function showCreateUserModal() {
+            showNotification('Create User modal would open here', 'info');
+        }
+
+        function refreshUsers() {
+            loadUsers();
+            showNotification('Users refreshed', 'success');
+        }
+
+        function exportUsers() {
+            const csvContent = generateUsersCSV();
+            downloadCSV(csvContent, 'users.csv');
+            showNotification('Users exported successfully', 'success');
+        }
+
+        function generateUsersCSV() {
+            const headers = ['Name', 'Email', 'Role', 'Status', 'Last Login', 'Created'];
+            const rows = usersData.map(user => [
+                user.name,
+                user.email,
+                user.role,
+                user.status,
+                user.lastLogin || 'Never',
+                user.created || 'Unknown'
+            ]);
+            
+            return [headers, ...rows].map(row => row.join(',')).join('\n');
+        }
+
+        function downloadCSV(content, filename) {
+            const blob = new Blob([content], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        function viewUser(userId) {
+            showNotification(`Viewing user ${userId}`, 'info');
+        }
+
+        function editUser(userId) {
+            showNotification(`Editing user ${userId}`, 'info');
+        }
+
+        async function deleteUser(userId) {
+            if (confirm('Are you sure you want to delete this user?')) {
+                try {
+                    const response = await fetch(`/api/users/${userId}`, {
+                        method: 'DELETE'
+                    });
+                    
+                    if (response.ok) {
+                        showNotification('User deleted successfully', 'success');
+                        loadUsers();
+                    } else {
+                        showNotification('Error deleting user', 'error');
+                    }
+                } catch (error) {
+                    console.error('Error deleting user:', error);
+                    showNotification('Error deleting user', 'error');
+                }
+            }
+        }
+
+        function toggleRolesPanel() {
+            showNotification('Roles management panel would open here', 'info');
+        }
+
+        function editRole(roleName) {
+            showNotification(`Editing role ${roleName}`, 'info');
+        }
+
+        function viewRoleDetails(roleName) {
+            showNotification(`Viewing role details for ${roleName}`, 'info');
+        }
+
+        // Advanced Charting Functions
+        // tradingChart already declared above
+        let candlestickSeries = null;
+        let volumeSeries = null;
+        let indicatorSeries = {};
+        let currentSymbol = 'BTCUSDT';
+        let currentTimeframe = '1h';
+        let currentChartType = 'candlestick';
+
+        function initializeAdvancedChart() {
+            try {
+                if (!window.LightweightCharts) {
+                    console.error('TradingView Lightweight Charts not loaded');
+                    return;
+                }
+
+            const chartContainer = document.getElementById('advancedTradingChart');
+            if (!chartContainer) return;
+
+            // Create chart with theme-aware colors
+            const chartOptions = {
+                layout: {
+                    textColor: getComputedStyle(document.documentElement).getPropertyValue('--text-primary').trim(),
+                    background: { 
+                        type: 'solid', 
+                        color: getComputedStyle(document.documentElement).getPropertyValue('--background').trim() 
+                    }
+                },
+                grid: {
+                    vertLines: { color: getComputedStyle(document.documentElement).getPropertyValue('--border-color').trim() },
+                    horzLines: { color: getComputedStyle(document.documentElement).getPropertyValue('--border-color').trim() }
+                },
+                crosshair: {
+                    mode: LightweightCharts.CrosshairMode.Normal
+                },
+                rightPriceScale: {
+                    borderColor: getComputedStyle(document.documentElement).getPropertyValue('--border-color').trim()
+                },
+                timeScale: {
+                    borderColor: getComputedStyle(document.documentElement).getPropertyValue('--border-color').trim()
+                }
+            };
+
+            advancedTradingChart = LightweightCharts.createChart(chartContainer, chartOptions);
+
+            // Add candlestick series
+            candlestickSeries = advancedTradingChart.addCandlestickSeries({
+                upColor: '#00d4aa',
+                downColor: '#ff4757',
+                borderVisible: false,
+                wickUpColor: '#00d4aa',
+                wickDownColor: '#ff4757'
+            });
+
+            // Add volume series
+            volumeSeries = advancedTradingChart.addHistogramSeries({
+                color: '#26a69a',
+                priceFormat: {
+                    type: 'volume',
+                },
+                priceScaleId: 'volume',
+            });
+
+            // Configure volume series
+            advancedTradingChart.priceScale('volume').applyOptions({
+                scaleMargins: {
+                    top: 0.8,
+                    bottom: 0,
+                },
+            });
+
+            // Load initial data
+            loadChartData();
+            } catch (error) {
+                console.error('Advanced chart initialization error:', error);
+            }
+        }
+
+        function loadChartData() {
+            try {
+                // Generate sample candlestick data
+                const data = generateSampleCandlestickData();
+                candlestickSeries.setData(data);
+
+                // Generate sample volume data
+                const volumeData = generateSampleVolumeData();
+                volumeSeries.setData(volumeData);
+
+                // Fit content to show all data
+                advancedTradingChart.timeScale().fitContent();
+
+                // Update chart info
+                updateChartInfo(data[data.length - 1]);
+            } catch (error) {
+                console.error('Chart data loading error:', error);
+            }
+        }
+
+        function generateSampleCandlestickData() {
+            const data = [];
+            const now = Math.floor(Date.now() / 1000);
+            let price = 45000; // Starting price for BTC
+
+            for (let i = 100; i >= 0; i--) {
+                const time = now - (i * 3600); // 1 hour intervals
+                const open = price;
+                const volatility = 0.02; // 2% volatility
+                const change = (Math.random() - 0.5) * volatility * price;
+                const close = open + change;
+                const high = Math.max(open, close) + Math.random() * volatility * price * 0.5;
+                const low = Math.min(open, close) - Math.random() * volatility * price * 0.5;
+
+                data.push({
+                    time: time,
+                    open: open,
+                    high: high,
+                    low: low,
+                    close: close
+                });
+
+                price = close;
+            }
+
+            return data;
+        }
+
+        function generateSampleVolumeData() {
+            const data = [];
+            const now = Math.floor(Date.now() / 1000);
+
+            for (let i = 100; i >= 0; i--) {
+                const time = now - (i * 3600);
+                const volume = Math.random() * 1000000 + 500000; // Random volume between 500k and 1.5M
+
+                data.push({
+                    time: time,
+                    value: volume,
+                    color: Math.random() > 0.5 ? '#00d4aa' : '#ff4757'
+                });
+            }
+
+            return data;
+        }
+
+        function updateChartInfo(latestCandle) {
+            const currentPrice = latestCandle.close;
+            const previousPrice = latestCandle.open;
+            const change = ((currentPrice - previousPrice) / previousPrice) * 100;
+            const changeColor = change >= 0 ? '#00d4aa' : '#ff4757';
+
+            document.getElementById('currentPrice').textContent = `$${currentPrice.toLocaleString()}`;
+            document.getElementById('priceChange').textContent = `${change >= 0 ? '+' : ''}${change.toFixed(2)}%`;
+            document.getElementById('priceChange').style.color = changeColor;
+            document.getElementById('volume24h').textContent = (Math.random() * 50000000 + 10000000).toLocaleString();
+            document.getElementById('marketCap').textContent = `$${(currentPrice * 21000000).toLocaleString()}`;
+        }
+
+        function updateChartSymbol() {
+            currentSymbol = document.getElementById('symbolSelect').value;
+            loadChartData();
+        }
+
+        function updateChartTimeframe() {
+            currentTimeframe = document.getElementById('timeframeSelect').value;
+            loadChartData();
+        }
+
+        function updateChartType() {
+            currentChartType = document.getElementById('chartTypeSelect').value;
+            
+            // Remove existing series
+            if (candlestickSeries) {
+                tradingChart.removeSeries(candlestickSeries);
+            }
+
+            // Add new series based on type
+            switch (currentChartType) {
+                case 'candlestick':
+                    candlestickSeries = tradingChart.addCandlestickSeries({
+                        upColor: '#00d4aa',
+                        downColor: '#ff4757',
+                        borderVisible: false,
+                        wickUpColor: '#00d4aa',
+                        wickDownColor: '#ff4757'
+                    });
+                    break;
+                case 'line':
+                    candlestickSeries = tradingChart.addLineSeries({
+                        color: '#00d4aa',
+                        lineWidth: 2
+                    });
+                    break;
+                case 'area':
+                    candlestickSeries = tradingChart.addAreaSeries({
+                        topColor: 'rgba(0, 212, 170, 0.3)',
+                        bottomColor: 'rgba(0, 212, 170, 0.1)',
+                        lineColor: '#00d4aa',
+                        lineWidth: 2
+                    });
+                    break;
+                case 'bar':
+                    candlestickSeries = tradingChart.addBarSeries({
+                        upColor: '#00d4aa',
+                        downColor: '#ff4757'
+                    });
+                    break;
+            }
+
+            loadChartData();
+        }
+
+        function toggleIndicators() {
+            const panel = document.getElementById('indicatorsPanel');
+            panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function toggleDrawingTools() {
+            const panel = document.getElementById('drawingToolsPanel');
+            panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function toggleIndicator(indicatorId) {
+            const isChecked = document.getElementById(indicatorId).checked;
+            
+            if (isChecked) {
+                addIndicator(indicatorId);
+            } else {
+                removeIndicator(indicatorId);
+            }
+        }
+
+        function addIndicator(indicatorId) {
+            // Add indicator series based on type
+            switch (indicatorId) {
+                case 'sma20':
+                    indicatorSeries.sma20 = tradingChart.addLineSeries({
+                        color: '#ff6b35',
+                        lineWidth: 1,
+                        title: 'SMA 20'
+                    });
+                    // Add sample SMA data
+                    const smaData = generateSMA(20);
+                    indicatorSeries.sma20.setData(smaData);
+                    break;
+                case 'sma50':
+                    indicatorSeries.sma50 = tradingChart.addLineSeries({
+                        color: '#ffa726',
+                        lineWidth: 1,
+                        title: 'SMA 50'
+                    });
+                    const sma50Data = generateSMA(50);
+                    indicatorSeries.sma50.setData(sma50Data);
+                    break;
+                case 'rsi':
+                    // RSI would typically be in a separate pane
+                    console.log('RSI indicator added');
+                    break;
+                case 'macd':
+                    console.log('MACD indicator added');
+                    break;
+                case 'bb':
+                    // Bollinger Bands
+                    indicatorSeries.bbUpper = tradingChart.addLineSeries({
+                        color: '#9c27b0',
+                        lineWidth: 1,
+                        title: 'BB Upper'
+                    });
+                    indicatorSeries.bbLower = tradingChart.addLineSeries({
+                        color: '#9c27b0',
+                        lineWidth: 1,
+                        title: 'BB Lower'
+                    });
+                    break;
+            }
+        }
+
+        function removeIndicator(indicatorId) {
+            if (indicatorSeries[indicatorId]) {
+                tradingChart.removeSeries(indicatorSeries[indicatorId]);
+                delete indicatorSeries[indicatorId];
+            }
+        }
+
+        function generateSMA(period) {
+            const data = generateSampleCandlestickData();
+            const smaData = [];
+            
+            for (let i = period - 1; i < data.length; i++) {
+                let sum = 0;
+                for (let j = 0; j < period; j++) {
+                    sum += data[i - j].close;
+                }
+                smaData.push({
+                    time: data[i].time,
+                    value: sum / period
+                });
+            }
+            
+            return smaData;
+        }
+
+        function activateDrawingTool(tool) {
+            console.log(`Activated drawing tool: ${tool}`);
+            // In a real implementation, this would activate the drawing tool
+            // For now, we'll just show a message
+            alert(`Drawing tool "${tool}" activated! Click and drag on the chart to draw.`);
+        }
+
+        function clearDrawings() {
+            console.log('Clearing all drawings');
+            // In a real implementation, this would clear all drawn objects
+            alert('All drawings cleared!');
+        }
+
+        function exportChart() {
+            // Export chart as image
+            if (tradingChart) {
+                const canvas = tradingChart.takeScreenshot();
+                const link = document.createElement('a');
+                link.download = `chart-${currentSymbol}-${currentTimeframe}-${Date.now()}.png`;
+                link.href = canvas.toDataURL();
+                link.click();
+            }
+        }
+
+        function initializeAdvancedCharts() {
+            // Initialize advanced charts when the section is shown
+            if (document.getElementById('advanced-charts').classList.contains('active')) {
+                setTimeout(() => {
+                    initializeAdvancedChart();
+                }, 100);
+            }
+        }
+
+        // Navigation
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remove active class from all nav items
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Add active class to clicked nav item
+            event.target.closest('.nav-item').classList.add('active');
+            
+            // Initialize advanced charts if that section is shown
+            if (sectionId === 'advanced-charts') {
+                setTimeout(() => {
+                    initializeAdvancedChart();
+                }, 100);
+            }
+        }
+
+        // Initialize charts
+        function initializeCharts() {
+            try {
+                // Check if Chart.js is loaded
+                if (typeof Chart === 'undefined') {
+                    console.error('Chart.js library not loaded');
+                    return;
+                }
+
+                // Portfolio Performance Chart
+                const portfolioElement = document.getElementById('portfolioChart');
+                if (!portfolioElement) {
+                    console.error('Portfolio chart element not found');
+                    return;
+                }
+                const portfolioCtx = portfolioElement.getContext('2d');
+            portfolioChart = new Chart(portfolioCtx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Portfolio Value',
+                        data: [],
+                        borderColor: '#00d4aa',
+                        backgroundColor: 'rgba(0, 212, 170, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#ffffff'
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                color: '#b0b0b0'
+                            },
+                            grid: {
+                                color: '#2a2a3e'
+                            }
+                        },
+                        y: {
+                            ticks: {
+                                color: '#b0b0b0'
+                            },
+                            grid: {
+                                color: '#2a2a3e'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // System Health Chart
+            const healthElement = document.getElementById('healthChart');
+            if (!healthElement) {
+                console.error('Health chart element not found');
+                return;
+            }
+            const healthCtx = healthElement.getContext('2d');
+            healthChart = new Chart(healthCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Healthy', 'Unhealthy'],
+                    datasets: [{
+                        data: [0, 0],
+                        backgroundColor: ['#00d4aa', '#f44336'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#ffffff'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Trading Performance Chart
+            const tradingCtx = document.getElementById('tradingChart').getContext('2d');
+            tradingChart = new Chart(tradingCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Win', 'Loss'],
+                    datasets: [{
+                        label: 'Trades',
+                        data: [0, 0],
+                        backgroundColor: ['#00d4aa', '#f44336']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#ffffff'
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                color: '#b0b0b0'
+                            },
+                            grid: {
+                                color: '#2a2a3e'
+                            }
+                        },
+                        y: {
+                            ticks: {
+                                color: '#b0b0b0'
+                            },
+                            grid: {
+                                color: '#2a2a3e'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // System Metrics Chart
+            const metricsCtx = document.getElementById('metricsChart').getContext('2d');
+            metricsChart = new Chart(metricsCtx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'CPU Usage',
+                        data: [],
+                        borderColor: '#667eea',
+                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                        tension: 0.4
+                    }, {
+                        label: 'Memory Usage',
+                        data: [],
+                        borderColor: '#764ba2',
+                        backgroundColor: 'rgba(118, 75, 162, 0.1)',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#ffffff'
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                color: '#b0b0b0'
+                            },
+                            grid: {
+                                color: '#2a2a3e'
+                            }
+                        },
+                        y: {
+                            ticks: {
+                                color: '#b0b0b0'
+                            },
+                            grid: {
+                                color: '#2a2a3e'
+                            }
+                        }
+                    }
+                }
+            });
+            } catch (error) {
+                console.error('Chart initialization error:', error);
+            }
+        }
+
+        // Load initial data
+        async function loadInitialData() {
+            await Promise.all([
+                fetchMarketData(),
+                fetchTradingData(),
+                fetchServicesHealth(),
+                fetchOrchestrationStatus()
+            ]);
+        }
+
+        // Fetch market data
+        async function fetchMarketData() {
+            try {
+                const response = await fetch('/api/market-data');
+                const data = await response.json();
+                
+                // Update market grid
+                const marketGrid = document.getElementById('marketGrid');
+                marketGrid.innerHTML = '';
+                
+                Object.entries(data).forEach(([symbol, info]) => {
+                    if (symbol !== 'timestamp' && info && typeof info === 'object') {
+                        const price = info.price || 0;
+                        const change24h = info.change_24h || 0;
+                        const changeClass = change24h >= 0 ? 'change-positive' : 'change-negative';
+                        const changeSymbol = change24h >= 0 ? '↗' : '↘';
+                        
+                        marketGrid.innerHTML += `
+                            <div class="market-card">
+                                <div class="crypto-symbol">${symbol.toUpperCase()}</div>
+                                <div class="crypto-price">$${price.toLocaleString()}</div>
+                                <div class="crypto-change ${changeClass}">
+                                    ${changeSymbol} ${Math.abs(change24h).toFixed(2)}%
+                                </div>
+                            </div>
+                        `;
+                    }
+                });
+                
+            } catch (error) {
+                console.error('Error fetching market data:', error);
+            }
+        }
+
+        // Fetch trading data
+        async function fetchTradingData() {
+            try {
+                const [positionsResponse, accountsResponse] = await Promise.all([
+                    fetch('/api/trading/positions'),
+                    fetch('/api/trading/accounts')
+                ]);
+                
+                const positions = await positionsResponse.json();
+                const accounts = await accountsResponse.json();
+                
+                // Update trading stats
+                document.getElementById('totalBalance').textContent = `$${accounts.total_balance?.toFixed(2) || '0.00'}`;
+                document.getElementById('activePositions').textContent = positions.positions?.length || 0;
+                document.getElementById('accountBalance').textContent = `$${accounts.total_balance?.toFixed(2) || '0.00'}`;
+                
+            } catch (error) {
+                console.error('Error fetching trading data:', error);
+            }
+        }
+
+        // Fetch services health
+        async function fetchServicesHealth() {
+            try {
+                const response = await fetch('/api/services/health');
+                const data = await response.json();
+                
+                // Update services grid
+                const servicesGrid = document.getElementById('servicesGrid');
+                servicesGrid.innerHTML = '';
+                
+                data.services.forEach(service => {
+                    const statusClass = service.status === 'healthy' ? 'healthy' : 'unhealthy';
+                    const statusText = service.status === 'healthy' ? 'Healthy' : 'Unhealthy';
+                    const statusBadgeClass = service.status === 'healthy' ? 'status-healthy' : 'status-unhealthy';
+                    
+                    servicesGrid.innerHTML += `
+                        <div class="service-card ${statusClass}">
+                            <div class="service-name">${service.name}</div>
+                            <div class="service-port">Port: ${service.port}</div>
+                            <div class="service-status ${statusBadgeClass}">${statusText}</div>
+                        </div>
+                    `;
+                });
+                
+                // Update health chart
+                if (healthChart && healthChart.data && healthChart.data.datasets && healthChart.data.datasets[0]) {
+                    const healthyCount = data.services.filter(s => s.status === 'healthy').length;
+                    const unhealthyCount = data.services.length - healthyCount;
+                    
+                    healthChart.data.datasets[0].data = [healthyCount, unhealthyCount];
+                    healthChart.update();
+                }
+                
+            } catch (error) {
+                console.error('Error fetching services health:', error);
+            }
+        }
+
+        // Fetch orchestration status
+        async function fetchOrchestrationStatus() {
+            try {
+                const response = await fetch('/api/orchestration/status');
+                const data = await response.json();
+                
+                // Update orchestration grid
+                const orchestrationGrid = document.getElementById('orchestrationGrid');
+                orchestrationGrid.innerHTML = '';
+                
+                Object.entries(data.services).forEach(([name, isHealthy]) => {
+                    const statusClass = isHealthy ? 'healthy' : 'unhealthy';
+                    const statusText = isHealthy ? 'Healthy' : 'Unhealthy';
+                    const statusBadgeClass = isHealthy ? 'status-healthy' : 'status-unhealthy';
+                    
+                    orchestrationGrid.innerHTML += `
+                        <div class="service-card ${statusClass}">
+                            <div class="service-name">${name.replace('_', ' ').toUpperCase()}</div>
+                            <div class="service-port">Service</div>
+                            <div class="service-status ${statusBadgeClass}">${statusText}</div>
+                        </div>
+                    `;
+                });
+                
+            } catch (error) {
+                console.error('Error fetching orchestration status:', error);
+            }
+        }
+
+        // Refresh all data
+        async function refreshAllData() {
+            const loader = document.getElementById('refreshLoader');
+            loader.style.display = 'inline-block';
+            
+            try {
+                await loadInitialData();
+                showNotification('Data refreshed successfully!', 'success');
+            } catch (error) {
+                showNotification('Error refreshing data', 'error');
+            } finally {
+                loader.style.display = 'none';
+            }
+        }
+
+        // Start auto refresh
+        function startAutoRefresh() {
+            refreshInterval = setInterval(loadInitialData, 30000); // 30 seconds
+        }
+
+        // Show notification
+        function showNotification(message, type) {
+            // Simple notification - could be enhanced with a proper notification system
+            console.log(`${type.toUpperCase()}: ${message}`);
+        }
+
+        // Backup & Restore Functions
+        let backupData = {
+            backups: [],
+            stats: {
+                total: 0,
+                size: '0 MB',
+                lastBackup: null
+            }
+        };
+
+        function initializeBackupRestore() {
+            loadBackups();
+            updateBackupStats();
+        }
+
+        function loadBackups() {
+            fetch('/api/backup')
+                .then(response => response.json())
+                .then(data => {
+                    backupData.backups = data.backups || [];
+                    renderBackups();
+                })
+                .catch(error => {
+                    console.error('Error loading backups:', error);
+                    showNotification('Failed to load backups', 'error');
+                });
+        }
+
+        function renderBackups() {
+            const tableBody = document.getElementById('backupTableBody');
+            const cardsContainer = document.getElementById('backupCardsContainer');
+            
+            if (!tableBody || !cardsContainer) return;
+
+            // Clear existing content
+            tableBody.innerHTML = '';
+            cardsContainer.innerHTML = '';
+
+            backupData.backups.forEach(backup => {
+                // Table row
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${backup.name}</td>
+                    <td>${backup.type}</td>
+                    <td>${backup.size}</td>
+                    <td>${backup.created}</td>
+                    <td>
+                        <span class="status-badge status-${backup.status}">${backup.status}</span>
+                    </td>
+                    <td>
+                        <button class="btn btn-sm btn-primary" onclick="restoreBackup('${backup.id}')">Restore</button>
+                        <button class="btn btn-sm btn-secondary" onclick="downloadBackup('${backup.id}')">Download</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteBackup('${backup.id}')">Delete</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+
+                // Card
+                const card = document.createElement('div');
+                card.className = 'backup-card';
+                card.innerHTML = `
+                    <div class="backup-card-header">
+                        <h3>${backup.name}</h3>
+                        <span class="status-badge status-${backup.status}">${backup.status}</span>
+                    </div>
+                    <div class="backup-card-body">
+                        <p><strong>Type:</strong> ${backup.type}</p>
+                        <p><strong>Size:</strong> ${backup.size}</p>
+                        <p><strong>Created:</strong> ${backup.created}</p>
+                    </div>
+                    <div class="backup-card-actions">
+                        <button class="btn btn-sm btn-primary" onclick="restoreBackup('${backup.id}')">Restore</button>
+                        <button class="btn btn-sm btn-secondary" onclick="downloadBackup('${backup.id}')">Download</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteBackup('${backup.id}')">Delete</button>
+                    </div>
+                `;
+                cardsContainer.appendChild(card);
+            });
+        }
+
+        function updateBackupStats() {
+            const stats = backupData.stats;
+            document.getElementById('backupTotal').textContent = stats.total;
+            document.getElementById('backupSize').textContent = stats.size;
+            document.getElementById('backupLast').textContent = stats.lastBackup || 'Never';
+        }
+
+        function showCreateBackupModal() {
+            const modal = document.createElement('div');
+            modal.className = 'modal';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>Create Backup</h2>
+                        <button class="modal-close" onclick="closeModal()">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="backupForm">
+                            <div class="form-group">
+                                <label for="backupName">Backup Name:</label>
+                                <input type="text" id="backupName" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="backupType">Backup Type:</label>
+                                <select id="backupType" name="type" required>
+                                    <option value="full">Full System Backup</option>
+                                    <option value="user_data">User Data Only</option>
+                                    <option value="config">Configuration Only</option>
+                                    <option value="database">Database Only</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="backupDescription">Description:</label>
+                                <textarea id="backupDescription" name="description" rows="3"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                        <button class="btn btn-primary" onclick="createBackup()">Create Backup</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        function createBackup() {
+            const form = document.getElementById('backupForm');
+            const formData = new FormData(form);
+            const backupData = Object.fromEntries(formData.entries());
+
+            fetch('/api/backup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(backupData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                showNotification('Backup created successfully', 'success');
+                closeModal();
+                loadBackups();
+            })
+            .catch(error => {
+                console.error('Error creating backup:', error);
+                showNotification('Failed to create backup', 'error');
+            });
+        }
+
+        function restoreBackup(backupId) {
+            if (!confirm('Are you sure you want to restore this backup? This will overwrite current data.')) {
+                return;
+            }
+
+            fetch('/api/restore', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ backupId: backupId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                showNotification('Backup restored successfully', 'success');
+                loadBackups();
+            })
+            .catch(error => {
+                console.error('Error restoring backup:', error);
+                showNotification('Failed to restore backup', 'error');
+            });
+        }
+
+        function downloadBackup(backupId) {
+            window.open(`/api/backup/${backupId}/download`, '_blank');
+        }
+
+        function deleteBackup(backupId) {
+            if (!confirm('Are you sure you want to delete this backup? This action cannot be undone.')) {
+                return;
+            }
+
+            fetch(`/api/backup/${backupId}`, {
+                method: 'DELETE'
+            })
+            .then(response => response.json())
+            .then(data => {
+                showNotification('Backup deleted successfully', 'success');
+                loadBackups();
+            })
+            .catch(error => {
+                console.error('Error deleting backup:', error);
+                showNotification('Failed to delete backup', 'error');
+            });
+        }
+
+        function refreshBackups() {
+            loadBackups();
+            showNotification('Backups refreshed', 'info');
+        }
+
+        function exportBackups() {
+            const csv = generateBackupsCSV();
+            downloadCSV(csv, 'backups.csv');
+        }
+
+        function generateBackupsCSV() {
+            const headers = ['Name', 'Type', 'Size', 'Created', 'Status'];
+            const rows = backupData.backups.map(backup => [
+                backup.name,
+                backup.type,
+                backup.size,
+                backup.created,
+                backup.status
+            ]);
+            
+            return [headers, ...rows].map(row => row.join(',')).join('\n');
+        }
+
+        function toggleBackupView() {
+            const tableView = document.getElementById('backupTableView');
+            const cardsView = document.getElementById('backupCardsView');
+            const toggleBtn = document.getElementById('backupViewToggle');
+            
+            if (tableView.style.display === 'none') {
+                tableView.style.display = 'block';
+                cardsView.style.display = 'none';
+                toggleBtn.textContent = '📋 Cards View';
+            } else {
+                tableView.style.display = 'none';
+                cardsView.style.display = 'block';
+                toggleBtn.textContent = '📊 Table View';
+            }
+        }
+
+        function searchBackups() {
+            const searchTerm = document.getElementById('backupSearch').value.toLowerCase();
+            const filteredBackups = backupData.backups.filter(backup => 
+                backup.name.toLowerCase().includes(searchTerm) ||
+                backup.type.toLowerCase().includes(searchTerm) ||
+                backup.status.toLowerCase().includes(searchTerm)
+            );
+            
+            // Update display with filtered results
+            const originalBackups = backupData.backups;
+            backupData.backups = filteredBackups;
+            renderBackups();
+            backupData.backups = originalBackups;
+        }
+
+        function filterBackupsByType() {
+            const filterType = document.getElementById('backupTypeFilter').value;
+            let filteredBackups = backupData.backups;
+            
+            if (filterType !== 'all') {
+                filteredBackups = backupData.backups.filter(backup => backup.type === filterType);
+            }
+            
+            // Update display with filtered results
+            const originalBackups = backupData.backups;
+            backupData.backups = filteredBackups;
+            renderBackups();
+            backupData.backups = originalBackups;
+        }
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', function() {
+            if (refreshInterval) {
+                clearInterval(refreshInterval);
+            }
+        });
+    </script>
+</body>
+</html>

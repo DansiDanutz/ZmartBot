@@ -1,0 +1,4443 @@
+# Professionaldashboard - Merged MDC Configuration
+
+## 🤖 MCP (Model Context Protocol) Integration
+
+### **MCP Server Pairing**
+**Status**: ✅ **ACTIVE** - Professional Dashboard MCP Integration
+**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
+**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
+**Integration Type**: Multi-MCP Service Integration
+
+### **MCP Integration Features**
+- **Claude Code Integration**: AI-powered dashboard development and optimization
+- **Memory Gateway**: Persistent dashboard state and user preferences
+- **UI Automation**: Automated dashboard monitoring and health checks
+- **Figma Integration**: Dashboard design and UI management
+- **Supabase Integration**: Cloud-based dashboard analytics and user management
+
+### **MCP Pairing Benefits**
+- **Enhanced Dashboard**: AI-powered dashboard development and optimization
+- **Persistent State**: Memory persistence for dashboard workflows and user preferences
+- **Automated Monitoring**: Automated dashboard health monitoring and management
+- **Design Integration**: Seamless integration with UI design workflows
+- **Cloud Analytics**: Advanced dashboard analytics and user management monitoring
+
+### **MCP Usage Examples**
+```bash
+# Test Professional Dashboard MCP connection
+curl -X GET http://127.0.0.1:3400/health
+
+# Execute dashboard update via MCP
+curl -X POST http://127.0.0.1:3400/dashboard/update \
+  -H "Content-Type: application/json" \
+  -d '{"action": "refresh_data", "component": "market_overview"}'
+```
+
+### **MCP Integration Status**
+- **Connection**: ✅ Active and responsive
+- **Health Check**: ✅ All MCP servers healthy
+- **Memory Sync**: ✅ Real-time memory synchronization
+- **UI Automation**: ✅ Automated monitoring active
+- **Cloud Sync**: ✅ Supabase integration active
+
+## 🔗 Merged from 2 duplicate files
+**Merged Files**: ProfessionalDashboard.mdc, ProfessionalDashboardApp.mdc
+**Merge Date**: 2025-09-01 00:11:21
+**Primary Source**: ProfessionalDashboard.mdc
+
+## 📋 Primary Configuration
+# Professionaldashboard - Merged MDC Configuration
+
+## 🔗 Merged from 2 duplicate files
+**Merged Files**: ProfessionalDashboard.mdc, ProfessionalDashboardApp.mdc
+**Merge Date**: 2025-08-31 20:10:54
+**Primary Source**: ProfessionalDashboard.mdc
+
+## 📋 Primary Configuration
+# Professionaldashboard - Merged MDC Configuration
+
+## 🔗 Merged from 2 duplicate files
+**Merged Files**: ProfessionalDashboard.mdc, ProfessionalDashboardApp.mdc
+**Merge Date**: 2025-08-31 14:25:51
+**Primary Source**: ProfessionalDashboard.mdc
+
+## 📋 Primary Configuration
+# Professionaldashboard - Merged MDC Configuration
+
+## 🔗 Merged from 2 duplicate files
+**Merged Files**: ProfessionalDashboard.mdc, ProfessionalDashboardApp.mdc
+**Merge Date**: 2025-08-31 09:30:55
+**Primary Source**: ProfessionalDashboard.mdc
+
+## 📋 Primary Configuration
+# Professionaldashboard - Merged MDC Configuration
+
+## 🔗 Merged from 2 duplicate files
+**Merged Files**: ProfessionalDashboard.mdc, ProfessionalDashboardApp.mdc
+**Merge Date**: 2025-08-31 03:55:38
+**Primary Source**: ProfessionalDashboard.mdc
+
+## 📋 Primary Configuration
+# Professionaldashboard - Merged MDC Configuration
+
+## 🔗 Merged from 2 duplicate files
+**Merged Files**: ProfessionalDashboard.mdc, ProfessionalDashboardApp.mdc
+**Merge Date**: 2025-08-30 15:34:11
+**Primary Source**: ProfessionalDashboard.mdc
+
+## 📋 Primary Configuration
+# Professionaldashboard - Merged MDC Configuration
+
+## 🔗 Merged from 2 duplicate files
+**Merged Files**: ProfessionalDashboard.mdc, ProfessionalDashboardApp.mdc
+**Merge Date**: 2025-08-30 11:32:15
+**Primary Source**: ProfessionalDashboard.mdc
+
+## 📋 Primary Configuration
+# Professionaldashboard - Merged MDC Configuration
+
+## 🔗 Merged from 2 duplicate files
+**Merged Files**: ProfessionalDashboard.mdc, ProfessionalDashboardApp.mdc
+**Merge Date**: 2025-08-30 07:23:02
+**Primary Source**: ProfessionalDashboard.mdc
+
+## 📋 Primary Configuration
+# Professionaldashboard - Merged MDC Configuration
+
+## 🔗 Merged from 2 duplicate files
+**Merged Files**: ProfessionalDashboard.mdc, ProfessionalDashboardApp.mdc
+**Merge Date**: 2025-08-30 11:06:01
+**Primary Source**: ProfessionalDashboard.mdc
+
+## 📋 Primary Configuration
+# Professionaldashboard - Merged MDC Configuration
+
+## 🔗 Merged from 2 duplicate files
+**Merged Files**: ProfessionalDashboard.mdc, ProfessionalDashboardApp.mdc
+**Merge Date**: 2025-08-29 22:55:51
+**Primary Source**: ProfessionalDashboard.mdc
+
+## 📋 Primary Configuration
+# Professionaldashboard - Merged MDC Configuration
+
+## 🔗 Merged from 2 duplicate files
+**Merged Files**: ProfessionalDashboard.mdc, ProfessionalDashboardApp.mdc
+**Merge Date**: 2025-08-29 17:58:21
+**Primary Source**: ProfessionalDashboard.mdc
+
+## 📋 Primary Configuration
+# Professionaldashboard - Merged MDC Configuration
+
+## 🔗 Merged from 2 duplicate files
+**Merged Files**: ProfessionalDashboard.mdc, ProfessionalDashboardApp.mdc
+**Merge Date**: 2025-08-29 11:57:30
+**Primary Source**: ProfessionalDashboard.mdc
+
+## 📋 Primary Configuration
+# Professionaldashboard - Merged MDC Configuration
+
+## 🔗 Merged from 2 duplicate files
+**Merged Files**: ProfessionalDashboard.mdc, ProfessionalDashboardApp.mdc
+**Merge Date**: 2025-08-29 07:28:17
+**Primary Source**: ProfessionalDashboard.mdc
+
+## 📋 Primary Configuration
+# 🚀 Professional Dashboard - Advanced Trading & Service Monitoring Platform
+> Type: frontend | Version: 2.0.0 | Owner: zmartbot | Port: 3434
+
+## Purpose
+Advanced professional-grade trading dashboard providing comprehensive service monitoring, real-time analytics, dynamic certificate management, enhanced UI/UX for trading operations, and intelligent service discovery with automated health monitoring for the complete ZmartBot ecosystem.
+
+## Description
+Advanced professional-grade trading dashboard providing comprehensive service monitoring, real-ti...
+
+## Overview
+Professional Dashboard serves as the premium frontend interface for ZmartBot, offering sophisticated trading analytics, comprehensive service monitoring, advanced certificate management system, real-time service discovery, and professional-grade UI components designed for high-frequency trading operations and system administration.
+
+## Critical Functions
+- **Advanced Service Monitoring**: Real-time monitoring of all 44 ZmartBot services with health status tracking
+- **Dynamic Service Discovery**: Intelligent service detection and registration with automatic passport validation
+- **Professional Trading Interface**: Sophisticated trading dashboard with advanced charting and analytics
+- **Certificate Management System**: Comprehensive service certificate generation and validation with live data
+- **Real-time Service Counts**: Dynamic service count updates every 5 seconds with visual feedback indicators
+- **Enhanced UI/UX**: Professional-grade interface with advanced animations and responsive design
+- **Service Health Analytics**: Comprehensive health monitoring with predictive analytics and trend analysis
+- **Automated Port Management**: Integration with Port Manager for dynamic port assignment and conflict resolution
+- **Live Data Integration**: Real-time API integration with Master Orchestration Agent for service data
+- **Advanced Notifications**: Intelligent notification system with priority-based alerts and system updates
+
+## System Architecture
+
+### Core Infrastructure
+```
+🚀 PROFESSIONAL DASHBOARD SYSTEM
+├── Frontend Core (Port 3434)
+│   ├── React/Vite Application
+│   ├── Advanced Service Grid Component
+│   ├── Real-time Certificate System
+│   └── Dynamic Service Count Display
+├── Service Integration Layer
+│   ├── Master Orchestration Agent API (8002)
+│   ├── Certificate Service API (8901) 
+│   ├── Port Manager Integration (8610)
+│   └── Passport Service Integration (8620)
+├── Advanced Features
+│   ├── Real-time Service Discovery Engine
+│   ├── Dynamic Certificate Generator
+│   ├── Service Health Analytics Engine
+│   └── Professional Trading Components
+└── Monitoring & Analytics
+    ├── Service Count Tracking (5s refresh)
+    ├── Health Status Monitoring
+    ├── Performance Analytics
+    └── System Notification Center
+```
+
+### Service Registration Protocol
+
+**🏆 Passport Information**
+- **Passport ID**: `ZMBT-FRE-20250828-2CF1D7`
+- **Service Type**: Frontend Service
+- **Registration Date**: 2025-08-28 17:35:13
+- **Status**: ACTIVE
+- **Port Assignment**: 3434 (Frontend Range: 3400-3499)
+- **Owner**: zmartbot
+- **Version**: 2.0.0
+
+### Technology Stack
+```
+📚 TECHNOLOGY STACK
+├── Frontend Framework
+│   ├── React 18.2.0 (Component Architecture)
+│   ├── Vite 4.4.0 (Build Tool & Dev Server)
+│   ├── TypeScript (Type Safety)
+│   └── Modern ES2022+ JavaScript
+├── UI/UX Components
+│   ├── Tailwind CSS (Utility-First Styling)
+│   ├── Shadcn/ui (Premium Component Library)
+│   ├── Lucide React (Premium Icons)
+│   └── Custom Animation Framework
+├── Data & State Management
+│   ├── React Query (Server State Management)
+│   ├── Zustand (Client State Management)
+│   ├── Real-time WebSocket Integration
+│   └── Local Storage Persistence
+├── Charts & Analytics
+│   ├── FusionCharts (Professional Charting)
+│   ├── Chart.js (Lightweight Charts)
+│   ├── D3.js (Custom Visualizations)
+│   └── TradingView Widgets
+└── Development & Build
+    ├── Vite Hot Module Replacement
+    ├── ESLint (Code Quality)
+    ├── Prettier (Code Formatting)
+    └── PostCSS (CSS Processing)
+```
+
+## Service Discovery & Integration
+
+### Real-time Service Monitoring
+```javascript
+// Advanced Service Discovery Engine
+class ServiceDiscoveryEngine {
+    constructor() {
+        this.refreshRate = 5000; // 5-second real-time updates
+        this.serviceCountRefreshInterval = null;
+        this.previousCounts = { total: 0, passport: 0, nonPassport: 0 };
+        this.updateCounter = 0;
+    }
+    
+    async loadLiveServiceCounts() {
+        // Fetches from Master Orchestration Agent API
+        const response = await fetch('http://localhost:8002/api/orchestration/services');
+        const allServices = await response.json();
+        
+        // Real-time count processing
+        const totalServices = allServices.length;
+        const passportServices = allServices.filter(s => s.passport_id).length;
+        const nonPassportServices = totalServices - passportServices;
+        
+        // Visual feedback with flash animations
+        this.updateServiceCountDisplay({
+            total: totalServices,
+            passport: passportServices, 
+            nonPassport: nonPassportServices
+        });
+    }
+}
+```
+
+### Certificate Management System
+```javascript
+// Professional Certificate Generation
+class CertificateManager {
+    async generateServiceCertificate(serviceName) {
+        // Fetch live service data from orchestration API
+        const serviceData = await this.fetchLiveServiceData(serviceName);
+        
+        // Generate professional certificate with live data
+        return this.createProfessionalCertificate({
+            serviceName: serviceName,
+            passportId: serviceData.passport_id,
+            port: serviceData.port,
+            serviceType: serviceData.service_type,
+            status: serviceData.status,
+            healthStatus: serviceData.health_status,
+            connectionStatus: serviceData.connection_status,
+            registrationDate: serviceData.registered_date
+        });
+    }
+}
+```
+
+## API Integration Points
+
+### Master Orchestration Agent Integration
+```yaml
+API Endpoints:
+  - GET http://localhost:8002/api/orchestration/services
+    Purpose: Fetch all service data for real-time monitoring
+    Response: Complete service registry with health status
+    Refresh: Every 5 seconds
+    
+  - GET http://localhost:8002/api/orchestration/services/{name}/status
+    Purpose: Individual service health checking
+    Response: Detailed service status and metrics
+    
+Service Data Structure:
+  service_name: string
+  port: integer
+  passport_id: string | null
+  service_type: string
+  status: "ACTIVE" | "INACTIVE" | "ERROR"
+  health_status: "healthy" | "unhealthy" | "unknown"
+  connection_status: "connected" | "disconnected" | "unknown"
+  description: string
+  registered_date: timestamp
+```
+
+### Certificate Service Integration
+```yaml
+API Endpoints:
+  - GET http://localhost:8901/api/certificates/{serviceName}
+    Purpose: Fetch service certificate data
+    Fallback: Master Orchestration Agent API
+    Response: Certificate metadata and validation status
+    
+Certificate Data Structure:
+  certificate_id: string
+  passport_id: string
+  service_name: string
+  port: integer
+  service_type: string
+  status: string
+  health_status: string
+  connection_status: string
+  process_id: string | null
+  registered_date: timestamp
+  description: string
+```
+
+### Port Manager Integration  
+```yaml
+Port Assignment:
+  Range: 3400-3499 (Frontend Services)
+  Assigned Port: 3434
+  Status: REGISTERED
+  Conflict Resolution: Automatic
+  
+Health Endpoints:
+  - GET http://localhost:3434/
+    Purpose: Basic health check
+    Response: Dashboard availability status
+    
+  - GET http://localhost:3434/health
+    Purpose: Detailed health metrics
+    Response: Service health and performance data
+    
+  - GET http://localhost:3434/metrics
+    Purpose: Performance metrics
+    Response: Service metrics and analytics
+```
+
+## Advanced Features
+
+### Real-time Service Count Updates
+```javascript
+// Enhanced Service Count Display with Visual Feedback
+updateServiceCountDisplay(newCounts) {
+    const elements = [totalElement, passportElement, otherElement];
+    
+    // Detect actual changes vs routine updates
+    const hasChanges = (
+        newCounts.total !== this.previousCounts.total ||
+        newCounts.passport !== this.previousCounts.passport ||
+        newCounts.nonPassport !== this.previousCounts.nonPassport
+    );
+    
+    // Visual feedback with color coding
+    elements.forEach(el => {
+        el.style.transition = 'all 0.3s ease';
+        if (hasChanges) {
+            el.style.background = '#f56565'; // Red for actual changes
+        } else {
+            el.style.background = '#4fd1c7'; // Teal for routine updates
+        }
+        el.style.padding = '2px 6px';
+        el.style.borderRadius = '4px';
+    });
+    
+    // Temporary counter display during updates
+    this.showUpdateActivity(newCounts);
+}
+```
+
+### Professional Trading Components
+```typescript
+// Advanced Trading Interface Components
+interface TradingDashboardProps {
+    services: ServiceData[];
+    certificates: CertificateData[];
+    realTimeUpdates: boolean;
+    refreshRate: number;
+}
+
+interface ServiceGridProps {
+    services: ServiceData[];
+    filter: ServiceFilter;
+    sortBy: SortOption;
+    displayMode: 'grid' | 'list' | 'compact';
+}
+
+interface CertificateModalProps {
+    serviceName: string;
+    liveData: boolean;
+    template: 'professional' | 'standard' | 'compact';
+}
+```
+
+## Service Lifecycle Management
+
+### Startup Sequence
+```bash
+# Service Initialization
+1. Port Validation (3434)
+2. Environment Configuration
+3. Dependency Resolution
+4. Service Registration
+5. Health Check Initialization
+6. Dashboard Component Loading
+7. Real-time Data Stream Setup
+8. Service Discovery Engine Start
+```
+
+### Health Monitoring
+```yaml
+Health Checks:
+  Liveness: http://localhost:3434/
+  Readiness: http://localhost:3434/health
+  Startup Grace: 30 seconds
+  HTTP Timeout: 30 seconds
+  
+Monitoring Intervals:
+  Service Count Updates: 5 seconds
+  Health Status Checks: 15 seconds
+  Certificate Validation: 30 seconds
+  Performance Metrics: 60 seconds
+```
+
+### Dependencies
+```yaml
+Required Services:
+  - zmart-api (Port 8000)
+    Purpose: Core API functionality
+    Status: CRITICAL
+    
+  - master-orchestration-agent (Port 8002)
+    Purpose: Service discovery and management
+    Status: CRITICAL
+    
+Optional Services:
+  - certificate-service (Port 8901)
+    Purpose: Certificate management
+    Status: OPTIONAL (Fallback available)
+    
+  - port-manager-service (Port 8610)
+    Purpose: Port management
+    Status: OPTIONAL
+    
+  - passport-service (Port 8620)
+    Purpose: Service registration
+    Status: OPTIONAL
+```
+
+## Configuration
+
+### Environment Variables
+```bash
+# Production Configuration
+NODE_ENV=production
+PORT=3434
+CORS_ORIGIN=http://localhost:8000
+
+# API Endpoints
+ORCHESTRATION_API_URL=http://localhost:8002
+CERTIFICATE_API_URL=http://localhost:8901
+MAIN_API_URL=http://localhost:8000
+
+# Performance Settings
+REFRESH_RATE=5000
+MAX_RETRIES=3
+REQUEST_TIMEOUT=5000
+
+# Feature Flags
+ENABLE_REAL_TIME_UPDATES=true
+ENABLE_CERTIFICATES=true
+ENABLE_ADVANCED_ANALYTICS=true
+```
+
+### Build Configuration
+```javascript
+// vite.config.js
+export default defineConfig({
+  plugins: [react()],
+  server: {
+    port: 3434,
+    host: '0.0.0.0',
+    cors: true
+  },
+  build: {
+    outDir: 'dist',
+    sourcemap: true,
+    minify: 'esbuild',
+    target: 'es2022'
+  },
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+      '@components': path.resolve(__dirname, './src/components'),
+      '@hooks': path.resolve(__dirname, './src/hooks'),
+      '@lib': path.resolve(__dirname, './src/lib')
+    }
+  }
+});
+```
+
+## Observability & Monitoring
+
+### Metrics Collection
+```yaml
+Performance Metrics:
+  - Service Discovery Latency
+  - Certificate Generation Time
+  - UI Component Render Time
+  - API Response Times
+  - Real-time Update Frequency
+  
+User Experience Metrics:
+  - Page Load Time
+  - Time to Interactive
+  - Component Hydration Time
+  - Real-time Update Lag
+  
+System Health Metrics:
+  - Memory Usage
+  - CPU Utilization
+  - Network Request Count
+  - Error Rate
+  - Uptime Statistics
+```
+
+### Logging Configuration
+```javascript
+// Advanced Logging System
+const logger = {
+  level: 'info',
+  format: 'json',
+  outputs: [
+    {
+      type: 'console',
+      colorize: true,
+      timestamp: true
+    },
+    {
+      type: 'file',
+      filename: 'professional-dashboard.log',
+      maxFiles: 5,
+      maxSize: '10m'
+    }
+  ],
+  metadata: {
+    service: 'professional-dashboard',
+    port: 3434,
+    passport_id: 'ZMBT-FRE-20250828-2CF1D7'
+  }
+};
+```
+
+## Security & Compliance
+
+### Authentication & Authorization
+```yaml
+Security Measures:
+  - CORS Configuration (localhost:8000)
+  - Request Rate Limiting
+  - Input Validation & Sanitization
+  - XSS Protection
+  - CSRF Prevention
+  
+Access Control:
+  - Service-to-Service Authentication
+  - API Key Validation
+  - Request Origin Verification
+  - Secure Headers Implementation
+```
+
+### Data Protection
+```yaml
+Data Security:
+  - Service Data Encryption in Transit
+  - Sensitive Information Masking
+  - Secure Certificate Storage
+  - API Response Sanitization
+  
+Privacy Compliance:
+  - No Personal Data Collection
+  - Service Metadata Only
+  - Audit Trail Maintenance
+  - Data Retention Policies
+```
+
+## Deployment & Operations
+
+### Production Deployment
+```bash
+# Build Process
+npm run build
+npm run preview
+
+# Service Start
+cd /Users/dansidanutz/Desktop/ZmartBot/zmart-api/professional_dashboard
+npm run dev -- --port 3434 --host 0.0.0.0
+
+# Health Verification
+curl http://localhost:3434/health
+```
+
+### Maintenance & Updates
+```yaml
+Update Procedures:
+  1. Service Health Check
+  2. Dependency Version Verification
+  3. Configuration Backup
+  4. Rolling Update Deployment
+  5. Post-deployment Validation
+  6. Performance Monitoring
+  
+Backup Strategy:
+  - Configuration Files
+  - Build Artifacts
+  - Performance Baselines
+  - Service Registry Data
+```
+
+## Performance Optimization
+
+### Caching Strategy
+```javascript
+// Intelligent Caching System
+const cacheConfig = {
+  serviceData: {
+    ttl: 5000, // 5 seconds
+    strategy: 'memory'
+  },
+  certificates: {
+    ttl: 30000, // 30 seconds  
+    strategy: 'localStorage'
+  },
+  staticAssets: {
+    ttl: 3600000, // 1 hour
+    strategy: 'browser'
+  }
+};
+```
+
+### Performance Benchmarks
+```yaml
+Performance Targets:
+  - Initial Load Time: < 2 seconds
+  - Time to Interactive: < 3 seconds
+  - Service Count Update: < 100ms
+  - Certificate Generation: < 500ms
+  - Real-time Update Latency: < 200ms
+  
+Resource Limits:
+  - Memory Usage: < 512MB
+  - CPU Usage: < 10%
+  - Network Bandwidth: < 1MB/s
+  - Storage: < 100MB
+```
+
+## Integration Testing
+
+### Test Coverage
+```yaml
+Unit Tests:
+  - Component Rendering
+  - Service Discovery Logic
+  - Certificate Generation
+  - Real-time Updates
+  - API Integration
+
+Integration Tests:
+  - Service Communication
+  - Health Check Validation
+  - Certificate Workflow
+  - Error Handling
+  - Performance Benchmarks
+
+End-to-End Tests:
+  - Complete User Workflows
+  - Service Registration Process
+  - Real-time Data Updates
+  - Cross-browser Compatibility
+```
+
+## Troubleshooting Guide
+
+### Common Issues
+```yaml
+Issue: Service Count Not Updating
+Solution: 
+  - Check Master Orchestration Agent (Port 8002)
+  - Verify API connectivity
+  - Check browser console for errors
+  - Restart real-time update service
+
+Issue: Certificate Generation Failed
+Solution:
+  - Verify service exists in registry
+  - Check Certificate Service (Port 8901)
+  - Validate passport ID assignment
+  - Review service data completeness
+
+Issue: Dashboard Not Loading
+Solution:
+  - Check port 3434 availability
+  - Verify environment configuration
+  - Review build process logs
+  - Check dependency installation
+```
+
+### Diagnostic Commands
+```bash
+# Service Status
+curl http://localhost:3434/health
+
+# API Connectivity
+curl http://localhost:8002/api/orchestration/services
+
+# Port Verification
+netstat -an | grep 3434
+
+# Process Status
+ps aux | grep professional
+```
+
+## Future Enhancements
+
+### Planned Features
+```yaml
+Version 2.1.0:
+  - Advanced Analytics Dashboard
+  - Machine Learning Predictions
+  - Custom Alert Rules
+  - Export Functionality
+
+Version 2.2.0:
+  - Multi-tenant Support
+  - Role-based Access Control
+  - Advanced Reporting
+  - API Rate Limiting
+
+Version 3.0.0:
+  - Microservice Architecture
+  - Kubernetes Support
+  - Advanced Security Features
+  - Real-time Collaboration
+```
+
+## Support & Documentation
+
+### Technical Support
+- **Primary Contact**: ZmartBot Development Team
+- **Documentation**: Internal MDC Documentation System
+- **Issue Tracking**: GitHub Issues
+- **Performance Monitoring**: Integrated Analytics
+
+### API Documentation
+- **OpenAPI Specification**: Available at `/docs`
+- **Interactive Documentation**: Swagger UI
+- **Code Examples**: Comprehensive examples provided
+- **SDK Support**: JavaScript/TypeScript SDK available
+
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Valid service passport**
+- ✅ **Complete MDC documentation**
+- ✅ **Health endpoint implementation**
+- ✅ **Master Orchestration integration**
+
+
+---
+
+## Changelog
+- **2.0.0** (2025-08-28): Enhanced Professional Dashboard with real-time service monitoring, advanced certificate system, dynamic service count updates, professional trading interface, and comprehensive system integration
+- **1.0.0** (2025-08-25): Initial Professional Dashboard with basic trading functionality
+
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Valid service passport**
+- ✅ **Complete MDC documentation**
+- ✅ **Health endpoint implementation**
+- ✅ **Master Orchestration integration**
+
+
+---
+
+*Generated by Professional Dashboard MDC Documentation System on 2025-08-28T17:40:00Z; input sha256-professional-dashboard-complete; context: service_registry.db, passport_registry.db, orchestration_api.json.*
+
+## 📄 Additional Content from ProfessionalDashboardApp.mdc
+# ProfessionalDashboardApp.mdc
+
+## Summary
+React-based professional trading dashboard application serving as the main UI entry point for ZmartBot, featuring routing, sidebar navigation, real-time components, and comprehensive trading interface with symbol management, chart visualization, and alert systems.
+
+## Purpose
+- Serves as the primary user interface for the ZmartBot trading platform
+- Provides centralized navigation and routing for all dashboard components
+- Implements real-time data display with live time updates and responsive design
+- Integrates trading components including symbol management, charts, and alerts
+- Manages application state and user interactions across the platform
+
+## Description
+Advanced professional-grade trading dashboard providing comprehensive service monitoring, real-ti...
+
+## Location
+`/Users/dansidanutz/Desktop/ZmartBot/zmart-api/professional_dashboard/App.jsx`
+
+## Component Architecture
+
+### Main Application Structure
+```jsx
+function App() {
+  return (
+    <Router>
+      <DashboardContent />
+    </Router>
+  )
+}
+```
+
+### Dashboard Content Component
+```jsx
+function DashboardContent() {
+  const [currentPage, setCurrentPage] = useState('symbols')
+  const [currentTime, setCurrentTime] = useState(new Date())
+  const [logoLoaded, setLogoLoaded] = useState(true)
+  const navigate = useNavigate()
+```
+
+**State Management**:
+- **currentPage**: Active navigation state ('symbols' default)
+- **currentTime**: Real-time clock display
+- **logoLoaded**: Logo loading status with fallback handling
+- **navigate**: React Router navigation hook
+
+## Core Features
+
+### Real-time Clock System
+```jsx
+useEffect(() => {
+  const timer = setInterval(() => {
+    setCurrentTime(new Date())
+  }, 1000)
+  return () => clearInterval(timer)
+}, [])
+```
+
+**Features**:
+- **Live Updates**: Every second clock refresh
+- **Memory Management**: Proper cleanup with clearInterval
+- **Display Format**: Localized time and date formatting
+- **Performance**: Efficient timer management
+
+### Logo Management System
+```jsx
+const handleLogoClick = () => {
+  console.log('🔘 Logo clicked!')
+  setCurrentPage('symbols')
+  navigate('/')
+}
+
+const handleLogoError = (e) => {
+  console.error('❌ Logo failed to load:', e.target.src)
+  // Progressive fallback chain
+  if (e.target.src.includes('Zmart-Logo-New.jpg')) {
+    e.target.src = '/logoZmart.png'
+  } else if (e.target.src.includes('logoZmart.png')) {
+    e.target.src = '/z-logo.png'
+  } else {
+    setLogoLoaded(false) // Show fallback
+  }
+}
+```
+
+**Features**:
+- **Progressive Fallback**: 3-tier logo loading with fallbacks
+- **Error Recovery**: Automatic fallback to alternative logo files
+- **User Interaction**: Clickable logo for navigation to home
+- **Visual Feedback**: Hover effects with CSS transforms
+
+## Header Component Structure
+
+### Header Layout
+```jsx
+<header className="dashboard-header">
+  <div className="header-content">
+    <div className="header-left">
+      <div className="header-brand">
+        <img src="/Zmart-Logo-New.jpg" alt="Zmart Logo" className="logo" />
+        <div className="header-title">
+          <h1>Zmart Trading</h1>
+          <p className="header-subtitle">Complete Dashboard</p>
+        </div>
+      </div>
+    </div>
+    <div className="header-right">
+      <div className="time-display">
+        <div className="current-time">{currentTime.toLocaleTimeString()}</div>
+        <div className="current-date">{currentTime.toLocaleDateString()}</div>
+      </div>
+    </div>
+  </div>
+</header>
+```
+
+**Design Elements**:
+- **Brand Identity**: Logo with company branding and title
+- **Time Display**: Real-time clock in header right section
+- **Responsive Layout**: Flexible header layout for different screen sizes
+- **Visual Hierarchy**: Clear separation of brand and time information
+
+## Navigation and Routing
+
+### React Router Configuration
+```jsx
+<Routes>
+  <Route path="/" element={<SymbolsManager />} />
+  <Route path="/overview" element={<Overview />} />
+  <Route path="/symbol-chart/:symbol" element={<SymbolChart />} />
+  <Route path="/scoring" element={<Scoring />} />
+  <Route path="/cryptometer" element={<Scoring />} />
+  <Route path="/kingfisher" element={<Scoring />} />
+  <Route path="/riskmetric" element={<Scoring />} />
+  <Route path="/chart" element={<SymbolChart />} />
+  <Route path="/enhanced-alerts" element={<EnhancedAlertsCard />} />
+  <Route path="/alerts" element={<EnhancedAlertsSystem />} />
+</Routes>
+```
+
+**Route Structure**:
+- **Home Route**: SymbolsManager as default landing page
+- **Overview**: System overview and status dashboard
+- **Symbol Chart**: Dynamic chart with symbol parameter routing
+- **Scoring Systems**: Multiple scoring algorithms (Cryptometer, Kingfisher, RiskMetric)
+- **Alert Systems**: Enhanced alerts card and comprehensive alert system
+
+### Sidebar Navigation Integration
+```jsx
+<Sidebar currentPage={currentPage} setCurrentPage={setCurrentPage} />
+```
+
+**Navigation Features**:
+- **State Synchronization**: Sidebar reflects current page state
+- **Bidirectional Updates**: Page changes update sidebar and vice versa
+- **Consistent Navigation**: Unified navigation experience across components
+
+## Component Integration
+
+### Trading Components
+- **SymbolsManager**: Primary symbol management interface
+- **SymbolChart**: Interactive trading charts with symbol-specific data
+- **Scoring**: Multi-algorithm scoring systems for trading decisions
+- **Overview**: System status and performance overview
+
+### Alert Components
+- **EnhancedAlertsCard**: Compact alert display component
+- **EnhancedAlertsSystem**: Comprehensive alert management system
+
+### Navigation Components
+- **Sidebar**: Main navigation sidebar with page state management
+
+## Styling and User Experience
+
+### Logo Styling
+```jsx
+style={{ 
+  width: '60px', 
+  height: '60px', 
+  borderRadius: '12px',
+  cursor: 'pointer',
+  transition: 'transform 0.3s ease'
+}}
+onMouseEnter={(e) => e.target.style.transform = 'scale(1.1)'}
+onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
+```
+
+**UX Features**:
+- **Interactive Design**: Hover effects with smooth transitions
+- **Visual Feedback**: Scale transformation on hover
+- **Accessibility**: Proper cursor indication for clickable elements
+- **Responsive**: Consistent sizing across different devices
+
+### CSS Class Structure
+- **dashboard**: Main application container
+- **dashboard-header**: Header component styling
+- **header-content**: Header layout container
+- **header-brand**: Brand identity section
+- **header-title**: Title and subtitle styling
+- **time-display**: Clock display formatting
+- **dashboard-container**: Main content container
+- **dashboard-main**: Primary content area
+
+## Error Handling and Resilience
+
+### Logo Loading Resilience
+- **Primary Logo**: `/Zmart-Logo-New.jpg` (preferred)
+- **Fallback 1**: `/logoZmart.png` (secondary option)
+- **Fallback 2**: `/z-logo.png` (tertiary option)
+- **Final Fallback**: `logoLoaded=false` state for text fallback
+
+### Error Logging
+```jsx
+console.log('🔘 Logo clicked!')
+console.log('✅ Logo loaded successfully')
+console.error('❌ Logo failed to load:', e.target.src)
+```
+
+**Debugging Features**:
+- **User Interaction Logging**: Track logo click events
+- **Success Confirmation**: Log successful logo loads
+- **Error Tracking**: Detailed error logging with source path
+
+## Performance Considerations
+
+### Memory Management
+- **Timer Cleanup**: Proper useEffect cleanup for intervals
+- **Component Unmounting**: Automatic resource cleanup
+- **State Optimization**: Minimal state updates for performance
+
+### Real-time Updates
+- **Efficient Timers**: Single interval for time updates
+- **Localized Formatting**: Native browser time formatting
+- **Minimal Re-renders**: Optimized component update patterns
+
+## Integration Points
+
+### Backend Integration
+- **API Endpoints**: Integration with ZmartBot backend services
+- **Real-time Data**: WebSocket connections for live data
+- **Authentication**: User session and authentication management
+
+### State Management
+- **Local State**: Component-level state for UI interactions
+- **Navigation State**: URL-based routing state management
+- **Global State**: Shared state across components (via props/context)
+
+## Development and Deployment
+
+### Development Features
+- **Hot Reload**: React development server integration
+- **Error Boundaries**: Comprehensive error handling
+- **Developer Tools**: React DevTools compatibility
+
+### Production Readiness
+- **Build Optimization**: Webpack/Vite build optimization
+- **Asset Management**: Efficient static asset handling
+- **Performance Monitoring**: Built-in performance tracking
+
+## Security Considerations
+- **XSS Prevention**: Safe rendering practices
+- **CSRF Protection**: Secure form handling
+- **Input Validation**: Client-side validation for user inputs
+- **Secure Navigation**: Protected routing and access control
+
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Valid service passport**
+- ✅ **Complete MDC documentation**
+- ✅ **Health endpoint implementation**
+- ✅ **Master Orchestration integration**
+
+
+---
+**Merge Summary**: Combined 2 files into unified MDC configuration
+**Generated**: 2025-08-29T07:28:17.485983
+
+## 📄 Additional Content from ProfessionalDashboardApp.mdc
+# ProfessionalDashboardApp.mdc
+
+## Summary
+React-based professional trading dashboard application serving as the main UI entry point for ZmartBot, featuring routing, sidebar navigation, real-time components, and comprehensive trading interface with symbol management, chart visualization, and alert systems.
+
+## Purpose
+- Serves as the primary user interface for the ZmartBot trading platform
+- Provides centralized navigation and routing for all dashboard components
+- Implements real-time data display with live time updates and responsive design
+- Integrates trading components including symbol management, charts, and alerts
+- Manages application state and user interactions across the platform
+
+## Description
+Advanced professional-grade trading dashboard providing comprehensive service monitoring, real-ti...
+
+## Location
+`/Users/dansidanutz/Desktop/ZmartBot/zmart-api/professional_dashboard/App.jsx`
+
+## Component Architecture
+
+### Main Application Structure
+```jsx
+function App() {
+  return (
+    <Router>
+      <DashboardContent />
+    </Router>
+  )
+}
+```
+
+### Dashboard Content Component
+```jsx
+function DashboardContent() {
+  const [currentPage, setCurrentPage] = useState('symbols')
+  const [currentTime, setCurrentTime] = useState(new Date())
+  const [logoLoaded, setLogoLoaded] = useState(true)
+  const navigate = useNavigate()
+```
+
+**State Management**:
+- **currentPage**: Active navigation state ('symbols' default)
+- **currentTime**: Real-time clock display
+- **logoLoaded**: Logo loading status with fallback handling
+- **navigate**: React Router navigation hook
+
+## Core Features
+
+### Real-time Clock System
+```jsx
+useEffect(() => {
+  const timer = setInterval(() => {
+    setCurrentTime(new Date())
+  }, 1000)
+  return () => clearInterval(timer)
+}, [])
+```
+
+**Features**:
+- **Live Updates**: Every second clock refresh
+- **Memory Management**: Proper cleanup with clearInterval
+- **Display Format**: Localized time and date formatting
+- **Performance**: Efficient timer management
+
+### Logo Management System
+```jsx
+const handleLogoClick = () => {
+  console.log('🔘 Logo clicked!')
+  setCurrentPage('symbols')
+  navigate('/')
+}
+
+const handleLogoError = (e) => {
+  console.error('❌ Logo failed to load:', e.target.src)
+  // Progressive fallback chain
+  if (e.target.src.includes('Zmart-Logo-New.jpg')) {
+    e.target.src = '/logoZmart.png'
+  } else if (e.target.src.includes('logoZmart.png')) {
+    e.target.src = '/z-logo.png'
+  } else {
+    setLogoLoaded(false) // Show fallback
+  }
+}
+```
+
+**Features**:
+- **Progressive Fallback**: 3-tier logo loading with fallbacks
+- **Error Recovery**: Automatic fallback to alternative logo files
+- **User Interaction**: Clickable logo for navigation to home
+- **Visual Feedback**: Hover effects with CSS transforms
+
+## Header Component Structure
+
+### Header Layout
+```jsx
+<header className="dashboard-header">
+  <div className="header-content">
+    <div className="header-left">
+      <div className="header-brand">
+        <img src="/Zmart-Logo-New.jpg" alt="Zmart Logo" className="logo" />
+        <div className="header-title">
+          <h1>Zmart Trading</h1>
+          <p className="header-subtitle">Complete Dashboard</p>
+        </div>
+      </div>
+    </div>
+    <div className="header-right">
+      <div className="time-display">
+        <div className="current-time">{currentTime.toLocaleTimeString()}</div>
+        <div className="current-date">{currentTime.toLocaleDateString()}</div>
+      </div>
+    </div>
+  </div>
+</header>
+```
+
+**Design Elements**:
+- **Brand Identity**: Logo with company branding and title
+- **Time Display**: Real-time clock in header right section
+- **Responsive Layout**: Flexible header layout for different screen sizes
+- **Visual Hierarchy**: Clear separation of brand and time information
+
+## Navigation and Routing
+
+### React Router Configuration
+```jsx
+<Routes>
+  <Route path="/" element={<SymbolsManager />} />
+  <Route path="/overview" element={<Overview />} />
+  <Route path="/symbol-chart/:symbol" element={<SymbolChart />} />
+  <Route path="/scoring" element={<Scoring />} />
+  <Route path="/cryptometer" element={<Scoring />} />
+  <Route path="/kingfisher" element={<Scoring />} />
+  <Route path="/riskmetric" element={<Scoring />} />
+  <Route path="/chart" element={<SymbolChart />} />
+  <Route path="/enhanced-alerts" element={<EnhancedAlertsCard />} />
+  <Route path="/alerts" element={<EnhancedAlertsSystem />} />
+</Routes>
+```
+
+**Route Structure**:
+- **Home Route**: SymbolsManager as default landing page
+- **Overview**: System overview and status dashboard
+- **Symbol Chart**: Dynamic chart with symbol parameter routing
+- **Scoring Systems**: Multiple scoring algorithms (Cryptometer, Kingfisher, RiskMetric)
+- **Alert Systems**: Enhanced alerts card and comprehensive alert system
+
+### Sidebar Navigation Integration
+```jsx
+<Sidebar currentPage={currentPage} setCurrentPage={setCurrentPage} />
+```
+
+**Navigation Features**:
+- **State Synchronization**: Sidebar reflects current page state
+- **Bidirectional Updates**: Page changes update sidebar and vice versa
+- **Consistent Navigation**: Unified navigation experience across components
+
+## Component Integration
+
+### Trading Components
+- **SymbolsManager**: Primary symbol management interface
+- **SymbolChart**: Interactive trading charts with symbol-specific data
+- **Scoring**: Multi-algorithm scoring systems for trading decisions
+- **Overview**: System status and performance overview
+
+### Alert Components
+- **EnhancedAlertsCard**: Compact alert display component
+- **EnhancedAlertsSystem**: Comprehensive alert management system
+
+### Navigation Components
+- **Sidebar**: Main navigation sidebar with page state management
+
+## Styling and User Experience
+
+### Logo Styling
+```jsx
+style={{ 
+  width: '60px', 
+  height: '60px', 
+  borderRadius: '12px',
+  cursor: 'pointer',
+  transition: 'transform 0.3s ease'
+}}
+onMouseEnter={(e) => e.target.style.transform = 'scale(1.1)'}
+onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
+```
+
+**UX Features**:
+- **Interactive Design**: Hover effects with smooth transitions
+- **Visual Feedback**: Scale transformation on hover
+- **Accessibility**: Proper cursor indication for clickable elements
+- **Responsive**: Consistent sizing across different devices
+
+### CSS Class Structure
+- **dashboard**: Main application container
+- **dashboard-header**: Header component styling
+- **header-content**: Header layout container
+- **header-brand**: Brand identity section
+- **header-title**: Title and subtitle styling
+- **time-display**: Clock display formatting
+- **dashboard-container**: Main content container
+- **dashboard-main**: Primary content area
+
+## Error Handling and Resilience
+
+### Logo Loading Resilience
+- **Primary Logo**: `/Zmart-Logo-New.jpg` (preferred)
+- **Fallback 1**: `/logoZmart.png` (secondary option)
+- **Fallback 2**: `/z-logo.png` (tertiary option)
+- **Final Fallback**: `logoLoaded=false` state for text fallback
+
+### Error Logging
+```jsx
+console.log('🔘 Logo clicked!')
+console.log('✅ Logo loaded successfully')
+console.error('❌ Logo failed to load:', e.target.src)
+```
+
+**Debugging Features**:
+- **User Interaction Logging**: Track logo click events
+- **Success Confirmation**: Log successful logo loads
+- **Error Tracking**: Detailed error logging with source path
+
+## Performance Considerations
+
+### Memory Management
+- **Timer Cleanup**: Proper useEffect cleanup for intervals
+- **Component Unmounting**: Automatic resource cleanup
+- **State Optimization**: Minimal state updates for performance
+
+### Real-time Updates
+- **Efficient Timers**: Single interval for time updates
+- **Localized Formatting**: Native browser time formatting
+- **Minimal Re-renders**: Optimized component update patterns
+
+## Integration Points
+
+### Backend Integration
+- **API Endpoints**: Integration with ZmartBot backend services
+- **Real-time Data**: WebSocket connections for live data
+- **Authentication**: User session and authentication management
+
+### State Management
+- **Local State**: Component-level state for UI interactions
+- **Navigation State**: URL-based routing state management
+- **Global State**: Shared state across components (via props/context)
+
+## Development and Deployment
+
+### Development Features
+- **Hot Reload**: React development server integration
+- **Error Boundaries**: Comprehensive error handling
+- **Developer Tools**: React DevTools compatibility
+
+### Production Readiness
+- **Build Optimization**: Webpack/Vite build optimization
+- **Asset Management**: Efficient static asset handling
+- **Performance Monitoring**: Built-in performance tracking
+
+## Security Considerations
+- **XSS Prevention**: Safe rendering practices
+- **CSRF Protection**: Secure form handling
+- **Input Validation**: Client-side validation for user inputs
+- **Secure Navigation**: Protected routing and access control
+
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Valid service passport**
+- ✅ **Complete MDC documentation**
+- ✅ **Health endpoint implementation**
+- ✅ **Master Orchestration integration**
+
+
+---
+**Merge Summary**: Combined 2 files into unified MDC configuration
+**Generated**: 2025-08-29T11:57:30.878804
+
+## Triggers
+- **API endpoint requests**
+- **Workflow transitions**
+- **Health check requests**
+
+
+## 📄 Additional Content from ProfessionalDashboardApp.mdc
+# ProfessionalDashboardApp.mdc
+
+## Summary
+React-based professional trading dashboard application serving as the main UI entry point for ZmartBot, featuring routing, sidebar navigation, real-time components, and comprehensive trading interface with symbol management, chart visualization, and alert systems.
+
+## Purpose
+- Serves as the primary user interface for the ZmartBot trading platform
+- Provides centralized navigation and routing for all dashboard components
+- Implements real-time data display with live time updates and responsive design
+- Integrates trading components including symbol management, charts, and alerts
+- Manages application state and user interactions across the platform
+
+## Description
+- Serves as the primary user interface for the ZmartBot trading platform
+- Provides centralized n...
+
+## Location
+`/Users/dansidanutz/Desktop/ZmartBot/zmart-api/professional_dashboard/App.jsx`
+
+## Component Architecture
+
+### Main Application Structure
+```jsx
+function App() {
+  return (
+    <Router>
+      <DashboardContent />
+    </Router>
+  )
+}
+```
+
+### Dashboard Content Component
+```jsx
+function DashboardContent() {
+  const [currentPage, setCurrentPage] = useState('symbols')
+  const [currentTime, setCurrentTime] = useState(new Date())
+  const [logoLoaded, setLogoLoaded] = useState(true)
+  const navigate = useNavigate()
+```
+
+**State Management**:
+- **currentPage**: Active navigation state ('symbols' default)
+- **currentTime**: Real-time clock display
+- **logoLoaded**: Logo loading status with fallback handling
+- **navigate**: React Router navigation hook
+
+## Core Features
+
+### Real-time Clock System
+```jsx
+useEffect(() => {
+  const timer = setInterval(() => {
+    setCurrentTime(new Date())
+  }, 1000)
+  return () => clearInterval(timer)
+}, [])
+```
+
+**Features**:
+- **Live Updates**: Every second clock refresh
+- **Memory Management**: Proper cleanup with clearInterval
+- **Display Format**: Localized time and date formatting
+- **Performance**: Efficient timer management
+
+### Logo Management System
+```jsx
+const handleLogoClick = () => {
+  console.log('🔘 Logo clicked!')
+  setCurrentPage('symbols')
+  navigate('/')
+}
+
+const handleLogoError = (e) => {
+  console.error('❌ Logo failed to load:', e.target.src)
+  // Progressive fallback chain
+  if (e.target.src.includes('Zmart-Logo-New.jpg')) {
+    e.target.src = '/logoZmart.png'
+  } else if (e.target.src.includes('logoZmart.png')) {
+    e.target.src = '/z-logo.png'
+  } else {
+    setLogoLoaded(false) // Show fallback
+  }
+}
+```
+
+**Features**:
+- **Progressive Fallback**: 3-tier logo loading with fallbacks
+- **Error Recovery**: Automatic fallback to alternative logo files
+- **User Interaction**: Clickable logo for navigation to home
+- **Visual Feedback**: Hover effects with CSS transforms
+
+## Header Component Structure
+
+### Header Layout
+```jsx
+<header className="dashboard-header">
+  <div className="header-content">
+    <div className="header-left">
+      <div className="header-brand">
+        <img src="/Zmart-Logo-New.jpg" alt="Zmart Logo" className="logo" />
+        <div className="header-title">
+          <h1>Zmart Trading</h1>
+          <p className="header-subtitle">Complete Dashboard</p>
+        </div>
+      </div>
+    </div>
+    <div className="header-right">
+      <div className="time-display">
+        <div className="current-time">{currentTime.toLocaleTimeString()}</div>
+        <div className="current-date">{currentTime.toLocaleDateString()}</div>
+      </div>
+    </div>
+  </div>
+</header>
+```
+
+**Design Elements**:
+- **Brand Identity**: Logo with company branding and title
+- **Time Display**: Real-time clock in header right section
+- **Responsive Layout**: Flexible header layout for different screen sizes
+- **Visual Hierarchy**: Clear separation of brand and time information
+
+## Navigation and Routing
+
+### React Router Configuration
+```jsx
+<Routes>
+  <Route path="/" element={<SymbolsManager />} />
+  <Route path="/overview" element={<Overview />} />
+  <Route path="/symbol-chart/:symbol" element={<SymbolChart />} />
+  <Route path="/scoring" element={<Scoring />} />
+  <Route path="/cryptometer" element={<Scoring />} />
+  <Route path="/kingfisher" element={<Scoring />} />
+  <Route path="/riskmetric" element={<Scoring />} />
+  <Route path="/chart" element={<SymbolChart />} />
+  <Route path="/enhanced-alerts" element={<EnhancedAlertsCard />} />
+  <Route path="/alerts" element={<EnhancedAlertsSystem />} />
+</Routes>
+```
+
+**Route Structure**:
+- **Home Route**: SymbolsManager as default landing page
+- **Overview**: System overview and status dashboard
+- **Symbol Chart**: Dynamic chart with symbol parameter routing
+- **Scoring Systems**: Multiple scoring algorithms (Cryptometer, Kingfisher, RiskMetric)
+- **Alert Systems**: Enhanced alerts card and comprehensive alert system
+
+### Sidebar Navigation Integration
+```jsx
+<Sidebar currentPage={currentPage} setCurrentPage={setCurrentPage} />
+```
+
+**Navigation Features**:
+- **State Synchronization**: Sidebar reflects current page state
+- **Bidirectional Updates**: Page changes update sidebar and vice versa
+- **Consistent Navigation**: Unified navigation experience across components
+
+## Component Integration
+
+### Trading Components
+- **SymbolsManager**: Primary symbol management interface
+- **SymbolChart**: Interactive trading charts with symbol-specific data
+- **Scoring**: Multi-algorithm scoring systems for trading decisions
+- **Overview**: System status and performance overview
+
+### Alert Components
+- **EnhancedAlertsCard**: Compact alert display component
+- **EnhancedAlertsSystem**: Comprehensive alert management system
+
+### Navigation Components
+- **Sidebar**: Main navigation sidebar with page state management
+
+## Styling and User Experience
+
+### Logo Styling
+```jsx
+style={{ 
+  width: '60px', 
+  height: '60px', 
+  borderRadius: '12px',
+  cursor: 'pointer',
+  transition: 'transform 0.3s ease'
+}}
+onMouseEnter={(e) => e.target.style.transform = 'scale(1.1)'}
+onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
+```
+
+**UX Features**:
+- **Interactive Design**: Hover effects with smooth transitions
+- **Visual Feedback**: Scale transformation on hover
+- **Accessibility**: Proper cursor indication for clickable elements
+- **Responsive**: Consistent sizing across different devices
+
+### CSS Class Structure
+- **dashboard**: Main application container
+- **dashboard-header**: Header component styling
+- **header-content**: Header layout container
+- **header-brand**: Brand identity section
+- **header-title**: Title and subtitle styling
+- **time-display**: Clock display formatting
+- **dashboard-container**: Main content container
+- **dashboard-main**: Primary content area
+
+## Error Handling and Resilience
+
+### Logo Loading Resilience
+- **Primary Logo**: `/Zmart-Logo-New.jpg` (preferred)
+- **Fallback 1**: `/logoZmart.png` (secondary option)
+- **Fallback 2**: `/z-logo.png` (tertiary option)
+- **Final Fallback**: `logoLoaded=false` state for text fallback
+
+### Error Logging
+```jsx
+console.log('🔘 Logo clicked!')
+console.log('✅ Logo loaded successfully')
+console.error('❌ Logo failed to load:', e.target.src)
+```
+
+**Debugging Features**:
+- **User Interaction Logging**: Track logo click events
+- **Success Confirmation**: Log successful logo loads
+- **Error Tracking**: Detailed error logging with source path
+
+## Performance Considerations
+
+### Memory Management
+- **Timer Cleanup**: Proper useEffect cleanup for intervals
+- **Component Unmounting**: Automatic resource cleanup
+- **State Optimization**: Minimal state updates for performance
+
+### Real-time Updates
+- **Efficient Timers**: Single interval for time updates
+- **Localized Formatting**: Native browser time formatting
+- **Minimal Re-renders**: Optimized component update patterns
+
+## Integration Points
+
+### Backend Integration
+- **API Endpoints**: Integration with ZmartBot backend services
+- **Real-time Data**: WebSocket connections for live data
+- **Authentication**: User session and authentication management
+
+### State Management
+- **Local State**: Component-level state for UI interactions
+- **Navigation State**: URL-based routing state management
+- **Global State**: Shared state across components (via props/context)
+
+## Development and Deployment
+
+### Development Features
+- **Hot Reload**: React development server integration
+- **Error Boundaries**: Comprehensive error handling
+- **Developer Tools**: React DevTools compatibility
+
+### Production Readiness
+- **Build Optimization**: Webpack/Vite build optimization
+- **Asset Management**: Efficient static asset handling
+- **Performance Monitoring**: Built-in performance tracking
+
+## Security Considerations
+- **XSS Prevention**: Safe rendering practices
+- **CSRF Protection**: Secure form handling
+- **Input Validation**: Client-side validation for user inputs
+- **Secure Navigation**: Protected routing and access control
+
+## Triggers
+- **API endpoint requests**
+
+
+## Requirements
+- ✅ **Complete MDC documentation**
+
+
+---
+**Merge Summary**: Combined 2 files into unified MDC configuration
+**Generated**: 2025-08-29T17:58:21.679933
+
+## 📄 Additional Content from ProfessionalDashboardApp.mdc
+# ProfessionalDashboardApp.mdc
+
+## Summary
+React-based professional trading dashboard application serving as the main UI entry point for ZmartBot, featuring routing, sidebar navigation, real-time components, and comprehensive trading interface with symbol management, chart visualization, and alert systems.
+
+## Purpose
+- Serves as the primary user interface for the ZmartBot trading platform
+- Provides centralized navigation and routing for all dashboard components
+- Implements real-time data display with live time updates and responsive design
+- Integrates trading components including symbol management, charts, and alerts
+- Manages application state and user interactions across the platform
+
+## Description
+- Serves as the primary user interface for the ZmartBot trading platform
+- Provides centralized n...
+
+## Location
+`/Users/dansidanutz/Desktop/ZmartBot/zmart-api/professional_dashboard/App.jsx`
+
+## Component Architecture
+
+### Main Application Structure
+```jsx
+function App() {
+  return (
+    <Router>
+      <DashboardContent />
+    </Router>
+  )
+}
+```
+
+### Dashboard Content Component
+```jsx
+function DashboardContent() {
+  const [currentPage, setCurrentPage] = useState('symbols')
+  const [currentTime, setCurrentTime] = useState(new Date())
+  const [logoLoaded, setLogoLoaded] = useState(true)
+  const navigate = useNavigate()
+```
+
+**State Management**:
+- **currentPage**: Active navigation state ('symbols' default)
+- **currentTime**: Real-time clock display
+- **logoLoaded**: Logo loading status with fallback handling
+- **navigate**: React Router navigation hook
+
+## Core Features
+
+### Real-time Clock System
+```jsx
+useEffect(() => {
+  const timer = setInterval(() => {
+    setCurrentTime(new Date())
+  }, 1000)
+  return () => clearInterval(timer)
+}, [])
+```
+
+**Features**:
+- **Live Updates**: Every second clock refresh
+- **Memory Management**: Proper cleanup with clearInterval
+- **Display Format**: Localized time and date formatting
+- **Performance**: Efficient timer management
+
+### Logo Management System
+```jsx
+const handleLogoClick = () => {
+  console.log('🔘 Logo clicked!')
+  setCurrentPage('symbols')
+  navigate('/')
+}
+
+const handleLogoError = (e) => {
+  console.error('❌ Logo failed to load:', e.target.src)
+  // Progressive fallback chain
+  if (e.target.src.includes('Zmart-Logo-New.jpg')) {
+    e.target.src = '/logoZmart.png'
+  } else if (e.target.src.includes('logoZmart.png')) {
+    e.target.src = '/z-logo.png'
+  } else {
+    setLogoLoaded(false) // Show fallback
+  }
+}
+```
+
+**Features**:
+- **Progressive Fallback**: 3-tier logo loading with fallbacks
+- **Error Recovery**: Automatic fallback to alternative logo files
+- **User Interaction**: Clickable logo for navigation to home
+- **Visual Feedback**: Hover effects with CSS transforms
+
+## Header Component Structure
+
+### Header Layout
+```jsx
+<header className="dashboard-header">
+  <div className="header-content">
+    <div className="header-left">
+      <div className="header-brand">
+        <img src="/Zmart-Logo-New.jpg" alt="Zmart Logo" className="logo" />
+        <div className="header-title">
+          <h1>Zmart Trading</h1>
+          <p className="header-subtitle">Complete Dashboard</p>
+        </div>
+      </div>
+    </div>
+    <div className="header-right">
+      <div className="time-display">
+        <div className="current-time">{currentTime.toLocaleTimeString()}</div>
+        <div className="current-date">{currentTime.toLocaleDateString()}</div>
+      </div>
+    </div>
+  </div>
+</header>
+```
+
+**Design Elements**:
+- **Brand Identity**: Logo with company branding and title
+- **Time Display**: Real-time clock in header right section
+- **Responsive Layout**: Flexible header layout for different screen sizes
+- **Visual Hierarchy**: Clear separation of brand and time information
+
+## Navigation and Routing
+
+### React Router Configuration
+```jsx
+<Routes>
+  <Route path="/" element={<SymbolsManager />} />
+  <Route path="/overview" element={<Overview />} />
+  <Route path="/symbol-chart/:symbol" element={<SymbolChart />} />
+  <Route path="/scoring" element={<Scoring />} />
+  <Route path="/cryptometer" element={<Scoring />} />
+  <Route path="/kingfisher" element={<Scoring />} />
+  <Route path="/riskmetric" element={<Scoring />} />
+  <Route path="/chart" element={<SymbolChart />} />
+  <Route path="/enhanced-alerts" element={<EnhancedAlertsCard />} />
+  <Route path="/alerts" element={<EnhancedAlertsSystem />} />
+</Routes>
+```
+
+**Route Structure**:
+- **Home Route**: SymbolsManager as default landing page
+- **Overview**: System overview and status dashboard
+- **Symbol Chart**: Dynamic chart with symbol parameter routing
+- **Scoring Systems**: Multiple scoring algorithms (Cryptometer, Kingfisher, RiskMetric)
+- **Alert Systems**: Enhanced alerts card and comprehensive alert system
+
+### Sidebar Navigation Integration
+```jsx
+<Sidebar currentPage={currentPage} setCurrentPage={setCurrentPage} />
+```
+
+**Navigation Features**:
+- **State Synchronization**: Sidebar reflects current page state
+- **Bidirectional Updates**: Page changes update sidebar and vice versa
+- **Consistent Navigation**: Unified navigation experience across components
+
+## Component Integration
+
+### Trading Components
+- **SymbolsManager**: Primary symbol management interface
+- **SymbolChart**: Interactive trading charts with symbol-specific data
+- **Scoring**: Multi-algorithm scoring systems for trading decisions
+- **Overview**: System status and performance overview
+
+### Alert Components
+- **EnhancedAlertsCard**: Compact alert display component
+- **EnhancedAlertsSystem**: Comprehensive alert management system
+
+### Navigation Components
+- **Sidebar**: Main navigation sidebar with page state management
+
+## Styling and User Experience
+
+### Logo Styling
+```jsx
+style={{ 
+  width: '60px', 
+  height: '60px', 
+  borderRadius: '12px',
+  cursor: 'pointer',
+  transition: 'transform 0.3s ease'
+}}
+onMouseEnter={(e) => e.target.style.transform = 'scale(1.1)'}
+onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
+```
+
+**UX Features**:
+- **Interactive Design**: Hover effects with smooth transitions
+- **Visual Feedback**: Scale transformation on hover
+- **Accessibility**: Proper cursor indication for clickable elements
+- **Responsive**: Consistent sizing across different devices
+
+### CSS Class Structure
+- **dashboard**: Main application container
+- **dashboard-header**: Header component styling
+- **header-content**: Header layout container
+- **header-brand**: Brand identity section
+- **header-title**: Title and subtitle styling
+- **time-display**: Clock display formatting
+- **dashboard-container**: Main content container
+- **dashboard-main**: Primary content area
+
+## Error Handling and Resilience
+
+### Logo Loading Resilience
+- **Primary Logo**: `/Zmart-Logo-New.jpg` (preferred)
+- **Fallback 1**: `/logoZmart.png` (secondary option)
+- **Fallback 2**: `/z-logo.png` (tertiary option)
+- **Final Fallback**: `logoLoaded=false` state for text fallback
+
+### Error Logging
+```jsx
+console.log('🔘 Logo clicked!')
+console.log('✅ Logo loaded successfully')
+console.error('❌ Logo failed to load:', e.target.src)
+```
+
+**Debugging Features**:
+- **User Interaction Logging**: Track logo click events
+- **Success Confirmation**: Log successful logo loads
+- **Error Tracking**: Detailed error logging with source path
+
+## Performance Considerations
+
+### Memory Management
+- **Timer Cleanup**: Proper useEffect cleanup for intervals
+- **Component Unmounting**: Automatic resource cleanup
+- **State Optimization**: Minimal state updates for performance
+
+### Real-time Updates
+- **Efficient Timers**: Single interval for time updates
+- **Localized Formatting**: Native browser time formatting
+- **Minimal Re-renders**: Optimized component update patterns
+
+## Integration Points
+
+### Backend Integration
+- **API Endpoints**: Integration with ZmartBot backend services
+- **Real-time Data**: WebSocket connections for live data
+- **Authentication**: User session and authentication management
+
+### State Management
+- **Local State**: Component-level state for UI interactions
+- **Navigation State**: URL-based routing state management
+- **Global State**: Shared state across components (via props/context)
+
+## Development and Deployment
+
+### Development Features
+- **Hot Reload**: React development server integration
+- **Error Boundaries**: Comprehensive error handling
+- **Developer Tools**: React DevTools compatibility
+
+### Production Readiness
+- **Build Optimization**: Webpack/Vite build optimization
+- **Asset Management**: Efficient static asset handling
+- **Performance Monitoring**: Built-in performance tracking
+
+## Security Considerations
+- **XSS Prevention**: Safe rendering practices
+- **CSRF Protection**: Secure form handling
+- **Input Validation**: Client-side validation for user inputs
+- **Secure Navigation**: Protected routing and access control
+
+## Triggers
+- **API endpoint requests**
+
+
+## Requirements
+- ✅ **Complete MDC documentation**
+
+
+---
+**Merge Summary**: Combined 2 files into unified MDC configuration
+**Generated**: 2025-08-29T22:55:51.645298
+
+## 📄 Additional Content from ProfessionalDashboardApp.mdc
+# ProfessionalDashboardApp.mdc
+
+## Summary
+React-based professional trading dashboard application serving as the main UI entry point for ZmartBot, featuring routing, sidebar navigation, real-time components, and comprehensive trading interface with symbol management, chart visualization, and alert systems.
+
+## Purpose
+- Serves as the primary user interface for the ZmartBot trading platform
+- Provides centralized navigation and routing for all dashboard components
+- Implements real-time data display with live time updates and responsive design
+- Integrates trading components including symbol management, charts, and alerts
+- Manages application state and user interactions across the platform
+
+## Description
+- Serves as the primary user interface for the ZmartBot trading platform
+- Provides centralized n...
+
+## Location
+`/Users/dansidanutz/Desktop/ZmartBot/zmart-api/professional_dashboard/App.jsx`
+
+## Component Architecture
+
+### Main Application Structure
+```jsx
+function App() {
+  return (
+    <Router>
+      <DashboardContent />
+    </Router>
+  )
+}
+```
+
+### Dashboard Content Component
+```jsx
+function DashboardContent() {
+  const [currentPage, setCurrentPage] = useState('symbols')
+  const [currentTime, setCurrentTime] = useState(new Date())
+  const [logoLoaded, setLogoLoaded] = useState(true)
+  const navigate = useNavigate()
+```
+
+**State Management**:
+- **currentPage**: Active navigation state ('symbols' default)
+- **currentTime**: Real-time clock display
+- **logoLoaded**: Logo loading status with fallback handling
+- **navigate**: React Router navigation hook
+
+## Core Features
+
+### Real-time Clock System
+```jsx
+useEffect(() => {
+  const timer = setInterval(() => {
+    setCurrentTime(new Date())
+  }, 1000)
+  return () => clearInterval(timer)
+}, [])
+```
+
+**Features**:
+- **Live Updates**: Every second clock refresh
+- **Memory Management**: Proper cleanup with clearInterval
+- **Display Format**: Localized time and date formatting
+- **Performance**: Efficient timer management
+
+### Logo Management System
+```jsx
+const handleLogoClick = () => {
+  console.log('🔘 Logo clicked!')
+  setCurrentPage('symbols')
+  navigate('/')
+}
+
+const handleLogoError = (e) => {
+  console.error('❌ Logo failed to load:', e.target.src)
+  // Progressive fallback chain
+  if (e.target.src.includes('Zmart-Logo-New.jpg')) {
+    e.target.src = '/logoZmart.png'
+  } else if (e.target.src.includes('logoZmart.png')) {
+    e.target.src = '/z-logo.png'
+  } else {
+    setLogoLoaded(false) // Show fallback
+  }
+}
+```
+
+**Features**:
+- **Progressive Fallback**: 3-tier logo loading with fallbacks
+- **Error Recovery**: Automatic fallback to alternative logo files
+- **User Interaction**: Clickable logo for navigation to home
+- **Visual Feedback**: Hover effects with CSS transforms
+
+## Header Component Structure
+
+### Header Layout
+```jsx
+<header className="dashboard-header">
+  <div className="header-content">
+    <div className="header-left">
+      <div className="header-brand">
+        <img src="/Zmart-Logo-New.jpg" alt="Zmart Logo" className="logo" />
+        <div className="header-title">
+          <h1>Zmart Trading</h1>
+          <p className="header-subtitle">Complete Dashboard</p>
+        </div>
+      </div>
+    </div>
+    <div className="header-right">
+      <div className="time-display">
+        <div className="current-time">{currentTime.toLocaleTimeString()}</div>
+        <div className="current-date">{currentTime.toLocaleDateString()}</div>
+      </div>
+    </div>
+  </div>
+</header>
+```
+
+**Design Elements**:
+- **Brand Identity**: Logo with company branding and title
+- **Time Display**: Real-time clock in header right section
+- **Responsive Layout**: Flexible header layout for different screen sizes
+- **Visual Hierarchy**: Clear separation of brand and time information
+
+## Navigation and Routing
+
+### React Router Configuration
+```jsx
+<Routes>
+  <Route path="/" element={<SymbolsManager />} />
+  <Route path="/overview" element={<Overview />} />
+  <Route path="/symbol-chart/:symbol" element={<SymbolChart />} />
+  <Route path="/scoring" element={<Scoring />} />
+  <Route path="/cryptometer" element={<Scoring />} />
+  <Route path="/kingfisher" element={<Scoring />} />
+  <Route path="/riskmetric" element={<Scoring />} />
+  <Route path="/chart" element={<SymbolChart />} />
+  <Route path="/enhanced-alerts" element={<EnhancedAlertsCard />} />
+  <Route path="/alerts" element={<EnhancedAlertsSystem />} />
+</Routes>
+```
+
+**Route Structure**:
+- **Home Route**: SymbolsManager as default landing page
+- **Overview**: System overview and status dashboard
+- **Symbol Chart**: Dynamic chart with symbol parameter routing
+- **Scoring Systems**: Multiple scoring algorithms (Cryptometer, Kingfisher, RiskMetric)
+- **Alert Systems**: Enhanced alerts card and comprehensive alert system
+
+### Sidebar Navigation Integration
+```jsx
+<Sidebar currentPage={currentPage} setCurrentPage={setCurrentPage} />
+```
+
+**Navigation Features**:
+- **State Synchronization**: Sidebar reflects current page state
+- **Bidirectional Updates**: Page changes update sidebar and vice versa
+- **Consistent Navigation**: Unified navigation experience across components
+
+## Component Integration
+
+### Trading Components
+- **SymbolsManager**: Primary symbol management interface
+- **SymbolChart**: Interactive trading charts with symbol-specific data
+- **Scoring**: Multi-algorithm scoring systems for trading decisions
+- **Overview**: System status and performance overview
+
+### Alert Components
+- **EnhancedAlertsCard**: Compact alert display component
+- **EnhancedAlertsSystem**: Comprehensive alert management system
+
+### Navigation Components
+- **Sidebar**: Main navigation sidebar with page state management
+
+## Styling and User Experience
+
+### Logo Styling
+```jsx
+style={{ 
+  width: '60px', 
+  height: '60px', 
+  borderRadius: '12px',
+  cursor: 'pointer',
+  transition: 'transform 0.3s ease'
+}}
+onMouseEnter={(e) => e.target.style.transform = 'scale(1.1)'}
+onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
+```
+
+**UX Features**:
+- **Interactive Design**: Hover effects with smooth transitions
+- **Visual Feedback**: Scale transformation on hover
+- **Accessibility**: Proper cursor indication for clickable elements
+- **Responsive**: Consistent sizing across different devices
+
+### CSS Class Structure
+- **dashboard**: Main application container
+- **dashboard-header**: Header component styling
+- **header-content**: Header layout container
+- **header-brand**: Brand identity section
+- **header-title**: Title and subtitle styling
+- **time-display**: Clock display formatting
+- **dashboard-container**: Main content container
+- **dashboard-main**: Primary content area
+
+## Error Handling and Resilience
+
+### Logo Loading Resilience
+- **Primary Logo**: `/Zmart-Logo-New.jpg` (preferred)
+- **Fallback 1**: `/logoZmart.png` (secondary option)
+- **Fallback 2**: `/z-logo.png` (tertiary option)
+- **Final Fallback**: `logoLoaded=false` state for text fallback
+
+### Error Logging
+```jsx
+console.log('🔘 Logo clicked!')
+console.log('✅ Logo loaded successfully')
+console.error('❌ Logo failed to load:', e.target.src)
+```
+
+**Debugging Features**:
+- **User Interaction Logging**: Track logo click events
+- **Success Confirmation**: Log successful logo loads
+- **Error Tracking**: Detailed error logging with source path
+
+## Performance Considerations
+
+### Memory Management
+- **Timer Cleanup**: Proper useEffect cleanup for intervals
+- **Component Unmounting**: Automatic resource cleanup
+- **State Optimization**: Minimal state updates for performance
+
+### Real-time Updates
+- **Efficient Timers**: Single interval for time updates
+- **Localized Formatting**: Native browser time formatting
+- **Minimal Re-renders**: Optimized component update patterns
+
+## Integration Points
+
+### Backend Integration
+- **API Endpoints**: Integration with ZmartBot backend services
+- **Real-time Data**: WebSocket connections for live data
+- **Authentication**: User session and authentication management
+
+### State Management
+- **Local State**: Component-level state for UI interactions
+- **Navigation State**: URL-based routing state management
+- **Global State**: Shared state across components (via props/context)
+
+## Development and Deployment
+
+### Development Features
+- **Hot Reload**: React development server integration
+- **Error Boundaries**: Comprehensive error handling
+- **Developer Tools**: React DevTools compatibility
+
+### Production Readiness
+- **Build Optimization**: Webpack/Vite build optimization
+- **Asset Management**: Efficient static asset handling
+- **Performance Monitoring**: Built-in performance tracking
+
+## Security Considerations
+- **XSS Prevention**: Safe rendering practices
+- **CSRF Protection**: Secure form handling
+- **Input Validation**: Client-side validation for user inputs
+- **Secure Navigation**: Protected routing and access control
+
+## Triggers
+- **API endpoint requests**
+
+
+## Requirements
+- ✅ **Complete MDC documentation**
+
+
+---
+**Merge Summary**: Combined 2 files into unified MDC configuration
+**Generated**: 2025-08-30T11:06:01.133552
+
+## 📄 Additional Content from ProfessionalDashboardApp.mdc
+# ProfessionalDashboardApp.mdc
+
+## Summary
+React-based professional trading dashboard application serving as the main UI entry point for ZmartBot, featuring routing, sidebar navigation, real-time components, and comprehensive trading interface with symbol management, chart visualization, and alert systems.
+
+## Purpose
+- Serves as the primary user interface for the ZmartBot trading platform
+- Provides centralized navigation and routing for all dashboard components
+- Implements real-time data display with live time updates and responsive design
+- Integrates trading components including symbol management, charts, and alerts
+- Manages application state and user interactions across the platform
+
+## Description
+- Serves as the primary user interface for the ZmartBot trading platform
+- Provides centralized n...
+
+## Location
+`/Users/dansidanutz/Desktop/ZmartBot/zmart-api/professional_dashboard/App.jsx`
+
+## Component Architecture
+
+### Main Application Structure
+```jsx
+function App() {
+  return (
+    <Router>
+      <DashboardContent />
+    </Router>
+  )
+}
+```
+
+### Dashboard Content Component
+```jsx
+function DashboardContent() {
+  const [currentPage, setCurrentPage] = useState('symbols')
+  const [currentTime, setCurrentTime] = useState(new Date())
+  const [logoLoaded, setLogoLoaded] = useState(true)
+  const navigate = useNavigate()
+```
+
+**State Management**:
+- **currentPage**: Active navigation state ('symbols' default)
+- **currentTime**: Real-time clock display
+- **logoLoaded**: Logo loading status with fallback handling
+- **navigate**: React Router navigation hook
+
+## Core Features
+
+### Real-time Clock System
+```jsx
+useEffect(() => {
+  const timer = setInterval(() => {
+    setCurrentTime(new Date())
+  }, 1000)
+  return () => clearInterval(timer)
+}, [])
+```
+
+**Features**:
+- **Live Updates**: Every second clock refresh
+- **Memory Management**: Proper cleanup with clearInterval
+- **Display Format**: Localized time and date formatting
+- **Performance**: Efficient timer management
+
+### Logo Management System
+```jsx
+const handleLogoClick = () => {
+  console.log('🔘 Logo clicked!')
+  setCurrentPage('symbols')
+  navigate('/')
+}
+
+const handleLogoError = (e) => {
+  console.error('❌ Logo failed to load:', e.target.src)
+  // Progressive fallback chain
+  if (e.target.src.includes('Zmart-Logo-New.jpg')) {
+    e.target.src = '/logoZmart.png'
+  } else if (e.target.src.includes('logoZmart.png')) {
+    e.target.src = '/z-logo.png'
+  } else {
+    setLogoLoaded(false) // Show fallback
+  }
+}
+```
+
+**Features**:
+- **Progressive Fallback**: 3-tier logo loading with fallbacks
+- **Error Recovery**: Automatic fallback to alternative logo files
+- **User Interaction**: Clickable logo for navigation to home
+- **Visual Feedback**: Hover effects with CSS transforms
+
+## Header Component Structure
+
+### Header Layout
+```jsx
+<header className="dashboard-header">
+  <div className="header-content">
+    <div className="header-left">
+      <div className="header-brand">
+        <img src="/Zmart-Logo-New.jpg" alt="Zmart Logo" className="logo" />
+        <div className="header-title">
+          <h1>Zmart Trading</h1>
+          <p className="header-subtitle">Complete Dashboard</p>
+        </div>
+      </div>
+    </div>
+    <div className="header-right">
+      <div className="time-display">
+        <div className="current-time">{currentTime.toLocaleTimeString()}</div>
+        <div className="current-date">{currentTime.toLocaleDateString()}</div>
+      </div>
+    </div>
+  </div>
+</header>
+```
+
+**Design Elements**:
+- **Brand Identity**: Logo with company branding and title
+- **Time Display**: Real-time clock in header right section
+- **Responsive Layout**: Flexible header layout for different screen sizes
+- **Visual Hierarchy**: Clear separation of brand and time information
+
+## Navigation and Routing
+
+### React Router Configuration
+```jsx
+<Routes>
+  <Route path="/" element={<SymbolsManager />} />
+  <Route path="/overview" element={<Overview />} />
+  <Route path="/symbol-chart/:symbol" element={<SymbolChart />} />
+  <Route path="/scoring" element={<Scoring />} />
+  <Route path="/cryptometer" element={<Scoring />} />
+  <Route path="/kingfisher" element={<Scoring />} />
+  <Route path="/riskmetric" element={<Scoring />} />
+  <Route path="/chart" element={<SymbolChart />} />
+  <Route path="/enhanced-alerts" element={<EnhancedAlertsCard />} />
+  <Route path="/alerts" element={<EnhancedAlertsSystem />} />
+</Routes>
+```
+
+**Route Structure**:
+- **Home Route**: SymbolsManager as default landing page
+- **Overview**: System overview and status dashboard
+- **Symbol Chart**: Dynamic chart with symbol parameter routing
+- **Scoring Systems**: Multiple scoring algorithms (Cryptometer, Kingfisher, RiskMetric)
+- **Alert Systems**: Enhanced alerts card and comprehensive alert system
+
+### Sidebar Navigation Integration
+```jsx
+<Sidebar currentPage={currentPage} setCurrentPage={setCurrentPage} />
+```
+
+**Navigation Features**:
+- **State Synchronization**: Sidebar reflects current page state
+- **Bidirectional Updates**: Page changes update sidebar and vice versa
+- **Consistent Navigation**: Unified navigation experience across components
+
+## Component Integration
+
+### Trading Components
+- **SymbolsManager**: Primary symbol management interface
+- **SymbolChart**: Interactive trading charts with symbol-specific data
+- **Scoring**: Multi-algorithm scoring systems for trading decisions
+- **Overview**: System status and performance overview
+
+### Alert Components
+- **EnhancedAlertsCard**: Compact alert display component
+- **EnhancedAlertsSystem**: Comprehensive alert management system
+
+### Navigation Components
+- **Sidebar**: Main navigation sidebar with page state management
+
+## Styling and User Experience
+
+### Logo Styling
+```jsx
+style={{ 
+  width: '60px', 
+  height: '60px', 
+  borderRadius: '12px',
+  cursor: 'pointer',
+  transition: 'transform 0.3s ease'
+}}
+onMouseEnter={(e) => e.target.style.transform = 'scale(1.1)'}
+onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
+```
+
+**UX Features**:
+- **Interactive Design**: Hover effects with smooth transitions
+- **Visual Feedback**: Scale transformation on hover
+- **Accessibility**: Proper cursor indication for clickable elements
+- **Responsive**: Consistent sizing across different devices
+
+### CSS Class Structure
+- **dashboard**: Main application container
+- **dashboard-header**: Header component styling
+- **header-content**: Header layout container
+- **header-brand**: Brand identity section
+- **header-title**: Title and subtitle styling
+- **time-display**: Clock display formatting
+- **dashboard-container**: Main content container
+- **dashboard-main**: Primary content area
+
+## Error Handling and Resilience
+
+### Logo Loading Resilience
+- **Primary Logo**: `/Zmart-Logo-New.jpg` (preferred)
+- **Fallback 1**: `/logoZmart.png` (secondary option)
+- **Fallback 2**: `/z-logo.png` (tertiary option)
+- **Final Fallback**: `logoLoaded=false` state for text fallback
+
+### Error Logging
+```jsx
+console.log('🔘 Logo clicked!')
+console.log('✅ Logo loaded successfully')
+console.error('❌ Logo failed to load:', e.target.src)
+```
+
+**Debugging Features**:
+- **User Interaction Logging**: Track logo click events
+- **Success Confirmation**: Log successful logo loads
+- **Error Tracking**: Detailed error logging with source path
+
+## Performance Considerations
+
+### Memory Management
+- **Timer Cleanup**: Proper useEffect cleanup for intervals
+- **Component Unmounting**: Automatic resource cleanup
+- **State Optimization**: Minimal state updates for performance
+
+### Real-time Updates
+- **Efficient Timers**: Single interval for time updates
+- **Localized Formatting**: Native browser time formatting
+- **Minimal Re-renders**: Optimized component update patterns
+
+## Integration Points
+
+### Backend Integration
+- **API Endpoints**: Integration with ZmartBot backend services
+- **Real-time Data**: WebSocket connections for live data
+- **Authentication**: User session and authentication management
+
+### State Management
+- **Local State**: Component-level state for UI interactions
+- **Navigation State**: URL-based routing state management
+- **Global State**: Shared state across components (via props/context)
+
+## Development and Deployment
+
+### Development Features
+- **Hot Reload**: React development server integration
+- **Error Boundaries**: Comprehensive error handling
+- **Developer Tools**: React DevTools compatibility
+
+### Production Readiness
+- **Build Optimization**: Webpack/Vite build optimization
+- **Asset Management**: Efficient static asset handling
+- **Performance Monitoring**: Built-in performance tracking
+
+## Security Considerations
+- **XSS Prevention**: Safe rendering practices
+- **CSRF Protection**: Secure form handling
+- **Input Validation**: Client-side validation for user inputs
+- **Secure Navigation**: Protected routing and access control
+
+## Triggers
+- **API endpoint requests**
+
+
+## Requirements
+- ✅ **Complete MDC documentation**
+
+
+---
+**Merge Summary**: Combined 2 files into unified MDC configuration
+**Generated**: 2025-08-30T07:23:02.293848
+
+## 📄 Additional Content from ProfessionalDashboardApp.mdc
+# ProfessionalDashboardApp.mdc
+
+## Summary
+React-based professional trading dashboard application serving as the main UI entry point for ZmartBot, featuring routing, sidebar navigation, real-time components, and comprehensive trading interface with symbol management, chart visualization, and alert systems.
+
+## Purpose
+- Serves as the primary user interface for the ZmartBot trading platform
+- Provides centralized navigation and routing for all dashboard components
+- Implements real-time data display with live time updates and responsive design
+- Integrates trading components including symbol management, charts, and alerts
+- Manages application state and user interactions across the platform
+
+## Description
+- Serves as the primary user interface for the ZmartBot trading platform
+- Provides centralized n...
+
+## Location
+`/Users/dansidanutz/Desktop/ZmartBot/zmart-api/professional_dashboard/App.jsx`
+
+## Component Architecture
+
+### Main Application Structure
+```jsx
+function App() {
+  return (
+    <Router>
+      <DashboardContent />
+    </Router>
+  )
+}
+```
+
+### Dashboard Content Component
+```jsx
+function DashboardContent() {
+  const [currentPage, setCurrentPage] = useState('symbols')
+  const [currentTime, setCurrentTime] = useState(new Date())
+  const [logoLoaded, setLogoLoaded] = useState(true)
+  const navigate = useNavigate()
+```
+
+**State Management**:
+- **currentPage**: Active navigation state ('symbols' default)
+- **currentTime**: Real-time clock display
+- **logoLoaded**: Logo loading status with fallback handling
+- **navigate**: React Router navigation hook
+
+## Core Features
+
+### Real-time Clock System
+```jsx
+useEffect(() => {
+  const timer = setInterval(() => {
+    setCurrentTime(new Date())
+  }, 1000)
+  return () => clearInterval(timer)
+}, [])
+```
+
+**Features**:
+- **Live Updates**: Every second clock refresh
+- **Memory Management**: Proper cleanup with clearInterval
+- **Display Format**: Localized time and date formatting
+- **Performance**: Efficient timer management
+
+### Logo Management System
+```jsx
+const handleLogoClick = () => {
+  console.log('🔘 Logo clicked!')
+  setCurrentPage('symbols')
+  navigate('/')
+}
+
+const handleLogoError = (e) => {
+  console.error('❌ Logo failed to load:', e.target.src)
+  // Progressive fallback chain
+  if (e.target.src.includes('Zmart-Logo-New.jpg')) {
+    e.target.src = '/logoZmart.png'
+  } else if (e.target.src.includes('logoZmart.png')) {
+    e.target.src = '/z-logo.png'
+  } else {
+    setLogoLoaded(false) // Show fallback
+  }
+}
+```
+
+**Features**:
+- **Progressive Fallback**: 3-tier logo loading with fallbacks
+- **Error Recovery**: Automatic fallback to alternative logo files
+- **User Interaction**: Clickable logo for navigation to home
+- **Visual Feedback**: Hover effects with CSS transforms
+
+## Header Component Structure
+
+### Header Layout
+```jsx
+<header className="dashboard-header">
+  <div className="header-content">
+    <div className="header-left">
+      <div className="header-brand">
+        <img src="/Zmart-Logo-New.jpg" alt="Zmart Logo" className="logo" />
+        <div className="header-title">
+          <h1>Zmart Trading</h1>
+          <p className="header-subtitle">Complete Dashboard</p>
+        </div>
+      </div>
+    </div>
+    <div className="header-right">
+      <div className="time-display">
+        <div className="current-time">{currentTime.toLocaleTimeString()}</div>
+        <div className="current-date">{currentTime.toLocaleDateString()}</div>
+      </div>
+    </div>
+  </div>
+</header>
+```
+
+**Design Elements**:
+- **Brand Identity**: Logo with company branding and title
+- **Time Display**: Real-time clock in header right section
+- **Responsive Layout**: Flexible header layout for different screen sizes
+- **Visual Hierarchy**: Clear separation of brand and time information
+
+## Navigation and Routing
+
+### React Router Configuration
+```jsx
+<Routes>
+  <Route path="/" element={<SymbolsManager />} />
+  <Route path="/overview" element={<Overview />} />
+  <Route path="/symbol-chart/:symbol" element={<SymbolChart />} />
+  <Route path="/scoring" element={<Scoring />} />
+  <Route path="/cryptometer" element={<Scoring />} />
+  <Route path="/kingfisher" element={<Scoring />} />
+  <Route path="/riskmetric" element={<Scoring />} />
+  <Route path="/chart" element={<SymbolChart />} />
+  <Route path="/enhanced-alerts" element={<EnhancedAlertsCard />} />
+  <Route path="/alerts" element={<EnhancedAlertsSystem />} />
+</Routes>
+```
+
+**Route Structure**:
+- **Home Route**: SymbolsManager as default landing page
+- **Overview**: System overview and status dashboard
+- **Symbol Chart**: Dynamic chart with symbol parameter routing
+- **Scoring Systems**: Multiple scoring algorithms (Cryptometer, Kingfisher, RiskMetric)
+- **Alert Systems**: Enhanced alerts card and comprehensive alert system
+
+### Sidebar Navigation Integration
+```jsx
+<Sidebar currentPage={currentPage} setCurrentPage={setCurrentPage} />
+```
+
+**Navigation Features**:
+- **State Synchronization**: Sidebar reflects current page state
+- **Bidirectional Updates**: Page changes update sidebar and vice versa
+- **Consistent Navigation**: Unified navigation experience across components
+
+## Component Integration
+
+### Trading Components
+- **SymbolsManager**: Primary symbol management interface
+- **SymbolChart**: Interactive trading charts with symbol-specific data
+- **Scoring**: Multi-algorithm scoring systems for trading decisions
+- **Overview**: System status and performance overview
+
+### Alert Components
+- **EnhancedAlertsCard**: Compact alert display component
+- **EnhancedAlertsSystem**: Comprehensive alert management system
+
+### Navigation Components
+- **Sidebar**: Main navigation sidebar with page state management
+
+## Styling and User Experience
+
+### Logo Styling
+```jsx
+style={{ 
+  width: '60px', 
+  height: '60px', 
+  borderRadius: '12px',
+  cursor: 'pointer',
+  transition: 'transform 0.3s ease'
+}}
+onMouseEnter={(e) => e.target.style.transform = 'scale(1.1)'}
+onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
+```
+
+**UX Features**:
+- **Interactive Design**: Hover effects with smooth transitions
+- **Visual Feedback**: Scale transformation on hover
+- **Accessibility**: Proper cursor indication for clickable elements
+- **Responsive**: Consistent sizing across different devices
+
+### CSS Class Structure
+- **dashboard**: Main application container
+- **dashboard-header**: Header component styling
+- **header-content**: Header layout container
+- **header-brand**: Brand identity section
+- **header-title**: Title and subtitle styling
+- **time-display**: Clock display formatting
+- **dashboard-container**: Main content container
+- **dashboard-main**: Primary content area
+
+## Error Handling and Resilience
+
+### Logo Loading Resilience
+- **Primary Logo**: `/Zmart-Logo-New.jpg` (preferred)
+- **Fallback 1**: `/logoZmart.png` (secondary option)
+- **Fallback 2**: `/z-logo.png` (tertiary option)
+- **Final Fallback**: `logoLoaded=false` state for text fallback
+
+### Error Logging
+```jsx
+console.log('🔘 Logo clicked!')
+console.log('✅ Logo loaded successfully')
+console.error('❌ Logo failed to load:', e.target.src)
+```
+
+**Debugging Features**:
+- **User Interaction Logging**: Track logo click events
+- **Success Confirmation**: Log successful logo loads
+- **Error Tracking**: Detailed error logging with source path
+
+## Performance Considerations
+
+### Memory Management
+- **Timer Cleanup**: Proper useEffect cleanup for intervals
+- **Component Unmounting**: Automatic resource cleanup
+- **State Optimization**: Minimal state updates for performance
+
+### Real-time Updates
+- **Efficient Timers**: Single interval for time updates
+- **Localized Formatting**: Native browser time formatting
+- **Minimal Re-renders**: Optimized component update patterns
+
+## Integration Points
+
+### Backend Integration
+- **API Endpoints**: Integration with ZmartBot backend services
+- **Real-time Data**: WebSocket connections for live data
+- **Authentication**: User session and authentication management
+
+### State Management
+- **Local State**: Component-level state for UI interactions
+- **Navigation State**: URL-based routing state management
+- **Global State**: Shared state across components (via props/context)
+
+## Development and Deployment
+
+### Development Features
+- **Hot Reload**: React development server integration
+- **Error Boundaries**: Comprehensive error handling
+- **Developer Tools**: React DevTools compatibility
+
+### Production Readiness
+- **Build Optimization**: Webpack/Vite build optimization
+- **Asset Management**: Efficient static asset handling
+- **Performance Monitoring**: Built-in performance tracking
+
+## Security Considerations
+- **XSS Prevention**: Safe rendering practices
+- **CSRF Protection**: Secure form handling
+- **Input Validation**: Client-side validation for user inputs
+- **Secure Navigation**: Protected routing and access control
+
+## Triggers
+- **API endpoint requests**
+
+
+## Requirements
+- ✅ **Complete MDC documentation**
+
+
+---
+**Merge Summary**: Combined 2 files into unified MDC configuration
+**Generated**: 2025-08-30T11:32:15.291214
+
+## 📄 Additional Content from ProfessionalDashboardApp.mdc
+# ProfessionalDashboardApp.mdc
+
+## Summary
+React-based professional trading dashboard application serving as the main UI entry point for ZmartBot, featuring routing, sidebar navigation, real-time components, and comprehensive trading interface with symbol management, chart visualization, and alert systems.
+
+## Purpose
+- Serves as the primary user interface for the ZmartBot trading platform
+- Provides centralized navigation and routing for all dashboard components
+- Implements real-time data display with live time updates and responsive design
+- Integrates trading components including symbol management, charts, and alerts
+- Manages application state and user interactions across the platform
+
+## Description
+- Serves as the primary user interface for the ZmartBot trading platform
+- Provides centralized n...
+
+## Location
+`/Users/dansidanutz/Desktop/ZmartBot/zmart-api/professional_dashboard/App.jsx`
+
+## Component Architecture
+
+### Main Application Structure
+```jsx
+function App() {
+  return (
+    <Router>
+      <DashboardContent />
+    </Router>
+  )
+}
+```
+
+### Dashboard Content Component
+```jsx
+function DashboardContent() {
+  const [currentPage, setCurrentPage] = useState('symbols')
+  const [currentTime, setCurrentTime] = useState(new Date())
+  const [logoLoaded, setLogoLoaded] = useState(true)
+  const navigate = useNavigate()
+```
+
+**State Management**:
+- **currentPage**: Active navigation state ('symbols' default)
+- **currentTime**: Real-time clock display
+- **logoLoaded**: Logo loading status with fallback handling
+- **navigate**: React Router navigation hook
+
+## Core Features
+
+### Real-time Clock System
+```jsx
+useEffect(() => {
+  const timer = setInterval(() => {
+    setCurrentTime(new Date())
+  }, 1000)
+  return () => clearInterval(timer)
+}, [])
+```
+
+**Features**:
+- **Live Updates**: Every second clock refresh
+- **Memory Management**: Proper cleanup with clearInterval
+- **Display Format**: Localized time and date formatting
+- **Performance**: Efficient timer management
+
+### Logo Management System
+```jsx
+const handleLogoClick = () => {
+  console.log('🔘 Logo clicked!')
+  setCurrentPage('symbols')
+  navigate('/')
+}
+
+const handleLogoError = (e) => {
+  console.error('❌ Logo failed to load:', e.target.src)
+  // Progressive fallback chain
+  if (e.target.src.includes('Zmart-Logo-New.jpg')) {
+    e.target.src = '/logoZmart.png'
+  } else if (e.target.src.includes('logoZmart.png')) {
+    e.target.src = '/z-logo.png'
+  } else {
+    setLogoLoaded(false) // Show fallback
+  }
+}
+```
+
+**Features**:
+- **Progressive Fallback**: 3-tier logo loading with fallbacks
+- **Error Recovery**: Automatic fallback to alternative logo files
+- **User Interaction**: Clickable logo for navigation to home
+- **Visual Feedback**: Hover effects with CSS transforms
+
+## Header Component Structure
+
+### Header Layout
+```jsx
+<header className="dashboard-header">
+  <div className="header-content">
+    <div className="header-left">
+      <div className="header-brand">
+        <img src="/Zmart-Logo-New.jpg" alt="Zmart Logo" className="logo" />
+        <div className="header-title">
+          <h1>Zmart Trading</h1>
+          <p className="header-subtitle">Complete Dashboard</p>
+        </div>
+      </div>
+    </div>
+    <div className="header-right">
+      <div className="time-display">
+        <div className="current-time">{currentTime.toLocaleTimeString()}</div>
+        <div className="current-date">{currentTime.toLocaleDateString()}</div>
+      </div>
+    </div>
+  </div>
+</header>
+```
+
+**Design Elements**:
+- **Brand Identity**: Logo with company branding and title
+- **Time Display**: Real-time clock in header right section
+- **Responsive Layout**: Flexible header layout for different screen sizes
+- **Visual Hierarchy**: Clear separation of brand and time information
+
+## Navigation and Routing
+
+### React Router Configuration
+```jsx
+<Routes>
+  <Route path="/" element={<SymbolsManager />} />
+  <Route path="/overview" element={<Overview />} />
+  <Route path="/symbol-chart/:symbol" element={<SymbolChart />} />
+  <Route path="/scoring" element={<Scoring />} />
+  <Route path="/cryptometer" element={<Scoring />} />
+  <Route path="/kingfisher" element={<Scoring />} />
+  <Route path="/riskmetric" element={<Scoring />} />
+  <Route path="/chart" element={<SymbolChart />} />
+  <Route path="/enhanced-alerts" element={<EnhancedAlertsCard />} />
+  <Route path="/alerts" element={<EnhancedAlertsSystem />} />
+</Routes>
+```
+
+**Route Structure**:
+- **Home Route**: SymbolsManager as default landing page
+- **Overview**: System overview and status dashboard
+- **Symbol Chart**: Dynamic chart with symbol parameter routing
+- **Scoring Systems**: Multiple scoring algorithms (Cryptometer, Kingfisher, RiskMetric)
+- **Alert Systems**: Enhanced alerts card and comprehensive alert system
+
+### Sidebar Navigation Integration
+```jsx
+<Sidebar currentPage={currentPage} setCurrentPage={setCurrentPage} />
+```
+
+**Navigation Features**:
+- **State Synchronization**: Sidebar reflects current page state
+- **Bidirectional Updates**: Page changes update sidebar and vice versa
+- **Consistent Navigation**: Unified navigation experience across components
+
+## Component Integration
+
+### Trading Components
+- **SymbolsManager**: Primary symbol management interface
+- **SymbolChart**: Interactive trading charts with symbol-specific data
+- **Scoring**: Multi-algorithm scoring systems for trading decisions
+- **Overview**: System status and performance overview
+
+### Alert Components
+- **EnhancedAlertsCard**: Compact alert display component
+- **EnhancedAlertsSystem**: Comprehensive alert management system
+
+### Navigation Components
+- **Sidebar**: Main navigation sidebar with page state management
+
+## Styling and User Experience
+
+### Logo Styling
+```jsx
+style={{ 
+  width: '60px', 
+  height: '60px', 
+  borderRadius: '12px',
+  cursor: 'pointer',
+  transition: 'transform 0.3s ease'
+}}
+onMouseEnter={(e) => e.target.style.transform = 'scale(1.1)'}
+onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
+```
+
+**UX Features**:
+- **Interactive Design**: Hover effects with smooth transitions
+- **Visual Feedback**: Scale transformation on hover
+- **Accessibility**: Proper cursor indication for clickable elements
+- **Responsive**: Consistent sizing across different devices
+
+### CSS Class Structure
+- **dashboard**: Main application container
+- **dashboard-header**: Header component styling
+- **header-content**: Header layout container
+- **header-brand**: Brand identity section
+- **header-title**: Title and subtitle styling
+- **time-display**: Clock display formatting
+- **dashboard-container**: Main content container
+- **dashboard-main**: Primary content area
+
+## Error Handling and Resilience
+
+### Logo Loading Resilience
+- **Primary Logo**: `/Zmart-Logo-New.jpg` (preferred)
+- **Fallback 1**: `/logoZmart.png` (secondary option)
+- **Fallback 2**: `/z-logo.png` (tertiary option)
+- **Final Fallback**: `logoLoaded=false` state for text fallback
+
+### Error Logging
+```jsx
+console.log('🔘 Logo clicked!')
+console.log('✅ Logo loaded successfully')
+console.error('❌ Logo failed to load:', e.target.src)
+```
+
+**Debugging Features**:
+- **User Interaction Logging**: Track logo click events
+- **Success Confirmation**: Log successful logo loads
+- **Error Tracking**: Detailed error logging with source path
+
+## Performance Considerations
+
+### Memory Management
+- **Timer Cleanup**: Proper useEffect cleanup for intervals
+- **Component Unmounting**: Automatic resource cleanup
+- **State Optimization**: Minimal state updates for performance
+
+### Real-time Updates
+- **Efficient Timers**: Single interval for time updates
+- **Localized Formatting**: Native browser time formatting
+- **Minimal Re-renders**: Optimized component update patterns
+
+## Integration Points
+
+### Backend Integration
+- **API Endpoints**: Integration with ZmartBot backend services
+- **Real-time Data**: WebSocket connections for live data
+- **Authentication**: User session and authentication management
+
+### State Management
+- **Local State**: Component-level state for UI interactions
+- **Navigation State**: URL-based routing state management
+- **Global State**: Shared state across components (via props/context)
+
+## Development and Deployment
+
+### Development Features
+- **Hot Reload**: React development server integration
+- **Error Boundaries**: Comprehensive error handling
+- **Developer Tools**: React DevTools compatibility
+
+### Production Readiness
+- **Build Optimization**: Webpack/Vite build optimization
+- **Asset Management**: Efficient static asset handling
+- **Performance Monitoring**: Built-in performance tracking
+
+## Security Considerations
+- **XSS Prevention**: Safe rendering practices
+- **CSRF Protection**: Secure form handling
+- **Input Validation**: Client-side validation for user inputs
+- **Secure Navigation**: Protected routing and access control
+
+## Triggers
+- **API endpoint requests**
+
+
+## Requirements
+- ✅ **Complete MDC documentation**
+
+
+---
+**Merge Summary**: Combined 2 files into unified MDC configuration
+**Generated**: 2025-08-30T15:34:11.022130
+
+## 📄 Additional Content from ProfessionalDashboardApp.mdc
+# ProfessionalDashboardApp.mdc
+
+## Summary
+React-based professional trading dashboard application serving as the main UI entry point for ZmartBot, featuring routing, sidebar navigation, real-time components, and comprehensive trading interface with symbol management, chart visualization, and alert systems.
+
+## Purpose
+- Serves as the primary user interface for the ZmartBot trading platform
+- Provides centralized navigation and routing for all dashboard components
+- Implements real-time data display with live time updates and responsive design
+- Integrates trading components including symbol management, charts, and alerts
+- Manages application state and user interactions across the platform
+
+## Description
+- Serves as the primary user interface for the ZmartBot trading platform
+- Provides centralized n...
+
+## Location
+`/Users/dansidanutz/Desktop/ZmartBot/zmart-api/professional_dashboard/App.jsx`
+
+## Component Architecture
+
+### Main Application Structure
+```jsx
+function App() {
+  return (
+    <Router>
+      <DashboardContent />
+    </Router>
+  )
+}
+```
+
+### Dashboard Content Component
+```jsx
+function DashboardContent() {
+  const [currentPage, setCurrentPage] = useState('symbols')
+  const [currentTime, setCurrentTime] = useState(new Date())
+  const [logoLoaded, setLogoLoaded] = useState(true)
+  const navigate = useNavigate()
+```
+
+**State Management**:
+- **currentPage**: Active navigation state ('symbols' default)
+- **currentTime**: Real-time clock display
+- **logoLoaded**: Logo loading status with fallback handling
+- **navigate**: React Router navigation hook
+
+## Core Features
+
+### Real-time Clock System
+```jsx
+useEffect(() => {
+  const timer = setInterval(() => {
+    setCurrentTime(new Date())
+  }, 1000)
+  return () => clearInterval(timer)
+}, [])
+```
+
+**Features**:
+- **Live Updates**: Every second clock refresh
+- **Memory Management**: Proper cleanup with clearInterval
+- **Display Format**: Localized time and date formatting
+- **Performance**: Efficient timer management
+
+### Logo Management System
+```jsx
+const handleLogoClick = () => {
+  console.log('🔘 Logo clicked!')
+  setCurrentPage('symbols')
+  navigate('/')
+}
+
+const handleLogoError = (e) => {
+  console.error('❌ Logo failed to load:', e.target.src)
+  // Progressive fallback chain
+  if (e.target.src.includes('Zmart-Logo-New.jpg')) {
+    e.target.src = '/logoZmart.png'
+  } else if (e.target.src.includes('logoZmart.png')) {
+    e.target.src = '/z-logo.png'
+  } else {
+    setLogoLoaded(false) // Show fallback
+  }
+}
+```
+
+**Features**:
+- **Progressive Fallback**: 3-tier logo loading with fallbacks
+- **Error Recovery**: Automatic fallback to alternative logo files
+- **User Interaction**: Clickable logo for navigation to home
+- **Visual Feedback**: Hover effects with CSS transforms
+
+## Header Component Structure
+
+### Header Layout
+```jsx
+<header className="dashboard-header">
+  <div className="header-content">
+    <div className="header-left">
+      <div className="header-brand">
+        <img src="/Zmart-Logo-New.jpg" alt="Zmart Logo" className="logo" />
+        <div className="header-title">
+          <h1>Zmart Trading</h1>
+          <p className="header-subtitle">Complete Dashboard</p>
+        </div>
+      </div>
+    </div>
+    <div className="header-right">
+      <div className="time-display">
+        <div className="current-time">{currentTime.toLocaleTimeString()}</div>
+        <div className="current-date">{currentTime.toLocaleDateString()}</div>
+      </div>
+    </div>
+  </div>
+</header>
+```
+
+**Design Elements**:
+- **Brand Identity**: Logo with company branding and title
+- **Time Display**: Real-time clock in header right section
+- **Responsive Layout**: Flexible header layout for different screen sizes
+- **Visual Hierarchy**: Clear separation of brand and time information
+
+## Navigation and Routing
+
+### React Router Configuration
+```jsx
+<Routes>
+  <Route path="/" element={<SymbolsManager />} />
+  <Route path="/overview" element={<Overview />} />
+  <Route path="/symbol-chart/:symbol" element={<SymbolChart />} />
+  <Route path="/scoring" element={<Scoring />} />
+  <Route path="/cryptometer" element={<Scoring />} />
+  <Route path="/kingfisher" element={<Scoring />} />
+  <Route path="/riskmetric" element={<Scoring />} />
+  <Route path="/chart" element={<SymbolChart />} />
+  <Route path="/enhanced-alerts" element={<EnhancedAlertsCard />} />
+  <Route path="/alerts" element={<EnhancedAlertsSystem />} />
+</Routes>
+```
+
+**Route Structure**:
+- **Home Route**: SymbolsManager as default landing page
+- **Overview**: System overview and status dashboard
+- **Symbol Chart**: Dynamic chart with symbol parameter routing
+- **Scoring Systems**: Multiple scoring algorithms (Cryptometer, Kingfisher, RiskMetric)
+- **Alert Systems**: Enhanced alerts card and comprehensive alert system
+
+### Sidebar Navigation Integration
+```jsx
+<Sidebar currentPage={currentPage} setCurrentPage={setCurrentPage} />
+```
+
+**Navigation Features**:
+- **State Synchronization**: Sidebar reflects current page state
+- **Bidirectional Updates**: Page changes update sidebar and vice versa
+- **Consistent Navigation**: Unified navigation experience across components
+
+## Component Integration
+
+### Trading Components
+- **SymbolsManager**: Primary symbol management interface
+- **SymbolChart**: Interactive trading charts with symbol-specific data
+- **Scoring**: Multi-algorithm scoring systems for trading decisions
+- **Overview**: System status and performance overview
+
+### Alert Components
+- **EnhancedAlertsCard**: Compact alert display component
+- **EnhancedAlertsSystem**: Comprehensive alert management system
+
+### Navigation Components
+- **Sidebar**: Main navigation sidebar with page state management
+
+## Styling and User Experience
+
+### Logo Styling
+```jsx
+style={{ 
+  width: '60px', 
+  height: '60px', 
+  borderRadius: '12px',
+  cursor: 'pointer',
+  transition: 'transform 0.3s ease'
+}}
+onMouseEnter={(e) => e.target.style.transform = 'scale(1.1)'}
+onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
+```
+
+**UX Features**:
+- **Interactive Design**: Hover effects with smooth transitions
+- **Visual Feedback**: Scale transformation on hover
+- **Accessibility**: Proper cursor indication for clickable elements
+- **Responsive**: Consistent sizing across different devices
+
+### CSS Class Structure
+- **dashboard**: Main application container
+- **dashboard-header**: Header component styling
+- **header-content**: Header layout container
+- **header-brand**: Brand identity section
+- **header-title**: Title and subtitle styling
+- **time-display**: Clock display formatting
+- **dashboard-container**: Main content container
+- **dashboard-main**: Primary content area
+
+## Error Handling and Resilience
+
+### Logo Loading Resilience
+- **Primary Logo**: `/Zmart-Logo-New.jpg` (preferred)
+- **Fallback 1**: `/logoZmart.png` (secondary option)
+- **Fallback 2**: `/z-logo.png` (tertiary option)
+- **Final Fallback**: `logoLoaded=false` state for text fallback
+
+### Error Logging
+```jsx
+console.log('🔘 Logo clicked!')
+console.log('✅ Logo loaded successfully')
+console.error('❌ Logo failed to load:', e.target.src)
+```
+
+**Debugging Features**:
+- **User Interaction Logging**: Track logo click events
+- **Success Confirmation**: Log successful logo loads
+- **Error Tracking**: Detailed error logging with source path
+
+## Performance Considerations
+
+### Memory Management
+- **Timer Cleanup**: Proper useEffect cleanup for intervals
+- **Component Unmounting**: Automatic resource cleanup
+- **State Optimization**: Minimal state updates for performance
+
+### Real-time Updates
+- **Efficient Timers**: Single interval for time updates
+- **Localized Formatting**: Native browser time formatting
+- **Minimal Re-renders**: Optimized component update patterns
+
+## Integration Points
+
+### Backend Integration
+- **API Endpoints**: Integration with ZmartBot backend services
+- **Real-time Data**: WebSocket connections for live data
+- **Authentication**: User session and authentication management
+
+### State Management
+- **Local State**: Component-level state for UI interactions
+- **Navigation State**: URL-based routing state management
+- **Global State**: Shared state across components (via props/context)
+
+## Development and Deployment
+
+### Development Features
+- **Hot Reload**: React development server integration
+- **Error Boundaries**: Comprehensive error handling
+- **Developer Tools**: React DevTools compatibility
+
+### Production Readiness
+- **Build Optimization**: Webpack/Vite build optimization
+- **Asset Management**: Efficient static asset handling
+- **Performance Monitoring**: Built-in performance tracking
+
+## Security Considerations
+- **XSS Prevention**: Safe rendering practices
+- **CSRF Protection**: Secure form handling
+- **Input Validation**: Client-side validation for user inputs
+- **Secure Navigation**: Protected routing and access control
+
+## Triggers
+- **API endpoint requests**
+
+
+## Requirements
+- ✅ **Complete MDC documentation**
+
+
+---
+**Merge Summary**: Combined 2 files into unified MDC configuration
+**Generated**: 2025-08-31T03:55:38.425055
+
+## 📄 Additional Content from ProfessionalDashboardApp.mdc
+# ProfessionalDashboardApp.mdc
+
+## Summary
+React-based professional trading dashboard application serving as the main UI entry point for ZmartBot, featuring routing, sidebar navigation, real-time components, and comprehensive trading interface with symbol management, chart visualization, and alert systems.
+
+## Purpose
+- Serves as the primary user interface for the ZmartBot trading platform
+- Provides centralized navigation and routing for all dashboard components
+- Implements real-time data display with live time updates and responsive design
+- Integrates trading components including symbol management, charts, and alerts
+- Manages application state and user interactions across the platform
+
+## Description
+- Serves as the primary user interface for the ZmartBot trading platform
+- Provides centralized n...
+
+## Location
+`/Users/dansidanutz/Desktop/ZmartBot/zmart-api/professional_dashboard/App.jsx`
+
+## Component Architecture
+
+### Main Application Structure
+```jsx
+function App() {
+  return (
+    <Router>
+      <DashboardContent />
+    </Router>
+  )
+}
+```
+
+### Dashboard Content Component
+```jsx
+function DashboardContent() {
+  const [currentPage, setCurrentPage] = useState('symbols')
+  const [currentTime, setCurrentTime] = useState(new Date())
+  const [logoLoaded, setLogoLoaded] = useState(true)
+  const navigate = useNavigate()
+```
+
+**State Management**:
+- **currentPage**: Active navigation state ('symbols' default)
+- **currentTime**: Real-time clock display
+- **logoLoaded**: Logo loading status with fallback handling
+- **navigate**: React Router navigation hook
+
+## Core Features
+
+### Real-time Clock System
+```jsx
+useEffect(() => {
+  const timer = setInterval(() => {
+    setCurrentTime(new Date())
+  }, 1000)
+  return () => clearInterval(timer)
+}, [])
+```
+
+**Features**:
+- **Live Updates**: Every second clock refresh
+- **Memory Management**: Proper cleanup with clearInterval
+- **Display Format**: Localized time and date formatting
+- **Performance**: Efficient timer management
+
+### Logo Management System
+```jsx
+const handleLogoClick = () => {
+  console.log('🔘 Logo clicked!')
+  setCurrentPage('symbols')
+  navigate('/')
+}
+
+const handleLogoError = (e) => {
+  console.error('❌ Logo failed to load:', e.target.src)
+  // Progressive fallback chain
+  if (e.target.src.includes('Zmart-Logo-New.jpg')) {
+    e.target.src = '/logoZmart.png'
+  } else if (e.target.src.includes('logoZmart.png')) {
+    e.target.src = '/z-logo.png'
+  } else {
+    setLogoLoaded(false) // Show fallback
+  }
+}
+```
+
+**Features**:
+- **Progressive Fallback**: 3-tier logo loading with fallbacks
+- **Error Recovery**: Automatic fallback to alternative logo files
+- **User Interaction**: Clickable logo for navigation to home
+- **Visual Feedback**: Hover effects with CSS transforms
+
+## Header Component Structure
+
+### Header Layout
+```jsx
+<header className="dashboard-header">
+  <div className="header-content">
+    <div className="header-left">
+      <div className="header-brand">
+        <img src="/Zmart-Logo-New.jpg" alt="Zmart Logo" className="logo" />
+        <div className="header-title">
+          <h1>Zmart Trading</h1>
+          <p className="header-subtitle">Complete Dashboard</p>
+        </div>
+      </div>
+    </div>
+    <div className="header-right">
+      <div className="time-display">
+        <div className="current-time">{currentTime.toLocaleTimeString()}</div>
+        <div className="current-date">{currentTime.toLocaleDateString()}</div>
+      </div>
+    </div>
+  </div>
+</header>
+```
+
+**Design Elements**:
+- **Brand Identity**: Logo with company branding and title
+- **Time Display**: Real-time clock in header right section
+- **Responsive Layout**: Flexible header layout for different screen sizes
+- **Visual Hierarchy**: Clear separation of brand and time information
+
+## Navigation and Routing
+
+### React Router Configuration
+```jsx
+<Routes>
+  <Route path="/" element={<SymbolsManager />} />
+  <Route path="/overview" element={<Overview />} />
+  <Route path="/symbol-chart/:symbol" element={<SymbolChart />} />
+  <Route path="/scoring" element={<Scoring />} />
+  <Route path="/cryptometer" element={<Scoring />} />
+  <Route path="/kingfisher" element={<Scoring />} />
+  <Route path="/riskmetric" element={<Scoring />} />
+  <Route path="/chart" element={<SymbolChart />} />
+  <Route path="/enhanced-alerts" element={<EnhancedAlertsCard />} />
+  <Route path="/alerts" element={<EnhancedAlertsSystem />} />
+</Routes>
+```
+
+**Route Structure**:
+- **Home Route**: SymbolsManager as default landing page
+- **Overview**: System overview and status dashboard
+- **Symbol Chart**: Dynamic chart with symbol parameter routing
+- **Scoring Systems**: Multiple scoring algorithms (Cryptometer, Kingfisher, RiskMetric)
+- **Alert Systems**: Enhanced alerts card and comprehensive alert system
+
+### Sidebar Navigation Integration
+```jsx
+<Sidebar currentPage={currentPage} setCurrentPage={setCurrentPage} />
+```
+
+**Navigation Features**:
+- **State Synchronization**: Sidebar reflects current page state
+- **Bidirectional Updates**: Page changes update sidebar and vice versa
+- **Consistent Navigation**: Unified navigation experience across components
+
+## Component Integration
+
+### Trading Components
+- **SymbolsManager**: Primary symbol management interface
+- **SymbolChart**: Interactive trading charts with symbol-specific data
+- **Scoring**: Multi-algorithm scoring systems for trading decisions
+- **Overview**: System status and performance overview
+
+### Alert Components
+- **EnhancedAlertsCard**: Compact alert display component
+- **EnhancedAlertsSystem**: Comprehensive alert management system
+
+### Navigation Components
+- **Sidebar**: Main navigation sidebar with page state management
+
+## Styling and User Experience
+
+### Logo Styling
+```jsx
+style={{ 
+  width: '60px', 
+  height: '60px', 
+  borderRadius: '12px',
+  cursor: 'pointer',
+  transition: 'transform 0.3s ease'
+}}
+onMouseEnter={(e) => e.target.style.transform = 'scale(1.1)'}
+onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
+```
+
+**UX Features**:
+- **Interactive Design**: Hover effects with smooth transitions
+- **Visual Feedback**: Scale transformation on hover
+- **Accessibility**: Proper cursor indication for clickable elements
+- **Responsive**: Consistent sizing across different devices
+
+### CSS Class Structure
+- **dashboard**: Main application container
+- **dashboard-header**: Header component styling
+- **header-content**: Header layout container
+- **header-brand**: Brand identity section
+- **header-title**: Title and subtitle styling
+- **time-display**: Clock display formatting
+- **dashboard-container**: Main content container
+- **dashboard-main**: Primary content area
+
+## Error Handling and Resilience
+
+### Logo Loading Resilience
+- **Primary Logo**: `/Zmart-Logo-New.jpg` (preferred)
+- **Fallback 1**: `/logoZmart.png` (secondary option)
+- **Fallback 2**: `/z-logo.png` (tertiary option)
+- **Final Fallback**: `logoLoaded=false` state for text fallback
+
+### Error Logging
+```jsx
+console.log('🔘 Logo clicked!')
+console.log('✅ Logo loaded successfully')
+console.error('❌ Logo failed to load:', e.target.src)
+```
+
+**Debugging Features**:
+- **User Interaction Logging**: Track logo click events
+- **Success Confirmation**: Log successful logo loads
+- **Error Tracking**: Detailed error logging with source path
+
+## Performance Considerations
+
+### Memory Management
+- **Timer Cleanup**: Proper useEffect cleanup for intervals
+- **Component Unmounting**: Automatic resource cleanup
+- **State Optimization**: Minimal state updates for performance
+
+### Real-time Updates
+- **Efficient Timers**: Single interval for time updates
+- **Localized Formatting**: Native browser time formatting
+- **Minimal Re-renders**: Optimized component update patterns
+
+## Integration Points
+
+### Backend Integration
+- **API Endpoints**: Integration with ZmartBot backend services
+- **Real-time Data**: WebSocket connections for live data
+- **Authentication**: User session and authentication management
+
+### State Management
+- **Local State**: Component-level state for UI interactions
+- **Navigation State**: URL-based routing state management
+- **Global State**: Shared state across components (via props/context)
+
+## Development and Deployment
+
+### Development Features
+- **Hot Reload**: React development server integration
+- **Error Boundaries**: Comprehensive error handling
+- **Developer Tools**: React DevTools compatibility
+
+### Production Readiness
+- **Build Optimization**: Webpack/Vite build optimization
+- **Asset Management**: Efficient static asset handling
+- **Performance Monitoring**: Built-in performance tracking
+
+## Security Considerations
+- **XSS Prevention**: Safe rendering practices
+- **CSRF Protection**: Secure form handling
+- **Input Validation**: Client-side validation for user inputs
+- **Secure Navigation**: Protected routing and access control
+
+## Triggers
+- **API endpoint requests**
+
+
+## Requirements
+- ✅ **Complete MDC documentation**
+
+
+---
+**Merge Summary**: Combined 2 files into unified MDC configuration
+**Generated**: 2025-08-31T09:30:55.361030
+
+## 📄 Additional Content from ProfessionalDashboardApp.mdc
+# ProfessionalDashboardApp.mdc
+
+## Summary
+React-based professional trading dashboard application serving as the main UI entry point for ZmartBot, featuring routing, sidebar navigation, real-time components, and comprehensive trading interface with symbol management, chart visualization, and alert systems.
+
+## Purpose
+- Serves as the primary user interface for the ZmartBot trading platform
+- Provides centralized navigation and routing for all dashboard components
+- Implements real-time data display with live time updates and responsive design
+- Integrates trading components including symbol management, charts, and alerts
+- Manages application state and user interactions across the platform
+
+## Description
+- Serves as the primary user interface for the ZmartBot trading platform
+- Provides centralized n...
+
+## Location
+`/Users/dansidanutz/Desktop/ZmartBot/zmart-api/professional_dashboard/App.jsx`
+
+## Component Architecture
+
+### Main Application Structure
+```jsx
+function App() {
+  return (
+    <Router>
+      <DashboardContent />
+    </Router>
+  )
+}
+```
+
+### Dashboard Content Component
+```jsx
+function DashboardContent() {
+  const [currentPage, setCurrentPage] = useState('symbols')
+  const [currentTime, setCurrentTime] = useState(new Date())
+  const [logoLoaded, setLogoLoaded] = useState(true)
+  const navigate = useNavigate()
+```
+
+**State Management**:
+- **currentPage**: Active navigation state ('symbols' default)
+- **currentTime**: Real-time clock display
+- **logoLoaded**: Logo loading status with fallback handling
+- **navigate**: React Router navigation hook
+
+## Core Features
+
+### Real-time Clock System
+```jsx
+useEffect(() => {
+  const timer = setInterval(() => {
+    setCurrentTime(new Date())
+  }, 1000)
+  return () => clearInterval(timer)
+}, [])
+```
+
+**Features**:
+- **Live Updates**: Every second clock refresh
+- **Memory Management**: Proper cleanup with clearInterval
+- **Display Format**: Localized time and date formatting
+- **Performance**: Efficient timer management
+
+### Logo Management System
+```jsx
+const handleLogoClick = () => {
+  console.log('🔘 Logo clicked!')
+  setCurrentPage('symbols')
+  navigate('/')
+}
+
+const handleLogoError = (e) => {
+  console.error('❌ Logo failed to load:', e.target.src)
+  // Progressive fallback chain
+  if (e.target.src.includes('Zmart-Logo-New.jpg')) {
+    e.target.src = '/logoZmart.png'
+  } else if (e.target.src.includes('logoZmart.png')) {
+    e.target.src = '/z-logo.png'
+  } else {
+    setLogoLoaded(false) // Show fallback
+  }
+}
+```
+
+**Features**:
+- **Progressive Fallback**: 3-tier logo loading with fallbacks
+- **Error Recovery**: Automatic fallback to alternative logo files
+- **User Interaction**: Clickable logo for navigation to home
+- **Visual Feedback**: Hover effects with CSS transforms
+
+## Header Component Structure
+
+### Header Layout
+```jsx
+<header className="dashboard-header">
+  <div className="header-content">
+    <div className="header-left">
+      <div className="header-brand">
+        <img src="/Zmart-Logo-New.jpg" alt="Zmart Logo" className="logo" />
+        <div className="header-title">
+          <h1>Zmart Trading</h1>
+          <p className="header-subtitle">Complete Dashboard</p>
+        </div>
+      </div>
+    </div>
+    <div className="header-right">
+      <div className="time-display">
+        <div className="current-time">{currentTime.toLocaleTimeString()}</div>
+        <div className="current-date">{currentTime.toLocaleDateString()}</div>
+      </div>
+    </div>
+  </div>
+</header>
+```
+
+**Design Elements**:
+- **Brand Identity**: Logo with company branding and title
+- **Time Display**: Real-time clock in header right section
+- **Responsive Layout**: Flexible header layout for different screen sizes
+- **Visual Hierarchy**: Clear separation of brand and time information
+
+## Navigation and Routing
+
+### React Router Configuration
+```jsx
+<Routes>
+  <Route path="/" element={<SymbolsManager />} />
+  <Route path="/overview" element={<Overview />} />
+  <Route path="/symbol-chart/:symbol" element={<SymbolChart />} />
+  <Route path="/scoring" element={<Scoring />} />
+  <Route path="/cryptometer" element={<Scoring />} />
+  <Route path="/kingfisher" element={<Scoring />} />
+  <Route path="/riskmetric" element={<Scoring />} />
+  <Route path="/chart" element={<SymbolChart />} />
+  <Route path="/enhanced-alerts" element={<EnhancedAlertsCard />} />
+  <Route path="/alerts" element={<EnhancedAlertsSystem />} />
+</Routes>
+```
+
+**Route Structure**:
+- **Home Route**: SymbolsManager as default landing page
+- **Overview**: System overview and status dashboard
+- **Symbol Chart**: Dynamic chart with symbol parameter routing
+- **Scoring Systems**: Multiple scoring algorithms (Cryptometer, Kingfisher, RiskMetric)
+- **Alert Systems**: Enhanced alerts card and comprehensive alert system
+
+### Sidebar Navigation Integration
+```jsx
+<Sidebar currentPage={currentPage} setCurrentPage={setCurrentPage} />
+```
+
+**Navigation Features**:
+- **State Synchronization**: Sidebar reflects current page state
+- **Bidirectional Updates**: Page changes update sidebar and vice versa
+- **Consistent Navigation**: Unified navigation experience across components
+
+## Component Integration
+
+### Trading Components
+- **SymbolsManager**: Primary symbol management interface
+- **SymbolChart**: Interactive trading charts with symbol-specific data
+- **Scoring**: Multi-algorithm scoring systems for trading decisions
+- **Overview**: System status and performance overview
+
+### Alert Components
+- **EnhancedAlertsCard**: Compact alert display component
+- **EnhancedAlertsSystem**: Comprehensive alert management system
+
+### Navigation Components
+- **Sidebar**: Main navigation sidebar with page state management
+
+## Styling and User Experience
+
+### Logo Styling
+```jsx
+style={{ 
+  width: '60px', 
+  height: '60px', 
+  borderRadius: '12px',
+  cursor: 'pointer',
+  transition: 'transform 0.3s ease'
+}}
+onMouseEnter={(e) => e.target.style.transform = 'scale(1.1)'}
+onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
+```
+
+**UX Features**:
+- **Interactive Design**: Hover effects with smooth transitions
+- **Visual Feedback**: Scale transformation on hover
+- **Accessibility**: Proper cursor indication for clickable elements
+- **Responsive**: Consistent sizing across different devices
+
+### CSS Class Structure
+- **dashboard**: Main application container
+- **dashboard-header**: Header component styling
+- **header-content**: Header layout container
+- **header-brand**: Brand identity section
+- **header-title**: Title and subtitle styling
+- **time-display**: Clock display formatting
+- **dashboard-container**: Main content container
+- **dashboard-main**: Primary content area
+
+## Error Handling and Resilience
+
+### Logo Loading Resilience
+- **Primary Logo**: `/Zmart-Logo-New.jpg` (preferred)
+- **Fallback 1**: `/logoZmart.png` (secondary option)
+- **Fallback 2**: `/z-logo.png` (tertiary option)
+- **Final Fallback**: `logoLoaded=false` state for text fallback
+
+### Error Logging
+```jsx
+console.log('🔘 Logo clicked!')
+console.log('✅ Logo loaded successfully')
+console.error('❌ Logo failed to load:', e.target.src)
+```
+
+**Debugging Features**:
+- **User Interaction Logging**: Track logo click events
+- **Success Confirmation**: Log successful logo loads
+- **Error Tracking**: Detailed error logging with source path
+
+## Performance Considerations
+
+### Memory Management
+- **Timer Cleanup**: Proper useEffect cleanup for intervals
+- **Component Unmounting**: Automatic resource cleanup
+- **State Optimization**: Minimal state updates for performance
+
+### Real-time Updates
+- **Efficient Timers**: Single interval for time updates
+- **Localized Formatting**: Native browser time formatting
+- **Minimal Re-renders**: Optimized component update patterns
+
+## Integration Points
+
+### Backend Integration
+- **API Endpoints**: Integration with ZmartBot backend services
+- **Real-time Data**: WebSocket connections for live data
+- **Authentication**: User session and authentication management
+
+### State Management
+- **Local State**: Component-level state for UI interactions
+- **Navigation State**: URL-based routing state management
+- **Global State**: Shared state across components (via props/context)
+
+## Development and Deployment
+
+### Development Features
+- **Hot Reload**: React development server integration
+- **Error Boundaries**: Comprehensive error handling
+- **Developer Tools**: React DevTools compatibility
+
+### Production Readiness
+- **Build Optimization**: Webpack/Vite build optimization
+- **Asset Management**: Efficient static asset handling
+- **Performance Monitoring**: Built-in performance tracking
+
+## Security Considerations
+- **XSS Prevention**: Safe rendering practices
+- **CSRF Protection**: Secure form handling
+- **Input Validation**: Client-side validation for user inputs
+- **Secure Navigation**: Protected routing and access control
+
+## Triggers
+- **API endpoint requests**
+
+
+## Requirements
+- ✅ **Complete MDC documentation**
+
+
+---
+**Merge Summary**: Combined 2 files into unified MDC configuration
+**Generated**: 2025-08-31T14:25:51.262388
+
+## 📄 Additional Content from ProfessionalDashboardApp.mdc
+# ProfessionalDashboardApp.mdc
+
+## Summary
+React-based professional trading dashboard application serving as the main UI entry point for ZmartBot, featuring routing, sidebar navigation, real-time components, and comprehensive trading interface with symbol management, chart visualization, and alert systems.
+
+## Purpose
+- Serves as the primary user interface for the ZmartBot trading platform
+- Provides centralized navigation and routing for all dashboard components
+- Implements real-time data display with live time updates and responsive design
+- Integrates trading components including symbol management, charts, and alerts
+- Manages application state and user interactions across the platform
+
+## Description
+- Serves as the primary user interface for the ZmartBot trading platform
+- Provides centralized n...
+
+## Location
+`/Users/dansidanutz/Desktop/ZmartBot/zmart-api/professional_dashboard/App.jsx`
+
+## Component Architecture
+
+### Main Application Structure
+```jsx
+function App() {
+  return (
+    <Router>
+      <DashboardContent />
+    </Router>
+  )
+}
+```
+
+### Dashboard Content Component
+```jsx
+function DashboardContent() {
+  const [currentPage, setCurrentPage] = useState('symbols')
+  const [currentTime, setCurrentTime] = useState(new Date())
+  const [logoLoaded, setLogoLoaded] = useState(true)
+  const navigate = useNavigate()
+```
+
+**State Management**:
+- **currentPage**: Active navigation state ('symbols' default)
+- **currentTime**: Real-time clock display
+- **logoLoaded**: Logo loading status with fallback handling
+- **navigate**: React Router navigation hook
+
+## Core Features
+
+### Real-time Clock System
+```jsx
+useEffect(() => {
+  const timer = setInterval(() => {
+    setCurrentTime(new Date())
+  }, 1000)
+  return () => clearInterval(timer)
+}, [])
+```
+
+**Features**:
+- **Live Updates**: Every second clock refresh
+- **Memory Management**: Proper cleanup with clearInterval
+- **Display Format**: Localized time and date formatting
+- **Performance**: Efficient timer management
+
+### Logo Management System
+```jsx
+const handleLogoClick = () => {
+  console.log('🔘 Logo clicked!')
+  setCurrentPage('symbols')
+  navigate('/')
+}
+
+const handleLogoError = (e) => {
+  console.error('❌ Logo failed to load:', e.target.src)
+  // Progressive fallback chain
+  if (e.target.src.includes('Zmart-Logo-New.jpg')) {
+    e.target.src = '/logoZmart.png'
+  } else if (e.target.src.includes('logoZmart.png')) {
+    e.target.src = '/z-logo.png'
+  } else {
+    setLogoLoaded(false) // Show fallback
+  }
+}
+```
+
+**Features**:
+- **Progressive Fallback**: 3-tier logo loading with fallbacks
+- **Error Recovery**: Automatic fallback to alternative logo files
+- **User Interaction**: Clickable logo for navigation to home
+- **Visual Feedback**: Hover effects with CSS transforms
+
+## Header Component Structure
+
+### Header Layout
+```jsx
+<header className="dashboard-header">
+  <div className="header-content">
+    <div className="header-left">
+      <div className="header-brand">
+        <img src="/Zmart-Logo-New.jpg" alt="Zmart Logo" className="logo" />
+        <div className="header-title">
+          <h1>Zmart Trading</h1>
+          <p className="header-subtitle">Complete Dashboard</p>
+        </div>
+      </div>
+    </div>
+    <div className="header-right">
+      <div className="time-display">
+        <div className="current-time">{currentTime.toLocaleTimeString()}</div>
+        <div className="current-date">{currentTime.toLocaleDateString()}</div>
+      </div>
+    </div>
+  </div>
+</header>
+```
+
+**Design Elements**:
+- **Brand Identity**: Logo with company branding and title
+- **Time Display**: Real-time clock in header right section
+- **Responsive Layout**: Flexible header layout for different screen sizes
+- **Visual Hierarchy**: Clear separation of brand and time information
+
+## Navigation and Routing
+
+### React Router Configuration
+```jsx
+<Routes>
+  <Route path="/" element={<SymbolsManager />} />
+  <Route path="/overview" element={<Overview />} />
+  <Route path="/symbol-chart/:symbol" element={<SymbolChart />} />
+  <Route path="/scoring" element={<Scoring />} />
+  <Route path="/cryptometer" element={<Scoring />} />
+  <Route path="/kingfisher" element={<Scoring />} />
+  <Route path="/riskmetric" element={<Scoring />} />
+  <Route path="/chart" element={<SymbolChart />} />
+  <Route path="/enhanced-alerts" element={<EnhancedAlertsCard />} />
+  <Route path="/alerts" element={<EnhancedAlertsSystem />} />
+</Routes>
+```
+
+**Route Structure**:
+- **Home Route**: SymbolsManager as default landing page
+- **Overview**: System overview and status dashboard
+- **Symbol Chart**: Dynamic chart with symbol parameter routing
+- **Scoring Systems**: Multiple scoring algorithms (Cryptometer, Kingfisher, RiskMetric)
+- **Alert Systems**: Enhanced alerts card and comprehensive alert system
+
+### Sidebar Navigation Integration
+```jsx
+<Sidebar currentPage={currentPage} setCurrentPage={setCurrentPage} />
+```
+
+**Navigation Features**:
+- **State Synchronization**: Sidebar reflects current page state
+- **Bidirectional Updates**: Page changes update sidebar and vice versa
+- **Consistent Navigation**: Unified navigation experience across components
+
+## Component Integration
+
+### Trading Components
+- **SymbolsManager**: Primary symbol management interface
+- **SymbolChart**: Interactive trading charts with symbol-specific data
+- **Scoring**: Multi-algorithm scoring systems for trading decisions
+- **Overview**: System status and performance overview
+
+### Alert Components
+- **EnhancedAlertsCard**: Compact alert display component
+- **EnhancedAlertsSystem**: Comprehensive alert management system
+
+### Navigation Components
+- **Sidebar**: Main navigation sidebar with page state management
+
+## Styling and User Experience
+
+### Logo Styling
+```jsx
+style={{ 
+  width: '60px', 
+  height: '60px', 
+  borderRadius: '12px',
+  cursor: 'pointer',
+  transition: 'transform 0.3s ease'
+}}
+onMouseEnter={(e) => e.target.style.transform = 'scale(1.1)'}
+onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
+```
+
+**UX Features**:
+- **Interactive Design**: Hover effects with smooth transitions
+- **Visual Feedback**: Scale transformation on hover
+- **Accessibility**: Proper cursor indication for clickable elements
+- **Responsive**: Consistent sizing across different devices
+
+### CSS Class Structure
+- **dashboard**: Main application container
+- **dashboard-header**: Header component styling
+- **header-content**: Header layout container
+- **header-brand**: Brand identity section
+- **header-title**: Title and subtitle styling
+- **time-display**: Clock display formatting
+- **dashboard-container**: Main content container
+- **dashboard-main**: Primary content area
+
+## Error Handling and Resilience
+
+### Logo Loading Resilience
+- **Primary Logo**: `/Zmart-Logo-New.jpg` (preferred)
+- **Fallback 1**: `/logoZmart.png` (secondary option)
+- **Fallback 2**: `/z-logo.png` (tertiary option)
+- **Final Fallback**: `logoLoaded=false` state for text fallback
+
+### Error Logging
+```jsx
+console.log('🔘 Logo clicked!')
+console.log('✅ Logo loaded successfully')
+console.error('❌ Logo failed to load:', e.target.src)
+```
+
+**Debugging Features**:
+- **User Interaction Logging**: Track logo click events
+- **Success Confirmation**: Log successful logo loads
+- **Error Tracking**: Detailed error logging with source path
+
+## Performance Considerations
+
+### Memory Management
+- **Timer Cleanup**: Proper useEffect cleanup for intervals
+- **Component Unmounting**: Automatic resource cleanup
+- **State Optimization**: Minimal state updates for performance
+
+### Real-time Updates
+- **Efficient Timers**: Single interval for time updates
+- **Localized Formatting**: Native browser time formatting
+- **Minimal Re-renders**: Optimized component update patterns
+
+## Integration Points
+
+### Backend Integration
+- **API Endpoints**: Integration with ZmartBot backend services
+- **Real-time Data**: WebSocket connections for live data
+- **Authentication**: User session and authentication management
+
+### State Management
+- **Local State**: Component-level state for UI interactions
+- **Navigation State**: URL-based routing state management
+- **Global State**: Shared state across components (via props/context)
+
+## Development and Deployment
+
+### Development Features
+- **Hot Reload**: React development server integration
+- **Error Boundaries**: Comprehensive error handling
+- **Developer Tools**: React DevTools compatibility
+
+### Production Readiness
+- **Build Optimization**: Webpack/Vite build optimization
+- **Asset Management**: Efficient static asset handling
+- **Performance Monitoring**: Built-in performance tracking
+
+## Security Considerations
+- **XSS Prevention**: Safe rendering practices
+- **CSRF Protection**: Secure form handling
+- **Input Validation**: Client-side validation for user inputs
+- **Secure Navigation**: Protected routing and access control
+
+## Triggers
+- **API endpoint requests**
+
+
+## Requirements
+- ✅ **Complete MDC documentation**
+
+
+---
+**Merge Summary**: Combined 2 files into unified MDC configuration
+**Generated**: 2025-08-31T20:10:54.480571
+
+## 📄 Additional Content from ProfessionalDashboardApp.mdc
+# ProfessionalDashboardApp.mdc
+
+## Summary
+React-based professional trading dashboard application serving as the main UI entry point for ZmartBot, featuring routing, sidebar navigation, real-time components, and comprehensive trading interface with symbol management, chart visualization, and alert systems.
+
+## Purpose
+- Serves as the primary user interface for the ZmartBot trading platform
+- Provides centralized navigation and routing for all dashboard components
+- Implements real-time data display with live time updates and responsive design
+- Integrates trading components including symbol management, charts, and alerts
+- Manages application state and user interactions across the platform
+
+## Description
+- Serves as the primary user interface for the ZmartBot trading platform
+- Provides centralized n...
+
+## Location
+`/Users/dansidanutz/Desktop/ZmartBot/zmart-api/professional_dashboard/App.jsx`
+
+## Component Architecture
+
+### Main Application Structure
+```jsx
+function App() {
+  return (
+    <Router>
+      <DashboardContent />
+    </Router>
+  )
+}
+```
+
+### Dashboard Content Component
+```jsx
+function DashboardContent() {
+  const [currentPage, setCurrentPage] = useState('symbols')
+  const [currentTime, setCurrentTime] = useState(new Date())
+  const [logoLoaded, setLogoLoaded] = useState(true)
+  const navigate = useNavigate()
+```
+
+**State Management**:
+- **currentPage**: Active navigation state ('symbols' default)
+- **currentTime**: Real-time clock display
+- **logoLoaded**: Logo loading status with fallback handling
+- **navigate**: React Router navigation hook
+
+## Core Features
+
+### Real-time Clock System
+```jsx
+useEffect(() => {
+  const timer = setInterval(() => {
+    setCurrentTime(new Date())
+  }, 1000)
+  return () => clearInterval(timer)
+}, [])
+```
+
+**Features**:
+- **Live Updates**: Every second clock refresh
+- **Memory Management**: Proper cleanup with clearInterval
+- **Display Format**: Localized time and date formatting
+- **Performance**: Efficient timer management
+
+### Logo Management System
+```jsx
+const handleLogoClick = () => {
+  console.log('🔘 Logo clicked!')
+  setCurrentPage('symbols')
+  navigate('/')
+}
+
+const handleLogoError = (e) => {
+  console.error('❌ Logo failed to load:', e.target.src)
+  // Progressive fallback chain
+  if (e.target.src.includes('Zmart-Logo-New.jpg')) {
+    e.target.src = '/logoZmart.png'
+  } else if (e.target.src.includes('logoZmart.png')) {
+    e.target.src = '/z-logo.png'
+  } else {
+    setLogoLoaded(false) // Show fallback
+  }
+}
+```
+
+**Features**:
+- **Progressive Fallback**: 3-tier logo loading with fallbacks
+- **Error Recovery**: Automatic fallback to alternative logo files
+- **User Interaction**: Clickable logo for navigation to home
+- **Visual Feedback**: Hover effects with CSS transforms
+
+## Header Component Structure
+
+### Header Layout
+```jsx
+<header className="dashboard-header">
+  <div className="header-content">
+    <div className="header-left">
+      <div className="header-brand">
+        <img src="/Zmart-Logo-New.jpg" alt="Zmart Logo" className="logo" />
+        <div className="header-title">
+          <h1>Zmart Trading</h1>
+          <p className="header-subtitle">Complete Dashboard</p>
+        </div>
+      </div>
+    </div>
+    <div className="header-right">
+      <div className="time-display">
+        <div className="current-time">{currentTime.toLocaleTimeString()}</div>
+        <div className="current-date">{currentTime.toLocaleDateString()}</div>
+      </div>
+    </div>
+  </div>
+</header>
+```
+
+**Design Elements**:
+- **Brand Identity**: Logo with company branding and title
+- **Time Display**: Real-time clock in header right section
+- **Responsive Layout**: Flexible header layout for different screen sizes
+- **Visual Hierarchy**: Clear separation of brand and time information
+
+## Navigation and Routing
+
+### React Router Configuration
+```jsx
+<Routes>
+  <Route path="/" element={<SymbolsManager />} />
+  <Route path="/overview" element={<Overview />} />
+  <Route path="/symbol-chart/:symbol" element={<SymbolChart />} />
+  <Route path="/scoring" element={<Scoring />} />
+  <Route path="/cryptometer" element={<Scoring />} />
+  <Route path="/kingfisher" element={<Scoring />} />
+  <Route path="/riskmetric" element={<Scoring />} />
+  <Route path="/chart" element={<SymbolChart />} />
+  <Route path="/enhanced-alerts" element={<EnhancedAlertsCard />} />
+  <Route path="/alerts" element={<EnhancedAlertsSystem />} />
+</Routes>
+```
+
+**Route Structure**:
+- **Home Route**: SymbolsManager as default landing page
+- **Overview**: System overview and status dashboard
+- **Symbol Chart**: Dynamic chart with symbol parameter routing
+- **Scoring Systems**: Multiple scoring algorithms (Cryptometer, Kingfisher, RiskMetric)
+- **Alert Systems**: Enhanced alerts card and comprehensive alert system
+
+### Sidebar Navigation Integration
+```jsx
+<Sidebar currentPage={currentPage} setCurrentPage={setCurrentPage} />
+```
+
+**Navigation Features**:
+- **State Synchronization**: Sidebar reflects current page state
+- **Bidirectional Updates**: Page changes update sidebar and vice versa
+- **Consistent Navigation**: Unified navigation experience across components
+
+## Component Integration
+
+### Trading Components
+- **SymbolsManager**: Primary symbol management interface
+- **SymbolChart**: Interactive trading charts with symbol-specific data
+- **Scoring**: Multi-algorithm scoring systems for trading decisions
+- **Overview**: System status and performance overview
+
+### Alert Components
+- **EnhancedAlertsCard**: Compact alert display component
+- **EnhancedAlertsSystem**: Comprehensive alert management system
+
+### Navigation Components
+- **Sidebar**: Main navigation sidebar with page state management
+
+## Styling and User Experience
+
+### Logo Styling
+```jsx
+style={{ 
+  width: '60px', 
+  height: '60px', 
+  borderRadius: '12px',
+  cursor: 'pointer',
+  transition: 'transform 0.3s ease'
+}}
+onMouseEnter={(e) => e.target.style.transform = 'scale(1.1)'}
+onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
+```
+
+**UX Features**:
+- **Interactive Design**: Hover effects with smooth transitions
+- **Visual Feedback**: Scale transformation on hover
+- **Accessibility**: Proper cursor indication for clickable elements
+- **Responsive**: Consistent sizing across different devices
+
+### CSS Class Structure
+- **dashboard**: Main application container
+- **dashboard-header**: Header component styling
+- **header-content**: Header layout container
+- **header-brand**: Brand identity section
+- **header-title**: Title and subtitle styling
+- **time-display**: Clock display formatting
+- **dashboard-container**: Main content container
+- **dashboard-main**: Primary content area
+
+## Error Handling and Resilience
+
+### Logo Loading Resilience
+- **Primary Logo**: `/Zmart-Logo-New.jpg` (preferred)
+- **Fallback 1**: `/logoZmart.png` (secondary option)
+- **Fallback 2**: `/z-logo.png` (tertiary option)
+- **Final Fallback**: `logoLoaded=false` state for text fallback
+
+### Error Logging
+```jsx
+console.log('🔘 Logo clicked!')
+console.log('✅ Logo loaded successfully')
+console.error('❌ Logo failed to load:', e.target.src)
+```
+
+**Debugging Features**:
+- **User Interaction Logging**: Track logo click events
+- **Success Confirmation**: Log successful logo loads
+- **Error Tracking**: Detailed error logging with source path
+
+## Performance Considerations
+
+### Memory Management
+- **Timer Cleanup**: Proper useEffect cleanup for intervals
+- **Component Unmounting**: Automatic resource cleanup
+- **State Optimization**: Minimal state updates for performance
+
+### Real-time Updates
+- **Efficient Timers**: Single interval for time updates
+- **Localized Formatting**: Native browser time formatting
+- **Minimal Re-renders**: Optimized component update patterns
+
+## Integration Points
+
+### Backend Integration
+- **API Endpoints**: Integration with ZmartBot backend services
+- **Real-time Data**: WebSocket connections for live data
+- **Authentication**: User session and authentication management
+
+### State Management
+- **Local State**: Component-level state for UI interactions
+- **Navigation State**: URL-based routing state management
+- **Global State**: Shared state across components (via props/context)
+
+## Development and Deployment
+
+### Development Features
+- **Hot Reload**: React development server integration
+- **Error Boundaries**: Comprehensive error handling
+- **Developer Tools**: React DevTools compatibility
+
+### Production Readiness
+- **Build Optimization**: Webpack/Vite build optimization
+- **Asset Management**: Efficient static asset handling
+- **Performance Monitoring**: Built-in performance tracking
+
+## Security Considerations
+- **XSS Prevention**: Safe rendering practices
+- **CSRF Protection**: Secure form handling
+- **Input Validation**: Client-side validation for user inputs
+- **Secure Navigation**: Protected routing and access control
+
+## Triggers
+- **API endpoint requests**
+
+
+## Requirements
+- ✅ **Complete MDC documentation**
+
+
+---
+**Merge Summary**: Combined 2 files into unified MDC configuration
+**Generated**: 2025-09-01T00:11:21.349380

@@ -1,0 +1,131 @@
+# 📈 Health Check Service - System Health Monitoring
+
+## 🤖 MCP (Model Context Protocol) Integration
+
+### **MCP Server Pairing**
+**Status**: ✅ **ACTIVE** - Health Check Service MCP Integration
+**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
+**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
+**Integration Type**: Multi-MCP Service Integration
+
+### **MCP Integration Features**
+- **Claude Code Integration**: AI-powered health monitoring and analysis
+- **Memory Gateway**: Persistent health monitoring state and metrics metadata
+- **UI Automation**: Automated health monitoring and alerting
+- **Figma Integration**: Health monitoring dashboard design and UI management
+- **Supabase Integration**: Cloud-based health monitoring analytics and reporting
+
+### **MCP Integration Benefits**
+- **Enhanced Monitoring**: AI-powered health analysis and optimization
+- **Persistent State**: Health monitoring history and metrics preservation
+- **Automated Alerting**: Real-time health monitoring and alert management
+- **Visual Design**: Professional health monitoring dashboard and UI design
+- **Cloud Analytics**: Advanced health monitoring analytics and reporting
+
+### **MCP Usage Examples**
+```bash
+# Health check via MCP
+curl -X GET "http://127.0.0.1:8000/health"
+
+# Health monitoring via MCP
+curl -X POST "http://127.0.0.1:8000/monitor" \
+  -H "Content-Type: application/json" \
+  -d '{"service": "all", "action": "check"}'
+```
+
+### **MCP Status**
+- **Claude Code**: ✅ Active - AI-powered health monitoring
+- **ByteRover**: ✅ Active - Health monitoring state persistence
+- **UI TARS**: ✅ Active - Health monitoring automation
+- **Figma**: ✅ Active - Health monitoring dashboard design
+- **Supabase**: ✅ Active - Health monitoring cloud analytics
+
+---
+
+## Purpose
+Comprehensive health monitoring service for ZmartBot system, providing real-time health checks, performance monitoring, and automated alerting.
+
+## Description
+Comprehensive health monitoring service for ZmartBot system, providing real-time health checks, p...
+
+## Critical Functions
+- **Service Health Monitoring**: Real-time health status of all services
+- **Performance Metrics**: CPU, memory, and resource usage tracking
+- **Error Detection**: Automatic error detection and alerting
+- **Response Time Monitoring**: Service response time tracking
+- **Availability Tracking**: Service availability and uptime monitoring
+- **Automated Recovery**: Automatic service recovery and restart
+
+## Monitoring Components
+- **Backend API**: Port 8000 health monitoring
+- **Frontend Dashboard**: Port 3400 health monitoring
+- **Database Services**: Database connection and performance monitoring
+- **External APIs**: External API health and response monitoring
+- **System Resources**: CPU, memory, and disk usage monitoring
+
+## Key Features
+- **Real-time Monitoring**: Continuous health status monitoring
+- **Performance Tracking**: Comprehensive performance metrics
+- **Error Alerting**: Immediate error notification and alerting
+- **Automated Recovery**: Self-healing capabilities for failed services
+- **Historical Data**: Health and performance historical data
+- **Customizable Alerts**: Configurable alert thresholds and notifications
+
+## Health Checks
+- **Service Availability**: Service up/down status monitoring
+- **Response Time**: Service response time measurement
+- **Error Rate**: Error rate tracking and analysis
+- **Resource Usage**: CPU, memory, and disk usage monitoring
+- **Database Health**: Database connection and performance health
+- **API Health**: External API health and availability
+
+## Performance Metrics
+- **Response Time**: Average, min, max response times
+- **Throughput**: Requests per second and data throughput
+- **Error Rate**: Error percentage and error types
+- **Resource Usage**: CPU, memory, disk usage percentages
+- **Availability**: Service uptime and availability percentages
+- **Latency**: Network and service latency measurements
+
+## Alerting System
+- **Threshold Alerts**: Configurable threshold-based alerting
+- **Error Alerts**: Immediate error notification
+- **Performance Alerts**: Performance degradation alerts
+- **Resource Alerts**: Resource usage alerts
+- **Custom Alerts**: Custom alert conditions and notifications
+
+## Integration
+- **Orchestration Agent**: Health data for orchestration decisions
+- **Alert System**: Health-based alerting and notifications
+- **Dashboard**: Health status display and visualization
+- **Logging System**: Health data logging and analysis
+- **Recovery System**: Automated recovery and restart procedures
+
+## Configuration
+- **Health Check Intervals**: Configurable check frequencies
+- **Alert Thresholds**: Customizable alert thresholds
+- **Recovery Settings**: Recovery procedure configurations
+- **Monitoring Scope**: Configurable monitoring scope
+- **Notification Settings**: Alert notification configurations
+
+## Status
+✅ **ACTIVE** - Core health monitoring service with comprehensive system oversight
+
+description:
+globs:
+alwaysApply: true
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Database connectivity**
+- ✅ **Health endpoint implementation**
+- ✅ **Master Orchestration integration**
+
+
+---
+
+
+## Triggers
+- **API endpoint requests**
+- **Database events**
+- **Health check requests**

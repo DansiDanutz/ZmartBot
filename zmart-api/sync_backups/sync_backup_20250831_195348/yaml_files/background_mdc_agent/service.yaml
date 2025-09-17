@@ -1,0 +1,30 @@
+service_name: background-mdc-agent
+service_type: BACKEND
+version: 1.0.0
+owner: zmartbot
+description: Background MDC agent - needs ZMBT passport
+port: 8091
+passport_id: ZMBT-SRV-20250828-4CAB2B
+status: ACTIVE
+registered_at: '2025-08-31'
+health_url: http://localhost:8091/health
+start_cmd: python3 background_mdc_agent_server.py --port 8091
+stop_cmd: pkill -f 'background_mdc_agent_server.py'
+dependencies:
+- zmart-api
+tags:
+- BACKEND
+- background-mdc-agent
+lifecycle:
+  startup_grace_seconds: 30
+  shutdown_timeout_seconds: 15
+  health_check_interval: 30
+monitoring:
+  metrics_endpoint: /metrics
+  logs_path: logs/background-mdc-agent.log
+  dashboard_url: http://localhost:8091/dashboard
+security:
+  cors_enabled: true
+  token_required: false
+  scopes:
+  - BACKEND

@@ -1,0 +1,19 @@
+endpoints:
+  health: http://127.0.0.1:8098/health
+  metrics: http://127.0.0.1:8098/metrics
+  ready: http://127.0.0.1:8098/ready
+lifecycle:
+  health_check: curl -f http://127.0.0.1:8098/health
+  start_command: null
+  stop_command: pkill -f kingfisher-ai
+metadata:
+  description: Service kingfisher-ai
+  owner: zmartbot
+  version: 1.0.0
+service:
+  level: 3
+  name: kingfisher-ai
+  passport: ZMBT-AGT-20250831-051C78
+  port: 8098
+  status: ACTIVE
+  type: backend

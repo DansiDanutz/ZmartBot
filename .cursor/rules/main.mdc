@@ -1,3 +1,8 @@
+# main.mdc
+> Type: service | Version: 1.0.0 | Owner: zmartbot | Status: Discovery | Level: 1
+Core service component of the ZmartBot ecosystem providing essential functionality.
+
+
 
 
 ## ZmartBot Orchestration Entry Point
@@ -79,4 +84,16 @@ This master file serves as the central reference for all ZmartBot system operati
 description:
 globs:
 alwaysApply: true
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Database connectivity**
+- ✅ **Complete MDC documentation**
+- ✅ **Master Orchestration integration**
+
+
 ---
+
+## Triggers
+- **API endpoint requests**
+- **Database events**

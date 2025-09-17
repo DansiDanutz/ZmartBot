@@ -1,0 +1,30 @@
+service_name: registration-service-py
+service_type: backend
+version: 1.0.0
+owner: zmartbot
+description: Registration service
+port: 8621
+passport_id: ZMBT-REG-20250831-N5O6P7
+status: ACTIVE
+registered_at: '2025-08-31'
+health_url: http://localhost:8621/health
+start_cmd: python3 registration_service_py_server.py --port 8621
+stop_cmd: pkill -f 'registration_service_py_server.py'
+dependencies:
+- zmart-api
+tags:
+- backend
+- registration-service-py
+lifecycle:
+  startup_grace_seconds: 30
+  shutdown_timeout_seconds: 15
+  health_check_interval: 30
+monitoring:
+  metrics_endpoint: /metrics
+  logs_path: logs/registration-service-py.log
+  dashboard_url: http://localhost:8621/dashboard
+security:
+  cors_enabled: true
+  token_required: false
+  scopes:
+  - backend

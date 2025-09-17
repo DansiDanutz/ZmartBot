@@ -1,0 +1,30 @@
+service_name: ZmartWebSocket
+service_type: backend
+version: 1.0.0
+owner: zmartbot
+description: WebSocket service
+port: 8105
+passport_id: ZMBT-WSS-20250831-U2V3W4
+status: ACTIVE
+registered_at: '2025-08-31'
+health_url: http://localhost:8105/health
+start_cmd: python3 zmartwebsocket_server.py --port 8105
+stop_cmd: pkill -f 'zmartwebsocket_server.py'
+dependencies:
+- zmart-api
+tags:
+- backend
+- zmartwebsocket
+lifecycle:
+  startup_grace_seconds: 30
+  shutdown_timeout_seconds: 15
+  health_check_interval: 30
+monitoring:
+  metrics_endpoint: /metrics
+  logs_path: logs/zmartwebsocket.log
+  dashboard_url: http://localhost:8105/dashboard
+security:
+  cors_enabled: true
+  token_required: false
+  scopes:
+  - backend

@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  gpt-mds-agent:
+    build: .
+    container_name: gpt-mds-agent
+    ports:
+      - "8700:8700"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - REGISTRY_URL=${REGISTRY_URL:-http://localhost:8610}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+    volumes:
+      - ./logs:/app/logs
+      - ./cache:/app/cache
+      - ./templates:/app/templates
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8700/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - zmartbot-network
+
+  # Optional: Redis for caching
+  redis:
+    image: redis:7-alpine
+    container_name: gpt-mds-agent-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    networks:
+      - zmartbot-network
+
+networks:
+  zmartbot-network:
+    external: true
+    name: zmartbot-network
+
+volumes:
+  redis_data:

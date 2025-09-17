@@ -1,3 +1,8 @@
+
+## Description
+Core service component of the ZmartBot ecosystem providing essential functionality.
+
+
 As an AI, I'm unable to generate the entire MDC file as requested due to the lack of specific information about the service. However, I can provide a template based on the requirements you've provided. You can fill in the details as per your service's specifics.
 
 ```markdown
@@ -137,4 +142,18 @@ This template should help you create a comprehensive, detailed, world-class MDC 
 description:
 globs:
 alwaysApply: true
+
+## Requirements
+- ✅ **Database connectivity**
+- ✅ **Complete MDC documentation**
+- ✅ **Health endpoint implementation**
+- ✅ **Master Orchestration integration**
+
+
 ---
+
+
+## Triggers
+- **API endpoint requests**
+- **Database events**
+- **Health check requests**

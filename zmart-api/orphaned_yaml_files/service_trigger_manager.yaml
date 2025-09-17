@@ -1,0 +1,30 @@
+service_name: trigger_manager
+service_type: orchestration
+version: 1.0.0
+owner: zmartbot
+description: Level 2/3 service trigger management (corrected passport)
+port: 8890
+passport_id: ZMBT-ORC-20250831-T2U3V4
+status: ACTIVE
+registered_at: '2025-08-31'
+health_url: http://localhost:8890/health
+start_cmd: python3 trigger_manager_server.py --port 8890
+stop_cmd: pkill -f 'trigger_manager_server.py'
+dependencies:
+- zmart-api
+tags:
+- orchestration
+- trigger_manager
+lifecycle:
+  startup_grace_seconds: 30
+  shutdown_timeout_seconds: 15
+  health_check_interval: 30
+monitoring:
+  metrics_endpoint: /metrics
+  logs_path: logs/trigger_manager.log
+  dashboard_url: http://localhost:8890/dashboard
+security:
+  cors_enabled: true
+  token_required: false
+  scopes:
+  - orchestration

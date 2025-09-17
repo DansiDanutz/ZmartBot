@@ -1,0 +1,32 @@
+{
+  "symbol": "BTC",
+  "symbol_name": "Bitcoin",
+  "birth_date": "2009-01-03",
+  "current_date": "2025-09-14",
+  "total_days": 5385,
+  "risk_bands": {
+    "0.0-0.1": 175,
+    "0.1-0.2": 550,
+    "0.2-0.3": 680,
+    "0.3-0.4": 850,
+    "0.4-0.5": 1100,
+    "0.5-0.6": 1180,
+    "0.6-0.7": 700,
+    "0.7-0.8": 380,
+    "0.8-0.9": 200,
+    "0.9-1.0": 85
+  },
+  "current_risk_band": "0.5-0.6",
+  "confidence_level": 9,
+  "actual_age_days": 6098,
+  "0.0-0.1_percentage": 3.25,
+  "0.1-0.2_percentage": 10.21,
+  "0.2-0.3_percentage": 12.63,
+  "0.3-0.4_percentage": 15.78,
+  "0.4-0.5_percentage": 20.43,
+  "0.5-0.6_percentage": 21.91,
+  "0.6-0.7_percentage": 13.0,
+  "0.7-0.8_percentage": 7.06,
+  "0.8-0.9_percentage": 3.71,
+  "0.9-1.0_percentage": 1.58
+}

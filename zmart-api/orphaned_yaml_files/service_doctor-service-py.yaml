@@ -1,0 +1,30 @@
+service_name: doctor-service-py
+service_type: backend
+version: 1.0.0
+owner: zmartbot
+description: Doctor service (services)
+port: 8701
+passport_id: ZMBT-DCS-20250831-H8I9J1
+status: ACTIVE
+registered_at: '2025-08-31'
+health_url: http://localhost:8701/health
+start_cmd: python3 doctor_service_py_server.py --port 8701
+stop_cmd: pkill -f 'doctor_service_py_server.py'
+dependencies:
+- zmart-api
+tags:
+- backend
+- doctor-service-py
+lifecycle:
+  startup_grace_seconds: 30
+  shutdown_timeout_seconds: 15
+  health_check_interval: 30
+monitoring:
+  metrics_endpoint: /metrics
+  logs_path: logs/doctor-service-py.log
+  dashboard_url: http://localhost:8701/dashboard
+security:
+  cors_enabled: true
+  token_required: false
+  scopes:
+  - backend

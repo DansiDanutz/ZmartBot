@@ -1,0 +1,16 @@
+service_name: professional-dashboard
+service_type: frontend
+port: 3434
+description: "Professional trading dashboard frontend"
+status: ACTIVE
+passport_id: ZMBT-FRE-20250828-2CF1D7
+registered_at: "2025-08-28"
+health_url: "http://localhost:3434/health"
+start_cmd: "python3 professional_dashboard_server.py --port 3434"
+stop_cmd: "pkill -f 'professional_dashboard_server.py'"
+dependencies:
+  - zmart-api
+tags:
+  - frontend
+  - dashboard
+  - trading

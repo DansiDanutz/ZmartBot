@@ -1,0 +1,8 @@
+{
+  "symbol": "ETH",
+  "price": 4637.17,
+  "risk_value": 0.7774890747714964,
+  "risk_zone": "\ud83d\udd34 HIGH RISK - Distribution Zone",
+  "market_bias": "SHORT",
+  "source": "Binance/CoinGecko/Coinbase"
+}

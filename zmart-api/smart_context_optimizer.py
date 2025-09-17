@@ -28,8 +28,8 @@ class SmartContextOptimizer:
         
         # Performance settings
         self.max_claude_size = 40000  # 40KB limit
-        self.max_context_age_hours = 24
-        self.batch_update_interval = 30  # seconds
+        self.max_context_age_hours = 8  # Optimize every 8 hours to reduce compacting frequency
+        self.batch_update_interval = 120  # seconds - Reduced frequency to minimize system load
         
         # Context domains
         self.domains = {
@@ -179,23 +179,50 @@ class SmartContextOptimizer:
         return sorted(mdc_files, key=lambda x: x['relevance'], reverse=True)
     
     def generate_content_summary(self, content: str, max_length: int = 200) -> str:
-        """Generate a summary of content for large files."""
+        """Generate an intelligent summary of content for large files."""
         if len(content) <= max_length:
             return content
         
-        # Extract first paragraph or first few sentences
+        # Enhanced summary extraction with priority sections
         lines = content.split('\n')
-        summary_lines = []
+        priority_content = []
+        regular_content = []
         char_count = 0
         
         for line in lines:
-            if line.strip():
-                if char_count + len(line) > max_length:
-                    break
-                summary_lines.append(line.strip())
-                char_count += len(line)
+            line = line.strip()
+            if not line:
+                continue
+                
+            # Priority content (more important for summaries)
+            if any(keyword in line.lower() for keyword in 
+                   ['purpose', 'overview', 'critical', 'important', 'api', 'port', 'service']):
+                priority_content.append(line)
+            elif line.startswith('#') or line.startswith('**'):
+                priority_content.append(line)
+            else:
+                regular_content.append(line)
         
-        summary = ' '.join(summary_lines)
+        # Build summary prioritizing important content
+        summary_lines = []
+        
+        # Add priority content first
+        for line in priority_content:
+            if char_count + len(line) + 1 <= max_length * 0.7:  # Reserve 30% for regular content
+                summary_lines.append(line)
+                char_count += len(line) + 1
+            else:
+                break
+        
+        # Add regular content to fill remaining space
+        for line in regular_content:
+            if char_count + len(line) + 1 <= max_length:
+                summary_lines.append(line)
+                char_count += len(line) + 1
+            else:
+                break
+        
+        summary = ' | '.join(summary_lines)  # Use separator for clarity
         return summary[:max_length] + "..." if len(summary) > max_length else summary
     
     def generate_domain_context(self, domain: str, mdc_files: List[Dict[str, Any]]) -> str:
@@ -213,11 +240,24 @@ class SmartContextOptimizer:
             context += f"**Relevance**: {file_info['relevance']}\n"
             context += f"**Size**: {file_info['size']} bytes\n\n"
             
-            # Use summary for large files, full content for small ones
-            if file_info['size'] > 10000:  # 10KB
-                context += f"**Summary**: {file_info['summary']}\n\n"
+            # Enhanced size-based content handling with better compression
+            if file_info['size'] > 15000:  # 15KB - Very large files
+                context += f"**Summary**: {file_info['summary']}\n"
+                # Add key metrics for large files
+                key_info = self.extract_key_information(file_info['content'])
+                if key_info:
+                    context += f"**Key Info**: {key_info}\n\n"
+                else:
+                    context += "\n"
+            elif file_info['size'] > 5000:  # 5-15KB - Medium files
+                context += f"**Summary**: {file_info['summary']}\n"
+                # Add compressed content for medium files
+                compressed_content = self.compress_content(file_info['content'], 500)
+                context += f"**Compressed**: {compressed_content}\n\n"
             else:
-                context += f"**Content**:\n```\n{file_info['content'][:2000]}\n```\n\n"
+                # Small files get smart extraction
+                smart_content = self.smart_extract_content(file_info['content'], 1500)
+                context += f"**Content**: {smart_content}\n\n"
             
             context += "---\n\n"
         
@@ -247,7 +287,9 @@ class SmartContextOptimizer:
         core_files = [f for f in mdc_files if f['domain'] == 'core']
         for file_info in core_files:
             claude_content += f"### {file_info['name']}\n"
-            claude_content += f"{file_info['content'][:1000]}\n\n"
+            # Use smart content extraction instead of crude truncation
+            smart_content = self.smart_extract_content(file_info['content'], 1000)
+            claude_content += f"{smart_content}\n\n"
         
         # Add focus domain if different from core
         if focus_domain != 'core':
@@ -259,7 +301,9 @@ class SmartContextOptimizer:
                 if file_info['size'] > 5000:
                     claude_content += f"**Summary**: {file_info['summary']}\n\n"
                 else:
-                    claude_content += f"{file_info['content'][:800]}\n\n"
+                    # Use smart content extraction instead of crude truncation
+                    smart_content = self.smart_extract_content(file_info['content'], 800)
+                    claude_content += f"{smart_content}\n\n"
         
         # Add high-relevance files from other domains
         claude_content += "## 🔥 High-Relevance Context\n\n"
@@ -303,11 +347,11 @@ This file is automatically optimized for performance. Full context available in:
             # Generate optimized content
             claude_content = self.generate_optimized_claude_md(current_task, focus_domain)
             
-            # Check size limit
+            # Check size limit with smart truncation
             if len(claude_content) > self.max_claude_size:
                 self.logger.warning(f"CLAUDE.md size ({len(claude_content)}) exceeds limit ({self.max_claude_size})")
-                # Truncate if necessary
-                claude_content = claude_content[:self.max_claude_size] + "\n\n[Content truncated for performance]"
+                # Smart truncation - find safe cutoff point
+                claude_content = self.smart_truncate_content(claude_content, self.max_claude_size)
             
             # Write main CLAUDE.md
             with open(self.claude_main_file, 'w', encoding='utf-8') as f:
@@ -332,6 +376,164 @@ This file is automatically optimized for performance. Full context available in:
         except Exception as e:
             self.logger.error(f"Error updating CLAUDE.md: {e}")
             return False
+    
+    def smart_truncate_content(self, content: str, max_size: int) -> str:
+        """Smart truncation that preserves content integrity - prevents mid-sentence cuts."""
+        if len(content) <= max_size:
+            return content
+        
+        # Reserve space for completion message
+        safe_size = max_size - 200
+        
+        # Find safe truncation points (in order of preference)
+        safe_points = [
+            '\n## ',        # Section headers
+            '\n### ',       # Subsection headers  
+            '\n\n',         # Paragraph breaks
+            '. ',           # Sentence endings
+            '\n',           # Line endings
+        ]
+        
+        best_cutoff = safe_size
+        
+        # Look for the best safe truncation point
+        for point in safe_points:
+            # Find all occurrences of this safe point
+            positions = []
+            start = 0
+            while True:
+                pos = content.find(point, start)
+                if pos == -1:
+                    break
+                if pos <= safe_size:
+                    positions.append(pos + len(point))
+                start = pos + 1
+            
+            # Use the latest safe point within limits
+            if positions:
+                best_cutoff = max(positions)
+                break
+        
+        # Truncate at safe point
+        truncated_content = content[:best_cutoff]
+        
+        # Add completion message with metadata
+        completion_msg = f"""
+
+## 🔄 Content Management
+
+**Status**: Content optimized for performance
+**Full Size**: {len(content):,} characters
+**Optimized Size**: {len(truncated_content):,} characters  
+**Completion**: {(len(truncated_content) / len(content) * 100):.1f}%
+
+Full context available in:
+- `.claude/contexts/` - Domain-specific contexts
+- `.cursor/rules/` - Complete MDC files
+
+**Generated**: {datetime.now().isoformat()}"""
+        
+        return truncated_content + completion_msg
+    
+    def smart_extract_content(self, content: str, max_length: int) -> str:
+        """Smart content extraction that preserves content integrity."""
+        if len(content) <= max_length:
+            return content
+        
+        # Find safe truncation points (in order of preference)
+        safe_points = [
+            '\n## ',        # Section headers
+            '\n### ',       # Subsection headers  
+            '\n\n',         # Paragraph breaks
+            '. ',           # Sentence endings
+            '\n',           # Line endings
+        ]
+        
+        best_cutoff = max_length
+        
+        # Look for the best safe truncation point
+        for point in safe_points:
+            # Find all occurrences of this safe point
+            positions = []
+            start = 0
+            while True:
+                pos = content.find(point, start)
+                if pos == -1:
+                    break
+                if pos <= max_length:
+                    positions.append(pos + len(point))
+                start = pos + 1
+            
+            # Use the latest safe point within limits
+            if positions:
+                best_cutoff = max(positions)
+                break
+        
+        # Extract content at safe point
+        extracted_content = content[:best_cutoff]
+        
+        # Add indication if content was truncated
+        if len(content) > max_length:
+            extracted_content += "..."
+        
+        return extracted_content
+    
+    def extract_key_information(self, content: str) -> str:
+        """Extract key information from content for very large files."""
+        key_patterns = [
+            r'Port:\s*(\d+)',
+            r'Type:\s*(\w+)',
+            r'Purpose:\s*([^\n]+)',
+            r'API.*?:\s*([^\n]+)',
+            r'Status:\s*(\w+)'
+        ]
+        
+        import re
+        key_info = []
+        
+        for pattern in key_patterns:
+            matches = re.findall(pattern, content, re.IGNORECASE)
+            if matches:
+                key_info.extend(matches[:2])  # Max 2 matches per pattern
+        
+        return ' | '.join(key_info[:5]) if key_info else ""  # Max 5 key items
+    
+    def compress_content(self, content: str, target_size: int) -> str:
+        """Compress content by extracting most relevant sentences."""
+        sentences = content.replace('\n', ' ').split('. ')
+        
+        # Score sentences by relevance
+        scored_sentences = []
+        for sentence in sentences:
+            if len(sentence.strip()) < 10:  # Skip very short sentences
+                continue
+                
+            score = 0
+            # Higher score for sentences with key terms
+            key_terms = ['service', 'api', 'port', 'function', 'endpoint', 'critical', 'important']
+            for term in key_terms:
+                if term.lower() in sentence.lower():
+                    score += 1
+            
+            # Prefer sentences with technical details
+            if any(char.isdigit() for char in sentence):  # Contains numbers
+                score += 0.5
+            if ':' in sentence:  # Contains definitions/explanations
+                score += 0.5
+                
+            scored_sentences.append((score, sentence.strip()))
+        
+        # Sort by score and build compressed content
+        scored_sentences.sort(key=lambda x: x[0], reverse=True)
+        
+        compressed = ""
+        for score, sentence in scored_sentences:
+            if len(compressed) + len(sentence) + 2 <= target_size:
+                compressed += sentence + ". "
+            else:
+                break
+        
+        return compressed.strip()
     
     def batch_update_context(self, pending_changes: List[str]) -> bool:
         """Batch update context for performance."""

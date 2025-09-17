@@ -1,0 +1,12 @@
+services:
+  ui-tars:
+    image: mcr.microsoft.com/playwright:v1.47.0-jammy
+    container_name: zmart-ui-tars
+    working_dir: /app
+    command: bash -lc "node tasks/run.js"
+    ports:
+      - "8308:8308"
+    restart: unless-stopped
+    volumes:
+      - ./tasks:/app/tasks
+      - ./data:/app/data

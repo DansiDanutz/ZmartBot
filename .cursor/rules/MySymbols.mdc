@@ -1,4 +1,9 @@
+
+## Description
+Core service component of the ZmartBot ecosystem providing essential functionality.
+
 @agent: SymbolValidator
+
 
 # MySymbols - Trading Symbol Management System
 
@@ -687,4 +692,14 @@ The MySymbols system ensures that only the most suitable symbols from Binance an
 description:
 globs:
 alwaysApply: true
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Database connectivity**
+- ✅ **Master Orchestration integration**
+
+
 ---
+
+## Triggers
+- **Database events**

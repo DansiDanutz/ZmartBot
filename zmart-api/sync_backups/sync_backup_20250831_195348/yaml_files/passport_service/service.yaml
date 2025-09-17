@@ -1,0 +1,16 @@
+service_name: passport-service
+service_type: backend
+port: 8029
+description: "ZmartBot Passport Service"
+status: ACTIVE
+passport_id: ZMBT-SRV-20250826-467E65
+registered_at: "2025-08-26"
+health_url: "http://localhost:8029/health"
+start_cmd: "python3 passport_service.py"
+stop_cmd: "pkill -f 'passport_service.py'"
+dependencies:
+  - zmart-api
+tags:
+  - passport
+  - backend
+  - identity

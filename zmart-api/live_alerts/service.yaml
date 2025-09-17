@@ -1,0 +1,19 @@
+endpoints:
+  health: http://127.0.0.1:8217/health
+  metrics: http://127.0.0.1:8217/metrics
+  ready: http://127.0.0.1:8217/ready
+lifecycle:
+  health_check: curl -f http://127.0.0.1:8217/health
+  start_command: python3 live_alerts_server.py
+  stop_command: pkill -f live-alerts
+metadata:
+  description: Live Real-Time Multi-Indicator Alerts
+  owner: zmartbot
+  version: 1.0.0
+service:
+  level: 3
+  name: live-alerts
+  passport: ZMBT-ALT-20250831-D1ACC0
+  port: 8217
+  status: ACTIVE
+  type: backend

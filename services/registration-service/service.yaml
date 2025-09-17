@@ -1,0 +1,59 @@
+service:
+  name: registration-service
+  type: backend
+  version: "1.0.0"
+  owner: zmartbot
+  description: "Enterprise-grade service registration and management system for ZmartBot ecosystem"
+  
+  port: 8902
+  health_endpoint: "/health"
+  readiness_endpoint: "/ready"
+  
+  dependencies:
+    - fastapi
+    - uvicorn
+    - sqlite3
+    - psutil
+  
+  environment:
+    - REGISTRATION_SERVICE_PORT=8902
+    - REGISTRATION_DB_PATH=data/registration_registry.db
+  
+  startup:
+    command: "python3 registration_service.py --port 8902"
+    timeout: 60
+    health_check_interval: 30
+  
+  shutdown:
+    command: "pkill -f registration_service"
+    timeout: 30
+  
+  monitoring:
+    metrics_endpoint: "/api/system/overview"
+    dashboard_endpoint: "/dashboard"
+    log_file: "registration_service.log"
+    
+  security:
+    cors_enabled: true
+    token_required: false
+    
+  api:
+    base_path: "/api"
+    version: "v1"
+    documentation: "/docs"
+    
+  database:
+    type: "sqlite"
+    path: "data/registration_registry.db"
+    tables:
+      - registration_registry
+      - registration_events
+      - registration_analytics
+      
+  features:
+    - service_registration
+    - certification_workflow
+    - registration_analytics
+    - dashboard_visualization
+    - event_tracking
+    - health_monitoring

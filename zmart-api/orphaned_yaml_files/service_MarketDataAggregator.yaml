@@ -1,0 +1,30 @@
+service_name: MarketDataAggregator
+service_type: backend
+version: 1.0.0
+owner: zmartbot
+description: Data aggregator (port changed from 8090)
+port: 8109
+passport_id: ZMBT-MDA-20250831-X5Y6Z7
+status: ACTIVE
+registered_at: '2025-08-31'
+health_url: http://localhost:8109/health
+start_cmd: python3 marketdataaggregator_server.py --port 8109
+stop_cmd: pkill -f 'marketdataaggregator_server.py'
+dependencies:
+- zmart-api
+tags:
+- backend
+- marketdataaggregator
+lifecycle:
+  startup_grace_seconds: 30
+  shutdown_timeout_seconds: 15
+  health_check_interval: 30
+monitoring:
+  metrics_endpoint: /metrics
+  logs_path: logs/marketdataaggregator.log
+  dashboard_url: http://localhost:8109/dashboard
+security:
+  cors_enabled: true
+  token_required: false
+  scopes:
+  - backend

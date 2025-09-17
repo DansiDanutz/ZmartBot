@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 ZmartBot ServiceLog - Ultimate Intelligence Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Load Chart.js locally with CDN fallback -->
+    <script>
+        window.chartLoadPromise = new Promise((resolve, reject) => {
+            // Try local file first, then CDN fallback
+            const chartSources = [
+                'chart.min.js',  // Local file
+                'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js',
+                'https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js'
+            ];
+            
+            let currentIndex = 0;
+            
+            function loadChart() {
+                if (currentIndex >= chartSources.length) {
+                    reject(new Error('All Chart.js sources failed to load'));
+                    return;
+                }
+                
+                const script = document.createElement('script');
+                script.src = chartSources[currentIndex];
+                
+                script.onload = () => {
+                    console.log(`📦 Chart.js script loaded from: ${chartSources[currentIndex]}`);
+                    // Small delay to ensure Chart is fully initialized
+                    setTimeout(() => {
+                        if (typeof Chart !== 'undefined') {
+                            console.log(`✅ Chart.js available! Version: ${Chart.version || 'unknown'}`);
+                            resolve();
+                        } else {
+                            console.warn(`⚠️ Chart.js script loaded but Chart object not available from: ${chartSources[currentIndex]}`);
+                            currentIndex++;
+                            loadChart();
+                        }
+                    }, 50);
+                };
+                
+                script.onerror = () => {
+                    console.warn(`❌ Failed to load Chart.js from: ${chartSources[currentIndex]}`);
+                    currentIndex++;
+                    loadChart();
+                };
+                
+                document.head.appendChild(script);
+            }
+            
+            loadChart();
+        });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>">
+</head>
+<body class="theme-dark">
+    <!-- Navigation Header -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            <div class="logo">
+                <i class="fas fa-chart-line logo-icon"></i>
+                <span class="logo-text">ServiceLog</span>
+                <span class="logo-subtitle">Intelligence Hub</span>
+            </div>
+        </div>
+        
+        <div class="nav-center">
+            <div class="nav-stats">
+                <div class="stat-item">
+                    <i class="fas fa-heartbeat stat-icon"></i>
+                    <div class="stat-details">
+                        <span class="stat-value" id="system-health">98.7%</span>
+                        <span class="stat-label">System Health</span>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-server stat-icon"></i>
+                    <div class="stat-details">
+                        <span class="stat-value" id="active-services">46</span>
+                        <span class="stat-label">Total Services</span>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-exclamation-triangle stat-icon"></i>
+                    <div class="stat-details">
+                        <span class="stat-value" id="active-alerts">3</span>
+                        <span class="stat-label">Active Alerts</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="nav-controls">
+            <div class="theme-switcher">
+                <button id="theme-toggle" class="theme-btn">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+            <div class="connection-status" id="connection-status">
+                <div class="status-indicator connected"></div>
+                <span>Connected</span>
+            </div>
+            <div class="user-profile">
+                <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%234F46E5'/><text x='50' y='60' text-anchor='middle' fill='white' font-size='40'>AI</text></svg>" alt="AI Profile">
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <nav class="sidebar-nav">
+                <a href="#overview" class="nav-item active" data-section="overview">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Overview</span>
+                </a>
+                <a href="#realtime" class="nav-item" data-section="realtime">
+                    <i class="fas fa-stream"></i>
+                    <span>Real-time Logs</span>
+                    <span class="nav-badge" id="log-count">127</span>
+                </a>
+                <a href="#advice" class="nav-item" data-section="advice">
+                    <i class="fas fa-lightbulb"></i>
+                    <span>Smart Advice</span>
+                    <span class="nav-badge priority" id="advice-count">5</span>
+                </a>
+                <a href="#services" class="nav-item" data-section="services">
+                    <i class="fas fa-cubes"></i>
+                    <span>Services</span>
+                </a>
+                <a href="#analytics" class="nav-item" data-section="analytics">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Analytics</span>
+                </a>
+                <a href="#agents" class="nav-item" data-section="agents">
+                    <i class="fas fa-robot"></i>
+                    <span>AI Agents</span>
+                </a>
+                <a href="#patterns" class="nav-item" data-section="patterns">
+                    <i class="fas fa-search"></i>
+                    <span>Pattern Detection</span>
+                </a>
+                <a href="#settings" class="nav-item" data-section="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Overview Section -->
+            <section id="overview-section" class="content-section active">
+                <div class="section-header">
+                    <h1 class="section-title">
+                        <i class="fas fa-tachometer-alt"></i>
+                        System Overview
+                    </h1>
+                    <div class="section-actions">
+                        <button class="btn btn-primary" id="refresh-btn">
+                            <i class="fas fa-sync-alt"></i>
+                            Refresh
+                        </button>
+                        <button class="btn btn-success" id="scan-services-btn">
+                            <i class="fas fa-search"></i>
+                            Scan Services
+                        </button>
+                        <button class="btn btn-secondary" id="export-btn">
+                            <i class="fas fa-download"></i>
+                            Export
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Critical Metrics -->
+                <div class="metrics-grid">
+                    <div class="metric-card critical">
+                        <div class="metric-header">
+                            <i class="fas fa-exclamation-circle"></i>
+                            <h3>Critical Issues</h3>
+                        </div>
+                        <div class="metric-value" id="critical-issues">2</div>
+                        <div class="metric-trend up">
+                            <i class="fas fa-arrow-up"></i>
+                            +1 from last hour
+                        </div>
+                        <div class="metric-chart">
+                            <canvas id="critical-chart" width="100" height="40"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="metric-card warning">
+                        <div class="metric-header">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <h3>Warnings</h3>
+                        </div>
+                        <div class="metric-value" id="warning-issues">8</div>
+                        <div class="metric-trend stable">
+                            <i class="fas fa-minus"></i>
+                            Stable
+                        </div>
+                        <div class="metric-chart">
+                            <canvas id="warning-chart" width="100" height="40"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="metric-card success">
+                        <div class="metric-header">
+                            <i class="fas fa-check-circle"></i>
+                            <h3>Resolved Today</h3>
+                        </div>
+                        <div class="metric-value" id="resolved-issues">23</div>
+                        <div class="metric-trend down">
+                            <i class="fas fa-arrow-down"></i>
+                            -5 from yesterday
+                        </div>
+                        <div class="metric-chart">
+                            <canvas id="resolved-chart" width="100" height="40"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="metric-card info">
+                        <div class="metric-header">
+                            <i class="fas fa-clock"></i>
+                            <h3>Avg Resolution</h3>
+                        </div>
+                        <div class="metric-value" id="avg-resolution">12m</div>
+                        <div class="metric-trend down">
+                            <i class="fas fa-arrow-down"></i>
+                            -3m improved
+                        </div>
+                        <div class="metric-chart">
+                            <canvas id="resolution-chart" width="100" height="40"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Dashboard Grid -->
+                <div class="dashboard-grid">
+                    <!-- Live Activity Feed -->
+                    <div class="dashboard-card activity-feed">
+                        <div class="card-header">
+                            <h3><i class="fas fa-stream"></i> Live Activity Feed</h3>
+                            <div class="activity-controls">
+                                <button class="btn-sm pause-feed" id="pause-feed">
+                                    <i class="fas fa-pause"></i>
+                                </button>
+                                <button class="btn-sm clear-feed" id="clear-feed">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="activity-list" id="activity-feed">
+                            <!-- Real-time activity items will be inserted here -->
+                        </div>
+                    </div>
+
+                    <!-- Priority Advice Queue -->
+                    <div class="dashboard-card advice-queue">
+                        <div class="card-header">
+                            <h3><i class="fas fa-lightbulb"></i> Priority Advice Queue</h3>
+                            <span class="queue-count" id="queue-count">5 items</span>
+                        </div>
+                        <div class="advice-list" id="advice-list">
+                            <!-- Priority advice items will be inserted here -->
+                        </div>
+                    </div>
+
+                    <!-- Service Health Map -->
+                    <div class="dashboard-card service-map">
+                        <div class="card-header">
+                            <h3><i class="fas fa-sitemap"></i> Service Health Map</h3>
+                            <div class="health-legend">
+                                <span class="legend-item healthy"><div class="legend-dot"></div>Healthy</span>
+                                <span class="legend-item warning"><div class="legend-dot"></div>Warning</span>
+                                <span class="legend-item critical"><div class="legend-dot"></div>Critical</span>
+                            </div>
+                        </div>
+                        <div class="service-grid" id="service-grid">
+                            <!-- Service status boxes will be inserted here -->
+                        </div>
+                    </div>
+
+                    <!-- Performance Chart -->
+                    <div class="dashboard-card performance-chart">
+                        <div class="card-header">
+                            <h3><i class="fas fa-chart-line"></i> System Performance</h3>
+                            <div class="chart-controls">
+                                <select class="time-range" id="time-range">
+                                    <option value="1h">Last Hour</option>
+                                    <option value="24h" selected>Last 24 Hours</option>
+                                    <option value="7d">Last 7 Days</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="performance-chart" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Real-time Logs Section -->
+            <section id="realtime-section" class="content-section">
+                <div class="section-header">
+                    <h1 class="section-title">
+                        <i class="fas fa-stream"></i>
+                        Real-time Log Stream
+                    </h1>
+                    <div class="log-controls">
+                        <div class="filter-group">
+                            <select id="service-filter" class="filter-select">
+                                <option value="">All Services</option>
+                            </select>
+                            <select id="level-filter" class="filter-select">
+                                <option value="">All Levels</option>
+                                <option value="CRITICAL">Critical</option>
+                                <option value="ERROR">Error</option>
+                                <option value="WARN">Warning</option>
+                                <option value="INFO">Info</option>
+                                <option value="DEBUG">Debug</option>
+                            </select>
+                            <input type="text" id="search-filter" class="search-input" placeholder="Search logs...">
+                        </div>
+                        <div class="action-group">
+                            <button class="btn btn-primary" id="pause-logs">
+                                <i class="fas fa-pause"></i>
+                                Pause
+                            </button>
+                            <button class="btn btn-secondary" id="clear-logs">
+                                <i class="fas fa-trash"></i>
+                                Clear
+                            </button>
+                            <button class="btn btn-secondary" id="export-logs">
+                                <i class="fas fa-download"></i>
+                                Export
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="log-viewer">
+                    <div class="log-stream" id="log-stream">
+                        <!-- Real-time log entries will be inserted here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Smart Advice Section -->
+            <section id="advice-section" class="content-section">
+                <div class="section-header">
+                    <h1 class="section-title">
+                        <i class="fas fa-lightbulb"></i>
+                        Smart Advice Center
+                    </h1>
+                    <div class="advice-stats">
+                        <div class="stat-pill critical">
+                            <span class="stat-value" id="critical-advice">2</span>
+                            <span class="stat-label">Critical</span>
+                        </div>
+                        <div class="stat-pill warning">
+                            <span class="stat-value" id="high-advice">3</span>
+                            <span class="stat-label">High</span>
+                        </div>
+                        <div class="stat-pill info">
+                            <span class="stat-value" id="medium-advice">8</span>
+                            <span class="stat-label">Medium</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="advice-container" id="advice-container">
+                    <!-- Detailed advice cards will be inserted here -->
+                </div>
+            </section>
+
+            <!-- Services Section -->
+            <section id="services-section" class="content-section">
+                <div class="section-header">
+                    <h1 class="section-title">
+                        <i class="fas fa-cubes"></i>
+                        Service Registry
+                    </h1>
+                    <div class="service-summary">
+                        <div class="summary-item">
+                            <span class="summary-value" id="total-services">41</span>
+                            <span class="summary-label">Total Services</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-value" id="healthy-services">29</span>
+                            <span class="summary-label">Healthy</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-value" id="passport-services">29</span>
+                            <span class="summary-label">Passport</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="services-grid" id="services-grid">
+                    <!-- Service detail cards will be inserted here -->
+                </div>
+            </section>
+
+            <!-- Analytics Section -->
+            <section id="analytics-section" class="content-section">
+                <div class="section-header">
+                    <h1 class="section-title">
+                        <i class="fas fa-chart-bar"></i>
+                        Advanced Analytics
+                    </h1>
+                    <div class="analytics-controls">
+                        <button class="btn btn-primary" id="generate-report">
+                            <i class="fas fa-file-alt"></i>
+                            Generate Report
+                        </button>
+                    </div>
+                </div>
+
+                <div class="analytics-grid">
+                    <div class="chart-card">
+                        <h3>Log Volume Trends</h3>
+                        <canvas id="volume-chart" width="400" height="200"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h3>Error Distribution</h3>
+                        <canvas id="error-chart" width="400" height="200"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h3>Service Performance</h3>
+                        <canvas id="service-chart" width="400" height="200"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h3>Resolution Times</h3>
+                        <canvas id="resolution-time-chart" width="400" height="200"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h3>System Health Trend</h3>
+                        <canvas id="health-trend-chart" width="400" height="200"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h3>Error Distribution</h3>
+                        <canvas id="error-distribution-chart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- AI Agents Section -->
+            <section id="agents-section" class="content-section">
+                <div class="section-header">
+                    <h1 class="section-title">
+                        <i class="fas fa-robot"></i>
+                        AI Agent Status
+                    </h1>
+                </div>
+
+                <div class="agents-grid" id="agents-grid">
+                    <!-- AI agent status cards will be inserted here -->
+                </div>
+            </section>
+
+            <!-- Pattern Detection Section -->
+            <section id="patterns-section" class="content-section">
+                <div class="section-header">
+                    <h1 class="section-title">
+                        <i class="fas fa-search"></i>
+                        Pattern Detection Engine
+                    </h1>
+                </div>
+
+                <div class="patterns-container" id="patterns-container">
+                    <!-- Pattern detection results will be inserted here -->
+                </div>
+            </section>
+
+            <!-- Settings Section -->
+            <section id="settings-section" class="content-section">
+                <div class="section-header">
+                    <h1 class="section-title">
+                        <i class="fas fa-cog"></i>
+                        Dashboard Settings
+                    </h1>
+                </div>
+
+                <div class="settings-grid">
+                    <div class="settings-card">
+                        <h3>Display Preferences</h3>
+                        <div class="setting-item">
+                            <label>Theme</label>
+                            <select id="theme-select">
+                                <option value="dark">Dark</option>
+                                <option value="light">Light</option>
+                                <option value="auto">Auto</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <label>Refresh Rate</label>
+                            <select id="refresh-rate">
+                                <option value="1000">1 second</option>
+                                <option value="5000" selected>5 seconds</option>
+                                <option value="10000">10 seconds</option>
+                                <option value="30000">30 seconds</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="settings-card">
+                        <h3>Notifications</h3>
+                        <div class="setting-item">
+                            <label class="switch">
+                                <input type="checkbox" id="critical-notifications" checked>
+                                <span class="slider"></span>
+                                Critical Alerts
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <label class="switch">
+                                <input type="checkbox" id="performance-notifications" checked>
+                                <span class="slider"></span>
+                                Performance Warnings
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Floating Action Button -->
+    <div class="fab" id="emergency-fab">
+        <i class="fas fa-exclamation-triangle"></i>
+    </div>
+
+    <!-- Modal for Emergency Actions -->
+    <div class="modal" id="emergency-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-exclamation-triangle"></i> Emergency Actions</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="emergency-actions">
+                    <button class="emergency-btn restart-services">
+                        <i class="fas fa-redo"></i>
+                        Restart Critical Services
+                    </button>
+                    <button class="emergency-btn clear-logs">
+                        <i class="fas fa-broom"></i>
+                        Clear Log Buffer
+                    </button>
+                    <button class="emergency-btn kill-processes">
+                        <i class="fas fa-stop"></i>
+                        Kill Hung Processes
+                    </button>
+                    <button class="emergency-btn backup-state">
+                        <i class="fas fa-save"></i>
+                        Backup System State
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <div class="loading-text">Connecting to ServiceLog...</div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

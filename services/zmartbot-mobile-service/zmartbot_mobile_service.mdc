@@ -1,0 +1,331 @@
+# zmartbot-mobile-service.mdc
+> Type: mobile-backend | Version: 1.0.0 | Owner: zmartbot | Status: ACTIVE | Level: 2 | Port: 7777
+
+## Purpose
+Mobile app backend service for React Native app integration with ZmartBot ecosystem. This service runs on port 7777 (RESERVED - NO EXCEPTIONS) and provides the bridge between the mobile app and the main ZmartBot API.
+
+## Description
+The ZmartBot Mobile Service is a dedicated backend service that runs on port 7777 and provides mobile-specific API endpoints for the React Native mobile application. It integrates with the main ZmartBot ecosystem (zmart-api on port 8000) and provides mobile-optimized data access for market data, portfolio management, trading signals, and IoT device integration.
+
+## Critical Functions
+
+### 📱 Mobile App Integration
+- **Port 7777 Service**: Dedicated mobile backend service (RESERVED PORT)
+- **React Native Bridge**: Provides mobile-optimized API endpoints
+- **CORS Support**: Enables mobile app to communicate with backend
+- **Mobile Authentication**: Handles mobile-specific authentication flows
+- **Push Notifications**: Manages mobile push notification delivery
+
+### 🔗 ZmartBot Ecosystem Integration
+- **Main API Integration**: Connects to zmart-api on port 8000
+- **Master Orchestration**: Registers with Master Orchestration Agent
+- **Port Manager**: Registers service with Port Manager
+- **Service Discovery**: Participates in service discovery system
+- **Health Monitoring**: Provides health status to ecosystem
+
+### 📊 Mobile Data Services
+- **Market Data API**: Mobile-optimized market data endpoints
+- **Portfolio API**: Mobile portfolio management endpoints
+- **Trading Signals**: Mobile trading signal delivery
+- **IoT Integration**: Mobile IoT device data access
+- **Real-time Updates**: WebSocket support for live data
+
+### 🛡️ Security & Performance
+- **Rate Limiting**: Mobile-specific rate limiting
+- **Data Validation**: Input validation for mobile requests
+- **Caching**: Mobile-optimized data caching
+- **Error Handling**: Mobile-friendly error responses
+- **Performance Monitoring**: Mobile app performance tracking
+
+## Architecture & Integration
+
+### **Service Configuration**
+- **Service Name**: zmartbot-mobile-service
+- **Service Type**: mobile-backend
+- **Port**: 7777 (RESERVED - NO EXCEPTIONS)
+- **Version**: 1.0.0
+- **Owner**: zmartbot
+- **Level**: 2 (Certified Service)
+
+### **Technology Stack**
+- **Framework**: FastAPI (Python)
+- **Runtime**: Uvicorn ASGI server
+- **Dependencies**: requests, pydantic, fastapi, uvicorn
+- **Logging**: Structured logging with file and console output
+- **Configuration**: Environment-based configuration management
+
+### **Port Assignment**
+```
+🚨 CRITICAL: PORT 7777 IS RESERVED FOR MOBILE APP SERVICE ONLY
+
+- Port 7777: zmartbot-mobile-service (RESERVED)
+- Port 8000: zmart-api (Main Backend)
+- Port 3400: Professional Dashboard (Frontend)
+- Port 8002: Master Orchestration Agent
+
+NEVER assign port 7777 to any other service!
+```
+
+### **Ecosystem Integration Points**
+- **zmart-api (Port 8000)**: Main backend API integration
+- **Master Orchestration Agent (Port 8002)**: Service registration and orchestration
+- **Port Manager (Port 8050)**: Port assignment and management
+- **Professional Dashboard (Port 3400)**: Frontend integration
+
+## API Endpoints
+
+### **Core Endpoints**
+- **GET /**: Service information and available endpoints
+- **GET /health**: Service health check and status
+- **GET /api/zmart-integration**: Ecosystem integration status
+
+### **Mobile App Endpoints**
+- **GET /api/market-data**: Mobile market data access
+- **GET /api/portfolio**: Mobile portfolio management
+- **GET /api/trading-signals**: Mobile trading signal delivery
+- **GET /api/iot-devices**: Mobile IoT device integration
+
+### **Request Models**
+```python
+class MarketDataRequest(BaseModel):
+    symbols: List[str] = []
+    exchange: str = "binance"
+    timeframe: str = "1h"
+    limit: int = 100
+
+class PortfolioRequest(BaseModel):
+    user_id: Optional[str] = None
+    include_positions: bool = True
+    include_history: bool = False
+
+class TradingSignalRequest(BaseModel):
+    symbol: str
+    timeframe: str = "1h"
+    include_analysis: bool = True
+
+class IoTDeviceRequest(BaseModel):
+    device_type: Optional[str] = None
+    include_data: bool = True
+```
+
+## Service Lifecycle
+
+### **Startup Process**
+1. **Service Initialization**: FastAPI app creation and configuration
+2. **Port Manager Registration**: Register service on port 7777
+3. **Master Orchestration Registration**: Register with orchestration system
+4. **Health Check Activation**: Enable health monitoring endpoints
+5. **API Endpoint Activation**: Enable all mobile app endpoints
+
+### **Runtime Operations**
+- **Health Monitoring**: Continuous health status reporting
+- **Request Processing**: Handle mobile app API requests
+- **Ecosystem Integration**: Maintain connections with other services
+- **Performance Monitoring**: Track service performance metrics
+- **Error Handling**: Graceful error handling and logging
+
+### **Shutdown Process**
+1. **Graceful Shutdown**: Stop accepting new requests
+2. **Service Deregistration**: Remove from Port Manager
+3. **Connection Cleanup**: Close all external connections
+4. **Resource Cleanup**: Release all allocated resources
+5. **Logging Finalization**: Complete all pending log operations
+
+## Dependencies & Requirements
+
+### **Required Services**
+- **zmart-api (Port 8000)**: Main backend API (REQUIRED)
+- **Master Orchestration Agent (Port 8002)**: Service orchestration (REQUIRED)
+- **Port Manager (Port 8050)**: Port management (REQUIRED)
+
+### **External Dependencies**
+- **FastAPI**: Web framework for API development
+- **Uvicorn**: ASGI server for running FastAPI
+- **Requests**: HTTP client for external API calls
+- **Pydantic**: Data validation and serialization
+- **Python 3.8+**: Runtime environment requirement
+
+### **System Requirements**
+- **Memory**: Minimum 256MB RAM
+- **CPU**: Single core minimum
+- **Storage**: 100MB disk space
+- **Network**: Local network access for ecosystem integration
+
+## Security & Compliance
+
+### **Authentication & Authorization**
+- **Mobile App Authentication**: Handle mobile app authentication
+- **API Key Management**: Manage mobile app API keys
+- **Rate Limiting**: Implement mobile-specific rate limiting
+- **Request Validation**: Validate all incoming requests
+- **Error Sanitization**: Sanitize error messages for security
+
+### **Data Protection**
+- **Input Validation**: Validate all input data
+- **Output Sanitization**: Sanitize all output data
+- **Logging Security**: Secure logging practices
+- **Error Handling**: Secure error handling
+- **Data Encryption**: Encrypt sensitive data in transit
+
+## Monitoring & Logging
+
+### **Health Monitoring**
+- **Service Health**: Continuous health status monitoring
+- **Ecosystem Integration**: Monitor integration with other services
+- **Performance Metrics**: Track response times and throughput
+- **Error Rates**: Monitor error rates and types
+- **Resource Usage**: Track memory and CPU usage
+
+### **Logging Strategy**
+- **Structured Logging**: JSON-formatted log entries
+- **Log Levels**: DEBUG, INFO, WARNING, ERROR, CRITICAL
+- **Log Rotation**: Automatic log file rotation
+- **Log Aggregation**: Centralized log collection
+- **Audit Trail**: Complete request/response audit trail
+
+## Error Handling & Recovery
+
+### **Error Categories**
+- **Client Errors (4xx)**: Invalid requests, authentication failures
+- **Server Errors (5xx)**: Internal service errors, external API failures
+- **Network Errors**: Connection timeouts, network failures
+- **Validation Errors**: Data validation failures
+- **Integration Errors**: Ecosystem service integration failures
+
+### **Recovery Strategies**
+- **Automatic Retry**: Retry failed external API calls
+- **Circuit Breaker**: Implement circuit breaker for external services
+- **Fallback Responses**: Provide fallback data when external services fail
+- **Graceful Degradation**: Maintain service functionality with reduced features
+- **Error Reporting**: Report errors to monitoring systems
+
+## Performance & Scalability
+
+### **Performance Targets**
+- **Response Time**: < 200ms for simple requests
+- **Throughput**: 1000+ requests per second
+- **Availability**: 99.9% uptime
+- **Error Rate**: < 1% error rate
+- **Resource Usage**: < 80% CPU and memory usage
+
+### **Scalability Features**
+- **Async Processing**: Async/await for non-blocking operations
+- **Connection Pooling**: Reuse HTTP connections
+- **Caching**: Implement response caching
+- **Load Balancing**: Support for load balancer integration
+- **Horizontal Scaling**: Stateless design for horizontal scaling
+
+## Testing & Quality Assurance
+
+### **Testing Strategy**
+- **Unit Tests**: Test individual functions and methods
+- **Integration Tests**: Test service integration with ecosystem
+- **API Tests**: Test all API endpoints
+- **Performance Tests**: Load testing and performance validation
+- **Security Tests**: Security vulnerability testing
+
+### **Quality Metrics**
+- **Code Coverage**: > 90% code coverage
+- **Test Pass Rate**: > 95% test pass rate
+- **Performance Benchmarks**: Meet all performance targets
+- **Security Score**: Pass security scanning
+- **Documentation**: Complete API documentation
+
+## Deployment & Operations
+
+### **Deployment Process**
+1. **Code Review**: Complete code review and approval
+2. **Testing**: Pass all automated tests
+3. **Build**: Create deployment package
+4. **Deploy**: Deploy to target environment
+5. **Verification**: Verify service functionality
+6. **Monitoring**: Enable monitoring and alerting
+
+### **Operational Procedures**
+- **Service Start**: Start service on port 7777
+- **Health Check**: Verify service health
+- **Integration Test**: Test ecosystem integration
+- **Monitoring Setup**: Configure monitoring and alerting
+- **Documentation Update**: Update operational documentation
+
+## Future Enhancements
+
+### **Planned Features**
+- **WebSocket Support**: Real-time data streaming
+- **Push Notifications**: Mobile push notification delivery
+- **Offline Support**: Offline data caching and sync
+- **Analytics**: Mobile app usage analytics
+- **A/B Testing**: Feature flag support for testing
+
+### **Technology Upgrades**
+- **GraphQL**: Consider GraphQL for flexible data queries
+- **gRPC**: Evaluate gRPC for high-performance communication
+- **Microservices**: Consider service decomposition
+- **Containerization**: Docker container support
+- **Kubernetes**: Kubernetes deployment support
+
+## Status & Maintenance
+
+### **Current Status**
+- **Status**: ACTIVE
+- **Level**: 2 (Certified Service)
+- **Port**: 7777 (RESERVED)
+- **Version**: 1.0.0
+- **Owner**: zmartbot
+
+### **Maintenance Schedule**
+- **Regular Updates**: Monthly security and dependency updates
+- **Performance Reviews**: Quarterly performance reviews
+- **Security Audits**: Annual security audits
+- **Documentation Updates**: Continuous documentation updates
+- **User Feedback**: Regular user feedback collection and implementation
+
+## 🤖 MCP (Model Context Protocol) Integration
+
+### **MCP Server Pairing**
+**Status**: ✅ **ACTIVE** - Mobile Service MCP Integration  
+**MCP Servers**: `claude-code`, `figma`, `byterover`, `ui-tars`  
+**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`  
+**Integration Type**: Multi-MCP Service Integration  
+
+### **MCP Integration Features**
+- **Claude Code Integration**: AI-powered mobile app development and code generation
+- **Figma Integration**: Design-to-code workflow for mobile UI components
+- **Memory Gateway**: Persistent memory for mobile app state management
+- **UI Automation**: Automated mobile app testing and validation
+- **Cross-Platform Development**: Unified development experience across platforms
+
+### **MCP Pairing Benefits**
+- **AI-Powered Development**: Enhanced mobile app development with Claude Code
+- **Design Integration**: Seamless Figma to React Native component generation
+- **State Management**: Persistent memory for complex mobile app states
+- **Automated Testing**: UI automation for mobile app validation
+- **Cross-Platform Sync**: Synchronized development across web and mobile
+
+### **MCP Usage Examples**
+```bash
+# Generate mobile component from Figma design
+curl -X POST http://127.0.0.1:3845/mcp/generate-component \
+  -H "Content-Type: application/json" \
+  -d '{"designId": "mobile-dashboard", "platform": "react-native"}'
+
+# Store mobile app state in memory gateway
+curl -X POST http://127.0.0.1:8295/memory/store \
+  -H "Content-Type: application/json" \
+  -d '{"key": "mobile-user-session", "data": {"userId": "123", "preferences": {...}}}'
+```
+
+### **MCP Integration Status**
+- **Claude Code**: ✅ Active for mobile development
+- **Figma Integration**: ✅ Design-to-code workflow operational
+- **Memory Gateway**: ✅ Mobile state persistence active
+- **UI Automation**: ✅ Mobile testing automation ready
+- **Cross-Platform**: ✅ Unified development environment
+
+---
+
+**🚨 REMEMBER: PORT 7777 IS RESERVED FOR MOBILE APP SERVICE ONLY - NEVER ASSIGN TO ANY OTHER SERVICE!**
+description:
+globs:
+alwaysApply: true
+---

@@ -1,0 +1,33 @@
+{
+  "symbol": "LTC",
+  "symbol_name": "Litecoin",
+  "birth_date": "2011-10-07",
+  "current_date": "2025-09-14",
+  "total_days": 5091,
+  "actual_age_days": 5091,
+  "risk_bands": {
+    "0.0-0.1": 152,
+    "0.1-0.2": 509,
+    "0.2-0.3": 661,
+    "0.3-0.4": 814,
+    "0.4-0.5": 1018,
+    "0.5-0.6": 1120,
+    "0.6-0.7": 661,
+    "0.7-0.8": 356,
+    "0.8-0.9": 203,
+    "0.9-1.0": 101
+  },
+  "current_risk_band": "0.5-0.6",
+  "confidence_level": 7,
+  "data_type": "estimated",
+  "0.0-0.1_percentage": 2.99,
+  "0.1-0.2_percentage": 10.0,
+  "0.2-0.3_percentage": 12.98,
+  "0.3-0.4_percentage": 15.99,
+  "0.4-0.5_percentage": 20.0,
+  "0.5-0.6_percentage": 22.0,
+  "0.6-0.7_percentage": 12.98,
+  "0.7-0.8_percentage": 6.99,
+  "0.8-0.9_percentage": 3.99,
+  "0.9-1.0_percentage": 1.98
+}

@@ -1,0 +1,84 @@
+# YAML Governance Rules - ZmartBot Platform
+# Created: 2025-08-31
+# Purpose: Enforce YAML configuration standards and prevent duplication
+
+allowed_directories:
+  - "zmart-api/*/service.yaml"
+  - "zmart-api/alerts/*/service.yaml"
+  - "zmart-api/security/*/service.yaml"
+  - "zmart-api/infrastructure/*/service.yaml"
+  - "services/*/service.yaml"  # Temporarily allowed for migration
+
+forbidden_directories:
+  - "*/zmart_*/zmart_*/service.yaml"     # Nested duplication
+  - "*/zmart-*/zmart-*/service.yaml"     # Nested duplication
+  - "**/duplicate_**/service.yaml"       # Obvious duplicates
+  - "**/backup_**/service.yaml"          # Backup directories
+  - "**/old_**/service.yaml"             # Old versions
+
+required_fields:
+  - service_name
+  - service_type
+  - port
+  - passport_id
+  - version
+  - owner
+  - description
+  - status
+  - health_url
+  - start_cmd
+  - stop_cmd
+
+optional_but_recommended:
+  - dependencies
+  - tags
+  - lifecycle
+  - monitoring
+  - security
+
+naming_conventions:
+  service_name_pattern: "^[a-z0-9-]+$"        # Only lowercase, numbers, hyphens
+  directory_pattern: "^[a-z0-9_]+$"           # Only lowercase, numbers, underscores
+  no_mixed_separators: true                    # Don't mix - and _ in same name
+  passport_id_pattern: "^ZMBT-[A-Z0-9-]{8,}$" # ZMBT passport format
+
+port_ranges:
+  alert_services: [8014, 8025]      # Alert system ports
+  alert_system: [8014, 8025]        # Alternative naming
+  backend: [8100, 8200]             # General backend services  
+  backend_services: [8100, 8200]    # Alternative naming
+  infrastructure: [8890, 8920]      # Infrastructure services
+  security: [8880, 8900]            # Security services
+  worker: [8300, 8350]              # Worker services
+  orchestration: [8600, 8650]       # Orchestration services
+  dashboard: [8080, 8095]           # Dashboard services
+
+validation_rules:
+  max_duplicates_allowed: 0          # Zero tolerance for duplicates
+  require_unique_ports: true         # No port conflicts allowed
+  require_unique_service_names: true # No name conflicts allowed
+  require_passport_ids: true         # All services must have passport IDs
+  
+duplication_prevention:
+  check_content_hash: true           # Detect identical content
+  check_service_names: true          # Detect name conflicts
+  check_port_conflicts: true         # Detect port conflicts
+  auto_fix_suggestions: true         # Provide fix suggestions
+
+migration_rules:
+  legacy_locations_allowed: true     # Temporarily allow services/* during migration
+  migration_deadline: "2025-09-30"   # Deadline to move from legacy locations
+  auto_migration_enabled: false      # Don't auto-migrate (manual review required)
+
+enforcement_level: "strict"          # strict, moderate, or lenient
+
+violation_actions:
+  duplicates: "block_commit"         # Block commits with duplicates
+  port_conflicts: "block_commit"     # Block commits with port conflicts
+  location_violations: "warn"        # Warn about location violations
+  content_violations: "block_commit" # Block commits with content issues
+
+notifications:
+  slack_webhook: null                # Optional Slack notifications
+  email_recipients: []               # Optional email notifications
+  dashboard_alerts: true             # Show in monitoring dashboard

@@ -1,0 +1,30 @@
+service_name: LiveAlerts
+service_type: alert_system
+version: 1.0.0
+owner: zmartbot
+description: Real-time alert system
+port: 8017
+passport_id: ZMBT-LIVE-20250830-8017
+status: ACTIVE
+registered_at: '2025-08-31'
+health_url: http://localhost:8017/health
+start_cmd: python3 livealerts_server.py --port 8017
+stop_cmd: pkill -f 'livealerts_server.py'
+dependencies:
+- zmart-api
+tags:
+- alert_system
+- livealerts
+lifecycle:
+  startup_grace_seconds: 30
+  shutdown_timeout_seconds: 15
+  health_check_interval: 30
+monitoring:
+  metrics_endpoint: /metrics
+  logs_path: logs/livealerts.log
+  dashboard_url: http://localhost:8017/dashboard
+security:
+  cors_enabled: true
+  token_required: false
+  scopes:
+  - alert_system

@@ -1,0 +1,19 @@
+endpoints:
+  health: http://127.0.0.1:8014/health
+  metrics: http://127.0.0.1:8014/metrics
+  ready: http://127.0.0.1:8014/ready
+lifecycle:
+  health_check: curl -f http://127.0.0.1:8014/health
+  start_command: null
+  stop_command: pkill -f zmart_machine_learning
+metadata:
+  description: Service zmart_machine_learning
+  owner: zmartbot
+  version: 1.0.0
+service:
+  level: 3
+  name: zmart_machine_learning
+  passport: ZMBT-ENG-20250826-5C28B0
+  port: 8014
+  status: ACTIVE
+  type: backend

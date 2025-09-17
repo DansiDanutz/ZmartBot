@@ -1,4 +1,9 @@
+
+## Description
+Core service component of the ZmartBot ecosystem providing essential functionality.
+
 @datasource: PortRegistry
+
 
 # PortManagerDatabase - Service Port Registry
 
@@ -501,4 +506,17 @@ The PortManagerDatabase is the central registry that ensures all ZmartBot servic
 description:
 globs:
 alwaysApply: true
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Database connectivity**
+- ✅ **Health endpoint implementation**
+- ✅ **Master Orchestration integration**
+
+
 ---
+
+## Triggers
+- **API endpoint requests**
+- **Database events**
+- **Health check requests**

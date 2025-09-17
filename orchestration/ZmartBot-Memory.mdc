@@ -1,0 +1,58 @@
+[Service]
+name = "zmart-memory-gateway"
+tier = "internal_api"
+port = 8295
+health_url = "http://127.0.0.1:8295/health"
+data_dir = "./services/memory-gateway/data"
+
+[Lifecycle]
+start = "docker compose -f services/memory-gateway/compose.memory.yml up -d"
+stop  = "docker compose -f services/memory-gateway/compose.memory.yml down"
+
+[Memory.Taxonomy]
+concepts  = ["risk_metric","coefficients","exchange_quirks","schemas","orchestration_rules"]
+reasoning = ["alert_fire_explanations","scaling_decisions","reserve_injection","postmortems"]
+workspace = ["service_onboarding","runbooks","heuristics_kingfisher"]
+
+[Memory.TTL]
+concepts_days  = 3650
+reasoning_days = 365
+workspace_days = 1095
+
+[Policies]
+pii = "deny"
+secrets = "deny"
+attachments = "strip"
+
+[FailFast]
+require_service = true
+
+## 🤖 MCP (Model Context Protocol) Integration
+
+### **MCP Server Pairing**
+**Status**: ✅ **ACTIVE** - ByteRover Memory Gateway MCP Server  
+**MCP Server**: `byterover`  
+**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`  
+**URL**: `http://127.0.0.1:8295`  
+**Type**: HTTP MCP Server  
+
+### **MCP Integration Features**
+- **Memory Persistence**: Persistent memory storage across sessions
+- **Context Management**: Advanced context and memory management
+- **Cipher Compatibility**: Full Cipher MCP memory server compatibility
+- **Real-time Sync**: Live memory synchronization with Cursor IDE
+- **Cross-Session Memory**: Memory persistence across development sessions
+
+### **MCP Pairing Benefits**
+- **Enhanced Development**: Persistent memory for complex trading bot development
+- **Context Preservation**: Maintains context across multiple development sessions
+- **Intelligent Caching**: Advanced caching for frequently accessed data
+- **Memory Optimization**: Efficient memory usage and garbage collection
+- **Integration Ready**: Seamless integration with ZmartBot ecosystem
+
+### **MCP Usage Guidelines**
+- **Memory Storage**: Use for storing development context and project state
+- **Session Persistence**: Maintains memory across Cursor IDE restarts
+- **Context Sharing**: Share context between different development sessions
+- **Performance**: Optimized for high-frequency memory operations
+- **Security**: Secure memory storage with access controls

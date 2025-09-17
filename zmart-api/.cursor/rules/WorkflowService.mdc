@@ -1,0 +1,338 @@
+# WorkflowService.mdc
+> Type: orchestration | Version: 1.0.0 | Owner: zmartbot | Port: 8950
+
+## Purpose
+Mandatory service validation and workflow orchestration system for ZmartBot ecosystem. Defines exact requirements for each service level, validates service transitions, manages the complete 3-database lifecycle workflow, and provides API-driven workflow guidance for AI agents and service management.
+
+## Overview
+ZmartBot Workflow Service serving as the authoritative workflow validation and requirements engine. This mandatory service must always be called by AI agents to understand service lifecycle steps, validate workflows, and ensure proper service transitions through the 3-database architecture (Discovery → Passport → Registration → Certification).
+
+## Critical Functions
+- **Workflow Requirements Definition**: Exact specifications for each service level transition
+- **Service Level Validation**: Automated validation of service requirements fulfillment
+- **3-Database Lifecycle Management**: Complete orchestration of Discovery → Passport → Registration workflow
+- **AI Workflow Guidance**: API endpoints providing step-by-step workflow instructions
+- **Service Conflict Prevention**: Duplicate service detection and conflict resolution
+- **Requirements Validation Engine**: Automated checking of MDC files, ports, passports, certificates
+- **Master Orchestration Integration**: Workflow data for decision-making processes
+- **Certification Management**: Complete certification workflow and database updates
+
+## Architecture & Integration
+- **Service Type:** orchestration
+- **Dependencies:** discovery_registry.db, passport_registry.db, service_registry.db, certification_registry.db
+- **Env Vars:** WORKFLOW_SERVICE_PORT, DATABASE_PATH, MASTER_ORCHESTRATION_URL
+- **Lifecycle:** start=`python3 workflow_service.py --port 8950` | stop=`pkill -f workflow_service` | migrate=`python3 create_workflow_database.py`
+
+## API Endpoints
+### Workflow Guidance Endpoints
+- `GET /api/workflow/service/{service_name}` - Get complete workflow status for specific service
+- `GET /api/workflow/requirements/{level}` - Get requirements for specific service level (1, 2, 3)
+- `POST /api/workflow/validate` - Validate service against current level requirements
+- `GET /api/workflow/next-steps/{service_name}` - Get next steps for service progression
+- `POST /api/workflow/trigger-transition` - Trigger service level transition
+
+### Service Level Management
+- `GET /api/levels/discovery` - Get all Level 1 (Discovery) services
+- `GET /api/levels/passport` - Get all Level 2 (Passport/Active) services  
+- `GET /api/levels/registered` - Get all Level 3 (Registered) services
+- `GET /api/levels/certified` - Get all Level 4 (Certified) services
+- `POST /api/levels/transition/{service_name}` - Execute service level transition
+
+### Requirements Validation
+- `POST /api/validate/mdc` - Validate MDC file requirements
+- `POST /api/validate/port` - Validate port assignment requirements
+- `POST /api/validate/passport` - Validate passport assignment
+- `POST /api/validate/health` - Validate health check requirements
+- `POST /api/validate/tests` - Validate test requirements
+- `POST /api/validate/orchestration` - Validate orchestration assignment
+
+### Conflict Detection
+- `GET /api/conflicts/duplicates` - Detect duplicate services
+- `GET /api/conflicts/ports` - Detect port conflicts
+- `POST /api/conflicts/resolve` - Resolve service conflicts
+
+
+## Triggers
+- **API endpoint requests**
+- **Database events**
+- **Workflow transitions**
+
+## Health & Readiness
+- **Liveness:** http://127.0.0.1:8950/health
+- **Readiness:** http://127.0.0.1:8950/api/workflow/status
+- **Timeouts:** startup_grace=30s, http_timeout=30s
+
+## Service Level Definitions
+
+### Level 1 - Discovery Service
+**Description**: Service discovery stage for any Python file that exists in the system.
+
+**Requirements**:
+- ✅ Python file (.py) exists
+- ✅ MDC file (.mdc) assigned and present
+- ✅ Python file DOES NOT interact with any other Python file
+- ✅ Service remains isolated (no external service calls)
+
+**Database**: `discovery_registry.db`
+**Status**: `DISCOVERED`
+**Trigger to Level 2**: First interaction with another service
+
+### Level 2 - Active Service (Passport)
+**Description**: Any Python file that interacts with other Python files and has system integration.
+
+**Requirements**:
+- ✅ All Level 1 requirements met
+- ✅ Service interacts with at least one other service
+- ✅ Port assigned by Port Manager (unique, not used by other services)
+- ✅ Passport assigned by Passport Service
+- ✅ Service responds to external calls
+
+**Database**: `passport_registry.db`
+**Status**: `ACTIVE`
+**Trigger to Level 3**: All production readiness requirements fulfilled
+
+### Level 3 - Registered Service
+**Description**: Production-ready service that has passed all quality checks and requirements.
+
+**Requirements**:
+- ✅ All Level 2 requirements met
+- ✅ Tests passed (unit tests, integration tests)
+- ✅ Health check endpoint functional and responding
+- ✅ No duplicate services registered in system
+- ✅ OrchestrationStart assignment completed
+- ✅ Master Orchestration Agent assignment active
+
+**Database**: `service_registry.db`
+**Status**: `REGISTERED`
+**Trigger to Level 4**: Certification process completion
+
+### Level 4 - Certified Service  
+**Description**: Highest quality service with full certification and production deployment.
+
+**Requirements**:
+- ✅ All Level 3 requirements met
+- ✅ Full certification process completed
+- ✅ Certificate (CERT) assigned
+- ✅ Production deployment verified
+- ✅ Master Orchestration Agent integration confirmed
+- ✅ Service performance metrics meet standards
+
+**Database**: `certification_registry.db`
+**Status**: `CERTIFIED`
+**Quality Level**: Enterprise-grade, Master Orchestration priority
+
+## Workflow Transitions
+
+### Level 1 → Level 2 Transition
+**Trigger**: First service interaction detected
+**Process**:
+1. Detect service interaction via system monitoring
+2. Validate interaction is legitimate (not test/debug)
+3. Request port assignment from Port Manager
+4. Request passport from Passport Service
+5. Move service from discovery_registry.db to passport_registry.db
+6. Update service status to ACTIVE
+
+### Level 2 → Level 3 Transition  
+**Trigger**: All production requirements fulfilled
+**Process**:
+1. Validate all Level 2 requirements maintained
+2. Execute comprehensive test suite
+3. Verify health check endpoint functionality
+4. Check for duplicate services in registry
+5. Assign OrchestrationStart configuration  
+6. Register with Master Orchestration Agent
+7. Move service from passport_registry.db to service_registry.db
+8. Update service status to REGISTERED
+
+### Level 3 → Level 4 Transition
+**Trigger**: Certification process initiation
+**Process**:
+1. Validate all Level 3 requirements maintained
+2. Execute comprehensive certification audit
+3. Generate and assign certificate (CERT)
+4. Update certification_registry.db
+5. Update service_registry.db with certification status
+6. Remove service from passport_registry.db (promotion complete)
+7. Notify Master Orchestration Agent of certified service
+8. Update service status to CERTIFIED
+
+## Database Schema
+
+### workflow_registry.db
+```sql
+CREATE TABLE service_workflows (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    service_name TEXT UNIQUE NOT NULL,
+    current_level INTEGER NOT NULL CHECK (current_level IN (1, 2, 3, 4)),
+    current_status TEXT NOT NULL,
+    requirements_met TEXT, -- JSON of fulfilled requirements
+    requirements_pending TEXT, -- JSON of pending requirements  
+    last_transition TIMESTAMP,
+    next_transition_eligible TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE workflow_requirements (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    level INTEGER NOT NULL CHECK (level IN (1, 2, 3, 4)),
+    requirement_type TEXT NOT NULL,
+    requirement_description TEXT NOT NULL,
+    validation_endpoint TEXT,
+    mandatory BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE workflow_transitions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    service_name TEXT NOT NULL,
+    from_level INTEGER NOT NULL,
+    to_level INTEGER NOT NULL,
+    transition_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    requirements_validated TEXT, -- JSON
+    success BOOLEAN NOT NULL,
+    error_message TEXT,
+    triggered_by TEXT -- system, manual, api
+);
+```
+
+## Master Orchestration Integration
+
+### Decision Priority System
+1. **Certified Services (Level 4)**: Highest priority, full trust, production decisions
+2. **Registered Services (Level 3)**: High priority, production-ready, reliable decisions
+3. **Active Services (Level 2)**: Medium priority, development/testing decisions only
+4. **Discovery Services (Level 1)**: NO consideration for decisions (never used)
+
+### Integration Points
+- Master Orchestration Agent queries workflow service for service reliability levels
+- Only Level 3 and 4 services are considered for critical production decisions
+- Level 2 services may be used for development/testing orchestration
+- Level 1 services are completely ignored by orchestration decision engine
+
+## AI Agent Integration
+
+### Mandatory Workflow Calls
+All AI agents MUST call WorkflowService API before:
+- Making service-related decisions
+- Implementing new services
+- Modifying existing services
+- Orchestrating service interactions
+
+### API Usage Examples
+```bash
+# Get workflow status for database_service
+GET /api/workflow/service/database_service
+
+# Get requirements for Level 3 transition
+GET /api/workflow/requirements/3
+
+# Validate service for current level
+POST /api/workflow/validate
+{
+  "service_name": "database_service",
+  "validation_type": "current_level"
+}
+
+# Get next steps for service progression
+GET /api/workflow/next-steps/database_service
+```
+
+## Service Registration Status
+
+### Current System State
+- **Level 1 Services**: 5 services (discovery phase)
+- **Level 2 Services**: 37 services (passport/active phase)  
+- **Level 3 Services**: 49 services (registered phase)
+- **Level 4 Services**: To be determined (certification phase)
+
+## Operational Metrics
+- **Workflow Validations**: Real-time requirement checking
+- **Transition Success Rate**: Track successful level transitions
+- **Conflict Detection**: Automated duplicate and conflict prevention
+- **API Response Time**: <50ms for workflow guidance
+- **Database Sync**: Real-time across all lifecycle databases
+- **Master Orchestration Queries**: Handle 100+ requests/minute
+
+## Development & Maintenance
+
+### Workflow Database Management
+- Automatic synchronization with discovery, passport, and service registries
+- Real-time requirement validation and status updates
+- Comprehensive transition logging and audit trails
+- Conflict detection and automatic resolution processes
+
+### Quality Assurance
+- All workflow transitions must be validated and logged
+- Requirements validation must be automated and consistent
+- API endpoints must provide clear, actionable guidance
+- Integration with Master Orchestration Agent must be seamless
+
+## Integration Dependencies
+- **Discovery Registry**: Source for Level 1 services
+- **Passport Registry**: Source for Level 2 services  
+- **Service Registry**: Source for Level 3 services
+- **Port Manager**: Port assignment validation
+- **Passport Service**: Passport assignment validation
+- **Master Orchestration Agent**: Decision-making integration
+- **Certification Authority**: Certificate management (Level 4)
+
+## Certification Compliance
+This service provides the foundation for ZmartBot service lifecycle management:
+- ✅ **Workflow Definition**: Complete 4-level service lifecycle
+- ✅ **Requirements Engine**: Automated validation system
+- ✅ **API Integration**: Mandatory AI agent integration points
+- ✅ **Master Orchestration**: Decision support system
+- ✅ **Quality Control**: Conflict prevention and resolution
+
+---
+
+## 🤖 MCP (Model Context Protocol) Integration
+
+### **MCP Server Pairing**
+**Status**: ✅ **ACTIVE** - Workflow Service MCP Integration
+**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
+**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
+**Integration Type**: Multi-MCP Service Integration
+
+### **MCP Integration Features**
+- **Claude Code Integration**: AI-powered workflow service optimization and analysis
+- **Memory Gateway**: Persistent workflow service state and metadata
+- **UI Automation**: Automated workflow service monitoring and health checks
+- **Figma Integration**: Workflow service dashboard design and UI management
+- **Supabase Integration**: Cloud-based workflow service analytics and reporting
+
+### **MCP Integration Benefits**
+- **Enhanced Workflow**: AI-powered workflow service optimization and analysis
+- **Persistent State**: Cross-session workflow service state and configuration management
+- **Automated Monitoring**: Real-time workflow service health and performance tracking
+- **Visual Dashboard**: Interactive workflow service management and testing interface
+- **Cloud Analytics**: Comprehensive workflow service usage and performance analytics
+
+### **MCP Usage Examples**
+```bash
+# Health check via MCP
+curl -X GET "http://127.0.0.1:8950/health"
+
+# Workflow service operation via MCP
+curl -X POST "http://127.0.0.1:8950/workflow/validate" -d '{"service": "test", "action": "validate"}'
+```
+
+### **MCP Status**
+- **Claude Code**: ✅ Active - AI-powered workflow service optimization
+- **ByteRover**: ✅ Active - Persistent workflow service state management
+- **UI TARS**: ✅ Active - Automated workflow service monitoring
+- **Figma**: ✅ Active - Workflow service dashboard design
+- **Supabase**: ✅ Active - Cloud-based workflow service analytics
+
+## Notes
+- This service is MANDATORY for all AI agents working with ZmartBot services
+- Workflow Service must be consulted before any service-related operations
+- Service transitions are automated but require validation at each step
+- Master Orchestration Agent relies on this service for quality-based decisions
+- Level 4 certification represents the highest service quality in the ecosystem
+
+---
+
+**This workflow ensures service quality, prevents conflicts, and provides Master Orchestration Agent with reliable service classification for optimal decision-making.**

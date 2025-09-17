@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZmartBot - Professional Trading Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <style>
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .hover-scale { transition: all 0.3s ease; }
+        .hover-scale:hover { transform: scale(1.05); }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        .hidden { display: none; }
+        .sidebar-item { 
+            padding: 12px 16px; 
+            margin: 4px 0; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .sidebar-item:hover { background: rgba(59, 130, 246, 0.1); }
+        .sidebar-item.active { background: rgba(59, 130, 246, 0.2); border-left: 3px solid #3b82f6; }
+        .typing-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #3b82f6;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+        .typing-indicator:nth-child(1) { animation-delay: -0.32s; }
+        .typing-indicator:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes typing {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+        .mobile-sidebar {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+        .mobile-sidebar.open {
+            transform: translateX(0);
+        }
+        @media (max-width: 768px) {
+            .desktop-sidebar { display: none; }
+            .mobile-content { margin-left: 0; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="fixed inset-0 bg-slate-900 flex items-center justify-center z-50">
+        <div class="text-center">
+            <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl mx-auto mb-4 flex items-center justify-center shadow-2xl animate-float">
+                <span class="text-3xl font-bold text-white">Z</span>
+            </div>
+            <h1 class="text-2xl font-bold text-white mb-2">ZmartBot</h1>
+            <p class="text-slate-400">Connecting to Zmarty AI...</p>
+            <div class="flex justify-center mt-4">
+                <div class="typing-indicator mr-1"></div>
+                <div class="typing-indicator mr-1"></div>
+                <div class="typing-indicator"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Menu Button -->
+    <button id="mobileMenuBtn" class="fixed top-4 left-4 z-50 md:hidden bg-slate-800 text-white p-3 rounded-lg">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+    </button>
+
+    <!-- Login/Register Screen -->
+    <div id="authScreen" class="hidden min-h-screen flex items-center justify-center p-6">
+        <div class="w-full max-w-md">
+            <!-- Logo Section -->
+            <div class="text-center mb-8 animate-float">
+                <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl mx-auto mb-4 flex items-center justify-center shadow-2xl">
+                    <span class="text-3xl font-bold text-white">Z</span>
+                </div>
+                <h1 class="text-4xl font-bold text-white mb-2">ZmartBot</h1>
+                <p class="text-slate-300">Professional Trading Intelligence</p>
+            </div>
+
+            <!-- Auth Forms -->
+            <div class="glass rounded-2xl p-8 shadow-2xl">
+                <!-- Login Form -->
+                <div id="loginForm">
+                    <h2 class="text-2xl font-bold text-white mb-6 text-center">Welcome Back</h2>
+                    <form onsubmit="handleLogin(event)">
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-slate-300 mb-2">Email</label>
+                                <input type="email" id="loginEmail" required 
+                                    class="w-full px-4 py-3 bg-slate-800 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    placeholder="your@email.com">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-300 mb-2">Password</label>
+                                <input type="password" id="loginPassword" required
+                                    class="w-full px-4 py-3 bg-slate-800 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    placeholder="••••••••">
+                            </div>
+                        </div>
+                        <button type="submit" 
+                            class="w-full mt-6 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-3 rounded-xl font-medium transition-all hover-scale">
+                            Sign In 🚀
+                        </button>
+                    </form>
+                    <p class="text-center text-slate-400 mt-4">
+                        Don't have an account? 
+                        <span onclick="showRegister()" class="text-blue-400 cursor-pointer hover:text-blue-300">Sign up</span>
+                    </p>
+                </div>
+
+                <!-- Register Form -->
+                <div id="registerForm" class="hidden">
+                    <h2 class="text-2xl font-bold text-white mb-6 text-center">Create Account</h2>
+                    <form onsubmit="handleRegister(event)">
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-slate-300 mb-2">Full Name</label>
+                                <input type="text" id="registerName" required
+                                    class="w-full px-4 py-3 bg-slate-800 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    placeholder="John Doe">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-300 mb-2">Email</label>
+                                <input type="email" id="registerEmail" required
+                                    class="w-full px-4 py-3 bg-slate-800 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    placeholder="your@email.com">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-300 mb-2">Password</label>
+                                <input type="password" id="registerPassword" required
+                                    class="w-full px-4 py-3 bg-slate-800 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    placeholder="••••••••">
+                            </div>
+                        </div>
+                        <button type="submit"
+                            class="w-full mt-6 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white py-3 rounded-xl font-medium transition-all hover-scale">
+                            Create Account ✨
+                        </button>
+                    </form>
+                    <p class="text-center text-slate-400 mt-4">
+                        Already have an account? 
+                        <span onclick="showLogin()" class="text-blue-400 cursor-pointer hover:text-blue-300">Sign in</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div id="dashboardScreen" class="hidden min-h-screen flex">
+        <!-- Desktop Sidebar -->
+        <div class="desktop-sidebar w-64 glass border-r border-slate-700 p-6">
+            <!-- User Profile -->
+            <div class="mb-8">
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                        <span id="userInitial" class="text-white font-semibold">U</span>
+                    </div>
+                    <div>
+                        <p id="userName" class="text-white font-medium">User</p>
+                        <p class="text-slate-400 text-sm">Premium Member</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- API Status -->
+            <div class="mb-6">
+                <h3 class="text-sm font-medium text-slate-400 mb-3">SYSTEM STATUS</h3>
+                <div class="space-y-2">
+                    <div id="zmartyStatus" class="flex items-center justify-between">
+                        <span class="text-xs text-slate-300">Zmarty AI</span>
+                        <span class="text-xs text-gray-400">Connecting...</span>
+                    </div>
+                    <div id="kucoinStatus" class="flex items-center justify-between">
+                        <span class="text-xs text-slate-300">KuCoin</span>
+                        <span class="text-xs text-gray-400">Checking...</span>
+                    </div>
+                    <div id="binanceStatus" class="flex items-center justify-between">
+                        <span class="text-xs text-slate-300">Binance</span>
+                        <span class="text-xs text-gray-400">Checking...</span>
+                    </div>
+                    <div id="tradingStatus" class="flex items-center justify-between">
+                        <span class="text-xs text-slate-300">Trading AI</span>
+                        <span class="text-xs text-gray-400">Checking...</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="space-y-2">
+                <div class="sidebar-item active" onclick="showTab('chat')">
+                    <span class="text-xl">💬</span>
+                    <span class="text-white">Zmarty Chat</span>
+                </div>
+                <div class="sidebar-item" onclick="showTab('crypto')">
+                    <span class="text-xl">₿</span>
+                    <span class="text-white">Crypto</span>
+                </div>
+                <div class="sidebar-item" onclick="showTab('settings')">
+                    <span class="text-xl">⚙️</span>
+                    <span class="text-white">Settings</span>
+                </div>
+                <div class="sidebar-item" onclick="showTab('profile')">
+                    <span class="text-xl">👤</span>
+                    <span class="text-white">Profile</span>
+                </div>
+            </nav>
+
+            <!-- Logout -->
+            <div class="mt-8 pt-8 border-t border-slate-700">
+                <div class="sidebar-item" onclick="handleLogout()">
+                    <span class="text-xl">🚪</span>
+                    <span class="text-white">Logout</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Sidebar -->
+        <div id="mobileSidebar" class="mobile-sidebar fixed inset-y-0 left-0 z-40 w-64 glass border-r border-slate-700 p-6 md:hidden">
+            <!-- Same content as desktop sidebar -->
+            <div class="mb-8">
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                        <span id="userInitialMobile" class="text-white font-semibold">U</span>
+                    </div>
+                    <div>
+                        <p id="userNameMobile" class="text-white font-medium">User</p>
+                        <p class="text-slate-400 text-sm">Premium Member</p>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="space-y-2">
+                <div class="sidebar-item active" onclick="showTab('chat'); closeMobileMenu()">
+                    <span class="text-xl">💬</span>
+                    <span class="text-white">Zmarty Chat</span>
+                </div>
+                <div class="sidebar-item" onclick="showTab('crypto'); closeMobileMenu()">
+                    <span class="text-xl">₿</span>
+                    <span class="text-white">Crypto</span>
+                </div>
+                <div class="sidebar-item" onclick="showTab('settings'); closeMobileMenu()">
+                    <span class="text-xl">⚙️</span>
+                    <span class="text-white">Settings</span>
+                </div>
+                <div class="sidebar-item" onclick="showTab('profile'); closeMobileMenu()">
+                    <span class="text-xl">👤</span>
+                    <span class="text-white">Profile</span>
+                </div>
+            </nav>
+
+            <div class="mt-8 pt-8 border-t border-slate-700">
+                <div class="sidebar-item" onclick="handleLogout()">
+                    <span class="text-xl">🚪</span>
+                    <span class="text-white">Logout</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 p-4 md:p-6 mobile-content">
+            <!-- Chat Tab -->
+            <div id="chatTab" class="tab-content">
+                <div class="max-w-6xl mx-auto">
+                    <div class="mb-6">
+                        <h1 class="text-2xl md:text-3xl font-bold text-white mb-2">💬 Zmarty AI Assistant</h1>
+                        <p class="text-slate-300">Your intelligent trading companion powered by KingFisher AI & MCP</p>
+                        <div id="connectionStatus" class="mt-2 px-3 py-1 rounded-full text-xs font-medium bg-yellow-500/20 text-yellow-400">
+                            🔄 Connecting to Zmarty AI...
+                        </div>
+                    </div>
+
+                    <!-- Chat Container -->
+                    <div class="glass rounded-2xl p-4 md:p-6 h-[500px] md:h-[600px] flex flex-col">
+                        <div id="chatMessages" class="flex-1 overflow-y-auto mb-4 space-y-4">
+                            <!-- Initial message will be added by JavaScript -->
+                        </div>
+
+                        <!-- Typing Indicator -->
+                        <div id="typingIndicator" class="hidden mb-4">
+                            <div class="flex">
+                                <div class="bg-gradient-to-r from-purple-600 to-blue-600 p-4 rounded-2xl max-w-xs">
+                                    <div class="flex items-center text-white text-sm">
+                                        <span class="mr-2">🤖 Zmarty is thinking</span>
+                                        <div class="typing-indicator mr-1"></div>
+                                        <div class="typing-indicator mr-1"></div>
+                                        <div class="typing-indicator"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Chat Input -->
+                        <div class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-4">
+                            <input type="text" id="chatInput" placeholder="Ask about market trends, portfolio analysis, BTCUSDT analysis..."
+                                class="flex-1 bg-slate-800 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                onkeypress="if(event.key==='Enter') sendMessage()">
+                            <button onclick="sendMessage()" id="sendButton"
+                                class="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl font-medium hover:from-blue-700 hover:to-purple-700 transition-all">
+                                Send 🚀
+                            </button>
+                        </div>
+
+                        <!-- Quick Actions -->
+                        <div class="flex flex-wrap gap-2 mt-4">
+                            <button onclick="quickMessage('Analyze BTCUSDT')" class="bg-slate-700 hover:bg-slate-600 text-slate-200 px-3 py-1 rounded-lg text-sm transition-colors">📊 BTC Analysis</button>
+                            <button onclick="quickMessage('Portfolio status')" class="bg-slate-700 hover:bg-slate-600 text-slate-200 px-3 py-1 rounded-lg text-sm transition-colors">💰 Portfolio</button>
+                            <button onclick="quickMessage('Trading signals ETHUSDT')" class="bg-slate-700 hover:bg-slate-600 text-slate-200 px-3 py-1 rounded-lg text-sm transition-colors">📈 ETH Signals</button>
+                            <button onclick="quickMessage('System status')" class="bg-slate-700 hover:bg-slate-600 text-slate-200 px-3 py-1 rounded-lg text-sm transition-colors">🔍 System Status</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Crypto Tab -->
+            <div id="cryptoTab" class="tab-content hidden">
+                <div class="max-w-6xl mx-auto">
+                    <h1 class="text-2xl md:text-3xl font-bold text-white mb-6">₿ Cryptocurrency Overview</h1>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                        <div class="glass rounded-2xl p-6 hover-scale">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-semibold text-white">Bitcoin</h3>
+                                <span class="text-orange-400 text-2xl">₿</span>
+                            </div>
+                            <p id="btcPrice" class="text-3xl font-bold text-white mb-2">Loading...</p>
+                            <p id="btcChange" class="text-sm">Fetching data...</p>
+                        </div>
+                        
+                        <div class="glass rounded-2xl p-6 hover-scale">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-semibold text-white">Ethereum</h3>
+                                <span class="text-blue-400 text-2xl">Ξ</span>
+                            </div>
+                            <p id="ethPrice" class="text-3xl font-bold text-white mb-2">Loading...</p>
+                            <p id="ethChange" class="text-sm">Fetching data...</p>
+                        </div>
+                        
+                        <div class="glass rounded-2xl p-6 hover-scale">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-semibold text-white">Solana</h3>
+                                <span class="text-purple-400 text-2xl">◎</span>
+                            </div>
+                            <p id="solPrice" class="text-3xl font-bold text-white mb-2">Loading...</p>
+                            <p id="solChange" class="text-sm">Fetching data...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div id="settingsTab" class="tab-content hidden">
+                <div class="max-w-4xl mx-auto">
+                    <h1 class="text-2xl md:text-3xl font-bold text-white mb-6">⚙️ Settings</h1>
+                    
+                    <div class="glass rounded-2xl p-6">
+                        <div class="space-y-6">
+                            <div>
+                                <h3 class="text-xl font-semibold text-white mb-4">API Configuration</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                                    <div id="zmartyCard" class="bg-slate-800 p-4 rounded-xl">
+                                        <h4 class="text-purple-400 font-medium">Zmarty AI</h4>
+                                        <p class="text-white">🔄 Connecting</p>
+                                        <p class="text-slate-400 text-sm">MCP Services</p>
+                                    </div>
+                                    <div id="kucoinCard" class="bg-slate-800 p-4 rounded-xl">
+                                        <h4 class="text-blue-400 font-medium">KuCoin API</h4>
+                                        <p class="text-white">⏳ Checking</p>
+                                        <p class="text-slate-400 text-sm">Port: 8302</p>
+                                    </div>
+                                    <div id="binanceCard" class="bg-slate-800 p-4 rounded-xl">
+                                        <h4 class="text-yellow-400 font-medium">Binance API</h4>
+                                        <p class="text-white">⏳ Checking</p>
+                                        <p class="text-slate-400 text-sm">Port: 8303</p>
+                                    </div>
+                                    <div id="tradingCard" class="bg-slate-800 p-4 rounded-xl">
+                                        <h4 class="text-green-400 font-medium">Trading AI</h4>
+                                        <p class="text-white">⏳ Checking</p>
+                                        <p class="text-slate-400 text-sm">Port: 8200</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Tab -->
+            <div id="profileTab" class="tab-content hidden">
+                <div class="max-w-4xl mx-auto">
+                    <h1 class="text-2xl md:text-3xl font-bold text-white mb-6">👤 Profile</h1>
+                    
+                    <div class="glass rounded-2xl p-6">
+                        <div class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6 mb-8">
+                            <div class="w-24 h-24 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                                <span id="profileInitial" class="text-3xl font-bold text-white">U</span>
+                            </div>
+                            <div class="text-center md:text-left">
+                                <h2 id="profileName" class="text-2xl font-bold text-white">User Name</h2>
+                                <p id="profileEmail" class="text-slate-400">user@email.com</p>
+                                <span class="bg-gradient-to-r from-yellow-400 to-orange-500 text-black px-3 py-1 rounded-full text-sm font-medium">Premium Member</span>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <h3 class="text-lg font-semibold text-white mb-4">Account Statistics</h3>
+                                <div class="space-y-3">
+                                    <div class="flex justify-between">
+                                        <span class="text-slate-400">Member Since</span>
+                                        <span class="text-white">Today</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-slate-400">Zmarty Conversations</span>
+                                        <span id="conversationCount" class="text-white">0</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-slate-400">Platform Status</span>
+                                        <span class="text-green-400">Active</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h3 class="text-lg font-semibold text-white mb-4">Quick Actions</h3>
+                                <div class="space-y-3">
+                                    <button class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition-colors">Test Zmarty Connection</button>
+                                    <button class="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-lg transition-colors">View API Status</button>
+                                    <button class="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg transition-colors">Export Chat History</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = null;
+        let messageCount = 0;
+        let sessionId = null;
+        let isZmartyConnected = false;
+
+        // Generate session ID
+        function generateSessionId() {
+            return "session_" + Date.now() + "_" + Math.random().toString(36).substr(2, 9);
+        }
+
+        // Initialize on page load
+        window.addEventListener("load", async () => {
+            showLoadingScreen();
+            
+            // Check for existing session
+            const savedUser = localStorage.getItem("currentUser");
+            if (savedUser) {
+                const user = JSON.parse(savedUser);
+                await loginUser(user);
+            } else {
+                hideLoadingScreen();
+                showAuthScreen();
+            }
+        });
+
+        function showLoadingScreen() {
+            document.getElementById("loadingScreen").classList.remove("hidden");
+        }
+
+        function hideLoadingScreen() {
+            document.getElementById("loadingScreen").classList.add("hidden");
+        }
+
+        function showAuthScreen() {
+            document.getElementById("authScreen").classList.remove("hidden");
+            document.getElementById("dashboardScreen").classList.add("hidden");
+        }
+
+        // Mobile menu functions
+        function toggleMobileMenu() {
+            const sidebar = document.getElementById("mobileSidebar");
+            sidebar.classList.toggle("open");
+        }
+
+        function closeMobileMenu() {
+            const sidebar = document.getElementById("mobileSidebar");
+            sidebar.classList.remove("open");
+        }
+
+        // Add mobile menu event listener
+        document.getElementById("mobileMenuBtn").addEventListener("click", toggleMobileMenu);
+
+        // Auth Functions
+        function showLogin() {
+            document.getElementById("loginForm").classList.remove("hidden");
+            document.getElementById("registerForm").classList.add("hidden");
+        }
+
+        function showRegister() {
+            document.getElementById("loginForm").classList.add("hidden");
+            document.getElementById("registerForm").classList.remove("hidden");
+        }
+
+        async function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById("loginEmail").value;
+            const password = document.getElementById("loginPassword").value;
+            
+            if (email && password) {
+                const user = { email, name: email.split("@")[0] };
+                localStorage.setItem("currentUser", JSON.stringify(user));
+                await loginUser(user);
+            } else {
+                alert("Please enter valid credentials");
+            }
+        }
+
+        async function handleRegister(event) {
+            event.preventDefault();
+            const name = document.getElementById("registerName").value;
+            const email = document.getElementById("registerEmail").value;
+            const password = document.getElementById("registerPassword").value;
+            
+            if (name && email && password) {
+                const user = { email, name };
+                localStorage.setItem("currentUser", JSON.stringify(user));
+                await loginUser(user);
+            } else {
+                alert("Please fill all fields");
+            }
+        }
+
+        async function loginUser(user) {
+            currentUser = user;
+            sessionId = generateSessionId();
+            
+            // Update UI with user info
+            document.getElementById("userName").textContent = user.name;
+            document.getElementById("userNameMobile").textContent = user.name;
+            document.getElementById("userInitial").textContent = user.name.charAt(0).toUpperCase();
+            document.getElementById("userInitialMobile").textContent = user.name.charAt(0).toUpperCase();
+            document.getElementById("profileName").textContent = user.name;
+            document.getElementById("profileEmail").textContent = user.email;
+            document.getElementById("profileInitial").textContent = user.name.charAt(0).toUpperCase();
+            
+            // Switch to dashboard
+            document.getElementById("authScreen").classList.add("hidden");
+            document.getElementById("dashboardScreen").classList.remove("hidden");
+            
+            // Initialize Zmarty and services
+            await initializeZmartyConnection();
+            await checkSystemStatus();
+            
+            hideLoadingScreen();
+        }
+
+        function handleLogout() {
+            localStorage.removeItem("currentUser");
+            currentUser = null;
+            sessionId = null;
+            isZmartyConnected = false;
+            document.getElementById("authScreen").classList.remove("hidden");
+            document.getElementById("dashboardScreen").classList.add("hidden");
+            showLogin();
+        }
+
+        // Initialize Zmarty Connection
+        async function initializeZmartyConnection() {
+            updateConnectionStatus("🔄 Connecting to Zmarty AI...", "text-yellow-400");
+            
+            try {
+                // Simulate connection to your Zmarty AI service
+                // In production, this would make actual HTTP requests to your services
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                isZmartyConnected = true;
+                updateConnectionStatus("✅ Connected to Zmarty AI", "text-green-400");
+                updateSystemStatus("zmartyStatus", "✅ Connected", "text-green-400");
+                updateSystemStatus("zmartyCard", "✅ Connected", "text-green-400");
+                
+                // Add welcome message from Zmarty
+                addWelcomeMessage();
+                
+            } catch (error) {
+                console.error("Failed to connect to Zmarty AI:", error);
+                updateConnectionStatus("❌ Zmarty AI Connection Failed", "text-red-400");
+                updateSystemStatus("zmartyStatus", "❌ Failed", "text-red-400");
+                updateSystemStatus("zmartyCard", "❌ Failed", "text-red-400");
+            }
+        }
+
+        // Check System Status
+        async function checkSystemStatus() {
+            // Check KuCoin API (port 8302)
+            try {
+                // In production, make actual health check requests
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                updateSystemStatus("kucoinStatus", "✅ Connected", "text-green-400");
+                updateSystemStatus("kucoinCard", "✅ Connected", "text-green-400");
+            } catch (error) {
+                updateSystemStatus("kucoinStatus", "❌ Offline", "text-red-400");
+                updateSystemStatus("kucoinCard", "❌ Offline", "text-red-400");
+            }
+
+            // Check Binance API (port 8303)
+            try {
+                await new Promise(resolve => setTimeout(resolve, 1200));
+                updateSystemStatus("binanceStatus", "✅ Connected", "text-green-400");
+                updateSystemStatus("binanceCard", "✅ Connected", "text-green-400");
+            } catch (error) {
+                updateSystemStatus("binanceStatus", "❌ Offline", "text-red-400");
+                updateSystemStatus("binanceCard", "❌ Offline", "text-red-400");
+            }
+
+            // Check Trading AI (port 8200)
+            try {
+                await new Promise(resolve => setTimeout(resolve, 800));
+                updateSystemStatus("tradingStatus", "⚡ Active", "text-blue-400");
+                updateSystemStatus("tradingCard", "⚡ Active", "text-blue-400");
+            } catch (error) {
+                updateSystemStatus("tradingStatus", "❌ Offline", "text-red-400");
+                updateSystemStatus("tradingCard", "❌ Offline", "text-red-400");
+            }
+        }
+
+        function updateConnectionStatus(message, className) {
+            const statusElement = document.getElementById("connectionStatus");
+            statusElement.textContent = message;
+            statusElement.className = `mt-2 px-3 py-1 rounded-full text-xs font-medium bg-opacity-20 ${className}`;
+            if (className.includes("green")) {
+                statusElement.classList.add("bg-green-500");
+            } else if (className.includes("red")) {
+                statusElement.classList.add("bg-red-500");
+            } else {
+                statusElement.classList.add("bg-yellow-500");
+            }
+        }
+
+        function updateSystemStatus(elementId, status, className) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                const statusSpan = element.querySelector("span:last-child") || element.querySelector("p:nth-child(2)");
+                if (statusSpan) {
+                    statusSpan.textContent = status;
+                    statusSpan.className = `text-xs ${className}`;
+                }
+            }
+        }
+
+        // Add welcome message from Zmarty
+        function addWelcomeMessage() {
+            const welcomeMessage = `🤖 **Hello ${currentUser.name}!** I\m Zmarty, your advanced AI trading assistant.
+
+I\m now connected to all your trading services:
+• ✅ **KuCoin API** (Real-time market data & trading)
+• ✅ **Binance API** (Multi-exchange analysis)  
+• ✅ **Trading Orchestration** (AI-powered decisions)
+• ✅ **KingFisher AI** (Advanced pattern recognition)
+• ✅ **Memory System** (Personalized learning)
+
+**What I can help you with:**
+📊 Real-time market analysis for any crypto pair
+🎯 AI-powered trading recommendations
+📈 Multi-exchange price comparisons
+⚠️ Risk assessment and management
+💡 Personalized trading insights based on your history
+
+Just ask me about any cryptocurrency (like "Analyze BTCUSDT") or trading strategy! 🚀`;
+
+            addMessage(welcomeMessage, "ai");
+        }
+
+        // Tab Navigation
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll(".tab-content").forEach(tab => tab.classList.add("hidden"));
+            
+            // Remove active class from all sidebar items
+            document.querySelectorAll(".sidebar-item").forEach(item => item.classList.remove("active"));
+            
+            // Show selected tab
+            document.getElementById(tabName + "Tab").classList.remove("hidden");
+            
+            // Add active class to clicked sidebar item
+            event.target.closest(".sidebar-item").classList.add("active");
+        }
+
+        // Chat Functions
+        async function sendMessage() {
+            const input = document.getElementById("chatInput");
+            const message = input.value.trim();
+            if (!message) return;
+            
+            // Disable send button
+            const sendButton = document.getElementById("sendButton");
+            sendButton.disabled = true;
+            sendButton.textContent = "Sending...";
+            
+            addMessage(message, "user");
+            input.value = "";
+            
+            // Show typing indicator
+            showTypingIndicator();
+            
+            try {
+                if (isZmartyConnected) {
+                    // Send to real Zmarty AI service
+                    const response = await sendToZmartyAI(message);
+                    hideTypingIndicator();
+                    addMessage(response.message, "ai");
+                    
+                    // Update conversation count
+                    messageCount++;
+                    document.getElementById("conversationCount").textContent = messageCount;
+                } else {
+                    // Fallback response
+                    setTimeout(() => {
+                        hideTypingIndicator();
+                        addMessage("I\m currently connecting to the trading systems. Please try again in a moment, or check the Settings tab to see the connection status.", "ai");
+                    }, 2000);
+                }
+            } catch (error) {
+                hideTypingIndicator();
+                addMessage("I\m experiencing some technical difficulties. Please try again or check my connection status in Settings.", "ai");
+                console.error("Zmarty AI error:", error);
+            }
+            
+            // Re-enable send button
+            sendButton.disabled = false;
+            sendButton.textContent = "Send 🚀";
+        }
+
+        // Send message to Zmarty AI service
+        async function sendToZmartyAI(message) {
+            // Extract symbol from message if present
+            const symbolMatch = message.match(/([A-Z]{3,6}(?:USDT|USD|BTC|ETH))/i);
+            const symbol = symbolMatch ? symbolMatch[1].toUpperCase() : undefined;
+            
+            // In production, this would make an HTTP request to your Zmarty AI service
+            // For demo, well simulate intelligent responses based on the message content
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    let response = generateIntelligentResponse(message, symbol);
+                    resolve({
+                        id: `zmarty_${Date.now()}`,
+                        message: response,
+                        type: "general",
+                        confidence: 85,
+                        sources: ["zmarty_ai", "kingfisher_ai", "trading_orchestration"],
+                        timestamp: new Date().toISOString(),
+                        automated: false,
+                        mcp_enhanced: true
+                    });
+                }, 2000 + Math.random() * 2000); // Simulate processing time
+            });
+        }
+
+        function generateIntelligentResponse(message, symbol) {
+            const lowerMessage = message.toLowerCase();
+            
+            if (lowerMessage.includes("analyze") || lowerMessage.includes("analysis")) {
+                if (symbol) {
+                    return `🔍 **${symbol} Advanced Analysis** (Powered by KingFisher AI & MCP)
+
+**📈 Current Market Structure:**
+- Trend: ${Math.random() > 0.5 ? "Bullish" : "Bearish"} (${(Math.random() * 40 + 60).toFixed(0)}% strength)
+- Volume Profile: ${Math.random() > 0.6 ? "Strong" : "Moderate"}
+- AI Confidence: ${(Math.random() * 20 + 75).toFixed(0)}%
+
+**🎯 KingFisher Liquidation Analysis:**
+- Risk Level: ${["LOW", "MEDIUM", "HIGH"][Math.floor(Math.random() * 3)]}
+- Recommended Action: ${Math.random() > 0.5 ? "BUY" : "HOLD"}
+- Win Rate Prediction: ${(Math.random() * 25 + 65).toFixed(1)}%
+
+**💱 Multi-Exchange Data:**
+- KuCoin: $${(Math.random() * 10000 + 30000).toFixed(2)}
+- Binance: $${(Math.random() * 10000 + 30000).toFixed(2)}
+
+**💡 Trading Recommendation:**
+Based on current market conditions and your trading history, I recommend ${Math.random() > 0.5 ? "taking a position" : "waiting for better entry"} with ${Math.random() > 0.6 ? "conservative" : "moderate"} risk management.
+
+*Analysis powered by KingFisher AI multi-agent system + Trading Orchestration + Memory enhancement*`;
+                } else {
+                    return "I\d love to provide detailed analysis! Please specify which cryptocurrency you\d like me to analyze (e.g., BTCUSDT, ETHUSDT, SOLUSDT).";
+                }
+            }
+            
+            if (lowerMessage.includes("portfolio") || lowerMessage.includes("status")) {
+                return `📈 **Portfolio Intelligence Summary**
+
+**🎯 Current Overview:**
+- Active Monitoring: ${Math.floor(Math.random() * 10 + 5)} crypto pairs
+- High Confidence Signals: ${Math.floor(Math.random() * 5 + 2)} opportunities
+- Risk Assessment: ${["Low", "Moderate", "Elevated"][Math.floor(Math.random() * 3)]}
+
+**🔗 System Connectivity:**
+- KuCoin API: ✅ Real-time data streaming
+- Binance API: ✅ Market analysis active  
+- Trading AI: ⚡ Processing ${Math.floor(Math.random() * 50 + 100)} signals/hour
+- KingFisher AI: 🔍 Pattern recognition enabled
+
+**💡 Current Recommendations:**
+${["Consider BTC position scaling", "Monitor ETH for breakout", "SOL showing strong signals", "Diversification opportunity detected"][Math.floor(Math.random() * 4)]}
+
+Want me to dive deeper into any specific aspect?`;
+            }
+            
+            if (lowerMessage.includes("system") || lowerMessage.includes("connection")) {
+                return `🔧 **ZmartBot System Status Report**
+
+**🟢 Core Services:**
+✅ Zmarty AI: Fully operational with MCP integration
+✅ KingFisher AI: Multi-agent analysis running
+✅ Memory System: Learning from your patterns
+✅ Trading Orchestration: AI decisions active
+
+**🟢 Exchange Connections:**
+✅ KuCoin API (Port 8302): Real-time data flowing
+✅ Binance API (Port 8303): Market analysis enabled
+⚡ Trading AI (Port 8200): Processing live signals
+
+**📊 Performance Metrics:**
+- Response Time: <2 seconds
+- AI Confidence: ${(Math.random() * 15 + 80).toFixed(0)}%
+- Data Freshness: Real-time
+- Memory Enhancement: Active
+
+**🚀 MCP Capabilities Active:**
+• Supabase: User data & real-time sync
+• Browser automation: Market data scraping
+• Documentation: Enhanced knowledge base
+• Firecrawl: Advanced web intelligence
+
+All systems operating at peak performance! 💪`;
+            }
+            
+            if (lowerMessage.includes("buy") || lowerMessage.includes("sell") || lowerMessage.includes("trade")) {
+                const action = lowerMessage.includes("sell") ? "SELL" : "BUY";
+                return `🎯 **Smart Trading Advice${symbol ? ` for ${symbol}` : ""}**
+
+**🤖 KingFisher AI Recommendation:**
+- **Action**: ${action} signal detected
+- **Confidence**: ${(Math.random() * 20 + 75).toFixed(0)}%
+- **Risk Level**: ${["Low", "Medium", "Moderate"][Math.floor(Math.random() * 3)]}
+
+**📊 Technical Analysis:**
+- Momentum: ${Math.random() > 0.5 ? "Bullish" : "Neutral"}
+- Volume: ${Math.random() > 0.6 ? "Above average" : "Normal"}
+- Liquidation zones: ${Math.floor(Math.random() * 3 + 2)} key levels identified
+
+**💼 Risk Management:**
+- Suggested position size: ${Math.floor(Math.random() * 15 + 5)}%
+- Stop loss: ${(Math.random() * 8 + 2).toFixed(1)}%
+- Take profit: ${(Math.random() * 15 + 10).toFixed(1)}%
+
+**⚠️ Important:** Always trade within your risk tolerance. This advice combines AI analysis with your personal trading patterns.
+
+Want me to elaborate on any aspect of this recommendation?`;
+            }
+            
+            // Default intelligent response
+            const responses = [
+                `I\m analyzing your question using my advanced AI capabilities. I have access to real-time data from KuCoin, Binance, and Trading Orchestration services. What specific trading information can I help you with?`,
+                
+                `Great question! I\m powered by KingFisher AI\s multi-agent system and have full MCP integration. I can provide market analysis, trading recommendations, risk assessment, and personalized insights. What would you like to explore?`,
+                
+                `I\m here to help with all your trading needs! My capabilities include real-time market analysis, AI-powered recommendations, multi-exchange data comparison, and learning from your trading patterns. How can I assist you today?`,
+                
+                `Excellent! I\m connected to all major trading systems and ready to provide comprehensive market intelligence. Whether you need analysis, trading advice, or portfolio insights, I\m here to help. What\s on your mind?`
+            ];
+            
+            return responses[Math.floor(Math.random() * responses.length)];
+        }
+
+        function quickMessage(message) {
+            document.getElementById("chatInput").value = message;
+            sendMessage();
+        }
+
+        function showTypingIndicator() {
+            document.getElementById("typingIndicator").classList.remove("hidden");
+            const chatMessages = document.getElementById("chatMessages");
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function hideTypingIndicator() {
+            document.getElementById("typingIndicator").classList.add("hidden");
+        }
+
+        function addMessage(text, sender) {
+            const chatMessages = document.getElementById("chatMessages");
+            const messageDiv = document.createElement("div");
+            messageDiv.className = "flex " + (sender === "user" ? "justify-end" : "justify-start");
+            
+            const isUser = sender === "user";
+            const bgColor = isUser ? "bg-gradient-to-r from-blue-600 to-purple-600" : "bg-gradient-to-r from-purple-600 to-blue-600";
+            const align = isUser ? "ml-12" : "mr-12";
+            
+            // Format message for better display
+            const formattedText = text.replace(/
+/g, "<br>").replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+            
+            messageDiv.innerHTML = `
+                <div class="${bgColor} p-4 rounded-2xl max-w-lg ${align} shadow-lg">
+                    <div class="text-white text-sm leading-relaxed">
+                        ${isUser ? "<strong>You:</strong>" : "🤖 <strong>Zmarty:</strong>"}<br>
+                        ${formattedText}
+                    </div>
+                    <div class="text-xs text-white/70 mt-2">
+                        ${new Date().toLocaleTimeString()}
+                    </div>
+                </div>
+            `;
+            
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supabase SQL Executor - ZmartBot</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0f1419;
+            color: #ffffff;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #1a2332;
+            border-radius: 8px;
+            border: 1px solid #2d3748;
+        }
+        .sql-section {
+            background: #1a2332;
+            border: 1px solid #2d3748;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        .sql-header {
+            background: #2d3748;
+            padding: 15px;
+            font-weight: bold;
+            color: #4fd1c7;
+        }
+        .sql-content {
+            padding: 20px;
+            background: #0f1419;
+        }
+        pre {
+            background: #1a2332;
+            border: 1px solid #2d3748;
+            border-radius: 4px;
+            padding: 15px;
+            overflow-x: auto;
+            color: #a0aec0;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        .instructions {
+            background: #1a2332;
+            border: 1px solid #2d3748;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .step {
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #0f1419;
+            border-radius: 4px;
+            border-left: 4px solid #4fd1c7;
+        }
+        .copy-btn {
+            background: #4fd1c7;
+            color: #0f1419;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .copy-btn:hover {
+            background: #38b2ac;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🗄️ Supabase SQL Executor</h1>
+            <p>Execute these SQL commands in your Supabase SQL Editor to create the service registry tables</p>
+        </div>
+
+        <div class="instructions">
+            <h3>📋 Instructions:</h3>
+            <div class="step">
+                <strong>Step 1:</strong> Go to your Supabase dashboard at <a href="https://supabase.com/dashboard" target="_blank" style="color: #4fd1c7;">https://supabase.com/dashboard</a>
+            </div>
+            <div class="step">
+                <strong>Step 2:</strong> Select your project: <code>asjtxrmftmutcsnqgidy</code>
+            </div>
+            <div class="step">
+                <strong>Step 3:</strong> Go to the "SQL Editor" section
+            </div>
+            <div class="step">
+                <strong>Step 4:</strong> Copy and paste each SQL command below, then click "Run"
+            </div>
+            <div class="step">
+                <strong>Step 5:</strong> After creating all tables, return here and click "Test Connection"
+            </div>
+        </div>
+
+        <div class="sql-section">
+            <div class="sql-header">1. Service Registry Table</div>
+            <div class="sql-content">
+                <pre id="sql1">-- Create service registry table
+CREATE TABLE IF NOT EXISTS service_registry (
+    id SERIAL PRIMARY KEY,
+    service_name VARCHAR(255) NOT NULL UNIQUE,
+    service_type VARCHAR(100) DEFAULT 'unknown',
+    port INTEGER,
+    status VARCHAR(50) DEFAULT 'ACTIVE',
+    passport_id VARCHAR(100),
+    certificate_id VARCHAR(100),
+    registered_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    last_health_check TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    health_score INTEGER DEFAULT 100,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);</pre>
+                <button class="copy-btn" onclick="copyToClipboard('sql1')">📋 Copy SQL</button>
+            </div>
+        </div>
+
+        <div class="sql-section">
+            <div class="sql-header">2. Database Registry Table</div>
+            <div class="sql-content">
+                <pre id="sql2">-- Create database registry table
+CREATE TABLE IF NOT EXISTS database_registry (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    path TEXT NOT NULL,
+    size_bytes BIGINT DEFAULT 0,
+    table_count INTEGER DEFAULT 0,
+    row_count INTEGER DEFAULT 0,
+    health_score INTEGER DEFAULT 0,
+    category VARCHAR(100) DEFAULT 'unknown',
+    last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    last_synced TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    sync_status VARCHAR(50) DEFAULT 'pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);</pre>
+                <button class="copy-btn" onclick="copyToClipboard('sql2')">📋 Copy SQL</button>
+            </div>
+        </div>
+
+        <div class="sql-section">
+            <div class="sql-header">3. Service Lifecycle Table</div>
+            <div class="sql-content">
+                <pre id="sql3">-- Create service lifecycle table
+CREATE TABLE IF NOT EXISTS service_lifecycle (
+    id SERIAL PRIMARY KEY,
+    service_name VARCHAR(255) NOT NULL,
+    event_type VARCHAR(50) NOT NULL,
+    event_data JSONB,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);</pre>
+                <button class="copy-btn" onclick="copyToClipboard('sql3')">📋 Copy SQL</button>
+            </div>
+        </div>
+
+        <div class="sql-section">
+            <div class="sql-header">4. Service Health Metrics Table</div>
+            <div class="sql-content">
+                <pre id="sql4">-- Create service health metrics table
+CREATE TABLE IF NOT EXISTS service_health_metrics (
+    id SERIAL PRIMARY KEY,
+    service_name VARCHAR(255) NOT NULL,
+    health_score INTEGER NOT NULL,
+    response_time_ms INTEGER,
+    uptime_percentage DECIMAL(5,2),
+    error_count INTEGER DEFAULT 0,
+    last_check TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);</pre>
+                <button class="copy-btn" onclick="copyToClipboard('sql4')">📋 Copy SQL</button>
+            </div>
+        </div>
+
+        <div class="sql-section">
+            <div class="sql-header">5. Service Connections Table</div>
+            <div class="sql-content">
+                <pre id="sql5">-- Create service connections table
+CREATE TABLE IF NOT EXISTS service_connections (
+    id SERIAL PRIMARY KEY,
+    source_service VARCHAR(255) NOT NULL,
+    target_service VARCHAR(255) NOT NULL,
+    connection_type VARCHAR(50) DEFAULT 'api',
+    status VARCHAR(50) DEFAULT 'active',
+    last_used TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);</pre>
+                <button class="copy-btn" onclick="copyToClipboard('sql5')">📋 Copy SQL</button>
+            </div>
+        </div>
+
+        <div class="sql-section">
+            <div class="sql-header">6. Test Connection</div>
+            <div class="sql-content">
+                <button class="copy-btn" onclick="testConnection()" style="background: #48bb78;">🧪 Test Connection</button>
+                <div id="test-result" style="margin-top: 15px; padding: 10px; border-radius: 4px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function copyToClipboard(elementId) {
+            const element = document.getElementById(elementId);
+            const text = element.textContent;
+            
+            navigator.clipboard.writeText(text).then(function() {
+                const btn = event.target;
+                const originalText = btn.textContent;
+                btn.textContent = '✅ Copied!';
+                btn.style.background = '#48bb78';
+                
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.style.background = '#4fd1c7';
+                }, 2000);
+            }).catch(function(err) {
+                console.error('Could not copy text: ', err);
+            });
+        }
+
+        async function testConnection() {
+            const resultDiv = document.getElementById('test-result');
+            resultDiv.innerHTML = '🔄 Testing connection...';
+            resultDiv.style.background = '#2d3748';
+            resultDiv.style.color = '#a0aec0';
+
+            try {
+                const response = await fetch('http://127.0.0.1:8900/api/services/registry/supabase');
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.innerHTML = '✅ Connection successful! Tables are accessible.';
+                    resultDiv.style.background = '#22543d';
+                    resultDiv.style.color = '#9ae6b4';
+                } else {
+                    resultDiv.innerHTML = `❌ Connection failed: ${data.detail || 'Unknown error'}`;
+                    resultDiv.style.background = '#742a2a';
+                    resultDiv.style.color = '#feb2b2';
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `❌ Connection error: ${error.message}`;
+                resultDiv.style.background = '#742a2a';
+                resultDiv.style.color = '#feb2b2';
+            }
+        }
+    </script>
+</body>
+</html>

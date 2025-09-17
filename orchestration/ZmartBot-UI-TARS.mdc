@@ -1,0 +1,77 @@
+[Service]
+name = "zmart-ui-tars"
+tier = "worker"
+port = 8308
+health_url = "http://127.0.0.1:8308/health"
+
+[Lifecycle]
+start = "docker compose -f services/ui-tars/compose.ui-tars.yml up -d"
+stop  = "docker compose -f services/ui-tars/compose.ui-tars.yml down"
+
+[Capabilities]
+tasks = ["tradingview_capture","kingfisher_capture","dashboard_smoke"]
+
+[Schedules]
+tradingview = "*/15 * * * *"
+kingfisher  = "*/30 * * * *"
+dashboard   = "*/10 * * * *"
+
+[FailFast]
+require_service = false
+
+## 🤖 MCP (Model Context Protocol) Integration
+
+### **MCP Server Pairing**
+**Status**: ✅ **ACTIVE** - UI TARS Task Automation MCP Server  
+**MCP Server**: `ui-tars`  
+**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`  
+**URL**: `http://127.0.0.1:8308`  
+**Type**: HTTP MCP Server  
+
+### **MCP Integration Features**
+- **Task Automation**: Automated UI task execution and management
+- **TradingView Integration**: Automated TradingView chart capture and analysis
+- **KingFisher Integration**: Automated KingFisher image capture and processing
+- **Dashboard Monitoring**: Automated dashboard smoke testing and validation
+- **Scheduled Operations**: Cron-based task scheduling and execution
+
+### **MCP Pairing Benefits**
+- **Automated Trading**: Automated trading signal capture and analysis
+- **UI Automation**: Automated UI testing and validation
+- **Task Scheduling**: Automated task execution and monitoring
+- **Integration Testing**: Automated integration testing across services
+- **Performance Monitoring**: Automated performance testing and validation
+
+### **MCP Usage Examples**
+```bash
+# Test UI TARS MCP connection
+curl -X GET http://127.0.0.1:8308/health
+
+# Execute automated task via MCP
+curl -X POST http://127.0.0.1:8308/tasks/execute \
+  -H "Content-Type: application/json" \
+  -d '{"task": "tradingview_capture", "symbol": "BTCUSDT"}'
+```
+
+### **MCP Integration Status**
+- **Connection**: ✅ Active and responsive
+- **Health Check**: ✅ Passing
+- **Task Execution**: ✅ Operational
+- **Scheduling**: ✅ Cron jobs active
+- **Monitoring**: ✅ Real-time status updatesis
+- **UI Automation**: Automated UI testing and validation for ZmartBot dashboards
+- **Image Processing**: Automated capture and processing of trading charts
+- **Performance Monitoring**: Automated performance testing and validation
+- **Workflow Integration**: Seamless integration with ZmartBot orchestration
+
+### **MCP Usage Guidelines**
+- **Task Scheduling**: Use for scheduling automated trading and UI tasks
+- **Chart Capture**: Automated capture of TradingView and KingFisher charts
+- **Dashboard Testing**: Automated smoke testing of ZmartBot dashboards
+- **Performance**: Optimized for high-frequency task execution
+- **Reliability**: Robust error handling and task recovery mechanisms
+
+### **Scheduled Task Integration**
+- **TradingView Capture**: `*/15 * * * *` - Every 15 minutes
+- **KingFisher Capture**: `*/30 * * * *` - Every 30 minutes  
+- **Dashboard Testing**: `*/10 * * * *` - Every 10 minutes

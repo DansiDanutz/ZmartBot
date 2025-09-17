@@ -1,4 +1,9 @@
+
+## Description
+Core service component of the ZmartBot ecosystem providing essential functionality.
+
 @agent: SymbolValidator
+
 
 # MySymbolsDatabase - Core Trading Portfolio Database
 
@@ -1022,4 +1027,16 @@ The MySymbolsDatabase serves as the **single source of truth** for all trading s
 description:
 globs:
 alwaysApply: true
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Database connectivity**
+- ✅ **Master Orchestration integration**
+
+
 ---
+
+## Triggers
+- **API endpoint requests**
+- **Database events**
+- **Workflow transitions**

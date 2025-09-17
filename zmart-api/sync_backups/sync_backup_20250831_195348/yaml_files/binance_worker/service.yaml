@@ -1,0 +1,17 @@
+service_name: binance
+service_type: worker
+port: 8303
+description: "Binance API integration and trading worker service"
+status: ACTIVE
+passport_id: ZMBT-SRV-20250826-7070E8
+registered_at: "2025-08-26"
+health_url: "http://localhost:8303/health"
+start_cmd: "python3 binance_worker.py"
+stop_cmd: "pkill -f 'binance_worker.py'"
+dependencies:
+  - zmart-api
+  - database
+tags:
+  - trading
+  - binance
+  - worker

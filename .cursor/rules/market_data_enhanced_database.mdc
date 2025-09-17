@@ -1,3 +1,8 @@
+
+## Description
+Core service component of the ZmartBot ecosystem providing essential functionality.
+
+
 # Market Data Enhanced Database - Database Structure MDC File
 
 ## 1. Database Overview
@@ -355,4 +360,16 @@ This database represents the **historical memory** of the ZmartBot ecosystem, de
 description:
 globs:
 alwaysApply: true
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Database connectivity**
+- ✅ **Complete MDC documentation**
+
+
 ---
+
+
+## Triggers
+- **API endpoint requests**
+- **Database events**

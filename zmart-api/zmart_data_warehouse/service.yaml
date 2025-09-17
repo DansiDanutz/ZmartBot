@@ -1,0 +1,19 @@
+endpoints:
+  health: http://127.0.0.1:8015/health
+  metrics: http://127.0.0.1:8015/metrics
+  ready: http://127.0.0.1:8015/ready
+lifecycle:
+  health_check: curl -f http://127.0.0.1:8015/health
+  start_command: null
+  stop_command: pkill -f zmart_data_warehouse
+metadata:
+  description: Service zmart_data_warehouse
+  owner: zmartbot
+  version: 1.0.0
+service:
+  level: 3
+  name: zmart_data_warehouse
+  passport: ZMBT-DB-20250826-325722
+  port: 8015
+  status: ACTIVE
+  type: backend

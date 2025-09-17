@@ -1,0 +1,30 @@
+service_name: port-conflict-analyzer
+service_type: infrastructure
+version: 1.0.0
+owner: zmartbot
+description: Port conflict analyzer
+port: 8997
+passport_id: ZMBT-PCA-20250831-Y8Z9A1
+status: ACTIVE
+registered_at: '2025-08-31'
+health_url: http://localhost:8997/health
+start_cmd: python3 port_conflict_analyzer_server.py --port 8997
+stop_cmd: pkill -f 'port_conflict_analyzer_server.py'
+dependencies:
+- zmart-api
+tags:
+- infrastructure
+- port-conflict-analyzer
+lifecycle:
+  startup_grace_seconds: 30
+  shutdown_timeout_seconds: 15
+  health_check_interval: 30
+monitoring:
+  metrics_endpoint: /metrics
+  logs_path: logs/port-conflict-analyzer.log
+  dashboard_url: http://localhost:8997/dashboard
+security:
+  cors_enabled: true
+  token_required: false
+  scopes:
+  - infrastructure

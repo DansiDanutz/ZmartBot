@@ -1,0 +1,309 @@
+
+## Description
+Core service component of the ZmartBot ecosystem providing essential functionality.
+
+## 🤖 MCP (Model Context Protocol) Integration
+
+### **MCP Server Pairing**
+**Status**: ✅ **ACTIVE** - StopStartCycle MCP Integration
+**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
+**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
+**Integration Type**: Multi-MCP Service Integration
+
+### **MCP Integration Features**
+- **Claude Code Integration**: AI-powered lifecycle management and service orchestration
+- **Memory Gateway**: Persistent lifecycle state and service metadata
+- **UI Automation**: Automated lifecycle monitoring and health checks
+- **Figma Integration**: Lifecycle dashboard design and UI management
+- **Supabase Integration**: Cloud-based lifecycle analytics and reporting
+
+### **MCP Integration Benefits**
+- **AI-Powered Lifecycle**: Intelligent service lifecycle management and orchestration
+- **Persistent State**: Lifecycle process state and service metadata storage
+- **Automated Monitoring**: Real-time lifecycle progress and error detection
+- **Visual Dashboard**: Lifecycle process visualization and status tracking
+- **Cloud Analytics**: Lifecycle performance metrics and optimization insights
+
+### **MCP Usage Examples**
+```bash
+# Health check via MCP
+curl -X GET "http://127.0.0.1:8000/health" \
+  -H "Content-Type: application/json"
+
+# Lifecycle management via MCP
+curl -X POST "http://127.0.0.1:8000/lifecycle" \
+  -H "Content-Type: application/json" \
+  -d '{"action": "stopstart", "services": ["all"]}'
+```
+
+### **MCP Status**
+- **Claude Code**: ✅ Active - AI-powered lifecycle management
+- **ByteRover**: ✅ Active - Persistent lifecycle state management
+- **UI TARS**: ✅ Active - Automated lifecycle monitoring
+- **Figma**: ✅ Active - Lifecycle dashboard design
+- **Supabase**: ✅ Active - Cloud-based lifecycle analytics
+
+---
+
+# StopStartCycle.mdc
+> Type: rule | Version: 1.2.0 | Owner: zmartbot | Purpose: Service Lifecycle Management
+
+**CRITICAL UPDATE**: Added ZmartBot Service Architecture Workflow (Rule 1.X) - FORBIDDEN TO IGNORE
+
+## 🚨 **MANDATORY ZMARTBOT SERVICE ARCHITECTURE WORKFLOW**
+
+### **CRITICAL WORKFLOW RULES (FORBIDDEN TO IGNORE)**
+
+**🚨 NO EXCUSES - SYSTEM WILL CRASH IF RULES ARE BROKEN**
+
+#### **Rule 1: Service Definition**
+- **ANY .py file = SERVICE**: Every Python file represents a service
+- **MANDATORY MDC**: Every .py file MUST have an associated MDC file
+- **SERVICE COUNTING**: All .py files are counted as services in the system
+
+#### **Rule 2: Port Assignment (Port Manager)**
+- **MANDATORY PORT**: Any service trying to connect with other services MUST receive a port from Port Manager
+- **PORT DATABASE**: Port Manager assigns a FREE port different from stored ports in database
+- **CONFLICT RESOLUTION**: If port conflict detected, Port Manager automatically assigns new port
+- **PERSISTENCE**: Port assignment is persisted and cannot be changed without proper workflow
+
+#### **Rule 3: Passport Assignment (Integration Gate)**
+- **PASSPORT REQUIRED**: Service MUST receive a passport to be integrated into system
+- **MDC PREREQUISITE**: Passport is ONLY accepted if the .py service has an associated MDC file
+- **UNIQUE IDENTITY**: Each passport provides unique service identity and tracking
+- **SYSTEM ACCESS**: Without passport, service cannot access system resources
+
+#### **Rule 4: Registration Process (Final Stage)**
+- **IMPLEMENTATION COMPLETE**: Service implementation must be done and tested
+- **STRICT WORKFLOW**: Registration follows mandatory steps documented in StopStartCycle and NewService MDC files
+- **SUCCESS VERIFICATION**: Only proceed if all steps are successful
+- **FINAL STATUS**: Successful registration upgrades service to "REGISTERED" status
+
+#### **Rule 5: Registered Service Requirements**
+- **AUTOMATIC STARTUP**: All registered services MUST start when system starts
+- **ORCHESTRATION INTEGRATION**: Services must be assigned to Master Orchestration Agent
+- **SAFE LEARNING**: Services must integrate with Master Orchestration Agent's safe learning system
+- **CERTIFICATION**: All registered services MUST receive a certificate from Certification Service
+
+#### **Rule 6: System Protection**
+- **PROTECTION TRIGGER**: After registration completion, Protection Service is automatically triggered
+- **DELETION PREVENTION**: Protection Service prevents registered services from being deleted
+- **SYSTEM INTEGRITY**: Protection ensures system architecture integrity
+
+### **SERVICE DEFINITION & COUNTING**
+**EVERY PYTHON FILE = SERVICE**: Any `.py` file that exists in the system has an MDC file associated with it and is counted as a service. This is the foundation of ZmartBot's service architecture.
+
+### **MANDATORY INTEGRATION WORKFLOW**
+1. **Service Discovery**: Python file with MDC documentation exists
+2. **Passport Assignment**: Service receives unique Passport ID for system integration
+3. **Registration Process**: Follow StopStartCycle and NewService patterns
+4. **Orchestration Integration**: Service included in startup sequence
+5. **Master Orchestration Connection**: Service connects to Master Orchestration Agent
+6. **System Protection**: Service protected by System Protection Service
+7. **Certification**: Service receives production certificate via Certification Service
+
+### **VERIFICATION REQUIREMENTS**
+**CRITICAL**: Every service must have:
+- ✅ Passport ID assigned
+- ✅ Port assignment
+- ✅ Orchestration integration
+- ✅ Master Orchestration Agent listing
+- ✅ System Protection Service protection
+- ✅ Production certificate
+- ✅ Complete MDC documentation
+- ✅ Health monitoring active
+
+### **SERVICE COUNTING METHODOLOGY**
+- **Total Services**: All Python files with MDC documentation
+- **Active Services**: Services currently running in the system
+- **Registered Services**: Services with passports and orchestration integration
+- **Certified Services**: Services with ALL certification requirements completed
+
+**CRITICAL**: This workflow is the foundation of ZmartBot architecture and is FORBIDDEN to be ignored under any circumstances.
+
+## Preconditions
+- `service.yaml` present and validated
+- Port assigned and persisted in PortManager DB
+- Local health checks pass
+
+## Step 3 — STOP Gate (`STOP_zmartbot.sh`)  **CRITICAL**
+1. Freeze discovery watcher.
+2. Validate `/health` across current services.
+3. Create system snapshot (DB, registry, graph, logs, PIDs).
+4. Run Process Reaper for ZmartBot scope only.
+5. Confirm port assignment for new service is persisted.
+
+**Command**
+```bash
+bash infra/scripts/STOP_zmartbot.sh \
+  --db "/Users/dansidanutz/Desktop/ZmartBot/infra/port_manager.db" \
+  --snapshot-dir "/Users/dansidanutz/Desktop/ZmartBot/infra/snapshots" \
+  --scope "zmart-*"
+```
+
+## Step 4 — Service Registry Registration (8610)
+
+**Command**
+
+```bash
+python -m infra.registry_client.register \
+  --registry "http://localhost:8610" \
+  --manifest "/Users/dansidanutz/Desktop/ZmartBot/services/{{SERVICE_NAME}}/service.yaml" \
+  --port-db "/Users/dansidanutz/Desktop/ZmartBot/infra/port_manager.db"
+```
+
+## Step 4.1 — Passport Service Registration (8620) **MANDATORY**
+
+**Purpose**: Issue unique Passport ID for approved service and register in Passport Service.
+
+**Command**
+
+```bash
+# Register service with Passport Service for Passport ID assignment
+curl -X POST "http://localhost:8620/api/passport/register" \
+  -H "Authorization: Bearer passport-admin-token" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "service_name": "{{SERVICE_NAME}}",
+    "service_type": "{{SERVICE_TYPE}}",
+    "port": {{PORT}},
+    "health_endpoint": "/health",
+    "description": "{{DESCRIPTION}}",
+    "version": "{{VERSION}}",
+    "dependencies": {{DEPENDENCIES}},
+    "tags": {{TAGS}},
+    "metadata": {{METADATA}}
+  }'
+
+# Alternative: Direct database registration (if API unavailable)
+sqlite3 /Users/dansidanutz/Desktop/ZmartBot/data/passport_registry.db \
+  "INSERT INTO passport_registry (
+    passport_id, service_name, service_type, port, status, 
+    registered_at, activated_at, description, metadata, created_by
+  ) VALUES (
+    'ZMBT-{{TYPE}}-$(date +%Y%m%d)-$(openssl rand -hex 3 | tr '[:lower:]' '[:upper:]')',
+    '{{SERVICE_NAME}}', '{{SERVICE_TYPE}}', {{PORT}}, 'ACTIVE',
+    datetime('now'), datetime('now'), '{{DESCRIPTION}}', '{{METADATA}}', 'system'
+  );"
+
+# Verify Passport ID assignment
+curl -s "http://localhost:8620/api/passport/services/{{SERVICE_NAME}}" | jq '.passport_id'
+
+# CRITICAL: Service registration is NOT complete until Passport ID is assigned
+echo "✅ Passport ID assigned successfully for {{SERVICE_NAME}}"
+```
+
+## Step 5 — MDC Documentation Generation (AI)
+
+**Command**
+
+```bash
+python -m infra.mdc_agent.generate \
+  --service "{{SERVICE_NAME}}" \
+  --manifest "/Users/dansidanutz/Desktop/ZmartBot/services/{{SERVICE_NAME}}/service.yaml" \
+  --output ".cursor/rules/services/{{SERVICE_NAME}}.mdc" \
+  --llm "gpt5,fallback=gpt4"
+```
+
+## Step 6A — Orchestration Integration (CRITICAL)
+
+**Command**
+
+```bash
+# Add service to orchestration system
+bash infra/orchestration/orchestrationstart.sh add "{{SERVICE_NAME}}"
+
+# Verify service is properly registered in orchestration
+bash infra/orchestration/orchestrationstart.sh status | grep "{{SERVICE_NAME}}"
+```
+
+## Step 6B — Orchestration Startup Test
+
+**Command**
+
+```bash
+# Test starting the service via orchestration
+bash infra/orchestration/orchestrationstart.sh start "{{SERVICE_NAME}}"
+
+# Verify service started successfully
+sleep 5
+bash infra/orchestration/orchestrationstart.sh health "{{SERVICE_NAME}}"
+```
+
+## Step 7 — Health & Readiness Verification
+
+**Command**
+
+```bash
+# Comprehensive health check via orchestration
+bash infra/orchestration/orchestrationstart.sh health "{{SERVICE_NAME}}"
+
+# Manual health verification (fallback)
+python -m infra.health.wait_ready --service "{{SERVICE_NAME}}" --timeout 60
+python -m infra.tests.smoke --service "{{SERVICE_NAME}}"
+
+# Verify service appears in orchestration status
+bash infra/orchestration/orchestrationstart.sh status | grep "{{SERVICE_NAME}}"
+```
+
+## Step 8 — Production Activation
+
+**Command**
+
+```bash
+python -m infra.orchestrator.activate --service "{{SERVICE_NAME}}"
+python -m infra.snapshot.update-baseline --service "{{SERVICE_NAME}}"
+```
+
+## Rollback
+
+If any step fails:
+
+```bash
+# Stop service via orchestration
+bash infra/orchestration/orchestrationstart.sh stop "{{SERVICE_NAME}}" || true
+
+# Isolate service from orchestration
+python -m infra.orchestrator.isolate --service "{{SERVICE_NAME}}" || true
+
+# Restore system snapshot
+python -m infra.snapshot.restore --latest-success
+
+# Unfreeze discovery
+python -m infra.discovery.unfreeze
+
+# Verify orchestration status
+bash infra/orchestration/orchestrationstart.sh status | grep "{{SERVICE_NAME}}"
+
+exit 1
+```
+
+## Success Criteria
+
+* Service listed in Registry with correct metadata
+* Service properly integrated into orchestration system
+* `/ready` returns 200; smoke tests pass
+* Service appears in orchestration status as "running"
+* Service health check passes via orchestration
+* Snapshot baseline updated
+* Orchestrator shows the service in the active graph
+
+description:
+globs:
+alwaysApply: true
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Database connectivity**
+- ✅ **Valid service passport**
+- ✅ **Complete MDC documentation**
+- ✅ **Health endpoint implementation**
+
+
+---
+
+
+## Triggers
+- **API endpoint requests**
+- **File system changes**
+- **Database events**

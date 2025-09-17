@@ -1,0 +1,2352 @@
+[
+  {
+    "symbol": "BTC",
+    "symbol_name": "Bitcoin",
+    "birth_date": "2009-01-03",
+    "total_days": 5385,
+    "band_coefficients": {
+      "0.0-0.1": {
+        "days_in_band": 175,
+        "percentage": 3.25,
+        "coefficient": 0.001625,
+        "band_center": 0.05,
+        "lower": 0.0,
+        "upper": 0.1
+      },
+      "0.1-0.2": {
+        "days_in_band": 550,
+        "percentage": 10.21,
+        "coefficient": 0.01532,
+        "band_center": 0.15000000000000002,
+        "lower": 0.1,
+        "upper": 0.2
+      },
+      "0.2-0.3": {
+        "days_in_band": 680,
+        "percentage": 12.63,
+        "coefficient": 0.031569,
+        "band_center": 0.25,
+        "lower": 0.2,
+        "upper": 0.3
+      },
+      "0.3-0.4": {
+        "days_in_band": 850,
+        "percentage": 15.78,
+        "coefficient": 0.055246,
+        "band_center": 0.35,
+        "lower": 0.3,
+        "upper": 0.4
+      },
+      "0.4-0.5": {
+        "days_in_band": 1100,
+        "percentage": 20.43,
+        "coefficient": 0.091922,
+        "band_center": 0.45,
+        "lower": 0.4,
+        "upper": 0.5
+      },
+      "0.5-0.6": {
+        "days_in_band": 1180,
+        "percentage": 21.91,
+        "coefficient": 0.12052,
+        "band_center": 0.55,
+        "lower": 0.5,
+        "upper": 0.6
+      },
+      "0.6-0.7": {
+        "days_in_band": 700,
+        "percentage": 13.0,
+        "coefficient": 0.084494,
+        "band_center": 0.6499999999999999,
+        "lower": 0.6,
+        "upper": 0.7
+      },
+      "0.7-0.8": {
+        "days_in_band": 380,
+        "percentage": 7.06,
+        "coefficient": 0.052925,
+        "band_center": 0.75,
+        "lower": 0.7,
+        "upper": 0.8
+      },
+      "0.8-0.9": {
+        "days_in_band": 200,
+        "percentage": 3.71,
+        "coefficient": 0.031569,
+        "band_center": 0.8500000000000001,
+        "lower": 0.8,
+        "upper": 0.9
+      },
+      "0.9-1.0": {
+        "days_in_band": 85,
+        "percentage": 1.58,
+        "coefficient": 0.014995,
+        "band_center": 0.95,
+        "lower": 0.9,
+        "upper": 1.0
+      }
+    },
+    "weighted_risk_score": 0.5002,
+    "current_risk_level": 0.55,
+    "current_risk_band": "0.5-0.6",
+    "confidence_level": 9,
+    "data_type": "estimated",
+    "calculated_at": "2025-09-14T22:51:01.263443"
+  },
+  {
+    "symbol": "ETH",
+    "symbol_name": "Ethereum",
+    "birth_date": "2015-07-30",
+    "total_days": 3699,
+    "band_coefficients": {
+      "0.0-0.1": {
+        "days_in_band": 110,
+        "percentage": 2.97,
+        "coefficient": 0.001487,
+        "band_center": 0.05,
+        "lower": 0.0,
+        "upper": 0.1
+      },
+      "0.1-0.2": {
+        "days_in_band": 369,
+        "percentage": 9.98,
+        "coefficient": 0.014964,
+        "band_center": 0.15000000000000002,
+        "lower": 0.1,
+        "upper": 0.2
+      },
+      "0.2-0.3": {
+        "days_in_band": 480,
+        "percentage": 12.98,
+        "coefficient": 0.032441,
+        "band_center": 0.25,
+        "lower": 0.2,
+        "upper": 0.3
+      },
+      "0.3-0.4": {
+        "days_in_band": 591,
+        "percentage": 15.98,
+        "coefficient": 0.055921,
+        "band_center": 0.35,
+        "lower": 0.3,
+        "upper": 0.4
+      },
+      "0.4-0.5": {
+        "days_in_band": 739,
+        "percentage": 19.98,
+        "coefficient": 0.089903,
+        "band_center": 0.45,
+        "lower": 0.4,
+        "upper": 0.5
+      },
+      "0.5-0.6": {
+        "days_in_band": 813,
+        "percentage": 21.98,
+        "coefficient": 0.120884,
+        "band_center": 0.55,
+        "lower": 0.5,
+        "upper": 0.6
+      },
+      "0.6-0.7": {
+        "days_in_band": 480,
+        "percentage": 12.98,
+        "coefficient": 0.084347,
+        "band_center": 0.6499999999999999,
+        "lower": 0.6,
+        "upper": 0.7
+      },
+      "0.7-0.8": {
+        "days_in_band": 258,
+        "percentage": 6.97,
+        "coefficient": 0.052311,
+        "band_center": 0.75,
+        "lower": 0.7,
+        "upper": 0.8
+      },
+      "0.8-0.9": {
+        "days_in_band": 147,
+        "percentage": 3.97,
+        "coefficient": 0.033779,
+        "band_center": 0.8500000000000001,
+        "lower": 0.8,
+        "upper": 0.9
+      },
+      "0.9-1.0": {
+        "days_in_band": 73,
+        "percentage": 1.97,
+        "coefficient": 0.018748,
+        "band_center": 0.95,
+        "lower": 0.9,
+        "upper": 1.0
+      }
+    },
+    "weighted_risk_score": 0.5048,
+    "current_risk_level": 0.55,
+    "current_risk_band": "0.5-0.6",
+    "confidence_level": 7,
+    "data_type": "estimated",
+    "calculated_at": "2025-09-14T22:51:01.263668"
+  },
+  {
+    "symbol": "BNB",
+    "symbol_name": "Binance Coin",
+    "birth_date": "2017-07-14",
+    "total_days": 2984,
+    "band_coefficients": {
+      "0.0-0.1": {
+        "days_in_band": 89,
+        "percentage": 2.98,
+        "coefficient": 0.001491,
+        "band_center": 0.05,
+        "lower": 0.0,
+        "upper": 0.1
+      },
+      "0.1-0.2": {
+        "days_in_band": 298,
+        "percentage": 9.99,
+        "coefficient": 0.01498,
+        "band_center": 0.15000000000000002,
+        "lower": 0.1,
+        "upper": 0.2
+      },
+      "0.2-0.3": {
+        "days_in_band": 387,
+        "percentage": 12.97,
+        "coefficient": 0.032423,
+        "band_center": 0.25,
+        "lower": 0.2,
+        "upper": 0.3
+      },
+      "0.3-0.4": {
+        "days_in_band": 477,
+        "percentage": 15.99,
+        "coefficient": 0.055948,
+        "band_center": 0.35,
+        "lower": 0.3,
+        "upper": 0.4
+      },
+      "0.4-0.5": {
+        "days_in_band": 596,
+        "percentage": 19.97,
+        "coefficient": 0.089879,
+        "band_center": 0.45,
+        "lower": 0.4,
+        "upper": 0.5
+      },
+      "0.5-0.6": {
+        "days_in_band": 656,
+        "percentage": 21.98,
+        "coefficient": 0.120912,
+        "band_center": 0.55,
+        "lower": 0.5,
+        "upper": 0.6
+      },
+      "0.6-0.7": {
+        "days_in_band": 387,
+        "percentage": 12.97,
+        "coefficient": 0.0843,
+        "band_center": 0.6499999999999999,
+        "lower": 0.6,
+        "upper": 0.7
+      },
+      "0.7-0.8": {
+        "days_in_band": 208,
+        "percentage": 6.97,
+        "coefficient": 0.052279,
+        "band_center": 0.75,
+        "lower": 0.7,
+        "upper": 0.8
+      },
+      "0.8-0.9": {
+        "days_in_band": 119,
+        "percentage": 3.99,
+        "coefficient": 0.033897,
+        "band_center": 0.8500000000000001,
+        "lower": 0.8,
+        "upper": 0.9
+      },
+      "0.9-1.0": {
+        "days_in_band": 59,
+        "percentage": 1.98,
+        "coefficient": 0.018784,
+        "band_center": 0.95,
+        "lower": 0.9,
+        "upper": 1.0
+      }
+    },
+    "weighted_risk_score": 0.5049,
+    "current_risk_level": 0.55,
+    "current_risk_band": "0.5-0.6",
+    "confidence_level": 7,
+    "data_type": "estimated",
+    "calculated_at": "2025-09-14T22:51:01.263829"
+  },
+  {
+    "symbol": "SOL",
+    "symbol_name": "Solana",
+    "birth_date": "2020-03-16",
+    "total_days": 2008,
+    "band_coefficients": {
+      "0.0-0.1": {
+        "days_in_band": 60,
+        "percentage": 2.99,
+        "coefficient": 0.001494,
+        "band_center": 0.05,
+        "lower": 0.0,
+        "upper": 0.1
+      },
+      "0.1-0.2": {
+        "days_in_band": 200,
+        "percentage": 9.96,
+        "coefficient": 0.01494,
+        "band_center": 0.15000000000000002,
+        "lower": 0.1,
+        "upper": 0.2
+      },
+      "0.2-0.3": {
+        "days_in_band": 261,
+        "percentage": 13.0,
+        "coefficient": 0.032495,
+        "band_center": 0.25,
+        "lower": 0.2,
+        "upper": 0.3
+      },
+      "0.3-0.4": {
+        "days_in_band": 321,
+        "percentage": 15.99,
+        "coefficient": 0.055951,
+        "band_center": 0.35,
+        "lower": 0.3,
+        "upper": 0.4
+      },
+      "0.4-0.5": {
+        "days_in_band": 401,
+        "percentage": 19.97,
+        "coefficient": 0.089866,
+        "band_center": 0.45,
+        "lower": 0.4,
+        "upper": 0.5
+      },
+      "0.5-0.6": {
+        "days_in_band": 441,
+        "percentage": 21.96,
+        "coefficient": 0.120792,
+        "band_center": 0.55,
+        "lower": 0.5,
+        "upper": 0.6
+      },
+      "0.6-0.7": {
+        "days_in_band": 261,
+        "percentage": 13.0,
+        "coefficient": 0.084487,
+        "band_center": 0.6499999999999999,
+        "lower": 0.6,
+        "upper": 0.7
+      },
+      "0.7-0.8": {
+        "days_in_band": 140,
+        "percentage": 6.97,
+        "coefficient": 0.052291,
+        "band_center": 0.75,
+        "lower": 0.7,
+        "upper": 0.8
+      },
+      "0.8-0.9": {
+        "days_in_band": 80,
+        "percentage": 3.98,
+        "coefficient": 0.033865,
+        "band_center": 0.8500000000000001,
+        "lower": 0.8,
+        "upper": 0.9
+      },
+      "0.9-1.0": {
+        "days_in_band": 40,
+        "percentage": 1.99,
+        "coefficient": 0.018924,
+        "band_center": 0.95,
+        "lower": 0.9,
+        "upper": 1.0
+      }
+    },
+    "weighted_risk_score": 0.5051,
+    "current_risk_level": 0.55,
+    "current_risk_band": "0.5-0.6",
+    "confidence_level": 7,
+    "data_type": "estimated",
+    "calculated_at": "2025-09-14T22:51:01.263972"
+  },
+  {
+    "symbol": "XRP",
+    "symbol_name": "Ripple",
+    "birth_date": "2013-08-04",
+    "total_days": 4424,
+    "band_coefficients": {
+      "0.0-0.1": {
+        "days_in_band": 132,
+        "percentage": 2.98,
+        "coefficient": 0.001492,
+        "band_center": 0.05,
+        "lower": 0.0,
+        "upper": 0.1
+      },
+      "0.1-0.2": {
+        "days_in_band": 442,
+        "percentage": 9.99,
+        "coefficient": 0.014986,
+        "band_center": 0.15000000000000002,
+        "lower": 0.1,
+        "upper": 0.2
+      },
+      "0.2-0.3": {
+        "days_in_band": 575,
+        "percentage": 13.0,
+        "coefficient": 0.032493,
+        "band_center": 0.25,
+        "lower": 0.2,
+        "upper": 0.3
+      },
+      "0.3-0.4": {
+        "days_in_band": 707,
+        "percentage": 15.98,
+        "coefficient": 0.055934,
+        "band_center": 0.35,
+        "lower": 0.3,
+        "upper": 0.4
+      },
+      "0.4-0.5": {
+        "days_in_band": 884,
+        "percentage": 19.98,
+        "coefficient": 0.089919,
+        "band_center": 0.45,
+        "lower": 0.4,
+        "upper": 0.5
+      },
+      "0.5-0.6": {
+        "days_in_band": 973,
+        "percentage": 21.99,
+        "coefficient": 0.120965,
+        "band_center": 0.55,
+        "lower": 0.5,
+        "upper": 0.6
+      },
+      "0.6-0.7": {
+        "days_in_band": 575,
+        "percentage": 13.0,
+        "coefficient": 0.084482,
+        "band_center": 0.6499999999999999,
+        "lower": 0.6,
+        "upper": 0.7
+      },
+      "0.7-0.8": {
+        "days_in_band": 309,
+        "percentage": 6.98,
+        "coefficient": 0.052385,
+        "band_center": 0.75,
+        "lower": 0.7,
+        "upper": 0.8
+      },
+      "0.8-0.9": {
+        "days_in_band": 176,
+        "percentage": 3.98,
+        "coefficient": 0.033816,
+        "band_center": 0.8500000000000001,
+        "lower": 0.8,
+        "upper": 0.9
+      },
+      "0.9-1.0": {
+        "days_in_band": 88,
+        "percentage": 1.99,
+        "coefficient": 0.018897,
+        "band_center": 0.95,
+        "lower": 0.9,
+        "upper": 1.0
+      }
+    },
+    "weighted_risk_score": 0.5054,
+    "current_risk_level": 0.55,
+    "current_risk_band": "0.5-0.6",
+    "confidence_level": 7,
+    "data_type": "estimated",
+    "calculated_at": "2025-09-14T22:51:01.264110"
+  },
+  {
+    "symbol": "ADA",
+    "symbol_name": "Cardano",
+    "birth_date": "2017-09-29",
+    "total_days": 2907,
+    "band_coefficients": {
+      "0.0-0.1": {
+        "days_in_band": 87,
+        "percentage": 2.99,
+        "coefficient": 0.001496,
+        "band_center": 0.05,
+        "lower": 0.0,
+        "upper": 0.1
+      },
+      "0.1-0.2": {
+        "days_in_band": 290,
+        "percentage": 9.98,
+        "coefficient": 0.014964,
+        "band_center": 0.15000000000000002,
+        "lower": 0.1,
+        "upper": 0.2
+      },
+      "0.2-0.3": {
+        "days_in_band": 377,
+        "percentage": 12.97,
+        "coefficient": 0.032422,
+        "band_center": 0.25,
+        "lower": 0.2,
+        "upper": 0.3
+      },
+      "0.3-0.4": {
+        "days_in_band": 465,
+        "percentage": 16.0,
+        "coefficient": 0.055986,
+        "band_center": 0.35,
+        "lower": 0.3,
+        "upper": 0.4
+      },
+      "0.4-0.5": {
+        "days_in_band": 581,
+        "percentage": 19.99,
+        "coefficient": 0.089938,
+        "band_center": 0.45,
+        "lower": 0.4,
+        "upper": 0.5
+      },
+      "0.5-0.6": {
+        "days_in_band": 639,
+        "percentage": 21.98,
+        "coefficient": 0.120898,
+        "band_center": 0.55,
+        "lower": 0.5,
+        "upper": 0.6
+      },
+      "0.6-0.7": {
+        "days_in_band": 377,
+        "percentage": 12.97,
+        "coefficient": 0.084297,
+        "band_center": 0.6499999999999999,
+        "lower": 0.6,
+        "upper": 0.7
+      },
+      "0.7-0.8": {
+        "days_in_band": 203,
+        "percentage": 6.98,
+        "coefficient": 0.052374,
+        "band_center": 0.75,
+        "lower": 0.7,
+        "upper": 0.8
+      },
+      "0.8-0.9": {
+        "days_in_band": 116,
+        "percentage": 3.99,
+        "coefficient": 0.033918,
+        "band_center": 0.8500000000000001,
+        "lower": 0.8,
+        "upper": 0.9
+      },
+      "0.9-1.0": {
+        "days_in_band": 58,
+        "percentage": 2.0,
+        "coefficient": 0.018954,
+        "band_center": 0.95,
+        "lower": 0.9,
+        "upper": 1.0
+      }
+    },
+    "weighted_risk_score": 0.5052,
+    "current_risk_level": 0.55,
+    "current_risk_band": "0.5-0.6",
+    "confidence_level": 7,
+    "data_type": "estimated",
+    "calculated_at": "2025-09-14T22:51:01.264251"
+  },
+  {
+    "symbol": "AVAX",
+    "symbol_name": "Avalanche",
+    "birth_date": "2020-09-21",
+    "total_days": 1819,
+    "band_coefficients": {
+      "0.0-0.1": {
+        "days_in_band": 54,
+        "percentage": 2.97,
+        "coefficient": 0.001484,
+        "band_center": 0.05,
+        "lower": 0.0,
+        "upper": 0.1
+      },
+      "0.1-0.2": {
+        "days_in_band": 181,
+        "percentage": 9.95,
+        "coefficient": 0.014926,
+        "band_center": 0.15000000000000002,
+        "lower": 0.1,
+        "upper": 0.2
+      },
+      "0.2-0.3": {
+        "days_in_band": 236,
+        "percentage": 12.97,
+        "coefficient": 0.032435,
+        "band_center": 0.25,
+        "lower": 0.2,
+        "upper": 0.3
+      },
+      "0.3-0.4": {
+        "days_in_band": 291,
+        "percentage": 16.0,
+        "coefficient": 0.055992,
+        "band_center": 0.35,
+        "lower": 0.3,
+        "upper": 0.4
+      },
+      "0.4-0.5": {
+        "days_in_band": 363,
+        "percentage": 19.96,
+        "coefficient": 0.089802,
+        "band_center": 0.45,
+        "lower": 0.4,
+        "upper": 0.5
+      },
+      "0.5-0.6": {
+        "days_in_band": 400,
+        "percentage": 21.99,
+        "coefficient": 0.120946,
+        "band_center": 0.55,
+        "lower": 0.5,
+        "upper": 0.6
+      },
+      "0.6-0.7": {
+        "days_in_band": 236,
+        "percentage": 12.97,
+        "coefficient": 0.084332,
+        "band_center": 0.6499999999999999,
+        "lower": 0.6,
+        "upper": 0.7
+      },
+      "0.7-0.8": {
+        "days_in_band": 127,
+        "percentage": 6.98,
+        "coefficient": 0.052364,
+        "band_center": 0.75,
+        "lower": 0.7,
+        "upper": 0.8
+      },
+      "0.8-0.9": {
+        "days_in_band": 72,
+        "percentage": 3.96,
+        "coefficient": 0.033645,
+        "band_center": 0.8500000000000001,
+        "lower": 0.8,
+        "upper": 0.9
+      },
+      "0.9-1.0": {
+        "days_in_band": 36,
+        "percentage": 1.98,
+        "coefficient": 0.018802,
+        "band_center": 0.95,
+        "lower": 0.9,
+        "upper": 1.0
+      }
+    },
+    "weighted_risk_score": 0.5047,
+    "current_risk_level": 0.55,
+    "current_risk_band": "0.5-0.6",
+    "confidence_level": 7,
+    "data_type": "estimated",
+    "calculated_at": "2025-09-14T22:51:01.264452"
+  },
+  {
+    "symbol": "DOGE",
+    "symbol_name": "Dogecoin",
+    "birth_date": "2013-12-06",
+    "total_days": 4300,
+    "band_coefficients": {
+      "0.0-0.1": {
+        "days_in_band": 129,
+        "percentage": 3.0,
+        "coefficient": 0.0015,
+        "band_center": 0.05,
+        "lower": 0.0,
+        "upper": 0.1
+      },
+      "0.1-0.2": {
+        "days_in_band": 430,
+        "percentage": 10.0,
+        "coefficient": 0.015,
+        "band_center": 0.15000000000000002,
+        "lower": 0.1,
+        "upper": 0.2
+      },
+      "0.2-0.3": {
+        "days_in_band": 559,
+        "percentage": 13.0,
+        "coefficient": 0.0325,
+        "band_center": 0.25,
+        "lower": 0.2,
+        "upper": 0.3
+      },
+      "0.3-0.4": {
+        "days_in_band": 688,
+        "percentage": 16.0,
+        "coefficient": 0.056,
+        "band_center": 0.35,
+        "lower": 0.3,
+        "upper": 0.4
+      },
+      "0.4-0.5": {
+        "days_in_band": 860,
+        "percentage": 20.0,
+        "coefficient": 0.09,
+        "band_center": 0.45,
+        "lower": 0.4,
+        "upper": 0.5
+      },
+      "0.5-0.6": {
+        "days_in_band": 946,
+        "percentage": 22.0,
+        "coefficient": 0.121,
+        "band_center": 0.55,
+        "lower": 0.5,
+        "upper": 0.6
+      },
+      "0.6-0.7": {
+        "days_in_band": 559,
+        "percentage": 13.0,
+        "coefficient": 0.0845,
+        "band_center": 0.6499999999999999,
+        "lower": 0.6,
+        "upper": 0.7
+      },
+      "0.7-0.8": {
+        "days_in_band": 301,
+        "percentage": 7.0,
+        "coefficient": 0.0525,
+        "band_center": 0.75,
+        "lower": 0.7,
+        "upper": 0.8
+      },
+      "0.8-0.9": {
+        "days_in_band": 172,
+        "percentage": 4.0,
+        "coefficient": 0.034,
+        "band_center": 0.8500000000000001,
+        "lower": 0.8,
+        "upper": 0.9
+      },
+      "0.9-1.0": {
+        "days_in_band": 86,
+        "percentage": 2.0,
+        "coefficient": 0.019,
+        "band_center": 0.95,
+        "lower": 0.9,
+        "upper": 1.0
+      }
+    },
+    "weighted_risk_score": 0.506,
+    "current_risk_level": 0.55,
+    "current_risk_band": "0.5-0.6",
+    "confidence_level": 7,
+    "data_type": "estimated",
+    "calculated_at": "2025-09-14T22:51:01.264866"
+  },
+  {
+    "symbol": "DOT",
+    "symbol_name": "Polkadot",
+    "birth_date": "2020-08-19",
+    "total_days": 1852,
+    "band_coefficients": {
+      "0.0-0.1": {
+        "days_in_band": 55,
+        "percentage": 2.97,
+        "coefficient": 0.001485,
+        "band_center": 0.05,
+        "lower": 0.0,
+        "upper": 0.1
+      },
+      "0.1-0.2": {
+        "days_in_band": 185,
+        "percentage": 9.99,
+        "coefficient": 0.014984,
+        "band_center": 0.15000000000000002,
+        "lower": 0.1,
+        "upper": 0.2
+      },
+      "0.2-0.3": {
+        "days_in_band": 240,
+        "percentage": 12.96,
+        "coefficient": 0.032397,
+        "band_center": 0.25,
+        "lower": 0.2,
+        "upper": 0.3
+      },
+      "0.3-0.4": {
+        "days_in_band": 296,
+        "percentage": 15.98,
+        "coefficient": 0.05594,
+        "band_center": 0.35,
+        "lower": 0.3,
+        "upper": 0.4
+      },
+      "0.4-0.5": {
+        "days_in_band": 370,
+        "percentage": 19.98,
+        "coefficient": 0.089903,
+        "band_center": 0.45,
+        "lower": 0.4,
+        "upper": 0.5
+      },
+      "0.5-0.6": {
+        "days_in_band": 407,
+        "percentage": 21.98,
+        "coefficient": 0.120869,
+        "band_center": 0.55,
+        "lower": 0.5,
+        "upper": 0.6
+      },
+      "0.6-0.7": {
+        "days_in_band": 240,
+        "percentage": 12.96,
+        "coefficient": 0.084233,
+        "band_center": 0.6499999999999999,
+        "lower": 0.6,
+        "upper": 0.7
+      },
+      "0.7-0.8": {
+        "days_in_band": 129,
+        "percentage": 6.97,
+        "coefficient": 0.052241,
+        "band_center": 0.75,
+        "lower": 0.7,
+        "upper": 0.8
+      },
+      "0.8-0.9": {
+        "days_in_band": 74,
+        "percentage": 4.0,
+        "coefficient": 0.033963,
+        "band_center": 0.8500000000000001,
+        "lower": 0.8,
+        "upper": 0.9
+      },
+      "0.9-1.0": {
+        "days_in_band": 37,
+        "percentage": 2.0,
+        "coefficient": 0.018979,
+        "band_center": 0.95,
+        "lower": 0.9,
+        "upper": 1.0
+      }
+    },
+    "weighted_risk_score": 0.505,
+    "current_risk_level": 0.55,
+    "current_risk_band": "0.5-0.6",
+    "confidence_level": 7,
+    "data_type": "estimated",
+    "calculated_at": "2025-09-14T22:51:01.265343"
+  },
+  {
+    "symbol": "LINK",
+    "symbol_name": "Chainlink",
+    "birth_date": "2017-09-19",
+    "total_days": 2917,
+    "band_coefficients": {
+      "0.0-0.1": {
+        "days_in_band": 87,
+        "percentage": 2.98,
+        "coefficient": 0.001491,
+        "band_center": 0.05,
+        "lower": 0.0,
+        "upper": 0.1
+      },
+      "0.1-0.2": {
+        "days_in_band": 291,
+        "percentage": 9.98,
+        "coefficient": 0.014964,
+        "band_center": 0.15000000000000002,
+        "lower": 0.1,
+        "upper": 0.2
+      },
+      "0.2-0.3": {
+        "days_in_band": 379,
+        "percentage": 12.99,
+        "coefficient": 0.032482,
+        "band_center": 0.25,
+        "lower": 0.2,
+        "upper": 0.3
+      },
+      "0.3-0.4": {
+        "days_in_band": 466,
+        "percentage": 15.98,
+        "coefficient": 0.055914,
+        "band_center": 0.35,
+        "lower": 0.3,
+        "upper": 0.4
+      },
+      "0.4-0.5": {
+        "days_in_band": 583,
+        "percentage": 19.99,
+        "coefficient": 0.089938,
+        "band_center": 0.45,
+        "lower": 0.4,
+        "upper": 0.5
+      },
+      "0.5-0.6": {
+        "days_in_band": 641,
+        "percentage": 21.97,
+        "coefficient": 0.12086,
+        "band_center": 0.55,
+        "lower": 0.5,
+        "upper": 0.6
+      },
+      "0.6-0.7": {
+        "days_in_band": 379,
+        "percentage": 12.99,
+        "coefficient": 0.084453,
+        "band_center": 0.6499999999999999,
+        "lower": 0.6,
+        "upper": 0.7
+      },
+      "0.7-0.8": {
+        "days_in_band": 204,
+        "percentage": 6.99,
+        "coefficient": 0.052451,
+        "band_center": 0.75,
+        "lower": 0.7,
+        "upper": 0.8
+      },
+      "0.8-0.9": {
+        "days_in_band": 116,
+        "percentage": 3.98,
+        "coefficient": 0.033802,
+        "band_center": 0.8500000000000001,
+        "lower": 0.8,
+        "upper": 0.9
+      },
+      "0.9-1.0": {
+        "days_in_band": 58,
+        "percentage": 1.99,
+        "coefficient": 0.018889,
+        "band_center": 0.95,
+        "lower": 0.9,
+        "upper": 1.0
+      }
+    },
+    "weighted_risk_score": 0.5052,
+    "current_risk_level": 0.55,
+    "current_risk_band": "0.5-0.6",
+    "confidence_level": 7,
+    "data_type": "estimated",
+    "calculated_at": "2025-09-14T22:51:01.265551"
+  },
+  {
+    "symbol": "LTC",
+    "symbol_name": "Litecoin",
+    "birth_date": "2011-10-07",
+    "total_days": 5091,
+    "band_coefficients": {
+      "0.0-0.1": {
+        "days_in_band": 152,
+        "percentage": 2.99,
+        "coefficient": 0.001493,
+        "band_center": 0.05,
+        "lower": 0.0,
+        "upper": 0.1
+      },
+      "0.1-0.2": {
+        "days_in_band": 509,
+        "percentage": 10.0,
+        "coefficient": 0.014997,
+        "band_center": 0.15000000000000002,
+        "lower": 0.1,
+        "upper": 0.2
+      },
+      "0.2-0.3": {
+        "days_in_band": 661,
+        "percentage": 12.98,
+        "coefficient": 0.032459,
+        "band_center": 0.25,
+        "lower": 0.2,
+        "upper": 0.3
+      },
+      "0.3-0.4": {
+        "days_in_band": 814,
+        "percentage": 15.99,
+        "coefficient": 0.055962,
+        "band_center": 0.35,
+        "lower": 0.3,
+        "upper": 0.4
+      },
+      "0.4-0.5": {
+        "days_in_band": 1018,
+        "percentage": 20.0,
+        "coefficient": 0.089982,
+        "band_center": 0.45,
+        "lower": 0.4,
+        "upper": 0.5
+      },
+      "0.5-0.6": {
+        "days_in_band": 1120,
+        "percentage": 22.0,
+        "coefficient": 0.120998,
+        "band_center": 0.55,
+        "lower": 0.5,
+        "upper": 0.6
+      },
+      "0.6-0.7": {
+        "days_in_band": 661,
+        "percentage": 12.98,
+        "coefficient": 0.084394,
+        "band_center": 0.6499999999999999,
+        "lower": 0.6,
+        "upper": 0.7
+      },
+      "0.7-0.8": {
+        "days_in_band": 356,
+        "percentage": 6.99,
+        "coefficient": 0.052445,
+        "band_center": 0.75,
+        "lower": 0.7,
+        "upper": 0.8
+      },
+      "0.8-0.9": {
+        "days_in_band": 203,
+        "percentage": 3.99,
+        "coefficient": 0.033893,
+        "band_center": 0.8500000000000001,
+        "lower": 0.8,
+        "upper": 0.9
+      },
+      "0.9-1.0": {
+        "days_in_band": 101,
+        "percentage": 1.98,
+        "coefficient": 0.018847,
+        "band_center": 0.95,
+        "lower": 0.9,
+        "upper": 1.0
+      }
+    },
+    "weighted_risk_score": 0.5055,
+    "current_risk_level": 0.55,
+    "current_risk_band": "0.5-0.6",
+    "confidence_level": 7,
+    "data_type": "estimated",
+    "calculated_at": "2025-09-14T22:51:01.265737"
+  },
+  {
+    "symbol": "ATOM",
+    "symbol_name": "Cosmos",
+    "birth_date": "2019-03-14",
+    "total_days": 2376,
+    "band_coefficients": {
+      "0.0-0.1": {
+        "days_in_band": 71,
+        "percentage": 2.99,
+        "coefficient": 0.001494,
+        "band_center": 0.05,
+        "lower": 0.0,
+        "upper": 0.1
+      },
+      "0.1-0.2": {
+        "days_in_band": 237,
+        "percentage": 9.97,
+        "coefficient": 0.014962,
+        "band_center": 0.15000000000000002,
+        "lower": 0.1,
+        "upper": 0.2
+      },
+      "0.2-0.3": {
+        "days_in_band": 308,
+        "percentage": 12.96,
+        "coefficient": 0.032407,
+        "band_center": 0.25,
+        "lower": 0.2,
+        "upper": 0.3
+      },
+      "0.3-0.4": {
+        "days_in_band": 380,
+        "percentage": 15.99,
+        "coefficient": 0.055976,
+        "band_center": 0.35,
+        "lower": 0.3,
+        "upper": 0.4
+      },
+      "0.4-0.5": {
+        "days_in_band": 475,
+        "percentage": 19.99,
+        "coefficient": 0.089962,
+        "band_center": 0.45,
+        "lower": 0.4,
+        "upper": 0.5
+      },
+      "0.5-0.6": {
+        "days_in_band": 522,
+        "percentage": 21.97,
+        "coefficient": 0.120833,
+        "band_center": 0.55,
+        "lower": 0.5,
+        "upper": 0.6
+      },
+      "0.6-0.7": {
+        "days_in_band": 308,
+        "percentage": 12.96,
+        "coefficient": 0.084259,
+        "band_center": 0.6499999999999999,
+        "lower": 0.6,
+        "upper": 0.7
+      },
+      "0.7-0.8": {
+        "days_in_band": 166,
+        "percentage": 6.99,
+        "coefficient": 0.052399,
+        "band_center": 0.75,
+        "lower": 0.7,
+        "upper": 0.8
+      },
+      "0.8-0.9": {
+        "days_in_band": 95,
+        "percentage": 4.0,
+        "coefficient": 0.033986,
+        "band_center": 0.8500000000000001,
+        "lower": 0.8,
+        "upper": 0.9
+      },
+      "0.9-1.0": {
+        "days_in_band": 47,
+        "percentage": 1.98,
+        "coefficient": 0.018792,
+        "band_center": 0.95,
+        "lower": 0.9,
+        "upper": 1.0
+      }
+    },
+    "weighted_risk_score": 0.5051,
+    "current_risk_level": 0.55,
+    "current_risk_band": "0.5-0.6",
+    "confidence_level": 7,
+    "data_type": "estimated",
+    "calculated_at": "2025-09-14T22:51:01.266038"
+  },
+  {
+    "symbol": "XTZ",
+    "symbol_name": "Tezos",
+    "birth_date": "2018-06-30",
+    "total_days": 2633,
+    "band_coefficients": {
+      "0.0-0.1": {
+        "days_in_band": 78,
+        "percentage": 2.96,
+        "coefficient": 0.001481,
+        "band_center": 0.05,
+        "lower": 0.0,
+        "upper": 0.1
+      },
+      "0.1-0.2": {
+        "days_in_band": 263,
+        "percentage": 9.99,
+        "coefficient": 0.014983,
+        "band_center": 0.15000000000000002,
+        "lower": 0.1,
+        "upper": 0.2
+      },
+      "0.2-0.3": {
+        "days_in_band": 342,
+        "percentage": 12.99,
+        "coefficient": 0.032472,
+        "band_center": 0.25,
+        "lower": 0.2,
+        "upper": 0.3
+      },
+      "0.3-0.4": {
+        "days_in_band": 421,
+        "percentage": 15.99,
+        "coefficient": 0.055963,
+        "band_center": 0.35,
+        "lower": 0.3,
+        "upper": 0.4
+      },
+      "0.4-0.5": {
+        "days_in_band": 526,
+        "percentage": 19.98,
+        "coefficient": 0.089897,
+        "band_center": 0.45,
+        "lower": 0.4,
+        "upper": 0.5
+      },
+      "0.5-0.6": {
+        "days_in_band": 579,
+        "percentage": 21.99,
+        "coefficient": 0.120946,
+        "band_center": 0.55,
+        "lower": 0.5,
+        "upper": 0.6
+      },
+      "0.6-0.7": {
+        "days_in_band": 342,
+        "percentage": 12.99,
+        "coefficient": 0.084428,
+        "band_center": 0.6499999999999999,
+        "lower": 0.6,
+        "upper": 0.7
+      },
+      "0.7-0.8": {
+        "days_in_band": 184,
+        "percentage": 6.99,
+        "coefficient": 0.052412,
+        "band_center": 0.75,
+        "lower": 0.7,
+        "upper": 0.8
+      },
+      "0.8-0.9": {
+        "days_in_band": 105,
+        "percentage": 3.99,
+        "coefficient": 0.033897,
+        "band_center": 0.8500000000000001,
+        "lower": 0.8,
+        "upper": 0.9
+      },
+      "0.9-1.0": {
+        "days_in_band": 52,
+        "percentage": 1.97,
+        "coefficient": 0.018762,
+        "band_center": 0.95,
+        "lower": 0.9,
+        "upper": 1.0
+      }
+    },
+    "weighted_risk_score": 0.5052,
+    "current_risk_level": 0.55,
+    "current_risk_band": "0.5-0.6",
+    "confidence_level": 7,
+    "data_type": "estimated",
+    "calculated_at": "2025-09-14T22:51:01.266240"
+  },
+  {
+    "symbol": "AAVE",
+    "symbol_name": "Aave",
+    "birth_date": "2020-10-02",
+    "total_days": 1808,
+    "band_coefficients": {
+      "0.0-0.1": {
+        "days_in_band": 54,
+        "percentage": 2.99,
+        "coefficient": 0.001493,
+        "band_center": 0.05,
+        "lower": 0.0,
+        "upper": 0.1
+      },
+      "0.1-0.2": {
+        "days_in_band": 180,
+        "percentage": 9.96,
+        "coefficient": 0.014934,
+        "band_center": 0.15000000000000002,
+        "lower": 0.1,
+        "upper": 0.2
+      },
+      "0.2-0.3": {
+        "days_in_band": 235,
+        "percentage": 13.0,
+        "coefficient": 0.032494,
+        "band_center": 0.25,
+        "lower": 0.2,
+        "upper": 0.3
+      },
+      "0.3-0.4": {
+        "days_in_band": 289,
+        "percentage": 15.98,
+        "coefficient": 0.055946,
+        "band_center": 0.35,
+        "lower": 0.3,
+        "upper": 0.4
+      },
+      "0.4-0.5": {
+        "days_in_band": 361,
+        "percentage": 19.97,
+        "coefficient": 0.089851,
+        "band_center": 0.45,
+        "lower": 0.4,
+        "upper": 0.5
+      },
+      "0.5-0.6": {
+        "days_in_band": 397,
+        "percentage": 21.96,
+        "coefficient": 0.120769,
+        "band_center": 0.55,
+        "lower": 0.5,
+        "upper": 0.6
+      },
+      "0.6-0.7": {
+        "days_in_band": 235,
+        "percentage": 13.0,
+        "coefficient": 0.084486,
+        "band_center": 0.6499999999999999,
+        "lower": 0.6,
+        "upper": 0.7
+      },
+      "0.7-0.8": {
+        "days_in_band": 126,
+        "percentage": 6.97,
+        "coefficient": 0.052268,
+        "band_center": 0.75,
+        "lower": 0.7,
+        "upper": 0.8
+      },
+      "0.8-0.9": {
+        "days_in_band": 72,
+        "percentage": 3.98,
+        "coefficient": 0.03385,
+        "band_center": 0.8500000000000001,
+        "lower": 0.8,
+        "upper": 0.9
+      },
+      "0.9-1.0": {
+        "days_in_band": 36,
+        "percentage": 1.99,
+        "coefficient": 0.018916,
+        "band_center": 0.95,
+        "lower": 0.9,
+        "upper": 1.0
+      }
+    },
+    "weighted_risk_score": 0.505,
+    "current_risk_level": 0.55,
+    "current_risk_band": "0.5-0.6",
+    "confidence_level": 7,
+    "data_type": "estimated",
+    "calculated_at": "2025-09-14T22:51:01.266404"
+  },
+  {
+    "symbol": "MKR",
+    "symbol_name": "Maker",
+    "birth_date": "2017-11-25",
+    "total_days": 2850,
+    "band_coefficients": {
+      "0.0-0.1": {
+        "days_in_band": 85,
+        "percentage": 2.98,
+        "coefficient": 0.001491,
+        "band_center": 0.05,
+        "lower": 0.0,
+        "upper": 0.1
+      },
+      "0.1-0.2": {
+        "days_in_band": 285,
+        "percentage": 10.0,
+        "coefficient": 0.015,
+        "band_center": 0.15000000000000002,
+        "lower": 0.1,
+        "upper": 0.2
+      },
+      "0.2-0.3": {
+        "days_in_band": 370,
+        "percentage": 12.98,
+        "coefficient": 0.032456,
+        "band_center": 0.25,
+        "lower": 0.2,
+        "upper": 0.3
+      },
+      "0.3-0.4": {
+        "days_in_band": 456,
+        "percentage": 16.0,
+        "coefficient": 0.056,
+        "band_center": 0.35,
+        "lower": 0.3,
+        "upper": 0.4
+      },
+      "0.4-0.5": {
+        "days_in_band": 570,
+        "percentage": 20.0,
+        "coefficient": 0.09,
+        "band_center": 0.45,
+        "lower": 0.4,
+        "upper": 0.5
+      },
+      "0.5-0.6": {
+        "days_in_band": 627,
+        "percentage": 22.0,
+        "coefficient": 0.121,
+        "band_center": 0.55,
+        "lower": 0.5,
+        "upper": 0.6
+      },
+      "0.6-0.7": {
+        "days_in_band": 370,
+        "percentage": 12.98,
+        "coefficient": 0.084386,
+        "band_center": 0.6499999999999999,
+        "lower": 0.6,
+        "upper": 0.7
+      },
+      "0.7-0.8": {
+        "days_in_band": 199,
+        "percentage": 6.98,
+        "coefficient": 0.052368,
+        "band_center": 0.75,
+        "lower": 0.7,
+        "upper": 0.8
+      },
+      "0.8-0.9": {
+        "days_in_band": 114,
+        "percentage": 4.0,
+        "coefficient": 0.034,
+        "band_center": 0.8500000000000001,
+        "lower": 0.8,
+        "upper": 0.9
+      },
+      "0.9-1.0": {
+        "days_in_band": 57,
+        "percentage": 2.0,
+        "coefficient": 0.019,
+        "band_center": 0.95,
+        "lower": 0.9,
+        "upper": 1.0
+      }
+    },
+    "weighted_risk_score": 0.5057,
+    "current_risk_level": 0.55,
+    "current_risk_band": "0.5-0.6",
+    "confidence_level": 7,
+    "data_type": "estimated",
+    "calculated_at": "2025-09-14T22:51:01.266575"
+  },
+  {
+    "symbol": "XMR",
+    "symbol_name": "Monero",
+    "birth_date": "2014-04-18",
+    "total_days": 4167,
+    "band_coefficients": {
+      "0.0-0.1": {
+        "days_in_band": 125,
+        "percentage": 3.0,
+        "coefficient": 0.0015,
+        "band_center": 0.05,
+        "lower": 0.0,
+        "upper": 0.1
+      },
+      "0.1-0.2": {
+        "days_in_band": 416,
+        "percentage": 9.98,
+        "coefficient": 0.014975,
+        "band_center": 0.15000000000000002,
+        "lower": 0.1,
+        "upper": 0.2
+      },
+      "0.2-0.3": {
+        "days_in_band": 541,
+        "percentage": 12.98,
+        "coefficient": 0.032457,
+        "band_center": 0.25,
+        "lower": 0.2,
+        "upper": 0.3
+      },
+      "0.3-0.4": {
+        "days_in_band": 666,
+        "percentage": 15.98,
+        "coefficient": 0.05594,
+        "band_center": 0.35,
+        "lower": 0.3,
+        "upper": 0.4
+      },
+      "0.4-0.5": {
+        "days_in_band": 833,
+        "percentage": 19.99,
+        "coefficient": 0.089957,
+        "band_center": 0.45,
+        "lower": 0.4,
+        "upper": 0.5
+      },
+      "0.5-0.6": {
+        "days_in_band": 916,
+        "percentage": 21.98,
+        "coefficient": 0.120902,
+        "band_center": 0.55,
+        "lower": 0.5,
+        "upper": 0.6
+      },
+      "0.6-0.7": {
+        "days_in_band": 541,
+        "percentage": 12.98,
+        "coefficient": 0.084389,
+        "band_center": 0.6499999999999999,
+        "lower": 0.6,
+        "upper": 0.7
+      },
+      "0.7-0.8": {
+        "days_in_band": 291,
+        "percentage": 6.98,
+        "coefficient": 0.052376,
+        "band_center": 0.75,
+        "lower": 0.7,
+        "upper": 0.8
+      },
+      "0.8-0.9": {
+        "days_in_band": 166,
+        "percentage": 3.98,
+        "coefficient": 0.033861,
+        "band_center": 0.8500000000000001,
+        "lower": 0.8,
+        "upper": 0.9
+      },
+      "0.9-1.0": {
+        "days_in_band": 83,
+        "percentage": 1.99,
+        "coefficient": 0.018922,
+        "band_center": 0.95,
+        "lower": 0.9,
+        "upper": 1.0
+      }
+    },
+    "weighted_risk_score": 0.5053,
+    "current_risk_level": 0.55,
+    "current_risk_band": "0.5-0.6",
+    "confidence_level": 7,
+    "data_type": "estimated",
+    "calculated_at": "2025-09-14T22:51:01.266780"
+  },
+  {
+    "symbol": "XLM",
+    "symbol_name": "Stellar",
+    "birth_date": "2014-07-31",
+    "total_days": 4063,
+    "band_coefficients": {
+      "0.0-0.1": {
+        "days_in_band": 121,
+        "percentage": 2.98,
+        "coefficient": 0.001489,
+        "band_center": 0.05,
+        "lower": 0.0,
+        "upper": 0.1
+      },
+      "0.1-0.2": {
+        "days_in_band": 406,
+        "percentage": 9.99,
+        "coefficient": 0.014989,
+        "band_center": 0.15000000000000002,
+        "lower": 0.1,
+        "upper": 0.2
+      },
+      "0.2-0.3": {
+        "days_in_band": 528,
+        "percentage": 13.0,
+        "coefficient": 0.032488,
+        "band_center": 0.25,
+        "lower": 0.2,
+        "upper": 0.3
+      },
+      "0.3-0.4": {
+        "days_in_band": 650,
+        "percentage": 16.0,
+        "coefficient": 0.055993,
+        "band_center": 0.35,
+        "lower": 0.3,
+        "upper": 0.4
+      },
+      "0.4-0.5": {
+        "days_in_band": 812,
+        "percentage": 19.99,
+        "coefficient": 0.089934,
+        "band_center": 0.45,
+        "lower": 0.4,
+        "upper": 0.5
+      },
+      "0.5-0.6": {
+        "days_in_band": 893,
+        "percentage": 21.98,
+        "coefficient": 0.120884,
+        "band_center": 0.55,
+        "lower": 0.5,
+        "upper": 0.6
+      },
+      "0.6-0.7": {
+        "days_in_band": 528,
+        "percentage": 13.0,
+        "coefficient": 0.08447,
+        "band_center": 0.6499999999999999,
+        "lower": 0.6,
+        "upper": 0.7
+      },
+      "0.7-0.8": {
+        "days_in_band": 284,
+        "percentage": 6.99,
+        "coefficient": 0.052424,
+        "band_center": 0.75,
+        "lower": 0.7,
+        "upper": 0.8
+      },
+      "0.8-0.9": {
+        "days_in_band": 162,
+        "percentage": 3.99,
+        "coefficient": 0.033891,
+        "band_center": 0.8500000000000001,
+        "lower": 0.8,
+        "upper": 0.9
+      },
+      "0.9-1.0": {
+        "days_in_band": 81,
+        "percentage": 1.99,
+        "coefficient": 0.018939,
+        "band_center": 0.95,
+        "lower": 0.9,
+        "upper": 1.0
+      }
+    },
+    "weighted_risk_score": 0.5055,
+    "current_risk_level": 0.55,
+    "current_risk_band": "0.5-0.6",
+    "confidence_level": 7,
+    "data_type": "estimated",
+    "calculated_at": "2025-09-14T22:51:01.266928"
+  },
+  {
+    "symbol": "SUI",
+    "symbol_name": "Sui",
+    "birth_date": "2023-05-03",
+    "total_days": 865,
+    "band_coefficients": {
+      "0.0-0.1": {
+        "days_in_band": 25,
+        "percentage": 2.89,
+        "coefficient": 0.001445,
+        "band_center": 0.05,
+        "lower": 0.0,
+        "upper": 0.1
+      },
+      "0.1-0.2": {
+        "days_in_band": 86,
+        "percentage": 9.94,
+        "coefficient": 0.014913,
+        "band_center": 0.15000000000000002,
+        "lower": 0.1,
+        "upper": 0.2
+      },
+      "0.2-0.3": {
+        "days_in_band": 112,
+        "percentage": 12.95,
+        "coefficient": 0.03237,
+        "band_center": 0.25,
+        "lower": 0.2,
+        "upper": 0.3
+      },
+      "0.3-0.4": {
+        "days_in_band": 138,
+        "percentage": 15.95,
+        "coefficient": 0.055838,
+        "band_center": 0.35,
+        "lower": 0.3,
+        "upper": 0.4
+      },
+      "0.4-0.5": {
+        "days_in_band": 173,
+        "percentage": 20.0,
+        "coefficient": 0.09,
+        "band_center": 0.45,
+        "lower": 0.4,
+        "upper": 0.5
+      },
+      "0.5-0.6": {
+        "days_in_band": 190,
+        "percentage": 21.97,
+        "coefficient": 0.120809,
+        "band_center": 0.55,
+        "lower": 0.5,
+        "upper": 0.6
+      },
+      "0.6-0.7": {
+        "days_in_band": 112,
+        "percentage": 12.95,
+        "coefficient": 0.084162,
+        "band_center": 0.6499999999999999,
+        "lower": 0.6,
+        "upper": 0.7
+      },
+      "0.7-0.8": {
+        "days_in_band": 60,
+        "percentage": 6.94,
+        "coefficient": 0.052023,
+        "band_center": 0.75,
+        "lower": 0.7,
+        "upper": 0.8
+      },
+      "0.8-0.9": {
+        "days_in_band": 34,
+        "percentage": 3.93,
+        "coefficient": 0.03341,
+        "band_center": 0.8500000000000001,
+        "lower": 0.8,
+        "upper": 0.9
+      },
+      "0.9-1.0": {
+        "days_in_band": 17,
+        "percentage": 1.97,
+        "coefficient": 0.018671,
+        "band_center": 0.95,
+        "lower": 0.9,
+        "upper": 1.0
+      }
+    },
+    "weighted_risk_score": 0.5036,
+    "current_risk_level": 0.55,
+    "current_risk_band": "0.5-0.6",
+    "confidence_level": 7,
+    "data_type": "estimated",
+    "calculated_at": "2025-09-14T22:51:01.267067"
+  },
+  {
+    "symbol": "HBAR",
+    "symbol_name": "Hedera",
+    "birth_date": "2019-09-17",
+    "total_days": 2189,
+    "band_coefficients": {
+      "0.0-0.1": {
+        "days_in_band": 65,
+        "percentage": 2.97,
+        "coefficient": 0.001485,
+        "band_center": 0.05,
+        "lower": 0.0,
+        "upper": 0.1
+      },
+      "0.1-0.2": {
+        "days_in_band": 218,
+        "percentage": 9.96,
+        "coefficient": 0.014938,
+        "band_center": 0.15000000000000002,
+        "lower": 0.1,
+        "upper": 0.2
+      },
+      "0.2-0.3": {
+        "days_in_band": 284,
+        "percentage": 12.97,
+        "coefficient": 0.032435,
+        "band_center": 0.25,
+        "lower": 0.2,
+        "upper": 0.3
+      },
+      "0.3-0.4": {
+        "days_in_band": 350,
+        "percentage": 15.99,
+        "coefficient": 0.055962,
+        "band_center": 0.35,
+        "lower": 0.3,
+        "upper": 0.4
+      },
+      "0.4-0.5": {
+        "days_in_band": 437,
+        "percentage": 19.96,
+        "coefficient": 0.089836,
+        "band_center": 0.45,
+        "lower": 0.4,
+        "upper": 0.5
+      },
+      "0.5-0.6": {
+        "days_in_band": 481,
+        "percentage": 21.97,
+        "coefficient": 0.120854,
+        "band_center": 0.55,
+        "lower": 0.5,
+        "upper": 0.6
+      },
+      "0.6-0.7": {
+        "days_in_band": 284,
+        "percentage": 12.97,
+        "coefficient": 0.084331,
+        "band_center": 0.6499999999999999,
+        "lower": 0.6,
+        "upper": 0.7
+      },
+      "0.7-0.8": {
+        "days_in_band": 153,
+        "percentage": 6.99,
+        "coefficient": 0.052421,
+        "band_center": 0.75,
+        "lower": 0.7,
+        "upper": 0.8
+      },
+      "0.8-0.9": {
+        "days_in_band": 87,
+        "percentage": 3.97,
+        "coefficient": 0.033783,
+        "band_center": 0.8500000000000001,
+        "lower": 0.8,
+        "upper": 0.9
+      },
+      "0.9-1.0": {
+        "days_in_band": 43,
+        "percentage": 1.96,
+        "coefficient": 0.018661,
+        "band_center": 0.95,
+        "lower": 0.9,
+        "upper": 1.0
+      }
+    },
+    "weighted_risk_score": 0.5047,
+    "current_risk_level": 0.55,
+    "current_risk_band": "0.5-0.6",
+    "confidence_level": 7,
+    "data_type": "estimated",
+    "calculated_at": "2025-09-14T22:51:01.267454"
+  },
+  {
+    "symbol": "RENDER",
+    "symbol_name": "Render",
+    "birth_date": "2020-12-28",
+    "total_days": 1721,
+    "band_coefficients": {
+      "0.0-0.1": {
+        "days_in_band": 51,
+        "percentage": 2.96,
+        "coefficient": 0.001482,
+        "band_center": 0.05,
+        "lower": 0.0,
+        "upper": 0.1
+      },
+      "0.1-0.2": {
+        "days_in_band": 172,
+        "percentage": 9.99,
+        "coefficient": 0.014991,
+        "band_center": 0.15000000000000002,
+        "lower": 0.1,
+        "upper": 0.2
+      },
+      "0.2-0.3": {
+        "days_in_band": 223,
+        "percentage": 12.96,
+        "coefficient": 0.032394,
+        "band_center": 0.25,
+        "lower": 0.2,
+        "upper": 0.3
+      },
+      "0.3-0.4": {
+        "days_in_band": 275,
+        "percentage": 15.98,
+        "coefficient": 0.055927,
+        "band_center": 0.35,
+        "lower": 0.3,
+        "upper": 0.4
+      },
+      "0.4-0.5": {
+        "days_in_band": 344,
+        "percentage": 19.99,
+        "coefficient": 0.089948,
+        "band_center": 0.45,
+        "lower": 0.4,
+        "upper": 0.5
+      },
+      "0.5-0.6": {
+        "days_in_band": 378,
+        "percentage": 21.96,
+        "coefficient": 0.120802,
+        "band_center": 0.55,
+        "lower": 0.5,
+        "upper": 0.6
+      },
+      "0.6-0.7": {
+        "days_in_band": 223,
+        "percentage": 12.96,
+        "coefficient": 0.084224,
+        "band_center": 0.6499999999999999,
+        "lower": 0.6,
+        "upper": 0.7
+      },
+      "0.7-0.8": {
+        "days_in_band": 120,
+        "percentage": 6.97,
+        "coefficient": 0.052295,
+        "band_center": 0.75,
+        "lower": 0.7,
+        "upper": 0.8
+      },
+      "0.8-0.9": {
+        "days_in_band": 68,
+        "percentage": 3.95,
+        "coefficient": 0.033585,
+        "band_center": 0.8500000000000001,
+        "lower": 0.8,
+        "upper": 0.9
+      },
+      "0.9-1.0": {
+        "days_in_band": 34,
+        "percentage": 1.98,
+        "coefficient": 0.018768,
+        "band_center": 0.95,
+        "lower": 0.9,
+        "upper": 1.0
+      }
+    },
+    "weighted_risk_score": 0.5044,
+    "current_risk_level": 0.55,
+    "current_risk_band": "0.5-0.6",
+    "confidence_level": 7,
+    "data_type": "estimated",
+    "calculated_at": "2025-09-14T22:51:01.267598"
+  },
+  {
+    "symbol": "TRX",
+    "symbol_name": "Tron",
+    "birth_date": "2017-08-28",
+    "total_days": 2939,
+    "band_coefficients": {
+      "0.0-0.1": {
+        "days_in_band": 88,
+        "percentage": 2.99,
+        "coefficient": 0.001497,
+        "band_center": 0.05,
+        "lower": 0.0,
+        "upper": 0.1
+      },
+      "0.1-0.2": {
+        "days_in_band": 293,
+        "percentage": 9.97,
+        "coefficient": 0.014954,
+        "band_center": 0.15000000000000002,
+        "lower": 0.1,
+        "upper": 0.2
+      },
+      "0.2-0.3": {
+        "days_in_band": 382,
+        "percentage": 13.0,
+        "coefficient": 0.032494,
+        "band_center": 0.25,
+        "lower": 0.2,
+        "upper": 0.3
+      },
+      "0.3-0.4": {
+        "days_in_band": 470,
+        "percentage": 15.99,
+        "coefficient": 0.055971,
+        "band_center": 0.35,
+        "lower": 0.3,
+        "upper": 0.4
+      },
+      "0.4-0.5": {
+        "days_in_band": 587,
+        "percentage": 19.97,
+        "coefficient": 0.089878,
+        "band_center": 0.45,
+        "lower": 0.4,
+        "upper": 0.5
+      },
+      "0.5-0.6": {
+        "days_in_band": 646,
+        "percentage": 21.98,
+        "coefficient": 0.120891,
+        "band_center": 0.55,
+        "lower": 0.5,
+        "upper": 0.6
+      },
+      "0.6-0.7": {
+        "days_in_band": 382,
+        "percentage": 13.0,
+        "coefficient": 0.084485,
+        "band_center": 0.6499999999999999,
+        "lower": 0.6,
+        "upper": 0.7
+      },
+      "0.7-0.8": {
+        "days_in_band": 205,
+        "percentage": 6.98,
+        "coefficient": 0.052314,
+        "band_center": 0.75,
+        "lower": 0.7,
+        "upper": 0.8
+      },
+      "0.8-0.9": {
+        "days_in_band": 117,
+        "percentage": 3.98,
+        "coefficient": 0.033838,
+        "band_center": 0.8500000000000001,
+        "lower": 0.8,
+        "upper": 0.9
+      },
+      "0.9-1.0": {
+        "days_in_band": 58,
+        "percentage": 1.97,
+        "coefficient": 0.018748,
+        "band_center": 0.95,
+        "lower": 0.9,
+        "upper": 1.0
+      }
+    },
+    "weighted_risk_score": 0.5051,
+    "current_risk_level": 0.55,
+    "current_risk_band": "0.5-0.6",
+    "confidence_level": 7,
+    "data_type": "estimated",
+    "calculated_at": "2025-09-14T22:51:01.267732"
+  },
+  {
+    "symbol": "VET",
+    "symbol_name": "VeChain",
+    "birth_date": "2017-08-18",
+    "total_days": 2949,
+    "band_coefficients": {
+      "0.0-0.1": {
+        "days_in_band": 88,
+        "percentage": 2.98,
+        "coefficient": 0.001492,
+        "band_center": 0.05,
+        "lower": 0.0,
+        "upper": 0.1
+      },
+      "0.1-0.2": {
+        "days_in_band": 294,
+        "percentage": 9.97,
+        "coefficient": 0.014954,
+        "band_center": 0.15000000000000002,
+        "lower": 0.1,
+        "upper": 0.2
+      },
+      "0.2-0.3": {
+        "days_in_band": 383,
+        "percentage": 12.99,
+        "coefficient": 0.032469,
+        "band_center": 0.25,
+        "lower": 0.2,
+        "upper": 0.3
+      },
+      "0.3-0.4": {
+        "days_in_band": 471,
+        "percentage": 15.97,
+        "coefficient": 0.0559,
+        "band_center": 0.35,
+        "lower": 0.3,
+        "upper": 0.4
+      },
+      "0.4-0.5": {
+        "days_in_band": 589,
+        "percentage": 19.97,
+        "coefficient": 0.089878,
+        "band_center": 0.45,
+        "lower": 0.4,
+        "upper": 0.5
+      },
+      "0.5-0.6": {
+        "days_in_band": 648,
+        "percentage": 21.97,
+        "coefficient": 0.120855,
+        "band_center": 0.55,
+        "lower": 0.5,
+        "upper": 0.6
+      },
+      "0.6-0.7": {
+        "days_in_band": 383,
+        "percentage": 12.99,
+        "coefficient": 0.084418,
+        "band_center": 0.6499999999999999,
+        "lower": 0.6,
+        "upper": 0.7
+      },
+      "0.7-0.8": {
+        "days_in_band": 206,
+        "percentage": 6.99,
+        "coefficient": 0.052391,
+        "band_center": 0.75,
+        "lower": 0.7,
+        "upper": 0.8
+      },
+      "0.8-0.9": {
+        "days_in_band": 117,
+        "percentage": 3.97,
+        "coefficient": 0.033723,
+        "band_center": 0.8500000000000001,
+        "lower": 0.8,
+        "upper": 0.9
+      },
+      "0.9-1.0": {
+        "days_in_band": 58,
+        "percentage": 1.97,
+        "coefficient": 0.018684,
+        "band_center": 0.95,
+        "lower": 0.9,
+        "upper": 1.0
+      }
+    },
+    "weighted_risk_score": 0.5048,
+    "current_risk_level": 0.55,
+    "current_risk_band": "0.5-0.6",
+    "confidence_level": 7,
+    "data_type": "estimated",
+    "calculated_at": "2025-09-14T22:51:01.267864"
+  },
+  {
+    "symbol": "ALGO",
+    "symbol_name": "Algorand",
+    "birth_date": "2019-06-19",
+    "total_days": 2279,
+    "band_coefficients": {
+      "0.0-0.1": {
+        "days_in_band": 68,
+        "percentage": 2.98,
+        "coefficient": 0.001492,
+        "band_center": 0.05,
+        "lower": 0.0,
+        "upper": 0.1
+      },
+      "0.1-0.2": {
+        "days_in_band": 227,
+        "percentage": 9.96,
+        "coefficient": 0.014941,
+        "band_center": 0.15000000000000002,
+        "lower": 0.1,
+        "upper": 0.2
+      },
+      "0.2-0.3": {
+        "days_in_band": 296,
+        "percentage": 12.99,
+        "coefficient": 0.03247,
+        "band_center": 0.25,
+        "lower": 0.2,
+        "upper": 0.3
+      },
+      "0.3-0.4": {
+        "days_in_band": 364,
+        "percentage": 15.97,
+        "coefficient": 0.055902,
+        "band_center": 0.35,
+        "lower": 0.3,
+        "upper": 0.4
+      },
+      "0.4-0.5": {
+        "days_in_band": 455,
+        "percentage": 19.96,
+        "coefficient": 0.089842,
+        "band_center": 0.45,
+        "lower": 0.4,
+        "upper": 0.5
+      },
+      "0.5-0.6": {
+        "days_in_band": 501,
+        "percentage": 21.98,
+        "coefficient": 0.120908,
+        "band_center": 0.55,
+        "lower": 0.5,
+        "upper": 0.6
+      },
+      "0.6-0.7": {
+        "days_in_band": 296,
+        "percentage": 12.99,
+        "coefficient": 0.084423,
+        "band_center": 0.6499999999999999,
+        "lower": 0.6,
+        "upper": 0.7
+      },
+      "0.7-0.8": {
+        "days_in_band": 159,
+        "percentage": 6.98,
+        "coefficient": 0.052326,
+        "band_center": 0.75,
+        "lower": 0.7,
+        "upper": 0.8
+      },
+      "0.8-0.9": {
+        "days_in_band": 91,
+        "percentage": 3.99,
+        "coefficient": 0.03394,
+        "band_center": 0.8500000000000001,
+        "lower": 0.8,
+        "upper": 0.9
+      },
+      "0.9-1.0": {
+        "days_in_band": 45,
+        "percentage": 1.97,
+        "coefficient": 0.018758,
+        "band_center": 0.95,
+        "lower": 0.9,
+        "upper": 1.0
+      }
+    },
+    "weighted_risk_score": 0.505,
+    "current_risk_level": 0.55,
+    "current_risk_band": "0.5-0.6",
+    "confidence_level": 7,
+    "data_type": "estimated",
+    "calculated_at": "2025-09-14T22:51:01.267991"
+  },
+  {
+    "symbol": "SHIB",
+    "symbol_name": "Shiba Inu",
+    "birth_date": "2020-08-01",
+    "total_days": 1870,
+    "band_coefficients": {
+      "0.0-0.1": {
+        "days_in_band": 56,
+        "percentage": 2.99,
+        "coefficient": 0.001497,
+        "band_center": 0.05,
+        "lower": 0.0,
+        "upper": 0.1
+      },
+      "0.1-0.2": {
+        "days_in_band": 187,
+        "percentage": 10.0,
+        "coefficient": 0.015,
+        "band_center": 0.15000000000000002,
+        "lower": 0.1,
+        "upper": 0.2
+      },
+      "0.2-0.3": {
+        "days_in_band": 243,
+        "percentage": 12.99,
+        "coefficient": 0.032487,
+        "band_center": 0.25,
+        "lower": 0.2,
+        "upper": 0.3
+      },
+      "0.3-0.4": {
+        "days_in_band": 299,
+        "percentage": 15.99,
+        "coefficient": 0.055963,
+        "band_center": 0.35,
+        "lower": 0.3,
+        "upper": 0.4
+      },
+      "0.4-0.5": {
+        "days_in_band": 374,
+        "percentage": 20.0,
+        "coefficient": 0.09,
+        "band_center": 0.45,
+        "lower": 0.4,
+        "upper": 0.5
+      },
+      "0.5-0.6": {
+        "days_in_band": 411,
+        "percentage": 21.98,
+        "coefficient": 0.120882,
+        "band_center": 0.55,
+        "lower": 0.5,
+        "upper": 0.6
+      },
+      "0.6-0.7": {
+        "days_in_band": 243,
+        "percentage": 12.99,
+        "coefficient": 0.084465,
+        "band_center": 0.6499999999999999,
+        "lower": 0.6,
+        "upper": 0.7
+      },
+      "0.7-0.8": {
+        "days_in_band": 130,
+        "percentage": 6.95,
+        "coefficient": 0.052139,
+        "band_center": 0.75,
+        "lower": 0.7,
+        "upper": 0.8
+      },
+      "0.8-0.9": {
+        "days_in_band": 74,
+        "percentage": 3.96,
+        "coefficient": 0.033636,
+        "band_center": 0.8500000000000001,
+        "lower": 0.8,
+        "upper": 0.9
+      },
+      "0.9-1.0": {
+        "days_in_band": 37,
+        "percentage": 1.98,
+        "coefficient": 0.018797,
+        "band_center": 0.95,
+        "lower": 0.9,
+        "upper": 1.0
+      }
+    },
+    "weighted_risk_score": 0.5049,
+    "current_risk_level": 0.55,
+    "current_risk_band": "0.5-0.6",
+    "confidence_level": 7,
+    "data_type": "estimated",
+    "calculated_at": "2025-09-14T22:51:01.268124"
+  },
+  {
+    "symbol": "TON",
+    "symbol_name": "The Open Network",
+    "birth_date": "2021-06-01",
+    "total_days": 1566,
+    "band_coefficients": {
+      "0.0-0.1": {
+        "days_in_band": 46,
+        "percentage": 2.94,
+        "coefficient": 0.001469,
+        "band_center": 0.05,
+        "lower": 0.0,
+        "upper": 0.1
+      },
+      "0.1-0.2": {
+        "days_in_band": 156,
+        "percentage": 9.96,
+        "coefficient": 0.014943,
+        "band_center": 0.15000000000000002,
+        "lower": 0.1,
+        "upper": 0.2
+      },
+      "0.2-0.3": {
+        "days_in_band": 203,
+        "percentage": 12.96,
+        "coefficient": 0.032407,
+        "band_center": 0.25,
+        "lower": 0.2,
+        "upper": 0.3
+      },
+      "0.3-0.4": {
+        "days_in_band": 250,
+        "percentage": 15.96,
+        "coefficient": 0.055875,
+        "band_center": 0.35,
+        "lower": 0.3,
+        "upper": 0.4
+      },
+      "0.4-0.5": {
+        "days_in_band": 313,
+        "percentage": 19.99,
+        "coefficient": 0.089943,
+        "band_center": 0.45,
+        "lower": 0.4,
+        "upper": 0.5
+      },
+      "0.5-0.6": {
+        "days_in_band": 344,
+        "percentage": 21.97,
+        "coefficient": 0.120817,
+        "band_center": 0.55,
+        "lower": 0.5,
+        "upper": 0.6
+      },
+      "0.6-0.7": {
+        "days_in_band": 203,
+        "percentage": 12.96,
+        "coefficient": 0.084259,
+        "band_center": 0.6499999999999999,
+        "lower": 0.6,
+        "upper": 0.7
+      },
+      "0.7-0.8": {
+        "days_in_band": 109,
+        "percentage": 6.96,
+        "coefficient": 0.052203,
+        "band_center": 0.75,
+        "lower": 0.7,
+        "upper": 0.8
+      },
+      "0.8-0.9": {
+        "days_in_band": 62,
+        "percentage": 3.96,
+        "coefficient": 0.033653,
+        "band_center": 0.8500000000000001,
+        "lower": 0.8,
+        "upper": 0.9
+      },
+      "0.9-1.0": {
+        "days_in_band": 31,
+        "percentage": 1.98,
+        "coefficient": 0.018806,
+        "band_center": 0.95,
+        "lower": 0.9,
+        "upper": 1.0
+      }
+    },
+    "weighted_risk_score": 0.5044,
+    "current_risk_level": 0.55,
+    "current_risk_band": "0.5-0.6",
+    "confidence_level": 7,
+    "data_type": "estimated",
+    "calculated_at": "2025-09-14T22:51:01.268250"
+  }
+]

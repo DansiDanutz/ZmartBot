@@ -1,0 +1,25 @@
+{
+  "symbol": "ETHUSDT",
+  "recommendation": "SHORT",
+  "win_rates": {
+    "long_win_rate": 42.0,
+    "short_win_rate": 63.0,
+    "market_bias": "STRONG SHORT",
+    "confidence": "HIGH"
+  },
+  "risk_data": {
+    "symbol": "ETHUSDT",
+    "risk_value": 0.559673643959308,
+    "risk_level": "MEDIUM",
+    "risk_score": 55.97,
+    "recommendation": "Moderate risk, consider partial positions",
+    "bounds": {
+      "low": 1500,
+      "medium": 2500,
+      "high": 4000
+    },
+    "timestamp": "2025-09-14T13:03:34.332142",
+    "source": "Benjamin Cowen RiskMetric Model"
+  },
+  "timestamp": "2025-09-14T13:03:34.334478"
+}

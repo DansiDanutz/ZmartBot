@@ -1,0 +1,775 @@
+
+## Description
+Core service component of the ZmartBot ecosystem providing essential functionality.
+
+## 🤖 MCP (Model Context Protocol) Integration
+
+### **MCP Server Pairing**
+**Status**: ✅ **ACTIVE** - Pele Alerts MCP Integration
+**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
+**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
+**Integration Type**: Multi-MCP Service Integration
+
+### **MCP Integration Features**
+- **Claude Code Integration**: AI-powered Pele alerts analysis and optimization
+- **Memory Gateway**: Persistent Pele alerts state and pattern metadata
+- **UI Automation**: Automated Pele alerts monitoring and health checks
+- **Figma Integration**: Pele alerts dashboard design and UI management
+- **Supabase Integration**: Cloud-based Pele alerts analytics and reporting
+
+### **MCP Integration Benefits**
+- **Enhanced Analysis**: AI-powered Pele alerts pattern recognition and optimization
+- **Persistent State**: Cross-session Pele alerts state and configuration management
+- **Automated Monitoring**: Real-time Pele alerts health and performance tracking
+- **Visual Dashboard**: Interactive Pele alerts management and testing interface
+- **Cloud Analytics**: Comprehensive Pele alerts usage and performance analytics
+
+### **MCP Usage Examples**
+```bash
+# Health check via MCP
+curl -X GET "http://127.0.0.1:8000/pele/health"
+
+# Pele alerts analysis via MCP
+curl -X POST "http://127.0.0.1:8000/pele/analyze" -d '{"symbol": "BTCUSDT", "pattern": "trend_continuation"}'
+```
+
+### **MCP Status**
+- **Claude Code**: ✅ Active - AI-powered Pele alerts analysis
+- **ByteRover**: ✅ Active - Persistent Pele alerts state management
+- **UI TARS**: ✅ Active - Automated Pele alerts monitoring
+- **Figma**: ✅ Active - Pele alerts dashboard design
+- **Supabase**: ✅ Active - Cloud-based Pele alerts analytics
+
+---
+
+# Pele Alerts - Trend Continuation Pattern System
+
+## Overview
+**Pele Alerts** represent the **trend continuation patterns** in the ZmartBot system, named after the legendary footballer's powerful, consistent, and trend-setting playing style. These alerts detect strong trend continuations, clean breakouts with volume confirmation, and strong support/resistance level respect that create trend-following trading opportunities.
+
+## Pele Alert Philosophy
+
+### **Core Concept**
+Pele Alerts are designed to capture **strong trend movements** and **sustained momentum** that occur over medium to long timeframes. Just as Pele's playing style was characterized by powerful, consistent movements, strong directional play, and the ability to maintain momentum, these alerts identify similar patterns in market behavior.
+
+### **Trading Style**
+- **Timeframe Focus**: Primarily 1h, 4h, and 1d charts
+- **Trading Approach**: Trend following and momentum trading
+- **Position Duration**: Hours to days (not minutes)
+- **Risk Management**: Trend-based stop-losses, momentum profit-taking
+
+## Alert Trigger Mechanisms
+
+### **1. Pele Trend Continuation Pattern**
+
+#### **Trigger Detection Algorithm**
+```python
+class PeleTrendContinuation:
+    def __init__(self):
+        self.trend_history = []
+        self.trend_strength_threshold = 0.7  # 70% trend strength
+        self.momentum_threshold = 0.6  # 60% momentum consistency
+        self.time_window = 50  # candles to analyze
+        
+    def detect_strong_trend_continuation(self, current_trend, symbol, timeframe):
+        """Detect strong trend continuation with sustained momentum"""
+        
+        # Add current trend data to history
+        self.trend_history.append({
+            'trend': current_trend,
+            'timestamp': datetime.now(),
+            'symbol': symbol,
+            'timeframe': timeframe
+        })
+        
+        # Keep only recent history
+        if len(self.trend_history) > self.time_window:
+            self.trend_history.pop(0)
+        
+        # Calculate trend metrics
+        if len(self.trend_history) >= 30:
+            trend_analysis = self.calculate_trend_strength()
+            
+            # Check for strong trend continuation
+            if trend_analysis['strength'] >= self.trend_strength_threshold and \
+               trend_analysis['momentum_consistency'] >= self.momentum_threshold:
+                return self.create_pele_trend_alert(trend_analysis)
+        
+        return None
+    
+    def calculate_trend_strength(self):
+        """Calculate trend strength and momentum consistency"""
+        trends = [entry['trend'] for entry in self.trend_history]
+        
+        analysis = {
+            'strength': 0,
+            'direction': 'neutral',
+            'momentum_consistency': 0,
+            'trend_duration': 0,
+            'price_momentum': 0,
+            'volume_confirmation': 0
+        }
+        
+        # Calculate trend direction consistency
+        bullish_periods = sum(1 for trend in trends if trend.direction == 'bullish')
+        bearish_periods = sum(1 for trend in trends if trend.direction == 'bearish')
+        
+        total_periods = len(trends)
+        analysis['strength'] = max(bullish_periods, bearish_periods) / total_periods
+        
+        # Determine dominant direction
+        if bullish_periods > bearish_periods:
+            analysis['direction'] = 'bullish'
+        elif bearish_periods > bullish_periods:
+            analysis['direction'] = 'bearish'
+        
+        # Calculate momentum consistency
+        momentum_changes = []
+        for i in range(1, len(trends)):
+            momentum_change = abs(trends[i].momentum - trends[i-1].momentum)
+            momentum_changes.append(momentum_change)
+        
+        avg_momentum_change = sum(momentum_changes) / len(momentum_changes)
+        analysis['momentum_consistency'] = 1 - (avg_momentum_change / max(momentum_changes))
+        
+        # Calculate trend duration
+        analysis['trend_duration'] = self.calculate_trend_duration(trends)
+        
+        # Calculate price momentum
+        price_changes = [trend.price_change for trend in trends]
+        analysis['price_momentum'] = sum(price_changes) / len(price_changes)
+        
+        # Calculate volume confirmation
+        volume_ratios = [trend.volume_ratio for trend in trends]
+        analysis['volume_confirmation'] = sum(volume_ratios) / len(volume_ratios)
+        
+        return analysis
+```
+
+#### **What Happens When Triggered**
+```python
+def create_pele_trend_alert(self, trend_analysis):
+    """Create Pele Trend alert when strong continuation detected"""
+    
+    alert = AlertTrigger(
+        type="PELE_TREND_CONTINUATION",
+        symbol=self.trend_history[-1]['symbol'],
+        timeframe=self.trend_history[-1]['timeframe'],
+        value=self.trend_history[-1]['trend'].strength,
+        message=f"Pele Trend Pattern: Strong {trend_analysis['direction']} trend continuation with {trend_analysis['strength']:.1%} strength",
+        severity="HIGH",
+        action="Trend following opportunity - ride the momentum",
+        indicators_triggered=["EMA", "SMA", "ADX", "DMI"],
+        trend_data=trend_analysis,
+        trading_opportunity={
+            'type': 'trend_following',
+            'entry_strategy': 'trend_pullback',
+            'exit_strategy': 'trend_reversal',
+            'stop_loss': 'trend_based',
+            'target_timeframe': '4h-1d'
+        }
+    )
+    
+    return alert
+```
+
+### **2. Pele Breakout Pattern**
+
+#### **Trigger Detection Algorithm**
+```python
+class PeleBreakout:
+    def __init__(self):
+        self.breakout_history = []
+        self.breakout_strength_threshold = 0.8  # 80% breakout strength
+        self.volume_confirmation_threshold = 2.0  # 200% volume confirmation
+        self.time_window = 30  # candles to analyze
+        
+    def detect_clean_breakout(self, current_breakout, symbol, timeframe):
+        """Detect clean breakout with strong volume confirmation"""
+        
+        # Add current breakout data to history
+        self.breakout_history.append({
+            'breakout': current_breakout,
+            'timestamp': datetime.now(),
+            'symbol': symbol,
+            'timeframe': timeframe
+        })
+        
+        # Keep only recent history
+        if len(self.breakout_history) > self.time_window:
+            self.breakout_history.pop(0)
+        
+        # Calculate breakout metrics
+        if len(self.breakout_history) >= 15:
+            breakout_analysis = self.analyze_breakout_patterns()
+            
+            # Check for clean breakout
+            if breakout_analysis['strength'] >= self.breakout_strength_threshold and \
+               breakout_analysis['volume_confirmation'] >= self.volume_confirmation_threshold:
+                return self.create_pele_breakout_alert(breakout_analysis)
+        
+        return None
+    
+    def analyze_breakout_patterns(self):
+        """Analyze breakout patterns for strength and confirmation"""
+        breakouts = [entry['breakout'] for entry in self.breakout_history]
+        
+        analysis = {
+            'strength': 0,
+            'volume_confirmation': 0,
+            'breakout_type': 'unknown',
+            'resistance_level': 0,
+            'support_level': 0,
+            'price_momentum': 0,
+            'retest_probability': 0
+        }
+        
+        # Calculate breakout strength
+        recent_breakouts = breakouts[-5:]  # Last 5 breakouts
+        strength_scores = []
+        
+        for breakout in recent_breakouts:
+            # Calculate strength based on price movement vs resistance/support
+            if breakout.type == 'resistance':
+                strength = (breakout.price - breakout.resistance_level) / breakout.resistance_level
+            else:  # support
+                strength = (breakout.support_level - breakout.price) / breakout.support_level
+            
+            strength_scores.append(strength)
+        
+        analysis['strength'] = sum(strength_scores) / len(strength_scores)
+        
+        # Calculate volume confirmation
+        volume_ratios = [breakout.volume_ratio for breakout in recent_breakouts]
+        analysis['volume_confirmation'] = sum(volume_ratios) / len(volume_ratios)
+        
+        # Determine breakout type
+        resistance_breakouts = sum(1 for b in recent_breakouts if b.type == 'resistance')
+        support_breakouts = sum(1 for b in recent_breakouts if b.type == 'support')
+        
+        if resistance_breakouts > support_breakouts:
+            analysis['breakout_type'] = 'resistance'
+        else:
+            analysis['breakout_type'] = 'support'
+        
+        # Calculate retest probability
+        retest_count = sum(1 for b in recent_breakouts if b.retest_occurred)
+        analysis['retest_probability'] = retest_count / len(recent_breakouts)
+        
+        return analysis
+```
+
+#### **What Happens When Triggered**
+```python
+def create_pele_breakout_alert(self, breakout_analysis):
+    """Create Pele Breakout alert when clean breakout detected"""
+    
+    alert = AlertTrigger(
+        type="PELE_BREAKOUT",
+        symbol=self.breakout_history[-1]['symbol'],
+        timeframe=self.breakout_history[-1]['timeframe'],
+        value=self.breakout_history[-1]['breakout'].strength,
+        message=f"Pele Breakout Pattern: Clean {breakout_analysis['breakout_type']} breakout with {breakout_analysis['volume_confirmation']:.1f}x volume confirmation",
+        severity="HIGH",
+        action="Breakout trading - enter with trend direction",
+        indicators_triggered=["Bollinger Bands", "Keltner Channel", "Parabolic SAR"],
+        breakout_data=breakout_analysis,
+        trading_opportunity={
+            'type': 'breakout_trading',
+            'entry_strategy': 'breakout_confirmation',
+            'exit_strategy': 'trend_continuation',
+            'stop_loss': 'breakout_level',
+            'target_timeframe': '1h-4h'
+        }
+    )
+    
+    return alert
+```
+
+### **3. Pele Support/Resistance Level Pattern**
+
+#### **Trigger Detection Algorithm**
+```python
+class PeleLevelRespect:
+    def __init__(self):
+        self.level_history = []
+        self.respect_threshold = 0.85  # 85% level respect
+        self.bounce_strength_threshold = 0.6  # 60% bounce strength
+        self.time_window = 100  # candles to analyze
+        
+    def detect_level_respect(self, current_level, symbol, timeframe):
+        """Detect strong support/resistance level respect with bounces"""
+        
+        # Add current level data to history
+        self.level_history.append({
+            'level': current_level,
+            'timestamp': datetime.now(),
+            'symbol': symbol,
+            'timeframe': timeframe
+        })
+        
+        # Keep only recent history
+        if len(self.level_history) > self.time_window:
+            self.level_history.pop(0)
+        
+        # Calculate level metrics
+        if len(self.level_history) >= 50:
+            level_analysis = self.analyze_level_patterns()
+            
+            # Check for strong level respect
+            if level_analysis['respect_rate'] >= self.respect_threshold and \
+               level_analysis['bounce_strength'] >= self.bounce_strength_threshold:
+                return self.create_pele_level_alert(level_analysis)
+        
+        return None
+    
+    def analyze_level_patterns(self):
+        """Analyze support/resistance level patterns"""
+        levels = [entry['level'] for entry in self.level_history]
+        
+        analysis = {
+            'respect_rate': 0,
+            'bounce_strength': 0,
+            'level_type': 'unknown',
+            'touch_count': 0,
+            'break_count': 0,
+            'avg_bounce': 0,
+            'level_strength': 0
+        }
+        
+        # Count level touches and breaks
+        touches = []
+        breaks = []
+        
+        for level in levels:
+            if level.touched:
+                touches.append(level)
+                if level.bounced:
+                    analysis['bounce_strength'] += level.bounce_strength
+                else:
+                    breaks.append(level)
+        
+        analysis['touch_count'] = len(touches)
+        analysis['break_count'] = len(breaks)
+        
+        # Calculate respect rate
+        total_touches = analysis['touch_count'] + analysis['break_count']
+        if total_touches > 0:
+            analysis['respect_rate'] = analysis['touch_count'] / total_touches
+        
+        # Calculate average bounce strength
+        if analysis['touch_count'] > 0:
+            analysis['avg_bounce'] = analysis['bounce_strength'] / analysis['touch_count']
+        
+        # Determine level type
+        support_touches = sum(1 for t in touches if t.type == 'support')
+        resistance_touches = sum(1 for t in touches if t.type == 'resistance')
+        
+        if support_touches > resistance_touches:
+            analysis['level_type'] = 'support'
+        else:
+            analysis['level_type'] = 'resistance'
+        
+        # Calculate level strength
+        analysis['level_strength'] = analysis['respect_rate'] * analysis['avg_bounce']
+        
+        return analysis
+```
+
+#### **What Happens When Triggered**
+```python
+def create_pele_level_alert(self, level_analysis):
+    """Create Pele Level alert when strong level respect detected"""
+    
+    alert = AlertTrigger(
+        type="PELE_LEVEL_RESPECT",
+        symbol=self.level_history[-1]['symbol'],
+        timeframe=self.level_history[-1]['timeframe'],
+        value=self.level_history[-1]['level'].strength,
+        message=f"Pele Level Pattern: Strong {level_analysis['level_type']} respect with {level_analysis['respect_rate']:.1%} success rate",
+        severity="MEDIUM",
+        action="Level-based trading - trade bounces and breaks",
+        indicators_triggered=["Bollinger Bands", "Keltner Channel", "ATR"],
+        level_data=level_analysis,
+        trading_opportunity={
+            'type': 'level_trading',
+            'entry_strategy': 'level_bounce',
+            'exit_strategy': 'level_break',
+            'stop_loss': 'level_beyond',
+            'target_timeframe': '1h-4h'
+        }
+    )
+    
+    return alert
+```
+
+## Dynamic Indicator Changes
+
+### **Real-Time Indicator Updates**
+
+#### **1. EMA/SMA Dynamic Changes**
+```javascript
+class PeleTrendDynamicUpdater {
+    constructor() {
+        this.updateFrequency = 10000; // 10 seconds
+        this.trendBuffer = [];
+    }
+    
+    updateTrendOnPeleAlert(alert) {
+        const emaCard = document.getElementById(`ema-card-${alert.symbol}`);
+        const smaCard = document.getElementById(`sma-card-${alert.symbol}`);
+        const trendChart = emaCard.querySelector('.trend-chart');
+        
+        // Add trend data to buffer
+        this.trendBuffer.push(alert.trend_data);
+        
+        // Update trend display with continuation indicators
+        this.addTrendContinuationIndicators(trendChart, alert.trend_data);
+        
+        // Update EMA/SMA values with trend highlighting
+        this.updateTrendValues(emaCard, smaCard, alert.trend_data);
+        
+        // Add trend strength indicator
+        this.addTrendStrengthIndicator(emaCard, alert.trend_data);
+        
+        // Start real-time updates
+        this.startRealTimeUpdates(alert.symbol);
+    }
+    
+    addTrendContinuationIndicators(chart, trendData) {
+        // Add trend continuation bands
+        const continuationBand = document.createElement('div');
+        continuationBand.className = 'trend-continuation-band';
+        continuationBand.style.background = `linear-gradient(90deg, 
+            ${trendData.direction === 'bullish' ? '#4CAF50' : '#f44336'} 0%, 
+            ${trendData.direction === 'bullish' ? '#81C784' : '#e57373'} 100%)`;
+        continuationBand.style.opacity = trendData.strength;
+        
+        chart.appendChild(continuationBand);
+        
+        // Add momentum arrows
+        const momentumArrow = document.createElement('div');
+        momentumArrow.className = 'momentum-arrow';
+        momentumArrow.innerHTML = trendData.direction === 'bullish' ? '↗' : '↘';
+        momentumArrow.style.color = trendData.direction === 'bullish' ? '#4CAF50' : '#f44336';
+        
+        chart.appendChild(momentumArrow);
+    }
+    
+    updateTrendValues(emaCard, smaCard, trendData) {
+        const emaValue = emaCard.querySelector('.ema-value');
+        const smaValue = smaCard.querySelector('.sma-value');
+        
+        // Update with trend highlighting
+        emaValue.classList.add(`trend-${trendData.direction}`);
+        smaValue.classList.add(`trend-${trendData.direction}`);
+        
+        // Add trend strength indicator
+        emaValue.setAttribute('data-trend-strength', trendData.strength.toFixed(2));
+        smaValue.setAttribute('data-trend-strength', trendData.strength.toFixed(2));
+    }
+    
+    addTrendStrengthIndicator(card, trendData) {
+        const strengthIndicator = document.createElement('div');
+        strengthIndicator.className = 'trend-strength-indicator';
+        strengthIndicator.innerHTML = `
+            <span class="strength-label">Trend Strength:</span>
+            <span class="strength-value">${(trendData.strength * 100).toFixed(0)}%</span>
+            <span class="momentum-consistency">Momentum: ${(trendData.momentum_consistency * 100).toFixed(0)}%</span>
+        `;
+        
+        card.appendChild(strengthIndicator);
+    }
+    
+    startRealTimeUpdates(symbol) {
+        setInterval(() => {
+            this.updateTrendMetrics(symbol);
+        }, this.updateFrequency);
+    }
+    
+    updateTrendMetrics(symbol) {
+        const emaCard = document.getElementById(`ema-card-${symbol}`);
+        const strengthValue = emaCard.querySelector('.strength-value');
+        const momentumValue = emaCard.querySelector('.momentum-consistency');
+        
+        // Calculate new metrics from buffer
+        const recentTrends = this.trendBuffer.slice(-3);
+        const avgStrength = recentTrends.reduce((sum, trend) => sum + trend.strength, 0) / recentTrends.length;
+        const avgMomentum = recentTrends.reduce((sum, trend) => sum + trend.momentum_consistency, 0) / recentTrends.length;
+        
+        strengthValue.textContent = `${(avgStrength * 100).toFixed(0)}%`;
+        momentumValue.textContent = `Momentum: ${(avgMomentum * 100).toFixed(0)}%`;
+    }
+}
+```
+
+#### **2. Bollinger Bands Dynamic Changes**
+```javascript
+class PeleBreakoutDynamicUpdater {
+    constructor() {
+        this.updateFrequency = 8000; // 8 seconds
+        this.breakoutBuffer = [];
+    }
+    
+    updateBreakoutOnPeleAlert(alert) {
+        const bbCard = document.getElementById(`bollinger-card-${alert.symbol}`);
+        const bbChart = bbCard.querySelector('.bollinger-chart');
+        const bbValue = bbCard.querySelector('.bollinger-value');
+        
+        // Add breakout data to buffer
+        this.breakoutBuffer.push(alert.breakout_data);
+        
+        // Update Bollinger Bands display with breakout indicators
+        this.addBreakoutIndicators(bbChart, alert.breakout_data);
+        
+        // Update value with breakout highlighting
+        bbValue.textContent = alert.value;
+        bbValue.classList.add('pele-breakout');
+        
+        // Add breakout strength indicator
+        this.addBreakoutStrengthIndicator(bbCard, alert.breakout_data);
+        
+        // Start real-time updates
+        this.startRealTimeUpdates(alert.symbol);
+    }
+    
+    addBreakoutIndicators(chart, breakoutData) {
+        // Add breakout zone
+        const breakoutZone = document.createElement('div');
+        breakoutZone.className = 'breakout-zone';
+        breakoutZone.style.backgroundColor = breakoutData.breakout_type === 'resistance' ? 
+            'rgba(76, 175, 80, 0.3)' : 'rgba(244, 67, 54, 0.3)';
+        breakoutZone.style.border = `2px solid ${breakoutData.breakout_type === 'resistance' ? '#4CAF50' : '#f44336'}`;
+        
+        chart.appendChild(breakoutZone);
+        
+        // Add volume confirmation bars
+        const volumeBars = document.createElement('div');
+        volumeBars.className = 'volume-confirmation-bars';
+        volumeBars.style.height = `${Math.min(breakoutData.volume_confirmation * 20, 100)}%`;
+        volumeBars.style.backgroundColor = '#FF9800';
+        
+        chart.appendChild(volumeBars);
+        
+        // Add retest probability indicator
+        if (breakoutData.retest_probability > 0.5) {
+            const retestIndicator = document.createElement('div');
+            retestIndicator.className = 'retest-indicator';
+            retestIndicator.innerHTML = `Retest: ${(breakoutData.retest_probability * 100).toFixed(0)}%`;
+            retestIndicator.style.color = '#FF9800';
+            
+            chart.appendChild(retestIndicator);
+        }
+    }
+    
+    addBreakoutStrengthIndicator(card, breakoutData) {
+        const strengthIndicator = document.createElement('div');
+        strengthIndicator.className = 'breakout-strength-indicator';
+        strengthIndicator.innerHTML = `
+            <span class="breakout-label">Breakout Strength:</span>
+            <span class="breakout-value">${(breakoutData.strength * 100).toFixed(0)}%</span>
+            <span class="volume-confirmation">Volume: ${breakoutData.volume_confirmation.toFixed(1)}x</span>
+        `;
+        
+        card.appendChild(strengthIndicator);
+    }
+}
+```
+
+#### **3. ATR Dynamic Changes**
+```javascript
+class PeleLevelDynamicUpdater {
+    constructor() {
+        this.updateFrequency = 12000; // 12 seconds
+        this.levelBuffer = [];
+    }
+    
+    updateLevelOnPeleAlert(alert) {
+        const atrCard = document.getElementById(`atr-card-${alert.symbol}`);
+        const atrChart = atrCard.querySelector('.atr-chart');
+        const atrValue = atrCard.querySelector('.atr-value');
+        
+        // Add level data to buffer
+        this.levelBuffer.push(alert.level_data);
+        
+        // Update ATR display with level respect indicators
+        this.addLevelRespectIndicators(atrChart, alert.level_data);
+        
+        // Update value with level highlighting
+        atrValue.textContent = alert.value;
+        atrValue.classList.add('pele-level');
+        
+        // Add level strength indicator
+        this.addLevelStrengthIndicator(atrCard, alert.level_data);
+        
+        // Start real-time updates
+        this.startRealTimeUpdates(alert.symbol);
+    }
+    
+    addLevelRespectIndicators(chart, levelData) {
+        // Add level respect zone
+        const levelZone = document.createElement('div');
+        levelZone.className = 'level-respect-zone';
+        levelZone.style.backgroundColor = levelData.level_type === 'support' ? 
+            'rgba(76, 175, 80, 0.2)' : 'rgba(244, 67, 54, 0.2)`;
+        levelZone.style.border = `1px dashed ${levelData.level_type === 'support' ? '#4CAF50' : '#f44336'}`;
+        
+        chart.appendChild(levelZone);
+        
+        // Add bounce markers
+        for (let i = 0; i < levelData.touch_count; i++) {
+            const bounceMarker = document.createElement('div');
+            bounceMarker.className = 'bounce-marker';
+            bounceMarker.style.left = `${(i / levelData.touch_count) * 100}%`;
+            bounceMarker.style.backgroundColor = levelData.level_type === 'support' ? '#4CAF50' : '#f44336';
+            
+            chart.appendChild(bounceMarker);
+        }
+        
+        // Add respect rate indicator
+        const respectIndicator = document.createElement('div');
+        respectIndicator.className = 'respect-rate-indicator';
+        respectIndicator.innerHTML = `Respect: ${(levelData.respect_rate * 100).toFixed(0)}%`;
+        respectIndicator.style.color = levelData.respect_rate > 0.8 ? '#4CAF50' : '#FF9800';
+        
+        chart.appendChild(respectIndicator);
+    }
+    
+    addLevelStrengthIndicator(card, levelData) {
+        const strengthIndicator = document.createElement('div');
+        strengthIndicator.className = 'level-strength-indicator';
+        strengthIndicator.innerHTML = `
+            <span class="level-label">Level Strength:</span>
+            <span class="level-value">${(levelData.level_strength * 100).toFixed(0)}%</span>
+            <span class="touch-count">Touches: ${levelData.touch_count}</span>
+        `;
+        
+        card.appendChild(strengthIndicator);
+    }
+}
+```
+
+## Trading Integration
+
+### **Pele Alert Trading Strategy**
+```python
+class PeleTradingStrategy:
+    def __init__(self):
+        self.active_positions = {}
+        self.pele_alerts = []
+        self.risk_manager = PeleRiskManager()
+    
+    def process_pele_alert(self, alert):
+        """Process Pele alert and execute trading strategy"""
+        
+        # Check if we should enter a position
+        if self.should_enter_position(alert):
+            position = self.enter_position(alert)
+            self.active_positions[alert.symbol] = position
+        
+        # Check if we should exit existing position
+        elif alert.symbol in self.active_positions:
+            if self.should_exit_position(alert):
+                self.exit_position(alert.symbol)
+    
+    def should_enter_position(self, alert):
+        """Determine if we should enter a position based on Pele alert"""
+        
+        # Check risk management rules
+        if not self.risk_manager.can_enter_position(alert.symbol):
+            return False
+        
+        # Check alert strength
+        if alert.severity != "HIGH":
+            return False
+        
+        # Check for trend confirmation
+        if alert.type == "PELE_TREND_CONTINUATION":
+            if alert.trend_data.strength < 0.7:
+                return False
+        
+        # Check for breakout confirmation
+        elif alert.type == "PELE_BREAKOUT":
+            if alert.breakout_data.strength < 0.8:
+                return False
+        
+        # Check for level confirmation
+        elif alert.type == "PELE_LEVEL_RESPECT":
+            if alert.level_data.respect_rate < 0.85:
+                return False
+        
+        return True
+    
+    def enter_position(self, alert):
+        """Enter a position based on Pele alert"""
+        
+        position = {
+            'symbol': alert.symbol,
+            'entry_price': self.get_current_price(alert.symbol),
+            'entry_time': datetime.now(),
+            'alert_type': alert.type,
+            'direction': self.determine_direction(alert),
+            'size': self.calculate_position_size(alert),
+            'stop_loss': self.calculate_stop_loss(alert),
+            'take_profit': self.calculate_take_profit(alert),
+            'timeframe': alert.timeframe
+        }
+        
+        # Execute trade
+        self.execute_trade(position)
+        
+        return position
+    
+    def determine_direction(self, alert):
+        """Determine trade direction based on Pele alert type"""
+        
+        if alert.type == "PELE_TREND_CONTINUATION":
+            # Trade in trend direction
+            return "LONG" if alert.trend_data.direction == "bullish" else "SHORT"
+        
+        elif alert.type == "PELE_BREAKOUT":
+            # Trade in breakout direction
+            return "LONG" if alert.breakout_data.breakout_type == "resistance" else "SHORT"
+        
+        elif alert.type == "PELE_LEVEL_RESPECT":
+            # Trade level bounces
+            return "LONG" if alert.level_data.level_type == "support" else "SHORT"
+        
+        return "NEUTRAL"
+```
+
+## Success Criteria
+
+### **Pele Alert Performance**
+- ✅ **Strong trend detection** with 80%+ accuracy
+- ✅ **Clean breakout identification** with volume confirmation
+- ✅ **Level respect recognition** with high success rates
+- ✅ **Trend-following opportunity identification** with clear entry/exit signals
+
+### **Trading Integration**
+- ✅ **Automated position management** based on Pele alerts
+- ✅ **Risk management integration** with trend-based stop-losses
+- ✅ **Multi-timeframe confirmation** for entry decisions
+- ✅ **Momentum-based profit-taking** based on trend strength
+
+### **User Experience**
+- ✅ **Visual trend continuation indicators** on EMA/SMA charts
+- ✅ **Breakout zone markers** on Bollinger Bands charts
+- ✅ **Level respect indicators** with bounce markers
+- ✅ **Real-time strength updates** showing trend momentum
+
+The Pele Alerts system provides **powerful trend-following opportunities** through strong pattern recognition, dynamic indicator updates, and automated trading integration that captures sustained momentum and trend continuations for medium to long-term trading strategies.
+description:
+globs:
+alwaysApply: true
+
+## Requirements
+- ✅ **Unique port assignment**
+
+
+---
+
+## Triggers
+- **System initialization**
+- **External requests**
+- **Scheduled tasks**

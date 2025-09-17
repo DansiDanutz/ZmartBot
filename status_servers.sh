@@ -111,13 +111,9 @@ get_dashboard_response_time() {
 
 # Function to check monitoring status
 check_monitoring_status() {
-    if [ -f "$PID_DIR/monitor.pid" ]; then
-        local monitor_pid=$(cat "$PID_DIR/monitor.pid")
-        if kill -0 $monitor_pid 2>/dev/null; then
-            echo "true"
-        else
-            echo "false"
-        fi
+    # Check if any monitoring services are running
+    if lsof -i :8615 >/dev/null 2>&1 || lsof -i :8700 >/dev/null 2>&1 || lsof -i :8999 >/dev/null 2>&1; then
+        echo "true"
     else
         echo "false"
     fi

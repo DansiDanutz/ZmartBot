@@ -1,0 +1,30 @@
+service_name: mdc-orchestration-agent
+service_type: orchestration
+version: 1.0.0
+owner: zmartbot
+description: MDC documentation orchestration service
+port: 8615
+passport_id: ZMBT-AGT-20250826-CAD9CD
+status: ACTIVE
+registered_at: '2025-08-31'
+health_url: http://localhost:8615/health
+start_cmd: python3 mdc_orchestration_agent_server.py --port 8615
+stop_cmd: pkill -f 'mdc_orchestration_agent_server.py'
+dependencies:
+- zmart-api
+tags:
+- orchestration
+- mdc-orchestration-agent
+lifecycle:
+  startup_grace_seconds: 30
+  shutdown_timeout_seconds: 15
+  health_check_interval: 30
+monitoring:
+  metrics_endpoint: /metrics
+  logs_path: logs/mdc-orchestration-agent.log
+  dashboard_url: http://localhost:8615/dashboard
+security:
+  cors_enabled: true
+  token_required: false
+  scopes:
+  - orchestration

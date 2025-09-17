@@ -1,0 +1,33 @@
+{
+  "symbol": "TON",
+  "symbol_name": "The Open Network",
+  "birth_date": "2021-06-01",
+  "current_date": "2025-09-14",
+  "total_days": 1566,
+  "actual_age_days": 1566,
+  "risk_bands": {
+    "0.0-0.1": 46,
+    "0.1-0.2": 156,
+    "0.2-0.3": 203,
+    "0.3-0.4": 250,
+    "0.4-0.5": 313,
+    "0.5-0.6": 344,
+    "0.6-0.7": 203,
+    "0.7-0.8": 109,
+    "0.8-0.9": 62,
+    "0.9-1.0": 31
+  },
+  "current_risk_band": "0.5-0.6",
+  "confidence_level": 7,
+  "data_type": "estimated",
+  "0.0-0.1_percentage": 2.94,
+  "0.1-0.2_percentage": 9.96,
+  "0.2-0.3_percentage": 12.96,
+  "0.3-0.4_percentage": 15.96,
+  "0.4-0.5_percentage": 19.99,
+  "0.5-0.6_percentage": 21.97,
+  "0.6-0.7_percentage": 12.96,
+  "0.7-0.8_percentage": 6.96,
+  "0.8-0.9_percentage": 3.96,
+  "0.9-1.0_percentage": 1.98
+}

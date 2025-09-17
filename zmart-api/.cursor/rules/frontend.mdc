@@ -1,0 +1,408 @@
+
+## Description
+Core service component of the ZmartBot ecosystem providing essential functionality.
+
+## 🤖 MCP (Model Context Protocol) Integration
+
+### **MCP Server Pairing**
+**Status**: ✅ **ACTIVE** - Frontend MCP Integration
+**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
+**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
+**Integration Type**: Multi-MCP Service Integration
+
+### **MCP Integration Features**
+- **Claude Code Integration**: AI-powered frontend development and optimization
+- **Memory Gateway**: Persistent frontend state and user session metadata
+- **UI Automation**: Automated frontend monitoring and health checks
+- **Figma Integration**: Frontend design and UI management
+- **Supabase Integration**: Cloud-based frontend analytics and user management
+
+### **MCP Integration Benefits**
+- **Enhanced Development**: AI-powered frontend optimization and development
+- **Persistent State**: Frontend state and user session preservation
+- **Automated Monitoring**: Real-time frontend health and performance tracking
+- **Visual Design**: Professional frontend design and UI management
+- **Cloud Analytics**: Advanced frontend analytics and user behavior tracking
+
+### **MCP Usage Examples**
+```bash
+# Health check via MCP
+curl -X GET "http://127.0.0.1:3400/health"
+
+# Frontend update via MCP
+curl -X POST "http://127.0.0.1:3400/update" \
+  -H "Content-Type: application/json" \
+  -d '{"component": "dashboard", "action": "refresh"}'
+```
+
+### **MCP Status**
+- **Claude Code**: ✅ Active - AI-powered frontend development
+- **ByteRover**: ✅ Active - Frontend state persistence
+- **UI TARS**: ✅ Active - Frontend monitoring automation
+- **Figma**: ✅ Active - Frontend design management
+- **Supabase**: ✅ Active - Frontend cloud analytics
+
+---
+
+# Service Overview
+
+## Name
+Frontend
+
+## Service Classification
+Foundation
+
+## Criticality Level
+CRITICAL
+
+## Business Impact
+If the Frontend service fails, the entire ZmartBot platform becomes inaccessible to users. This would result in a complete halt of trading operations, real-time market data updates, and professional trading tools. The impact on the business would be significant, potentially leading to loss of revenue, customer dissatisfaction, and damage to the company's reputation.
+
+## System Role
+The Frontend service is the primary user interface of the ZmartBot platform. It provides users with comprehensive trading operations, real-time market data, and professional trading tools. It communicates with the backend services to fetch and update data, and presents it in a user-friendly manner.
+
+# Service Architecture
+
+## Technical Foundation
+The Frontend service is built using React with TypeScript. It uses Vite as the build tool for fast development, CSS/SCSS for styling, Chart.js for data visualization, and Axios for API communication.
+
+## Core Components
+The core components of the Frontend service include the Main Trading Interface, Live Alerts System, Technical Analysis Tools, Symbol Management, and Professional Features. Each of these components plays a crucial role in providing comprehensive trading operations to the users.
+
+## Data Structures
+The Frontend service primarily deals with real-time market data, trading symbols, portfolio data, trading orders, alerts, and user preferences. The data is organized in a structured manner to facilitate efficient processing and presentation.
+
+## Integration Ecosystem
+The Frontend service integrates with the Backend API for data retrieval, order management, user authentication, and real-time updates. It also integrates with the Alert System for real-time alerts and notifications, and the Symbol Management for managing trading symbols.
+
+## Design Patterns
+The Frontend service follows the Model-View-Controller (MVC) design pattern. It uses React components (View) to present data to the users, Axios (Controller) to fetch and update data from the backend services, and local state and props (Model) to manage and store data.
+
+# Service Dependencies
+
+## Required Python Modules
+The Frontend service is built using React and TypeScript, and does not require any Python modules.
+
+## Database Dependencies
+The Frontend service does not directly interact with any databases. It communicates with the Backend API to fetch and update data.
+
+## External Service Dependencies
+The Frontend service depends on the Backend API for data retrieval, order management, user authentication, and real-time updates. It also depends on the Alert System for real-time alerts and notifications, and the Symbol Management for managing trading symbols.
+
+## File System Dependencies
+The Frontend service requires access to the local file system for reading and writing temporary files, logs, and user preferences.
+
+## Network Dependencies
+The Frontend service runs on port 3400 and communicates with the Backend API on port 8000. It requires a stable network connection for real-time data updates.
+
+## Environment Dependencies
+The Frontend service requires a modern web browser for rendering the user interface. It supports all modern browsers and is optimized for mobile, tablet, and desktop interfaces.
+
+# Inter-Service Operation Patterns
+
+## Provides Services To
+The Frontend service provides user interface services to the users of the ZmartBot platform.
+
+## Depends On Services
+The Frontend service depends on the Backend API for data retrieval, order management, user authentication, and real-time updates. It also depends on the Alert System for real-time alerts and notifications, and the Symbol Management for managing trading symbols.
+
+## Communication Protocols
+The Frontend service uses HTTP for API communication and WebSocket for real-time updates.
+
+## Data Exchange Patterns
+The Frontend service fetches data from the Backend API using HTTP GET requests, and updates data using POST, PUT, and DELETE requests. It receives real-time updates via WebSocket connections.
+
+## Failure Impact Analysis
+If the Frontend service fails, the entire ZmartBot platform becomes inaccessible to users. This would result in a complete halt of trading operations, real-time market data updates, and professional trading tools.
+
+## Cascade Failure Patterns
+If the Frontend service fails, it could potentially cause a cascade failure in the Backend API and other dependent services due to a sudden drop in requests.
+
+## Recovery Coordination
+In the event of a failure, the Frontend service needs to be restarted. The dependent services may also need to be restarted or scaled up to handle the sudden surge in requests when the Frontend service comes back online.
+
+# Service Lifecycle Behavior
+
+## Startup Time
+The Frontend service typically starts up in less than a second. The startup time may vary depending on the network latency and the load on the Backend API.
+
+## Startup Dependencies
+The Frontend service requires the Backend API to be running before it can start. It also requires a stable network connection for API communication and real-time updates.
+
+## Startup Sequence
+The Frontend service starts by initializing the React framework, loading the user interface components, and establishing a connection with the Backend API. It then fetches the initial data and updates the user interface.
+
+## Initialization Checks
+During startup, the Frontend service checks for a successful connection with the Backend API, and verifies that it can fetch and update data. It also checks for any saved user preferences and applies them to the user interface.
+
+## Shutdown Behavior
+On shutdown, the Frontend service closes the connection with the Backend API, saves any user preferences, and gracefully unmounts the React components.
+
+## Shutdown Priority
+The Frontend service has a shutdown priority of 1. It should be the first service to shut down to prevent any user interactions while the backend services are shutting down.
+
+## State Persistence
+The Frontend service does not persist any state between restarts. It fetches the latest data from the Backend API on startup.
+
+## Recovery Patterns
+In the event of a failure, the Frontend service can be recovered by restarting it. If the failure is due to a network issue, the network connection needs to be restored before restarting the service.
+
+# Runtime Characteristics
+
+## Memory Usage
+The Frontend service has a low memory footprint. The memory usage may increase during peak trading hours due to increased user interactions and real-time updates.
+
+## CPU Usage
+The Frontend service has a low to moderate CPU usage. The CPU usage may increase during peak trading hours due to increased user interactions and real-time updates.
+
+## Network Usage
+The Frontend service requires a stable network connection for API communication and real-time updates. The network usage may increase during peak trading hours due to increased data updates.
+
+## Disk I/O
+The Frontend service has minimal disk I/O requirements. It reads and writes temporary files, logs, and user preferences to the local file system.
+
+## Concurrency Model
+The Frontend service uses the single-threaded event loop model provided by the JavaScript runtime. It handles user interactions and real-time updates in an asynchronous manner.
+
+## Performance Characteristics
+The Frontend service is designed for fast and responsive performance. It uses efficient data structures and algorithms, and optimizes network and disk I/O for maximum performance.
+
+## Resource Scaling
+The Frontend service scales horizontally by adding more instances behind a load balancer. It can also scale vertically by increasing the CPU and memory resources.
+
+## Performance Optimization
+The Frontend service uses caching, connection pooling, and lazy loading for performance optimization. It also uses efficient data structures and algorithms for fast data processing.
+
+# Error Conditions & Recovery
+
+## Failure Modes
+The Frontend service can fail due to network issues, Backend API failures, unhandled exceptions, or resource exhaustion.
+
+## Failure Detection
+Failures can be detected by monitoring the health check endpoints, performance metrics, and log files. Any deviation from the normal behavior can indicate a potential failure.
+
+## Failure Impact
+A failure in the Frontend service can make the entire ZmartBot platform inaccessible to users. This would result in a complete halt of trading operations, real-time market data updates, and professional trading tools.
+
+## Recovery Strategies
+In the event of a failure, the Frontend service can be recovered by restarting it. If the failure is due to a network issue, the network connection needs to be restored before restarting the service. If the failure is due to a Backend API issue, the Backend API needs to be recovered first.
+
+## Circuit Breaker Patterns
+The Frontend service can implement a circuit breaker pattern to stop sending requests to the Backend API if it detects a failure. This can prevent a cascade failure and give the Backend API time to recover.
+
+## Fallback Mechanisms
+In the event of a failure, the Frontend service can provide a fallback user interface with limited functionality. This can allow users to view their portfolio and market data, but not perform any trading operations.
+
+## Disaster Recovery
+In the event of a disaster, the Frontend service can be recovered by deploying it to a new environment. The new environment needs to have the same configuration as the original environment.
+
+## Health Check Patterns
+The Frontend service provides a health check endpoint that returns the current status of the service. It checks for a successful connection with the Backend API, and verifies that it can fetch and update data.
+
+# Monitoring & Observability
+
+## Health Check Endpoints
+The Frontend service provides a health check endpoint at `/health`. It returns a `200 OK` status if the service is healthy, and a `500 Internal Server Error` status if the service is unhealthy.
+
+## Performance Metrics
+The Frontend service tracks performance metrics such as response time, error rate, and resource usage. These metrics can be monitored to detect any performance issues or potential failures.
+
+## Log Analysis
+The Frontend service generates log files that contain information about the operations and any errors. These log files can be analyzed to detect any abnormal behavior or potential failures.
+
+## Alert Conditions
+Alerts can be triggered based on the performance metrics and log analysis. For example, an alert can be triggered if the response time exceeds a certain threshold, or if the error rate increases significantly.
+
+## Diagnostic Procedures
+In the event of a failure, the performance metrics and log files can be analyzed to diagnose the issue. The health check endpoint can also be used to check the current status of the service.
+
+## Performance Baselines
+The performance baselines are established based on the normal behavior of the service. Any deviation from these baselines can indicate a performance issue or potential failure.
+
+## Monitoring Integration
+The Frontend service can be integrated with monitoring systems such as Prometheus and Grafana for real-time monitoring and alerting.
+
+# Master Orchestration Integration Points
+
+## Service Discovery
+The Master Orchestration Agent can discover the Frontend service through the health check endpoint. It can periodically check this endpoint to track the status of the service.
+
+## Health Monitoring
+The Master Orchestration Agent can monitor the health of the Frontend service through the health check endpoint. It can also monitor the performance metrics and log files for any abnormal behavior or potential failures.
+
+## Lifecycle Management
+The Master Orchestration Agent can manage the lifecycle of the Frontend service. It can start, stop, and restart the service as needed.
+
+## Resource Coordination
+The Master Orchestration Agent can coordinate the resources for the Frontend service. It can allocate CPU and memory resources based on the load, and scale the service horizontally or vertically as needed.
+
+## Dependency Management
+The Master Orchestration Agent can manage the dependencies of the Frontend service. It can ensure that the Backend API is running before starting the Frontend service, and coordinate the recovery of the services in the event of a failure.
+
+## Configuration Management
+The Master Orchestration Agent can manage the configuration of the Frontend service. It can apply the environment-specific settings and update the configuration as needed.
+
+## Security Coordination
+The Master Orchestration Agent can coordinate the security of the Frontend service. It can enforce the security controls, monitor the security logs, and handle any security incidents.
+
+# Critical Decision Patterns for Orchestration
+
+## Startup Priority
+The Frontend service has a startup priority of 2. It needs to be started after the Backend API, but before any other user-facing services.
+
+## Startup Conditions
+The Frontend service requires the Backend API to be running, and a stable network connection for API communication and real-time updates.
+
+## Shutdown Priority
+The Frontend service has a shutdown priority of 1. It should be the first service to shut down to prevent any user interactions while the backend services are shutting down.
+
+## Restart Strategy
+The Frontend service can be restarted immediately in the event of a failure. However, if the failure is due to a network issue or a Backend API issue, these issues need to be resolved before restarting the service.
+
+## Scaling Strategy
+The Frontend service can be scaled up during peak trading hours to handle the increased load. It can be scaled down during off-peak hours to conserve resources.
+
+## Resource Allocation
+The Frontend service requires a minimum of 1 CPU and 1 GB of memory. The optimal resource allocation depends on the load, and can be adjusted based on the performance metrics.
+
+## Update Strategy
+The Frontend service can be updated using a rolling update strategy. This allows the service to remain available during the update, and reduces the risk of a failure.
+
+## Backup Strategy
+The Frontend service does not require any backups, as it does not store any persistent data. All data is fetched from the Backend API on startup.
+
+## Security Strategy
+The Frontend service requires secure communication with the Backend API, and secure handling of user data. It should be isolated from other services, and access should be controlled based on the user roles.
+
+# API Endpoints
+
+## Endpoint Inventory
+The Frontend service provides several API endpoints for fetching and updating data. These endpoints include `/symbols`, `/orders`, `/alerts`, and `/preferences`.
+
+## Authentication
+The Frontend service uses token-based authentication for API communication. The token is generated by the Backend API during user login, and is included in the header of each API request.
+
+## Authorization
+The Frontend service uses role-based access control for API endpoints. The user role is determined during user login, and is used to control access to the API endpoints.
+
+## Rate Limiting
+The Frontend service implements rate limiting to prevent abuse of the API endpoints. The rate limits are configured based on the user role and the endpoint.
+
+## Error Handling
+The Frontend service returns a `200 OK` status for successful API requests, and a `400 Bad Request` or `500 Internal Server Error` status for failed requests. The error response includes a message describing the error.
+
+## Data Validation
+The Frontend service validates the data in each API request. It checks for the required fields, and validates the data type and format.
+
+## API Versioning
+The Frontend service uses URL versioning for the API endpoints. The version number is included in the URL, and is used to ensure compatibility with different versions of the Backend API.
+
+# Security Features
+
+## Authentication Mechanisms
+The Frontend service uses token-based authentication for API communication. The token is generated by the Backend API during user login, and is included in the header of each API request.
+
+## Authorization Patterns
+The Frontend service uses role-based access control for API endpoints. The user role is determined during user login, and is used to control access to the API endpoints.
+
+## Encryption Standards
+The Frontend service uses HTTPS for secure communication with the Backend API. It also encrypts the user data in the local storage for added security.
+
+## Security Controls
+The Frontend service implements several security controls, including secure communication, data encryption, access control, and rate limiting.
+
+## Compliance Requirements
+The Frontend service complies with the GDPR and other relevant data protection regulations. It ensures the privacy and security of user data.
+
+## Threat Model
+The Frontend service is potentially vulnerable to threats such as data breaches, denial of service attacks, and cross-site scripting attacks. It mitigates these threats through secure communication, data encryption, access control, and rate limiting.
+
+## Security Monitoring
+The Frontend service monitors the security logs for any abnormal behavior or potential threats. It also provides a security alert system for notifying the users and administrators of any security incidents.
+
+# Development Guidelines
+
+## Coding Standards
+The Frontend service follows the coding standards and best practices for React and TypeScript. It uses functional components, hooks, and context for state management.
+
+## Architecture Patterns
+The Frontend service follows the Model-View-Controller (MVC) design pattern. It uses React components (View) to present data to the users, Axios (Controller) to fetch and update data from the backend services, and local state and props (Model) to manage and store data.
+
+## Testing Requirements
+The Frontend service requires unit tests for each component and function, integration tests for the API endpoints, and performance tests for the load and response time.
+
+## Code Quality
+The Frontend service uses linting and static analysis tools to ensure code quality. It also requires code reviews for each pull request to ensure that the code meets the standards and best practices.
+
+## Documentation Standards
+The Frontend service requires documentation for each component and function, and API documentation for the endpoints. The documentation should be clear, concise, and up-to-date.
+
+## Configuration Management
+The Frontend service uses environment variables for configuration management. The configuration includes the API URLs, rate limits, and other environment-specific settings.
+
+## Deployment Standards
+The Frontend service requires automated deployment using CI/CD pipelines. The deployment process includes building the code, running the tests, and deploying the code to the production environment.
+
+# Deployment Considerations
+
+## Infrastructure Requirements
+The Frontend service requires a server with at least 1 CPU and 1 GB of memory. It also requires a stable network connection for API communication and real-time updates.
+
+## Environment Configurations
+The Frontend service uses environment variables for configuration. The configuration includes the API URLs, rate limits, and other environment-specific settings.
+
+## Deployment Patterns
+The Frontend service can be deployed using a rolling update strategy. This allows the service to remain available during the update, and reduces the risk of a failure.
+
+## Scaling Considerations
+The Frontend service can be scaled horizontally by adding more instances behind a load balancer. It can also be scaled vertically by increasing the CPU and memory resources.
+
+## Monitoring Requirements
+The Frontend service requires real-time monitoring and alerting. It provides health check endpoints, performance metrics, and log files for monitoring.
+
+## Disaster Recovery
+In the event of a disaster, the Frontend service can be recovered by deploying it to a new environment. The new environment needs to have the same configuration as the original environment.
+
+## Capacity Planning
+The Frontend service can handle a large number of users and real-time updates. The capacity needs to be planned based on the expected load, and the service needs to be scaled accordingly.
+
+# Success Criteria
+
+## User Experience
+- ✅ Intuitive and easy-to-use interface
+- ✅ Fast and responsive performance
+- ✅ Reliable real-time data updates
+- ✅ Comprehensive trading tools
+
+## Functionality
+- ✅ All trading operations accessible
+- ✅ Complete alert system integration
+- ✅ Full symbol management capabilities
+- ✅ Advanced technical analysis tools
+
+## Performance
+- ✅ Sub-second response times
+- ✅ 99.9% uptime availability
+- ✅ Real-time data accuracy
+- ✅ Cross-platform compatibility
+
+The Professional Dashboard on port 3400 is the comprehensive, feature-rich frontend that provides traders with all the tools and information needed for successful trading operations in the ZmartBot platform.
+
+description:
+globs:
+alwaysApply: true
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Database connectivity**
+- ✅ **Health endpoint implementation**
+- ✅ **Master Orchestration integration**
+
+
+---
+
+
+## Triggers
+- **API endpoint requests**
+- **Database events**
+- **Health check requests**

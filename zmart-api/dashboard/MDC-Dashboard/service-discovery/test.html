@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TEST PAGE - COMPLETE REBUILD</title>
+    <meta charset="UTF-8">
+</head>
+<body style="background: black; color: white; font-family: Arial; padding: 50px;">
+    <h1 style="color: red; font-size: 3rem;">🚨 EMERGENCY TEST PAGE 🚨</h1>
+    <p style="font-size: 2rem; color: yellow;">If you see this, the server IS working!</p>
+    
+    <div style="background: red; padding: 30px; margin: 20px 0; border: 5px solid yellow;">
+        <h2 style="color: white; font-size: 2rem;">MDC GENERATION BUTTONS:</h2>
+        
+        <button onclick="alert('AI ANALYSIS CLICKED!')" 
+                style="background: lime; color: black; font-size: 2rem; padding: 20px; margin: 10px; border: 3px solid black; cursor: pointer;">
+            🧠 AI ANALYSIS BUTTON
+        </button>
+        
+        <button onclick="alert('MDC GENERATE CLICKED!')" 
+                style="background: cyan; color: black; font-size: 2rem; padding: 20px; margin: 10px; border: 3px solid black; cursor: pointer;">
+            📄 GENERATE MDC FILE
+        </button>
+        
+        <button onclick="startRealAnalysis()" 
+                style="background: magenta; color: white; font-size: 2rem; padding: 20px; margin: 10px; border: 3px solid white; cursor: pointer;">
+            🚀 START REAL ANALYSIS
+        </button>
+    </div>
+    
+    <div id="results" style="background: blue; color: white; padding: 20px; margin: 20px 0; font-size: 1.5rem;">
+        Results will appear here...
+    </div>
+    
+    <script>
+        function startRealAnalysis() {
+            document.getElementById('results').innerHTML = 'RUNNING AI ANALYSIS...';
+            
+            fetch('/api/discovery/ai-analysis')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('results').innerHTML = 
+                        '<h3>AI ANALYSIS COMPLETE!</h3>' +
+                        '<p>Recommendations: ' + (data.connection_recommendations?.length || 0) + '</p>' +
+                        '<p>Improvements: ' + (data.service_improvements?.length || 0) + '</p>' +
+                        '<button onclick="generateMDC()" style="background: gold; color: black; padding: 15px; font-size: 1.5rem;">GENERATE MDC NOW</button>';
+                })
+                .catch(error => {
+                    document.getElementById('results').innerHTML = 'ERROR: ' + error.message;
+                });
+        }
+        
+        function generateMDC() {
+            const data = {
+                service_a: 'TestServiceA',
+                service_b: 'TestServiceB',
+                ai_analysis: 'Test analysis data',
+                compatibility_score: 9.0
+            };
+            
+            fetch('/api/generate-mdc', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                document.getElementById('results').innerHTML = 
+                    '<h3 style="color: lime;">MDC FILE GENERATED!</h3>' +
+                    '<p>File: ' + (result.file_path || 'Generated successfully') + '</p>';
+            })
+            .catch(error => {
+                document.getElementById('results').innerHTML = 'MDC GENERATION ERROR: ' + error.message;
+            });
+        }
+    </script>
+</body>
+</html>

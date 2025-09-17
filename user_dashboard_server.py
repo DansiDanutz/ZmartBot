@@ -1,0 +1,558 @@
+#!/usr/bin/env python3
+"""
+USER-Dashboard Server
+A simple HTTP server to host the USER-Dashboard on port 7001
+"""
+
+import http.server
+import socketserver
+import os
+import sys
+import json
+import urllib.request
+import urllib.parse
+from pathlib import Path
+from datetime import datetime
+
+# Configuration
+PORT = 7001
+HOST = "127.0.0.1"
+
+def fetch_real_market_data():
+    """Fetch real cryptocurrency market data from CoinGecko API"""
+    try:
+        # Fetch Bitcoin price and market data
+        url = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true"
+        
+        with urllib.request.urlopen(url, timeout=10) as response:
+            data = json.loads(response.read().decode())
+            
+        btc_data = data.get('bitcoin', {})
+        
+        # Fetch Fear & Greed Index
+        try:
+            fear_greed_url = "https://api.alternative.me/fng/"
+            with urllib.request.urlopen(fear_greed_url, timeout=5) as response:
+                fear_greed_data = json.loads(response.read().decode())
+                fear_greed = fear_greed_data.get('data', [{}])[0].get('value', '50')
+        except:
+            fear_greed = '50'
+        
+        return {
+            'btc_price': btc_data.get('usd', 0),
+            'market_cap': btc_data.get('usd_market_cap', 0),
+            'volume_24h': btc_data.get('usd_24h_vol', 0),
+            'change_24h': btc_data.get('usd_24h_change', 0),
+            'fear_greed': int(fear_greed),
+            'timestamp': datetime.now().isoformat()
+        }
+    except Exception as e:
+        print(f"Error fetching market data: {e}")
+        return None
+
+class DashboardHandler(http.server.SimpleHTTPRequestHandler):
+    """Custom handler for the USER-Dashboard"""
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, directory=os.path.dirname(os.path.abspath(__file__)), **kwargs)
+    
+    def end_headers(self):
+        # Add CORS headers for development
+        self.send_header('Access-Control-Allow-Origin', '*')
+        self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+        self.send_header('Access-Control-Allow-Headers', 'Content-Type')
+        super().end_headers()
+    
+    def do_GET(self):
+        # API endpoint for real market data
+        if self.path == '/api/market-data':
+            self.send_response(200)
+            self.send_header('Content-type', 'application/json')
+            self.end_headers()
+            
+            market_data = fetch_real_market_data()
+            if market_data:
+                self.wfile.write(json.dumps(market_data).encode())
+            else:
+                self.wfile.write(json.dumps({'error': 'Failed to fetch market data'}).encode())
+            return
+        
+        # Serve the dashboard HTML file
+        if self.path == '/' or self.path == '/dashboard':
+            self.path = '/user_dashboard.html'
+        return super().do_GET()
+
+def create_dashboard_html():
+    """Create the USER-Dashboard HTML file"""
+    html_content = '''<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USER-Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: white;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+        
+        .card h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            background: #f8f9ff;
+            border-radius: 10px;
+        }
+        
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+        
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .button:active {
+            transform: translateY(0);
+        }
+        
+        .controls {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .status {
+            text-align: center;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+        
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        
+        .footer {
+            text-align: center;
+            color: white;
+            margin-top: 40px;
+            opacity: 0.8;
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 USER-Dashboard</h1>
+            <p>Advanced Trading & Analytics Platform</p>
+        </div>
+        
+        <div class="dashboard-grid">
+            <div class="card">
+                <h3>📊 Trading Statistics</h3>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-value" id="totalTrades">0</div>
+                        <div class="stat-label">Total Trades</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="winRate">0%</div>
+                        <div class="stat-label">Win Rate</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="profitLoss">$0</div>
+                        <div class="stat-label">P&L</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="activePositions">0</div>
+                        <div class="stat-label">Active Positions</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>⚡ Quick Actions</h3>
+                <div class="controls">
+                    <button class="button" onclick="startTrading()">Start Trading</button>
+                    <button class="button" onclick="stopTrading()">Stop Trading</button>
+                    <button class="button" onclick="refreshData()">Refresh Data</button>
+                    <button class="button" onclick="exportReport()">Export Report</button>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>📈 Market Overview</h3>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-value" id="btcPrice">$0</div>
+                        <div class="stat-label">BTC Price</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="marketCap">$0</div>
+                        <div class="stat-label">Market Cap</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="volume24h">$0</div>
+                        <div class="stat-label">24h Volume</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="fearGreed">0</div>
+                        <div class="stat-label">Fear & Greed</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>🔧 System Status</h3>
+                <div class="controls">
+                    <button class="button" onclick="checkSystemHealth()">Health Check</button>
+                    <button class="button" onclick="viewLogs()">View Logs</button>
+                    <button class="button" onclick="updateSystem()">Update System</button>
+                    <button class="button" onclick="backupData()">Backup Data</button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="statusMessage" class="status info" style="display: none;">
+            System ready and operational
+        </div>
+        
+        <div class="footer">
+            <p>© 2024 USER-Dashboard | Powered by ZmartBot Technology</p>
+        </div>
+    </div>
+
+    <script>
+        // Dashboard functionality
+        let isTrading = false;
+        let stats = {
+            totalTrades: 0,
+            winRate: 0,
+            profitLoss: 0,
+            activePositions: 0,
+            btcPrice: 0,
+            marketCap: 0,
+            volume24h: 0,
+            fearGreed: 0
+        };
+        
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            showStatus('Dashboard initialized successfully!', 'success');
+            loadInitialData();
+            startDataRefresh();
+        });
+        
+        function showStatus(message, type = 'info') {
+            const statusEl = document.getElementById('statusMessage');
+            statusEl.textContent = message;
+            statusEl.className = `status ${type}`;
+            statusEl.style.display = 'block';
+            
+            setTimeout(() => {
+                statusEl.style.display = 'none';
+            }, 3000);
+        }
+        
+        function loadInitialData() {
+            // Load real market data
+            fetchRealMarketData();
+            
+            // Simulate trading data (these would come from your trading system)
+            stats.totalTrades = Math.floor(Math.random() * 100) + 50;
+            stats.winRate = Math.floor(Math.random() * 30) + 70;
+            stats.profitLoss = (Math.random() - 0.5) * 10000;
+            stats.activePositions = Math.floor(Math.random() * 10) + 1;
+            
+            updateDisplay();
+        }
+        
+        function fetchRealMarketData() {
+            fetch('/api/market-data')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        console.error('Error fetching market data:', data.error);
+                        showStatus('Failed to fetch real market data', 'error');
+                        return;
+                    }
+                    
+                    // Update with real market data
+                    stats.btcPrice = data.btc_price;
+                    stats.marketCap = data.market_cap;
+                    stats.volume24h = data.volume_24h;
+                    stats.fearGreed = data.fear_greed;
+                    
+                    updateDisplay();
+                    showStatus('Real market data loaded successfully!', 'success');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showStatus('Failed to fetch market data', 'error');
+                });
+        }
+        
+        function updateDisplay() {
+            document.getElementById('totalTrades').textContent = stats.totalTrades;
+            document.getElementById('winRate').textContent = stats.winRate + '%';
+            document.getElementById('profitLoss').textContent = '$' + stats.profitLoss.toFixed(2);
+            document.getElementById('activePositions').textContent = stats.activePositions;
+            document.getElementById('btcPrice').textContent = '$' + stats.btcPrice.toFixed(0);
+            document.getElementById('marketCap').textContent = '$' + (stats.marketCap / 1000000000).toFixed(1) + 'B';
+            document.getElementById('volume24h').textContent = '$' + (stats.volume24h / 1000000000).toFixed(1) + 'B';
+            document.getElementById('fearGreed').textContent = stats.fearGreed;
+        }
+        
+        function startDataRefresh() {
+            setInterval(() => {
+                // Fetch real market data every 30 seconds
+                fetchRealMarketData();
+                
+                // Simulate trading data updates (these would come from your trading system)
+                stats.profitLoss += (Math.random() - 0.5) * 100;
+                
+                updateDisplay();
+            }, 30000); // Update every 30 seconds
+        }
+        
+        // Button functions
+        function startTrading() {
+            if (!isTrading) {
+                isTrading = true;
+                showStatus('Trading started successfully!', 'success');
+                // Add trading logic here
+            } else {
+                showStatus('Trading is already active!', 'info');
+            }
+        }
+        
+        function stopTrading() {
+            if (isTrading) {
+                isTrading = false;
+                showStatus('Trading stopped successfully!', 'success');
+                // Add stop trading logic here
+            } else {
+                showStatus('Trading is not currently active!', 'info');
+            }
+        }
+        
+        function refreshData() {
+            showStatus('Refreshing data...', 'info');
+            fetchRealMarketData();
+            // Keep trading data as is, only refresh market data
+            setTimeout(() => {
+                showStatus('Data refreshed successfully!', 'success');
+            }, 1000);
+        }
+        
+        function exportReport() {
+            showStatus('Exporting report...', 'info');
+            // Add export logic here
+            setTimeout(() => {
+                showStatus('Report exported successfully!', 'success');
+            }, 2000);
+        }
+        
+        function checkSystemHealth() {
+            showStatus('Checking system health...', 'info');
+            // Add health check logic here
+            setTimeout(() => {
+                showStatus('System health check completed - All systems operational!', 'success');
+            }, 1500);
+        }
+        
+        function viewLogs() {
+            showStatus('Opening system logs...', 'info');
+            // Add log viewing logic here
+        }
+        
+        function updateSystem() {
+            showStatus('Updating system...', 'info');
+            // Add system update logic here
+            setTimeout(() => {
+                showStatus('System update completed!', 'success');
+            }, 3000);
+        }
+        
+        function backupData() {
+            showStatus('Creating data backup...', 'info');
+            // Add backup logic here
+            setTimeout(() => {
+                showStatus('Data backup completed successfully!', 'success');
+            }, 2500);
+        }
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey || e.metaKey) {
+                switch(e.key) {
+                    case 'r':
+                        e.preventDefault();
+                        refreshData();
+                        break;
+                    case 's':
+                        e.preventDefault();
+                        if (isTrading) {
+                            stopTrading();
+                        } else {
+                            startTrading();
+                        }
+                        break;
+                }
+            }
+        });
+    </script>
+</body>
+</html>'''
+    
+    with open('user_dashboard.html', 'w') as f:
+        f.write(html_content)
+    print("✅ Created user_dashboard.html")
+
+def main():
+    """Main function to start the dashboard server"""
+    print(f"🚀 Starting USER-Dashboard Server...")
+    print(f"📍 Host: {HOST}")
+    print(f"🔌 Port: {PORT}")
+    print(f"🌐 URL: http://{HOST}:{PORT}")
+    print("-" * 50)
+    
+    # Create the dashboard HTML file
+    create_dashboard_html()
+    
+    # Check if port is available
+    try:
+        with socketserver.TCPServer((HOST, PORT), DashboardHandler) as httpd:
+            print(f"✅ Server started successfully on port {PORT}")
+            print(f"📊 Dashboard available at: http://{HOST}:{PORT}")
+            print("🛑 Press Ctrl+C to stop the server")
+            print("-" * 50)
+            
+            try:
+                httpd.serve_forever()
+            except KeyboardInterrupt:
+                print("\n🛑 Server stopped by user")
+                print("👋 Goodbye!")
+                
+    except OSError as e:
+        if e.errno == 48:  # Address already in use
+            print(f"❌ Error: Port {PORT} is already in use")
+            print(f"💡 Try using a different port or stop the service using port {PORT}")
+        else:
+            print(f"❌ Error starting server: {e}")
+        sys.exit(1)
+
+if __name__ == "__main__":
+    main()

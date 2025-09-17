@@ -1,0 +1,20 @@
+{
+  "supported_symbols": [
+    "BTC",
+    "ETH",
+    "SOL",
+    "ADA",
+    "AVAX",
+    "DOT",
+    "MATIC",
+    "LINK",
+    "UNI",
+    "ATOM",
+    "FTM",
+    "ALGO"
+  ],
+  "total_count": 12,
+  "source": "IntoTheCryptoverse",
+  "note": "Only these symbols have risk metrics from Benjamin Cowen's model",
+  "last_updated": "2025-09-14"
+}

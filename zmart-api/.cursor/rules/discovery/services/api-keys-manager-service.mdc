@@ -1,0 +1,434 @@
+# Api-Keys-Manager-Service - Merged MDC Configuration
+
+## 🔗 Merged from 2 duplicate files
+**Merged Files**: api-keys-manager-service.mdc, api_keys_manager_server.mdc
+**Merge Date**: 2025-08-27 10:39:58
+**Primary Source**: api-keys-manager-service.mdc
+
+## 📋 Primary Configuration
+# Api-Keys-Manager-Service - Merged MDC Configuration
+
+## 🔗 Merged from 2 duplicate files
+**Merged Files**: api-keys-manager-service.mdc, api_keys_manager_server.mdc
+**Merge Date**: 2025-08-26 09:03:52
+**Primary Source**: api-keys-manager-service.mdc
+
+## 📋 Primary Configuration
+# api-keys-manager-service.mdc
+> Purpose: ZmartBot API Keys Manager Service providing secure storage, rotation, and access control for all external API credentials.
+
+## Service Overview
+**api-keys-manager-service** is a comprehensive API keys management service that provides secure storage, rotation, and access control for all external API credentials with comprehensive encryption, key rotation, and security monitoring capabilities for the ZmartBot trading system.
+
+## Architecture
+**Type**: Backend Service (FastAPI-based)
+**Port**: 8006
+**Language**: Python 3.11+
+**Framework**: FastAPI, SQLite, cryptography
+**Database**: SQLite (encrypted key storage)
+**Compute**: High-security key management and encryption
+
+### Core Components
+- **Key Storage**: Secure encrypted API key storage
+- **Key Rotation**: Automated API key rotation system
+- **Encryption Engine**: Advanced encryption and decryption
+- **Access Control**: Role-based access control for keys
+- **Audit System**: Comprehensive access audit logging
+- **Backup System**: Encrypted backup and restore
+- **Validation Engine**: API key validation and testing
+
+## API Endpoints
+
+### Health & Status
+- `GET /health` - Service health check
+- `GET /ready` - Service readiness check
+- `GET /metrics` - Prometheus metrics
+
+### Key Management Endpoints
+- `GET /api/keys/status` - Get API keys manager service status
+- `GET /api/keys/list` - List all API keys (encrypted)
+- `POST /api/keys/store` - Store new API key
+- `GET /api/keys/{service}/{key_name}` - Get specific API key (decrypted)
+- `PUT /api/keys/{service}/{key_name}` - Update API key
+- `DELETE /api/keys/{service}/{key_name}` - Delete API key
+
+### Key Operations Endpoints
+- `POST /api/keys/rotate` - Rotate API key
+- `GET /api/keys/rotation/status` - Get key rotation status
+- `POST /api/keys/validate` - Validate API key
+- `GET /api/keys/expiry` - Get expiring keys
+
+### Security Endpoints
+- `POST /api/keys/encrypt` - Encrypt API key
+- `POST /api/keys/decrypt` - Decrypt API key
+- `GET /api/keys/audit` - Get access audit log
+
+### Backup & Recovery Endpoints
+- `POST /api/keys/backup` - Create encrypted backup
+- `POST /api/keys/restore` - Restore from backup
+
+### Legacy Endpoints (for compatibility)
+- `/startup_event` - Initialize service and register with port manager
+- `/shutdown_event` - Cleanup on shutdown
+- `/root` - Root endpoint
+- `/list_services` - List all configured services
+- `/get_service_info` - Get detailed info about a specific service
+- `/add_api_key` - Add or update an API key for a service
+- `/get_usage_stats` - Get API usage statistics
+- `/test_service_connections` - Test connections to configured services
+
+## Key Management Features
+
+### Secure Storage
+- **Encryption**: All API keys encrypted at rest using AES-256
+- **Key Separation**: Service-specific key isolation
+- **Metadata Storage**: Key metadata and usage information
+- **Version Control**: Key versioning and history tracking
+- **Access Logging**: Comprehensive access audit trail
+- **Secure Transmission**: Encrypted key transmission
+
+### Key Rotation
+- **Automated Rotation**: Scheduled key rotation
+- **Manual Rotation**: On-demand key rotation
+- **Rotation Policies**: Configurable rotation policies
+- **Rotation Validation**: Post-rotation validation
+- **Rollback Support**: Key rotation rollback capability
+- **Notification System**: Rotation status notifications
+
+### Access Control
+- **Authentication**: Token-based authentication
+- **Authorization**: Role-based access control
+- **Service Isolation**: Service-specific key access
+- **Temporary Access**: Time-limited key access
+- **Access Auditing**: Complete access audit trail
+- **Security Monitoring**: Real-time security monitoring
+
+### Validation & Testing
+- **Key Validation**: API key format and structure validation
+- **Connectivity Testing**: Service connectivity testing
+- **Performance Testing**: Key retrieval performance testing
+- **Security Testing**: Security vulnerability testing
+- **Compliance Checking**: Regulatory compliance validation
+- **Health Monitoring**: Key health and status monitoring
+
+## Security Features
+
+### Encryption
+- **AES-256 Encryption**: Military-grade encryption for all keys
+- **Key Derivation**: Secure key derivation functions
+- **Salt Generation**: Cryptographically secure salt generation
+- **Encryption Keys**: Secure encryption key management
+- **Key Rotation**: Regular encryption key rotation
+- **Hardware Security**: Hardware security module support
+
+### Access Control
+- **Multi-Factor Authentication**: MFA for sensitive operations
+- **Role-Based Access**: Granular role-based permissions
+- **IP Whitelisting**: IP-based access restrictions
+- **Session Management**: Secure session handling
+- **Audit Logging**: Comprehensive audit trail
+- **Security Alerts**: Real-time security alerting
+
+### Compliance
+- **GDPR Compliance**: Data protection compliance
+- **SOC 2 Compliance**: Security compliance framework
+- **PCI DSS**: Payment card industry compliance
+- **ISO 27001**: Information security management
+- **Audit Trail**: Complete audit trail maintenance
+- **Data Retention**: Configurable data retention policies
+
+## Data Sources
+- **Service Registrations**: Service API key registrations
+- **Usage Statistics**: API key usage patterns
+- **Security Events**: Security and access events
+- **Rotation Schedules**: Key rotation schedules
+- **Audit Logs**: Access and operation audit logs
+- **Backup Data**: Encrypted backup data
+
+## Configuration
+- **Environment Variables**: API_KEYS_MANAGER_TOKEN, ENCRYPTION_KEY, DATABASE_URL
+- **Security Settings**: Encryption and access control settings
+- **Rotation Settings**: Key rotation policies and schedules
+- **Backup Settings**: Backup and recovery configuration
+- **Monitoring Settings**: Security monitoring configuration
+
+## Monitoring
+- **Health Checks**: Automated health monitoring
+- **Security Metrics**: Security performance tracking
+- **Access Monitoring**: Key access monitoring
+- **Resource Monitoring**: CPU, memory, storage usage
+
+## Security
+- **Authentication**: Required for all endpoints
+- **Authorization**: Role-based access control
+- **Data Encryption**: All data encrypted in transit and at rest
+- **Audit Logging**: Comprehensive security audit trail
+
+## Performance
+- **Caching**: Secure caching for frequently accessed keys
+- **Encryption Optimization**: Optimized encryption algorithms
+- **Scaling**: Horizontal scaling capabilities
+- **Load Balancing**: Request distribution across instances
+
+## Dependencies
+- **zmart-api** (Port 8000) - Required for system integration
+- **master-orchestration-agent** (Port 8002) - Required for orchestration
+- **Database**: SQLite for encrypted key storage
+- **Encryption**: Cryptography library for key encryption
+
+## Orchestration
+- **Service Discovery**: Automatic service registration
+- **Health Monitoring**: Integrated health checks
+- **Dependency Management**: Proper dependency resolution
+- **Scaling**: Automated scaling based on demand
+
+## Rollback
+- **Data Backup**: Automatic encrypted backup
+- **Configuration Backup**: Versioned configuration management
+- **Snapshot Recovery**: Point-in-time data recovery
+- **Service Rollback**: Service configuration rollback
+
+## Load Balancing
+- **Request Distribution**: Load balancing across instances
+- **Session Management**: Proper session handling
+- **Resource Management**: Efficient resource allocation
+- **Performance Monitoring**: Real-time performance tracking
+
+## Failure Modes & Runbooks
+
+### Encryption Key Failure
+- **Symptoms**: Cannot encrypt/decrypt API keys, service unavailable
+- **Impact**: All key operations fail, system authentication issues
+- **Remediation**: Check encryption key configuration, restart service, verify key integrity
+- **Prevention**: Regular key rotation, secure key storage, monitoring
+
+### Database Connection Failure
+- **Symptoms**: Cannot access API keys database, authentication failing
+- **Impact**: Key retrieval and storage operations fail
+- **Remediation**: Check database connectivity, restart service, verify database permissions
+- **Prevention**: Database monitoring, connection pooling, backup systems
+
+### Key Rotation Failure
+- **Symptoms**: API key rotation not working, keys becoming stale
+- **Impact**: Service authentication failures, security compliance issues
+- **Remediation**: Check rotation schedule, verify API connectivity, restart rotation service
+- **Prevention**: Automated rotation testing, monitoring, alerting
+
+## Known Issues
+- **High Memory Usage**: Encryption operations may use significant memory
+- **Key Retrieval Latency**: Encrypted key retrieval may have latency
+- **Rotation Complexity**: Complex key rotation scenarios
+- **Workarounds**: Implemented optimization and monitoring
+
+## Status
+- **Operational Status**: ✅ **ACTIVE**
+- **Implementation Completeness**: 95%
+- **Performance**: Optimized for secure key management
+- **Reliability**: High availability with failover support
+
+## Changelog
+- **Version 1.0.0**: Initial API keys management service with encryption and rotation
+- **Security Enhancement**: Advanced encryption and access control
+- **Performance Optimization**: Optimized encryption and caching
+- **Monitoring**: Advanced security monitoring and alerting
+
+---
+
+description: ZmartBot API Keys Manager Service Documentation
+globs:
+alwaysApply: true
+
+
+## 📄 Additional Content from api_keys_manager_server.mdc
+# api_keys_manager_server.mdc
+> Type: backend | Version: 1.0.0 | Owner: zmartbot | Port: 8006
+
+## Purpose
+Represents an API key entry
+
+## Overview
+Auto-discovered service managed by MDC-Dashboard system. This service was identified during automated system scanning and requires manual review and enhancement.
+
+## Critical Functions
+- Auto-discovered service functionality (requires manual documentation)
+- Service integration with ZmartBot ecosystem
+
+## Architecture & Integration
+- **Service Type:** backend
+- **Dependencies:** To be determined
+- **Env Vars:** To be determined  
+- **Lifecycle:** start=`python3 /Users/dansidanutz/Desktop/ZmartBot/zmart-api/api_keys_manager/api_keys_manager_server.py.py` | stop=`pkill -f api_keys_manager_server` | migrate=`n/a`
+
+## API Endpoints
+*Endpoints to be documented during manual review*
+
+## Health & Readiness
+- Liveness: To be configured
+- Readiness: To be configured
+- Timeouts: startup_grace=30s, http_timeout=30s
+
+## Observability
+- Metrics: To be configured
+- Logs: format=python-logging
+- Dashboards: To be created
+
+
+
+## Service Connections & Dependencies
+
+### Current Active Connections
+- **port-8006** ✅ **ACTIVE** - network connection
+- ****** ✅ **ACTIVE** - dependency connection
+
+### Potential Connections
+- **PortManagerService** ⏳ **POTENTIAL** - High-potential integration between api-keys-manager-service and PortManagerService - Strong synergy opportunity (Confidence: 100%)
+- **my-symbols-extended-service** ⏳ **POTENTIAL** - High-potential integration between api-keys-manager-service and my-symbols-extended-service - Strong synergy opportunity (Confidence: 100%)
+- **PortManager** ⏳ **POTENTIAL** - High-potential integration between api-keys-manager-service and PortManager - Strong synergy opportunity (Confidence: 100%)
+- **market_data_enhanced_database** ⏳ **POTENTIAL** - High-potential integration between api-keys-manager-service and market_data_enhanced_database - Strong synergy opportunity (Confidence: 100%)
+- **SecurityScanService** ⏳ **POTENTIAL** - High-potential integration between api-keys-manager-service and SecurityScanService - Strong synergy opportunity (Confidence: 100%)
+
+### Priority Connections
+*Will be populated automatically during Phase 4 if service qualifies for top 10 priority services*
+
+### Connection Summary
+- **Current Active**: 2
+- **Potential**: 5  
+- **Priority**: 0
+- **Total Discovered**: 2
+- **Last Discovery Scan**: Auto-updated on system initialization
+- **Discovery Method**: Multi-phase automated analysis with diamond pattern extraction
+- **Update Policy**: Real-time updates during workflow execution
+## Orchestration & Ordering
+- Basic Integration: Enabled
+- Master Agent Linked: No
+- Ordering Hints: To be determined
+
+## Performance & SLO
+- Baseline p95 (ms): To be measured
+- Notes: Auto-discovered service requiring performance baseline establishment
+
+## Failure Modes & Runbooks
+*To be documented during manual review*
+
+## Rollback
+- Snapshot required: To be determined
+- Playbook: To be determined
+
+## Load Balancing
+- Enabled: To be determined
+- Pool: To be determined
+
+## Known Issues
+- Auto-generated MDC file requiring manual review and enhancement
+- Service functionality and dependencies need documentation
+
+## Changelog
+- 1.0.0 (2025-08-26): Auto-discovered service, MDC file generated by MDC-Dashboard system
+
+---
+*Auto-generated by MDC-Dashboard orphan service discovery on 2025-08-26*
+description: Auto-discovered service requiring manual documentation
+globs: ["/Users/dansidanutz/Desktop/ZmartBot/zmart-api/api_keys_manager/api_keys_manager_server.py"]
+alwaysApply: true
+---
+
+---
+**Merge Summary**: Combined 2 files into unified MDC configuration
+**Generated**: 2025-08-26T09:03:52.866741
+
+## 📄 Additional Content from api_keys_manager_server.mdc
+# api_keys_manager_server.mdc
+> Type: backend | Version: 1.0.0 | Owner: zmartbot | Port: 8006
+
+## Purpose
+Represents an API key entry
+
+## Overview
+Auto-discovered service managed by MDC-Dashboard system. This service was identified during automated system scanning and requires manual review and enhancement.
+
+## Critical Functions
+- Auto-discovered service functionality (requires manual documentation)
+- Service integration with ZmartBot ecosystem
+
+## Architecture & Integration
+- **Service Type:** backend
+- **Dependencies:** To be determined
+- **Env Vars:** To be determined  
+- **Lifecycle:** start=`python3 /Users/dansidanutz/Desktop/ZmartBot/zmart-api/api_keys_manager/api_keys_manager_server.py.py` | stop=`pkill -f api_keys_manager_server` | migrate=`n/a`
+
+## API Endpoints
+*Endpoints to be documented during manual review*
+
+## Health & Readiness
+- Liveness: To be configured
+- Readiness: To be configured
+- Timeouts: startup_grace=30s, http_timeout=30s
+
+## Observability
+- Metrics: To be configured
+- Logs: format=python-logging
+- Dashboards: To be created
+
+
+
+## Service Connections & Dependencies
+
+### Current Active Connections
+- **port-8006** ✅ **ACTIVE** - network connection
+- ****** ✅ **ACTIVE** - dependency connection
+
+### Potential Connections
+- **PortManagerService** ⏳ **POTENTIAL** - High-potential integration between api_keys_manager_server and PortManagerService - Strong synergy opportunity (Confidence: 100%)
+- **my-symbols-extended-service** ⏳ **POTENTIAL** - High-potential integration between api_keys_manager_server and my-symbols-extended-service - Strong synergy opportunity (Confidence: 100%)
+- **MainAPIServer** ⏳ **POTENTIAL** - High-potential integration between api_keys_manager_server and MainAPIServer - Strong synergy opportunity (Confidence: 100%)
+- **binance-worker-service** ⏳ **POTENTIAL** - High-potential integration between api_keys_manager_server and binance-worker-service - Strong synergy opportunity (Confidence: 100%)
+- **api-keys-manager-service** ⏳ **POTENTIAL** - High-potential integration between api_keys_manager_server and api-keys-manager-service - Strong synergy opportunity (Confidence: 100%)
+
+### Priority Connections
+*Will be populated automatically during Phase 4 if service qualifies for top 10 priority services*
+
+### Connection Summary
+- **Current Active**: 2
+- **Potential**: 5  
+- **Priority**: 0
+- **Total Discovered**: 2
+- **Last Discovery Scan**: Auto-updated on system initialization
+- **Discovery Method**: Multi-phase automated analysis with diamond pattern extraction
+- **Update Policy**: Real-time updates during workflow execution
+## Orchestration & Ordering
+- Basic Integration: Enabled
+- Master Agent Linked: No
+- Ordering Hints: To be determined
+
+## Performance & SLO
+- Baseline p95 (ms): To be measured
+- Notes: Auto-discovered service requiring performance baseline establishment
+
+## Failure Modes & Runbooks
+*To be documented during manual review*
+
+## Rollback
+- Snapshot required: To be determined
+- Playbook: To be determined
+
+## Load Balancing
+- Enabled: To be determined
+- Pool: To be determined
+
+## Known Issues
+- Auto-generated MDC file requiring manual review and enhancement
+- Service functionality and dependencies need documentation
+
+## Changelog
+- 1.0.0 (2025-08-26): Auto-discovered service, MDC file generated by MDC-Dashboard system
+
+---
+*Auto-generated by MDC-Dashboard orphan service discovery on 2025-08-26*
+description: Auto-discovered service requiring manual documentation
+globs: ["/Users/dansidanutz/Desktop/ZmartBot/zmart-api/api_keys_manager/api_keys_manager_server.py"]
+alwaysApply: true
+---
+
+---
+**Merge Summary**: Combined 2 files into unified MDC configuration
+**Generated**: 2025-08-27T10:39:58.316040

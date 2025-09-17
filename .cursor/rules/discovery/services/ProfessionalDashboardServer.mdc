@@ -1,0 +1,1073 @@
+# Professionaldashboardserver - Merged MDC Configuration
+
+## 🔗 Merged from 3 duplicate files
+**Merged Files**: ProfessionalDashboardServer.mdc, ProfessionalDashboardApp.mdc, professional_dashboard_server.mdc
+**Merge Date**: 2025-08-27 10:39:58
+**Primary Source**: ProfessionalDashboardServer.mdc
+
+## 📋 Primary Configuration
+# Professionaldashboardserver - Merged MDC Configuration
+
+## 🔗 Merged from 3 duplicate files
+**Merged Files**: ProfessionalDashboardServer.mdc, ProfessionalDashboardApp.mdc, professional_dashboard_server.mdc
+**Merge Date**: 2025-08-26 09:03:52
+**Primary Source**: ProfessionalDashboardServer.mdc
+
+## 📋 Primary Configuration
+# 📊 Professional Dashboard Server - Complete Trading Platform Dashboard
+> Type: frontend | Version: 2.0.0 | Owner: zmartbot | Port: 3400
+
+## Purpose
+FastAPI-based professional dashboard server serving the complete ZmartBot trading platform with comprehensive charting, real-time data visualization, API proxy functionality, and full integration with the backend trading system.
+
+## Overview
+ZmartBot Professional Dashboard Server providing complete trading platform access with DBI Coefficient analysis, real-time market data, professional charting capabilities, and seamless backend API integration with graceful fallback mechanisms.
+
+## Critical Functions
+- **Professional Dashboard Serving**: Complete trading platform interface with advanced features
+- **API Proxy Management**: Seamless proxy functionality for Binance and backend API calls
+- **Real-time Data Integration**: Live market data, alerts, and trading signals
+- **Static Asset Management**: Professional dashboard assets and React application serving
+- **Multi-route Support**: Comprehensive routing for scoring, risk metrics, and symbols
+- **Health Monitoring**: Comprehensive health checks and service status reporting
+- **Error Recovery**: Graceful fallback mechanisms and mock data provision
+- **Cross-platform Compatibility**: Support for multiple dashboard configurations
+
+## Architecture & Integration
+- **Service Type:** frontend
+- **Dependencies:** zmart-api (Port 8000), professional_dashboard directory structure
+- **Env Vars:** BACKEND_URL
+- **Lifecycle:** start=`python3 professional_dashboard_server.py` | stop=`pkill -f professional_dashboard_server.py` | migrate=`n/a`
+
+## Architecture Components
+- **FastAPI Application**: Main server framework with comprehensive middleware
+- **CORS Management**: Cross-origin resource sharing for frontend-backend communication
+- **Static File Serving**: Professional dashboard assets and React build artifacts
+- **API Proxy Layer**: Intelligent proxy with fallback mechanisms
+- **Route Management**: Dynamic route loading with error handling
+- **Asset Pipeline**: CSS, JS, JSX, and image asset serving
+
+## Key Features
+- **Professional Trading Interface**: Complete trading platform with advanced features
+- **Real-time Market Data**: Live price feeds, alerts, and market information
+- **Comprehensive API Integration**: Full backend API proxy with intelligent routing
+- **Advanced Charting**: Professional charting capabilities with FusionCharts integration
+- **Responsive Design**: Multi-device support with professional styling
+- **Error Resilience**: Graceful degradation with mock data fallbacks
+- **Route Intelligence**: Smart routing for SPA and traditional navigation
+- **Asset Optimization**: Efficient static asset delivery and caching
+
+## Dashboard Features
+- **DBI Coefficient Dashboard**: Advanced coefficient analysis and visualization
+- **Risk Metric Analysis**: Benjamin Cowen RiskMetric integration and display
+- **Symbol Management**: My Symbols dashboard with comprehensive symbol data
+- **Live Alerts System**: Real-time alert dashboard with professional notifications
+- **Scoring Systems**: Multi-dimensional scoring and analysis dashboards
+- **Market Data Visualization**: Professional market data charts and indicators
+
+## API Routes Loaded
+### Core Trading Routes
+- **My Symbols**: Symbol management and analysis
+- **Futures Symbols**: Futures trading symbol management
+- **Cryptometer**: Market sentiment and crypto analysis
+- **RiskMetric**: Benjamin Cowen risk analysis integration
+- **ChatGPT Alerts**: AI-powered alert generation
+- **Binance Integration**: Direct Binance API proxy and data
+- **DBI Coefficient**: Advanced coefficient calculations and analysis
+- **KingFisher**: Advanced trading signal analysis
+- **Professional Alerts**: Comprehensive alert management system
+
+## API Endpoints
+
+### GET /health
+- Summary: Dashboard server health check with comprehensive status
+- Auth Required: No
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: Health status with routes loaded/failed, port, version, and timestamp
+  - 503: Service unavailable
+
+### GET /
+- Summary: Serve main React trading dashboard
+- Auth Required: No
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: Professional trading dashboard HTML
+  - 404: Dashboard not found
+
+### GET /scoring
+- Summary: Serve scoring analysis page
+- Auth Required: No
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: Scoring dashboard page
+  - 200: Main dashboard with scoring route (fallback)
+
+### GET /riskmetric
+- Summary: Serve RiskMetric analysis page
+- Auth Required: No
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: RiskMetric dashboard page
+  - 200: Main dashboard with riskmetric route (fallback)
+
+### GET /my-symbols
+- Summary: Serve My Symbols management page
+- Auth Required: No
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: My Symbols dashboard page
+  - 200: Main dashboard with symbols route (fallback)
+
+### GET /api/binance/ticker/24hr
+- Summary: Proxy Binance 24hr ticker data with backend integration
+- Auth Required: No
+- Request:
+  - Params: `{}`
+  - Query: `{"symbol": "string"}`
+  - Body: `{}`
+- Responses:
+  - 200: Binance ticker data (live or mock)
+  - 502: Backend proxy error
+
+### GET /api/binance/klines
+- Summary: Proxy Binance klines/candlestick data
+- Auth Required: No
+- Request:
+  - Params: `{}`
+  - Query: `{"symbol": "string", "interval": "string", "limit": "int"}`
+  - Body: `{}`
+- Responses:
+  - 200: Binance klines data (live or mock)
+  - 502: Backend proxy error
+
+### GET /cryptometer/symbol/{symbol}
+- Summary: Proxy Cryptometer symbol analysis
+- Auth Required: No
+- Request:
+  - Params: `{"symbol": "string"}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: Cryptometer analysis data (live or mock)
+  - 502: Backend proxy error
+
+### API_ROUTE /api/{path:path}
+- Summary: Universal API proxy to backend with comprehensive method support
+- Auth Required: Varies
+- Request:
+  - Params: `{"path": "string"}`
+  - Query: `dynamic`
+  - Body: `dynamic`
+- Responses:
+  - 200: Proxied response from backend
+  - 401: Authentication required
+  - 502: Backend error
+
+### GET /{filename}.css
+- Summary: Serve CSS stylesheet files
+- Auth Required: No
+- Request:
+  - Params: `{"filename": "string"}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: CSS file content
+  - 404: CSS file not found
+
+### GET /{filename}.js
+- Summary: Serve JavaScript files
+- Auth Required: No
+- Request:
+  - Params: `{"filename": "string"}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: JavaScript file content
+  - 404: JS file not found
+
+### GET /{filename}.jsx
+- Summary: Serve JSX React component files
+- Auth Required: No
+- Request:
+  - Params: `{"filename": "string"}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: JSX file content
+  - 404: JSX file not found
+
+### GET /test-proxy.html
+- Summary: Serve API proxy testing page
+- Auth Required: No
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: Proxy test HTML page
+  - 404: Test file not found
+
+### GET /test-backend-proxy.html
+- Summary: Serve backend proxy testing page
+- Auth Required: No
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: Backend proxy test HTML page
+  - 404: Test file not found
+
+## Static Asset Management
+- **Assets Directory**: `/professional_dashboard/dist/assets` - React build artifacts
+- **Static Directory**: `/professional_dashboard/static` - Static resources
+- **FusionCharts**: `/professional_dashboard/fusioncharts` - Professional charting library
+- **Image Support**: PNG, JPG, JPEG image serving with intelligent path resolution
+- **API Proxy Script**: `/api-proxy.js` - Frontend API integration script
+
+## Health & Readiness
+- Liveness: `/health`
+- Readiness: Service startup with route validation
+- Timeouts: startup_grace=30s, http_timeout=45s
+- Health Status: Comprehensive status including routes loaded/failed
+
+## Observability
+- Metrics: Service health, route status, backend connectivity
+- Logs: Request/response logging, error tracking, proxy status
+- Dashboards: Professional Trading Dashboard, Risk Analysis, Symbol Management
+
+## Error Recovery & Fallbacks
+- **Mock Data Provision**: Intelligent mock data for offline/error scenarios
+- **Backend Fallback**: Graceful degradation when backend is unavailable
+- **Route Resilience**: SPA fallback routing for professional navigation
+- **Asset Fallback**: Multiple directory asset resolution
+- **Connection Recovery**: Automatic backend reconnection attempts
+
+## Integration Points
+- **Backend API Integration**: Complete proxy to zmart-api on port 8000
+- **Binance API Proxy**: Direct Binance market data integration
+- **Cryptometer Integration**: Market sentiment and analysis data
+- **Real-time WebSocket**: Live data feeds and notifications
+- **Database Connectivity**: Indirect through backend API proxy
+- **Alert System Integration**: Real-time alert processing and display
+
+## Configuration
+- **Dashboard Root**: `/professional_dashboard` directory structure
+- **Backend URL**: Configurable backend service endpoint (default: localhost:8000)
+- **CORS Settings**: Comprehensive cross-origin configuration
+- **Asset Paths**: Intelligent asset resolution across multiple directories
+- **Proxy Timeouts**: Configurable timeout settings for backend calls
+
+## Performance Optimizations
+- **Static Asset Caching**: Efficient static file delivery
+- **Proxy Connection Pooling**: Optimized backend connections
+- **Asset Compression**: Optimized CSS/JS delivery
+- **Route Optimization**: Efficient SPA routing with fallbacks
+- **Error Circuit Breaker**: Intelligent error handling to prevent cascading failures
+
+## Orchestration & Ordering
+- Basic Integration: Enabled
+- Master Agent Linked: Yes
+- Ordering Hints: zmart-api → professional-dashboard-server
+- Startup Dependencies: Requires zmart-api for full functionality
+
+## Performance & SLO
+- Baseline p95 (ms): 200
+- Static Asset Delivery: <50ms
+- API Proxy Response: <500ms
+- Notes: Professional dashboard with comprehensive trading features and backend integration
+
+## Failure Modes & Runbooks
+- **backend-connection-failed** — Symptoms: API proxy errors, fallback to mock data — Remediation: Check backend connectivity, verify zmart-api service status, restart if needed
+- **asset-loading-failed** — Symptoms: Dashboard not loading, missing assets — Remediation: Verify professional_dashboard directory structure, check asset paths, rebuild if needed
+- **route-loading-failed** — Symptoms: Some routes disabled, API functionality limited — Remediation: Check route imports, verify dependencies, restart service
+- **port-conflict** — Symptoms: Server fails to start on port 3400 — Remediation: Check port availability, kill conflicting processes, restart service
+
+## Rollback
+- Snapshot required: No (Frontend service)
+- Playbook: stop → restore_assets → restart → verify
+
+## Load Balancing
+- Enabled: No
+- Pool: Single instance serving professional dashboard
+
+## Status
+✅ **ACTIVE** - Professional trading dashboard serving complete ZmartBot platform with comprehensive features
+
+## Changelog
+- 2.0.0 (2025-08-25): Professional dashboard server with comprehensive trading features, API proxy, and fallback mechanisms
+
+
+
+
+## Service Connections & Dependencies
+
+### Current Active Connections
+- **port-3400** ✅ **ACTIVE** - network connection
+- ****** ✅ **ACTIVE** - dependency connection
+- **professional_dashboard** ✅ **ACTIVE** - dependency connection
+- **Requires** ✅ **ACTIVE** - dependency connection
+- **port-3400** ✅ **ACTIVE** - network connection
+- ****** ✅ **ACTIVE** - dependency connection
+
+### Potential Connections
+- **zmart-alert-system** ⏳ **POTENTIAL** - High-potential integration between ProfessionalDashboardServer and zmart-alert-system - Strong synergy opportunity (Confidence: 80%)
+- **notification_server** ⏳ **POTENTIAL** - High-potential integration between ProfessionalDashboardServer and notification_server - Strong synergy opportunity (Confidence: 80%)
+- **PortManagerService** ⏳ **POTENTIAL** - High-potential integration between ProfessionalDashboardServer and PortManagerService - Strong synergy opportunity (Confidence: 80%)
+- **START_zmartbot** ⏳ **POTENTIAL** - High-potential integration between ProfessionalDashboardServer and START_zmartbot - Strong synergy opportunity (Confidence: 80%)
+- **my-symbols-extended-service** ⏳ **POTENTIAL** - High-potential integration between ProfessionalDashboardServer and my-symbols-extended-service - Strong synergy opportunity (Confidence: 80%)
+
+### Priority Connections
+- **optimization-target-3** 🔥 **PRIORITY #3** - Top #3 priority for system optimization - Score: 1.90 - Score: 1.00
+  - **Optimization Impact**: 0.90
+  - **Priority Score**: 0.50
+
+### Connection Summary
+- **Current Active**: 6
+- **Potential**: 5  
+- **Priority**: 1
+- **Total Discovered**: 12
+- **Last Discovery Scan**: Auto-updated on system initialization
+- **Discovery Method**: Multi-phase automated analysis with diamond pattern extraction
+- **Update Policy**: Real-time updates during workflow execution
+## 📄 Additional Content from ProfessionalDashboardApp.mdc
+# ProfessionalDashboardApp.mdc
+
+## Summary
+React-based professional trading dashboard application serving as the main UI entry point for ZmartBot, featuring routing, sidebar navigation, real-time components, and comprehensive trading interface with symbol management, chart visualization, and alert systems.
+
+## Purpose
+- Serves as the primary user interface for the ZmartBot trading platform
+- Provides centralized navigation and routing for all dashboard components
+- Implements real-time data display with live time updates and responsive design
+- Integrates trading components including symbol management, charts, and alerts
+- Manages application state and user interactions across the platform
+
+## Location
+`/Users/dansidanutz/Desktop/ZmartBot/zmart-api/professional_dashboard/App.jsx`
+
+## Component Architecture
+
+### Main Application Structure
+```jsx
+function App() {
+  return (
+    <Router>
+      <DashboardContent />
+    </Router>
+  )
+}
+```
+
+### Dashboard Content Component
+```jsx
+function DashboardContent() {
+  const [currentPage, setCurrentPage] = useState('symbols')
+  const [currentTime, setCurrentTime] = useState(new Date())
+  const [logoLoaded, setLogoLoaded] = useState(true)
+  const navigate = useNavigate()
+```
+
+**State Management**:
+- **currentPage**: Active navigation state ('symbols' default)
+- **currentTime**: Real-time clock display
+- **logoLoaded**: Logo loading status with fallback handling
+- **navigate**: React Router navigation hook
+
+## Core Features
+
+### Real-time Clock System
+```jsx
+useEffect(() => {
+  const timer = setInterval(() => {
+    setCurrentTime(new Date())
+  }, 1000)
+  return () => clearInterval(timer)
+}, [])
+```
+
+**Features**:
+- **Live Updates**: Every second clock refresh
+- **Memory Management**: Proper cleanup with clearInterval
+- **Display Format**: Localized time and date formatting
+- **Performance**: Efficient timer management
+
+### Logo Management System
+```jsx
+const handleLogoClick = () => {
+  console.log('🔘 Logo clicked!')
+  setCurrentPage('symbols')
+  navigate('/')
+}
+
+const handleLogoError = (e) => {
+  console.error('❌ Logo failed to load:', e.target.src)
+  // Progressive fallback chain
+  if (e.target.src.includes('Zmart-Logo-New.jpg')) {
+    e.target.src = '/logoZmart.png'
+  } else if (e.target.src.includes('logoZmart.png')) {
+    e.target.src = '/z-logo.png'
+  } else {
+    setLogoLoaded(false) // Show fallback
+  }
+}
+```
+
+**Features**:
+- **Progressive Fallback**: 3-tier logo loading with fallbacks
+- **Error Recovery**: Automatic fallback to alternative logo files
+- **User Interaction**: Clickable logo for navigation to home
+- **Visual Feedback**: Hover effects with CSS transforms
+
+## Header Component Structure
+
+### Header Layout
+```jsx
+<header className="dashboard-header">
+  <div className="header-content">
+    <div className="header-left">
+      <div className="header-brand">
+        <img src="/Zmart-Logo-New.jpg" alt="Zmart Logo" className="logo" />
+        <div className="header-title">
+          <h1>Zmart Trading</h1>
+          <p className="header-subtitle">Complete Dashboard</p>
+        </div>
+      </div>
+    </div>
+    <div className="header-right">
+      <div className="time-display">
+        <div className="current-time">{currentTime.toLocaleTimeString()}</div>
+        <div className="current-date">{currentTime.toLocaleDateString()}</div>
+      </div>
+    </div>
+  </div>
+</header>
+```
+
+**Design Elements**:
+- **Brand Identity**: Logo with company branding and title
+- **Time Display**: Real-time clock in header right section
+- **Responsive Layout**: Flexible header layout for different screen sizes
+- **Visual Hierarchy**: Clear separation of brand and time information
+
+## Navigation and Routing
+
+### React Router Configuration
+```jsx
+<Routes>
+  <Route path="/" element={<SymbolsManager />} />
+  <Route path="/overview" element={<Overview />} />
+  <Route path="/symbol-chart/:symbol" element={<SymbolChart />} />
+  <Route path="/scoring" element={<Scoring />} />
+  <Route path="/cryptometer" element={<Scoring />} />
+  <Route path="/kingfisher" element={<Scoring />} />
+  <Route path="/riskmetric" element={<Scoring />} />
+  <Route path="/chart" element={<SymbolChart />} />
+  <Route path="/enhanced-alerts" element={<EnhancedAlertsCard />} />
+  <Route path="/alerts" element={<EnhancedAlertsSystem />} />
+</Routes>
+```
+
+**Route Structure**:
+- **Home Route**: SymbolsManager as default landing page
+- **Overview**: System overview and status dashboard
+- **Symbol Chart**: Dynamic chart with symbol parameter routing
+- **Scoring Systems**: Multiple scoring algorithms (Cryptometer, Kingfisher, RiskMetric)
+- **Alert Systems**: Enhanced alerts card and comprehensive alert system
+
+### Sidebar Navigation Integration
+```jsx
+<Sidebar currentPage={currentPage} setCurrentPage={setCurrentPage} />
+```
+
+**Navigation Features**:
+- **State Synchronization**: Sidebar reflects current page state
+- **Bidirectional Updates**: Page changes update sidebar and vice versa
+- **Consistent Navigation**: Unified navigation experience across components
+
+## Component Integration
+
+### Trading Components
+- **SymbolsManager**: Primary symbol management interface
+- **SymbolChart**: Interactive trading charts with symbol-specific data
+- **Scoring**: Multi-algorithm scoring systems for trading decisions
+- **Overview**: System status and performance overview
+
+### Alert Components
+- **EnhancedAlertsCard**: Compact alert display component
+- **EnhancedAlertsSystem**: Comprehensive alert management system
+
+### Navigation Components
+- **Sidebar**: Main navigation sidebar with page state management
+
+## Styling and User Experience
+
+### Logo Styling
+```jsx
+style={{ 
+  width: '60px', 
+  height: '60px', 
+  borderRadius: '12px',
+  cursor: 'pointer',
+  transition: 'transform 0.3s ease'
+}}
+onMouseEnter={(e) => e.target.style.transform = 'scale(1.1)'}
+onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
+```
+
+**UX Features**:
+- **Interactive Design**: Hover effects with smooth transitions
+- **Visual Feedback**: Scale transformation on hover
+- **Accessibility**: Proper cursor indication for clickable elements
+- **Responsive**: Consistent sizing across different devices
+
+### CSS Class Structure
+- **dashboard**: Main application container
+- **dashboard-header**: Header component styling
+- **header-content**: Header layout container
+- **header-brand**: Brand identity section
+- **header-title**: Title and subtitle styling
+- **time-display**: Clock display formatting
+- **dashboard-container**: Main content container
+- **dashboard-main**: Primary content area
+
+## Error Handling and Resilience
+
+### Logo Loading Resilience
+- **Primary Logo**: `/Zmart-Logo-New.jpg` (preferred)
+- **Fallback 1**: `/logoZmart.png` (secondary option)
+- **Fallback 2**: `/z-logo.png` (tertiary option)
+- **Final Fallback**: `logoLoaded=false` state for text fallback
+
+### Error Logging
+```jsx
+console.log('🔘 Logo clicked!')
+console.log('✅ Logo loaded successfully')
+console.error('❌ Logo failed to load:', e.target.src)
+```
+
+**Debugging Features**:
+- **User Interaction Logging**: Track logo click events
+- **Success Confirmation**: Log successful logo loads
+- **Error Tracking**: Detailed error logging with source path
+
+## Performance Considerations
+
+### Memory Management
+- **Timer Cleanup**: Proper useEffect cleanup for intervals
+- **Component Unmounting**: Automatic resource cleanup
+- **State Optimization**: Minimal state updates for performance
+
+### Real-time Updates
+- **Efficient Timers**: Single interval for time updates
+- **Localized Formatting**: Native browser time formatting
+- **Minimal Re-renders**: Optimized component update patterns
+
+## Integration Points
+
+### Backend Integration
+- **API Endpoints**: Integration with ZmartBot backend services
+- **Real-time Data**: WebSocket connections for live data
+- **Authentication**: User session and authentication management
+
+### State Management
+- **Local State**: Component-level state for UI interactions
+- **Navigation State**: URL-based routing state management
+- **Global State**: Shared state across components (via props/context)
+
+## Development and Deployment
+
+### Development Features
+- **Hot Reload**: React development server integration
+- **Error Boundaries**: Comprehensive error handling
+- **Developer Tools**: React DevTools compatibility
+
+### Production Readiness
+- **Build Optimization**: Webpack/Vite build optimization
+- **Asset Management**: Efficient static asset handling
+- **Performance Monitoring**: Built-in performance tracking
+
+## Security Considerations
+- **XSS Prevention**: Safe rendering practices
+- **CSRF Protection**: Secure form handling
+- **Input Validation**: Client-side validation for user inputs
+- **Secure Navigation**: Protected routing and access control
+
+## 📄 Additional Content from professional_dashboard_server.mdc
+# professional_dashboard_server.mdc
+> Type: frontend | Version: 1.0.0 | Owner: zmartbot | Port: 3400
+
+## Purpose
+Serve the proxy test page
+
+## Overview
+Auto-discovered service managed by MDC-Dashboard system. This service was identified during automated system scanning and requires manual review and enhancement.
+
+## Critical Functions
+- Auto-discovered service functionality (requires manual documentation)
+- Service integration with ZmartBot ecosystem
+
+## Architecture & Integration
+- **Service Type:** frontend
+- **Dependencies:** To be determined
+- **Env Vars:** To be determined  
+- **Lifecycle:** start=`python3 /Users/dansidanutz/Desktop/ZmartBot/zmart-api/system_backups/initial_startup_backup/system_backups/initial_startup_backup/professional_dashboard_server.py.py` | stop=`pkill -f professional_dashboard_server` | migrate=`n/a`
+
+## API Endpoints
+*Endpoints to be documented during manual review*
+
+## Health & Readiness
+- Liveness: To be configured
+- Readiness: To be configured
+- Timeouts: startup_grace=30s, http_timeout=30s
+
+## Observability
+- Metrics: To be configured
+- Logs: format=python-logging
+- Dashboards: To be created
+
+
+
+## Service Connections & Dependencies
+
+### Current Active Connections
+- **port-3400** ✅ **ACTIVE** - network connection
+- ****** ✅ **ACTIVE** - dependency connection
+- **professional_dashboard** ✅ **ACTIVE** - dependency connection
+- **Requires** ✅ **ACTIVE** - dependency connection
+- **port-3400** ✅ **ACTIVE** - network connection
+- ****** ✅ **ACTIVE** - dependency connection
+
+### Potential Connections
+- **zmart-alert-system** ⏳ **POTENTIAL** - High-potential integration between ProfessionalDashboardServer and zmart-alert-system - Strong synergy opportunity (Confidence: 80%)
+- **notification_server** ⏳ **POTENTIAL** - High-potential integration between ProfessionalDashboardServer and notification_server - Strong synergy opportunity (Confidence: 80%)
+- **PortManagerService** ⏳ **POTENTIAL** - High-potential integration between ProfessionalDashboardServer and PortManagerService - Strong synergy opportunity (Confidence: 80%)
+- **START_zmartbot** ⏳ **POTENTIAL** - High-potential integration between ProfessionalDashboardServer and START_zmartbot - Strong synergy opportunity (Confidence: 80%)
+- **my-symbols-extended-service** ⏳ **POTENTIAL** - High-potential integration between ProfessionalDashboardServer and my-symbols-extended-service - Strong synergy opportunity (Confidence: 80%)
+
+### Priority Connections
+- **optimization-target-3** 🔥 **PRIORITY #3** - Top #3 priority for system optimization - Score: 1.90 - Score: 1.00
+  - **Optimization Impact**: 0.90
+  - **Priority Score**: 0.50
+
+### Connection Summary
+- **Current Active**: 6
+- **Potential**: 5  
+- **Priority**: 1
+- **Total Discovered**: 12
+- **Last Discovery Scan**: Auto-updated on system initialization
+- **Discovery Method**: Multi-phase automated analysis with diamond pattern extraction
+- **Update Policy**: Real-time updates during workflow execution
+## Orchestration & Ordering
+- Basic Integration: Enabled
+- Master Agent Linked: No
+- Ordering Hints: To be determined
+
+## Performance & SLO
+- Baseline p95 (ms): To be measured
+- Notes: Auto-discovered service requiring performance baseline establishment
+
+## Failure Modes & Runbooks
+*To be documented during manual review*
+
+## Rollback
+- Snapshot required: To be determined
+- Playbook: To be determined
+
+## Load Balancing
+- Enabled: To be determined
+- Pool: To be determined
+
+## Known Issues
+- Auto-generated MDC file requiring manual review and enhancement
+- Service functionality and dependencies need documentation
+
+## Changelog
+- 1.0.0 (2025-08-26): Auto-discovered service, MDC file generated by MDC-Dashboard system
+
+---
+*Auto-generated by MDC-Dashboard orphan service discovery on 2025-08-26*
+description: Auto-discovered service requiring manual documentation
+globs: ["/Users/dansidanutz/Desktop/ZmartBot/zmart-api/system_backups/initial_startup_backup/system_backups/initial_startup_backup/professional_dashboard_server.py"]
+alwaysApply: true
+---
+
+---
+**Merge Summary**: Combined 3 files into unified MDC configuration
+**Generated**: 2025-08-26T09:03:52.861658
+
+## 📄 Additional Content from ProfessionalDashboardApp.mdc
+# ProfessionalDashboardApp.mdc
+
+## Summary
+React-based professional trading dashboard application serving as the main UI entry point for ZmartBot, featuring routing, sidebar navigation, real-time components, and comprehensive trading interface with symbol management, chart visualization, and alert systems.
+
+## Purpose
+- Serves as the primary user interface for the ZmartBot trading platform
+- Provides centralized navigation and routing for all dashboard components
+- Implements real-time data display with live time updates and responsive design
+- Integrates trading components including symbol management, charts, and alerts
+- Manages application state and user interactions across the platform
+
+## Location
+`/Users/dansidanutz/Desktop/ZmartBot/zmart-api/professional_dashboard/App.jsx`
+
+## Component Architecture
+
+### Main Application Structure
+```jsx
+function App() {
+  return (
+    <Router>
+      <DashboardContent />
+    </Router>
+  )
+}
+```
+
+### Dashboard Content Component
+```jsx
+function DashboardContent() {
+  const [currentPage, setCurrentPage] = useState('symbols')
+  const [currentTime, setCurrentTime] = useState(new Date())
+  const [logoLoaded, setLogoLoaded] = useState(true)
+  const navigate = useNavigate()
+```
+
+**State Management**:
+- **currentPage**: Active navigation state ('symbols' default)
+- **currentTime**: Real-time clock display
+- **logoLoaded**: Logo loading status with fallback handling
+- **navigate**: React Router navigation hook
+
+## Core Features
+
+### Real-time Clock System
+```jsx
+useEffect(() => {
+  const timer = setInterval(() => {
+    setCurrentTime(new Date())
+  }, 1000)
+  return () => clearInterval(timer)
+}, [])
+```
+
+**Features**:
+- **Live Updates**: Every second clock refresh
+- **Memory Management**: Proper cleanup with clearInterval
+- **Display Format**: Localized time and date formatting
+- **Performance**: Efficient timer management
+
+### Logo Management System
+```jsx
+const handleLogoClick = () => {
+  console.log('🔘 Logo clicked!')
+  setCurrentPage('symbols')
+  navigate('/')
+}
+
+const handleLogoError = (e) => {
+  console.error('❌ Logo failed to load:', e.target.src)
+  // Progressive fallback chain
+  if (e.target.src.includes('Zmart-Logo-New.jpg')) {
+    e.target.src = '/logoZmart.png'
+  } else if (e.target.src.includes('logoZmart.png')) {
+    e.target.src = '/z-logo.png'
+  } else {
+    setLogoLoaded(false) // Show fallback
+  }
+}
+```
+
+**Features**:
+- **Progressive Fallback**: 3-tier logo loading with fallbacks
+- **Error Recovery**: Automatic fallback to alternative logo files
+- **User Interaction**: Clickable logo for navigation to home
+- **Visual Feedback**: Hover effects with CSS transforms
+
+## Header Component Structure
+
+### Header Layout
+```jsx
+<header className="dashboard-header">
+  <div className="header-content">
+    <div className="header-left">
+      <div className="header-brand">
+        <img src="/Zmart-Logo-New.jpg" alt="Zmart Logo" className="logo" />
+        <div className="header-title">
+          <h1>Zmart Trading</h1>
+          <p className="header-subtitle">Complete Dashboard</p>
+        </div>
+      </div>
+    </div>
+    <div className="header-right">
+      <div className="time-display">
+        <div className="current-time">{currentTime.toLocaleTimeString()}</div>
+        <div className="current-date">{currentTime.toLocaleDateString()}</div>
+      </div>
+    </div>
+  </div>
+</header>
+```
+
+**Design Elements**:
+- **Brand Identity**: Logo with company branding and title
+- **Time Display**: Real-time clock in header right section
+- **Responsive Layout**: Flexible header layout for different screen sizes
+- **Visual Hierarchy**: Clear separation of brand and time information
+
+## Navigation and Routing
+
+### React Router Configuration
+```jsx
+<Routes>
+  <Route path="/" element={<SymbolsManager />} />
+  <Route path="/overview" element={<Overview />} />
+  <Route path="/symbol-chart/:symbol" element={<SymbolChart />} />
+  <Route path="/scoring" element={<Scoring />} />
+  <Route path="/cryptometer" element={<Scoring />} />
+  <Route path="/kingfisher" element={<Scoring />} />
+  <Route path="/riskmetric" element={<Scoring />} />
+  <Route path="/chart" element={<SymbolChart />} />
+  <Route path="/enhanced-alerts" element={<EnhancedAlertsCard />} />
+  <Route path="/alerts" element={<EnhancedAlertsSystem />} />
+</Routes>
+```
+
+**Route Structure**:
+- **Home Route**: SymbolsManager as default landing page
+- **Overview**: System overview and status dashboard
+- **Symbol Chart**: Dynamic chart with symbol parameter routing
+- **Scoring Systems**: Multiple scoring algorithms (Cryptometer, Kingfisher, RiskMetric)
+- **Alert Systems**: Enhanced alerts card and comprehensive alert system
+
+### Sidebar Navigation Integration
+```jsx
+<Sidebar currentPage={currentPage} setCurrentPage={setCurrentPage} />
+```
+
+**Navigation Features**:
+- **State Synchronization**: Sidebar reflects current page state
+- **Bidirectional Updates**: Page changes update sidebar and vice versa
+- **Consistent Navigation**: Unified navigation experience across components
+
+## Component Integration
+
+### Trading Components
+- **SymbolsManager**: Primary symbol management interface
+- **SymbolChart**: Interactive trading charts with symbol-specific data
+- **Scoring**: Multi-algorithm scoring systems for trading decisions
+- **Overview**: System status and performance overview
+
+### Alert Components
+- **EnhancedAlertsCard**: Compact alert display component
+- **EnhancedAlertsSystem**: Comprehensive alert management system
+
+### Navigation Components
+- **Sidebar**: Main navigation sidebar with page state management
+
+## Styling and User Experience
+
+### Logo Styling
+```jsx
+style={{ 
+  width: '60px', 
+  height: '60px', 
+  borderRadius: '12px',
+  cursor: 'pointer',
+  transition: 'transform 0.3s ease'
+}}
+onMouseEnter={(e) => e.target.style.transform = 'scale(1.1)'}
+onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
+```
+
+**UX Features**:
+- **Interactive Design**: Hover effects with smooth transitions
+- **Visual Feedback**: Scale transformation on hover
+- **Accessibility**: Proper cursor indication for clickable elements
+- **Responsive**: Consistent sizing across different devices
+
+### CSS Class Structure
+- **dashboard**: Main application container
+- **dashboard-header**: Header component styling
+- **header-content**: Header layout container
+- **header-brand**: Brand identity section
+- **header-title**: Title and subtitle styling
+- **time-display**: Clock display formatting
+- **dashboard-container**: Main content container
+- **dashboard-main**: Primary content area
+
+## Error Handling and Resilience
+
+### Logo Loading Resilience
+- **Primary Logo**: `/Zmart-Logo-New.jpg` (preferred)
+- **Fallback 1**: `/logoZmart.png` (secondary option)
+- **Fallback 2**: `/z-logo.png` (tertiary option)
+- **Final Fallback**: `logoLoaded=false` state for text fallback
+
+### Error Logging
+```jsx
+console.log('🔘 Logo clicked!')
+console.log('✅ Logo loaded successfully')
+console.error('❌ Logo failed to load:', e.target.src)
+```
+
+**Debugging Features**:
+- **User Interaction Logging**: Track logo click events
+- **Success Confirmation**: Log successful logo loads
+- **Error Tracking**: Detailed error logging with source path
+
+## Performance Considerations
+
+### Memory Management
+- **Timer Cleanup**: Proper useEffect cleanup for intervals
+- **Component Unmounting**: Automatic resource cleanup
+- **State Optimization**: Minimal state updates for performance
+
+### Real-time Updates
+- **Efficient Timers**: Single interval for time updates
+- **Localized Formatting**: Native browser time formatting
+- **Minimal Re-renders**: Optimized component update patterns
+
+## Integration Points
+
+### Backend Integration
+- **API Endpoints**: Integration with ZmartBot backend services
+- **Real-time Data**: WebSocket connections for live data
+- **Authentication**: User session and authentication management
+
+### State Management
+- **Local State**: Component-level state for UI interactions
+- **Navigation State**: URL-based routing state management
+- **Global State**: Shared state across components (via props/context)
+
+## Development and Deployment
+
+### Development Features
+- **Hot Reload**: React development server integration
+- **Error Boundaries**: Comprehensive error handling
+- **Developer Tools**: React DevTools compatibility
+
+### Production Readiness
+- **Build Optimization**: Webpack/Vite build optimization
+- **Asset Management**: Efficient static asset handling
+- **Performance Monitoring**: Built-in performance tracking
+
+## Security Considerations
+- **XSS Prevention**: Safe rendering practices
+- **CSRF Protection**: Secure form handling
+- **Input Validation**: Client-side validation for user inputs
+- **Secure Navigation**: Protected routing and access control
+
+## 📄 Additional Content from professional_dashboard_server.mdc
+# professional_dashboard_server.mdc
+> Type: frontend | Version: 1.0.0 | Owner: zmartbot | Port: 3400
+
+## Purpose
+Serve the proxy test page
+
+## Overview
+Auto-discovered service managed by MDC-Dashboard system. This service was identified during automated system scanning and requires manual review and enhancement.
+
+## Critical Functions
+- Auto-discovered service functionality (requires manual documentation)
+- Service integration with ZmartBot ecosystem
+
+## Architecture & Integration
+- **Service Type:** frontend
+- **Dependencies:** To be determined
+- **Env Vars:** To be determined  
+- **Lifecycle:** start=`python3 /Users/dansidanutz/Desktop/ZmartBot/zmart-api/system_backups/initial_startup_backup/system_backups/initial_startup_backup/professional_dashboard_server.py.py` | stop=`pkill -f professional_dashboard_server` | migrate=`n/a`
+
+## API Endpoints
+*Endpoints to be documented during manual review*
+
+## Health & Readiness
+- Liveness: To be configured
+- Readiness: To be configured
+- Timeouts: startup_grace=30s, http_timeout=30s
+
+## Observability
+- Metrics: To be configured
+- Logs: format=python-logging
+- Dashboards: To be created
+
+
+
+## Service Connections & Dependencies
+
+### Current Active Connections
+- **port-3400** ✅ **ACTIVE** - network connection
+- ****** ✅ **ACTIVE** - dependency connection
+
+### Potential Connections
+- **notification_server** ⏳ **POTENTIAL** - Moderate integration opportunity between professional_dashboard_server and notification_server - Consider for future development (Confidence: 70%)
+- **PortManagerService** ⏳ **POTENTIAL** - Moderate integration opportunity between professional_dashboard_server and PortManagerService - Consider for future development (Confidence: 70%)
+- **my-symbols-extended-service** ⏳ **POTENTIAL** - Moderate integration opportunity between professional_dashboard_server and my-symbols-extended-service - Consider for future development (Confidence: 70%)
+- **kucoin_server** ⏳ **POTENTIAL** - Moderate integration opportunity between professional_dashboard_server and kucoin_server - Consider for future development (Confidence: 70%)
+- **update-master-orchestration** ⏳ **POTENTIAL** - Moderate integration opportunity between professional_dashboard_server and update-master-orchestration - Consider for future development (Confidence: 70%)
+
+### Priority Connections
+*Will be populated automatically during Phase 4 if service qualifies for top 10 priority services*
+
+### Connection Summary
+- **Current Active**: 2
+- **Potential**: 5  
+- **Priority**: 0
+- **Total Discovered**: 2
+- **Last Discovery Scan**: Auto-updated on system initialization
+- **Discovery Method**: Multi-phase automated analysis with diamond pattern extraction
+- **Update Policy**: Real-time updates during workflow execution
+## Orchestration & Ordering
+- Basic Integration: Enabled
+- Master Agent Linked: No
+- Ordering Hints: To be determined
+
+## Performance & SLO
+- Baseline p95 (ms): To be measured
+- Notes: Auto-discovered service requiring performance baseline establishment
+
+## Failure Modes & Runbooks
+*To be documented during manual review*
+
+## Rollback
+- Snapshot required: To be determined
+- Playbook: To be determined
+
+## Load Balancing
+- Enabled: To be determined
+- Pool: To be determined
+
+## Known Issues
+- Auto-generated MDC file requiring manual review and enhancement
+- Service functionality and dependencies need documentation
+
+## Changelog
+- 1.0.0 (2025-08-26): Auto-discovered service, MDC file generated by MDC-Dashboard system
+
+---
+*Auto-generated by MDC-Dashboard orphan service discovery on 2025-08-26*
+description: Auto-discovered service requiring manual documentation
+globs: ["/Users/dansidanutz/Desktop/ZmartBot/zmart-api/system_backups/initial_startup_backup/system_backups/initial_startup_backup/professional_dashboard_server.py"]
+alwaysApply: true
+---
+
+---
+**Merge Summary**: Combined 3 files into unified MDC configuration
+**Generated**: 2025-08-27T10:39:58.310172

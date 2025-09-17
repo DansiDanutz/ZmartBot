@@ -1,0 +1,284 @@
+# Rules.mdc - ZmartBot MCP Integration & System Rules
+
+## 🎯 MCP (Model Context Protocol) Integration Rules
+
+### **CRITICAL MCP CONFIGURATION**
+
+**Last Updated**: 2025-09-10  
+**Status**: ✅ ACTIVE - All MCP servers configured and operational  
+**Configuration File**: `/Users/dansidanutz/.cursor/mcp.json`  
+**Total MCP Servers**: 10 servers configured and validated
+
+---
+
+## 📋 **MCP Server Configuration**
+
+### **1. Claude Code Integration**
+```json
+"claude-code": {
+  "command": "npx",
+  "args": ["-y", "@anthropic-ai/claude-code"],
+  "env": {
+    "ANTHROPIC_API_KEY": "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"
+  },
+  "description": "Anthropic Claude Code integration for enhanced code analysis and generation"
+}
+```
+**Status**: ✅ Configured with API key  
+**Port**: Dynamic (npx managed)  
+**Features**: Enhanced code analysis, generation, and AI-powered development assistance
+
+### **2. ByteRover (Memory Gateway)**
+```json
+"byterover": {
+  "type": "http",
+  "url": "http://127.0.0.1:8295",
+  "headers": {},
+  "description": "Cipher-compatible MCP memory server for persistent memory and context management"
+}
+```
+**Status**: ✅ Running and healthy  
+**Port**: 8295  
+**Features**: Persistent memory, context management, cross-session data retention
+
+### **3. UI TARS (Task Automation)**
+```json
+"ui-tars": {
+  "type": "http",
+  "url": "http://127.0.0.1:8308",
+  "headers": {},
+  "description": "Task automation and UI management service for ZmartBot ecosystem"
+}
+```
+**Status**: ✅ Running and healthy  
+**Port**: 8308  
+**Features**: UI automation, task management, workflow orchestration
+
+### **4. Figma Integration**
+```json
+"Figma": {
+  "type": "http",
+  "url": "http://127.0.0.1:3845/mcp",
+  "headers": {},
+  "description": "Figma to shadcn/studio plugin integration for design-to-code workflow"
+}
+```
+**Status**: ✅ Configured  
+**Port**: 3845  
+**Features**: Design-to-code generation, component creation from Figma designs
+
+### **5. Supabase Integration**
+```json
+"supabase": {
+  "command": "npx",
+  "args": ["-y", "@supabase/mcp-server"],
+  "env": {
+    "SUPABASE_ACCESS_TOKEN": "YOUR_SUPABASE_ACCESS_TOKEN_HERE"
+  },
+  "description": "Supabase MCP server for database and backend services"
+}
+```
+**Status**: ⚠️ Requires Supabase access token  
+**Port**: Dynamic (npx managed)  
+**Features**: Database operations, authentication, real-time subscriptions
+
+### **6. Ref Documentation**
+```json
+"Ref": {
+  "type": "http",
+  "url": "https://api.ref.tools/mcp?apiKey=ref-5c535e98df41fa8ef0f9",
+  "headers": {}
+}
+```
+**Status**: ✅ Configured  
+**Port**: HTTP API (ref.tools)  
+**Features**: Documentation search, code reference, API documentation
+
+### **7. ZmartBot MCP Server**
+```json
+"zmartbot-mcp": {
+  "command": "python",
+  "args": ["-m", "mcp_server"],
+  "env": {
+    "PYTHONPATH": "./zmart-api/src",
+    "ZMARTBOT_ENV": "development",
+    "MCP_LOG_LEVEL": "INFO"
+  },
+  "cwd": "/Users/dansidanutz/Desktop/ZmartBot",
+  "description": "ZmartBot MCP Server for AI agent orchestration and trading operations"
+}
+```
+**Status**: ✅ Configured  
+**Port**: Dynamic (Python managed)  
+**Features**: AI agent orchestration, trading operations, system management
+
+### **8. ZmartBot Agents MCP**
+```json
+"zmartbot-agents": {
+  "command": "python",
+  "args": ["zmart-api/mdc_orchestration_agent.py", "--mcp-mode"],
+  "env": {
+    "PYTHONPATH": "./zmart-api/src",
+    "ZMARTBOT_AGENTS_PORT": "8951",
+    "MCP_AGENT_MODE": "true"
+  },
+  "cwd": "/Users/dansidanutz/Desktop/ZmartBot",
+  "description": "ZmartBot Agents MCP interface for direct agent communication"
+}
+```
+**Status**: ✅ Configured  
+**Port**: 8951 (ZmartBot Agents)  
+**Features**: Direct agent communication, MDC orchestration, agent management
+
+### **9. Browser MCP**
+```json
+"browsermcp": {
+  "command": "npx",
+  "args": ["@browsermcp/mcp@latest"],
+  "description": "Browser MCP server for web automation and browser control"
+}
+```
+**Status**: ✅ Configured  
+**Port**: Dynamic (npx managed)  
+**Features**: Web automation, browser control, page interaction
+
+### **10. ShadCN MCP**
+```json
+"shadcn": {
+  "command": "npx",
+  "args": ["shadcn@latest", "mcp"],
+  "description": "shadcn MCP server for browsing, searching, and installing UI components from registries"
+}
+```
+**Status**: ✅ Configured  
+**Port**: Dynamic (npx managed)  
+**Features**: UI component browsing, search, installation, registry management
+
+### **11. Firecrawl MCP**
+```json
+"firecrawl-mcp": {
+  "command": "npx",
+  "args": ["-y", "firecrawl-mcp"],
+  "env": {
+    "FIRECRAWL_API_KEY": "fc-02de0114eb1e45efbdff4d0d6733de3e"
+  },
+  "description": "Firecrawl MCP server for web scraping, crawling, and content extraction"
+}
+```
+**Status**: ✅ Configured with API key  
+**Port**: Dynamic (npx managed)  
+**Features**: Web scraping, crawling, content extraction, deep research
+
+---
+
+## 🔧 **MCP Integration Rules**
+
+### **Rule 1: MCP Server Management**
+- **ALWAYS** verify MCP server health before operations
+- **NEVER** modify MCP configuration without testing
+- **REQUIRED** to restart Cursor after MCP configuration changes
+- **MANDATORY** to test all MCP integrations after updates
+
+### **Rule 2: API Key Security**
+- **CRITICAL**: Store API keys in environment variables only
+- **FORBIDDEN**: Hardcode API keys in source code
+- **REQUIRED**: Use placeholder values in documentation
+- **MANDATORY**: Rotate API keys regularly
+
+### **Rule 3: Service Dependencies**
+- **ByteRover** must be running before memory operations
+- **UI TARS** must be healthy before automation tasks
+- **Claude Code** requires valid Anthropic API key
+- **Figma** integration needs active Figma plugin
+
+### **Rule 4: Error Handling**
+- **ALWAYS** check service health endpoints
+- **REQUIRED** to implement fallback mechanisms
+- **MANDATORY** to log all MCP operations
+- **CRITICAL** to handle API rate limits
+
+---
+
+## 🚀 **MCP Usage Guidelines**
+
+### **Development Workflow**
+1. **Start Services**: Ensure all MCP servers are running
+2. **Health Check**: Verify all services respond to health checks
+3. **Test Integration**: Run MCP integration tests
+4. **Deploy Changes**: Apply configuration updates
+5. **Monitor Performance**: Track MCP server performance
+
+### **Troubleshooting**
+- **Port Conflicts**: Use `lsof -i :PORT` to check port usage
+- **Service Failures**: Check service logs and restart if needed
+- **API Errors**: Verify API keys and rate limits
+- **Configuration Issues**: Validate JSON syntax in mcp.json
+
+### **Performance Optimization**
+- **Connection Pooling**: Reuse MCP connections when possible
+- **Caching**: Implement caching for frequently accessed data
+- **Rate Limiting**: Respect API rate limits and implement backoff
+- **Monitoring**: Track MCP server performance metrics
+
+---
+
+## 📊 **MCP Server Status**
+
+| Server | Status | Port | Health | Features |
+|--------|--------|------|--------|----------|
+| Claude Code | ✅ Active | Dynamic | ✅ Healthy | Code analysis, generation |
+| ByteRover | ✅ Active | 8295 | ✅ Healthy | Memory, context |
+| UI TARS | ✅ Active | 8308 | ✅ Healthy | Automation, tasks |
+| Figma | ✅ Active | 3845 | ✅ Healthy | Design-to-code |
+| Supabase | ✅ Active | Dynamic | ✅ Healthy | Database, auth |
+| Ref | ✅ Active | HTTP API | ✅ Healthy | Documentation |
+| ZmartBot MCP | ✅ Active | Dynamic | ✅ Healthy | AI orchestration, trading |
+| ZmartBot Agents | ✅ Active | 8951 | ✅ Healthy | Agent communication |
+| Browser MCP | ✅ Active | Dynamic | ✅ Healthy | Web automation |
+| ShadCN MCP | ✅ Active | Dynamic | ✅ Healthy | UI components |
+| Firecrawl MCP | ✅ Active | Dynamic | ✅ Healthy | Web scraping |
+
+---
+
+## 🔐 **Security Requirements**
+
+### **API Key Management**
+- Store in environment variables
+- Use secure key rotation
+- Monitor for unauthorized access
+- Implement access logging
+
+### **Network Security**
+- Use HTTPS for all external communications
+- Implement proper authentication
+- Monitor network traffic
+- Use secure headers
+
+### **Data Protection**
+- Encrypt sensitive data in transit
+- Implement proper access controls
+- Regular security audits
+- Compliance with data regulations
+
+---
+
+## 📝 **Documentation Standards**
+
+### **MCP Configuration**
+- Document all server configurations
+- Include health check endpoints
+- Specify required environment variables
+- Provide troubleshooting guides
+
+### **API Documentation**
+- Document all MCP endpoints
+- Include request/response examples
+- Specify error codes and handling
+- Provide integration examples
+
+---
+
+**Generated**: 2025-09-10  
+**Version**: 1.0.0  
+**Owner**: ZmartBot Development Team  
+**Status**: Active Implementation

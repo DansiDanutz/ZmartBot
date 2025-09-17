@@ -1,0 +1,39 @@
+{
+  "generated_at": "2025-09-14T22:48:34.283569",
+  "total_symbols": 25,
+  "symbols": [
+    "BTC",
+    "ETH",
+    "BNB",
+    "SOL",
+    "XRP",
+    "ADA",
+    "AVAX",
+    "DOGE",
+    "DOT",
+    "LINK",
+    "LTC",
+    "ATOM",
+    "XTZ",
+    "AAVE",
+    "MKR",
+    "XMR",
+    "XLM",
+    "SUI",
+    "HBAR",
+    "RENDER",
+    "TRX",
+    "VET",
+    "ALGO",
+    "SHIB",
+    "TON"
+  ],
+  "data_source": "IntoTheCryptoverse",
+  "notes": [
+    "BTC data is based on actual chart values",
+    "Other symbols use estimated distribution",
+    "Actual data should be extracted from IntoTheCryptoverse API",
+    "Risk bands are: 0.0-0.1, 0.1-0.2, ..., 0.9-1.0",
+    "Total of 10 risk bands per symbol"
+  ]
+}

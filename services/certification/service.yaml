@@ -1,0 +1,6 @@
+service_name: certification
+port: 8901
+type: backend
+description: Automated service certification scanner
+health_url: http://localhost:8901/health
+start_cmd: python3 services/certification/certification_service.py --port 8901

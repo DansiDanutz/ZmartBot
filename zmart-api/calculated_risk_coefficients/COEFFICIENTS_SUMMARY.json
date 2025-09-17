@@ -1,0 +1,163 @@
+{
+  "generated_at": "2025-09-14T22:51:01.270299",
+  "total_symbols": 25,
+  "methodology": {
+    "description": "Risk coefficients calculated based on time spent in each risk band",
+    "formula": "coefficient = band_center * (time_percentage / 100)",
+    "weighted_score": "Sum of (band_center * time_weight) for all bands"
+  },
+  "symbols_processed": [
+    "BTC",
+    "ETH",
+    "BNB",
+    "SOL",
+    "XRP",
+    "ADA",
+    "AVAX",
+    "DOGE",
+    "DOT",
+    "LINK",
+    "LTC",
+    "ATOM",
+    "XTZ",
+    "AAVE",
+    "MKR",
+    "XMR",
+    "XLM",
+    "SUI",
+    "HBAR",
+    "RENDER",
+    "TRX",
+    "VET",
+    "ALGO",
+    "SHIB",
+    "TON"
+  ],
+  "risk_scores": {
+    "BTC": {
+      "weighted_score": 0.5002,
+      "current_level": 0.55,
+      "confidence": 9
+    },
+    "ETH": {
+      "weighted_score": 0.5048,
+      "current_level": 0.55,
+      "confidence": 7
+    },
+    "BNB": {
+      "weighted_score": 0.5049,
+      "current_level": 0.55,
+      "confidence": 7
+    },
+    "SOL": {
+      "weighted_score": 0.5051,
+      "current_level": 0.55,
+      "confidence": 7
+    },
+    "XRP": {
+      "weighted_score": 0.5054,
+      "current_level": 0.55,
+      "confidence": 7
+    },
+    "ADA": {
+      "weighted_score": 0.5052,
+      "current_level": 0.55,
+      "confidence": 7
+    },
+    "AVAX": {
+      "weighted_score": 0.5047,
+      "current_level": 0.55,
+      "confidence": 7
+    },
+    "DOGE": {
+      "weighted_score": 0.506,
+      "current_level": 0.55,
+      "confidence": 7
+    },
+    "DOT": {
+      "weighted_score": 0.505,
+      "current_level": 0.55,
+      "confidence": 7
+    },
+    "LINK": {
+      "weighted_score": 0.5052,
+      "current_level": 0.55,
+      "confidence": 7
+    },
+    "LTC": {
+      "weighted_score": 0.5055,
+      "current_level": 0.55,
+      "confidence": 7
+    },
+    "ATOM": {
+      "weighted_score": 0.5051,
+      "current_level": 0.55,
+      "confidence": 7
+    },
+    "XTZ": {
+      "weighted_score": 0.5052,
+      "current_level": 0.55,
+      "confidence": 7
+    },
+    "AAVE": {
+      "weighted_score": 0.505,
+      "current_level": 0.55,
+      "confidence": 7
+    },
+    "MKR": {
+      "weighted_score": 0.5057,
+      "current_level": 0.55,
+      "confidence": 7
+    },
+    "XMR": {
+      "weighted_score": 0.5053,
+      "current_level": 0.55,
+      "confidence": 7
+    },
+    "XLM": {
+      "weighted_score": 0.5055,
+      "current_level": 0.55,
+      "confidence": 7
+    },
+    "SUI": {
+      "weighted_score": 0.5036,
+      "current_level": 0.55,
+      "confidence": 7
+    },
+    "HBAR": {
+      "weighted_score": 0.5047,
+      "current_level": 0.55,
+      "confidence": 7
+    },
+    "RENDER": {
+      "weighted_score": 0.5044,
+      "current_level": 0.55,
+      "confidence": 7
+    },
+    "TRX": {
+      "weighted_score": 0.5051,
+      "current_level": 0.55,
+      "confidence": 7
+    },
+    "VET": {
+      "weighted_score": 0.5048,
+      "current_level": 0.55,
+      "confidence": 7
+    },
+    "ALGO": {
+      "weighted_score": 0.505,
+      "current_level": 0.55,
+      "confidence": 7
+    },
+    "SHIB": {
+      "weighted_score": 0.5049,
+      "current_level": 0.55,
+      "confidence": 7
+    },
+    "TON": {
+      "weighted_score": 0.5044,
+      "current_level": 0.55,
+      "confidence": 7
+    }
+  }
+}

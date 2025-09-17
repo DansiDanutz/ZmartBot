@@ -1,0 +1,91 @@
+# GptMDCagentService.mdc
+> Service Type: **Core Infrastructure** | Version: **1.0.0** | Owner: **Platform Team** | Port: **8700**
+> Purpose: GPT-powered MDC/MDS document processing, generation, and intelligent service documentation automation for ZmartBot
+
+@datasource: ZmartBotCore
+
+## Executive Summary
+The GptMDCagentService is the foundational AI infrastructure that powers intelligent documentation across ZmartBot. It processes MDC (Markdown Component) and MDS (Markdown Service) documents using OpenAI's GPT models (GPT-4o, GPT-5 ready), providing automated service documentation, code analysis, and system integration intelligence. This service is the brain behind ZmartBot's self-documenting architecture.
+
+## Complete Implementation Timeline
+```
+Day 1: Foundation Setup → Test GPT Connection ✓
+Day 2: Core Implementation → MDC/MDS Processing ✓
+Day 3: Integration Layer → Connect to ZmartBot ✓
+Day 4: API Development → RESTful Service ✓
+Day 5: Testing Suite → Unit & Integration ✓
+Day 6: Deployment → Production Ready ✓
+Day 7: Monitoring → Observability & Alerts ✓
+```
+
+## Core Functions
+- GPT-powered MDC/MDS document processing and generation
+- Intelligent service documentation automation
+- Code analysis and system integration intelligence
+- ZmartBot ecosystem integration and orchestration management
+- Real-time document validation and enhancement
+- Advanced caching and performance optimization
+
+## Architecture & Integration
+- **Service Type:** Core Infrastructure
+- **Dependencies:** OpenAI API, ZmartBot Registry, Port Manager
+- **Env Vars:** OPENAI_API_KEY, SERVICE_PORT, REGISTRY_URL
+- **Lifecycle:** start=`python3 src/main.py` | stop=`pkill -f gpt-mdc-agent` | migrate=`n/a`
+
+## API Endpoints
+- `/health` - Health check endpoint
+- `/api/v1/process/mdc` - Process MDC documents
+- `/api/v1/generate/mdc` - Generate new MDC documents
+- `/api/v1/enhance/document` - Enhance existing documents
+- `/api/v1/validate/document` - Validate document structure
+- `/api/v1/stats` - Service statistics and metrics
+
+## Health & Readiness
+- Liveness: `/health` endpoint with GPT connection test
+- Readiness: OpenAI API connectivity + ZmartBot registry integration
+- Timeouts: startup_grace=60s, http_timeout=30s, gpt_timeout=45s
+
+## 🤖 MCP (Model Context Protocol) Integration
+
+### **MCP Server Pairing**
+**Status**: ✅ **ACTIVE** - GPT MDC Agent MCP Integration  
+**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`  
+**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`  
+**Integration Type**: Multi-MCP Service Integration  
+
+### **MCP Integration Features**
+- **Claude Code Integration**: AI-powered MDC document generation and enhancement
+- **Memory Gateway**: Persistent storage for document templates and processing history
+- **UI Automation**: Automated document validation and testing workflows
+- **Figma Integration**: Design-to-documentation workflow for service documentation
+- **Cross-Service Intelligence**: Enhanced document processing across all ZmartBot services
+
+### **MCP Pairing Benefits**
+- **Enhanced Documentation**: AI-powered document generation and optimization
+- **Persistent Templates**: Reusable document templates and processing patterns
+- **Automated Validation**: Automated document structure and content validation
+- **Design Integration**: Seamless integration between design and documentation
+- **Intelligent Processing**: Advanced AI processing for complex documentation tasks
+
+### **MCP Usage Examples**
+```bash
+# Test GPT MDC Agent MCP connection
+curl -X GET http://127.0.0.1:8700/health
+
+# Process MDC document via MCP
+curl -X POST http://127.0.0.1:8700/api/v1/process/mdc \
+  -H "Content-Type: application/json" \
+  -d '{"document": "service_template.mdc", "enhance": true}'
+
+# Generate new MDC document via MCP
+curl -X POST http://127.0.0.1:8700/api/v1/generate/mdc \
+  -H "Content-Type: application/json" \
+  -d '{"service_name": "new_service", "type": "trading"}'
+```
+
+### **MCP Integration Status**
+- **Connection**: ✅ Active and responsive
+- **Health Check**: ✅ Passing all health checks
+- **Documentation**: ✅ Auto-generated and maintained
+- **Performance**: ✅ Optimized for high-volume processing
+- **Security**: ✅ Secure API key management

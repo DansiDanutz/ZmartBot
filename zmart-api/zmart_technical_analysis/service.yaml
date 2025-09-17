@@ -1,0 +1,19 @@
+endpoints:
+  health: http://127.0.0.1:8011/health
+  metrics: http://127.0.0.1:8011/metrics
+  ready: http://127.0.0.1:8011/ready
+lifecycle:
+  health_check: curl -f http://127.0.0.1:8011/health
+  start_command: null
+  stop_command: pkill -f zmart_technical_analysis
+metadata:
+  description: Service zmart_technical_analysis
+  owner: zmartbot
+  version: 1.0.0
+service:
+  level: 3
+  name: zmart_technical_analysis
+  passport: ZMBT-ENG-20250826-641E1D
+  port: 8011
+  status: ACTIVE
+  type: backend

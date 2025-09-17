@@ -1,0 +1,88 @@
+---
+# System Protection Service - Level 3 Certified
+apiVersion: zmartbot/v1
+kind: Service
+metadata:
+  name: system-protection-service
+  namespace: zmartbot-system
+  labels:
+    app: system-protection-service
+    tier: level3-certified
+    category: system-service
+    owner: zmartbot
+spec:
+  service:
+    name: system-protection-service
+    port: 8999
+    type: backend
+    protocol: HTTP
+    certification_level: 3
+    passport_id: ZMBT-PROTECTION-20250826-2C0587
+    python_file: system_protection_service.py
+    
+  endpoints:
+    health: /health
+    ready: /ready
+    status: /api/status
+    metrics: /metrics
+    
+  runtime:
+    startup_timeout: 30s
+    health_check_interval: 30s
+    restart_policy: always
+    
+  deployment:
+    replicas: 1
+    resources:
+      cpu: "100m"
+      memory: "128Mi"
+    env:
+      - name: PORT
+        value: "8999"
+      - name: LOG_LEVEL
+        value: "INFO"
+      - name: SERVICE_NAME
+        value: "system-protection-service"
+        
+  monitoring:
+    enabled: true
+    metrics_port: 9999
+    alerts:
+      - name: service-down
+        condition: "up == 0"
+        severity: critical
+      - name: high-latency
+        condition: "response_time > 500"
+        severity: warning
+      - name: high-error-rate
+        condition: "error_rate > 0.01"
+        severity: warning
+
+  security:
+    network_policies:
+      - allow_from: ["zmartbot-core", "zmartbot-orchestration"]
+      - deny_all: false
+    secrets:
+      - name: service-config
+        type: Opaque
+
+  integration:
+    dependencies:
+      - zmartapi-server:8000
+      - database-service:8900
+    provides:
+      - system-protection-service-functionality
+      - system-integration
+      
+  backup:
+    enabled: true
+    retention_days: 30
+    schedule: "0 2 * * *"
+
+status:
+  phase: Running
+  certification:
+    level: 3
+    issued_date: "2025-08-31"
+    expiry_date: "2026-08-31"
+    authority: zmartbot-system

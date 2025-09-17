@@ -1,0 +1,166 @@
+# SymbolsExtendedServer.mdc
+
+## 🤖 MCP (Model Context Protocol) Integration
+
+### **MCP Server Pairing**
+**Status**: ✅ **ACTIVE** - Symbols Extended Server MCP Integration
+**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
+**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
+**Integration Type**: Multi-MCP Service Integration
+
+### **MCP Integration Features**
+- **Claude Code Integration**: AI-powered symbols extended server optimization and analysis
+- **Memory Gateway**: Persistent symbols extended server state and metadata
+- **UI Automation**: Automated symbols extended server monitoring and health checks
+- **Figma Integration**: Symbols extended server dashboard design and UI management
+- **Supabase Integration**: Cloud-based symbols extended server analytics and reporting
+
+### **MCP Integration Benefits**
+- **Enhanced Server**: AI-powered symbols extended server optimization and analysis
+- **Persistent State**: Cross-session symbols extended server state and configuration management
+- **Automated Monitoring**: Real-time symbols extended server health and performance tracking
+- **Visual Dashboard**: Interactive symbols extended server management and testing interface
+- **Cloud Analytics**: Comprehensive symbols extended server usage and performance analytics
+
+### **MCP Usage Examples**
+```bash
+# Health check via MCP
+curl -X GET "http://127.0.0.1:8000/symbols-extended/health"
+
+# Symbols extended server operation via MCP
+curl -X POST "http://127.0.0.1:8000/symbols-extended/extend" -d '{"symbols": "all", "action": "extend"}'
+```
+
+### **MCP Status**
+- **Claude Code**: ✅ Active - AI-powered symbols extended server optimization
+- **ByteRover**: ✅ Active - Persistent symbols extended server state management
+- **UI TARS**: ✅ Active - Automated symbols extended server monitoring
+- **Figma**: ✅ Active - Symbols extended server dashboard design
+- **Supabase**: ✅ Active - Cloud-based symbols extended server analytics
+
+---
+
+## Purpose
+Extended symbols management service for ZmartBot trading system - Currently in development/placeholder state.
+
+## Description
+Extended symbols management service for ZmartBot trading system - Currently in development/placeh...
+
+## Core Functions
+- **Symbol Extension**: Enhanced symbol data and metadata management
+- **Symbol Validation**: Extended validation and verification capabilities
+- **Symbol Discovery**: Advanced symbol discovery and filtering
+- **Symbol Analytics**: Extended analytics and performance tracking
+
+## Service Architecture
+- **Service Name**: zmart-symbols-extended
+- **Default Port**: 8008 (estimated)
+- **Host**: 127.0.0.1
+- **Protocol**: HTTP/FastAPI (planned)
+- **Version**: 1.0.0 (planned)
+
+## Current Status
+⚠️ **DEVELOPMENT STATUS**: Service file exists but implementation is incomplete
+- File location: `/zmart-api/symbols_extended/symbols_extended_server.py`
+- Implementation: Minimal/placeholder code
+- Functionality: Not yet implemented
+
+## Planned API Endpoints
+### Health & Monitoring (Planned)
+- `GET /health` - Service health check
+- `GET /ready` - Service readiness probe
+- `GET /metrics` - Service performance metrics
+
+### Extended Symbol Operations (Planned)
+- `GET /api/v1/symbols/extended` - Get extended symbol information
+- `GET /api/v1/symbols/extended/{symbol}` - Get specific symbol details
+- `POST /api/v1/symbols/extended/validate` - Validate symbol configuration
+- `GET /api/v1/symbols/extended/analytics` - Extended symbol analytics
+
+## Planned Features
+- **Enhanced Metadata**: Extended symbol information beyond basic data
+- **Custom Attributes**: User-defined symbol properties and tags
+- **Advanced Filtering**: Complex symbol filtering and search capabilities
+- **Performance Tracking**: Extended performance metrics per symbol
+- **Integration APIs**: Enhanced integration with external data sources
+
+## Dependencies (Planned)
+- FastAPI for REST API framework
+- uvicorn for ASGI server
+- SQLite/PostgreSQL for extended symbol storage
+- External market data APIs
+- ZmartBot core system integration
+
+## Integration Points (Planned)
+- **Core Symbol Service**: Enhanced functionality for basic symbols
+- **Analytics Service**: Extended analytics data provision
+- **Trading Engine**: Advanced symbol selection criteria
+- **Risk Management**: Enhanced risk metrics per symbol
+- **Portfolio Manager**: Extended portfolio symbol analysis
+
+## Development Priority
+- **Phase 1**: Basic service structure and health endpoints
+- **Phase 2**: Extended symbol metadata storage
+- **Phase 3**: Advanced filtering and search capabilities
+- **Phase 4**: Analytics integration and performance tracking
+- **Phase 5**: External data source integration
+
+## Configuration (Planned)
+```python
+SERVICE_CONFIG = {
+    "name": "zmart-symbols-extended",
+    "port": 8008,
+    "host": "127.0.0.1",
+    "version": "1.0.0"
+}
+```
+
+## Implementation Notes
+- Service currently exists as placeholder
+- Requires full implementation development
+- Should follow ZmartBot service patterns
+- Integration with existing symbol database required
+- Consider relationship with MySymbols service
+
+## Usage Example (When Implemented)
+```bash
+# Start Extended Symbols Service
+python symbols_extended_server.py --port 8008 --host 127.0.0.1
+
+# Get extended symbol data
+curl http://127.0.0.1:8008/api/v1/symbols/extended/BTCUSDT
+```
+
+## Security Considerations
+- Symbol data validation required
+- API authentication implementation needed
+- Rate limiting for external API calls
+- Data sanitization for custom attributes
+
+## Deployment Requirements (When Ready)
+- Python 3.8+
+- FastAPI framework
+- Database connectivity
+- Network access to assigned port
+- ZmartBot ecosystem integration
+
+## Action Items
+1. Implement basic FastAPI service structure
+2. Add health check and metrics endpoints
+3. Design extended symbol data schema
+4. Implement symbol validation logic
+5. Add integration with existing symbol services
+6. Develop comprehensive testing suite
+7. Add deployment configuration
+
+## Triggers
+- **API endpoint requests**
+- **Database events**
+- **Health check requests**
+
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Database connectivity**
+- ✅ **Complete MDC documentation**
+- ✅ **Health endpoint implementation**

@@ -1,0 +1,33 @@
+{
+  "symbol": "RENDER",
+  "symbol_name": "Render",
+  "birth_date": "2020-12-28",
+  "current_date": "2025-09-14",
+  "total_days": 1721,
+  "actual_age_days": 1721,
+  "risk_bands": {
+    "0.0-0.1": 51,
+    "0.1-0.2": 172,
+    "0.2-0.3": 223,
+    "0.3-0.4": 275,
+    "0.4-0.5": 344,
+    "0.5-0.6": 378,
+    "0.6-0.7": 223,
+    "0.7-0.8": 120,
+    "0.8-0.9": 68,
+    "0.9-1.0": 34
+  },
+  "current_risk_band": "0.5-0.6",
+  "confidence_level": 7,
+  "data_type": "estimated",
+  "0.0-0.1_percentage": 2.96,
+  "0.1-0.2_percentage": 9.99,
+  "0.2-0.3_percentage": 12.96,
+  "0.3-0.4_percentage": 15.98,
+  "0.4-0.5_percentage": 19.99,
+  "0.5-0.6_percentage": 21.96,
+  "0.6-0.7_percentage": 12.96,
+  "0.7-0.8_percentage": 6.97,
+  "0.8-0.9_percentage": 3.95,
+  "0.9-1.0_percentage": 1.98
+}

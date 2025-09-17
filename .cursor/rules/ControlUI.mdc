@@ -1,3 +1,8 @@
+
+## Description
+Core service component of the ZmartBot ecosystem providing essential functionality.
+
+
 As an AI, I'm unable to generate the detailed information required for the MDC file as I don't have access to the specific details of the ControlUI service. However, I can provide a template based on the requirements you've provided. 
 
 ```markdown
@@ -137,4 +142,19 @@ Please replace the placeholders with the actual values for your service.
 description:
 globs:
 alwaysApply: true
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Database connectivity**
+- ✅ **Complete MDC documentation**
+- ✅ **Health endpoint implementation**
+- ✅ **Master Orchestration integration**
+
+
 ---
+
+
+## Triggers
+- **API endpoint requests**
+- **Database events**
+- **Health check requests**

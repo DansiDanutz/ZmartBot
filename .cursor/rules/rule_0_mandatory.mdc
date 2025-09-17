@@ -1,3 +1,8 @@
+
+## Description
+Core service component of the ZmartBot ecosystem providing essential functionality.
+
+
 # Rule 0: ZmartBot Mandatory Core Requirements
 
 ## Summary
@@ -195,6 +200,14 @@ Core requirements that MUST be satisfied before any development work can proceed
 - ✅ System availability meets SLA requirements (99.9%)
 - ✅ Performance meets user experience requirements
 
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Complete MDC documentation**
+- ✅ **Health endpoint implementation**
+- ✅ **Master Orchestration integration**
+
+
 ---
 
 **Metadata (Cursor-aware tooling)**
@@ -206,4 +219,17 @@ Core requirements that MUST be satisfied before any development work can proceed
 description:
 globs:
 alwaysApply: true
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Complete MDC documentation**
+- ✅ **Health endpoint implementation**
+- ✅ **Master Orchestration integration**
+
+
 ---
+
+
+## Triggers
+- **API endpoint requests**
+- **Health check requests**

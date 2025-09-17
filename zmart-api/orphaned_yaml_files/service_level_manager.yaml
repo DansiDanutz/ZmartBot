@@ -1,0 +1,30 @@
+service_name: level_manager
+service_type: orchestration
+version: 1.0.0
+owner: zmartbot
+description: 3-Database lifecycle classification (corrected passport)
+port: 8891
+passport_id: ZMBT-ORC-20250831-W5X6Y7
+status: ACTIVE
+registered_at: '2025-08-31'
+health_url: http://localhost:8891/health
+start_cmd: python3 level_manager_server.py --port 8891
+stop_cmd: pkill -f 'level_manager_server.py'
+dependencies:
+- zmart-api
+tags:
+- orchestration
+- level_manager
+lifecycle:
+  startup_grace_seconds: 30
+  shutdown_timeout_seconds: 15
+  health_check_interval: 30
+monitoring:
+  metrics_endpoint: /metrics
+  logs_path: logs/level_manager.log
+  dashboard_url: http://localhost:8891/dashboard
+security:
+  cors_enabled: true
+  token_required: false
+  scopes:
+  - orchestration

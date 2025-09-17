@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ZmartBot Mobile Test</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            background: #0B0E11; 
+            color: white; 
+            padding: 20px;
+            text-align: center;
+        }
+        .status { 
+            background: #1E2026; 
+            padding: 20px; 
+            border-radius: 10px; 
+            margin: 20px 0;
+        }
+        .success { color: #0ECB81; }
+        .warning { color: #F0B90B; }
+    </style>
+</head>
+<body>
+    <h1>🚀 ZmartBot Mobile</h1>
+    
+    <div class="status">
+        <h2 class="success">✅ Server Status: RUNNING</h2>
+        <p>Port: 7777</p>
+        <p>Service: zmartbot-mobile-service</p>
+    </div>
+    
+    <div class="status">
+        <h2 class="warning">📱 Access Instructions</h2>
+        <p>1. For Web: You're seeing this page - server is working!</p>
+        <p>2. For Mobile: Open Expo Go app and scan QR code</p>
+        <p>3. Main App: <a href="http://localhost:7777" style="color: #F0B90B;">http://localhost:7777</a></p>
+    </div>
+    
+    <script>
+        // Test JavaScript functionality
+        console.log('ZmartBot Mobile Test Page Loaded');
+        
+        // Redirect to main app after 5 seconds
+        setTimeout(() => {
+            document.body.innerHTML += '<div class="status"><h3>🔄 Redirecting to main app...</h3></div>';
+            setTimeout(() => {
+                window.location.href = 'http://localhost:7777';
+            }, 2000);
+        }, 5000);
+    </script>
+</body>
+</html>

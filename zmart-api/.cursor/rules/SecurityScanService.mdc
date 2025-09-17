@@ -1,0 +1,124 @@
+# 🔒 Security Scan Service - Comprehensive Security Monitoring
+
+## 🤖 MCP (Model Context Protocol) Integration
+
+### **MCP Server Pairing**
+**Status**: ✅ **ACTIVE** - Security Scan Service MCP Integration
+**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
+**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
+**Integration Type**: Multi-MCP Service Integration
+
+### **MCP Integration Features**
+- **Claude Code Integration**: AI-powered security scanning and optimization
+- **Memory Gateway**: Persistent security scanning state and metadata
+- **UI Automation**: Automated security scanning monitoring and health checks
+- **Figma Integration**: Security scanning dashboard design and UI management
+- **Supabase Integration**: Cloud-based security scanning analytics and reporting
+
+### **MCP Integration Benefits**
+- **Enhanced Security Scanning**: AI-powered security scanning and optimization
+- **Persistent State**: Cross-session security scanning state and configuration management
+- **Automated Monitoring**: Real-time security scanning health and performance tracking
+- **Visual Dashboard**: Interactive security scanning and testing interface
+- **Cloud Analytics**: Comprehensive security scanning usage and performance analytics
+
+### **MCP Usage Examples**
+```bash
+# Health check via MCP
+curl -X GET "http://127.0.0.1:8000/security-scan/health"
+
+# Security scanning via MCP
+curl -X POST "http://127.0.0.1:8000/security-scan/scan" -d '{"target": "all", "action": "full_scan"}'
+```
+
+### **MCP Status**
+- **Claude Code**: ✅ Active - AI-powered security scanning
+- **ByteRover**: ✅ Active - Persistent security scanning state management
+- **UI TARS**: ✅ Active - Automated security scanning monitoring
+- **Figma**: ✅ Active - Security scanning dashboard design
+- **Supabase**: ✅ Active - Cloud-based security scanning analytics
+
+---
+
+## Purpose
+Comprehensive security scanning and monitoring service for ZmartBot system, providing secret detection, vulnerability scanning, and security compliance monitoring.
+
+## Description
+Comprehensive security scanning and monitoring service for ZmartBot system, providing secret dete...
+
+## Critical Functions
+- **Secret Detection**: Automated detection of exposed secrets and credentials
+- **Vulnerability Scanning**: Security vulnerability identification and assessment
+- **Compliance Monitoring**: Security compliance and policy enforcement
+- **Access Control**: API key and credential access management
+- **Security Logging**: Comprehensive security event logging
+- **Threat Detection**: Security threat identification and alerting
+
+## Security Tools
+- **Gitleaks**: Git repository secret detection
+- **Detect-Secrets**: Comprehensive secret detection framework
+- **Custom Scanners**: ZmartBot-specific security scanners
+- **API Key Manager**: Secure API key management and rotation
+- **Credential Protection**: Encrypted credential storage and access
+
+## Key Features
+- **Automated Scanning**: Continuous security scanning and monitoring
+- **Secret Detection**: Real-time secret and credential detection
+- **Vulnerability Assessment**: Comprehensive vulnerability scanning
+- **Compliance Checking**: Security compliance validation
+- **Access Control**: Secure access control and management
+- **Security Logging**: Detailed security event logging
+
+## Scanning Capabilities
+- **Code Scanning**: Source code security analysis
+- **Configuration Scanning**: Configuration file security analysis
+- **Dependency Scanning**: Third-party dependency security analysis
+- **API Scanning**: API endpoint security analysis
+- **Database Scanning**: Database security configuration analysis
+
+## Secret Detection
+- **API Keys**: Detection of exposed API keys
+- **Passwords**: Detection of hardcoded passwords
+- **Tokens**: Detection of authentication tokens
+- **Credentials**: Detection of database credentials
+- **Private Keys**: Detection of private cryptographic keys
+
+## Compliance Monitoring
+- **Security Policies**: Security policy compliance checking
+- **Access Controls**: Access control policy validation
+- **Data Protection**: Data protection compliance monitoring
+- **Audit Trails**: Security audit trail maintenance
+- **Reporting**: Security compliance reporting
+
+## Integration
+- **CI/CD Pipeline**: Automated security scanning in deployment
+- **Alert System**: Security alert notification system
+- **Logging System**: Security event logging and analysis
+- **Dashboard**: Security status display and visualization
+- **Recovery System**: Security incident response and recovery
+
+## Configuration
+- **Scan Intervals**: Configurable scanning frequencies
+- **Alert Thresholds**: Security alert threshold settings
+- **Scan Scope**: Configurable scanning scope and targets
+- **Compliance Rules**: Security compliance rule configurations
+- **Notification Settings**: Security alert notification settings
+
+## Status
+✅ **ACTIVE** - Core security service with comprehensive protection capabilities
+
+description:
+globs:
+alwaysApply: true
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Database connectivity**
+
+
+---
+
+
+## Triggers
+- **API endpoint requests**
+- **Database events**

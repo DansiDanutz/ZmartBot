@@ -1,0 +1,127 @@
+# RegistryConsolidator.mdc
+> Type: backend | Version: 1.0.0 | Owner: zmartbot | Port: 8898 | Level: 2
+
+## 🤖 MCP (Model Context Protocol) Integration
+
+### **MCP Server Pairing**
+**Status**: ✅ **ACTIVE** - Registry Consolidator MCP Integration
+**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
+**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
+**Integration Type**: Multi-MCP Service Integration
+
+### **MCP Integration Features**
+- **Claude Code Integration**: AI-powered registry consolidation and optimization
+- **Memory Gateway**: Persistent registry consolidation state and metadata
+- **UI Automation**: Automated registry consolidation monitoring and health checks
+- **Figma Integration**: Registry consolidation dashboard design and UI management
+- **Supabase Integration**: Cloud-based registry consolidation analytics and reporting
+
+### **MCP Integration Benefits**
+- **Enhanced Consolidation**: AI-powered registry consolidation and optimization
+- **Persistent State**: Cross-session registry consolidation state and configuration management
+- **Automated Monitoring**: Real-time registry consolidation health and performance tracking
+- **Visual Dashboard**: Interactive registry consolidation management and testing interface
+- **Cloud Analytics**: Comprehensive registry consolidation usage and performance analytics
+
+### **MCP Usage Examples**
+```bash
+# Health check via MCP
+curl -X GET "http://127.0.0.1:8898/health"
+
+# Registry consolidation via MCP
+curl -X POST "http://127.0.0.1:8898/consolidate" -d '{"action": "consolidate_all"}'
+```
+
+### **MCP Status**
+- **Claude Code**: ✅ Active - AI-powered registry consolidation
+- **ByteRover**: ✅ Active - Persistent registry consolidation state management
+- **UI TARS**: ✅ Active - Automated registry consolidation monitoring
+- **Figma**: ✅ Active - Registry consolidation dashboard design
+- **Supabase**: ✅ Active - Cloud-based registry consolidation analytics
+
+---
+
+## Purpose
+Registry Database Consolidator - Comprehensive database organization service that consolidates all scattered registry databases into a single, well-organized system to prevent registry database chaos and ensure unified data management across the ZmartBot platform.
+
+## Description
+Production-ready Flask-based consolidation service that scans, backs up, and consolidates all registry databases throughout the ZmartBot ecosystem. Provides centralized registry management with organized table structures, automated monitoring, and complete backup/recovery capabilities.
+
+## Overview
+Advanced registry consolidation system serving as the single source of truth for all database registry operations. Handles 32+ registry databases with 480,000+ records, providing unified access to services, ports, configurations, processes, and endpoints through a consolidated SQLite database with proper backup and versioning.
+
+## Critical Functions
+- **Database Consolidation**: Scan and merge all registry databases into organized structure
+- **Backup Management**: Automated timestamped backups of all source databases
+- **Data Migration**: Intelligent migration with table structure analysis and mapping
+- **Monitoring & Validation**: Continuous monitoring of registry database integrity
+- **REST API**: Complete API endpoints for consolidation management and status
+- **Conflict Resolution**: Detect and resolve duplicate services and port conflicts
+
+## Architecture & Integration
+- **Service Type:** backend
+- **Dependencies:** sqlite3, flask, pathlib, glob
+- **Database:** registries/consolidated_registry.db (primary), registries/backups/ (backup storage)
+- **Env Vars:** None required
+- **Integration:** Integrated with OrchestrationStart for automated startup
+- **Lifecycle:** start=`python3 registry_consolidator.py --service --port 8898` | stop=`pkill -f registry_consolidator` | migrate=`/api/consolidate`
+
+## API Endpoints
+- `GET /health` - Service health check and status
+- `GET /api/scan` - Scan for all registry database files
+- `GET /api/consolidate` - Execute full consolidation process
+- `GET /api/status` - Get comprehensive consolidation status
+- `GET /api/backup` - Create timestamped backups of all registries
+- `GET /api/duplicates` - Check for duplicate services and conflicts
+
+## Database Schema
+**Primary Tables:**
+- `services_registry` - Consolidated service definitions and metadata
+- `ports_registry` - Port assignments and availability tracking
+- `process_registry` - Process monitoring and lifecycle tracking
+- `config_registry` - Configuration entries and service settings
+- `endpoints_registry` - API endpoint definitions and status
+- `consolidation_log` - Migration operations and audit trail
+
+## Health & Readiness
+- **Liveness:** `GET /health` - Returns service status and port confirmation
+- **Readiness:** Automated validation of consolidated database integrity
+- **Monitoring:** Background thread validates registry consistency every 5 minutes
+- **Timeouts:** startup_grace=30s, http_timeout=30s, consolidation_timeout=300s
+
+## Performance Metrics
+- **Consolidation Capacity:** 32+ registry databases, 480,000+ records
+- **Processing Time:** Full consolidation in under 60 seconds
+- **Storage Efficiency:** 158MB consolidated database with complete backup system
+- **API Response:** <100ms for status endpoints, <30s for consolidation operations
+
+## Security & Compliance
+- **Data Integrity:** Complete backup before any consolidation operations
+- **Access Control:** Localhost-only access (127.0.0.1:8898)
+- **Audit Trail:** Full logging of all migration operations with timestamps
+- **Recovery:** Complete backup/restore capabilities with timestamped versions
+
+## Integration Points
+- **OrchestrationStart:** Automatic startup during system initialization
+- **YAML Governance:** Coordination for configuration management
+- **Service Discovery:** Primary registry data source for service lookups
+- **Monitoring Systems:** Registry status reporting and health metrics
+
+## Deployment Notes
+- **Status:** ACTIVE - Running in production
+- **Passport:** REGO-CONSOLIDATOR-8898-L2
+- **Owner:** zmartbot-system
+- **Priority:** HIGH - Critical for system organization and registry management
+- **Scaling:** Single instance sufficient for current registry volume
+
+## Error Handling
+- **Database Locks:** Retry mechanism with exponential backoff
+- **Migration Failures:** Rollback capabilities with detailed error logging
+- **Backup Failures:** Prevent consolidation if backup operations fail
+- **API Errors:** Comprehensive error responses with actionable messages
+
+## Monitoring & Alerts
+- **Health Monitoring:** Continuous registry database health checks
+- **Performance Tracking:** Migration timing and throughput metrics
+- **Capacity Alerts:** Storage and record count threshold monitoring
+- **Integration Status:** Coordination status with other system components

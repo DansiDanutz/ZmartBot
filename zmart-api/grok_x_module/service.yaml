@@ -1,0 +1,30 @@
+service_name: grok-x-module
+service_type: backend
+version: 1.0.0
+owner: zmartbot
+description: Grok X module - needs ZMBT passport
+port: 8110
+passport_id: ZMBT-SRV-20250828-0E8507
+status: ACTIVE
+registered_at: '2025-08-31'
+health_url: http://localhost:8110/health
+start_cmd: python3 grok_x_module_server.py --port 8110
+stop_cmd: pkill -f 'grok_x_module_server.py'
+dependencies:
+- zmart-api
+tags:
+- backend
+- grok-x-module
+lifecycle:
+  startup_grace_seconds: 30
+  shutdown_timeout_seconds: 15
+  health_check_interval: 30
+monitoring:
+  metrics_endpoint: /metrics
+  logs_path: logs/grok-x-module.log
+  dashboard_url: http://localhost:8110/dashboard
+security:
+  cors_enabled: true
+  token_required: false
+  scopes:
+  - backend

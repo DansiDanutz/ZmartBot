@@ -1,0 +1,561 @@
+
+## Description
+Core service component of the ZmartBot ecosystem providing essential functionality.
+
+@datasource: PortRegistry
+
+## 🤖 MCP (Model Context Protocol) Integration
+
+### **MCP Server Pairing**
+**Status**: ✅ **ACTIVE** - Port Manager Database MCP Integration
+**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
+**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
+**Integration Type**: Multi-MCP Service Integration
+
+### **MCP Integration Features**
+- **Claude Code Integration**: AI-powered port database optimization and analysis
+- **Memory Gateway**: Persistent port database state and metadata
+- **UI Automation**: Automated port database monitoring and health checks
+- **Figma Integration**: Port database dashboard design and UI management
+- **Supabase Integration**: Cloud-based port database analytics and reporting
+
+### **MCP Integration Benefits**
+- **Enhanced Database**: AI-powered port database optimization and analysis
+- **Persistent State**: Cross-session port database state and configuration management
+- **Automated Monitoring**: Real-time port database health and performance tracking
+- **Visual Dashboard**: Interactive port database management and testing interface
+- **Cloud Analytics**: Comprehensive port database usage and performance analytics
+
+### **MCP Usage Examples**
+```bash
+# Health check via MCP
+curl -X GET "http://127.0.0.1:8000/port-db/health"
+
+# Port database operation via MCP
+curl -X POST "http://127.0.0.1:8000/port-db/query" -d '{"action": "get_available_ports"}'
+```
+
+### **MCP Status**
+- **Claude Code**: ✅ Active - AI-powered port database optimization
+- **ByteRover**: ✅ Active - Persistent port database state management
+- **UI TARS**: ✅ Active - Automated port database monitoring
+- **Figma**: ✅ Active - Port database dashboard design
+- **Supabase**: ✅ Active - Cloud-based port database analytics
+
+---
+
+# PortManagerDatabase - Service Port Registry
+
+## Overview
+The **PortManagerDatabase** is the central registry that contains **all services with unique port assignments** for the ZmartBot project. It serves as the single source of truth for port management, ensuring no conflicts and maintaining permanent port assignments for all system services.
+
+## Database Structure
+
+### **Core Database**
+- **Location**: `src/data/port_registry.db`
+- **Type**: SQLite database
+- **Purpose**: Permanent port assignment registry
+- **Access**: Port Manager and Master Orchestration Agent
+
+### **Database Schema**
+```sql
+-- Main port assignments table
+CREATE TABLE port_assignments (
+    id INTEGER PRIMARY KEY,
+    service_name TEXT NOT NULL UNIQUE,
+    port INTEGER NOT NULL UNIQUE,
+    pid INTEGER,
+    status TEXT DEFAULT 'RUNNING',
+    service_type TEXT NOT NULL,
+    assigned_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    is_permanent BOOLEAN DEFAULT TRUE,
+    description TEXT
+);
+
+-- Temporary assignments table
+CREATE TABLE temporary_port_assignments (
+    id INTEGER PRIMARY KEY,
+    service_name TEXT NOT NULL,
+    port INTEGER NOT NULL,
+    pid INTEGER,
+    assigned_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    status TEXT DEFAULT 'TEMPORARY',
+    will_persist BOOLEAN DEFAULT FALSE
+);
+
+-- Service types table
+CREATE TABLE service_types (
+    id INTEGER PRIMARY KEY,
+    type_name TEXT NOT NULL UNIQUE,
+    port_range_start INTEGER,
+    port_range_end INTEGER,
+    description TEXT
+);
+```
+
+## Service Categories
+
+### **Core Services** (Fixed Ports)
+- **Backend API**: Port 8000 - FastAPI server
+- **Dashboard Server**: Port 3400 - Professional Dashboard
+- **Orchestration Agent**: Port 8002 - Master orchestration service
+
+### **Dynamic Services** (Auto-assigned)
+- **Alert Services**: Ports 8010-8019
+- **Data Processors**: Ports 8020-8029
+- **Monitoring Services**: Ports 8030-8039
+- **Analysis Services**: Ports 8040-8049
+- **Integration Services**: Ports 8050-8059
+
+### **Reserved Services** (Special Purpose)
+- **Database Services**: Ports 9000-9099
+- **Security Services**: Ports 9100-9199
+- **Backup Services**: Ports 9200-9299
+- **Development Services**: Ports 9300-9399
+
+## Port Assignment Rules
+
+### **Assignment Priority**
+1. **Core Services**: Fixed ports (8000, 3400, 8002)
+2. **Dynamic Services**: Auto-assigned from available ranges
+3. **Reserved Services**: Special purpose assignments
+4. **Temporary Services**: Temporary assignments until STOP_ZMARTBOT
+
+### **Conflict Prevention**
+- **Unique Ports**: No two services can have the same port
+- **Unique Names**: No two services can have the same name
+- **Permanent Locking**: Once assigned, port remains with service
+- **Conflict Resolution**: Automatic new port assignment for conflicts
+
+### **Port Ranges**
+```python
+PORT_RANGES = {
+    "core": [8000, 8009],      # Fixed core services
+    "dynamic": [8010, 8999],   # Auto-assigned services
+    "reserved": [9000, 9999],  # Special purpose services
+    "development": [10000, 10999]  # Development services
+}
+```
+
+## Database Operations
+
+### **Service Registration**
+```python
+def register_service(service_name: str, port: int, service_type: str = "general"):
+    """
+    Registers a new service with port assignment.
+    
+    Args:
+        service_name: Unique service identifier
+        port: Assigned port number
+        service_type: Service category (api, dashboard, monitoring, etc.)
+    """
+    # Check for duplicates
+    if service_exists(service_name):
+        raise DuplicateServiceError(f"Service {service_name} already registered")
+    
+    if port_is_assigned(port):
+        raise PortConflictError(f"Port {port} already assigned")
+    
+    # Insert into main registry
+    cursor.execute("""
+        INSERT INTO port_assignments 
+        (service_name, port, service_type, status, is_permanent)
+        VALUES (?, ?, ?, 'ACTIVE', TRUE)
+    """, (service_name, port, service_type))
+    
+    # Also write to runtime registry for immediate access
+    runtime_registry[service_name] = {
+        'port': port,
+        'service_type': service_type,
+        'status': 'ACTIVE',
+        'timestamp': datetime.now()
+    }
+    
+    connection.commit()
+    logger.info(f"Service {service_name} registered on port {port}")
+```
+
+## New Column Mappings
+
+### **Enhanced Database Schema**
+```sql
+-- Updated port assignments table with new columns
+CREATE TABLE port_assignments (
+    id INTEGER PRIMARY KEY,
+    service_name TEXT NOT NULL UNIQUE,
+    port INTEGER NOT NULL UNIQUE,
+    pid INTEGER,
+    status TEXT DEFAULT 'ACTIVE',
+    service_type TEXT NOT NULL,
+    assigned_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    is_permanent BOOLEAN DEFAULT TRUE,
+    description TEXT,
+    -- NEW COLUMNS
+    profile_name TEXT DEFAULT 'default',
+    health_status TEXT DEFAULT 'UNKNOWN',
+    last_health_check TIMESTAMP,
+    restart_count INTEGER DEFAULT 0,
+    max_restarts INTEGER DEFAULT 3,
+    auto_restart BOOLEAN DEFAULT TRUE,
+    dependencies TEXT,  -- JSON array of dependent services
+    metadata TEXT       -- JSON object for additional data
+);
+
+-- Service profiles table
+CREATE TABLE service_profiles (
+    id INTEGER PRIMARY KEY,
+    profile_name TEXT NOT NULL UNIQUE,
+    description TEXT,
+    services TEXT NOT NULL,  -- JSON array of service names
+    is_active BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+### **Dual Registry Writes**
+```python
+def persist_to_both_registries(service_name: str, port: int, service_type: str):
+    """
+    Writes port assignment to both permanent database and runtime registry.
+    
+    Args:
+        service_name: Service identifier
+        port: Assigned port
+        service_type: Service category
+    """
+    # Write to permanent database
+    db_cursor.execute("""
+        INSERT OR REPLACE INTO port_assignments 
+        (service_name, port, service_type, status, updated_at)
+        VALUES (?, ?, ?, 'ACTIVE', CURRENT_TIMESTAMP)
+    """, (service_name, port, service_type))
+    
+    # Write to runtime registry
+    runtime_registry[service_name] = {
+        'port': port,
+        'service_type': service_type,
+        'status': 'ACTIVE',
+        'last_updated': datetime.now(),
+        'health_status': 'UNKNOWN'
+    }
+    
+    # Commit both changes
+    db_connection.commit()
+    runtime_registry.commit()
+    
+    logger.info(f"Service {service_name} persisted to both registries on port {port}")
+```
+def register_service(service_name, port, service_type, description=""):
+    """Register a new service with port assignment"""
+    query = """
+    INSERT INTO port_assignments 
+    (service_name, port, service_type, description, is_permanent)
+    VALUES (?, ?, ?, ?, TRUE)
+    """
+    execute_query(query, (service_name, port, service_type, description))
+```
+
+### **Port Assignment**
+```python
+def assign_port_to_service(service_name, service_type):
+    """Assign available port to new service"""
+    # Check if service already exists
+    if service_exists(service_name):
+        return None  # Service already registered
+    
+    # Find available port in appropriate range
+    available_port = find_available_port(service_type)
+    
+    # Register service with port
+    register_service(service_name, available_port, service_type)
+    
+    return available_port
+```
+
+### **Port Validation**
+```python
+def validate_port_assignment(port, service_name):
+    """Validate port assignment for service"""
+    # Check if port is available
+    if port_in_use(port):
+        return False, "Port already in use"
+    
+    # Check if service name is unique
+    if service_name_exists(service_name):
+        return False, "Service name already exists"
+    
+    # Check if port is in valid range
+    if not port_in_valid_range(port):
+        return False, "Port not in valid range"
+    
+    return True, "Port assignment valid"
+```
+
+## Service Management
+
+### **Service Types**
+```python
+SERVICE_TYPES = {
+    "core": {
+        "description": "Core system services",
+        "port_range": [8000, 8009],
+        "examples": ["backend_api", "dashboard_server", "orchestration_agent"]
+    },
+    "alert": {
+        "description": "Alert and notification services",
+        "port_range": [8010, 8019],
+        "examples": ["enhanced_alerts", "technical_alerts", "risk_alerts"]
+    },
+    "data_processor": {
+        "description": "Data processing services",
+        "port_range": [8020, 8029],
+        "examples": ["market_data_processor", "indicator_calculator", "pattern_analyzer"]
+    },
+    "monitoring": {
+        "description": "System monitoring services",
+        "port_range": [8030, 8039],
+        "examples": ["health_monitor", "performance_monitor", "security_monitor"]
+    },
+    "analysis": {
+        "description": "Analysis and AI services",
+        "port_range": [8040, 8049],
+        "examples": ["ai_analyzer", "risk_analyzer", "sentiment_analyzer"]
+    },
+    "integration": {
+        "description": "External API integration services",
+        "port_range": [8050, 8059],
+        "examples": ["kucoin_integration", "binance_integration", "cryptometer_integration"]
+    }
+}
+```
+
+### **Service Status Tracking**
+```python
+SERVICE_STATUS = {
+    "RUNNING": "Service is currently running",
+    "STOPPED": "Service has been stopped",
+    "STARTING": "Service is in startup process",
+    "STOPPING": "Service is in shutdown process",
+    "ERROR": "Service encountered an error",
+    "TEMPORARY": "Service has temporary assignment"
+}
+```
+
+## Database Queries
+
+### **Get All Services**
+```sql
+SELECT 
+    service_name,
+    port,
+    service_type,
+    status,
+    assigned_at,
+    description
+FROM port_assignments
+ORDER BY port;
+```
+
+### **Get Available Ports**
+```sql
+SELECT port
+FROM port_assignments
+WHERE status = 'STOPPED' OR status = 'ERROR'
+ORDER BY port;
+```
+
+### **Get Service by Name**
+```sql
+SELECT *
+FROM port_assignments
+WHERE service_name = ?;
+```
+
+### **Get Services by Type**
+```sql
+SELECT *
+FROM port_assignments
+WHERE service_type = ?
+ORDER BY port;
+```
+
+### **Get Temporary Assignments**
+```sql
+SELECT *
+FROM temporary_port_assignments
+WHERE status = 'TEMPORARY'
+ORDER BY assigned_at;
+```
+
+## Integration with System Components
+
+### **With Port Manager**
+- **Port Assignment**: Port Manager queries database for available ports
+- **Service Registration**: New services are registered in database
+- **Conflict Resolution**: Database validates port assignments
+- **Status Updates**: Service status is updated in database
+
+### **With Master Orchestration Agent**
+- **Service Discovery**: Agent reads database for all registered services
+- **Port Monitoring**: Agent monitors port assignments and conflicts
+- **Learning Integration**: Database provides data for learning patterns
+- **Intelligence Growth**: Agent learns from port assignment patterns
+
+### **With START_ZMARTBOT**
+- **Service Loading**: Startup script loads services from database
+- **Port Assignment**: Services are started with their assigned ports
+- **Validation**: Startup validates port assignments against database
+- **Synchronization**: Database is synchronized with running services
+
+### **With STOP_ZMARTBOT**
+- **Port Preservation**: Database preserves all port assignments
+- **Temporary to Permanent**: Temporary assignments become permanent
+- **Status Update**: All service statuses are updated
+- **Backup**: Database is backed up before shutdown
+
+### **Database Update Rules**
+- **New ports will be added** to the database **ONLY IF** STOP_ZMARTBOT is preceded by START_ZMARTBOT
+- **START_ZMARTBOT precedes STOP_ZMARTBOT** in the proper sequence
+- **Normal restart** does NOT update the database with new port assignments
+- **Temporary port assignments** are not saved to the database during normal operations
+- **Only permanent assignments** from the STOP_ZMARTBOT SAVE mechanism are stored
+
+### **Port Assignment Sequence Validation**
+```python
+def validate_port_assignment_sequence():
+    """Validate that START_ZMARTBOT preceded STOP_ZMARTBOT"""
+    # Check system logs for proper sequence
+    startup_log = read_system_startup_log()
+    stop_log = read_system_stop_log()
+    
+    # Verify sequence: START_ZMARTBOT -> [operations] -> STOP_ZMARTBOT
+    if not has_valid_start_stop_sequence(startup_log, stop_log):
+        log_warning("Invalid sequence - database will not be updated with new ports")
+        return False
+    
+    log_info("Valid START_ZMARTBOT -> STOP_ZMARTBOT sequence detected")
+    return True
+```
+
+### **Database Update Process**
+```python
+def update_database_with_new_ports():
+    """Update database only if proper sequence detected"""
+    if not validate_port_assignment_sequence():
+        log_info("Skipping database update - no valid START_ZMARTBOT -> STOP_ZMARTBOT sequence")
+        return False
+    
+    # Get new port assignments from Port Manager
+    new_assignments = port_manager.get_new_assignments()
+    
+    # Add new assignments to database
+    for assignment in new_assignments:
+        port_registry.add_service(
+            name=assignment.service_name,
+            port=assignment.port_number,
+            service_type=assignment.service_type,
+            status='ACTIVE',
+            permanent=True
+        )
+    
+    log_info(f"Database updated with {len(new_assignments)} new port assignments")
+    return True
+```
+
+## Database Maintenance
+
+### **Backup Procedures**
+```python
+def backup_port_database():
+    """Create backup of port registry database"""
+    backup_path = f"backups/port_registry_{datetime.now().strftime('%Y%m%d_%H%M%S')}.db"
+    shutil.copy2("src/data/port_registry.db", backup_path)
+    return backup_path
+```
+
+### **Cleanup Procedures**
+```python
+def cleanup_orphaned_services():
+    """Remove orphaned service entries"""
+    query = """
+    DELETE FROM port_assignments 
+    WHERE status = 'ERROR' 
+    AND updated_at < datetime('now', '-24 hours')
+    """
+    execute_query(query)
+```
+
+### **Validation Procedures**
+```python
+def validate_database_integrity():
+    """Validate database integrity"""
+    # Check for duplicate ports
+    duplicate_ports = check_duplicate_ports()
+    
+    # Check for duplicate service names
+    duplicate_names = check_duplicate_names()
+    
+    # Check for invalid port ranges
+    invalid_ports = check_invalid_port_ranges()
+    
+    return {
+        "duplicate_ports": duplicate_ports,
+        "duplicate_names": duplicate_names,
+        "invalid_ports": invalid_ports,
+        "integrity_ok": len(duplicate_ports) == 0 and len(duplicate_names) == 0
+    }
+```
+
+## Success Criteria
+
+### **Database Integrity**
+- ✅ No duplicate port assignments
+- ✅ No duplicate service names
+- ✅ All ports in valid ranges
+- ✅ Consistent service status
+
+### **Port Management**
+- ✅ All services have unique ports
+- ✅ No port conflicts
+- ✅ Permanent port assignments
+- ✅ Temporary assignment tracking
+
+### **System Integration**
+- ✅ Port Manager can query database
+- ✅ Master Agent can read assignments
+- ✅ START/STOP scripts use database
+- ✅ All components synchronized
+
+The PortManagerDatabase is the central registry that ensures all ZmartBot services have unique, permanent port assignments, preventing conflicts and maintaining system stability across all startup/shutdown cycles.
+
+#### Integration with Service Registry (source of truth)
+- Mirror every assignment into `service_registry.db`.
+- Treat the registry as canonical for service→port mapping.
+- Keep UNIQUE(port) invariant enforced at DB level.
+
+#### State Snapshot Integration
+- State snapshots include port assignments and service configurations
+- Cached data stored for smooth startup experience
+- Snapshot creation during STOP operations
+- Snapshot loading and transition to live data during START operations
+description:
+globs:
+alwaysApply: true
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Database connectivity**
+- ✅ **Health endpoint implementation**
+- ✅ **Master Orchestration integration**
+
+
+---
+
+## Triggers
+- **API endpoint requests**
+- **Database events**
+- **Health check requests**

@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  crypto-charts:
+    build: .
+    ports:
+      - "8901:8901"
+      - "8902:8902"
+    environment:
+      - NODE_ENV=production
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - redis
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - ./cache:/app/cache
+    restart: unless-stopped
+    networks:
+      - zmartbot-network
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    restart: unless-stopped
+    networks:
+      - zmartbot-network
+
+volumes:
+  redis-data:
+
+networks:
+  zmartbot-network:
+    driver: bridge

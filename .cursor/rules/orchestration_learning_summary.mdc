@@ -1,3 +1,8 @@
+
+## Description
+Core orchestration service component of the ZmartBot ecosystem providing essential functionality.
+
+
 # Master Orchestration Agent - Complete Learning Integration Summary
 
 ## 1. ORCHESTRATION EVOLUTION ACHIEVED
@@ -446,4 +451,64 @@ Intelligence Level: Advanced 6-service ecosystem orchestration with machine lear
 description:
 globs:
 alwaysApply: true
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Database connectivity**
+- ✅ **Complete MDC documentation**
+- ✅ **Health endpoint implementation**
+- ✅ **Master Orchestration integration**
+
+
 ---
+
+
+
+## Service Connections & Dependencies
+
+### Current Active Connections
+- **port-8156** ✅ **ACTIVE** - network connection
+- **my_symbols_database** ✅ **ACTIVE** - dependency connection
+- **binance_api** ✅ **ACTIVE** - dependency connection
+- **port-8157** ✅ **ACTIVE** - network connection
+- **my_symbols_database** ✅ **ACTIVE** - dependency connection
+- **binance_api** ✅ **ACTIVE** - dependency connection
+- **cryptometer_api** ✅ **ACTIVE** - dependency connection
+- **port-8001** ✅ **ACTIVE** - network connection
+- **None** ✅ **ACTIVE** - dependency connection
+- **port-8156** ✅ **ACTIVE** - network connection
+- **API** ✅ **ACTIVE** - dependency connection
+- **port-8002** ✅ **ACTIVE** - network connection
+- **API** ✅ **ACTIVE** - dependency connection
+- **port-8008** ✅ **ACTIVE** - network connection
+- **Market** ✅ **ACTIVE** - dependency connection
+- **port-8000** ✅ **ACTIVE** - network connection
+- **Market** ✅ **ACTIVE** - dependency connection
+- **port-3400** ✅ **ACTIVE** - network connection
+- **Backend** ✅ **ACTIVE** - dependency connection
+
+### Potential Connections
+- **update-master-orchestration** ⏳ **POTENTIAL** - High-potential integration between orchestration_learning_summary and update-master-orchestration - Strong synergy opportunity (Confidence: 100%)
+- **MDCOrchestrationAgent** ⏳ **POTENTIAL** - High-potential integration between orchestration_learning_summary and MDCOrchestrationAgent - Strong synergy opportunity (Confidence: 100%)
+- **MasterOrchestrationAgent** ⏳ **POTENTIAL** - High-potential integration between orchestration_learning_summary and MasterOrchestrationAgent - Strong synergy opportunity (Confidence: 100%)
+- **MDCAgent** ⏳ **POTENTIAL** - High-potential integration between orchestration_learning_summary and MDCAgent - Strong synergy opportunity (Confidence: 100%)
+- **OrchestrationStartWorkflow** ⏳ **POTENTIAL** - High-potential integration between orchestration_learning_summary and OrchestrationStartWorkflow - Strong synergy opportunity (Confidence: 100%)
+
+### Priority Connections
+- **optimization-target-2** 🔥 **PRIORITY #2** - Top #2 priority for system optimization - Score: 1.90 - Score: 1.00
+  - **Optimization Impact**: 0.90
+  - **Priority Score**: 0.50
+
+### Connection Summary
+- **Current Active**: 19
+- **Potential**: 5  
+- **Priority**: 1
+- **Total Discovered**: 25
+- **Last Discovery Scan**: Auto-updated on system initialization
+- **Discovery Method**: Multi-phase automated analysis with diamond pattern extraction
+- **Update Policy**: Real-time updates during workflow execution
+
+## Triggers
+- **API endpoint requests**
+- **Scheduled execution**
+- **Database events**

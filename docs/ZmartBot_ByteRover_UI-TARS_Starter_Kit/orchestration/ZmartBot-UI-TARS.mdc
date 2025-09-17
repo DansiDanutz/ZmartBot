@@ -1,0 +1,20 @@
+[Service]
+name = "zmart-ui-tars"
+tier = "worker"
+port = 8308
+health_url = "http://127.0.0.1:8308/health"
+
+[Lifecycle]
+start = "docker compose -f services/ui-tars/compose.ui-tars.yml up -d"
+stop  = "docker compose -f services/ui-tars/compose.ui-tars.yml down"
+
+[Capabilities]
+tasks = ["tradingview_capture","kingfisher_capture","dashboard_smoke"]
+
+[Schedules]
+tradingview = "*/15 * * * *"
+kingfisher  = "*/30 * * * *"
+dashboard   = "*/10 * * * *"
+
+[FailFast]
+require_service = false

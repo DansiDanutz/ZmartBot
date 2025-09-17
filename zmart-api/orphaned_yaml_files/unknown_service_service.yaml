@@ -1,0 +1,20 @@
+endpoints:
+  health: http://127.0.0.1:8888/health
+  metrics: http://127.0.0.1:8888/metrics
+  ready: http://127.0.0.1:8888/ready
+lifecycle:
+  health_check: curl -f http://127.0.0.1:8888/health
+  start_command: null
+  stop_command: pkill -f TradingStrategy
+metadata:
+  description: Progressive BUY Trading Strategy with Kingfisher Liquidation Cluster
+    Integration
+  owner: zmartbot
+  version: 1.0.0
+service:
+  level: 2
+  name: TradingStrategy
+  passport: PASS_TradingStrategy_20250831_021012
+  port: 8888
+  status: ACTIVE
+  type: backend

@@ -1,0 +1,99 @@
+service_name: kucoin
+service_type: worker
+port: 8302
+description: "KuCoin API integration service for real-time market data and trading operations"
+
+# Lifecycle Management
+lifecycle:
+  start: "python3 kucoin_server.py --port 8302"
+  stop: "pkill -f kucoin_server.py"
+  restart: "pkill -f kucoin_server.py && sleep 2 && python3 kucoin_server.py --port 8302"
+  health_check: "curl -f http://localhost:8302/health"
+
+# Dependencies
+dependencies:
+  - name: "zmart_api"
+    type: "required"
+    port: 8000
+  - name: "port-manager-service"
+    type: "required"
+    port: 8610
+  - name: "api_keys_manager_service"
+    type: "required"
+    port: 8006
+
+# Health and Monitoring
+health:
+  endpoint: "/health"
+  readiness_endpoint: "/ready"
+  liveness_path: "/health"
+  readiness_path: "/ready"
+  timeout: 30
+  interval: 60
+
+# Observability
+observability:
+  metrics_endpoint: "/metrics"
+  logs_level: "INFO"
+  tracing_enabled: true
+  prometheus_metrics: true
+
+# Security
+security:
+  api_key_required: true
+  rate_limiting: true
+  ssl_required: true
+  cors_enabled: true
+
+# Orchestration Hints
+orchestration:
+  startup_order: 5
+  dependency_wait_time: 10
+  health_check_retries: 3
+  graceful_shutdown_timeout: 30
+
+# Performance
+performance:
+  max_connections: 100
+  request_timeout: 30
+  memory_limit: "512MB"
+  cpu_limit: "0.5"
+
+# Failure Modes
+failure_modes:
+  - name: "API Rate Limit Exceeded"
+    action: "backoff_and_retry"
+    max_retries: 3
+  - name: "Network Timeout"
+    action: "circuit_breaker"
+    threshold: 5
+  - name: "Authentication Failure"
+    action: "restart_service"
+    max_attempts: 2
+
+# Rollback Strategy
+rollback:
+  automatic: true
+  health_check_failure_threshold: 3
+  rollback_timeout: 60
+
+# Load Balancing
+load_balancing:
+  enabled: false
+  algorithm: "round_robin"
+  health_check_path: "/health"
+
+# Known Issues
+known_issues:
+  - issue: "Rate limiting from KuCoin API"
+    impact: "Temporary service degradation"
+    mitigation: "Implement exponential backoff"
+  - issue: "Network latency to KuCoin servers"
+    impact: "Increased response times"
+    mitigation: "Use connection pooling"
+
+# Changelog
+changelog:
+  - version: "1.0.0"
+    date: "2025-08-26"
+    notes: "Initial KuCoin service implementation with real-time market data and trading operations"

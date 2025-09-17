@@ -1,0 +1,20 @@
+service_name: discovery-database-service
+service_type: backend
+port: 8780
+description: "Professional Discovery Database Service for ZmartBot 3-database service lifecycle management"
+status: ACTIVE
+passport_id: ZMBT-SRV-20250829-DISCOVERY
+registered_at: "2025-08-29"
+health_url: "http://localhost:8780/health"
+start_cmd: "python3 discovery_database_server.py"
+stop_cmd: "pkill -f discovery_database_server"
+dependencies:
+  - zmart-api
+  - service-registry
+  - port-manager
+tags:
+  - backend
+  - database
+  - lifecycle
+  - discovery
+  - certification-ready

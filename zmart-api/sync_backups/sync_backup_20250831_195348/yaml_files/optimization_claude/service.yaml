@@ -1,0 +1,17 @@
+service_name: optimization-claude-service
+service_type: backend
+port: 8080
+description: "Claude AI optimization and processing service"
+status: ACTIVE
+passport_id: ZMBT-SRV-20250826-513E16
+registered_at: "2025-08-26"
+health_url: "http://localhost:8080/health"
+start_cmd: "python3 optimization_claude_service.py"
+stop_cmd: "pkill -f 'optimization_claude_service.py'"
+dependencies:
+  - zmart-api
+  - claude_api
+tags:
+  - ai
+  - optimization
+  - claude

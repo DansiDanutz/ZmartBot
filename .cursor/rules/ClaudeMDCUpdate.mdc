@@ -1,3 +1,8 @@
+
+## Description
+Core service component of the ZmartBot ecosystem providing essential functionality.
+
+
 # Claude MDC Update System - Autonomous Documentation Synchronization
 
 ## 1. Service Overview
@@ -139,8 +144,29 @@
 description: Autonomous MDC to CLAUDE.md synchronization system
 globs: ["zmart-api/update_claude_mdc.py", "zmart-api/watch_mdc_changes*.py", "CLAUDE.md"]
 alwaysApply: true
+
+## Requirements
+- ✅ **Database connectivity**
+- ✅ **Complete MDC documentation**
+- ✅ **Health endpoint implementation**
+- ✅ **Master Orchestration integration**
+
+
 ---
 description:
 globs:
 alwaysApply: true
+
+## Requirements
+- ✅ **Database connectivity**
+- ✅ **Complete MDC documentation**
+- ✅ **Health endpoint implementation**
+- ✅ **Master Orchestration integration**
+
+
 ---
+
+## Triggers
+- **API endpoint requests**
+- **File system changes**
+- **Database events**

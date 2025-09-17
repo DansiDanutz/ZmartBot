@@ -1,0 +1,91 @@
+{
+  "symbol": "SOL",
+  "timestamp": "2025-09-17T03:52:05.068227",
+  "multi_timeframe_analysis": {
+    "symbol": "SOL",
+    "mock": true,
+    "multi_timeframe_analysis": {
+      "SHORT": 75,
+      "MEDIUM": 80,
+      "LONG": 70
+    },
+    "timestamp": "2025-09-17T03:52:05.068215"
+  },
+  "win_rate_predictions": {
+    "symbol": "SOL",
+    "mock": true,
+    "short_term_24h": {
+      "win_rate": 0.75,
+      "confidence": 0.8
+    },
+    "medium_term_7d": {
+      "win_rate": 0.8,
+      "confidence": 0.85
+    },
+    "long_term_1m": {
+      "win_rate": 0.7,
+      "confidence": 0.75
+    },
+    "timestamp": "2025-09-17T03:52:05.068223"
+  },
+  "data_points": 0,
+  "endpoints_called": 0,
+  "success": true,
+  "enhanced_prediction": {
+    "symbol": "SOL",
+    "short_term": {
+      "score": 60.0,
+      "patterns": [
+        {
+          "type": "short_term_trend",
+          "confidence": 0.6,
+          "learned_confidence": 0.5,
+          "original_confidence": 0.7,
+          "enhanced": true
+        }
+      ],
+      "original_score": 75,
+      "enhancement_applied": true
+    },
+    "medium_term": {
+      "score": 65.0,
+      "patterns": [
+        {
+          "type": "medium_term_trend",
+          "confidence": 0.65,
+          "learned_confidence": 0.5,
+          "original_confidence": 0.8,
+          "enhanced": true
+        }
+      ],
+      "original_score": 80,
+      "enhancement_applied": true
+    },
+    "long_term": {
+      "score": 62.5,
+      "patterns": [
+        {
+          "type": "long_term_trend",
+          "confidence": 0.625,
+          "learned_confidence": 0.5,
+          "original_confidence": 0.75,
+          "enhanced": true
+        }
+      ],
+      "original_score": 70,
+      "enhancement_applied": true
+    },
+    "timestamp": "2025-09-17T03:52:05.068229",
+    "enhanced_by_learning": true,
+    "learning_metrics": {
+      "accuracy": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1_score": 0.0,
+      "prediction_count": 0,
+      "last_updated": "2025-09-17 03:52:03.555234"
+    },
+    "enhancement_timestamp": "2025-09-17T03:52:05.068861"
+  },
+  "self_learning_applied": true
+}

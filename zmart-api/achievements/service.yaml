@@ -1,0 +1,19 @@
+endpoints:
+  health: http://127.0.0.1:8026/health
+  metrics: http://127.0.0.1:8026/metrics
+  ready: http://127.0.0.1:8026/ready
+lifecycle:
+  health_check: curl -f http://127.0.0.1:8026/health
+  start_command: null
+  stop_command: pkill -f achievements
+metadata:
+  description: Service achievements
+  owner: zmartbot
+  version: 1.0.0
+service:
+  level: 3
+  name: achievements
+  passport: ZMBT-SYSTEM-20250828-AB513A
+  port: 8026
+  status: ACTIVE
+  type: backend

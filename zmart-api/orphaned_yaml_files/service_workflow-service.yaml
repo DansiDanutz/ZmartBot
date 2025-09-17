@@ -1,0 +1,30 @@
+service_name: workflow-service
+service_type: backend
+version: 1.0.0
+owner: zmartbot
+description: Workflow service
+port: 8666
+passport_id: ZMBT-WFL-20250831-U5V6W7
+status: ACTIVE
+registered_at: '2025-08-31'
+health_url: http://localhost:8666/health
+start_cmd: python3 workflow_service_server.py --port 8666
+stop_cmd: pkill -f 'workflow_service_server.py'
+dependencies:
+- zmart-api
+tags:
+- backend
+- workflow-service
+lifecycle:
+  startup_grace_seconds: 30
+  shutdown_timeout_seconds: 15
+  health_check_interval: 30
+monitoring:
+  metrics_endpoint: /metrics
+  logs_path: logs/workflow-service.log
+  dashboard_url: http://localhost:8666/dashboard
+security:
+  cors_enabled: true
+  token_required: false
+  scopes:
+  - backend

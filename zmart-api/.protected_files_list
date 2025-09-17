@@ -1,0 +1,16 @@
+# CRITICAL FILES - NEVER DELETE THESE
+.cursor/rules/*.mdc
+Dashboard/MDC-Dashboard/*
+CLAUDE.md
+.env*
+package.json
+requirements.txt
+*.py
+*.js
+*.html
+*.css
+.git/*
+.gitignore
+Dockerfile*
+docker-compose*
+README.md

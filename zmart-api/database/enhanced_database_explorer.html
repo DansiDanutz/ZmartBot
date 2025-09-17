@@ -1,0 +1,3112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Database Explorer - ZmartBot</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+            color: #e8e8e8;
+            overflow-x: hidden;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, #1e1e1e 0%, #2a2a2a 100%);
+            border-right: 1px solid #3a3a3a;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+            padding: 20px 0;
+            overflow-y: auto;
+            position: fixed;
+            height: 100vh;
+            left: 0;
+            top: 0;
+        }
+
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid #3a3a3a;
+            margin-bottom: 20px;
+            background: rgba(0, 212, 255, 0.02);
+            border-radius: 8px;
+            margin: 0 10px 20px 10px;
+        }
+
+        .sidebar-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 5px;
+            letter-spacing: -0.5px;
+        }
+
+        .sidebar-subtitle {
+            font-size: 0.9rem;
+            color: #b3b3b3;
+            font-weight: 500;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 5px;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            color: #d0d0d0;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-left: 3px solid transparent;
+            border-radius: 0 8px 8px 0;
+            margin: 2px 0;
+            font-weight: 500;
+        }
+
+        .sidebar-menu a:hover {
+            background: linear-gradient(90deg, rgba(0, 212, 255, 0.1) 0%, rgba(0, 212, 255, 0.05) 100%);
+            border-left-color: #00d4ff;
+            color: #ffffff;
+            transform: translateX(2px);
+        }
+
+        .sidebar-menu a.active {
+            background: linear-gradient(90deg, rgba(0, 212, 255, 0.15) 0%, rgba(0, 212, 255, 0.08) 100%);
+            border-left-color: #00d4ff;
+            color: #00d4ff;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-menu i {
+            margin-right: 12px;
+            width: 18px;
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        .service-count {
+            background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+            color: #000;
+            padding: 3px 10px;
+            border-radius: 14px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            box-shadow: 0 2px 4px rgba(0, 212, 255, 0.3);
+            margin-left: auto;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 25px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #1f1f1f 100%);
+            min-height: 100vh;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 35px;
+            padding: 20px 0;
+            border-bottom: 2px solid #3a3a3a;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .header h1 {
+            background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .theme-toggle {
+            background: linear-gradient(135deg, #404040 0%, #4a4a4a 100%);
+            border: 1px solid #555;
+            color: #ffffff;
+            padding: 12px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 500;
+        }
+
+        .theme-toggle:hover {
+            background: linear-gradient(135deg, #505050 0%, #5a5a5a 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: linear-gradient(135deg, #2a2a2a 0%, #323232 100%);
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid #3a3a3a;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #00d4ff 0%, #0099cc 50%, #00d4ff 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0, 212, 255, 0.15);
+            border-color: rgba(0, 212, 255, 0.3);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #00d4ff 0%, #ffffff 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .card-icon {
+            font-size: 1.6rem;
+            background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .card-value {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-label {
+            color: #b3b3b3;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .card-change {
+            font-size: 0.85rem;
+            margin-top: 8px;
+            font-weight: 600;
+        }
+
+        .card-change.positive {
+            color: #00ff88;
+            text-shadow: 0 1px 2px rgba(0, 255, 136, 0.2);
+        }
+
+        .card-change.negative {
+            color: #ff6b6b;
+            text-shadow: 0 1px 2px rgba(255, 107, 107, 0.2);
+        }
+
+        /* Database List */
+        .database-section {
+            background: linear-gradient(135deg, #2a2a2a 0%, #323232 100%);
+            border-radius: 16px;
+            padding: 28px;
+            border: 1px solid #3a3a3a;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid rgba(0, 212, 255, 0.1);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #00d4ff 0%, #ffffff 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .database-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 18px;
+        }
+
+        .database-item {
+            background: linear-gradient(135deg, #404040 0%, #4a4a4a 100%);
+            border-radius: 12px;
+            padding: 18px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid #555;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .database-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #00d4ff 0%, #0099cc 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .database-item:hover {
+            background: linear-gradient(135deg, #505050 0%, #5a5a5a 100%);
+            border-color: rgba(0, 212, 255, 0.5);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0, 212, 255, 0.1);
+        }
+
+        .database-item:hover::before {
+            opacity: 1;
+        }
+
+        .database-name {
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 8px;
+            font-size: 1rem;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .database-info {
+            font-size: 0.85rem;
+            color: #b3b3b3;
+            line-height: 1.4;
+        }
+
+        /* Database Cards Grid */
+        .database-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .database-card {
+            background: linear-gradient(135deg, #2d2d2d 0%, #3a3a3a 100%);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #404040;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .database-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #00d4ff, #00ff88);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .database-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 212, 255, 0.15);
+            border-color: #00d4ff;
+        }
+
+        .database-card:hover::before {
+            opacity: 1;
+        }
+
+        .database-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .database-card-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 5px;
+        }
+
+        .database-card-status {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .status-active {
+            background: rgba(0, 255, 136, 0.2);
+            color: #00ff88;
+            border: 1px solid #00ff88;
+        }
+
+        .status-inactive {
+            background: rgba(255, 68, 68, 0.2);
+            color: #ff4444;
+            border: 1px solid #ff4444;
+        }
+
+        .database-card-category {
+            color: #00d4ff;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+        }
+
+        .database-card-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .database-stat {
+            text-align: center;
+        }
+
+        .database-stat-value {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #ffffff;
+            display: block;
+        }
+
+        .database-stat-label {
+            font-size: 0.7rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .database-card-description {
+            color: #aaa;
+            font-size: 0.8rem;
+            line-height: 1.4;
+            margin-bottom: 15px;
+        }
+
+        .database-card-health {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .health-bar {
+            flex: 1;
+            height: 6px;
+            background: #404040;
+            border-radius: 3px;
+            margin-right: 10px;
+            overflow: hidden;
+        }
+
+        .health-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff4444, #ffaa00, #00ff88);
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+
+        .health-value {
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        /* Certified Services Grid */
+        .certified-services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .certified-service-card {
+            background: linear-gradient(135deg, #1a4a2e 0%, #2d5a3d 100%);
+            border-radius: 10px;
+            padding: 15px;
+            border: 2px solid #00ff88;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .certified-service-card::before {
+            content: '🏆';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1.5rem;
+            opacity: 0.3;
+        }
+
+        .certified-service-card.new-service {
+            animation: newServiceGlow 2s ease-in-out;
+            border-color: #ffaa00;
+            box-shadow: 0 0 20px rgba(255, 170, 0, 0.5);
+        }
+
+        @keyframes newServiceGlow {
+            0% { transform: scale(1); box-shadow: 0 0 5px rgba(255, 170, 0, 0.3); }
+            50% { transform: scale(1.05); box-shadow: 0 0 25px rgba(255, 170, 0, 0.8); }
+            100% { transform: scale(1); box-shadow: 0 0 10px rgba(0, 255, 136, 0.4); }
+        }
+
+        .certified-service-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 255, 136, 0.2);
+            border-color: #00d4ff;
+        }
+
+        .service-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .service-card-name {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+
+        .service-card-type {
+            font-size: 0.7rem;
+            color: #00ff88;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .service-card-badge {
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            color: #000;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.6rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .service-card-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .service-card-port {
+            color: #00d4ff;
+            font-family: monospace;
+            font-size: 0.8rem;
+        }
+
+        .service-card-date {
+            color: #888;
+            font-size: 0.7rem;
+        }
+
+        .new-service-indicator {
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            height: 4px;
+            background: linear-gradient(90deg, #ffaa00, #ff6b6b, #ffaa00);
+            animation: newServicePulse 1.5s infinite;
+        }
+
+        @keyframes newServicePulse {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        /* Services Grid */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .service-card {
+            background: linear-gradient(135deg, #2d2d2d 0%, #3a3a3a 100%);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #404040;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 212, 255, 0.15);
+            border-color: #00d4ff;
+        }
+
+        .service-card.certified {
+            border-left: 4px solid #00ff88;
+            background: linear-gradient(135deg, #1a4a2e 0%, #2d5a3d 100%);
+        }
+
+        .service-card.pending {
+            border-left: 4px solid #ffaa00;
+            background: linear-gradient(135deg, #4a3d1a 0%, #5a4d2d 100%);
+        }
+
+        .service-card.discovery {
+            border-left: 4px solid #888;
+            background: linear-gradient(135deg, #2a2a2a 0%, #3a3a3a 100%);
+        }
+
+        .service-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .service-card-name {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+
+        .service-card-type {
+            font-size: 0.8rem;
+            color: #00d4ff;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .service-status-badge {
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .status-certified {
+            background: rgba(0, 255, 136, 0.2);
+            color: #00ff88;
+            border: 1px solid #00ff88;
+        }
+
+        .status-pending {
+            background: rgba(255, 170, 0, 0.2);
+            color: #ffaa00;
+            border: 1px solid #ffaa00;
+        }
+
+        .status-discovery {
+            background: rgba(136, 136, 136, 0.2);
+            color: #888;
+            border: 1px solid #888;
+        }
+
+        .service-card-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+
+        .service-port {
+            color: #00d4ff;
+            font-family: monospace;
+        }
+
+        .service-date {
+            color: #888;
+            font-size: 0.8rem;
+        }
+
+        .service-card-description {
+            color: #aaa;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            margin-bottom: 15px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .service-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 10px;
+            border-top: 1px solid #404040;
+        }
+
+        .service-passport {
+            font-size: 0.7rem;
+            color: #00d4ff;
+            font-family: monospace;
+        }
+
+        .service-expand-btn {
+            background: none;
+            border: 1px solid #404040;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .service-expand-btn:hover {
+            border-color: #00d4ff;
+            color: #00d4ff;
+        }
+
+        /* Expanded service details */
+        .service-details {
+            display: none;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #404040;
+        }
+
+        .service-details.expanded {
+            display: block;
+        }
+
+        .service-detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.8rem;
+        }
+
+        /* Database Operations Section */
+        .database-operations-section {
+            padding: 30px;
+            background: #2d2d2d;
+            margin-bottom: 30px;
+            border-radius: 15px;
+            border: 1px solid #404040;
+        }
+
+        .database-selector select {
+            background: #404040;
+            border: 1px solid #666;
+            color: #ffffff;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+
+        .database-operations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .db-operation-card {
+            background: linear-gradient(135deg, #232323 0%, #2a2a2a 100%);
+            border: 1px solid #3a3a3a;
+            border-radius: 16px;
+            padding: 26px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .db-operation-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #00d4ff 0%, #0099cc 50%, #00d4ff 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .db-operation-card:hover {
+            border-color: rgba(0, 212, 255, 0.4);
+            transform: translateY(-6px);
+            box-shadow: 0 16px 40px rgba(0, 212, 255, 0.2);
+            background: linear-gradient(135deg, #2a2a2a 0%, #323232 100%);
+        }
+
+        .db-operation-card:hover::before {
+            opacity: 1;
+        }
+
+        .db-operation-card:hover .operation-icon {
+            background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transform: scale(1.15);
+        }
+
+        .operation-icon {
+            font-size: 2.8rem;
+            color: #888;
+            margin-bottom: 18px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: block;
+        }
+
+        .operation-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .operation-description {
+            font-size: 0.9rem;
+            color: #b3b3b3;
+            line-height: 1.4;
+            line-height: 1.4;
+        }
+
+        /* Expanded Database Card */
+        .expanded-database-card {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 900px;
+            max-height: 80%;
+            background: #2d2d2d;
+            border: 2px solid #00d4ff;
+            border-radius: 15px;
+            z-index: 1000;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { 
+                opacity: 0; 
+                transform: translate(-50%, -60%); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translate(-50%, -50%); 
+            }
+        }
+
+        .expanded-card-header {
+            background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
+            border-bottom: 1px solid #404040;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .expanded-card-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: #ffffff;
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+
+        .expanded-card-title i {
+            color: #00d4ff;
+            font-size: 1.5rem;
+        }
+
+        .operation-type {
+            background: #00d4ff;
+            color: #000;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .close-expanded-card {
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .close-expanded-card:hover {
+            color: #ff4444;
+            background: rgba(255, 68, 68, 0.1);
+        }
+
+        .expanded-card-content {
+            padding: 30px;
+            overflow-y: auto;
+            max-height: 60vh;
+        }
+
+        .database-info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .info-section h3 {
+            color: #00d4ff;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            border-bottom: 1px solid #404040;
+            padding-bottom: 10px;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #333;
+        }
+
+        .info-label {
+            color: #aaa;
+            font-weight: 500;
+        }
+
+        .info-value {
+            color: #ffffff;
+            font-weight: bold;
+        }
+
+        .operation-details {
+            background: #1a1a1a;
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid #404040;
+        }
+
+        /* Overlay for expanded card */
+        .expanded-database-card::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: -1;
+        }
+
+        /* Operation button */
+        .operation-btn {
+            background: linear-gradient(45deg, #00d4ff, #0099cc);
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .operation-btn:hover {
+            background: linear-gradient(45deg, #00b8e6, #007aa3);
+            transform: translateY(-2px);
+        }
+
+        .operation-btn:disabled {
+            background: #666;
+            color: #999;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .operation-content {
+            margin-top: 10px;
+        }
+
+        .service-detail-label {
+            color: #888;
+            font-weight: 600;
+        }
+
+        .service-detail-value {
+            color: #fff;
+            font-family: monospace;
+        }
+
+        /* Charts */
+        .chart-container {
+            background: #2d2d2d;
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid #404040;
+            margin-bottom: 20px;
+        }
+
+        .chart-title {
+            font-size: 1.2rem;
+            color: #00d4ff;
+            margin-bottom: 15px;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #888;
+        }
+
+        .loading i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: #00d4ff;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                position: relative;
+                height: auto;
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .container {
+                flex-direction: column;
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #2d2d2d;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #404040;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #505050;
+        }
+    </style>
+</head>
+<body data-theme="dark">
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-title">Database Explorer</div>
+                <div class="sidebar-subtitle">Enhanced Dashboard</div>
+            </div>
+            
+            <ul class="sidebar-menu">
+                <li><a href="#" class="active" onclick="showOverview()">
+                    <i class="fas fa-tachometer-alt"></i>
+                    Overview
+                </a></li>
+                <li><a href="#" onclick="showCertified()">
+                    <i class="fas fa-certificate"></i>
+                    Certified <span class="service-count" id="certifiedSidebarCount">23</span>
+                </a></li>
+                <li><a href="#" onclick="showPending()">
+                    <i class="fas fa-check-circle"></i>
+                    ACTIVE <span class="service-count" id="pendingSidebarCount">16</span>
+                </a></li>
+                <li><a href="#" onclick="showDiscovery()">
+                    <i class="fas fa-search"></i>
+                    Discovery <span class="service-count" id="discoverySidebarCount">91</span>
+                </a></li>
+                <li><a href="#" onclick="showAllServices()">
+                    <i class="fas fa-server"></i>
+                    All Services <span class="service-count" id="allSidebarCount">121</span>
+                </a></li>
+                <li><a href="#" onclick="showDatabases()">
+                    <i class="fas fa-database"></i>
+                    Databases
+                </a></li>
+                <li style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #3a3a3a;">
+                    <a href="#" onclick="validateActiveServices()" style="color: #ffaa00;">
+                        <i class="fas fa-shield-alt"></i>
+                        Validate Services
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <h1>Enhanced Database Explorer</h1>
+                <div class="header-controls">
+                    <button class="theme-toggle" onclick="toggleTheme()">
+                        <i class="fas fa-moon"></i> Dark Theme
+                    </button>
+                </div>
+            </div>
+
+            <div id="contentArea">
+                <!-- Overview Dashboard -->
+                <div class="dashboard-grid" id="overviewDashboard">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Total Services</div>
+                            <i class="fas fa-server card-icon"></i>
+                        </div>
+                        <div class="card-value" id="totalAllServices">121</div>
+                        <div class="card-label">All services in system</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Certified Services</div>
+                            <i class="fas fa-certificate card-icon"></i>
+                        </div>
+                        <div class="card-value" id="totalCertified">23</div>
+                        <div class="card-label">Level 3 certified</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">ACTIVE Services</div>
+                            <i class="fas fa-check-circle card-icon"></i>
+                        </div>
+                        <div class="card-value" id="totalPending">16</div>
+                        <div class="card-label">Awaiting certification</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Discovery Services</div>
+                            <i class="fas fa-search card-icon"></i>
+                        </div>
+                        <div class="card-value" id="totalDiscovery">91</div>
+                        <div class="card-label">In discovery phase</div>
+                    </div>
+                </div>
+
+                <!-- Database Operations Section -->
+                <div class="database-operations-section" id="databaseOperationsSection">
+                    <div class="section-header">
+                        <div class="section-title">Database Operations</div>
+                        <div class="database-selector">
+                            <select id="databaseSelector" onchange="updateDatabaseCards()">
+                                <option value="">Select Database...</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="database-operations-grid" id="databaseOperationsGrid">
+                        <div class="db-operation-card" onclick="expandDatabaseCard('analyze', this)">
+                            <div class="operation-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="operation-title">Analyze Tables</div>
+                            <div class="operation-description">Analyze table structure and statistics</div>
+                        </div>
+                        
+                        <div class="db-operation-card" onclick="expandDatabaseCard('optimize', this)">
+                            <div class="operation-icon">
+                                <i class="fas fa-tachometer-alt"></i>
+                            </div>
+                            <div class="operation-title">Optimize</div>
+                            <div class="operation-description">Optimize database performance</div>
+                        </div>
+                        
+                        <div class="db-operation-card" onclick="expandDatabaseCard('backup', this)">
+                            <div class="operation-icon">
+                                <i class="fas fa-save"></i>
+                            </div>
+                            <div class="operation-title">Backup</div>
+                            <div class="operation-description">Create database backup</div>
+                        </div>
+                        
+                        <div class="db-operation-card" onclick="expandDatabaseCard('schema', this)">
+                            <div class="operation-icon">
+                                <i class="fas fa-sitemap"></i>
+                            </div>
+                            <div class="operation-title">Schema</div>
+                            <div class="operation-description">View database schema</div>
+                        </div>
+                        
+                        <div class="db-operation-card" onclick="expandDatabaseCard('query', this)">
+                            <div class="operation-icon">
+                                <i class="fas fa-code"></i>
+                            </div>
+                            <div class="operation-title">Query Tool</div>
+                            <div class="operation-description">Execute SQL queries</div>
+                        </div>
+                        
+                        <div class="db-operation-card" onclick="expandDatabaseCard('export', this)">
+                            <div class="operation-icon">
+                                <i class="fas fa-download"></i>
+                            </div>
+                            <div class="operation-title">Export Data</div>
+                            <div class="operation-description">Export database data</div>
+                        </div>
+                        
+                        <div class="db-operation-card" onclick="expandDatabaseCard('logs', this)">
+                            <div class="operation-icon">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                            <div class="operation-title">View Logs</div>
+                            <div class="operation-description">View database logs</div>
+                        </div>
+                        
+                        <div class="db-operation-card" onclick="expandDatabaseCard('repair', this)">
+                            <div class="operation-icon">
+                                <i class="fas fa-tools"></i>
+                            </div>
+                            <div class="operation-title">Repair</div>
+                            <div class="operation-description">Database repair tools</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Expanded Database Card -->
+                <div class="expanded-database-card" id="expandedDatabaseCard" style="display: none;">
+                    <div class="expanded-card-header">
+                        <div class="expanded-card-title">
+                            <i class="fas fa-database"></i>
+                            <span id="expandedDatabaseName">Database Name</span>
+                            <span class="operation-type" id="expandedOperationType">Operation</span>
+                        </div>
+                        <button class="close-expanded-card" onclick="closeExpandedCard()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="expanded-card-content">
+                        <div class="database-info-grid">
+                            <div class="info-section">
+                                <h3>Database Information</h3>
+                                <div class="info-item">
+                                    <span class="info-label">Size:</span>
+                                    <span class="info-value" id="dbSize">--</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Status:</span>
+                                    <span class="info-value" id="dbStatus">--</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Tables:</span>
+                                    <span class="info-value" id="dbTables">--</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Records:</span>
+                                    <span class="info-value" id="dbRecords">--</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Health Score:</span>
+                                    <span class="info-value" id="dbHealth">--</span>
+                                </div>
+                            </div>
+                            
+                            <div class="operation-details" id="operationDetails">
+                                <!-- Dynamic content based on operation type -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Service Cards Section -->
+                <div class="service-cards-section" id="serviceCardsSection" style="display: none;">
+                    <div class="section-header">
+                        <div class="section-title" id="servicesSectionTitle">Services</div>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <input type="text" id="serviceSearchInput" placeholder="Search services..." 
+                                   style="padding: 8px 15px; border: 1px solid #404040; background: #3a3a3a; color: #fff; border-radius: 5px; width: 200px;"
+                                   onkeyup="filterServices()">
+                            <div id="serviceResultsCount" style="color: #888; font-size: 0.9rem;"></div>
+                        </div>
+                    </div>
+                    <div class="services-grid" id="servicesGrid">
+                        <div class="loading">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <p>Loading services...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Individual Database Cards -->
+                <div class="database-section">
+                    <div class="section-header">
+                        <div class="section-title">Database Management</div>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <input type="text" id="searchInput" placeholder="Search databases..." 
+                                   style="padding: 8px 15px; border: 1px solid #404040; background: #3a3a3a; color: #fff; border-radius: 5px; width: 200px;"
+                                   onkeyup="filterDatabases()">
+                            <select id="categoryFilter" onchange="filterDatabases()" 
+                                    style="padding: 8px 12px; border: 1px solid #404040; background: #3a3a3a; color: #fff; border-radius: 5px;">
+                                <option value="">All Categories</option>
+                                <option value="system">System</option>
+                                <option value="ai_learning">AI Learning</option>
+                                <option value="analytics">Analytics</option>
+                                <option value="trading">Trading</option>
+                                <option value="discovery">Discovery</option>
+                            </select>
+                            <button class="theme-toggle" onclick="toggleCardView()" id="cardViewToggle">
+                                <i class="fas fa-th"></i> Card View
+                            </button>
+                        </div>
+                    </div>
+                    <div class="database-cards-grid" id="databaseCardsGrid" style="display: none;">
+                        <!-- Cards will be populated here -->
+                    </div>
+                    <div class="database-list" id="databaseList">
+                        <div class="loading">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <p>Loading databases...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Level 3 Certified Services -->
+                <div class="database-section">
+                    <div class="section-header">
+                        <div class="section-title">Level 3 Certified Services</div>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <div id="certifiedCount" style="color: #00ff88; font-weight: bold; font-size: 1.1rem;">Loading...</div>
+                            <button class="theme-toggle" onclick="refreshCertifiedServices()" id="refreshCertified">
+                                <i class="fas fa-sync"></i> Refresh
+                            </button>
+                        </div>
+                    </div>
+                    <div class="certified-services-grid" id="certifiedServicesGrid">
+                        <div class="loading">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <p>Loading certified services...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts -->
+                <div class="chart-container">
+                    <div class="chart-title">Database Health Overview</div>
+                    <canvas id="healthChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize theme
+        function initTheme() {
+            document.body.setAttribute('data-theme', 'dark');
+            updateThemeButton();
+        }
+
+        // Toggle theme
+        function toggleTheme() {
+            const currentTheme = document.body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.body.setAttribute('data-theme', newTheme);
+            updateThemeButton();
+        }
+
+        // Update theme button
+        function updateThemeButton() {
+            const themeToggle = document.querySelector('.theme-toggle');
+            const currentTheme = document.body.getAttribute('data-theme');
+            
+            if (currentTheme === 'dark') {
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i> Dark Theme';
+            } else {
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i> Light Theme';
+            }
+        }
+
+        // Load dashboard data
+        async function loadDashboardData() {
+            try {
+                const response = await fetch('http://127.0.0.1:8900/api/databases');
+                const result = await response.json();
+                const data = result.databases || result; // Handle different response formats
+                
+                updateDashboardCards(data);
+                updateDatabaseList(data);
+                createHealthChart(data);
+            } catch (error) {
+                console.error('Error loading dashboard data:', error);
+                // Show sample data if API is not available
+                const sampleData = [
+                    {
+                        name: "enhanced_learning_data.db",
+                        table_count: 4,
+                        record_count: 28,
+                        health_score: 92.0,
+                        category: "ai_learning",
+                        status: "ACTIVE",
+                        size_mb: 0.05,
+                        description: "AI learning and pattern recognition"
+                    },
+                    {
+                        name: "historical_patterns.db", 
+                        table_count: 8,
+                        record_count: 156,
+                        health_score: 88.0,
+                        category: "analytics",
+                        status: "ACTIVE",
+                        size_mb: 0.2,
+                        description: "Historical pattern analysis"
+                    },
+                    {
+                        name: "service_registry.db",
+                        table_count: 3,
+                        record_count: 21,
+                        health_score: 95.0,
+                        category: "system",
+                        status: "ACTIVE", 
+                        size_mb: 0.1,
+                        description: "Service registration and management"
+                    }
+                ];
+                updateDashboardCards(sampleData);
+                updateDatabaseList(sampleData);
+                createHealthChart(sampleData);
+            }
+        }
+
+        // Update dashboard cards
+        function updateDashboardCards(data) {
+            const totalDatabases = data.length;
+            let totalServices = 0;
+            let totalRecords = 0;
+            let totalHealth = 0;
+            let totalSize = 0;
+            let activeCount = 0;
+
+            data.forEach(db => {
+                totalServices += db.service_count || 0;
+                totalRecords += db.record_count || 0;
+                totalHealth += db.health_score || 0;
+                totalSize += db.size_mb || 0;
+                if (db.status === 'ACTIVE') activeCount++;
+            });
+
+            const avgHealth = totalDatabases > 0 ? Math.round(totalHealth / totalDatabases) : 0;
+            const uptime = totalDatabases > 0 ? Math.round((activeCount / totalDatabases) * 100) : 0;
+
+            // Only update elements if they exist (enhanced database explorer doesn't have dashboard cards)
+            const totalDbElement = document.getElementById('totalDatabases');
+            if (totalDbElement) totalDbElement.textContent = totalDatabases;
+            
+            const totalServicesElement = document.getElementById('totalServices');
+            if (totalServicesElement) totalServicesElement.textContent = totalRecords.toLocaleString();
+            
+            const totalRecordsElement = document.getElementById('totalRecords');
+            if (totalRecordsElement) totalRecordsElement.textContent = `${totalSize.toFixed(1)} MB`;
+            
+            const healthScoreElement = document.getElementById('healthScore');
+            if (healthScoreElement) healthScoreElement.textContent = avgHealth + '%';
+            
+            // Update labels to reflect actual data (only if they exist)
+            const recordLabel = document.querySelector('.card:nth-child(2) .card-label');
+            if (recordLabel) recordLabel.textContent = 'Total records';
+            
+            const sizeLabel = document.querySelector('.card:nth-child(3) .card-label');
+            if (sizeLabel) sizeLabel.textContent = 'Database size';
+            
+            const activeLabel = document.querySelector('.card:nth-child(4) .card-label');
+            if (activeLabel) activeLabel.textContent = `${uptime}% active`;
+            
+            console.log(`Dashboard updated: ${totalDatabases} databases, ${avgHealth}% avg health`);
+        }
+
+        // Update database list
+        function updateDatabaseList(data) {
+            // Store data globally for filtering
+            allDatabaseData = data;
+            
+            // Update both views
+            updateFilteredViews(data);
+        }
+        
+        
+        // Toggle between list and card view
+        let isCardView = false;
+        function toggleCardView() {
+            const cardGrid = document.getElementById('databaseCardsGrid');
+            const listView = document.getElementById('databaseList');
+            const toggleButton = document.getElementById('cardViewToggle');
+            
+            isCardView = !isCardView;
+            
+            if (isCardView) {
+                cardGrid.style.display = 'grid';
+                listView.style.display = 'none';
+                toggleButton.innerHTML = '<i class="fas fa-list"></i> List View';
+            } else {
+                cardGrid.style.display = 'none';
+                listView.style.display = 'grid';
+                toggleButton.innerHTML = '<i class="fas fa-th"></i> Card View';
+            }
+        }
+        
+        // Store all database data for filtering
+        let allDatabaseData = [];
+        
+        // Filter databases based on search and category
+        function filterDatabases() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const selectedCategory = document.getElementById('categoryFilter').value;
+            
+            const filteredData = allDatabaseData.filter(db => {
+                const matchesSearch = !searchTerm || 
+                    db.name.toLowerCase().includes(searchTerm) ||
+                    (db.description || '').toLowerCase().includes(searchTerm) ||
+                    (db.category || '').toLowerCase().includes(searchTerm);
+                
+                const matchesCategory = !selectedCategory || 
+                    (db.category || '').toLowerCase() === selectedCategory.toLowerCase();
+                
+                return matchesSearch && matchesCategory;
+            });
+            
+            // Update both views with filtered data
+            updateFilteredViews(filteredData);
+            
+            // Update results counter
+            const resultsInfo = document.getElementById('resultsInfo');
+            if (!resultsInfo) {
+                const sectionHeader = document.querySelector('.section-header');
+                const infoDiv = document.createElement('div');
+                infoDiv.id = 'resultsInfo';
+                infoDiv.style.cssText = 'color: #888; font-size: 0.9rem; margin-top: 10px;';
+                sectionHeader.appendChild(infoDiv);
+            }
+            
+            document.getElementById('resultsInfo').textContent = 
+                `Showing ${filteredData.length} of ${allDatabaseData.length} databases`;
+        }
+        
+        // Update views with filtered data
+        function updateFilteredViews(data) {
+            const databaseList = document.getElementById('databaseList');
+            const cardsGrid = document.getElementById('databaseCardsGrid');
+            
+            if (data.length === 0) {
+                const noResultsHtml = `
+                    <div style="text-align: center; padding: 40px; color: #888;">
+                        <i class="fas fa-search" style="font-size: 3rem; margin-bottom: 15px; color: #404040;"></i>
+                        <p>No databases found matching your criteria</p>
+                        <p style="font-size: 0.8rem; margin-top: 10px;">Try adjusting your search or filter settings</p>
+                    </div>
+                `;
+                databaseList.innerHTML = noResultsHtml;
+                cardsGrid.innerHTML = noResultsHtml;
+                return;
+            }
+            
+            // Update list view
+            databaseList.innerHTML = data.map(db => {
+                const statusColor = db.status === 'ACTIVE' ? '#00ff88' : '#ff4444';
+                const sizeDisplay = db.size_mb ? `${db.size_mb.toFixed(1)} MB` : 'Unknown';
+                const isCloud = db.source === 'cloud';
+                const sourceIcon = isCloud ? 'fas fa-cloud' : 'fas fa-database';
+                const sourceColor = isCloud ? '#00d4ff' : '#00ff88';
+                
+                return `
+                <div class="database-item" onclick="selectDatabase('${db.name}')" 
+                     style="border-left: 4px solid ${statusColor};">
+                    <div class="database-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <div class="database-name">
+                            <i class="${sourceIcon}" style="color: ${sourceColor}; margin-right: 8px;"></i>
+                            ${getDisplayName(db.name)}
+                        </div>
+                        <div class="database-status" style="background: ${statusColor}; color: #000; padding: 2px 8px; border-radius: 10px; font-size: 0.7rem; font-weight: bold;">
+                            ${db.status || 'UNKNOWN'}
+                        </div>
+                    </div>
+                    <div class="database-category" style="color: #00d4ff; font-size: 0.8rem; margin-bottom: 5px;">
+                        ${db.category || 'general'} • ${sizeDisplay} • 
+                        <span style="color: ${sourceColor}; font-weight: bold;">${isCloud ? 'Supabase Cloud' : 'Local Database'}</span>
+                    </div>
+                    <div class="database-info">
+                        ${db.table_count || 0} tables • ${(db.record_count || 0).toLocaleString()} records • ${Math.round(db.health_score || 0)}% health
+                    </div>
+                    <div class="database-description" style="color: #aaa; font-size: 0.75rem; margin-top: 5px; font-style: italic;">
+                        ${db.description || 'No description available'}
+                    </div>
+                </div>
+            `}).join('');
+            
+            // Update card view
+            cardsGrid.innerHTML = data.map(db => {
+                const isActive = db.status === 'ACTIVE';
+                const statusClass = isActive ? 'status-active' : 'status-inactive';
+                const healthScore = Math.round(db.health_score || 0);
+                const sizeDisplay = db.size_mb ? `${db.size_mb.toFixed(1)} MB` : '0.0 MB';
+                const isCloud = db.source === 'cloud';
+                const sourceIcon = isCloud ? 'fas fa-cloud' : 'fas fa-database';
+                const sourceColor = isCloud ? '#00d4ff' : '#00ff88';
+                
+                return `
+                <div class="database-card" onclick="selectDatabase('${db.name}')">
+                    <div class="database-card-header">
+                        <div>
+                            <div class="database-card-title">
+                                <i class="${sourceIcon}" style="color: ${sourceColor}; margin-right: 8px;"></i>
+                                ${getDisplayName(db.name)}
+                            </div>
+                            <div class="database-card-category">${db.category || 'general'}</div>
+                        </div>
+                        <div class="database-card-status ${statusClass}">
+                            ${db.status || 'UNKNOWN'}
+                        </div>
+                    </div>
+                    
+                    <div class="database-card-stats">
+                        <div class="database-stat">
+                            <span class="database-stat-value">${db.table_count || 0}</span>
+                            <span class="database-stat-label">Tables</span>
+                        </div>
+                        <div class="database-stat">
+                            <span class="database-stat-value">${(db.record_count || 0).toLocaleString()}</span>
+                            <span class="database-stat-label">Records</span>
+                        </div>
+                        <div class="database-stat">
+                            <span class="database-stat-value">${sizeDisplay}</span>
+                            <span class="database-stat-label">Size</span>
+                        </div>
+                    </div>
+                    
+                    <div class="database-card-description">
+                        ${db.description || 'No description available'}
+                    </div>
+                    
+                    <div class="database-card-health">
+                        <div class="health-bar">
+                            <div class="health-fill" style="width: ${healthScore}%"></div>
+                        </div>
+                        <div class="health-value">${healthScore}%</div>
+                    </div>
+                    
+                    <div style="margin-top: 10px; display: flex; justify-content: space-between; align-items: center;">
+                        <span style="color: ${sourceColor}; font-size: 0.7rem; text-transform: uppercase; font-weight: bold;">
+                            <i class="${sourceIcon}" style="margin-right: 4px;"></i>
+                            ${isCloud ? 'Supabase Cloud' : 'Local Database'}
+                        </span>
+                        ${db.last_checked ? `<span style="color: #888; font-size: 0.7rem;">Updated: ${new Date(db.last_checked).toLocaleTimeString()}</span>` : ''}
+                    </div>
+                </div>
+            `}).join('');
+        }
+
+        // Get display name for database
+        function getDisplayName(dbName) {
+            if (dbName === 'service_registry.db') return 'Certifications';
+            if (dbName === 'passport_registry.db') return 'Discovery';
+            return dbName;
+        }
+
+        // Create health chart
+        function createHealthChart(data) {
+            const ctx = document.getElementById('healthChart').getContext('2d');
+            
+            const chartData = {
+                labels: data.map(db => getDisplayName(db.name)),
+                datasets: [{
+                    label: 'Health Score (%)',
+                    data: data.map(db => db.health_score || 0),
+                    backgroundColor: 'rgba(0, 212, 255, 0.2)',
+                    borderColor: 'rgba(0, 212, 255, 1)',
+                    borderWidth: 2,
+                    fill: true
+                }]
+            };
+
+            new Chart(ctx, {
+                type: 'line',
+                data: chartData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#ffffff'
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                color: '#ffffff'
+                            },
+                            grid: {
+                                color: '#404040'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#ffffff'
+                            },
+                            grid: {
+                                color: '#404040'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Select database
+        function selectDatabase(dbName) {
+            // For now, just show an alert - this can be enhanced later
+            alert(`Selected database: ${getDisplayName(dbName)}`);
+        }
+
+        // Store all services data
+        let allServicesData = [];
+        let currentView = 'overview';
+
+        // Navigation functions
+        function showOverview() {
+            currentView = 'overview';
+            document.getElementById('overviewDashboard').style.display = 'grid';
+            document.getElementById('serviceCardsSection').style.display = 'none';
+            document.querySelector('.database-section').style.display = 'none'; // Hide database list for overview
+            document.querySelector('.chart-container').style.display = 'block';
+            
+            // Show database operations section for enhanced database explorer
+            const dbOpsSection = document.getElementById('databaseOperationsSection');
+            if (dbOpsSection) {
+                dbOpsSection.style.display = 'block';
+            }
+            
+            updateActiveMenu('overview');
+            loadDashboardDataEnhanced();
+        }
+
+        function showCertified() {
+            currentView = 'certified';
+            
+            // Hide other sections and show services section
+            document.getElementById('overviewDashboard').style.display = 'none';
+            document.getElementById('serviceCardsSection').style.display = 'none';
+            document.querySelector('.database-section').style.display = 'block';
+            document.querySelector('.chart-container').style.display = 'none';
+            
+            // Hide database list and show services grid
+            document.getElementById('databaseList').style.display = 'none';
+            document.getElementById('databaseCardsGrid').style.display = 'none';
+            
+            // Hide database operations section
+            const dbOperationsSection = document.getElementById('databaseOperationsSection');
+            if (dbOperationsSection) {
+                dbOperationsSection.style.display = 'none';
+            }
+            
+            // Show loading message for services
+            const grid = document.getElementById('certifiedServicesGrid');
+            if (grid) {
+                grid.innerHTML = '<div style="text-align: center; padding: 40px; color: #888;"><i class="fas fa-spinner fa-spin"></i><p>Loading certified services...</p></div>';
+            }
+            
+            // Enhanced Database Explorer - Load services data first
+            loadAllServicesData().then(() => {
+                const certifiedServices = allServicesData.filter(s => s.certification_status === 'CERTIFIED');
+                
+                // Replace the existing certified services grid with individual service cards
+                const grid = document.getElementById('certifiedServicesGrid');
+                if (grid && certifiedServices.length > 0) {
+                    grid.innerHTML = certifiedServices.map((service, index) => createServiceCard(service, index)).join('');
+                } else if (grid) {
+                    grid.innerHTML = '<div style="text-align: center; padding: 40px; color: #888;">No certified services found</div>';
+                }
+                
+                // Update count
+                const countElement = document.getElementById('certifiedCount');
+                if (countElement) {
+                    countElement.textContent = `${certifiedServices.length} Certified Services`;
+                }
+                updateActiveMenu('certified');
+            }).catch(error => {
+                console.error('Error loading certified services:', error);
+                const grid = document.getElementById('certifiedServicesGrid');
+                if (grid) {
+                    grid.innerHTML = '<div style="text-align: center; padding: 40px; color: #ff4444;">Error loading services data</div>';
+                }
+            });
+        }
+
+        function showPending() {
+            currentView = 'pending';
+            
+            // Hide other sections and show services section
+            document.getElementById('overviewDashboard').style.display = 'none';
+            document.getElementById('serviceCardsSection').style.display = 'none';
+            document.querySelector('.database-section').style.display = 'block';
+            document.querySelector('.chart-container').style.display = 'none';
+            
+            // Hide database list and show services grid
+            document.getElementById('databaseList').style.display = 'none';
+            document.getElementById('databaseCardsGrid').style.display = 'none';
+            
+            // Hide database operations section
+            const dbOperationsSection = document.getElementById('databaseOperationsSection');
+            if (dbOperationsSection) {
+                dbOperationsSection.style.display = 'none';
+            }
+            
+            // Show loading message for services
+            const grid = document.getElementById('certifiedServicesGrid');
+            if (grid) {
+                grid.innerHTML = '<div style="text-align: center; padding: 40px; color: #888;"><i class="fas fa-spinner fa-spin"></i><p>Loading active services...</p></div>';
+            }
+            
+            // Enhanced Database Explorer - Load services data first and show ACTIVE services
+            loadAllServicesData().then(() => {
+                // Show ACTIVE services (services that are running with passport but not fully certified)
+                const activeServices = allServicesData.filter(s => s.certification_status === 'ACTIVE' || s.status === 'ACTIVE' || s.certification_status === 'PENDING');
+                
+                // Show active services in the certified grid area
+                const grid = document.getElementById('certifiedServicesGrid');
+                if (grid && activeServices.length > 0) {
+                    grid.innerHTML = activeServices.map((service, index) => createServiceCard(service, index)).join('');
+                } else if (grid) {
+                    grid.innerHTML = '<div style="text-align: center; padding: 40px; color: #888;">No active services found</div>';
+                }
+                
+                // Update title and count
+                const titleElement = document.querySelector('.database-section .section-title');
+                if (titleElement) {
+                    titleElement.textContent = 'ACTIVE Services';
+                }
+                
+                const countElement = document.getElementById('certifiedCount');
+                if (countElement) {
+                    countElement.textContent = `${activeServices.length} ACTIVE Services`;
+                }
+                updateActiveMenu('pending');
+            }).catch(error => {
+                console.error('Error loading active services:', error);
+                const grid = document.getElementById('certifiedServicesGrid');
+                if (grid) {
+                    grid.innerHTML = '<div style="text-align: center; padding: 40px; color: #ff4444;">Error loading services data</div>';
+                }
+            });
+        }
+
+        function showDiscovery() {
+            currentView = 'discovery';
+            // For discovery, we'll show a placeholder since we need to fetch from discovery database
+            const grid = document.getElementById('certifiedServicesGrid');
+            grid.innerHTML = `
+                <div style="text-align: center; padding: 40px; color: #888;">
+                    <i class="fas fa-search" style="font-size: 3rem; margin-bottom: 15px; color: #404040;"></i>
+                    <p>Discovery services (91 total)</p>
+                    <p style="font-size: 0.8rem; margin-top: 10px;">These are services in discovery phase - not yet active</p>
+                </div>
+            `;
+            
+            // Update title and count
+            document.querySelector('.database-section .section-title').textContent = 'Discovery Services';
+            document.getElementById('certifiedCount').textContent = '91 Discovery Services';
+            updateActiveMenu('discovery');
+        }
+
+        function showAllServices() {
+            currentView = 'all';
+            
+            // Hide other sections and show services section
+            document.getElementById('overviewDashboard').style.display = 'none';
+            document.getElementById('serviceCardsSection').style.display = 'none';
+            document.querySelector('.database-section').style.display = 'block';
+            document.querySelector('.chart-container').style.display = 'none';
+            
+            // Hide database list and show services grid
+            document.getElementById('databaseList').style.display = 'none';
+            document.getElementById('databaseCardsGrid').style.display = 'none';
+            
+            // Hide database operations section
+            const dbOperationsSection = document.getElementById('databaseOperationsSection');
+            if (dbOperationsSection) {
+                dbOperationsSection.style.display = 'none';
+            }
+            
+            // Show loading message for services
+            const grid = document.getElementById('certifiedServicesGrid');
+            if (grid) {
+                grid.innerHTML = '<div style="text-align: center; padding: 40px; color: #888;"><i class="fas fa-spinner fa-spin"></i><p>Loading services...</p></div>';
+            }
+            
+            // Enhanced Database Explorer - Load services data first
+            loadAllServicesData().then(() => {
+                // Show all services
+                const grid = document.getElementById('certifiedServicesGrid');
+                if (grid && allServicesData.length > 0) {
+                    grid.innerHTML = allServicesData.map((service, index) => createServiceCard(service, index)).join('');
+                } else if (grid) {
+                    grid.innerHTML = '<div style="text-align: center; padding: 40px; color: #888;">No services found</div>';
+                }
+                
+                // Update title and count
+                const titleElement = document.querySelector('.database-section .section-title');
+                if (titleElement) {
+                    titleElement.textContent = 'All Services';
+                }
+                
+                const countElement = document.getElementById('certifiedCount');
+                if (countElement) {
+                    countElement.textContent = `${allServicesData.length} Total Services`;
+                }
+                updateActiveMenu('all');
+            }).catch(error => {
+                console.error('Error loading all services:', error);
+                const grid = document.getElementById('certifiedServicesGrid');
+                if (grid) {
+                    grid.innerHTML = '<div style="text-align: center; padding: 40px; color: #ff4444;">Error loading services data</div>';
+                }
+            });
+        }
+
+        // Create individual service card
+        function createServiceCard(service, index) {
+            const statusClass = service.certification_status === 'CERTIFIED' ? 'certified' : 
+                              service.certification_status === 'PENDING' ? 'pending' : 'discovery';
+            const statusColor = service.certification_status === 'CERTIFIED' ? '#00ff88' : 
+                               service.certification_status === 'PENDING' ? '#ffaa00' : '#888';
+            
+            const registrationDate = service.registered_at || service.registration_date;
+            const formattedDate = registrationDate ? 
+                new Date(registrationDate).toLocaleDateString() : 'Unknown';
+            
+            return `
+                <div class="certified-service-card ${statusClass}" onclick="toggleServiceDetails('${service.service_name}')">
+                    <div class="service-card-header">
+                        <div>
+                            <div class="service-card-name">${service.service_name}</div>
+                            <div class="service-card-type">${service.service_type || 'Service'}</div>
+                        </div>
+                        <div class="service-status-badge" style="background: rgba(${statusColor === '#00ff88' ? '0,255,136' : statusColor === '#ffaa00' ? '255,170,0' : '136,136,136'},0.2); color: ${statusColor}; border: 1px solid ${statusColor};">
+                            ${service.certification_status || 'UNKNOWN'}
+                        </div>
+                    </div>
+                    
+                    <div class="service-card-info">
+                        <div class="service-port">
+                            <i class="fas fa-network-wired"></i> ${service.port ? `Port: ${service.port}` : 'No Port'}
+                        </div>
+                        <div class="service-date">${formattedDate}</div>
+                    </div>
+                    
+                    <div style="margin-top: 8px; color: #aaa; font-size: 0.85rem;">
+                        ${service.description || 'No description available'}
+                    </div>
+                    
+                    ${service.passport_id ? `
+                        <div style="margin-top: 8px; font-size: 0.7rem; color: #00d4ff;">
+                            <i class="fas fa-id-card"></i> ${service.passport_id}
+                        </div>
+                    ` : ''}
+                    
+                    <div class="service-details" id="details-${service.service_name}" style="display: none; margin-top: 10px; padding-top: 10px; border-top: 1px solid #404040; font-size: 0.8rem;">
+                        <div style="margin-bottom: 5px;"><strong>Status:</strong> ${service.status || 'UNKNOWN'}</div>
+                        <div style="margin-bottom: 5px;"><strong>Health Score:</strong> ${service.health_score || 0}%</div>
+                        <div style="margin-bottom: 5px;"><strong>Category:</strong> ${service.category || 'general'}</div>
+                        <div style="margin-bottom: 5px;"><strong>Integration Level:</strong> Level ${service.integration_level || 1}</div>
+                        ${service.metadata && Object.keys(service.metadata).length > 0 ? `
+                            <div><strong>Metadata:</strong><br><pre style="font-size: 0.7rem; color: #888; margin-top: 5px;">${JSON.stringify(service.metadata, null, 2)}</pre></div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Toggle service details (updated)
+        function toggleServiceDetails(serviceName) {
+            const details = document.getElementById(`details-${serviceName}`);
+            if (details) {
+                details.style.display = details.style.display === 'none' ? 'block' : 'none';
+            }
+        }
+
+        function showDatabases() {
+            currentView = 'databases';
+            document.getElementById('overviewDashboard').style.display = 'none';
+            document.getElementById('serviceCardsSection').style.display = 'none';
+            document.querySelector('.database-section').style.display = 'block';
+            document.querySelector('.chart-container').style.display = 'block';
+            
+            // Show database list and hide services grid
+            document.getElementById('databaseList').style.display = 'block';
+            document.getElementById('databaseCardsGrid').style.display = 'block';
+            document.getElementById('certifiedServicesGrid').style.display = 'none';
+            
+            updateActiveMenu('databases');
+            loadDashboardDataEnhanced();
+        }
+
+        // Show services view
+        function showServicesView(title, filter) {
+            document.getElementById('overviewDashboard').style.display = 'none';
+            document.getElementById('serviceCardsSection').style.display = 'block';
+            document.querySelector('.database-section').style.display = 'none';
+            document.querySelector('.chart-container').style.display = 'none';
+            
+            document.getElementById('servicesSectionTitle').textContent = title;
+            displayServices(filterServices(allServicesData, filter));
+        }
+
+        // Filter services based on type
+        function filterServices(services, filter) {
+            switch(filter) {
+                case 'CERTIFIED':
+                    return services.filter(s => s.certification_status === 'CERTIFIED');
+                case 'PENDING':
+                    return services.filter(s => s.certification_status === 'PENDING');
+                case 'DISCOVERY':
+                    // This would need to be fetched from discovery database
+                    return []; // Placeholder
+                case 'ALL':
+                default:
+                    return services;
+            }
+        }
+
+        // Display services in cards
+        function displayServices(services) {
+            const grid = document.getElementById('servicesGrid');
+            const countElement = document.getElementById('serviceResultsCount');
+            
+            countElement.textContent = `Showing ${services.length} service${services.length !== 1 ? 's' : ''}`;
+            
+            if (services.length === 0) {
+                grid.innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: #888; grid-column: 1 / -1;">
+                        <i class="fas fa-server" style="font-size: 3rem; margin-bottom: 15px; color: #404040;"></i>
+                        <p>No services found for this category</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = services.map((service, index) => {
+                const statusClass = service.certification_status === 'CERTIFIED' ? 'certified' : 
+                                  service.certification_status === 'PENDING' ? 'pending' : 'discovery';
+                const statusBadgeClass = service.certification_status === 'CERTIFIED' ? 'status-certified' : 
+                                       service.certification_status === 'PENDING' ? 'status-pending' : 'status-discovery';
+                
+                const registrationDate = service.registered_at || service.registration_date;
+                const formattedDate = registrationDate ? 
+                    new Date(registrationDate).toLocaleDateString() : 'Unknown';
+                
+                return `
+                <div class="service-card ${statusClass}" id="service-${index}">
+                    <div class="service-card-header">
+                        <div>
+                            <div class="service-card-name">${service.service_name}</div>
+                            <div class="service-card-type">${service.service_type || 'Service'}</div>
+                        </div>
+                        <div class="service-status-badge ${statusBadgeClass}">
+                            ${service.certification_status || 'UNKNOWN'}
+                        </div>
+                    </div>
+                    
+                    <div class="service-card-info">
+                        <div class="service-port">
+                            <i class="fas fa-network-wired"></i> ${service.port ? `Port: ${service.port}` : 'No Port'}
+                        </div>
+                        <div class="service-date">${formattedDate}</div>
+                    </div>
+                    
+                    <div class="service-card-description">
+                        ${service.description || 'No description available'}
+                    </div>
+                    
+                    <div class="service-card-footer">
+                        <div class="service-passport">
+                            ${service.passport_id ? `🎫 ${service.passport_id}` : 'No Passport'}
+                        </div>
+                        <button class="service-expand-btn" onclick="toggleServiceDetails(${index})">
+                            <i class="fas fa-chevron-down"></i> Details
+                        </button>
+                    </div>
+                    
+                    <div class="service-details" id="details-${index}">
+                        <div class="service-detail-row">
+                            <span class="service-detail-label">Status:</span>
+                            <span class="service-detail-value">${service.status || 'UNKNOWN'}</span>
+                        </div>
+                        <div class="service-detail-row">
+                            <span class="service-detail-label">Health Score:</span>
+                            <span class="service-detail-value">${service.health_score || 0}%</span>
+                        </div>
+                        <div class="service-detail-row">
+                            <span class="service-detail-label">Category:</span>
+                            <span class="service-detail-value">${service.category || 'general'}</span>
+                        </div>
+                        <div class="service-detail-row">
+                            <span class="service-detail-label">Integration Level:</span>
+                            <span class="service-detail-value">Level ${service.integration_level || 1}</span>
+                        </div>
+                        ${service.metadata && Object.keys(service.metadata).length > 0 ? `
+                            <div class="service-detail-row">
+                                <span class="service-detail-label">Metadata:</span>
+                                <span class="service-detail-value">${JSON.stringify(service.metadata, null, 2)}</span>
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `}).join('');
+        }
+
+
+        // Search/filter services
+        function filterServices() {
+            if (currentView === 'overview' || currentView === 'databases') return;
+            
+            const searchTerm = document.getElementById('serviceSearchInput').value.toLowerCase();
+            let currentFilter = '';
+            
+            switch(currentView) {
+                case 'certified': currentFilter = 'CERTIFIED'; break;
+                case 'pending': currentFilter = 'PENDING'; break;
+                case 'discovery': currentFilter = 'DISCOVERY'; break;
+                case 'all': currentFilter = 'ALL'; break;
+            }
+            
+            let filteredServices = filterServices(allServicesData, currentFilter);
+            
+            if (searchTerm) {
+                filteredServices = filteredServices.filter(service => 
+                    service.service_name.toLowerCase().includes(searchTerm) ||
+                    (service.description || '').toLowerCase().includes(searchTerm) ||
+                    (service.service_type || '').toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            displayServices(filteredServices);
+        }
+
+        // Update active menu
+        function updateActiveMenu(activeItem) {
+            document.querySelectorAll('.sidebar-menu a').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            const activeLink = document.querySelector(`[onclick*="${activeItem}"]`);
+            if (activeLink) {
+                activeLink.classList.add('active');
+            }
+        }
+
+        // Auto-refresh functionality
+        let refreshInterval;
+        
+        function startAutoRefresh() {
+            refreshInterval = setInterval(() => {
+                loadDashboardDataEnhanced();
+            }, 10000); // Refresh every 10 seconds
+        }
+        
+        function stopAutoRefresh() {
+            if (refreshInterval) {
+                clearInterval(refreshInterval);
+                refreshInterval = null;
+            }
+        }
+        
+        // Add loading states
+        function showLoading() {
+            document.querySelectorAll('.card-value').forEach(el => {
+                el.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            });
+        }
+        
+        // Add connection status indicator
+        function updateConnectionStatus(connected) {
+            const headerControls = document.querySelector('.header-controls');
+            let statusIndicator = document.getElementById('connectionStatus');
+            
+            if (!statusIndicator) {
+                statusIndicator = document.createElement('div');
+                statusIndicator.id = 'connectionStatus';
+                statusIndicator.style.cssText = 'display: flex; align-items: center; margin-right: 15px; font-size: 0.9rem;';
+                headerControls.insertBefore(statusIndicator, headerControls.firstChild);
+            }
+            
+            if (connected) {
+                statusIndicator.innerHTML = '<i class="fas fa-circle" style="color: #00ff88; margin-right: 5px;"></i> Connected';
+                statusIndicator.style.color = '#00ff88';
+            } else {
+                statusIndicator.innerHTML = '<i class="fas fa-circle" style="color: #ff4444; margin-right: 5px;"></i> Offline Mode';
+                statusIndicator.style.color = '#ff4444';
+            }
+        }
+        
+        // Enhanced Database Explorer - Load database data
+        async function loadDashboardDataEnhanced() {
+            console.log('Enhanced Database Explorer: Loading database data...');
+            try {
+                // Fetch local database data only (enhanced explorer doesn't need cloud data)
+                const localResponse = await fetch('http://127.0.0.1:8900/api/databases');
+                if (!localResponse.ok) throw new Error(`HTTP ${localResponse.status}`);
+                
+                const localResult = await localResponse.json();
+                const localData = localResult.databases || localResult;
+                
+                console.log(`Loaded ${localData.length} databases for enhanced explorer`);
+                
+                // Update database operations interface
+                updateDatabaseList(localData);
+                console.log('Enhanced Database Explorer: Data loaded successfully');
+            } catch (error) {
+                console.error('Enhanced Database Explorer: API unavailable, using sample data:', error);
+                
+                // Use sample data when API is unavailable
+                const sampleData = [
+                    {
+                        name: "enhanced_learning_data.db",
+                        table_count: 4,
+                        record_count: 28,
+                        health_score: 92.0,
+                        category: "ai_learning",
+                        status: "ACTIVE",
+                        size_mb: 0.05,
+                        description: "AI learning and pattern recognition",
+                        source: 'local'
+                    },
+                    {
+                        name: "historical_patterns.db", 
+                        table_count: 8,
+                        record_count: 156,
+                        health_score: 88.0,
+                        category: "analytics",
+                        status: "ACTIVE",
+                        size_mb: 0.2,
+                        description: "Historical pattern analysis",
+                        source: 'local'
+                    },
+                    {
+                        name: "service_registry.db",
+                        table_count: 3,
+                        record_count: 21,
+                        health_score: 95.0,
+                        category: "system",
+                        status: "ACTIVE", 
+                        size_mb: 0.1,
+                        description: "Service registration and management",
+                        source: 'local'
+                    }
+                ];
+                // Only update database list for enhanced database explorer
+                updateDatabaseList(sampleData);
+                console.log('Enhanced Database Explorer: Using sample data');
+            }
+        }
+        
+        // Update cloud sync status indicator
+        function updateCloudSyncStatus(synced) {
+            const headerControls = document.querySelector('.header-controls');
+            let syncIndicator = document.getElementById('cloudSyncStatus');
+            
+            if (!syncIndicator) {
+                syncIndicator = document.createElement('div');
+                syncIndicator.id = 'cloudSyncStatus';
+                syncIndicator.style.cssText = 'display: flex; align-items: center; margin-right: 15px; font-size: 0.9rem;';
+                headerControls.insertBefore(syncIndicator, headerControls.children[1]);
+            }
+            
+            if (synced) {
+                syncIndicator.innerHTML = '<i class="fas fa-cloud-upload-alt" style="color: #00d4ff; margin-right: 5px;"></i> Cloud Synced';
+                syncIndicator.style.color = '#00d4ff';
+            } else {
+                syncIndicator.innerHTML = '<i class="fas fa-cloud-slash" style="color: #888; margin-right: 5px;"></i> Local Only';
+                syncIndicator.style.color = '#888';
+            }
+        }
+        
+        // Certified services tracking
+        let previousCertifiedServices = new Set();
+        let certifiedServicesData = [];
+        
+        // Load all services data
+        async function loadAllServicesData() {
+            try {
+                const response = await fetch('http://127.0.0.1:8900/api/services/registry');
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                
+                const result = await response.json();
+                const services = result.services || result.data || [];
+                
+                // Store all services data globally
+                allServicesData = services;
+                
+                // Update sidebar counts
+                const certifiedCount = services.filter(s => s.certification_status === 'CERTIFIED').length;
+                const pendingCount = services.filter(s => s.certification_status === 'PENDING').length;
+                
+                document.getElementById('certifiedSidebarCount').textContent = certifiedCount;
+                document.getElementById('pendingSidebarCount').textContent = pendingCount;
+                document.getElementById('allSidebarCount').textContent = services.length;
+                
+                // Update overview dashboard
+                document.getElementById('totalCertified').textContent = certifiedCount;
+                document.getElementById('totalPending').textContent = pendingCount;
+                document.getElementById('totalAllServices').textContent = services.length;
+                
+                return services;
+            } catch (error) {
+                console.error('Error loading services data:', error);
+                return [];
+            }
+        }
+
+        // Load certified services (keep existing function for compatibility)
+        async function loadCertifiedServices() {
+            try {
+                const services = await loadAllServicesData();
+                
+                // Filter only Level 3 certified services (CERTIFIED status)
+                const certifiedServices = services.filter(service => 
+                    service.certification_status === 'CERTIFIED'
+                );
+                
+                // Check for new services
+                const currentServiceNames = new Set(certifiedServices.map(s => s.service_name));
+                const newServices = [...currentServiceNames].filter(name => !previousCertifiedServices.has(name));
+                
+                // Update previous services set
+                previousCertifiedServices = currentServiceNames;
+                certifiedServicesData = certifiedServices;
+                
+                // Update display
+                updateCertifiedServicesDisplay(certifiedServices, newServices);
+                
+                return certifiedServices;
+            } catch (error) {
+                console.error('Error loading certified services:', error);
+                document.getElementById('certifiedServicesGrid').innerHTML = `
+                    <div style="text-align: center; padding: 20px; color: #ff4444;">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Unable to load certified services</p>
+                    </div>
+                `;
+                return [];
+            }
+        }
+        
+        // Update certified services display
+        function updateCertifiedServicesDisplay(services, newServices = []) {
+            const grid = document.getElementById('certifiedServicesGrid');
+            const countElement = document.getElementById('certifiedCount');
+            
+            countElement.textContent = `${services.length} Certified Services`;
+            
+            if (services.length === 0) {
+                grid.innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: #888;">
+                        <i class="fas fa-certificate" style="font-size: 3rem; margin-bottom: 15px; color: #404040;"></i>
+                        <p>No Level 3 certified services found</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Sort by registration date (newest first)
+            const sortedServices = services.sort((a, b) => 
+                new Date(b.registered_at || b.registration_date || 0) - new Date(a.registered_at || a.registration_date || 0)
+            );
+            
+            grid.innerHTML = sortedServices.map(service => {
+                const isNew = newServices.includes(service.service_name);
+                const registrationDate = service.registered_at || service.registration_date;
+                const formattedDate = registrationDate ? 
+                    new Date(registrationDate).toLocaleDateString() : 'Unknown';
+                
+                return `
+                <div class="certified-service-card ${isNew ? 'new-service' : ''}">
+                    ${isNew ? '<div class="new-service-indicator"></div>' : ''}
+                    <div class="service-card-header">
+                        <div>
+                            <div class="service-card-name">${service.service_name}</div>
+                            <div class="service-card-type">${service.service_type || 'Service'}</div>
+                        </div>
+                        <div class="service-card-badge">
+                            ${isNew ? 'NEW' : 'CERTIFIED'}
+                        </div>
+                    </div>
+                    
+                    <div class="service-card-info">
+                        <div class="service-card-port">
+                            <i class="fas fa-network-wired"></i> Port: ${service.port || 'N/A'}
+                        </div>
+                        <div class="service-card-date">
+                            ${formattedDate}
+                        </div>
+                    </div>
+                    
+                    ${service.passport_id ? `
+                        <div style="margin-top: 8px; font-size: 0.7rem; color: #00d4ff;">
+                            <i class="fas fa-id-card"></i> ${service.passport_id}
+                        </div>
+                    ` : ''}
+                </div>
+            `}).join('');
+            
+            // Show notification for new services
+            if (newServices.length > 0) {
+                showNewServiceNotification(newServices);
+            }
+        }
+        
+        // Show notification for new services
+        function showNewServiceNotification(newServices) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(45deg, #00ff88, #00d4ff);
+                color: #000;
+                padding: 15px 20px;
+                border-radius: 10px;
+                box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
+                z-index: 10000;
+                font-weight: bold;
+                animation: slideInRight 0.5s ease-out;
+            `;
+            
+            notification.innerHTML = `
+                <div style="display: flex; align-items: center;">
+                    <i class="fas fa-certificate" style="margin-right: 10px; font-size: 1.2rem;"></i>
+                    <div>
+                        <div>🎉 New Level 3 Service${newServices.length > 1 ? 's' : ''} Certified!</div>
+                        <div style="font-size: 0.8rem; margin-top: 2px;">
+                            ${newServices.join(', ')}
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Auto-remove after 5 seconds
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.5s ease-in';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 500);
+            }, 5000);
+        }
+        
+        // Manual refresh function
+        async function refreshCertifiedServices() {
+            const refreshButton = document.getElementById('refreshCertified');
+            const originalContent = refreshButton.innerHTML;
+            
+            refreshButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Refreshing...';
+            refreshButton.disabled = true;
+            
+            await loadCertifiedServices();
+            
+            setTimeout(() => {
+                refreshButton.innerHTML = originalContent;
+                refreshButton.disabled = false;
+            }, 1000);
+        }
+        
+        // Enhanced auto-refresh to include certified services
+        function startAutoRefresh() {
+            refreshInterval = setInterval(() => {
+                loadDashboardDataEnhanced();
+                loadCertifiedServices(); // Add certified services refresh
+            }, 5000); // Refresh every 5 seconds for faster detection
+        }
+        
+        // Add CSS animation keyframes
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideInRight {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOutRight {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Database operations functions
+        let selectedDatabase = null;
+        let allDatabasesData = [];
+
+        // Load databases for selector
+        async function loadDatabasesList() {
+            try {
+                console.log('Loading databases list...');
+                const response = await fetch('/api/databases');
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                allDatabasesData = data.databases || [];
+                console.log(`Loaded ${allDatabasesData.length} databases:`, allDatabasesData.map(db => db.name));
+                
+                const selector = document.getElementById('databaseSelector');
+                if (!selector) {
+                    console.error('Database selector element not found!');
+                    return;
+                }
+                
+                selector.innerHTML = '<option value="">Select Database...</option>';
+                
+                allDatabasesData.forEach(db => {
+                    const option = document.createElement('option');
+                    option.value = db.name;
+                    option.textContent = `${db.name} (${db.size_mb}MB)`;
+                    selector.appendChild(option);
+                });
+                
+                console.log('Database selector populated successfully');
+                
+                // Initialize cards as disabled
+                updateDatabaseCards();
+                
+            } catch (error) {
+                console.error('Error loading databases:', error);
+                const selector = document.getElementById('databaseSelector');
+                if (selector) {
+                    selector.innerHTML = '<option value="">Error loading databases</option>';
+                }
+            }
+        }
+
+        // Update database cards based on selection
+        function updateDatabaseCards() {
+            const selector = document.getElementById('databaseSelector');
+            selectedDatabase = selector.value;
+            
+            console.log('Database selected:', selectedDatabase);
+            
+            // Enable/disable cards based on selection
+            const cards = document.querySelectorAll('.db-operation-card');
+            cards.forEach(card => {
+                if (selectedDatabase) {
+                    card.style.opacity = '1';
+                    card.style.pointerEvents = 'auto';
+                    card.style.cursor = 'pointer';
+                } else {
+                    card.style.opacity = '0.5';
+                    card.style.pointerEvents = 'none';
+                    card.style.cursor = 'not-allowed';
+                }
+            });
+            
+            // Update status text
+            if (selectedDatabase) {
+                console.log(`Cards enabled for database: ${selectedDatabase}`);
+            } else {
+                console.log('Cards disabled - no database selected');
+            }
+        }
+
+        // Expand database card
+        function expandDatabaseCard(operation, cardElement) {
+            console.log('expandDatabaseCard called with:', { operation, selectedDatabase });
+            console.log('cardElement:', cardElement);
+            
+            if (!selectedDatabase) {
+                alert('Please select a database first');
+                return;
+            }
+
+            const database = allDatabasesData.find(db => db.name === selectedDatabase);
+            if (!database) return;
+
+            // Show expanded card
+            document.getElementById('expandedDatabaseCard').style.display = 'block';
+            document.getElementById('expandedDatabaseName').textContent = database.name;
+            document.getElementById('expandedOperationType').textContent = operation.charAt(0).toUpperCase() + operation.slice(1);
+
+            // Update database info
+            document.getElementById('dbSize').textContent = `${database.size_mb} MB`;
+            document.getElementById('dbStatus').textContent = database.status;
+            document.getElementById('dbTables').textContent = database.table_count || 'N/A';
+            document.getElementById('dbRecords').textContent = (database.record_count || 0).toLocaleString();
+            document.getElementById('dbHealth').textContent = `${Math.round(database.health_score || 0)}%`;
+
+            // Generate operation-specific details
+            const operationDetails = generateOperationDetails(operation, database);
+            document.getElementById('operationDetails').innerHTML = operationDetails;
+
+            // Add animation class to card
+            cardElement.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                cardElement.style.transform = 'scale(1)';
+            }, 200);
+        }
+
+        // Generate operation-specific content
+        function generateOperationDetails(operation, database) {
+            switch (operation) {
+                case 'analyze':
+                    return `
+                        <h3>Table Analysis</h3>
+                        <div class="operation-content">
+                            <p>Database: <strong>${database.name}</strong></p>
+                            <p>Tables: <strong>${database.table_count || 'Unknown'}</strong></p>
+                            <p>Total Records: <strong>${(database.record_count || 0).toLocaleString()}</strong></p>
+                            <p>Average records per table: <strong>${database.table_count ? Math.round((database.record_count || 0) / database.table_count) : 'N/A'}</strong></p>
+                            <button class="operation-btn" onclick="runAnalysis('${database.name}')">
+                                <i class="fas fa-play"></i> Run Analysis
+                            </button>
+                        </div>
+                    `;
+                case 'optimize':
+                    return `
+                        <h3>Database Optimization</h3>
+                        <div class="operation-content">
+                            <p>Current Health Score: <strong>${Math.round(database.health_score || 0)}%</strong></p>
+                            <p>Size: <strong>${database.size_mb} MB</strong></p>
+                            <p>Status: <strong>${database.status}</strong></p>
+                            <button class="operation-btn" onclick="optimizeDatabase('${database.name}')">
+                                <i class="fas fa-rocket"></i> Optimize Database
+                            </button>
+                        </div>
+                    `;
+                case 'backup':
+                    return `
+                        <h3>Database Backup</h3>
+                        <div class="operation-content">
+                            <p>Database: <strong>${database.name}</strong></p>
+                            <p>Size: <strong>${database.size_mb} MB</strong></p>
+                            <p>Last Backup: <strong>Not available</strong></p>
+                            <button class="operation-btn" onclick="createBackup('${database.name}')">
+                                <i class="fas fa-save"></i> Create Backup
+                            </button>
+                        </div>
+                    `;
+                case 'schema':
+                    return `
+                        <h3>Database Schema</h3>
+                        <div class="operation-content">
+                            <p>Tables: <strong>${database.table_count || 'Unknown'}</strong></p>
+                            <p>Category: <strong>${database.category || 'Unknown'}</strong></p>
+                            <p>Integration Level: <strong>${database.integration_level || 'N/A'}</strong></p>
+                            <button class="operation-btn" onclick="viewSchema('${database.name}')">
+                                <i class="fas fa-eye"></i> View Schema
+                            </button>
+                        </div>
+                    `;
+                case 'query':
+                    return `
+                        <h3>Query Tool</h3>
+                        <div class="operation-content">
+                            <textarea placeholder="Enter SQL query..." rows="6" style="width: 100%; background: #333; color: #fff; border: 1px solid #666; border-radius: 5px; padding: 10px; font-family: monospace;"></textarea>
+                            <button class="operation-btn" onclick="executeQuery('${database.name}')">
+                                <i class="fas fa-play"></i> Execute Query
+                            </button>
+                        </div>
+                    `;
+                case 'export':
+                    return `
+                        <h3>Export Data</h3>
+                        <div class="operation-content">
+                            <p>Format:</p>
+                            <select style="background: #333; color: #fff; border: 1px solid #666; padding: 5px; border-radius: 3px;">
+                                <option>CSV</option>
+                                <option>JSON</option>
+                                <option>SQL</option>
+                            </select>
+                            <button class="operation-btn" onclick="exportData('${database.name}')">
+                                <i class="fas fa-download"></i> Export Data
+                            </button>
+                        </div>
+                    `;
+                case 'logs':
+                    return `
+                        <h3>Database Logs</h3>
+                        <div class="operation-content">
+                            <p>Last Checked: <strong>${database.last_checked || 'Unknown'}</strong></p>
+                            <p>Status: <strong>${database.status}</strong></p>
+                            <button class="operation-btn" onclick="viewLogs('${database.name}')">
+                                <i class="fas fa-file-alt"></i> View Logs
+                            </button>
+                        </div>
+                    `;
+                case 'repair':
+                    return `
+                        <h3>Database Repair</h3>
+                        <div class="operation-content">
+                            <p>Health Score: <strong>${Math.round(database.health_score || 0)}%</strong></p>
+                            <p>Status: <strong>${database.status}</strong></p>
+                            <button class="operation-btn" onclick="repairDatabase('${database.name}')" ${database.health_score >= 90 ? 'disabled' : ''}>
+                                <i class="fas fa-tools"></i> ${database.health_score >= 90 ? 'No Repair Needed' : 'Repair Database'}
+                            </button>
+                        </div>
+                    `;
+                default:
+                    return '<p>Operation details not available</p>';
+            }
+        }
+
+        // Close expanded card
+        function closeExpandedCard() {
+            document.getElementById('expandedDatabaseCard').style.display = 'none';
+        }
+
+        // Real operation action functions
+        async function runAnalysis(dbName) {
+            const btn = event.target;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Analyzing...';
+            btn.disabled = true;
+            
+            try {
+                const response = await fetch(`/api/operations/analyze/${dbName}`, { method: 'POST' });
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    const data = result.data;
+                    document.getElementById('operationDetails').innerHTML = `
+                        <h3>Analysis Complete</h3>
+                        <div class="operation-content">
+                            <p><strong>Database:</strong> ${data.database}</p>
+                            <p><strong>Total Tables:</strong> ${data.total_tables}</p>
+                            <h4>Table Details:</h4>
+                            <div style="max-height: 300px; overflow-y: auto;">
+                                ${data.tables.map(table => `
+                                    <div style="margin: 10px 0; padding: 10px; background: #444; border-radius: 5px;">
+                                        <strong>${table.name}</strong> - ${table.columns} columns, ${table.rows.toLocaleString()} rows
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    alert('Analysis failed: ' + result.message);
+                }
+            } catch (error) {
+                alert('Analysis error: ' + error.message);
+            }
+            
+            btn.innerHTML = '<i class="fas fa-play"></i> Run Analysis';
+            btn.disabled = false;
+        }
+
+        async function optimizeDatabase(dbName) {
+            const btn = event.target;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Optimizing...';
+            btn.disabled = true;
+            
+            try {
+                const response = await fetch(`/api/operations/optimize/${dbName}`, { method: 'POST' });
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    const data = result.data;
+                    document.getElementById('operationDetails').innerHTML = `
+                        <h3>Optimization Complete</h3>
+                        <div class="operation-content">
+                            <p style="color: #00ff88;"><strong>${result.message}</strong></p>
+                            <p><strong>Database:</strong> ${data.database}</p>
+                            <p><strong>Optimized Size:</strong> ${data.optimized_size_mb} MB</p>
+                            <p><strong>Operations Performed:</strong> ${data.operations_performed.join(', ')}</p>
+                        </div>
+                    `;
+                } else {
+                    alert('Optimization failed: ' + result.message);
+                }
+            } catch (error) {
+                alert('Optimization error: ' + error.message);
+            }
+            
+            btn.innerHTML = '<i class="fas fa-rocket"></i> Optimize Database';
+            btn.disabled = false;
+        }
+
+        async function createBackup(dbName) {
+            const btn = event.target;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Backup...';
+            btn.disabled = true;
+            
+            try {
+                const response = await fetch(`/api/operations/backup/${dbName}`, { method: 'POST' });
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    const data = result.data;
+                    document.getElementById('operationDetails').innerHTML = `
+                        <h3>Backup Created Successfully</h3>
+                        <div class="operation-content">
+                            <p style="color: #00ff88;"><strong>${result.message}</strong></p>
+                            <p><strong>Database:</strong> ${data.database}</p>
+                            <p><strong>Backup File:</strong> ${data.backup_file}</p>
+                            <p><strong>Backup Size:</strong> ${data.backup_size_mb} MB</p>
+                            <p><strong>Created:</strong> ${data.created_at}</p>
+                        </div>
+                    `;
+                } else {
+                    alert('Backup failed: ' + result.message);
+                }
+            } catch (error) {
+                alert('Backup error: ' + error.message);
+            }
+            
+            btn.innerHTML = '<i class="fas fa-save"></i> Create Backup';
+            btn.disabled = false;
+        }
+
+        async function viewSchema(dbName) {
+            const btn = event.target;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading Schema...';
+            btn.disabled = true;
+            
+            try {
+                const response = await fetch(`/api/operations/schema/${dbName}`);
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    const data = result.data;
+                    document.getElementById('operationDetails').innerHTML = `
+                        <h3>Database Schema</h3>
+                        <div class="operation-content">
+                            <p><strong>Database:</strong> ${data.database}</p>
+                            <p><strong>Tables:</strong> ${data.objects.tables.length}</p>
+                            <p><strong>Indexes:</strong> ${data.objects.indexes.length}</p>
+                            <p><strong>Views:</strong> ${data.objects.views.length}</p>
+                            <h4>Tables:</h4>
+                            <div style="background: #333; padding: 10px; border-radius: 5px; font-family: monospace; max-height: 200px; overflow-y: auto;">
+                                ${data.objects.tables.join('<br>')}
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    alert('Schema view failed: ' + result.message);
+                }
+            } catch (error) {
+                alert('Schema error: ' + error.message);
+            }
+            
+            btn.innerHTML = '<i class="fas fa-eye"></i> View Schema';
+            btn.disabled = false;
+        }
+
+        async function executeQuery(dbName) {
+            const textarea = document.querySelector('#operationDetails textarea');
+            const query = textarea.value.trim();
+            
+            if (!query) {
+                alert('Please enter a SELECT query');
+                return;
+            }
+            
+            const btn = event.target;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Executing...';
+            btn.disabled = true;
+            
+            try {
+                const response = await fetch(`/api/operations/query/${dbName}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ sql: query })
+                });
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    const data = result.data;
+                    const resultHtml = `
+                        <h3>Query Results</h3>
+                        <div class="operation-content">
+                            <p><strong>Query:</strong> ${data.query}</p>
+                            <p><strong>Rows Returned:</strong> ${data.row_count}</p>
+                            <div style="max-height: 300px; overflow: auto; background: #333; padding: 10px; border-radius: 5px; font-family: monospace; font-size: 0.8rem;">
+                                ${JSON.stringify(data.results, null, 2)}
+                            </div>
+                        </div>
+                    `;
+                    document.getElementById('operationDetails').innerHTML = 
+                        generateOperationDetails('query', allDatabasesData.find(db => db.name === dbName)) + resultHtml;
+                } else {
+                    alert('Query failed: ' + result.detail || result.message);
+                }
+            } catch (error) {
+                alert('Query error: ' + error.message);
+            }
+            
+            btn.innerHTML = '<i class="fas fa-play"></i> Execute Query';
+            btn.disabled = false;
+        }
+
+        async function exportData(dbName) {
+            const btn = event.target;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Exporting...';
+            btn.disabled = true;
+            
+            try {
+                const response = await fetch(`/api/operations/export/${dbName}?format=json`);
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    const data = result.data;
+                    // Create download link
+                    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `${dbName}_export_${new Date().toISOString().split('T')[0]}.json`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                    
+                    document.getElementById('operationDetails').innerHTML = `
+                        <h3>Export Complete</h3>
+                        <div class="operation-content">
+                            <p style="color: #00ff88;"><strong>${result.message}</strong></p>
+                            <p><strong>Database:</strong> ${data.database}</p>
+                            <p><strong>Format:</strong> ${data.format}</p>
+                            <p><strong>Tables Exported:</strong> ${Object.keys(data.tables).length}</p>
+                            <p><strong>Download Started:</strong> Check your downloads folder</p>
+                        </div>
+                    `;
+                } else {
+                    alert('Export failed: ' + result.message);
+                }
+            } catch (error) {
+                alert('Export error: ' + error.message);
+            }
+            
+            btn.innerHTML = '<i class="fas fa-download"></i> Export Data';
+            btn.disabled = false;
+        }
+
+        async function viewLogs(dbName) {
+            const btn = event.target;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading Logs...';
+            btn.disabled = true;
+            
+            try {
+                const response = await fetch(`/api/operations/logs/${dbName}`);
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    const data = result.data;
+                    document.getElementById('operationDetails').innerHTML = `
+                        <h3>Database Logs</h3>
+                        <div class="operation-content">
+                            <p><strong>Database:</strong> ${data.database}</p>
+                            <p><strong>Health Score:</strong> ${data.health_score}%</p>
+                            <p><strong>File Size:</strong> ${data.file_info.size_mb} MB</p>
+                            <p><strong>Last Modified:</strong> ${new Date(data.file_info.modified).toLocaleString()}</p>
+                            <h4>Recent Log Entries:</h4>
+                            <div style="background: #222; padding: 10px; border-radius: 5px; font-family: monospace; font-size: 0.8rem; max-height: 200px; overflow-y: auto;">
+                                ${data.recent_logs.length > 0 ? data.recent_logs.join('<br>') : 'No recent log entries found for this database'}
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    alert('Logs view failed: ' + result.message);
+                }
+            } catch (error) {
+                alert('Logs error: ' + error.message);
+            }
+            
+            btn.innerHTML = '<i class="fas fa-file-alt"></i> View Logs';
+            btn.disabled = false;
+        }
+
+        async function repairDatabase(dbName) {
+            const btn = event.target;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Repairing...';
+            btn.disabled = true;
+            
+            try {
+                const response = await fetch(`/api/operations/repair/${dbName}`, { method: 'POST' });
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    const data = result.data;
+                    document.getElementById('operationDetails').innerHTML = `
+                        <h3>Database Repair Complete</h3>
+                        <div class="operation-content">
+                            <p style="color: #00ff88;"><strong>${result.message}</strong></p>
+                            <p style="color: #00ff88;"><strong>${data.data_safety}</strong></p>
+                            <p><strong>Database:</strong> ${data.database}</p>
+                            <p><strong>Integrity Status:</strong> ${data.integrity_status}</p>
+                            <p><strong>New Health Score:</strong> ${data.new_health_score}%</p>
+                            <p><strong>Backup Created:</strong> ${data.repair_backup}</p>
+                            <h4>Repair Actions:</h4>
+                            <ul>
+                                ${data.repair_actions.map(action => `<li>${action}</li>`).join('')}
+                            </ul>
+                        </div>
+                    `;
+                } else {
+                    alert('Repair failed: ' + result.message);
+                }
+            } catch (error) {
+                alert('Repair error: ' + error.message);
+            }
+            
+            btn.innerHTML = '<i class="fas fa-tools"></i> Repair Database';
+            btn.disabled = false;
+        }
+
+        // Validate ACTIVE services - ensure they have ports assigned
+        async function validateActiveServices() {
+            try {
+                const response = await fetch('/api/services/validate-active', { method: 'POST' });
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    alert('✅ ACTIVE Services Validation Complete\n\n' + result.message + '\n\nAll ACTIVE services now have valid ports assigned according to ZmartBot 3-Database Service Lifecycle Architecture.');
+                    // Refresh the data
+                    if (typeof loadDashboardDataEnhanced === 'function') {
+                        loadDashboardDataEnhanced();
+                    }
+                } else {
+                    alert('❌ Validation Failed: ' + result.message);
+                }
+            } catch (error) {
+                alert('❌ Validation Error: ' + error.message);
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Enhanced Database Explorer initializing...');
+            initTheme();
+            loadDatabasesList(); // Load databases for operations - this is all we need
+            
+            // Ensure navigation functions are available globally
+            window.showOverview = showOverview;
+            window.showCertified = showCertified;
+            window.showPending = showPending;
+            window.showDiscovery = showDiscovery;
+            window.showAllServices = showAllServices;
+            window.showDatabases = showDatabases;
+            window.refreshCertifiedServices = refreshCertifiedServices;
+            window.validateActiveServices = validateActiveServices;
+            
+            console.log('Enhanced Database Explorer initialized successfully');
+        });
+        
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            console.log('Enhanced Database Explorer unloading...');
+        });
+    </script>
+</body>
+</html>

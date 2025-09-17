@@ -17,13 +17,35 @@ PURPLE='\033[0;35m'
 NC='\033[0m' # No Color
 
 # Configuration
-PROJECT_DIR="/Users/dansidanutz/Desktop/ZmartBot/project/backend/api"
+PROJECT_DIR="/Users/dansidanutz/Desktop/ZmartBot/zmart-api"
 API_PORT=8000
 DASHBOARD_PORT=3400
 
 echo -e "${BLUE}🚀 ZMARTBOT INSTANT START${NC}"
 echo -e "${BLUE}=========================${NC}"
 echo -e "${YELLOW}Getting to fully working state...${NC}"
+echo ""
+
+# Start sync service first
+echo -e "${PURPLE}🔄 Starting auto-sync service...${NC}"
+if [ -x "./sync_always.sh" ]; then
+    ./sync_always.sh start
+else
+    echo -e "${YELLOW}⚠️ Auto-sync script not found (skipping)${NC}"
+fi
+echo ""
+
+# Run security check at startup
+echo -e "${PURPLE}🔒 Running security check...${NC}"
+if [ -x "./simple_security_check.sh" ]; then
+    if ./simple_security_check.sh; then
+        echo -e "${GREEN}✅ Security check passed${NC}"
+    else
+        echo -e "${RED}⚠️ Security check found issues (continuing anyway)${NC}"
+    fi
+else
+    echo -e "${YELLOW}⚠️ Security check script not found (skipping)${NC}"
+fi
 echo ""
 
 # Function to check if port is in use
@@ -102,54 +124,42 @@ sleep 2
 echo -e "${GREEN}✅ Cleanup completed${NC}"
 echo ""
 
-# Step 5: Start Backend API
-echo -e "${BLUE}🚀 STEP 5: Start Backend API Server${NC}"
-nohup python3 run_dev.py > api_server.log 2>&1 &
-API_PID=$!
-echo $API_PID > api_server.pid
-echo -e "${GREEN}✅ Backend API started (PID: $API_PID)${NC}"
+# Step 5: Start All Registered Services via Orchestration
+echo -e "${BLUE}🚀 STEP 5: Starting All Registered Services${NC}"
+echo -e "${YELLOW}Using comprehensive orchestration startup system...${NC}"
 
-# Step 6: Start Dashboard Server
-echo -e "${BLUE}🎛️ STEP 6: Start Dashboard Server${NC}"
-nohup python3 professional_dashboard_server.py > dashboard.log 2>&1 &
-DASHBOARD_PID=$!
-echo $DASHBOARD_PID > dashboard_server.pid
-echo -e "${GREEN}✅ Dashboard Server started (PID: $DASHBOARD_PID)${NC}"
+# Use the orchestration startup script to start all services
+if [ -f "zmart-api/infra/orchestration/orchestrationstart.sh" ]; then
+    chmod +x zmart-api/infra/orchestration/orchestrationstart.sh
+    ./zmart-api/infra/orchestration/orchestrationstart.sh start
+    echo -e "${GREEN}✅ All registered services started via orchestration${NC}"
+else
+    echo -e "${RED}❌ Orchestration startup script not found${NC}"
+    echo -e "${YELLOW}Falling back to basic service startup...${NC}"
+    
+    # Fallback to basic startup
+    nohup python3 run_dev.py > api_server.log 2>&1 &
+    API_PID=$!
+    echo $API_PID > api_server.pid
+    echo -e "${GREEN}✅ Backend API started (PID: $API_PID)${NC}"
+    
+    nohup python3 professional_dashboard_server.py > dashboard.log 2>&1 &
+    DASHBOARD_PID=$!
+    echo $DASHBOARD_PID > dashboard_server.pid
+    echo -e "${GREEN}✅ Dashboard Server started (PID: $DASHBOARD_PID)${NC}"
+fi
 echo ""
 
-# Step 7: Start Orchestration Agent (Database Updates & System Management)
-echo -e "${BLUE}🎯 STEP 7: Start Orchestration Agent${NC}"
-echo -e "${YELLOW}Starting database orchestrator and system management...${NC}"
-nohup python3 -c "
-import asyncio
-import sys
-sys.path.append('src')
-from agents.orchestration.orchestration_agent import OrchestrationAgent
-
-async def start_orchestration():
-    agent = OrchestrationAgent()
-    await agent.start()
-    # Keep running
-    while True:
-        await asyncio.sleep(60)
-
-if __name__ == '__main__':
-    asyncio.run(start_orchestration())
-" > orchestration.log 2>&1 &
-ORCHESTRATION_PID=$!
-echo $ORCHESTRATION_PID > orchestration_agent.pid
-echo -e "${GREEN}✅ Orchestration Agent started (PID: $ORCHESTRATION_PID)${NC}"
-echo -e "${YELLOW}📊 Database orchestrator: Cross events, alerts, indicators, market data${NC}"
-echo ""
-
-# Step 8: Wait for services to be ready
-echo -e "${BLUE}⏳ STEP 8: Verify services are ready${NC}"
+# Step 6: Wait for services to be ready
+echo -e "${BLUE}⏳ STEP 6: Verify services are ready${NC}"
 wait_for_service $API_PORT "Backend API"
 wait_for_service $DASHBOARD_PORT "Dashboard Server" 
 echo ""
 
-# Step 9: Health checks
-echo -e "${BLUE}🏥 STEP 9: Health verification${NC}"
+# Step 7: Health checks for all services
+echo -e "${BLUE}🏥 STEP 7: Health verification for all services${NC}"
+
+# Check core services
 echo -e "${YELLOW}Testing Backend API...${NC}"
 if curl -s http://localhost:$API_PORT/health >/dev/null 2>&1; then
     echo -e "${GREEN}✅ Backend API responding${NC}"
@@ -164,39 +174,50 @@ else
     echo -e "${RED}⚠️ Dashboard Server not responding yet${NC}"
 fi
 
-echo -e "${YELLOW}Testing My Symbols API...${NC}"
-if curl -s http://localhost:$DASHBOARD_PORT/api/futures-symbols/my-symbols/current >/dev/null 2>&1; then
-    echo -e "${GREEN}✅ My Symbols API responding${NC}"
+# Check orchestration services
+echo -e "${YELLOW}Testing MDC Orchestration Agent...${NC}"
+if curl -s http://localhost:8615/health >/dev/null 2>&1; then
+    echo -e "${GREEN}✅ MDC Orchestration Agent responding${NC}"
 else
-    echo -e "${RED}⚠️ My Symbols API not responding yet${NC}"
+    echo -e "${RED}⚠️ MDC Orchestration Agent not responding yet${NC}"
 fi
 
-echo -e "${YELLOW}Testing Orchestration Agent...${NC}"
-if curl -s http://localhost:$API_PORT/api/v1/orchestration/database-status >/dev/null 2>&1; then
-    echo -e "${GREEN}✅ Orchestration Agent responding${NC}"
+echo -e "${YELLOW}Testing System Protection Service...${NC}"
+if curl -s http://localhost:8999/health >/dev/null 2>&1; then
+    echo -e "${GREEN}✅ System Protection Service responding${NC}"
 else
-    echo -e "${RED}⚠️ Orchestration Agent not responding yet${NC}"
+    echo -e "${RED}⚠️ System Protection Service not responding yet${NC}"
+fi
+
+# Use orchestration script to check all services health
+if [ -f "zmart-api/infra/orchestration/orchestrationstart.sh" ]; then
+    echo -e "${YELLOW}Checking health of all registered services...${NC}"
+    ./zmart-api/infra/orchestration/orchestrationstart.sh health
 fi
 echo ""
 
-# Step 10: Final status
+# Step 8: Final status
 echo -e "${PURPLE}🎉 ZMARTBOT FULLY OPERATIONAL!${NC}"
 echo -e "${PURPLE}==============================${NC}"
 echo ""
-echo -e "${BLUE}📊 SERVER STATUS:${NC}"
-echo -e "${GREEN}✅ Backend API Server:${NC} Port $API_PORT (PID: $API_PID)"
-echo -e "${GREEN}✅ Dashboard Server:${NC} Port $DASHBOARD_PORT (PID: $DASHBOARD_PID)"
-echo -e "${GREEN}✅ Orchestration Agent:${NC} Database Updates (PID: $ORCHESTRATION_PID)"
+echo -e "${BLUE}📊 CORE SERVER STATUS:${NC}"
+echo -e "${GREEN}✅ Backend API Server:${NC} Port $API_PORT"
+echo -e "${GREEN}✅ Dashboard Server:${NC} Port $DASHBOARD_PORT"
+echo -e "${GREEN}✅ MDC Orchestration Agent:${NC} Port 8615"
+echo -e "${GREEN}✅ System Protection Service:${NC} Port 8999"
 echo ""
 echo -e "${BLUE}🌐 ACCESS URLS:${NC}"
 echo -e "${YELLOW}📊 Professional Dashboard:${NC} http://localhost:$DASHBOARD_PORT"
 echo -e "${YELLOW}🚨 Live Alerts System:${NC} http://localhost:$DASHBOARD_PORT/enhanced-alerts"
 echo -e "${YELLOW}🔧 Backend API:${NC} http://localhost:$API_PORT/api/"
 echo -e "${YELLOW}📚 API Documentation:${NC} http://localhost:$API_PORT/docs"
+echo -e "${YELLOW}🎯 MDC Orchestration:${NC} http://localhost:8615/health"
+echo -e "${YELLOW}🛡️ System Protection:${NC} http://localhost:8999/health"
 echo ""
 echo -e "${BLUE}📋 PROCESS MANAGEMENT:${NC}"
-echo -e "${YELLOW}Stop servers:${NC} pkill -f 'python3 run_dev.py'; pkill -f 'professional_dashboard_server.py'; pkill -f 'orchestration_agent'"
+echo -e "${YELLOW}Stop all services:${NC} ./zmart-api/infra/orchestration/orchestrationstart.sh stop"
+echo -e "${YELLOW}Restart all services:${NC} ./zmart-api/infra/orchestration/orchestrationstart.sh restart"
+echo -e "${YELLOW}Check all services:${NC} ./zmart-api/infra/orchestration/orchestrationstart.sh status"
 echo -e "${YELLOW}Restart:${NC} ./START_ZMARTBOT.sh"
-echo -e "${YELLOW}View logs:${NC} tail -f api_server.log dashboard.log orchestration.log"
 echo ""
-echo -e "${GREEN}🎯 System ready for trading operations!${NC}"
+echo -e "${GREEN}🎯 All 28 registered services ready for trading operations!${NC}"

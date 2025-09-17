@@ -1,0 +1,138 @@
+# main.mdc
+> Type: service | Version: 1.0.0 | Owner: zmartbot | Status: Discovery | Level: 1
+Core service component of the ZmartBot ecosystem providing essential functionality.
+
+## 🤖 MCP (Model Context Protocol) Integration
+
+### **MCP Server Pairing**
+**Status**: ✅ **ACTIVE** - Main Service MCP Integration
+**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
+**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
+**Integration Type**: Multi-MCP Service Integration
+
+### **MCP Integration Features**
+- **Claude Code Integration**: AI-powered main service orchestration and optimization
+- **Memory Gateway**: Persistent main service state and metadata
+- **UI Automation**: Automated main service monitoring and health checks
+- **Figma Integration**: Main service dashboard design and UI management
+- **Supabase Integration**: Cloud-based main service analytics and reporting
+
+### **MCP Integration Benefits**
+- **Enhanced Orchestration**: AI-powered main service management and optimization
+- **Persistent State**: Cross-session main service state and configuration management
+- **Automated Monitoring**: Real-time main service health and performance tracking
+- **Visual Dashboard**: Interactive main service management and testing interface
+- **Cloud Analytics**: Comprehensive main service usage and performance analytics
+
+### **MCP Usage Examples**
+```bash
+# Health check via MCP
+curl -X GET "http://127.0.0.1:8000/main/health"
+
+# Main service orchestration via MCP
+curl -X POST "http://127.0.0.1:8000/main/orchestrate" -d '{"action": "start_all"}'
+```
+
+### **MCP Status**
+- **Claude Code**: ✅ Active - AI-powered main service orchestration
+- **ByteRover**: ✅ Active - Persistent main service state management
+- **UI TARS**: ✅ Active - Automated main service monitoring
+- **Figma**: ✅ Active - Main service dashboard design
+- **Supabase**: ✅ Active - Cloud-based main service analytics
+
+---
+
+
+
+## ZmartBot Orchestration Entry Point
+
+@include "2IndicatorsDatabase.mdc"
+@include "API-Manager.mdc"
+@include "Backend.mdc"
+@include "BackendDoctorPack.mdc"
+@include "ProcessReaper.mdc"
+@include "LiveAlerts.mdc"
+@include "IndicatorCard.mdc"
+@include "MasterOrchestrationAgent.mdc"
+@include "MesseiAlerts.mdc"
+@include "MySymbols.mdc"
+@include "MySymbolsDatabase.mdc"
+@include "OrchestrationStart.mdc"
+@include "Pele.mdc"
+@include "PortManager.mdc"
+@include "PortManagerDatabase.mdc"
+@include "START_zmartbot.mdc"
+@include "STOP_zmartbot.mdc"
+@include "WhaleAlerts.mdc"
+@include "ServiceRegistry.mdc"
+@include "StartGuard.mdc"
+@include "ControlUI.mdc"
+@include "zmartbot.dynamic.test.mdc"
+@include "BackendFrontendProtection.mdc"
+@include "ClaudeMDCUpdate.mdc"
+@include "ServiceDiscovery.mdc"
+@include "rules.mdc"
+
+
+### System Description
+
+ZmartBot is an AI-driven crypto trading system using symbol selection, risk metrics, liquidity tracking, and orchestration agents.
+
+This file aggregates all rule modules and should be used as the master entry point for orchestrating agents, symbol operations, and alerting logic.
+
+### Core System Components
+
+1. **Orchestration System**
+   - Master Orchestration Agent coordinates all system components
+   - Port Manager handles service port assignments
+   - ProcessReaper utility resolves port conflicts and orphaned processes
+
+2. **Trading Infrastructure**
+   - Backend API (FastAPI) on port 8000
+   - Professional Dashboard (React/Vite) on port 3400
+   - MySymbols management (max 10 symbols)
+   - 21 Technical Indicators with real-time updates
+
+3. **Alert System**
+   - Live Alerts with dynamic indicator updates
+   - Special Alerts: Messi, Pele, Maradona, Whale Flow
+   - Real-time market data integration
+
+4. **Data Management**
+   - SQLite databases for port registry and MySymbols
+   - PostgreSQL, Redis, InfluxDB for various data types
+   - API Keys Manager for secure credential management
+
+### Operational Rules
+
+- Each service runs on unique, permanently assigned ports
+- Maximum 10 symbols in MySymbols portfolio
+- Dynamic symbol changes trigger system-wide updates
+- All API credentials stored in environment variables
+- Single instance enforcement for all services
+- Comprehensive logging and monitoring
+
+### Startup/Shutdown Procedures
+
+- Use START_ZMARTBOT.sh for clean system startup
+- Use STOP_ZMARTBOT.sh for controlled shutdown
+- ProcessReaper automatically resolves conflicts during startup
+- Port Manager ensures proper service isolation
+
+This master file serves as the central reference for all ZmartBot system operations and architecture.
+description:
+globs:
+alwaysApply: true
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Database connectivity**
+- ✅ **Complete MDC documentation**
+- ✅ **Master Orchestration integration**
+
+
+---
+
+## Triggers
+- **API endpoint requests**
+- **Database events**

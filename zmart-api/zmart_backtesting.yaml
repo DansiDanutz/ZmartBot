@@ -1,0 +1,88 @@
+---
+# Zmart Backtesting - Level 3 Certified
+apiVersion: zmartbot/v1
+kind: Service
+metadata:
+  name: zmart_backtesting
+  namespace: zmartbot-system
+  labels:
+    app: zmart_backtesting
+    tier: level3-certified
+    category: system-service
+    owner: zmartbot
+spec:
+  service:
+    name: zmart_backtesting
+    port: 8013
+    type: backend
+    protocol: HTTP
+    certification_level: 3
+    passport_id: ZMBT-ENG-20250826-FB4140
+    python_file: zmart_backtesting.py
+    
+  endpoints:
+    health: /health
+    ready: /ready
+    status: /api/status
+    metrics: /metrics
+    
+  runtime:
+    startup_timeout: 30s
+    health_check_interval: 30s
+    restart_policy: always
+    
+  deployment:
+    replicas: 1
+    resources:
+      cpu: "100m"
+      memory: "128Mi"
+    env:
+      - name: PORT
+        value: "8013"
+      - name: LOG_LEVEL
+        value: "INFO"
+      - name: SERVICE_NAME
+        value: "zmart_backtesting"
+        
+  monitoring:
+    enabled: true
+    metrics_port: 9013
+    alerts:
+      - name: service-down
+        condition: "up == 0"
+        severity: critical
+      - name: high-latency
+        condition: "response_time > 500"
+        severity: warning
+      - name: high-error-rate
+        condition: "error_rate > 0.01"
+        severity: warning
+
+  security:
+    network_policies:
+      - allow_from: ["zmartbot-core", "zmartbot-orchestration"]
+      - deny_all: false
+    secrets:
+      - name: service-config
+        type: Opaque
+
+  integration:
+    dependencies:
+      - zmartapi-server:8000
+      - database-service:8900
+    provides:
+      - zmart_backtesting-functionality
+      - system-integration
+      
+  backup:
+    enabled: true
+    retention_days: 30
+    schedule: "0 2 * * *"
+
+status:
+  phase: Running
+  certification:
+    level: 3
+    issued_date: "2025-08-31"
+    expiry_date: "2026-08-31"
+    authority: zmartbot-system

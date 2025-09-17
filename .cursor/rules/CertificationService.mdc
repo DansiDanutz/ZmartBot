@@ -1,0 +1,22 @@
+# 🎓 Certification Service - Service Certification & Diploma Generation
+> Type: backend | Version: 1.0.0 | Owner: zmartbot | Port: 8630
+
+description:
+globs:
+alwaysApply: true
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Database connectivity**
+- ✅ **Valid service passport**
+- ✅ **Complete MDC documentation**
+- ✅ **Health endpoint implementation**
+
+
+---
+
+
+## Triggers
+- **API endpoint requests**
+- **Database events**
+- **Workflow transitions**

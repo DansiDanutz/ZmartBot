@@ -1,5 +1,6 @@
 # MDC Monitoring System - Comprehensive Documentation
 
+
 @agent: MonitoringMDC
 description: "Comprehensive documentation and management of the MDC (Markdown-driven Configuration) monitoring system, including Smart Context Optimization, automatic updates, and integration with CLAUDE.md"
 
@@ -13,6 +14,9 @@ The MDC Monitoring System is a critical infrastructure component that ensures re
 - **Integration** with the CLAUDE.md organization system
 - **Comprehensive logging** and status reporting
 - **Master Orchestration Agent auto-updates**
+
+## Description
+Core service component of the ZmartBot ecosystem providing essential functionality.
 
 ## System Architecture
 
@@ -420,6 +424,15 @@ python enhanced_mdc_monitor.py
 - Validate file paths and permissions
 - Test optimization system functionality
 
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Database connectivity**
+- ✅ **Complete MDC documentation**
+- ✅ **Health endpoint implementation**
+- ✅ **Master Orchestration integration**
+
+
 ---
 
 **Last Updated**: 2025-08-25
@@ -429,4 +442,19 @@ python enhanced_mdc_monitor.py
 description:
 globs:
 alwaysApply: true
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Database connectivity**
+- ✅ **Complete MDC documentation**
+- ✅ **Health endpoint implementation**
+- ✅ **Master Orchestration integration**
+
+
 ---
+
+
+## Triggers
+- **API endpoint requests**
+- **File system changes**
+- **Database events**

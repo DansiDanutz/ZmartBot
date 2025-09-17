@@ -1,4 +1,7 @@
 
+## Description
+Core service component of the ZmartBot ecosystem providing essential functionality.
+
 
 # Pele Alerts - Trend Continuation Pattern System
 
@@ -720,4 +723,14 @@ The Pele Alerts system provides **powerful trend-following opportunities** throu
 description:
 globs:
 alwaysApply: true
+
+## Requirements
+- ✅ **Unique port assignment**
+
+
 ---
+
+## Triggers
+- **System initialization**
+- **External requests**
+- **Scheduled tasks**

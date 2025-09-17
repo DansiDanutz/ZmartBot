@@ -1,0 +1,274 @@
+
+## Description
+Core service component of the ZmartBot ecosystem providing essential functionality.
+
+## 🤖 MCP (Model Context Protocol) Integration
+
+### **MCP Server Pairing**
+**Status**: ✅ **ACTIVE** - Rule 0 Mandatory MCP Integration
+**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
+**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
+**Integration Type**: Multi-MCP Service Integration
+
+### **MCP Integration Features**
+- **Claude Code Integration**: AI-powered rule enforcement and optimization
+- **Memory Gateway**: Persistent rule enforcement state and metadata
+- **UI Automation**: Automated rule enforcement monitoring and health checks
+- **Figma Integration**: Rule enforcement dashboard design and UI management
+- **Supabase Integration**: Cloud-based rule enforcement analytics and reporting
+
+### **MCP Integration Benefits**
+- **Enhanced Rule Enforcement**: AI-powered rule enforcement and optimization
+- **Persistent State**: Cross-session rule enforcement state and configuration management
+- **Automated Monitoring**: Real-time rule enforcement health and performance tracking
+- **Visual Dashboard**: Interactive rule enforcement and testing interface
+- **Cloud Analytics**: Comprehensive rule enforcement usage and performance analytics
+
+### **MCP Usage Examples**
+```bash
+# Health check via MCP
+curl -X GET "http://127.0.0.1:8000/rule-0/health"
+
+# Rule enforcement via MCP
+curl -X POST "http://127.0.0.1:8000/rule-0/enforce" -d '{"rule": "all", "action": "validate"}'
+```
+
+### **MCP Status**
+- **Claude Code**: ✅ Active - AI-powered rule enforcement
+- **ByteRover**: ✅ Active - Persistent rule enforcement state management
+- **UI TARS**: ✅ Active - Automated rule enforcement monitoring
+- **Figma**: ✅ Active - Rule enforcement dashboard design
+- **Supabase**: ✅ Active - Cloud-based rule enforcement analytics
+
+---
+
+# Rule 0: ZmartBot Mandatory Core Requirements
+
+## Summary
+Core requirements that MUST be satisfied before any development work can proceed. These are non-negotiable foundational requirements for the ZmartBot orchestration system.
+
+## Security & Secrets Management
+
+### Secret Scanning
+- **Requirement**: All commits MUST pass secret scanning before merge
+- **Tools**: Use gitleaks, detect-secrets, or equivalent
+- **Action**: Block commits containing API keys, passwords, tokens
+- **Implementation**: Pre-commit hooks + CI/CD pipeline checks
+
+### API Key Management
+- **Storage**: All API keys in environment variables or secure vault
+- **Rotation**: Automated key rotation every 90 days
+- **Access Control**: Principle of least privilege for API access
+- **Monitoring**: Log all API key usage and failed authentication attempts
+
+### Data Protection
+- **Encryption**: All sensitive data encrypted at rest and in transit
+- **PII Handling**: Strict controls on personally identifiable information
+- **Audit Trail**: Complete audit logs for all data access and modifications
+
+## Platform Invariants
+
+### Service Registry (Port 8610)
+- **Requirement**: MUST be the single source of truth for all services
+- **Contract**: All services MUST register with health endpoints
+- **Discovery**: Dynamic service discovery through registry only
+- **Consistency**: Registry state MUST be consistent across all operations
+
+### Master Orchestration Agent (Port 8002)
+- **Requirement**: MUST coordinate all service lifecycle operations
+- **Intelligence**: MUST learn from service interactions and failures
+- **Recovery**: MUST implement intelligent failure recovery strategies
+- **Monitoring**: MUST provide real-time system health monitoring
+
+### Snapshot Manager
+- **State Snapshots**: MUST capture complete system state before major operations
+- **Rollback Capability**: MUST enable instant rollback to previous states
+- **Consistency**: Snapshots MUST maintain data consistency across services
+- **Retention**: MUST retain snapshots for disaster recovery
+
+### Process Reaper
+- **Scoped Cleanup**: MUST clean up processes within defined boundaries
+- **Safety**: MUST never terminate critical system processes
+- **Logging**: MUST log all process termination actions
+- **Recovery**: MUST coordinate with orchestration for service recovery
+
+### PortManager DB
+- **Persistence**: MUST maintain persistent port assignments
+- **Conflict Resolution**: MUST prevent and resolve port conflicts
+- **History**: MUST track port assignment history
+- **Integration**: MUST integrate with Service Registry
+
+## Stop/Start Cycle Requirements
+
+### Mandatory Gates
+1. **Pre-Stop Gate**: Health check validation, backup verification
+2. **Stop Execution**: Graceful shutdown with timeout fallbacks
+3. **State Capture**: Complete system state snapshot
+4. **Pre-Start Gate**: Dependency validation, resource availability
+5. **Start Execution**: Ordered service startup with health validation
+6. **Post-Start Gate**: System health verification, integration tests
+
+### Service Contract
+- **Manifest**: Each service MUST have service.yaml with complete metadata
+- **Health Endpoints**: /health (liveness) and /ready (readiness) required
+- **Graceful Shutdown**: MUST handle SIGTERM within 30 seconds
+- **Dependency Declaration**: MUST declare all service dependencies
+- **Resource Requirements**: MUST specify CPU, memory, disk requirements
+
+### Logging Requirements
+- **Format**: JSON Lines format for structured logging
+- **Levels**: DEBUG, INFO, WARN, ERROR, FATAL with appropriate usage
+- **Correlation**: Request correlation IDs across service boundaries
+- **Retention**: 90-day retention policy for all logs
+
+## Quality & Testing Requirements
+
+### Automated Testing
+- **Unit Tests**: Minimum 80% code coverage for all services
+- **Integration Tests**: Full service integration test suite
+- **Performance Tests**: Load testing for all critical paths
+- **Security Tests**: Automated security scanning and penetration tests
+
+### Code Quality
+- **Linting**: All code MUST pass language-specific linting
+- **Type Safety**: Strong typing where language supports it
+- **Code Review**: All code MUST be reviewed by at least one other developer
+- **Documentation**: API documentation MUST be generated from code
+
+### Monitoring & Observability
+- **Metrics**: Prometheus-compatible metrics for all services
+- **Tracing**: Distributed tracing for request flows
+- **Alerting**: Automated alerting for all failure conditions
+- **Dashboards**: Real-time operational dashboards
+
+## Trading Safety Requirements
+
+### Risk Management
+- **Position Limits**: Hard limits on position sizes and exposures
+- **Stop Loss**: Mandatory stop-loss mechanisms for all trades
+- **Circuit Breakers**: Automatic trading halts during extreme conditions
+- **Capital Preservation**: Never risk more than 2% of capital on single trade
+
+### Data Validation
+- **Price Feeds**: Multiple price feed validation and cross-checking
+- **Order Validation**: All orders MUST be validated before execution
+- **Balance Checks**: Real-time balance verification before trades
+- **Audit Trail**: Complete audit trail for all trading decisions
+
+### Compliance
+- **Regulatory**: Compliance with relevant financial regulations
+- **Reporting**: Automated compliance reporting capabilities
+- **Record Keeping**: Comprehensive record keeping for all transactions
+- **Risk Disclosure**: Clear risk disclosure for all trading activities
+
+## Command & Control Guardrails
+
+### Command Validation
+- **Whitelist**: Only approved commands allowed for execution
+- **Parameter Validation**: All command parameters MUST be validated
+- **Authorization**: Role-based authorization for sensitive operations
+- **Audit Logging**: All commands MUST be logged with user attribution
+
+### Deployment Safety
+- **Canary Deployments**: New deployments MUST use canary deployment patterns
+- **Rollback Capability**: Instant rollback capability for all deployments
+- **Health Validation**: Post-deployment health validation required
+- **Feature Flags**: Use feature flags for risky features
+
+### Port Management
+- **Port Ranges**: 
+  - Frontend: 3400-3499
+  - Backend: 8000-8099
+  - Internal API: 8200-8299
+  - Worker: 8300-8399
+  - Orchestration: 8500-8599
+- **Conflict Resolution**: Automated port conflict detection and resolution
+- **Registry Integration**: All port assignments MUST be registered
+
+## Compliance & Governance
+
+### Change Management
+- **Approval Process**: All changes MUST follow approved change management
+- **Impact Assessment**: Change impact assessment required for major changes
+- **Rollback Plans**: All changes MUST have documented rollback procedures
+- **Communication**: Stakeholder communication required for significant changes
+
+### Documentation
+- **MDC Generation**: Auto-generated MDC files for all services
+- **API Documentation**: OpenAPI/Swagger documentation for all APIs
+- **Runbooks**: Operational runbooks for all critical procedures
+- **Architecture Decision Records**: ADRs for all significant architectural decisions
+
+### Performance Requirements
+- **Response Time**: API response times MUST be under 100ms for 95th percentile
+- **Availability**: 99.9% uptime requirement for critical services
+- **Scalability**: Services MUST handle 10x current load without degradation
+- **Resource Usage**: Efficient resource utilization with monitoring
+
+## Enforcement Mechanisms
+
+### Automated Validation
+- **Pre-commit Hooks**: Validate all requirements before code commit
+- **CI/CD Pipeline**: Continuous validation throughout deployment pipeline
+- **Runtime Monitoring**: Real-time monitoring of compliance metrics
+- **Alerting**: Immediate alerts for any rule violations
+
+### Remediation
+- **Automatic**: Where possible, automatic remediation of violations
+- **Manual**: Clear procedures for manual remediation when required
+- **Escalation**: Escalation procedures for unresolved violations
+- **Root Cause**: Root cause analysis required for all violations
+
+## Success Criteria
+
+### Technical Excellence
+- ✅ All services have comprehensive test coverage (>80%)
+- ✅ All APIs respond within performance requirements (<100ms p95)
+- ✅ Zero security vulnerabilities in production code
+- ✅ Complete observability across all system components
+
+### Operational Excellence
+- ✅ Automated deployment and rollback capabilities
+- ✅ Real-time system health monitoring and alerting
+- ✅ Disaster recovery procedures tested and validated
+- ✅ Complete audit trail for all system operations
+
+### Business Excellence
+- ✅ Trading safety mechanisms prevent significant losses
+- ✅ Regulatory compliance maintained at all times
+- ✅ System availability meets SLA requirements (99.9%)
+- ✅ Performance meets user experience requirements
+
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Complete MDC documentation**
+- ✅ **Health endpoint implementation**
+- ✅ **Master Orchestration integration**
+
+
+---
+
+**Metadata (Cursor-aware tooling)**
+- Rule version: 1.1.0
+- Last updated: 2025-08-24
+- Validation: Required for all ZmartBot development
+- Enforcement: Automated via CI/CD pipeline
+
+description:
+globs:
+alwaysApply: true
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Complete MDC documentation**
+- ✅ **Health endpoint implementation**
+- ✅ **Master Orchestration integration**
+
+
+---
+
+
+## Triggers
+- **API endpoint requests**
+- **Health check requests**

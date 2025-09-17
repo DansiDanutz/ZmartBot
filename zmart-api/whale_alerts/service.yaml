@@ -1,0 +1,19 @@
+endpoints:
+  health: http://127.0.0.1:8018/health
+  metrics: http://127.0.0.1:8018/metrics
+  ready: http://127.0.0.1:8018/ready
+lifecycle:
+  health_check: curl -f http://127.0.0.1:8018/health
+  start_command: python3 whale_alerts_server.py
+  stop_command: pkill -f whale-alerts
+metadata:
+  description: Whale Smart Money Flow Alerts
+  owner: zmartbot
+  version: 1.0.0
+service:
+  level: 3
+  name: whale-alerts
+  passport: ZMBT-ALT-20250831-72918A
+  port: 8018
+  status: ACTIVE
+  type: backend

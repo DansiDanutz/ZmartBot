@@ -1,0 +1,340 @@
+# WebSocketServer.mdc
+
+## Summary
+ZmartBot WebSocket Service - Real-time data streaming and bidirectional communication service providing live market data, instant notifications, and interactive client-server communication for the ZmartBot ecosystem.
+
+## Purpose
+- **Real-time Communication**: Bidirectional real-time client-server communication
+- **Live Data Streaming**: Real-time market data and alert broadcasting
+- **Interactive Sessions**: Multi-client interactive communication sessions
+- **Room-based Communication**: Organized communication channels and rooms
+
+## Description
+- **Real-time Communication**: Bidirectional real-time client-server communication
+- **Live Data ...
+
+## Key Functions
+
+### Core WebSocket Operations
+- **Connection Management**: Handle multiple simultaneous WebSocket connections
+- **Message Broadcasting**: Broadcast messages to all connected clients
+- **Room Management**: Organize clients into communication rooms
+- **Real-time Streaming**: Live data streaming capabilities
+
+### Communication Features
+- **Personal Messaging**: Direct messages to specific clients
+- **Broadcast Messaging**: Messages to all connected clients
+- **Room Broadcasting**: Messages to specific room members
+- **Echo Services**: Message echo and confirmation services
+
+### Connection Statistics
+- **Active Connections**: Real-time connection count monitoring
+- **Message Statistics**: Sent/received message tracking
+- **Room Analytics**: Room membership and activity tracking
+- **Connection Lifecycle**: Connection establishment and termination tracking
+
+## Technical Implementation
+
+### Service Configuration
+- **Service Name**: `zmart-websocket`
+- **Default Port**: `8009`
+- **Host**: `127.0.0.1`
+- **Framework**: FastAPI with WebSocket support and asyncio
+
+### WebSocket Architecture
+- **Connection Manager**: Centralized connection management system
+- **Async Operations**: Full async/await implementation for scalability
+- **Error Handling**: Robust connection error handling and recovery
+- **Resource Management**: Efficient memory and connection resource management
+
+### API Endpoints
+
+#### WebSocket Endpoints
+- **Main WebSocket**: `/ws` - Primary WebSocket connection endpoint
+
+#### REST API Endpoints
+- **Service Status**: `GET /api/v1/websocket/status` - WebSocket service status
+- **Connection Count**: `GET /api/v1/websocket/connections` - Active connection metrics
+- **Broadcast Message**: `POST /api/v1/websocket/broadcast` - Broadcast to all clients
+- **Room Management**: `GET /api/v1/websocket/rooms` - Available rooms information
+- **Connection List**: `GET /api/v1/connections/list` - List active connections
+- **Statistics**: `GET /api/v1/connections/stats` - Connection statistics
+- **Message APIs**: Various message management endpoints
+
+#### Health & Monitoring
+- **Health Check**: `GET /health` - Service health status
+- **Readiness Check**: `GET /ready` - Service readiness with connection count
+- **Metrics**: `GET /metrics` - Comprehensive service metrics
+
+## Connection Management
+
+### ConnectionManager Class
+- **Active Connections**: List of active WebSocket connections
+- **Room Management**: Dictionary-based room organization
+- **Statistics Tracking**: Comprehensive connection and message statistics
+- **Connection Lifecycle**: Complete connection lifecycle management
+
+### Connection Operations
+- **Connect**: Accept new WebSocket connections with logging
+- **Disconnect**: Clean disconnection with connection cleanup
+- **Send Personal**: Send messages to specific connections
+- **Broadcast**: Send messages to all active connections
+- **Join/Leave Rooms**: Room membership management
+- **Room Broadcasting**: Send messages to room members only
+
+### Statistics Collection
+```python
+connection_stats = {
+    "total_connections": 0,      # Total connections since start
+    "active_connections": 0,     # Currently active connections
+    "messages_sent": 0,          # Total messages sent
+    "messages_received": 0       # Total messages received
+}
+```
+
+## Message Handling
+
+### Message Types
+- **join_room**: Join a specific communication room
+- **leave_room**: Leave a communication room
+- **broadcast**: Broadcast message to all clients
+- **personal**: Direct message to specific client
+- **echo**: Echo message back to sender
+
+### Message Format
+```json
+{
+    "type": "message_type",
+    "room": "room_name",
+    "data": "message_content",
+    "timestamp": "ISO8601_timestamp"
+}
+```
+
+### Message Processing
+- **JSON Parsing**: Automatic JSON message parsing with fallback
+- **Message Routing**: Route messages based on type and target
+- **Error Handling**: Robust message processing error handling
+- **Message Validation**: Input validation and sanitization
+
+## Room Management
+
+### Room Features
+- **Dynamic Rooms**: Create rooms on-demand when clients join
+- **Room Membership**: Track which clients are in which rooms
+- **Room Broadcasting**: Send messages to all room members
+- **Room Cleanup**: Automatic cleanup of empty rooms
+
+### Room Operations
+- **Join Room**: Add client to specified room
+- **Leave Room**: Remove client from specified room
+- **List Rooms**: Get all available rooms
+- **Room Details**: Get room membership information
+- **Room Statistics**: Track room activity and membership
+
+## Performance Characteristics
+
+### Scalability
+- **Concurrent Connections**: Support for hundreds of simultaneous connections
+- **Message Throughput**: High-volume message processing capability
+- **Room Scalability**: Support for multiple rooms with many members
+- **Resource Efficiency**: Efficient memory and CPU usage
+
+### Real-time Performance
+- **Low Latency**: Minimal message delivery latency
+- **Connection Speed**: Fast connection establishment
+- **Message Delivery**: Reliable message delivery with error handling
+- **Connection Recovery**: Automatic connection cleanup and recovery
+
+## Integration Points
+
+### Service Ecosystem
+- **Alert System**: Real-time alert delivery via WebSocket
+- **Notification Service**: Live notification streaming
+- **Market Data**: Real-time market data broadcasting
+- **Dashboard Integration**: Real-time dashboard updates
+
+### External Integrations
+- **Frontend Applications**: Web and mobile app integration
+- **Third-party Clients**: External client application support
+- **API Gateway**: Integration with API gateway for routing
+- **Load Balancer**: Support for load-balanced deployments
+
+## Configuration
+
+### Environment Variables
+```bash
+WEBSOCKET_SERVICE_PORT=8009
+WEBSOCKET_SERVICE_HOST=127.0.0.1
+MAX_CONNECTIONS=1000
+MESSAGE_QUEUE_SIZE=10000
+CONNECTION_TIMEOUT=300
+HEARTBEAT_INTERVAL=30
+```
+
+### Service Settings
+```python
+WEBSOCKET_CONFIG = {
+    "max_connections": 1000,
+    "message_buffer_size": 10000,
+    "connection_timeout": 300,
+    "heartbeat_interval": 30,
+    "room_cleanup_interval": 600
+}
+```
+
+## Security Considerations
+
+### Connection Security
+- **CORS Configuration**: Proper cross-origin request handling
+- **Connection Validation**: Validate incoming connections
+- **Rate Limiting**: Prevent message spam and abuse
+- **Input Sanitization**: Clean and validate all incoming messages
+
+### Data Protection
+- **Message Encryption**: Support for encrypted message transmission
+- **Access Control**: Room-based access control (future enhancement)
+- **Audit Logging**: Complete message and connection audit trail
+- **Privacy Protection**: Protect sensitive communication data
+
+## Error Handling & Recovery
+
+### Connection Errors
+- **Connection Drops**: Graceful handling of connection failures
+- **Network Issues**: Robust network error recovery
+- **Client Disconnection**: Clean handling of unexpected disconnections
+- **Resource Exhaustion**: Handle resource limit scenarios
+
+### Message Errors
+- **Malformed Messages**: Handle invalid message formats
+- **Delivery Failures**: Retry logic for message delivery failures
+- **Queue Overflow**: Handle message queue overflow scenarios
+- **Processing Errors**: Robust message processing error handling
+
+### System Recovery
+- **Service Restart**: Maintain connection state across restarts
+- **Connection Recovery**: Re-establish connections after failures
+- **Message Recovery**: Recover unsent messages after failures
+- **Statistics Recovery**: Maintain statistics across service restarts
+
+## Operational Guidelines
+
+### Deployment
+- **Container Ready**: Docker-compatible WebSocket service
+- **Kubernetes Support**: Kubernetes deployment with health checks
+- **Load Balancing**: Support for WebSocket load balancing
+- **High Availability**: Multi-instance deployment support
+
+### Monitoring
+- **Connection Monitoring**: Real-time connection monitoring
+- **Message Monitoring**: Message throughput and error monitoring
+- **Performance Monitoring**: Latency and throughput monitoring
+- **Resource Monitoring**: CPU, memory, and network usage tracking
+
+### Maintenance
+- **Connection Cleanup**: Regular cleanup of stale connections
+- **Room Maintenance**: Automatic room cleanup and optimization
+- **Statistics Reset**: Periodic statistics reset and archival
+- **Performance Tuning**: Regular performance optimization
+
+## API Usage Examples
+
+### WebSocket Connection (JavaScript)
+```javascript
+const ws = new WebSocket('ws://localhost:8009/ws');
+
+ws.onopen = () => {
+    console.log('Connected to ZmartBot WebSocket');
+    
+    // Join a room
+    ws.send(JSON.stringify({
+        type: 'join_room',
+        room: 'trading_alerts'
+    }));
+};
+
+ws.onmessage = (event) => {
+    const message = JSON.parse(event.data);
+    console.log('Received:', message);
+};
+```
+
+### REST API Usage
+```bash
+# Get WebSocket status
+curl http://localhost:8009/api/v1/websocket/status
+
+# Broadcast message to all clients
+curl -X POST http://localhost:8009/api/v1/websocket/broadcast \
+  -H "Content-Type: application/json" \
+  -d '{"type": "alert", "message": "Market alert!"}'
+
+# Get active rooms
+curl http://localhost:8009/api/v1/websocket/rooms
+
+# Get connection statistics
+curl http://localhost:8009/api/v1/connections/stats
+```
+
+## Command Line Usage
+```bash
+# Start with default settings
+python websocket_server.py
+
+# Custom port and host
+python websocket_server.py --port 8009 --host 0.0.0.0
+
+# Production deployment
+uvicorn websocket_server:app --host 0.0.0.0 --port 8009 --workers 1
+```
+
+## Advanced Features
+
+### Connection Features
+- **Connection Persistence**: Maintain connections across service updates
+- **Connection Pooling**: Efficient connection resource management
+- **Connection Multiplexing**: Multiple data streams per connection
+- **Connection Authentication**: Secure connection authentication
+
+### Message Features
+- **Message Queuing**: Persistent message queuing for offline clients
+- **Message History**: Store and retrieve message history
+- **Message Filtering**: Client-side message filtering capabilities
+- **Message Compression**: Compress large messages for efficiency
+
+## Future Enhancements
+
+### Planned Features
+- **Authentication**: User authentication and authorization
+- **Message Persistence**: Persistent message storage and retrieval
+- **Advanced Rooms**: Private rooms and access control
+- **Message Encryption**: End-to-end message encryption
+
+### Integration Improvements
+- **Redis Integration**: Redis-based scaling and persistence
+- **Database Integration**: Database-backed message history
+- **External APIs**: Integration with external messaging services
+- **Mobile Support**: Enhanced mobile client support
+
+### Performance Enhancements
+- **Connection Clustering**: Multi-server connection clustering
+- **Message Sharding**: Message distribution across multiple servers
+- **Caching**: Intelligent message and connection caching
+- **Compression**: Advanced message compression algorithms
+
+This service provides the real-time communication backbone for the ZmartBot system, enabling instant data delivery and interactive user experiences.
+
+## Triggers
+- **API endpoint requests**
+- **Database events**
+- **Health check requests**
+
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Database connectivity**
+- ✅ **Complete MDC documentation**
+- ✅ **Health endpoint implementation**
+
+---
+

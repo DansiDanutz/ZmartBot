@@ -1,0 +1,29 @@
+{
+  "mcpServers": {
+    "supabase": {
+      "command": "npx",
+      "args": ["@supabase/mcp-server-supabase"],
+      "env": {
+        "SUPABASE_URL": "https://asjtxrmftmutcsnqgidy.supabase.co",
+        "SUPABASE_SERVICE_ROLE_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFzanR4cm1mdG11dGNzbnFnaWR5Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0OTU3Nzg2OCwiZXhwIjoyMDY1MTUzODY4fQ.HoJHlTVrX69BXs35vFwkPON0yMG2jEpjR-xPe_A9oXk"
+      }
+    },
+    "browser": {
+      "command": "mcp-server-browser"
+    },
+    "byterover": {
+      "command": "byterover-mcp"
+    },
+    "firecrawl": {
+      "command": "npx",
+      "args": ["firecrawl-mcp"],
+      "env": {
+        "FIRECRAWL_API_KEY": "fc-0b019c4a95b64f488f5c97f387e95b5e"
+      }
+    },
+    "shadcn-studio": {
+      "command": "npx",
+      "args": ["shadcn-studio-cli", "serve"]
+    }
+  }
+}

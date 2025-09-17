@@ -1,0 +1,118 @@
+{
+  "risk_data": {
+    "BTC": {
+      "fiat_risk": 0.549,
+      "btc_risk": 1.0,
+      "price_usd": 115844.88,
+      "price_btc": 1.0
+    },
+    "ETH": {
+      "fiat_risk": 0.452,
+      "btc_risk": 0.398,
+      "price_usd": 4637,
+      "price_btc": 0.04
+    },
+    "BNB": {
+      "fiat_risk": 0.477,
+      "btc_risk": 0.412,
+      "price_usd": 688.88,
+      "price_btc": 0.00595
+    },
+    "SOL": {
+      "fiat_risk": 0.511,
+      "btc_risk": 0.456,
+      "price_usd": 238.88,
+      "price_btc": 0.00206
+    },
+    "XRP": {
+      "fiat_risk": 0.482,
+      "btc_risk": 0.425,
+      "price_usd": 2.38,
+      "price_btc": 0.0000205
+    },
+    "ADA": {
+      "fiat_risk": 0.482,
+      "btc_risk": 0.425,
+      "price_usd": 1.18,
+      "price_btc": 0.0000102
+    },
+    "AVAX": {
+      "fiat_risk": 0.511,
+      "btc_risk": 0.456,
+      "price_usd": 56.88,
+      "price_btc": 0.000491
+    },
+    "DOGE": {
+      "fiat_risk": 0.534,
+      "btc_risk": 0.478,
+      "price_usd": 0.438,
+      "price_btc": 0.00000378
+    },
+    "TRX": {
+      "fiat_risk": 0.502,
+      "btc_risk": 0.447,
+      "price_usd": 0.288,
+      "price_btc": 0.00000249
+    },
+    "DOT": {
+      "fiat_risk": 0.452,
+      "btc_risk": 0.398,
+      "price_usd": 10.88,
+      "price_btc": 0.0000939
+    },
+    "MATIC": {
+      "fiat_risk": 0.547,
+      "btc_risk": 0.491,
+      "price_usd": 0.887,
+      "price_btc": 0.00000766
+    },
+    "SHIB": {
+      "fiat_risk": 0.502,
+      "btc_risk": 0.447,
+      "price_usd": 0.000031,
+      "price_btc": 0.000000000268
+    },
+    "LINK": {
+      "fiat_risk": 0.565,
+      "btc_risk": 0.509,
+      "price_usd": 25.88,
+      "price_btc": 0.000223
+    },
+    "BCH": {
+      "fiat_risk": 0.412,
+      "btc_risk": 0.358,
+      "price_usd": 588.88,
+      "price_btc": 0.00508
+    },
+    "UNI": {
+      "fiat_risk": 0.508,
+      "btc_risk": 0.453,
+      "price_usd": 15.88,
+      "price_btc": 0.000137
+    },
+    "LTC": {
+      "fiat_risk": 0.398,
+      "btc_risk": 0.344,
+      "price_usd": 128.88,
+      "price_btc": 0.00111
+    },
+    "ATOM": {
+      "fiat_risk": 0.430,
+      "btc_risk": 0.376,
+      "price_usd": 10.88,
+      "price_btc": 0.0000939
+    },
+    "ETC": {
+      "fiat_risk": 0.427,
+      "btc_risk": 0.373,
+      "price_usd": 38.88,
+      "price_btc": 0.000336
+    }
+  },
+  "metadata": {
+    "source": "IntoTheCryptoverse",
+    "extracted_at": "2025-09-14T17:00:00Z",
+    "note": "Both Fiat Risk and BTC Risk for all symbols",
+    "btc_price": 115844.88
+  }
+}

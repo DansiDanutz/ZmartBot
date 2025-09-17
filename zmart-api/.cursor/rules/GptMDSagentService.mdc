@@ -1,0 +1,344 @@
+
+## Description
+Core agent component of the ZmartBot ecosystem providing essential functionality.
+
+## 🤖 MCP (Model Context Protocol) Integration
+
+### **MCP Server Pairing**
+**Status**: ✅ **ACTIVE** - GPT MDS Agent Service MCP Integration
+**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
+**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
+**Integration Type**: Multi-MCP Service Integration
+
+### **MCP Integration Features**
+- **Claude Code Integration**: AI-powered GPT agent optimization and analysis
+- **Memory Gateway**: Persistent GPT agent state and processing metadata
+- **UI Automation**: Automated GPT agent monitoring and health checks
+- **Figma Integration**: GPT agent dashboard design and UI management
+- **Supabase Integration**: Cloud-based GPT agent analytics and reporting
+
+### **MCP Integration Benefits**
+- **Enhanced Processing**: AI-powered GPT agent optimization and document processing
+- **Persistent State**: GPT agent processing history and metadata preservation
+- **Automated Monitoring**: Real-time GPT agent health and performance tracking
+- **Visual Design**: Professional GPT agent dashboard and UI design
+- **Cloud Analytics**: Advanced GPT agent analytics and processing reporting
+
+### **MCP Usage Examples**
+```bash
+# Health check via MCP
+curl -X GET "http://127.0.0.1:8700/health"
+
+# GPT processing via MCP
+curl -X POST "http://127.0.0.1:8700/process" \
+  -H "Content-Type: application/json" \
+  -d '{"document": "service.mdc", "action": "analyze"}'
+```
+
+### **MCP Status**
+- **Claude Code**: ✅ Active - AI-powered GPT agent processing
+- **ByteRover**: ✅ Active - GPT agent state persistence
+- **UI TARS**: ✅ Active - GPT agent monitoring automation
+- **Figma**: ✅ Active - GPT agent dashboard design
+- **Supabase**: ✅ Active - GPT agent cloud analytics
+
+---
+
+# GptMDSagentService.mdc
+> Service Type: **Core Infrastructure** | Version: **1.0.0** | Owner: **Platform Team** | Port: **8700**
+> Purpose: GPT-powered MDC/MDS document processing, generation, and intelligent service documentation automation for ZmartBot
+
+@datasource: ZmartBotCore
+
+## Executive Summary
+The GptMDSagentService is the foundational AI infrastructure that powers intelligent documentation across ZmartBot. It processes MDC (Markdown Component) and MDS (Markdown Service) documents using OpenAI's GPT models (GPT-4o, GPT-5 ready), providing automated service documentation, code analysis, and system integration intelligence. This service is the brain behind ZmartBot's self-documenting architecture.
+
+## Overview
+Advanced AI-powered service that transforms documentation workflow through intelligent MDC/MDS processing, automated generation, and seamless integration with the ZmartBot ecosystem. Features enterprise-grade OpenAI integration, multi-model support, intelligent caching, and comprehensive validation systems.
+
+## @function: gpt_foundation_init
+Initialize GPT Foundation with advanced model selection and caching capabilities
+
+### Implementation
+```python
+async def initialize_gpt_foundation(config: GPTConfig) -> GPTFoundation:
+    """
+    Initialize GPT Foundation with comprehensive configuration
+    
+    Args:
+        config: GPT configuration with API keys, models, and settings
+        
+    Returns:
+        Configured GPTFoundation instance
+    """
+    foundation = GPTFoundation(config)
+    
+    # Validate connection
+    is_connected = await foundation.validate_connection()
+    if not is_connected:
+        raise ConnectionError("Failed to connect to OpenAI API")
+    
+    # Initialize cache if enabled
+    if config.enable_cache:
+        foundation.cache = TTLCache(maxsize=100, ttl=config.cache_ttl)
+    
+    return foundation
+```
+
+### Parameters
+- `config` (GPTConfig): Configuration object with API keys, model settings, and cache options
+
+### Returns
+- GPTFoundation: Initialized foundation ready for document processing
+
+## @function: process_mdc_document
+Process and validate MDC/MDS documents with GPT enhancement
+
+### Implementation
+```python
+async def process_mdc_document(content: str, doc_type: DocumentType) -> ProcessedDocument:
+    """
+    Parse, validate, and enhance MDC/MDS document
+    
+    Args:
+        content: Raw document content
+        doc_type: Type of document (MDC/MDS)
+        
+    Returns:
+        Processed document with validation results
+    """
+    processor = MDCMDSProcessor(gpt_foundation)
+    
+    # Parse document structure
+    parsed_doc = processor.parse_document(content, doc_type)
+    
+    # Validate document completeness
+    validation = await processor.validate_document(content)
+    
+    # Enhance if needed
+    if validation['score'] < 80:
+        enhanced_content = await processor.enhance_document(
+            content, 
+            f"Improve quality score from {validation['score']}"
+        )
+        parsed_doc = processor.parse_document(enhanced_content, doc_type)
+    
+    return ProcessedDocument(
+        original=parsed_doc,
+        validation=validation,
+        enhanced=enhanced_content if validation['score'] < 80 else content
+    )
+```
+
+### Parameters
+- `content` (str): Raw MDC/MDS document content
+- `doc_type` (DocumentType): Document type enumeration
+
+### Returns
+- ProcessedDocument: Complete processed document with validation and enhancement
+
+## @function: generate_service_documentation
+Generate comprehensive service documentation from description
+
+### Implementation
+```python
+async def generate_service_documentation(
+    service_name: str,
+    description: str,
+    service_type: str = "backend"
+) -> GeneratedDocs:
+    """
+    Generate complete MDC/MDS documentation for service
+    
+    Args:
+        service_name: Name of the service
+        description: Service functionality description
+        service_type: Type of service for appropriate templates
+        
+    Returns:
+        Generated documentation package
+    """
+    processor = MDCMDSProcessor(gpt_foundation)
+    
+    # Generate MDC document
+    mdc_content = await processor.generate_document(
+        description=f"Service: {service_name} - {description}",
+        doc_type=DocumentType.MDC,
+        service_type=service_type,
+        include_examples=True
+    )
+    
+    # Generate MDS system document
+    mds_content = await processor.generate_document(
+        description=f"System documentation for {service_name}",
+        doc_type=DocumentType.MDS,
+        service_type=service_type,
+        include_examples=True
+    )
+    
+    return GeneratedDocs(
+        mdc_document=mdc_content,
+        mds_document=mds_content,
+        service_name=service_name,
+        generated_at=datetime.now().isoformat()
+    )
+```
+
+### Parameters
+- `service_name` (str): Name of the service to document
+- `description` (str): Detailed service description
+- `service_type` (str): Service category for template selection
+
+### Returns
+- GeneratedDocs: Complete documentation package with MDC and MDS files
+
+## @step: service_startup
+Initialize and start the GptMDSagentService
+
+### Process
+1. Load configuration from environment and YAML files
+2. Initialize GPT Foundation with OpenAI connection
+3. Setup MDC/MDS processor with templates
+4. Initialize ZmartBot integrations (Registry, PortManager)
+5. Start API server on assigned port
+6. Register service with ZmartBot registry
+7. Begin health monitoring and metrics collection
+
+### Validation
+- GPT API connection established successfully
+- Service registered in ZmartBot registry
+- Health endpoint responding correctly
+
+## @step: document_processing_workflow
+Complete workflow for processing MDC/MDS documents
+
+### Process
+1. Receive document content via API or file system
+2. Parse document structure and extract components
+3. Validate document completeness and quality
+4. Enhance document if quality score below threshold
+5. Generate additional documentation if requested
+6. Store processed documents with metadata
+7. Return processed results with validation report
+
+### Validation
+- Document parsing completed without errors
+- Validation score meets minimum requirements
+- Enhanced documents maintain original structure
+
+## @step: service_integration
+Integrate with ZmartBot ecosystem services
+
+### Process
+1. Connect to Service Registry for service discovery
+2. Initialize Port Manager client for port management
+3. Setup orchestration hooks for lifecycle management
+4. Configure monitoring and metrics collection
+5. Establish health check endpoints
+6. Register service capabilities and endpoints
+7. Begin inter-service communication
+
+### Validation
+- All ZmartBot services discoverable through registry
+- Port assignments managed correctly
+- Health checks passing for all integrations
+
+## Variables
+- `{{SERVICE_PORT}}`: Service port (default: 8700)
+- `{{OPENAI_API_KEY}}`: OpenAI API key for GPT access
+- `{{REGISTRY_URL}}`: ZmartBot service registry URL
+- `{{CACHE_ENABLED}}`: Enable intelligent caching (default: true)
+- `{{PRIMARY_MODEL}}`: Primary GPT model (default: gpt-4o)
+- `{{FALLBACK_MODEL}}`: Fallback GPT model (default: gpt-4o-mini)
+- `{{TEMPLATE_DIR}}`: Directory for MDC/MDS templates
+- `{{OUTPUT_DIR}}`: Output directory for generated documents
+
+## Connections
+- **Service Registry** (registry): Service discovery and registration
+- **Port Manager** (database): Port assignment and management
+- **Orchestration Service** (orchestration): Lifecycle management
+- **OpenAI API** (external): GPT model access for document processing
+- **File System** (storage): Template and document storage
+- **Metrics Collector** (monitoring): Performance and usage metrics
+
+## Architecture & Integration
+- **Service Type:** Core Infrastructure
+- **Dependencies:** OpenAI API, Service Registry, Port Manager
+- **Data Flow:** Document Input → GPT Processing → Enhanced Output
+- **Caching:** TTL-based cache for API responses and processed documents
+- **Error Handling:** Retry logic, fallback models, graceful degradation
+- **Monitoring:** Prometheus metrics, structured logging, health checks
+
+## API Endpoints
+- `POST /api/v1/process` - Process MDC/MDS document
+- `POST /api/v1/generate` - Generate new documentation
+- `POST /api/v1/enhance` - Enhance existing document
+- `GET /api/v1/validate` - Validate document structure
+- `GET /health` - Health check endpoint
+- `GET /metrics` - Prometheus metrics
+- `GET /api/v1/models` - Available GPT models
+- `GET /api/v1/stats` - Processing statistics
+
+
+## Triggers
+- **API endpoint requests**
+- **Database events**
+- **Workflow transitions**
+
+## Health & Readiness
+- **Liveness**: OpenAI API connectivity test
+- **Readiness**: All components initialized and registry connected
+- **Metrics**: Request latency, success rates, cache hit rates
+- **Alerts**: API failures, high error rates, cache overflow
+
+## Lifecycle Management
+- **Start**: `python3 /Users/dansidanutz/Desktop/ZmartBot/services/gpt-mds-agent/src/main.py`
+- **Stop**: `pkill -f gpt-mds-agent`
+- **Health**: `curl http://localhost:8700/health`
+- **Logs**: `/Users/dansidanutz/Desktop/ZmartBot/services/gpt-mds-agent/logs/service.log`
+
+## Configuration Files
+- **Main Config**: `config/default.yaml`
+- **Environment**: `.env`
+- **Templates**: `templates/*.jinja2`
+- **Docker**: `docker-compose.yml`
+
+## Security & Compliance
+- **API Key Management**: Secure environment variable storage
+- **Rate Limiting**: Per-minute request limits to OpenAI
+- **Input Validation**: Comprehensive document structure validation
+- **Error Handling**: Sanitized error responses, no key exposure
+- **Audit Trail**: Complete processing history with timestamps
+
+## Monitoring & Observability
+- **Metrics**: Prometheus-compatible metrics endpoint
+- **Logging**: Structured JSON logging with correlation IDs
+- **Tracing**: Request tracing through processing pipeline
+- **Alerts**: Service health, API quota usage, error rates
+- **Dashboards**: Grafana dashboards for service monitoring
+
+## Error Handling & Recovery
+- **Model Fallback**: Automatic fallback to secondary GPT models
+- **Retry Logic**: Exponential backoff for API failures
+- **Graceful Degradation**: Continue with reduced functionality during outages
+- **Circuit Breaker**: Prevent cascade failures from external API issues
+- **Recovery**: Automatic service recovery and re-registration
+
+## Performance Optimization
+- **Intelligent Caching**: TTL-based cache for processed documents
+- **Model Selection**: Automatic model selection based on complexity
+- **Batch Processing**: Support for bulk document processing
+- **Async Operations**: Non-blocking I/O for all operations
+- **Resource Management**: Memory and connection pooling
+
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Database connectivity**
+- ✅ **Complete MDC documentation**
+- ✅ **Health endpoint implementation**
+- ✅ **Master Orchestration integration**
+
+
+---
+*Generated by ZmartBot Infrastructure Team - Production Ready v1.0.0*

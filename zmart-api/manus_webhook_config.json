@@ -1,0 +1,8 @@
+{
+  "webhook_id": "G8ZTdNoaKfPyqCtQsTBSQo",
+  "webhook_url": "http://0.0.0.0:8000/api/webhooks/manus",
+  "registered_at": "2025-09-14T03:08:53.781230",
+  "response": {
+    "webhook_id": "G8ZTdNoaKfPyqCtQsTBSQo"
+  }
+}

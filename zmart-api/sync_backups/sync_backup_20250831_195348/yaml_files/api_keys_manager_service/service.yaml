@@ -1,0 +1,16 @@
+service_name: api-keys-manager-service
+service_type: backend
+port: 8027
+description: "ZmartBot API Keys Manager Service"
+status: ACTIVE
+passport_id: ZMBT-SRV-20250826-3B1EF4
+registered_at: "2025-08-26"
+health_url: "http://localhost:8027/health"
+start_cmd: "python3 api_keys_manager_service.py"
+stop_cmd: "pkill -f 'api_keys_manager_service.py'"
+dependencies:
+  - zmart-api
+tags:
+  - api-keys
+  - backend
+  - security

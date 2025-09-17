@@ -1,0 +1,17 @@
+service_name: zmart-analytics
+service_type: backend
+port: 8007
+description: "ZmartBot analytics and data processing service"
+status: ACTIVE
+passport_id: ZMBT-SRV-20250826-6E0D70
+registered_at: "2025-08-26"
+health_url: "http://localhost:8007/health"
+start_cmd: "python3 zmart_analytics.py"
+stop_cmd: "pkill -f 'zmart_analytics.py'"
+dependencies:
+  - zmart-api
+  - database
+tags:
+  - analytics
+  - data_processing
+  - backend

@@ -1,0 +1,33 @@
+{
+  "symbol": "XLM",
+  "symbol_name": "Stellar",
+  "birth_date": "2014-07-31",
+  "current_date": "2025-09-14",
+  "total_days": 4063,
+  "actual_age_days": 4063,
+  "risk_bands": {
+    "0.0-0.1": 121,
+    "0.1-0.2": 406,
+    "0.2-0.3": 528,
+    "0.3-0.4": 650,
+    "0.4-0.5": 812,
+    "0.5-0.6": 893,
+    "0.6-0.7": 528,
+    "0.7-0.8": 284,
+    "0.8-0.9": 162,
+    "0.9-1.0": 81
+  },
+  "current_risk_band": "0.5-0.6",
+  "confidence_level": 7,
+  "data_type": "estimated",
+  "0.0-0.1_percentage": 2.98,
+  "0.1-0.2_percentage": 9.99,
+  "0.2-0.3_percentage": 13.0,
+  "0.3-0.4_percentage": 16.0,
+  "0.4-0.5_percentage": 19.99,
+  "0.5-0.6_percentage": 21.98,
+  "0.6-0.7_percentage": 13.0,
+  "0.7-0.8_percentage": 6.99,
+  "0.8-0.9_percentage": 3.99,
+  "0.9-1.0_percentage": 1.99
+}

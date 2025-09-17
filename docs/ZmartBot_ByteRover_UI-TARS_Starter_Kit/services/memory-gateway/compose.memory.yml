@@ -1,0 +1,18 @@
+services:
+  memory-gateway:
+    image: node:20
+    container_name: zmart-memory-gateway
+    working_dir: /srv/cipher
+    command: bash -lc "npx @byterover/cipher start --port 8295 --data ./.data"
+    ports:
+      - "8295:8295"
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ./data:/srv/cipher/.data
+    healthcheck:
+      test: ["CMD", "bash", "-lc", "curl -fsS http://127.0.0.1:8295/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 10

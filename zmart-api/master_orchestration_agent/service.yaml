@@ -1,0 +1,28 @@
+service_name: master-orchestration-agent
+service_type: orchestration
+port: 8002
+description: "Master orchestration agent managing all system services"
+status: ACTIVE
+passport_id: ZMBT-AGT-20250826-430BAD
+registered_at: "2025-08-26"
+health_url: "http://localhost:8002/health"
+start_cmd: "python3 master_orchestration_agent.py"
+stop_cmd: "pkill -f 'master_orchestration_agent.py'"
+dependencies:
+  - service_registry
+  - port_registry
+tags:
+  - orchestration
+  - management
+  - core
+
+
+
+
+
+
+
+
+
+
+

@@ -1,70 +1,7 @@
 # 🏦 KuCoin Service - Trading Platform Integration
 
-## Purpose
-KuCoin API integration service for trading operations, account management, and real-time market data access in the ZmartBot trading system.
 
-## Critical Functions
-- **Trading Operations**: Buy/sell order execution and management
-- **Account Management**: Account information and balance tracking
-- **Market Data**: Real-time market data and order book access
-- **Portfolio Management**: Portfolio tracking and position management
-- **Risk Management**: Position sizing and risk control
-- **Order Management**: Order placement, modification, and cancellation
 
-## API Endpoints
-- **Trading**: Order placement and management
-- **Account**: Account information and balances
-- **Market Data**: Real-time market data feeds
-- **Portfolio**: Portfolio and position management
-- **Risk Management**: Risk control and position sizing
-
-## Key Features
-- **Real-time Trading**: Live order execution and management
-- **Account Integration**: Full account access and management
-- **Portfolio Tracking**: Real-time portfolio monitoring
-- **Risk Controls**: Built-in risk management features
-- **Order Management**: Comprehensive order lifecycle management
-- **Market Data**: Real-time market data integration
-
-## Trading Operations
-- **Order Execution**: Market and limit order execution
-- **Position Management**: Position tracking and management
-- **Risk Control**: Position sizing and risk management
-- **Order Modification**: Order modification and cancellation
-- **Trade History**: Complete trade history and analysis
-
-## Account Management
-- **Balance Tracking**: Real-time balance monitoring
-- **Account Information**: Account details and settings
-- **API Key Management**: Secure API key handling
-- **Permission Management**: API permission and scope management
-- **Security**: Account security and protection
-
-## Risk Management
-- **Position Sizing**: Automatic position sizing calculations
-- **Risk Limits**: Configurable risk limits and controls
-- **Stop Loss**: Automatic stop loss management
-- **Take Profit**: Take profit order management
-- **Portfolio Risk**: Portfolio-level risk management
-
-## Integration
-- **Trading Engine**: Order execution and management
-- **Portfolio Manager**: Portfolio tracking and analysis
-- **Risk Manager**: Risk control and management
-- **Alert System**: Trading alerts and notifications
-- **Database**: Trade history and account data storage
-
-## Configuration
-- **API Keys**: Secure API key configuration
-- **Trading Parameters**: Trading strategy parameters
-- **Risk Settings**: Risk management configurations
-- **Order Settings**: Order execution settings
-- **Account Settings**: Account-specific configurations
-
-## Status
-✅ **ACTIVE** - Core trading platform integration with comprehensive functionality
-
-description:
-globs:
-alwaysApply: true
----
+## Triggers
+- **API endpoint requests**
+- **Database events**

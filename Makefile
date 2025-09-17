@@ -1,4 +1,4 @@
-.PHONY: infra-up infra-down infra-logs diana-up diana-status
+.PHONY: infra-up infra-down infra-logs diana-up diana-status security-check security-full setup-security
 
 diana-up: infra-up diana-status
 	@echo "🚀 DIANA Platform ready in 2 minutes!"
@@ -69,3 +69,52 @@ diana-clean:
 	docker system prune -f
 
 diana-restart: diana-down diana-up
+
+# Security Check Commands
+security-check:
+	@echo "🔒 Running simple security check..."
+	@./simple_security_check.sh
+
+security-full:
+	@echo "🔒 Running comprehensive security scan..."
+	@./security_scan.sh --gitleaks-only
+
+setup-security:
+	@echo "🔧 Setting up daily security check..."
+	@./setup_daily_security.sh
+
+# Quick Commands
+start: security-check
+	@echo "🚀 Starting ZmartBot with security check..."
+	@./START_ZMARTBOT.sh
+
+check: security-check
+
+scan: security-full
+
+# Context Management Commands  
+cleanup-context:
+	@echo "🧹 Smart context optimization (preserves MDC Agent)..."
+	@./smart_context_optimizer.sh
+
+cleanup-context-aggressive:
+	@echo "🧹 Aggressive cleanup (may break MDC Agent)..."
+	@./cleanup_context.sh
+
+optimize-claude:
+	@echo "🎯 Optimizing CLAUDE.md..."
+	@cp CLAUDE.md CLAUDE_BACKUP.md 2>/dev/null || true
+	@cp CLAUDE_OPTIMIZED.md CLAUDE.md
+	@echo "✅ CLAUDE.md optimized"
+
+restore-claude:
+	@echo "🔄 Restoring original CLAUDE.md..."
+	@cp CLAUDE_BACKUP.md CLAUDE.md 2>/dev/null || echo "No backup found"
+
+context-status:
+	@echo "📊 Context System Status:"
+	@echo "CLAUDE.md size: $$(wc -c < CLAUDE.md) characters"
+	@echo "Context files: $$(find .claude/contexts -name '*.md' 2>/dev/null | wc -l) files"  
+	@echo "MDC files: $$(find .cursor/rules -name '*.mdc' 2>/dev/null | wc -l) files"
+	@echo "Total .claude size: $$(du -sh .claude/ 2>/dev/null | cut -f1 || echo 'N/A')"
+	@echo "Background processes: $$(ps aux | grep -c 'mdc_agent\|context' | grep -v grep || echo '0')"

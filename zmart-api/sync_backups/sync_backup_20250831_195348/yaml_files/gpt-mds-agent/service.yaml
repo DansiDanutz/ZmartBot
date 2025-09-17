@@ -1,0 +1,79 @@
+service:
+  name: gpt-mds-agent
+  version: 1.0.0
+  type: core_infrastructure
+  port: 8700
+  host: 0.0.0.0
+  description: GPT-powered MDC/MDS document processing and generation service
+  owner: platform_team
+openai:
+  api_key: ${OPENAI_API_KEY}
+  org_id: ${OPENAI_ORG_ID}
+  models:
+    primary: gpt-4o
+    fallback: gpt-4o-mini
+    advanced: gpt-4-turbo
+    future: gpt-5
+  settings:
+    temperature: 0.1
+    max_tokens: 4000
+    timeout: 30
+    max_retries: 3
+    retry_delay: 1
+    rate_limit: 60
+mdc:
+  output_dir: .cursor/rules/services
+  mds_output_dir: .cursor/rules/systems
+  template_dir: templates
+  validation_enabled: true
+  auto_enhance: true
+cache:
+  enabled: true
+  type: memory
+  ttl: 3600
+  max_size: 100
+  redis:
+    host: localhost
+    port: 6379
+    db: 0
+integrations:
+  registry:
+    url: http://localhost:8610
+    token: ${REGISTRY_TOKEN}
+    timeout: 10
+    auto_register: true
+  port_manager:
+    db_path: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/data/port_registry.db
+    service_type: backend
+  orchestration:
+    url: http://localhost:8002
+    enabled: true
+database:
+  path: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/data/gpt_mds.db
+  backup_enabled: true
+  backup_interval: 3600
+logging:
+  level: INFO
+  format: json
+  file: logs/gpt-mds-agent.log
+  max_size: 100MB
+  backup_count: 5
+monitoring:
+  metrics:
+    enabled: true
+    port: 9700
+    path: /metrics
+  health:
+    enabled: true
+    path: /health
+    checks:
+    - name: openai_connection
+      critical: true
+    - name: database_connection
+      critical: true
+    - name: registry_connection
+      critical: false
+  tracing:
+    enabled: true
+    service_name: gpt-mds-agent
+service_name: gpt-mds-agent

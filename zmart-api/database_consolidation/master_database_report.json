@@ -1,0 +1,94 @@
+{
+  "timestamp": "2025-08-31T16:17:51.431474",
+  "summary": {
+    "total_databases": 95,
+    "duplicate_databases": 30,
+    "unique_databases": 65,
+    "total_size_mb": 93.16
+  },
+  "type_breakdown": {
+    "ANALYTICS": 2,
+    "ARCHIVE": 2,
+    "AUTHENTICATION": 2,
+    "CRYPTOCURRENCY": 5,
+    "GAMIFICATION": 2,
+    "GOVERNANCE": 1,
+    "MACHINE_LEARNING": 12,
+    "OPERATIONAL": 34,
+    "REGISTRY": 13,
+    "RISK_MANAGEMENT": 19,
+    "TESTING": 3
+  },
+  "recent_duplicates": [
+    {
+      "similarity": 1.0,
+      "type": "EXACT_SCHEMA",
+      "date": "2025-08-31 13:17:51",
+      "database1": "passport_registry.db",
+      "database2": "service_registry.db"
+    },
+    {
+      "similarity": 1.0,
+      "type": "EXACT_SCHEMA",
+      "date": "2025-08-31 13:17:51",
+      "database1": "passport_registry.db",
+      "database2": "comprehensive_riskmetric.db"
+    },
+    {
+      "similarity": 1.0,
+      "type": "EXACT_SCHEMA",
+      "date": "2025-08-31 13:17:51",
+      "database1": "passport_registry.db",
+      "database2": "risk_bands.db"
+    },
+    {
+      "similarity": 1.0,
+      "type": "EXACT_SCHEMA",
+      "date": "2025-08-31 13:17:51",
+      "database1": "passport_registry.db",
+      "database2": "port_registry.db"
+    },
+    {
+      "similarity": 1.0,
+      "type": "EXACT_SCHEMA",
+      "date": "2025-08-31 13:17:51",
+      "database1": "passport_registry.db",
+      "database2": "discovery_registry.db"
+    },
+    {
+      "similarity": 1.0,
+      "type": "EXACT_SCHEMA",
+      "date": "2025-08-31 13:17:51",
+      "database1": "passport_registry.db",
+      "database2": "service_registry.db"
+    },
+    {
+      "similarity": 1.0,
+      "type": "EXACT_SCHEMA",
+      "date": "2025-08-31 13:17:51",
+      "database1": "passport_registry.db",
+      "database2": "GOODDatabase.db"
+    },
+    {
+      "similarity": 1.0,
+      "type": "EXACT_SCHEMA",
+      "date": "2025-08-31 13:17:51",
+      "database1": "passport_registry.db",
+      "database2": "master_database_registry.db"
+    },
+    {
+      "similarity": 1.0,
+      "type": "EXACT_SCHEMA",
+      "date": "2025-08-31 13:17:51",
+      "database1": "passport_registry.db",
+      "database2": "my_symbols_v2.db"
+    },
+    {
+      "similarity": 1.0,
+      "type": "EXACT_SCHEMA",
+      "date": "2025-08-31 13:17:51",
+      "database1": "passport_registry.db",
+      "database2": "riskmetric.db"
+    }
+  ]
+}

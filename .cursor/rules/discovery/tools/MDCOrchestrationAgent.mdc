@@ -1,0 +1,1864 @@
+# Mdcorchestrationagent - Merged MDC Configuration
+
+## 🔗 Merged from 4 duplicate files
+**Merged Files**: MDCOrchestrationAgent.mdc, MasterOrchestrationAgent.mdc, mdc_orchestration_agent.mdc, mdc-orchestration-agent.mdc
+**Merge Date**: 2025-08-27 10:39:58
+**Primary Source**: MDCOrchestrationAgent.mdc
+
+## 📋 Primary Configuration
+# Mdcorchestrationagent - Merged MDC Configuration
+
+## 🔗 Merged from 4 duplicate files
+**Merged Files**: MDCOrchestrationAgent.mdc, MasterOrchestrationAgent.mdc, mdc_orchestration_agent.mdc, mdc-orchestration-agent.mdc
+**Merge Date**: 2025-08-26 09:03:52
+**Primary Source**: MDCOrchestrationAgent.mdc
+
+## 📋 Primary Configuration
+# 🎯 MDC Orchestration Agent - AI-Powered Service Documentation & Connection Discovery
+> Type: backend | Version: 2.0.0 | Owner: zmartbot | Port: 8615
+
+## Purpose
+AI-powered orchestration agent for automated MDC (Machine Documentation Code) generation, service connection discovery, context optimization, and intelligent documentation enhancement using ChatGPT-5/GPT-4 integration.
+
+## Overview
+Specialized orchestration service that manages MDC documentation lifecycle, discovers service relationships through AI analysis, generates comprehensive service documentation, and provides intelligent context optimization for the entire ZmartBot ecosystem.
+
+## Critical Functions
+- **AI-Powered MDC Generation**: Automated service documentation using ChatGPT-5/GPT-4
+- **Connection Discovery**: Intelligent analysis of service relationships and dependencies
+- **Context Optimization**: Smart CLAUDE.md context management and optimization
+- **Service Documentation**: Comprehensive MDC file generation for all services
+- **Relationship Mapping**: Automated service dependency and integration mapping
+- **Content Enhancement**: AI-powered improvement of existing documentation
+- **Task Orchestration**: Background task management for documentation workflows
+- **API Integration**: Centralized API key management for AI services
+
+## Architecture & Integration
+- **Service Type:** backend
+- **Dependencies:** api-keys-manager-service (Port 8006), service-registry, port-registry
+- **Env Vars:** OPENAI_API_KEY, MDC_BASE_PATH, ORCHESTRATION_PORT, SERVICE_REGISTRY_URL
+- **Lifecycle:** start=`python3 mdc_orchestration_agent.py --port 8615` | stop=`pkill -f mdc_orchestration_agent` | migrate=`n/a`
+
+## Architecture
+- **AI Engine**: ChatGPT-5/GPT-4 integration for intelligent documentation
+- **Connection Analyzer**: Service relationship discovery and mapping
+- **Context Optimizer**: CLAUDE.md smart context management
+- **Task Manager**: Background task orchestration and queue management
+- **MDC Generator**: Automated service documentation creation
+- **API Manager**: Centralized API key and service management
+- **File System Monitor**: Real-time file change detection and analysis
+- **Relationship Graph**: Service dependency visualization and management
+
+## Key Features
+- **Intelligent Documentation**: AI-powered MDC generation with context awareness
+- **Real-time Discovery**: Live service connection and dependency analysis
+- **Smart Optimization**: Context-aware CLAUDE.md optimization
+- **Multi-format Support**: MDC, JSON, YAML, and custom documentation formats
+- **Background Processing**: Asynchronous task management for large operations
+- **Version Control**: Comprehensive change tracking and rollback capabilities
+- **Integration Hooks**: Seamless integration with existing orchestration systems
+- **Performance Analytics**: Documentation quality and system performance metrics
+
+## Service Management
+- **MDC Dashboard Integration**: Real-time dashboard updates and status reporting
+- **Service Registry Sync**: Automatic synchronization with service registry
+- **Port Management Integration**: Dynamic port assignment coordination
+- **Database Orchestration**: Documentation storage and retrieval management
+- **Error Recovery**: Automatic error detection and recovery for documentation tasks
+- **Health Monitoring**: Continuous health checks and performance monitoring
+
+## API Endpoints
+
+### GET /health
+- Summary: MDC orchestration agent health check
+- Auth Required: No
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: Health status with AI service connectivity
+  - 503: Service or AI integration unavailable
+
+### GET /status
+- Summary: Get MDC orchestration agent status
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: Orchestration status and task queue information
+  - 401: Authentication required
+
+### POST /mdc/generate
+- Summary: Generate MDC documentation for a service
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{"service_name": "string", "service_path": "string", "analysis_depth": "string"}`
+- Responses:
+  - 200: MDC generation task created successfully
+  - 400: Invalid service parameters
+  - 401: Authentication required
+  - 503: AI service unavailable
+
+### POST /mdc/generate/all
+- Summary: Generate MDC documentation for all services
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{"force_regenerate": "boolean", "exclude_services": ["string"]}`
+- Responses:
+  - 200: Bulk MDC generation started
+  - 400: Invalid generation parameters
+  - 401: Authentication required
+  - 503: AI service unavailable
+
+### POST /mdc/enhance
+- Summary: Enhance existing MDC with ChatGPT analysis
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{"service_name": "string", "enhancement_type": "string", "existing_content": "string"}`
+- Responses:
+  - 200: Enhancement task created successfully
+  - 400: Invalid enhancement parameters
+  - 401: Authentication required
+  - 503: AI service unavailable
+
+### POST /connections/discover/{service_name}
+- Summary: Discover connections for a specific service
+- Auth Required: Yes
+- Request:
+  - Params: `{"service_name": "string"}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: Connection discovery started for service
+  - 400: Invalid service name
+  - 401: Authentication required
+  - 404: Service not found
+
+### POST /connections/discover/all
+- Summary: Full system connection discovery
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{"analysis_depth": "string", "include_dependencies": "boolean"}`
+- Responses:
+  - 200: Full connection discovery started
+  - 400: Invalid discovery parameters
+  - 401: Authentication required
+  - 503: Service registry unavailable
+
+### GET /connections/{service_name}
+- Summary: Get discovered connections for a service
+- Auth Required: Yes
+- Request:
+  - Params: `{"service_name": "string"}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: Service connection information
+  - 400: Invalid service name
+  - 401: Authentication required
+  - 404: No connections found
+
+### POST /context/optimize
+- Summary: Optimize CLAUDE.md context file
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{"focus_domain": "string", "max_size": "int", "include_patterns": ["string"]}`
+- Responses:
+  - 200: Context optimization completed
+  - 400: Invalid optimization parameters
+  - 401: Authentication required
+  - 503: File system error
+
+### GET /tasks/{task_id}
+- Summary: Get task status and results
+- Auth Required: Yes
+- Request:
+  - Params: `{"task_id": "string"}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: Task status and results
+  - 400: Invalid task ID
+  - 401: Authentication required
+  - 404: Task not found
+
+### POST /tasks/{task_id}/cancel
+- Summary: Cancel a running task
+- Auth Required: Yes
+- Request:
+  - Params: `{"task_id": "string"}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: Task cancelled successfully
+  - 400: Invalid task ID or task not cancellable
+  - 401: Authentication required
+  - 404: Task not found
+
+### GET /api/ai/models
+- Summary: Get available AI models and status
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: AI models and availability status
+  - 401: Authentication required
+  - 503: AI service integration unavailable
+
+## AI Integration
+- **OpenAI API Integration**: ChatGPT-5/GPT-4 for intelligent documentation
+- **Centralized API Management**: Integration with api-keys-manager-service
+- **Model Selection**: Automatic best model selection based on task complexity
+- **Token Management**: Efficient token usage and cost optimization
+- **Rate Limiting**: Intelligent rate limiting and request queuing
+- **Error Handling**: Robust error handling and fallback mechanisms
+
+## Health & Readiness
+- Liveness: `/health`
+- Readiness: `/status`  
+- Timeouts: startup_grace=45s, http_timeout=60s, ai_timeout=120s
+
+## Observability
+- Metrics: `/metrics` - Task completion rates, AI response times, error rates
+- Logs: format=jsonl - Comprehensive logging with task correlation IDs
+- Dashboards: MDC Generation Performance, AI Integration Health, Service Discovery Analytics
+
+## Task Management
+- **Background Tasks**: Asynchronous processing for long-running operations
+- **Task Queue**: Priority-based task scheduling and execution
+- **Progress Tracking**: Real-time task progress and status updates
+- **Error Recovery**: Automatic retry mechanisms for failed tasks
+- **Resource Management**: Memory and CPU optimization for AI operations
+- **Concurrent Processing**: Multi-threaded task execution for improved performance
+
+## Connection Discovery Engine
+- **Static Analysis**: Code parsing for import statements and dependencies
+- **Dynamic Analysis**: Runtime dependency detection through API calls
+- **Pattern Recognition**: AI-powered pattern recognition for implicit connections
+- **Graph Generation**: Automated service dependency graph creation
+- **Relationship Scoring**: Connection strength and importance scoring
+- **Visualization Data**: Graph data generation for dashboard visualization
+
+## Context Optimization
+- **Smart Compression**: Intelligent content reduction while preserving key information
+- **Relevance Scoring**: AI-powered relevance assessment for content inclusion
+- **Performance Monitoring**: Real-time performance impact assessment
+- **Backup Management**: Automated backup and rollback capabilities
+- **Domain Focusing**: Context optimization based on current development focus
+- **Update Scheduling**: Intelligent scheduling of context updates
+
+## Error Recovery & Resilience
+- **AI Service Fallback**: Graceful degradation when AI services are unavailable
+- **Local Processing**: Local analysis capabilities for basic operations
+- **Task Persistence**: Task state persistence across service restarts
+- **Rate Limit Handling**: Intelligent handling of API rate limits
+- **Connection Retry**: Smart retry mechanisms for network failures
+- **Data Validation**: Comprehensive validation of generated content
+
+## Integration Points
+- **MDC Dashboard Server**: Real-time status updates and task notifications
+- **Service Registry**: Service discovery and registration synchronization
+- **Port Registry**: Dynamic port assignment coordination
+- **API Keys Manager**: Secure API key retrieval and management
+- **File System Watcher**: Real-time file change monitoring and analysis
+- **Database Systems**: Documentation storage and retrieval coordination
+
+## Configuration
+- **AI Model Settings**: Model selection and parameter configuration
+- **Generation Templates**: Customizable MDC generation templates
+- **Discovery Rules**: Service connection discovery configuration
+- **Optimization Thresholds**: Context optimization trigger thresholds
+- **Integration Settings**: External service integration configuration
+- **Performance Tuning**: Task execution and resource management settings
+
+## Performance & SLO
+- **MDC Generation**: Target p95 < 30s for standard services, < 120s for complex services
+- **Connection Discovery**: Target p95 < 60s for full system scan
+- **Context Optimization**: Target p95 < 15s for optimization completion
+- **AI Response Time**: Target p95 < 10s for ChatGPT API calls
+- **Task Queue Processing**: Target p95 < 5s for task queue operations
+- **Health Check**: Target p95 < 1s for health endpoint response
+
+## Security & Authentication
+- **API Key Security**: Secure retrieval and storage of AI service API keys
+- **Request Validation**: Comprehensive input validation and sanitization
+- **Access Control**: Role-based access control for sensitive operations
+- **Audit Logging**: Comprehensive audit trail for all operations
+- **Rate Limiting**: Protection against abuse and excessive usage
+- **Content Filtering**: AI-generated content validation and filtering
+
+## Service Registration Preparation
+- **Port Assignment**: Ready for dynamic port assignment via service registry
+- **Dependency Declaration**: Explicit dependency on api-keys-manager-service
+- **Health Check Integration**: Full health check and readiness probe support
+- **Metrics Exposure**: Prometheus-compatible metrics endpoint
+- **Logging Integration**: Structured logging compatible with centralized logging
+- **Configuration Management**: Environment-based configuration support
+
+## Startup Sequence
+1. **Configuration Validation**: Validate all required environment variables and configurations
+2. **API Key Retrieval**: Retrieve OpenAI API key from centralized API management
+3. **Service Registration**: Register with service registry and request port assignment
+4. **Health Check Setup**: Initialize health check endpoints and monitoring
+5. **Task Queue Initialization**: Initialize background task processing system
+6. **AI Service Validation**: Validate AI service connectivity and model availability
+7. **File System Monitoring**: Start file system monitoring for real-time updates
+8. **Integration Testing**: Perform integration tests with dependent services
+
+## Failure Modes & Runbooks
+- **ai-service-unavailable** — Symptoms: AI API calls failing, 503 responses — Remediation: Check API key validity, verify OpenAI service status, switch to fallback processing
+- **task-queue-overflow** — Symptoms: Task queue full, 429 responses — Remediation: Increase task processing capacity, implement task prioritization, clear stuck tasks
+- **context-optimization-failure** — Symptoms: CLAUDE.md corruption, backup restoration — Remediation: Restore from backup, validate file integrity, restart optimization process
+- **service-discovery-timeout** — Symptoms: Connection discovery taking too long — Remediation: Reduce analysis scope, increase timeout limits, check file system performance
+- **api-key-rotation-failure** — Symptoms: Authentication failures after key rotation — Remediation: Verify new API key, restart service, update key in management system
+
+## Rollback
+- Snapshot required: Yes (MDC files, configuration, task queue state)
+- Playbook: isolate → backup_current_state → restore_latest_snapshot → validate_ai_connectivity → reactivate
+
+## Load Balancing
+- Enabled: No (Single instance with internal task distribution)
+- Pool: null
+- Notes: Uses internal task queue for load distribution across AI operations
+
+## Service Dependencies
+- **REQUIRED**: api-keys-manager-service (Port 8006) - API key retrieval
+- **REQUIRED**: service-registry - Service discovery and registration
+- **REQUIRED**: port-registry - Dynamic port assignment
+- **OPTIONAL**: mdc-dashboard-server (Port 5000) - Dashboard integration
+- **OPTIONAL**: master-orchestration-agent (Port 8002) - System coordination
+
+## Environment Variables
+- **OPENAI_API_KEY**: OpenAI API key (retrieved from api-keys-manager-service)
+- **MDC_BASE_PATH**: Base path for MDC file operations (default: /Users/dansidanutz/Desktop/ZmartBot/.cursor/rules)
+- **ORCHESTRATION_PORT**: Service port (assigned by port registry, default: 8615)
+- **SERVICE_REGISTRY_URL**: Service registry connection URL
+- **LOG_LEVEL**: Logging level (default: INFO)
+- **TASK_QUEUE_SIZE**: Maximum task queue size (default: 100)
+- **AI_REQUEST_TIMEOUT**: AI API request timeout in seconds (default: 120)
+- **CONTEXT_MAX_SIZE**: Maximum CLAUDE.md size in characters (default: 40000)
+
+## Monitoring & Alerts
+- **Task Completion Rate**: Monitor successful task completion percentage
+- **AI Service Response Time**: Track AI API response times and availability
+- **Queue Depth**: Monitor task queue depth and processing rate
+- **Error Rate**: Track error rates and types for proactive resolution
+- **Resource Usage**: Monitor CPU, memory, and disk usage during operations
+- **Service Health**: Continuous health monitoring with alerting
+
+## Status
+🚀 **READY FOR REGISTRATION** - Comprehensive AI-powered MDC orchestration service prepared for dynamic port assignment and service integration
+
+## Changelog
+- 2.0.0 (2025-08-26): Complete redesign for service registration with AI integration, connection discovery, and context optimization
+- 1.1.0 (2025-08-25): Added ChatGPT integration and enhanced documentation capabilities
+- 1.0.0 (2025-08-24): Initial MDC orchestration service with basic documentation generation
+
+## Registration Notes
+This service is fully prepared for registration using StopStartCycle.mdc and NewService.mdc processes:
+- All dependencies clearly defined
+- Port assignment ready (target: 8615)
+- Health checks implemented
+- Configuration management complete
+- Integration points documented
+- Failure modes and runbooks defined
+
+---
+*Prepared for service registration on 2025-08-26 - Ready for dynamic port assignment and system integration*
+
+
+## Service Connections & Dependencies
+
+### Current Active Connections
+- **port-8615** ✅ **ACTIVE** - network connection
+- ****** ✅ **ACTIVE** - dependency connection
+- **service-registry** ✅ **ACTIVE** - dependency connection
+- **port-registry** ✅ **ACTIVE** - dependency connection
+- **port-8002** ✅ **ACTIVE** - network connection
+- ****** ✅ **ACTIVE** - dependency connection
+- **port-8615** ✅ **ACTIVE** - network connection
+- ****** ✅ **ACTIVE** - dependency connection
+
+### Potential Connections
+- **update-master-orchestration** ⏳ **POTENTIAL** - High-potential integration between MDCOrchestrationAgent and update-master-orchestration - Strong synergy opportunity (Confidence: 100%)
+- **orchestration_learning_summary** ⏳ **POTENTIAL** - High-potential integration between MDCOrchestrationAgent and orchestration_learning_summary - Strong synergy opportunity (Confidence: 100%)
+- **MasterOrchestrationAgent** ⏳ **POTENTIAL** - High-potential integration between MDCOrchestrationAgent and MasterOrchestrationAgent - Strong synergy opportunity (Confidence: 100%)
+- **MDCAgent** ⏳ **POTENTIAL** - High-potential integration between MDCOrchestrationAgent and MDCAgent - Strong synergy opportunity (Confidence: 100%)
+- **OrchestrationStartWorkflow** ⏳ **POTENTIAL** - High-potential integration between MDCOrchestrationAgent and OrchestrationStartWorkflow - Strong synergy opportunity (Confidence: 100%)
+
+### Priority Connections
+- **optimization-target-5** 🔥 **PRIORITY #5** - Top #5 priority for system optimization - Score: 1.90 - Score: 1.00
+  - **Optimization Impact**: 0.90
+  - **Priority Score**: 0.50
+
+### Connection Summary
+- **Current Active**: 8
+- **Potential**: 5  
+- **Priority**: 1
+- **Total Discovered**: 14
+- **Last Discovery Scan**: Auto-updated on system initialization
+- **Discovery Method**: Multi-phase automated analysis with diamond pattern extraction
+- **Update Policy**: Real-time updates during workflow execution
+## 📄 Additional Content from MasterOrchestrationAgent.mdc
+# 🎯 Master Orchestration Agent - System Orchestration Controller
+> Type: backend | Version: 1.0.0 | Owner: zmartbot | Port: 8002
+
+## Purpose
+Central orchestration controller for ZmartBot system, managing service lifecycle, dependencies, health monitoring, and automated operations with comprehensive API endpoints and self-learning capabilities.
+
+## Overview
+ZmartBot orchestration service managing service lifecycle, dependencies, and system coordination with comprehensive dependency management and service coordination capabilities.
+
+## Critical Functions
+- **Service Lifecycle Management**: Start, stop, restart, and monitor all services
+- **Dependency Resolution**: Manages service dependencies and startup order
+- **Health Monitoring**: Real-time health checks for all system components
+- **Port Management**: Dynamic port assignment and conflict resolution
+- **Database Orchestration**: Manages all database connections and operations
+- **Error Recovery**: Automatic error detection and recovery mechanisms
+- **Performance Optimization**: Resource optimization and load balancing
+- **Self-Learning**: Continuously updates knowledge of all system services
+
+## Architecture & Integration
+- **Service Type:** backend
+- **Dependencies:** None (orchestrates other services)
+- **Env Vars:** ORCHESTRATION_TOKEN, SERVICE_REGISTRY_URL
+- **Lifecycle:** start=`python3 orchestration_server.py --port 8002` | stop=`pkill -f orchestration_server` | migrate=`n/a`
+
+## Architecture
+- **Central Controller**: Main orchestration logic and decision making
+- **Service Registry**: Tracks all services and their states
+- **Health Monitor**: Continuous health checking and alerting
+- **Port Manager**: Dynamic port allocation and management
+- **Database Orchestrator**: Database connection and operation management
+- **Error Handler**: Error detection, logging, and recovery
+
+## Key Features
+- **Intelligent Startup**: Optimized service startup sequence
+- **Real-time Monitoring**: Continuous health and performance monitoring
+- **Automatic Recovery**: Self-healing capabilities for failed services
+- **Resource Management**: Efficient resource allocation and cleanup
+- **Scalability**: Support for multiple services and configurations
+- **Logging**: Comprehensive logging and audit trails
+- **Self-Learning**: Updates service knowledge automatically
+
+## Service Management
+- **Backend API Server**: Port 8000 management and monitoring
+- **Frontend Dashboard**: Port 3400 management and monitoring
+- **Database Services**: All database connections and operations
+- **Monitoring Services**: Health checks and performance monitoring
+- **Security Services**: Authentication and authorization management
+
+## API Endpoints
+
+### GET /health
+- Summary: Orchestration service health check
+- Auth Required: No
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: Health status
+  - 503: Service unavailable
+
+### GET /ready
+- Summary: Orchestration service readiness check
+- Auth Required: No
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: Ready status
+  - 503: Not ready
+
+### GET /api/orchestration/status
+- Summary: Get orchestration system status
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: Orchestration status information
+  - 401: Authentication required
+
+### GET /api/orchestration/services
+- Summary: Get all managed services
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: List of managed services
+  - 401: Authentication required
+
+### POST /api/orchestration/services/{service_name}/start
+- Summary: Start a specific service
+- Auth Required: Yes
+- Request:
+  - Params: `{"service_name": "string"}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: Service started successfully
+  - 400: Invalid service name
+  - 401: Authentication required
+  - 409: Service already running
+
+### POST /api/orchestration/services/{service_name}/stop
+- Summary: Stop a specific service
+- Auth Required: Yes
+- Request:
+  - Params: `{"service_name": "string"}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: Service stopped successfully
+  - 400: Invalid service name
+  - 401: Authentication required
+  - 404: Service not found
+
+### POST /api/orchestration/services/{service_name}/restart
+- Summary: Restart a specific service
+- Auth Required: Yes
+- Request:
+  - Params: `{"service_name": "string"}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: Service restarted successfully
+  - 400: Invalid service name
+  - 401: Authentication required
+  - 404: Service not found
+
+### GET /api/orchestration/dependencies
+- Summary: Get service dependency graph
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: Dependency graph data
+  - 401: Authentication required
+
+### POST /api/orchestration/dependencies/validate
+- Summary: Validate service dependencies
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{"services": ["string"]}`
+- Responses:
+  - 200: Dependency validation result
+  - 400: Invalid dependency configuration
+  - 401: Authentication required
+
+### GET /api/orchestration/ports
+- Summary: Get port assignment status
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: Port assignment information
+  - 401: Authentication required
+
+### POST /api/orchestration/ports/assign
+- Summary: Assign port to service
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{"service_name": "string", "port": "int"}`
+- Responses:
+  - 200: Port assigned successfully
+  - 400: Invalid port or service
+  - 401: Authentication required
+  - 409: Port already in use
+
+### GET /api/orchestration/logs/{service_name}
+- Summary: Get service logs
+- Auth Required: Yes
+- Request:
+  - Params: `{"service_name": "string"}`
+  - Query: `{"lines": "int", "follow": "boolean"}`
+  - Body: `{}`
+- Responses:
+  - 200: Service logs
+  - 400: Invalid service name
+  - 401: Authentication required
+  - 404: Service not found
+
+### POST /api/orchestration/rollback
+- Summary: Rollback system to previous snapshot
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{"snapshot_id": "string"}`
+- Responses:
+  - 200: Rollback initiated successfully
+  - 400: Invalid snapshot ID
+  - 401: Authentication required
+  - 404: Snapshot not found
+
+## Health Monitoring
+- **Service Health**: Real-time health status of all services
+- **Performance Metrics**: CPU, memory, and resource usage
+- **Error Tracking**: Error detection and alerting
+- **Response Time**: Service response time monitoring
+- **Availability**: Service availability tracking
+
+## Health & Readiness
+- Liveness: `/health`
+- Readiness: `/ready`
+- Timeouts: startup_grace=30s, http_timeout=45s
+
+## Observability
+- Metrics: `/metrics`
+- Logs: format=jsonl
+- Dashboards: Orchestration Performance, Service Dependencies
+
+## Error Recovery
+- **Automatic Restart**: Failed service restart mechanisms
+- **Fallback Procedures**: Alternative service configurations
+- **Error Logging**: Comprehensive error logging and reporting
+- **Alert System**: Error notification and alerting
+- **Recovery Procedures**: Step-by-step recovery processes
+
+## Orchestration & Ordering
+- Basic Integration: Enabled
+- Master Agent Linked: Yes
+- Ordering Hints: zmart-orchestration → zmart-api, zmart-orchestration → zmart-dashboard
+
+## Performance & SLO (Initial)
+- Baseline p95 (ms): 100
+- Notes: Orchestration service with dependency management and service coordination
+
+## Integration Points
+- **Service Registry**: Service discovery and registration
+- **Port Registry**: Port allocation and management
+- **Database Orchestrator**: Database operation management
+- **Health Checker**: Health monitoring and validation
+- **Logging System**: Centralized logging and monitoring
+
+## Configuration
+- **Service Configurations**: Individual service settings
+- **Dependency Mappings**: Service dependency definitions
+- **Health Check Rules**: Health monitoring configurations
+- **Error Recovery Rules**: Error handling configurations
+- **Performance Thresholds**: Performance monitoring settings
+
+## Failure Modes & Runbooks
+- **service-registry-failed** — Symptoms: Cannot register or discover services — Remediation: Check service registry connectivity, restart orchestration service
+- **dependency-cycle** — Symptoms: Circular dependency detected, services stuck in starting state — Remediation: Analyze dependency graph, resolve circular dependencies, restart affected services
+- **port-conflict** — Symptoms: Port already in use, service startup fails — Remediation: Check port availability, resolve conflicts, restart orchestration service
+
+## Rollback
+- Snapshot required: Yes
+- Playbook: isolate → restore_latest_snapshot → verify → reactivate
+
+## Load Balancing
+- Enabled: No
+- Pool: null
+
+
+
+## Service Connections & Dependencies
+
+### Current Active Connections
+- **port-8615** ✅ **ACTIVE** - network connection
+- ****** ✅ **ACTIVE** - dependency connection
+- **service-registry** ✅ **ACTIVE** - dependency connection
+- **port-registry** ✅ **ACTIVE** - dependency connection
+- **port-8002** ✅ **ACTIVE** - network connection
+- ****** ✅ **ACTIVE** - dependency connection
+- **port-8615** ✅ **ACTIVE** - network connection
+- ****** ✅ **ACTIVE** - dependency connection
+
+### Potential Connections
+- **update-master-orchestration** ⏳ **POTENTIAL** - High-potential integration between MDCOrchestrationAgent and update-master-orchestration - Strong synergy opportunity (Confidence: 100%)
+- **orchestration_learning_summary** ⏳ **POTENTIAL** - High-potential integration between MDCOrchestrationAgent and orchestration_learning_summary - Strong synergy opportunity (Confidence: 100%)
+- **MasterOrchestrationAgent** ⏳ **POTENTIAL** - High-potential integration between MDCOrchestrationAgent and MasterOrchestrationAgent - Strong synergy opportunity (Confidence: 100%)
+- **MDCAgent** ⏳ **POTENTIAL** - High-potential integration between MDCOrchestrationAgent and MDCAgent - Strong synergy opportunity (Confidence: 100%)
+- **OrchestrationStartWorkflow** ⏳ **POTENTIAL** - High-potential integration between MDCOrchestrationAgent and OrchestrationStartWorkflow - Strong synergy opportunity (Confidence: 100%)
+
+### Priority Connections
+- **optimization-target-5** 🔥 **PRIORITY #5** - Top #5 priority for system optimization - Score: 1.90 - Score: 1.00
+  - **Optimization Impact**: 0.90
+  - **Priority Score**: 0.50
+
+### Connection Summary
+- **Current Active**: 8
+- **Potential**: 5  
+- **Priority**: 1
+- **Total Discovered**: 14
+- **Last Discovery Scan**: Auto-updated on system initialization
+- **Discovery Method**: Multi-phase automated analysis with diamond pattern extraction
+- **Update Policy**: Real-time updates during workflow execution
+## Self-Learning Service Knowledge
+**Updated: 2025-08-25T12:22:19Z**
+
+### Currently Registered Services:
+1. **system-protection-service** (protection) - Port 8999 - Status: ✅ ACTIVE (REGISTERED)
+2. **optimization-claude-service** (optimization) - Port 8998 - Status: ✅ ACTIVE (REGISTERED)
+3. **snapshot-service** (critical_infrastructure) - Port 8085 - Status: ✅ ACTIVE (REGISTERED)
+2. **api-keys-manager-service** (backend) - Port 8006 - Status: ACTIVE
+2. **binance** (worker) - Port 8303 - Status: ACTIVE
+3. **kingfisher-module** (backend) - Port 8100 - Status: ACTIVE
+4. **kucoin** (worker) - Port 8302 - Status: ✅ ACTIVE (REGISTERED)
+5. **master-orchestration-agent** (orchestration) - Port 8002 - Status: ACTIVE
+6. **mdc-orchestration-agent** (orchestration) - Port 8615 - Status: ACTIVE
+7. **my-symbols-extended-service** (backend) - Port 8005 - Status: ACTIVE
+8. **mysymbols** (internal_api) - Port 8201 - Status: ✅ ACTIVE (REGISTERED)
+9. **port-manager-service** (orchestration) - Port 8610 - Status: ACTIVE
+10. **test-analytics-service** (backend) - Port 8003 - Status: ACTIVE
+11. **test-service** (worker) - Port 8301 - Status: ✅ ACTIVE (REGISTERED)
+12. **test-websocket-service** (backend) - Port 8004 - Status: ACTIVE
+13. **zmart-analytics** (backend) - Port 8007 - Status: ACTIVE
+14. **zmart-api** (backend) - Port 8000 - Status: ACTIVE
+15. **zmart-dashboard** (frontend) - Port 3400 - Status: ACTIVE
+16. **zmart-notification** (backend) - Port 8008 - Status: ACTIVE
+17. **zmart-websocket** (backend) - Port 8009 - Status: ACTIVE
+18. **zmart_alert_system** (backend) - Port 8012 - Status: ACTIVE
+19. **zmart_backtesting** (backend) - Port 8013 - Status: ACTIVE
+20. **zmart_data_warehouse** (backend) - Port 8015 - Status: ACTIVE
+21. **zmart_machine_learning** (backend) - Port 8014 - Status: ACTIVE
+22. **zmart_risk_management** (backend) - Port 8010 - Status: ACTIVE
+23. **zmart_technical_analysis** (backend) - Port 8011 - Status: ACTIVE
+
+### Service Categories:
+- **Backend Services**: api-keys-manager-service, kingfisher-module, my-symbols-extended-service, test-analytics-service, test-websocket-service, zmart-analytics, zmart-api, zmart-notification, zmart-websocket, zmart_alert_system, zmart_backtesting, zmart_data_warehouse, zmart_machine_learning, zmart_risk_management, zmart_technical_analysis
+- **Frontend Services**: zmart-dashboard
+- **Worker Services**: binance, kucoin, test-service
+- **Orchestration Services**: master-orchestration-agent, mdc-orchestration-agent, port-manager-service
+- **Internal_Api Services**: mysymbols
+
+### Dependency Mapping:
+- master-orchestration-agent → api-keys-manager-service
+- master-orchestration-agent → kingfisher-module
+- master-orchestration-agent → mdc-orchestration-agent
+- master-orchestration-agent → my-symbols-extended-service
+- master-orchestration-agent → port-manager-service
+- master-orchestration-agent → test-analytics-service
+- master-orchestration-agent → test-websocket-service
+- master-orchestration-agent → zmart-analytics
+- master-orchestration-agent → zmart-api
+- master-orchestration-agent → zmart-notification
+- master-orchestration-agent → zmart-websocket
+- master-orchestration-agent → zmart_alert_system
+- master-orchestration-agent → zmart_backtesting
+- master-orchestration-agent → zmart_data_warehouse
+- master-orchestration-agent → zmart_machine_learning
+- master-orchestration-agent → zmart_risk_management
+- master-orchestration-agent → zmart_technical_analysis
+- master-orchestration-agent → zmart-dashboard
+- master-orchestration-agent → binance
+- master-orchestration-agent → kucoin
+- master-orchestration-agent → test-service## Known Issues
+- None recorded
+
+## Duplicate Prevention & Validation
+**CRITICAL: This service manages all other services and must prevent duplicates**
+
+### Service Registration Validation Rules:
+1. **Port Conflict Detection**: Check port registry before assigning new ports
+2. **Service Name Validation**: Verify service names against existing registry
+3. **MDC File Duplication**: Check for existing MDC documentation
+4. **Process Validation**: Verify if service is already running
+5. **Registry Consistency**: Ensure service registry matches port registry
+
+### Standardized Service Name Mapping:
+- `zmart_orchestration` → `master_orchestration_agent` (Port 8002)
+- `zmart_dashboard` → `zmart-dashboard` (Port 3400)
+- `zmart_api` → `zmart-api` (Port 8000)
+- `my_symbols` → `mysymbols` (Port 8201)
+- `api_keys_manager` → `api-keys-manager-service` (Port 8006)
+
+### Validation Commands (Run Before Any Service Registration):
+```bash
+# Port conflict check
+sqlite3 zmart-api/port_registry.db "SELECT * FROM port_assignments WHERE port = {PORT};"
+
+# Service name check
+sqlite3 zmart-api/src/data/service_registry.db "SELECT * FROM service_registry WHERE service_name LIKE '%{SERVICE_NAME}%' OR port = {PORT};"
+
+# MDC file check
+find .cursor/rules -name "*{SERVICE_NAME}*" -o -name "*{PORT}*"
+
+# Process check
+ps aux | grep -i "{SERVICE_NAME}" | grep -v grep
+```
+
+## Status
+✅ **ACTIVE** - Core orchestration system with comprehensive management capabilities and self-learning service knowledge
+
+## Changelog
+- 1.0.0 (2025-08-24): Initial orchestration service with service lifecycle management
+- 1.0.1 (2025-08-24): Merged with MasterOrchestrationAgent, added self-learning service knowledge
+- 1.0.2 (2025-08-26): Registered my-symbols-extended-service (Port 8005) with full implementation and testing
+- 1.0.3 (2025-08-26): Created and integrated orchestration-start-service (Port 8616) for comprehensive system startup management
+- 1.0.4 (2025-08-26): Registered kucoin service (Port 8302) with full implementation and orchestration integration
+- 1.0.5 (2025-08-26): Registered mysymbols service (Port 8201) with full implementation and orchestration integration
+- 1.0.6 (2025-08-26): Registered test-service (Port 8301) with full implementation and orchestration integration
+- 1.0.7 (2025-08-26): Registered system-protection-service (Port 8999) with CRITICAL priority and comprehensive system protection
+- 1.0.8 (2025-08-26): Registered optimization-claude-service (Port 8998) with HIGH priority and advanced context optimization
+- 1.0.9 (2025-08-26): Registered snapshot-service (Port 8085) with CRITICAL priority and comprehensive disaster recovery capabilities
+- 1.0.2 (2025-08-25): Auto-updated service knowledge - 21 services registered
+- 1.0.3 (2025-08-26): Added mdc-orchestration-agent (Port 8615) - 22 services registered
+- 1.0.4 (2025-08-26): Added port-manager-service (Port 8610) - 23 services registered
+
+---
+*Generated by MDCAgent (gpt5) on 2025-08-25T12:22:19Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.Generated by MDCAgent (gpt5) on 2025-08-25T12:11:14Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T12:06:14Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T12:01:14Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T11:56:14Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T11:51:14Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T11:46:13Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T11:41:13Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T11:36:13Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T11:31:13Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T11:26:13Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T11:21:13Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T11:16:13Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T11:11:12Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T11:06:12Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T11:01:12Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T10:56:12Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T10:51:12Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T10:46:12Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T10:41:12Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T10:36:12Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T10:31:11Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T10:26:11Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T10:21:11Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T10:16:11Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T10:11:11Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T10:06:11Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T10:01:11Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T09:56:10Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T09:51:10Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T09:46:10Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T09:41:10Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T09:36:10Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T09:31:10Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T09:26:10Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T09:21:09Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T09:16:09Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T09:11:09Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T09:06:09Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T09:01:09Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T08:56:09Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T08:51:09Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T08:46:08Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T08:41:08Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T08:36:08Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T08:31:08Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T08:26:08Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T08:21:08Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T08:16:08Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T08:11:08Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T08:06:07Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T08:01:07Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T07:56:07Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T07:51:07Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T07:46:07Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T07:41:07Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T07:36:06Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T07:31:06Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T07:26:06Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T07:21:06Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T07:16:06Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T07:11:06Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T07:06:06Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T07:01:06Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T06:56:06Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T06:51:05Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T06:46:05Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T06:41:05Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T06:36:05Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T06:31:05Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T06:26:05Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T06:21:05Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T06:16:05Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T06:11:05Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T06:06:04Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T06:01:04Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T05:56:04Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T05:51:04Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T05:46:04Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T05:41:04Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T05:36:04Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T05:31:04Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T05:30:58Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T05:26:03Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T05:23:35Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T05:21:03Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T05:18:24Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T05:16:03Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T05:13:25Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T05:11:03Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T05:06:03Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T05:01:03Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T04:56:03Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T04:51:02Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T04:50:27Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T04:46:02Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T04:45:03Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T04:41:07Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T04:41:02Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T04:36:02Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T04:35:02Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T04:32:23Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T04:31:02Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T04:31:02Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T04:27:50Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T04:26:02Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T04:21:02Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T04:16:01Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T04:15:44Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T04:11:59Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T04:11:01Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T04:08:50Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T04:06:01Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T04:01:01Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T03:56:01Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T03:51:01Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T03:46:01Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T03:41:01Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T03:36:01Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T03:31:00Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T03:26:00Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T03:24:56Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T03:21:00Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T03:16:00Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T03:11:00Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T03:06:00Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T03:01:00Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T02:56:00Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T02:51:00Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T02:46:00Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T02:40:59Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T02:35:59Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T02:31:04Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T02:30:59Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T02:25:59Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T02:20:59Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T02:19:01Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T02:15:59Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T02:10:59Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T02:10:03Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T02:05:59Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T02:00:59Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T01:55:59Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T01:50:58Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T01:46:20Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T01:45:58Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T01:40:58Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T01:36:18Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T01:35:58Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T01:30:58Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T01:28:11Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T01:25:58Z; input sha256-auto-update-19-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T01:20:58Z; input sha256-auto-update-15-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T01:19:52Z; input sha256-auto-update-15-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T01:15:58Z; input sha256-auto-update-14-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T01:10:58Z; input sha256-auto-update-14-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T01:05:58Z; input sha256-auto-update-14-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T01:02:20Z; input sha256-auto-update-14-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T01:00:57Z; input sha256-auto-update-14-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T00:59:29Z; input sha256-auto-update-14-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T00:55:57Z; input sha256-auto-update-13-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T00:52:13Z; input sha256-auto-update-13-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T00:50:57Z; input sha256-auto-update-12-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T00:50:10Z; input sha256-auto-update-12-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T00:47:55Z; input sha256-auto-update-11-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T00:45:57Z; input sha256-auto-update-10-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T00:40:57Z; input sha256-auto-update-10-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T00:40:31Z; input sha256-auto-update-10-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T00:35:57Z; input sha256-auto-update-9-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T00:22:53Z; input sha256-auto-update-9-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T00:19:40Z; input sha256-auto-update-8-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T00:18:44Z; input sha256-auto-update-8-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T00:17:40Z; input sha256-auto-update-7-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-24T23:45:00Z; input sha256-mno345pqr678; context: service.yaml, master_orchestration_context.json.*
+
+description:
+globs:
+alwaysApply: true
+---
+
+
+## 📄 Additional Content from mdc_orchestration_agent.mdc
+# mdc_orchestration_agent.mdc
+> Type: backend | Version: 1.0.0 | Owner: zmartbot | Port: 8615
+
+## Purpose
+Represents a task in the orchestration pipeline
+
+## Overview
+Auto-discovered service managed by MDC-Dashboard system. This service was identified during automated system scanning and requires manual review and enhancement.
+
+## Critical Functions
+- Auto-discovered service functionality (requires manual documentation)
+- Service integration with ZmartBot ecosystem
+
+## Architecture & Integration
+- **Service Type:** backend
+- **Dependencies:** To be determined
+- **Env Vars:** To be determined  
+- **Lifecycle:** start=`python3 /Users/dansidanutz/Desktop/ZmartBot/zmart-api/mdc_orchestration/mdc_orchestration_agent.py.py` | stop=`pkill -f mdc_orchestration_agent` | migrate=`n/a`
+
+## API Endpoints
+*Endpoints to be documented during manual review*
+
+## Health & Readiness
+- Liveness: To be configured
+- Readiness: To be configured
+- Timeouts: startup_grace=30s, http_timeout=30s
+
+## Observability
+- Metrics: To be configured
+- Logs: format=python-logging
+- Dashboards: To be created
+
+
+
+## Service Connections & Dependencies
+
+### Current Active Connections
+- **port-8615** ✅ **ACTIVE** - network connection
+- ****** ✅ **ACTIVE** - dependency connection
+- **service-registry** ✅ **ACTIVE** - dependency connection
+- **port-registry** ✅ **ACTIVE** - dependency connection
+- **port-8002** ✅ **ACTIVE** - network connection
+- ****** ✅ **ACTIVE** - dependency connection
+- **port-8615** ✅ **ACTIVE** - network connection
+- ****** ✅ **ACTIVE** - dependency connection
+
+### Potential Connections
+- **update-master-orchestration** ⏳ **POTENTIAL** - High-potential integration between MDCOrchestrationAgent and update-master-orchestration - Strong synergy opportunity (Confidence: 100%)
+- **orchestration_learning_summary** ⏳ **POTENTIAL** - High-potential integration between MDCOrchestrationAgent and orchestration_learning_summary - Strong synergy opportunity (Confidence: 100%)
+- **MasterOrchestrationAgent** ⏳ **POTENTIAL** - High-potential integration between MDCOrchestrationAgent and MasterOrchestrationAgent - Strong synergy opportunity (Confidence: 100%)
+- **MDCAgent** ⏳ **POTENTIAL** - High-potential integration between MDCOrchestrationAgent and MDCAgent - Strong synergy opportunity (Confidence: 100%)
+- **OrchestrationStartWorkflow** ⏳ **POTENTIAL** - High-potential integration between MDCOrchestrationAgent and OrchestrationStartWorkflow - Strong synergy opportunity (Confidence: 100%)
+
+### Priority Connections
+- **optimization-target-5** 🔥 **PRIORITY #5** - Top #5 priority for system optimization - Score: 1.90 - Score: 1.00
+  - **Optimization Impact**: 0.90
+  - **Priority Score**: 0.50
+
+### Connection Summary
+- **Current Active**: 8
+- **Potential**: 5  
+- **Priority**: 1
+- **Total Discovered**: 14
+- **Last Discovery Scan**: Auto-updated on system initialization
+- **Discovery Method**: Multi-phase automated analysis with diamond pattern extraction
+- **Update Policy**: Real-time updates during workflow execution
+## Orchestration & Ordering
+- Basic Integration: Enabled
+- Master Agent Linked: No
+- Ordering Hints: To be determined
+
+## Performance & SLO
+- Baseline p95 (ms): To be measured
+- Notes: Auto-discovered service requiring performance baseline establishment
+
+## Failure Modes & Runbooks
+*To be documented during manual review*
+
+## Rollback
+- Snapshot required: To be determined
+- Playbook: To be determined
+
+## Load Balancing
+- Enabled: To be determined
+- Pool: To be determined
+
+## Known Issues
+- Auto-generated MDC file requiring manual review and enhancement
+- Service functionality and dependencies need documentation
+
+## Changelog
+- 1.0.0 (2025-08-26): Auto-discovered service, MDC file generated by MDC-Dashboard system
+
+---
+*Auto-generated by MDC-Dashboard orphan service discovery on 2025-08-26*
+description: Auto-discovered service requiring manual documentation
+globs: ["/Users/dansidanutz/Desktop/ZmartBot/zmart-api/mdc_orchestration/mdc_orchestration_agent.py"]
+alwaysApply: true
+---
+
+## 📄 Additional Content from mdc-orchestration-agent.mdc
+# Mdc Orchestration Agent
+
+## Overview
+mdc-orchestration-agent service for ZmartBot platform
+
+## Architecture
+
+### Service Type
+- **Type**: Backend Service
+- **Port**: unknown
+- **Framework**: FastAPI/Flask with async support
+- **Communication**: REST API
+
+### Core Components
+1. **Service Core**: Main service functionality
+2. **Health Monitoring**: Health and readiness endpoints
+3. **API Layer**: REST API endpoints
+4. **Data Management**: Data processing and storage
+
+## Core Functions
+
+### Service Operations
+- **Health Monitoring**: Service health and readiness checks
+- **API Endpoints**: REST API for service functionality
+- **Data Processing**: Core service data operations
+- **Integration**: Integration with other ZmartBot services
+
+## Service Dependencies
+
+### Required Services
+- **zmart-api** (Port 8000): Main API service for coordination
+
+### External Dependencies
+- **Environment Variables**: Service configuration
+- **Database**: Data storage and retrieval
+
+## Environment Variables
+
+### Required Variables
+```bash
+# Service-specific environment variables
+SERVICE_ENV=production
+```
+
+## API Endpoints
+
+### Health & Monitoring
+- `GET /health` - Service health check
+- `GET /ready` - Service readiness check
+- `GET /metrics` - Service metrics and statistics
+
+### Service Endpoints
+- `GET /api/v1/mdc-orchestration-agent` - Main service endpoint
+- `POST /api/v1/mdc-orchestration-agent` - Service operations
+
+## Request/Response Formats
+
+### Health Check Response
+```json
+{
+  "status": "healthy",
+  "timestamp": "2025-08-26T00:00:00.000Z",
+  "service": "mdc-orchestration-agent",
+  "version": "1.0.0"
+}
+```
+
+## Port Ranges
+
+### Service Port Assignment
+- **Port**: unknown
+- **Range**: Based on service type
+- **Purpose**: backend service operations
+
+## Health & Monitoring
+
+### Health Checks
+- **Liveness**: `/health` endpoint returns 200 OK
+- **Readiness**: `/ready` endpoint checks service readiness
+- **Metrics**: `/metrics` provides service statistics
+
+## Failure Modes & Recovery
+
+### Service Failure
+- **Symptoms**: Service not responding, health checks failing
+- **Detection**: Health check failures, API timeouts
+- **Recovery**: Service restart, dependency verification
+
+## Configuration
+
+### Service Configuration
+```yaml
+service_name: mdc-orchestration-agent
+service_type: backend
+port: unknown
+version: 1.0.0
+```
+
+## Deployment Requirements
+
+### System Requirements
+- **Python**: 3.8+
+- **Memory**: 512MB minimum
+- **CPU**: 1 core minimum
+- **Network**: Stable internet connection
+
+## Integration Points
+
+### Internal Services
+- **zmart-api**: Main API coordination
+- **Other services**: Service-specific integrations
+
+## Security
+
+### API Security
+- **Authentication**: Service-specific authentication
+- **Authorization**: Role-based access control
+- **Data Protection**: Secure data handling
+
+## Development
+
+### Local Development
+```bash
+cd zmart-api/mdc_orchestration_agent
+python3 mdc_orchestration_agent_server.py --port unknown
+```
+
+### Testing
+```bash
+# Health check
+curl http://localhost:unknown/health
+
+# Service endpoint
+curl http://localhost:unknown/api/v1/mdc-orchestration-agent
+```
+
+## Lifecycle Management
+
+### Startup Sequence
+1. **Service Initialization**: Load configuration and dependencies
+2. **Health Check**: Verify service readiness
+3. **API Startup**: Start REST API server
+4. **Service Ready**: Service ready for requests
+
+### Shutdown Sequence
+1. **Graceful Shutdown**: Stop accepting new requests
+2. **Resource Cleanup**: Clean up resources and connections
+3. **Service Termination**: Complete shutdown
+
+---
+
+**Service Version**: 1.0.0  
+**Last Updated**: 2025-08-26  
+**Status**: ACTIVE  
+**Owner**: ZmartBot Development Team  
+**Generated by**: MDCAgent (Fallback Template)  
+**Generation Timestamp**: 2025-08-26T05:48:10.010440
+
+
+---
+**Merge Summary**: Combined 4 files into unified MDC configuration
+**Generated**: 2025-08-26T09:03:52.866234
+
+## 📄 Additional Content from MasterOrchestrationAgent.mdc
+# 🎯 Master Orchestration Agent - System Orchestration Controller
+> Type: backend | Version: 1.0.0 | Owner: zmartbot | Port: 8002
+
+## Purpose
+Central orchestration controller for ZmartBot system, managing service lifecycle, dependencies, health monitoring, and automated operations with comprehensive API endpoints and self-learning capabilities.
+
+## Overview
+ZmartBot orchestration service managing service lifecycle, dependencies, and system coordination with comprehensive dependency management and service coordination capabilities.
+
+## Critical Functions
+- **Service Lifecycle Management**: Start, stop, restart, and monitor all services
+- **Dependency Resolution**: Manages service dependencies and startup order
+- **Health Monitoring**: Real-time health checks for all system components
+- **Port Management**: Dynamic port assignment and conflict resolution
+- **Database Orchestration**: Manages all database connections and operations
+- **Error Recovery**: Automatic error detection and recovery mechanisms
+- **Performance Optimization**: Resource optimization and load balancing
+- **Self-Learning**: Continuously updates knowledge of all system services
+
+## Architecture & Integration
+- **Service Type:** backend
+- **Dependencies:** None (orchestrates other services)
+- **Env Vars:** ORCHESTRATION_TOKEN, SERVICE_REGISTRY_URL
+- **Lifecycle:** start=`python3 orchestration_server.py --port 8002` | stop=`pkill -f orchestration_server` | migrate=`n/a`
+
+## Architecture
+- **Central Controller**: Main orchestration logic and decision making
+- **Service Registry**: Tracks all services and their states
+- **Health Monitor**: Continuous health checking and alerting
+- **Port Manager**: Dynamic port allocation and management
+- **Database Orchestrator**: Database connection and operation management
+- **Error Handler**: Error detection, logging, and recovery
+
+## Key Features
+- **Intelligent Startup**: Optimized service startup sequence
+- **Real-time Monitoring**: Continuous health and performance monitoring
+- **Automatic Recovery**: Self-healing capabilities for failed services
+- **Resource Management**: Efficient resource allocation and cleanup
+- **Scalability**: Support for multiple services and configurations
+- **Logging**: Comprehensive logging and audit trails
+- **Self-Learning**: Updates service knowledge automatically
+
+## 🛂 Passport Protection System
+**CRITICAL SECURITY FEATURE**: All services with passport IDs are protected from deletion
+- **Protection Rule**: NEVER DELETE A SERVICE WITH PASSPORT AND ANY FILE THAT IS CLOSE TO IT
+- **Passport Services**: 23 services currently protected (see Self-Learning Service Knowledge)
+- **Validation**: All stop/delete operations check passport status first
+- **Override**: Passport protection can only be disabled from frontend with confirmation
+- **Audit**: All passport protection events are logged for security
+
+## Service Management
+- **Backend API Server**: Port 8000 management and monitoring
+- **Frontend Dashboard**: Port 3400 management and monitoring
+- **Database Services**: All database connections and operations
+- **Monitoring Services**: Health checks and performance monitoring
+- **Security Services**: Authentication and authorization management
+- **Passport Services**: Protected service lifecycle management
+
+## API Endpoints
+
+### GET /health
+- Summary: Orchestration service health check
+- Auth Required: No
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: Health status
+  - 503: Service unavailable
+
+### GET /ready
+- Summary: Orchestration service readiness check
+- Auth Required: No
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: Ready status
+  - 503: Not ready
+
+### GET /api/orchestration/status
+- Summary: Get orchestration system status
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: Orchestration status information
+  - 401: Authentication required
+
+### GET /api/orchestration/services
+- Summary: Get all managed services
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: List of managed services
+  - 401: Authentication required
+
+### POST /api/orchestration/services/{service_name}/start
+- Summary: Start a specific service
+- Auth Required: Yes
+- Request:
+  - Params: `{"service_name": "string"}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: Service started successfully
+  - 400: Invalid service name
+  - 401: Authentication required
+  - 409: Service already running
+
+### POST /api/orchestration/services/{service_name}/stop
+- Summary: Stop a specific service
+- Auth Required: Yes
+- Request:
+  - Params: `{"service_name": "string"}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: Service stopped successfully
+  - 400: Invalid service name
+  - 401: Authentication required
+  - 404: Service not found
+
+### POST /api/orchestration/services/{service_name}/restart
+- Summary: Restart a specific service
+- Auth Required: Yes
+- Request:
+  - Params: `{"service_name": "string"}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: Service restarted successfully
+  - 400: Invalid service name
+  - 401: Authentication required
+  - 404: Service not found
+
+### GET /api/orchestration/dependencies
+- Summary: Get service dependency graph
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: Dependency graph data
+  - 401: Authentication required
+
+### POST /api/orchestration/dependencies/validate
+- Summary: Validate service dependencies
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{"services": ["string"]}`
+- Responses:
+  - 200: Dependency validation result
+  - 400: Invalid dependency configuration
+  - 401: Authentication required
+
+### GET /api/orchestration/ports
+- Summary: Get port assignment status
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{}`
+- Responses:
+  - 200: Port assignment information
+  - 401: Authentication required
+
+### POST /api/orchestration/ports/assign
+- Summary: Assign port to service
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{"service_name": "string", "port": "int"}`
+- Responses:
+  - 200: Port assigned successfully
+  - 400: Invalid port or service
+  - 401: Authentication required
+  - 409: Port already in use
+
+### GET /api/orchestration/logs/{service_name}
+- Summary: Get service logs
+- Auth Required: Yes
+- Request:
+  - Params: `{"service_name": "string"}`
+  - Query: `{"lines": "int", "follow": "boolean"}`
+  - Body: `{}`
+- Responses:
+  - 200: Service logs
+  - 400: Invalid service name
+  - 401: Authentication required
+  - 404: Service not found
+
+### POST /api/orchestration/rollback
+- Summary: Rollback system to previous snapshot
+- Auth Required: Yes
+- Request:
+  - Params: `{}`
+  - Query: `{}`
+  - Body: `{"snapshot_id": "string"}`
+- Responses:
+  - 200: Rollback initiated successfully
+  - 400: Invalid snapshot ID
+  - 401: Authentication required
+  - 404: Snapshot not found
+
+## Health Monitoring
+- **Service Health**: Real-time health status of all services
+- **Performance Metrics**: CPU, memory, and resource usage
+- **Error Tracking**: Error detection and alerting
+- **Response Time**: Service response time monitoring
+- **Availability**: Service availability tracking
+
+## Health & Readiness
+- Liveness: `/health`
+- Readiness: `/ready`
+- Timeouts: startup_grace=30s, http_timeout=45s
+
+## Observability
+- Metrics: `/metrics`
+- Logs: format=jsonl
+- Dashboards: Orchestration Performance, Service Dependencies
+
+## Error Recovery
+- **Automatic Restart**: Failed service restart mechanisms
+- **Fallback Procedures**: Alternative service configurations
+- **Error Logging**: Comprehensive error logging and reporting
+- **Alert System**: Error notification and alerting
+- **Recovery Procedures**: Step-by-step recovery processes
+
+## Orchestration & Ordering
+- Basic Integration: Enabled
+- Master Agent Linked: Yes
+- Ordering Hints: zmart-orchestration → zmart-api, zmart-orchestration → zmart-dashboard
+
+## Performance & SLO (Initial)
+- Baseline p95 (ms): 100
+- Notes: Orchestration service with dependency management and service coordination
+
+## Integration Points
+- **Service Registry**: Service discovery and registration
+- **Port Registry**: Port allocation and management
+- **Database Orchestrator**: Database operation management
+- **Health Checker**: Health monitoring and validation
+- **Logging System**: Centralized logging and monitoring
+
+## Configuration
+- **Service Configurations**: Individual service settings
+- **Dependency Mappings**: Service dependency definitions
+- **Health Check Rules**: Health monitoring configurations
+- **Error Recovery Rules**: Error handling configurations
+- **Performance Thresholds**: Performance monitoring settings
+
+## Failure Modes & Runbooks
+- **service-registry-failed** — Symptoms: Cannot register or discover services — Remediation: Check service registry connectivity, restart orchestration service
+- **dependency-cycle** — Symptoms: Circular dependency detected, services stuck in starting state — Remediation: Analyze dependency graph, resolve circular dependencies, restart affected services
+- **port-conflict** — Symptoms: Port already in use, service startup fails — Remediation: Check port availability, resolve conflicts, restart orchestration service
+
+## Rollback
+- Snapshot required: Yes
+- Playbook: isolate → restore_latest_snapshot → verify → reactivate
+
+## Load Balancing
+- Enabled: No
+- Pool: null
+
+
+
+## Service Connections & Dependencies
+
+### Current Active Connections
+- **port-8002** ✅ **ACTIVE** - network connection
+- ****** ✅ **ACTIVE** - dependency connection
+
+### Potential Connections
+- **update-master-orchestration** ⏳ **POTENTIAL** - High-potential integration between MasterOrchestrationAgent and update-master-orchestration - Strong synergy opportunity (Confidence: 100%)
+- **orchestration_learning_summary** ⏳ **POTENTIAL** - High-potential integration between MasterOrchestrationAgent and orchestration_learning_summary - Strong synergy opportunity (Confidence: 100%)
+- **MDCOrchestrationAgent** ⏳ **POTENTIAL** - High-potential integration between MasterOrchestrationAgent and MDCOrchestrationAgent - Strong synergy opportunity (Confidence: 100%)
+- **MDCAgent** ⏳ **POTENTIAL** - High-potential integration between MasterOrchestrationAgent and MDCAgent - Strong synergy opportunity (Confidence: 100%)
+- **OrchestrationStartWorkflow** ⏳ **POTENTIAL** - High-potential integration between MasterOrchestrationAgent and OrchestrationStartWorkflow - Strong synergy opportunity (Confidence: 100%)
+
+### Priority Connections
+*Will be populated automatically during Phase 4 if service qualifies for top 10 priority services*
+
+### Connection Summary
+- **Current Active**: 12
+- **Potential**: 5  
+- **Priority**: 1
+- **Total Discovered**: 18
+- **Last Discovery Scan**: Auto-updated on system initialization
+- **Discovery Method**: Multi-phase automated analysis with diamond pattern extraction
+- **Update Policy**: Real-time updates during workflow execution
+## Self-Learning Service Knowledge
+**Updated: 2025-08-27T10:38:51Z**
+
+### Currently Registered Services:
+1. **api-keys-manager-service** (backend) - Port 8006 - Status: ACTIVE
+2. **background-mdc-agent** (backend) - Port 8091 - Status: DISCOVERED
+3. **binance** (worker) - Port 8303 - Status: ACTIVE
+4. **binance-worker** (worker) - Port 8304 - Status: DISCOVERED
+5. **cryptometer-service** (backend) - Port 8093 - Status: DISCOVERED
+6. **doctor-service** (backend) - Port 8700 - Status: ACTIVE
+7. **explainability-service** (backend) - Port 8099 - Status: DISCOVERED
+8. **grok-x-module** (backend) - Port 8092 - Status: DISCOVERED
+9. **historical-data-service** (backend) - Port 8094 - Status: DISCOVERED
+10. **kingfisher-module** (backend) - Port 8100 - Status: ACTIVE
+11. **kucoin** (worker) - Port 8302 - Status: ACTIVE
+12. **market-data-service** (backend) - Port 8095 - Status: DISCOVERED
+13. **master-orchestration-agent** (orchestration) - Port 8002 - Status: ACTIVE
+14. **mdc-dashboard** (frontend) - Port 8090 - Status: DISCOVERED
+15. **mdc-orchestration-agent** (orchestration) - Port 8615 - Status: ACTIVE
+16. **my-symbols-extended-service** (backend) - Port 8005 - Status: ACTIVE
+17. **mysymbols** (internal_api) - Port 8201 - Status: ACTIVE
+18. **optimization-claude-service** (backend) - Port 8080 - Status: ACTIVE
+19. **passport-service** (backend) - Port 8620 - Status: ACTIVE
+20. **pattern-recognition-service** (backend) - Port 8096 - Status: DISCOVERED
+21. **port-manager-service** (orchestration) - Port 8050 - Status: ACTIVE
+22. **professional-dashboard** (frontend) - Port 3001 - Status: DISCOVERED
+23. **scoring-service** (backend) - Port 8098 - Status: DISCOVERED
+24. **sentiment-analysis-service** (backend) - Port 8097 - Status: DISCOVERED
+25. **service-dashboard** (frontend) - Port 3000 - Status: ACTIVE
+26. **servicelog-service** (backend) - Port 8750 - Status: DISCOVERED
+27. **snapshot-service** (backend) - Port 8085 - Status: ACTIVE
+28. **system-protection-service** (backend) - Port 8999 - Status: ACTIVE
+29. **test-analytics-service** (backend) - Port 8003 - Status: ACTIVE
+30. **test-service** (worker) - Port 8301 - Status: ACTIVE
+31. **test-websocket-service** (backend) - Port 8004 - Status: ACTIVE
+32. **zmart-analytics** (backend) - Port 8007 - Status: ACTIVE
+33. **zmart-api** (backend) - Port 8000 - Status: ACTIVE
+34. **zmart-dashboard** (frontend) - Port 3400 - Status: ACTIVE
+35. **zmart-notification** (backend) - Port 8008 - Status: ACTIVE
+36. **zmart-websocket** (backend) - Port 8009 - Status: ACTIVE
+37. **zmart_alert_system** (backend) - Port 8012 - Status: ACTIVE
+38. **zmart_backtesting** (backend) - Port 8013 - Status: ACTIVE
+39. **zmart_data_warehouse** (backend) - Port 8015 - Status: ACTIVE
+40. **zmart_machine_learning** (backend) - Port 8014 - Status: ACTIVE
+41. **zmart_risk_management** (backend) - Port 8010 - Status: ACTIVE
+42. **zmart_technical_analysis** (backend) - Port 8011 - Status: ACTIVE
+
+### Service Categories:
+- **Backend Services**: api-keys-manager-service, background-mdc-agent, cryptometer-service, doctor-service, explainability-service, grok-x-module, historical-data-service, kingfisher-module, market-data-service, my-symbols-extended-service, optimization-claude-service, passport-service, pattern-recognition-service, scoring-service, sentiment-analysis-service, servicelog-service, snapshot-service, system-protection-service, test-analytics-service, test-websocket-service, zmart-analytics, zmart-api, zmart-notification, zmart-websocket, zmart_alert_system, zmart_backtesting, zmart_data_warehouse, zmart_machine_learning, zmart_risk_management, zmart_technical_analysis
+- **Frontend Services**: mdc-dashboard, professional-dashboard, service-dashboard, zmart-dashboard
+- **Worker Services**: binance, binance-worker, kucoin, test-service
+- **Orchestration Services**: master-orchestration-agent, mdc-orchestration-agent, port-manager-service
+- **Internal_Api Services**: mysymbols
+
+### Dependency Mapping:
+- master-orchestration-agent → api-keys-manager-service
+- master-orchestration-agent → background-mdc-agent
+- master-orchestration-agent → cryptometer-service
+- master-orchestration-agent → doctor-service
+- master-orchestration-agent → explainability-service
+- master-orchestration-agent → grok-x-module
+- master-orchestration-agent → historical-data-service
+- master-orchestration-agent → kingfisher-module
+- master-orchestration-agent → market-data-service
+- master-orchestration-agent → my-symbols-extended-service
+- master-orchestration-agent → optimization-claude-service
+- master-orchestration-agent → passport-service
+- master-orchestration-agent → pattern-recognition-service
+- master-orchestration-agent → scoring-service
+- master-orchestration-agent → sentiment-analysis-service
+- master-orchestration-agent → servicelog-service
+- master-orchestration-agent → snapshot-service
+- master-orchestration-agent → system-protection-service
+- master-orchestration-agent → test-analytics-service
+- master-orchestration-agent → test-websocket-service
+- master-orchestration-agent → zmart-analytics
+- master-orchestration-agent → zmart-api
+- master-orchestration-agent → zmart-notification
+- master-orchestration-agent → zmart-websocket
+- master-orchestration-agent → zmart_alert_system
+- master-orchestration-agent → zmart_backtesting
+- master-orchestration-agent → zmart_data_warehouse
+- master-orchestration-agent → zmart_machine_learning
+- master-orchestration-agent → zmart_risk_management
+- master-orchestration-agent → zmart_technical_analysis
+- master-orchestration-agent → mdc-dashboard
+- master-orchestration-agent → professional-dashboard
+- master-orchestration-agent → service-dashboard
+- master-orchestration-agent → zmart-dashboard
+- master-orchestration-agent → binance
+- master-orchestration-agent → binance-worker
+- master-orchestration-agent → kucoin
+- master-orchestration-agent → test-service## Known Issues
+- None recorded
+
+## Duplicate Prevention & Validation
+**CRITICAL: This service manages all other services and must prevent duplicates**
+
+### Service Registration Validation Rules:
+1. **Port Conflict Detection**: Check port registry before assigning new ports
+2. **Service Name Validation**: Verify service names against existing registry
+3. **MDC File Duplication**: Check for existing MDC documentation
+4. **Process Validation**: Verify if service is already running
+5. **Registry Consistency**: Ensure service registry matches port registry
+
+### CRITICAL: Passport Protection Rules
+**NEVER DELETE A SERVICE WITH PASSPORT AND ANY FILE THAT IS CLOSE TO IT**
+
+**Passport Protection Requirements:**
+1. **Passport Validation**: Before any service deletion, check if service has a Passport ID
+2. **File Protection**: Never delete files related to services with active passports
+3. **Registry Check**: Verify passport registry before any deletion operations
+4. **Backup Requirement**: Create backup before any passport-related operations
+5. **Audit Trail**: Log all passport-related operations for audit purposes
+
+**Protected Operations:**
+- ❌ **NEVER DELETE**: Services with active Passport IDs
+- ❌ **NEVER DELETE**: Passport registry entries
+- ❌ **NEVER DELETE**: Service files with passport associations
+- ❌ **NEVER DELETE**: MDC files for passport-protected services
+- ❌ **NEVER DELETE**: Configuration files for passport services
+
+**Required Checks Before Deletion:**
+```bash
+# Check passport registry before any deletion
+sqlite3 /Users/dansidanutz/Desktop/ZmartBot/data/passport_registry.db "SELECT * FROM passport_registry WHERE service_name = '{SERVICE_NAME}';"
+
+# Check port registry for passport associations
+sqlite3 zmart-api/port_registry.db "SELECT * FROM port_assignments WHERE service_name = '{SERVICE_NAME}';"
+
+# Check MDC files for passport references
+find .cursor/rules -name "*{SERVICE_NAME}*" -exec grep -l "passport\|Passport" {} \;
+
+# Only proceed if NO passport associations found
+```
+
+### Automated Service Registration System (MANDATORY):
+**CRITICAL**: When a service is registered, it MUST automatically update the orchestration startup system.
+
+**Automation Script**: `zmart-api/service_registration_automation.py`
+- **Purpose**: Automatically update orchestration startup when services are registered
+- **Functionality**: 
+  - Register new services with port assignment
+  - Update orchestration startup order automatically
+  - Sync service directory mappings and startup commands
+  - Backup orchestration script before changes
+  - Maintain service startup order integrity
+- **Commands**:
+  - `register <service_name> <port> [service_type]` - Register new service
+  - `sync` - Sync all registered services with orchestration
+  - `status` - Show orchestration status
+  - `list` - List all registered services
+- **Integration**: Automatically called when new services are registered
+- **Backup**: Creates timestamped backups before any changes
+- **Requirement**: ALL service registrations MUST use this automation system
+
+### Standardized Service Name Mapping:
+- `zmart_orchestration` → `master_orchestration_agent` (Port 8002)
+- `zmart_dashboard` → `zmart-dashboard` (Port 3400)
+- `zmart_api` → `zmart-api` (Port 8000)
+- `my_symbols` → `mysymbols` (Port 8201)
+- `api_keys_manager` → `api-keys-manager-service` (Port 8006)
+
+### Validation Commands (Run Before Any Service Registration):
+```bash
+# Port conflict check
+sqlite3 zmart-api/port_registry.db "SELECT * FROM port_assignments WHERE port = {PORT};"
+
+# Service name check
+sqlite3 zmart-api/src/data/service_registry.db "SELECT * FROM service_registry WHERE service_name LIKE '%{SERVICE_NAME}%' OR port = {PORT};"
+
+# MDC file check
+find .cursor/rules -name "*{SERVICE_NAME}*" -o -name "*{PORT}*"
+
+# Process check
+ps aux | grep -i "{SERVICE_NAME}" | grep -v grep
+
+# MANDATORY: Use automation system for registration
+python3 zmart-api/service_registration_automation.py register {SERVICE_NAME} {PORT} {SERVICE_TYPE}
+
+# Verify orchestration sync
+python3 zmart-api/service_registration_automation.py status
+```
+
+## Status
+✅ **ACTIVE** - Core orchestration system with comprehensive management capabilities and self-learning service knowledge
+
+## Changelog
+- 1.0.0 (2025-08-24): Initial orchestration service with service lifecycle management
+- 1.0.1 (2025-08-24): Merged with MasterOrchestrationAgent, added self-learning service knowledge
+- 1.0.2 (2025-08-27): Auto-updated service knowledge - 42 services registered
+
+---
+*Generated by MDCAgent (gpt5) on 2025-08-27T10:38:51Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.Generated by MDCAgent (gpt5) on 2025-08-27T02:28:51Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-27T02:23:50Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-27T02:18:50Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-27T02:13:50Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-27T02:08:50Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-27T02:03:49Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-27T01:58:49Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-27T01:53:49Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-27T01:48:49Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-27T01:43:49Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-27T01:38:48Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-27T01:33:48Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-27T01:28:48Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-27T00:15:30Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T23:59:34Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T23:54:33Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T23:49:33Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T23:44:33Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T23:39:33Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T23:34:32Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T23:29:32Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T23:24:32Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T23:19:32Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T23:14:32Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T23:09:31Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T23:04:31Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T22:28:32Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T22:07:15Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T22:02:14Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T21:57:14Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T21:52:14Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-27T05:47:14Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-27T05:42:14Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-27T05:37:13Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-27T05:32:13Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-27T05:27:13Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-27T05:22:13Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-27T05:17:12Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-27T05:12:12Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-27T04:08:40Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-27T03:33:41Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-27T03:28:41Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-27T03:23:40Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-27T03:18:40Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-27T03:13:40Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T19:08:40Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T19:03:40Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T18:58:40Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T18:53:39Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T18:48:39Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T18:43:39Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-27T02:38:39Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-27T02:33:38Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-27T02:28:38Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-27T02:23:38Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-27T02:18:38Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-27T02:13:38Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-27T02:08:38Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-27T02:03:37Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T17:58:37Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T17:53:37Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-27T01:48:37Z; input sha256-auto-update-42-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-27T01:43:37Z; input sha256-auto-update-41-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-27T01:38:36Z; input sha256-auto-update-41-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-27T01:33:36Z; input sha256-auto-update-41-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-27T01:28:36Z; input sha256-auto-update-41-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-27T01:23:36Z; input sha256-auto-update-41-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T17:18:35Z; input sha256-auto-update-41-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T17:13:35Z; input sha256-auto-update-41-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T17:08:35Z; input sha256-auto-update-41-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T17:03:35Z; input sha256-auto-update-41-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T16:58:34Z; input sha256-auto-update-41-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T16:53:34Z; input sha256-auto-update-41-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-27T00:48:34Z; input sha256-auto-update-41-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-27T00:43:34Z; input sha256-auto-update-41-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T16:38:33Z; input sha256-auto-update-41-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-27T00:33:33Z; input sha256-auto-update-41-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-27T00:28:33Z; input sha256-auto-update-41-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-27T00:23:33Z; input sha256-auto-update-41-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-27T00:18:33Z; input sha256-auto-update-29-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T16:13:32Z; input sha256-auto-update-29-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T16:08:32Z; input sha256-auto-update-29-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-27T00:03:32Z; input sha256-auto-update-29-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T23:58:32Z; input sha256-auto-update-23-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T23:53:32Z; input sha256-auto-update-23-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T23:48:31Z; input sha256-auto-update-23-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T23:43:31Z; input sha256-auto-update-23-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T23:40:49Z; input sha256-auto-update-23-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T23:38:31Z; input sha256-auto-update-23-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T23:33:31Z; input sha256-auto-update-23-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T23:28:31Z; input sha256-auto-update-23-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T23:23:31Z; input sha256-auto-update-23-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T15:18:30Z; input sha256-auto-update-23-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T15:13:30Z; input sha256-auto-update-23-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T23:08:30Z; input sha256-auto-update-23-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T23:05:18Z; input sha256-auto-update-23-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T23:03:30Z; input sha256-auto-update-23-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T15:01:32Z; input sha256-auto-update-23-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T14:58:30Z; input sha256-auto-update-23-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T14:53:29Z; input sha256-auto-update-23-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T22:48:29Z; input sha256-auto-update-23-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T22:43:29Z; input sha256-auto-update-23-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T22:38:29Z; input sha256-auto-update-23-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T22:33:29Z; input sha256-auto-update-23-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T14:28:28Z; input sha256-auto-update-23-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T14:23:28Z; input sha256-auto-update-23-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T22:18:28Z; input sha256-auto-update-23-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T22:13:28Z; input sha256-auto-update-23-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T22:08:28Z; input sha256-auto-update-23-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T22:03:28Z; input sha256-auto-update-23-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T21:58:27Z; input sha256-auto-update-23-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T21:53:27Z; input sha256-auto-update-23-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T21:48:27Z; input sha256-auto-update-23-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T21:47:30Z; input sha256-auto-update-23-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T21:43:27Z; input sha256-auto-update-23-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-26T13:42:30Z; input sha256-auto-update-23-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T12:22:19Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T12:16:14Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T12:11:14Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T12:06:14Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T12:01:14Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T11:56:14Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T11:51:14Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T11:46:13Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T11:41:13Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T11:36:13Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T11:31:13Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T11:26:13Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T11:21:13Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T11:16:13Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T11:11:12Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T11:06:12Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T11:01:12Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T10:56:12Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T10:51:12Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T10:46:12Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T10:41:12Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T10:36:12Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T10:31:11Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T10:26:11Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T10:21:11Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T10:16:11Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T10:11:11Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T10:06:11Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T10:01:11Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T09:56:10Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T09:51:10Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T09:46:10Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T09:41:10Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T09:36:10Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T09:31:10Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T09:26:10Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T09:21:09Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T09:16:09Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T09:11:09Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T09:06:09Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T09:01:09Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T08:56:09Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T08:51:09Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T08:46:08Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T08:41:08Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T08:36:08Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T08:31:08Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T08:26:08Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T08:21:08Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T08:16:08Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T08:11:08Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T08:06:07Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T08:01:07Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T07:56:07Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T07:51:07Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T07:46:07Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T07:41:07Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T07:36:06Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T07:31:06Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T07:26:06Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T07:21:06Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T07:16:06Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T07:11:06Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T07:06:06Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T07:01:06Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T06:56:06Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T06:51:05Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T06:46:05Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T06:41:05Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T06:36:05Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T06:31:05Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T06:26:05Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T06:21:05Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T06:16:05Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T06:11:05Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T06:06:04Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T06:01:04Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T05:56:04Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T05:51:04Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T05:46:04Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T05:41:04Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T05:36:04Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T05:31:04Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T05:30:58Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T05:26:03Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T05:23:35Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T05:21:03Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T05:18:24Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T05:16:03Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T05:13:25Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T05:11:03Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T05:06:03Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T05:01:03Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T04:56:03Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T04:51:02Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T04:50:27Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T04:46:02Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T04:45:03Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T04:41:07Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T04:41:02Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T04:36:02Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T04:35:02Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T04:32:23Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T04:31:02Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T04:31:02Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T04:27:50Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T04:26:02Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T04:21:02Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T04:16:01Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T04:15:44Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T04:11:59Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T04:11:01Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T04:08:50Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T04:06:01Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T04:01:01Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T03:56:01Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T03:51:01Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T03:46:01Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T03:41:01Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T03:36:01Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T03:31:00Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T03:26:00Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T03:24:56Z; input sha256-auto-update-21-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T03:21:00Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T03:16:00Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T03:11:00Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T03:06:00Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T03:01:00Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T02:56:00Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T02:51:00Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T02:46:00Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T02:40:59Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T02:35:59Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T02:31:04Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T02:30:59Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T02:25:59Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T02:20:59Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T02:19:01Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T02:15:59Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T02:10:59Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T02:10:03Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T02:05:59Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T02:00:59Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T01:55:59Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T01:50:58Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T01:46:20Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T01:45:58Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T01:40:58Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T01:36:18Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T01:35:58Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T01:30:58Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T01:28:11Z; input sha256-auto-update-20-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T01:25:58Z; input sha256-auto-update-19-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T01:20:58Z; input sha256-auto-update-15-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T01:19:52Z; input sha256-auto-update-15-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T01:15:58Z; input sha256-auto-update-14-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T01:10:58Z; input sha256-auto-update-14-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T01:05:58Z; input sha256-auto-update-14-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T01:02:20Z; input sha256-auto-update-14-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T01:00:57Z; input sha256-auto-update-14-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T00:59:29Z; input sha256-auto-update-14-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T00:55:57Z; input sha256-auto-update-13-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T00:52:13Z; input sha256-auto-update-13-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T00:50:57Z; input sha256-auto-update-12-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T00:50:10Z; input sha256-auto-update-12-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T00:47:55Z; input sha256-auto-update-11-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T00:45:57Z; input sha256-auto-update-10-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T00:40:57Z; input sha256-auto-update-10-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T00:40:31Z; input sha256-auto-update-10-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T00:35:57Z; input sha256-auto-update-9-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T00:22:53Z; input sha256-auto-update-9-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T00:19:40Z; input sha256-auto-update-8-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T00:18:44Z; input sha256-auto-update-8-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-25T00:17:40Z; input sha256-auto-update-7-services; context: service_registry.db, auto_update.py.**Generated by MDCAgent (gpt5) on 2025-08-24T23:45:00Z; input sha256-mno345pqr678; context: service.yaml, master_orchestration_context.json.*
+
+description:
+globs:
+alwaysApply: true
+---
+
+
+## 📄 Additional Content from mdc_orchestration_agent.mdc
+# mdc_orchestration_agent.mdc
+> Type: backend | Version: 1.0.0 | Owner: zmartbot | Port: 8615
+
+## Purpose
+Represents a task in the orchestration pipeline
+
+## Overview
+Auto-discovered service managed by MDC-Dashboard system. This service was identified during automated system scanning and requires manual review and enhancement.
+
+## Critical Functions
+- Auto-discovered service functionality (requires manual documentation)
+- Service integration with ZmartBot ecosystem
+
+## Architecture & Integration
+- **Service Type:** backend
+- **Dependencies:** To be determined
+- **Env Vars:** To be determined  
+- **Lifecycle:** start=`python3 /Users/dansidanutz/Desktop/ZmartBot/zmart-api/mdc_orchestration/mdc_orchestration_agent.py.py` | stop=`pkill -f mdc_orchestration_agent` | migrate=`n/a`
+
+## API Endpoints
+*Endpoints to be documented during manual review*
+
+## Health & Readiness
+- Liveness: To be configured
+- Readiness: To be configured
+- Timeouts: startup_grace=30s, http_timeout=30s
+
+## Observability
+- Metrics: To be configured
+- Logs: format=python-logging
+- Dashboards: To be created
+
+
+
+## Service Connections & Dependencies
+
+### Current Active Connections
+- **port-8615** ✅ **ACTIVE** - network connection
+- ****** ✅ **ACTIVE** - dependency connection
+
+### Potential Connections
+- **update-master-orchestration** ⏳ **POTENTIAL** - High-potential integration between mdc_orchestration_agent and update-master-orchestration - Strong synergy opportunity (Confidence: 100%)
+- **MDCOrchestrationAgent** ⏳ **POTENTIAL** - High-potential integration between mdc_orchestration_agent and MDCOrchestrationAgent - Strong synergy opportunity (Confidence: 100%)
+- **MasterOrchestrationAgent** ⏳ **POTENTIAL** - High-potential integration between mdc_orchestration_agent and MasterOrchestrationAgent - Strong synergy opportunity (Confidence: 100%)
+- **OrchestrationStartWorkflow** ⏳ **POTENTIAL** - High-potential integration between mdc_orchestration_agent and OrchestrationStartWorkflow - Strong synergy opportunity (Confidence: 100%)
+- **mdc-orchestration-agent** ⏳ **POTENTIAL** - High-potential integration between mdc_orchestration_agent and mdc-orchestration-agent - Strong synergy opportunity (Confidence: 100%)
+
+### Priority Connections
+*Will be populated automatically during Phase 4 if service qualifies for top 10 priority services*
+
+### Connection Summary
+- **Current Active**: 2
+- **Potential**: 5  
+- **Priority**: 0
+- **Total Discovered**: 2
+- **Last Discovery Scan**: Auto-updated on system initialization
+- **Discovery Method**: Multi-phase automated analysis with diamond pattern extraction
+- **Update Policy**: Real-time updates during workflow execution
+## Orchestration & Ordering
+- Basic Integration: Enabled
+- Master Agent Linked: No
+- Ordering Hints: To be determined
+
+## Performance & SLO
+- Baseline p95 (ms): To be measured
+- Notes: Auto-discovered service requiring performance baseline establishment
+
+## Failure Modes & Runbooks
+*To be documented during manual review*
+
+## Rollback
+- Snapshot required: To be determined
+- Playbook: To be determined
+
+## Load Balancing
+- Enabled: To be determined
+- Pool: To be determined
+
+## Known Issues
+- Auto-generated MDC file requiring manual review and enhancement
+- Service functionality and dependencies need documentation
+
+## Changelog
+- 1.0.0 (2025-08-26): Auto-discovered service, MDC file generated by MDC-Dashboard system
+
+---
+*Auto-generated by MDC-Dashboard orphan service discovery on 2025-08-26*
+description: Auto-discovered service requiring manual documentation
+globs: ["/Users/dansidanutz/Desktop/ZmartBot/zmart-api/mdc_orchestration/mdc_orchestration_agent.py"]
+alwaysApply: true
+---
+
+## 📄 Additional Content from mdc-orchestration-agent.mdc
+# Mdc Orchestration Agent
+
+## Overview
+mdc-orchestration-agent service for ZmartBot platform
+
+## Architecture
+
+### Service Type
+- **Type**: Backend Service
+- **Port**: unknown
+- **Framework**: FastAPI/Flask with async support
+- **Communication**: REST API
+
+### Core Components
+1. **Service Core**: Main service functionality
+2. **Health Monitoring**: Health and readiness endpoints
+3. **API Layer**: REST API endpoints
+4. **Data Management**: Data processing and storage
+
+## Core Functions
+
+### Service Operations
+- **Health Monitoring**: Service health and readiness checks
+- **API Endpoints**: REST API for service functionality
+- **Data Processing**: Core service data operations
+- **Integration**: Integration with other ZmartBot services
+
+## Service Dependencies
+
+### Required Services
+- **zmart-api** (Port 8000): Main API service for coordination
+
+### External Dependencies
+- **Environment Variables**: Service configuration
+- **Database**: Data storage and retrieval
+
+## Environment Variables
+
+### Required Variables
+```bash
+# Service-specific environment variables
+SERVICE_ENV=production
+```
+
+## API Endpoints
+
+### Health & Monitoring
+- `GET /health` - Service health check
+- `GET /ready` - Service readiness check
+- `GET /metrics` - Service metrics and statistics
+
+### Service Endpoints
+- `GET /api/v1/mdc-orchestration-agent` - Main service endpoint
+- `POST /api/v1/mdc-orchestration-agent` - Service operations
+
+## Request/Response Formats
+
+### Health Check Response
+```json
+{
+  "status": "healthy",
+  "timestamp": "2025-08-26T00:00:00.000Z",
+  "service": "mdc-orchestration-agent",
+  "version": "1.0.0"
+}
+```
+
+## Port Ranges
+
+### Service Port Assignment
+- **Port**: unknown
+- **Range**: Based on service type
+- **Purpose**: backend service operations
+
+## Health & Monitoring
+
+### Health Checks
+- **Liveness**: `/health` endpoint returns 200 OK
+- **Readiness**: `/ready` endpoint checks service readiness
+- **Metrics**: `/metrics` provides service statistics
+
+## Failure Modes & Recovery
+
+### Service Failure
+- **Symptoms**: Service not responding, health checks failing
+- **Detection**: Health check failures, API timeouts
+- **Recovery**: Service restart, dependency verification
+
+## Configuration
+
+### Service Configuration
+```yaml
+service_name: mdc-orchestration-agent
+service_type: backend
+port: unknown
+version: 1.0.0
+```
+
+## Deployment Requirements
+
+### System Requirements
+- **Python**: 3.8+
+- **Memory**: 512MB minimum
+- **CPU**: 1 core minimum
+- **Network**: Stable internet connection
+
+## Integration Points
+
+### Internal Services
+- **zmart-api**: Main API coordination
+- **Other services**: Service-specific integrations
+
+## Security
+
+### API Security
+- **Authentication**: Service-specific authentication
+- **Authorization**: Role-based access control
+- **Data Protection**: Secure data handling
+
+## Development
+
+### Local Development
+```bash
+cd zmart-api/mdc_orchestration_agent
+python3 mdc_orchestration_agent_server.py --port unknown
+```
+
+### Testing
+```bash
+# Health check
+curl http://localhost:unknown/health
+
+# Service endpoint
+curl http://localhost:unknown/api/v1/mdc-orchestration-agent
+```
+
+## Lifecycle Management
+
+### Startup Sequence
+1. **Service Initialization**: Load configuration and dependencies
+2. **Health Check**: Verify service readiness
+3. **API Startup**: Start REST API server
+4. **Service Ready**: Service ready for requests
+
+### Shutdown Sequence
+1. **Graceful Shutdown**: Stop accepting new requests
+2. **Resource Cleanup**: Clean up resources and connections
+3. **Service Termination**: Complete shutdown
+
+---
+
+**Service Version**: 1.0.0  
+**Last Updated**: 2025-08-26  
+**Status**: ACTIVE  
+**Owner**: ZmartBot Development Team  
+**Generated by**: MDCAgent (Fallback Template)  
+**Generation Timestamp**: 2025-08-26T05:48:10.010440
+
+
+---
+**Merge Summary**: Combined 4 files into unified MDC configuration
+**Generated**: 2025-08-27T10:39:58.314771

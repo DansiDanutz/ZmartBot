@@ -1,0 +1,19 @@
+service_name: servicelog-service
+service_type: backend
+port: 8750
+description: "Service logging and monitoring service"
+status: ACTIVE
+passport_id: ""
+registered_at: "2025-08-26"
+health_url: "http://localhost:8750/health"
+start_cmd: "python3 servicelog_service.py"
+stop_cmd: "pkill -f 'servicelog_service.py'"
+dependencies:
+  - zmart-api
+  - database
+tags:
+  - logging
+  - monitoring
+  - backend
+
+

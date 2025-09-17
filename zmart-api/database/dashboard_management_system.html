@@ -1,0 +1,1534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZmartBot Dashboard Management System</title>
+    
+    <!-- External Libraries -->
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #1e3c72;
+            --secondary-color: #2a5298;
+            --accent-color: #667eea;
+            --success-color: #4caf50;
+            --warning-color: #ff9800;
+            --danger-color: #f44336;
+            --light-bg: #f8f9fa;
+            --dark-bg: #343a40;
+            --text-primary: #2c3e50;
+            --text-secondary: #6c757d;
+            --border-color: #e9ecef;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 280px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            transform: translateX(0);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .sidebar.collapsed {
+            transform: translateX(-260px);
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+            color: white;
+        }
+
+        .sidebar-header h2 {
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-header p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .nav-menu {
+            padding: 0;
+            list-style: none;
+        }
+
+        .nav-category {
+            padding: 15px 20px 5px 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 5px;
+        }
+
+        .nav-item {
+            cursor: pointer;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+            font-size: 0.95rem;
+        }
+
+        .nav-item:hover {
+            background: var(--light-bg);
+            border-left-color: var(--accent-color);
+            padding-left: 25px;
+        }
+
+        .nav-item.active {
+            background: linear-gradient(90deg, rgba(102, 126, 234, 0.1), transparent);
+            border-left-color: var(--accent-color);
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+
+        .nav-item i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .nav-badge {
+            margin-left: auto;
+            background: var(--accent-color);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            transition: margin-left 0.3s ease;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main-content.expanded {
+            margin-left: 20px;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px 30px;
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .sidebar-toggle {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 10px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .sidebar-toggle:hover {
+            background: var(--primary-color);
+            transform: scale(1.05);
+        }
+
+        .header-title {
+            flex: 1;
+        }
+
+        .header-title h1 {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        .header-title p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .action-btn {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .action-btn:hover {
+            background: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .action-btn.success { background: var(--success-color); }
+        .action-btn.warning { background: var(--warning-color); }
+        .action-btn.danger { background: var(--danger-color); }
+
+        /* Status Indicators */
+        .status-bar {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px 30px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+        }
+
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .status-connected { background: var(--success-color); animation: pulse 2s infinite; }
+        .status-syncing { background: var(--warning-color); animation: spin 1s linear infinite; }
+        .status-error { background: var(--danger-color); }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.1); }
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Content Area */
+        .content-area {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .dashboard-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dashboard-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-color), var(--primary-color));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .dashboard-card:hover::before {
+            opacity: 1;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-action {
+            background: var(--light-bg);
+            border: none;
+            padding: 6px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .card-action:hover {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        /* Tables */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            background: white;
+            margin-top: 20px;
+        }
+
+        .data-table thead {
+            background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+            color: white;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.9rem;
+        }
+
+        .data-table th {
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.8rem;
+        }
+
+        .data-table tbody tr {
+            transition: background-color 0.3s ease;
+        }
+
+        .data-table tbody tr:hover {
+            background: var(--light-bg);
+        }
+
+        .data-table tbody tr:nth-child(even) {
+            background: rgba(248, 249, 250, 0.5);
+        }
+
+        /* Metrics Cards */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+        }
+
+        .metric-card:hover {
+            transform: scale(1.05);
+        }
+
+        .metric-value {
+            font-size: 2.2rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+            line-height: 1;
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+
+        .metric-change {
+            font-size: 0.8rem;
+            margin-top: 5px;
+            padding: 2px 6px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Charts */
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin: 20px 0;
+        }
+
+        .chart-small {
+            height: 200px;
+        }
+
+        /* Loading States */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-secondary);
+        }
+
+        .loading i {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            animation: spin 1s linear infinite;
+        }
+
+        /* Messages */
+        .message {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid;
+            font-size: 0.9rem;
+        }
+
+        .message.success {
+            background: rgba(76, 175, 80, 0.1);
+            border-color: var(--success-color);
+            color: var(--success-color);
+        }
+
+        .message.warning {
+            background: rgba(255, 152, 0, 0.1);
+            border-color: var(--warning-color);
+            color: #e65100;
+        }
+
+        .message.error {
+            background: rgba(244, 67, 54, 0.1);
+            border-color: var(--danger-color);
+            color: var(--danger-color);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: white;
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 800px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            animation: modalSlideIn 0.3s ease-out;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        @keyframes modalSlideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+            color: white;
+            padding: 20px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            font-size: 1.3rem;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            transition: background 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-body {
+            padding: 25px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-280px);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .header {
+                padding: 15px 20px;
+            }
+
+            .content-area {
+                padding: 20px;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Badges and Tags */
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            border-radius: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge.success { background: rgba(76, 175, 80, 0.2); color: var(--success-color); }
+        .badge.warning { background: rgba(255, 152, 0, 0.2); color: #e65100; }
+        .badge.danger { background: rgba(244, 67, 54, 0.2); color: var(--danger-color); }
+        .badge.info { background: rgba(102, 126, 234, 0.2); color: var(--accent-color); }
+
+        /* Search and Filters */
+        .search-bar {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 10px 15px;
+            font-size: 0.9rem;
+            width: 100%;
+            max-width: 300px;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-bar:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-database"></i> ZmartBot DMS</h2>
+            <p>Database Management System</p>
+        </div>
+        
+        <ul class="nav-menu">
+            <li class="nav-category">Dashboard</li>
+            <li class="nav-item active" data-section="overview">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Overview</span>
+                <span class="nav-badge" id="totalDbCount">0</span>
+            </li>
+            <li class="nav-item" data-section="analytics">
+                <i class="fas fa-chart-bar"></i>
+                <span>Analytics</span>
+            </li>
+            <li class="nav-item" data-section="monitoring">
+                <i class="fas fa-heartbeat"></i>
+                <span>Health Monitoring</span>
+                <span class="nav-badge" id="healthAlerts">0</span>
+            </li>
+            
+            <li class="nav-category">Service Lifecycle</li>
+            <li class="nav-item" data-section="discovery">
+                <i class="fas fa-search"></i>
+                <span>Discovery Registry</span>
+                <span class="nav-badge" id="discoveryCount">0</span>
+            </li>
+            <li class="nav-item" data-section="passport">
+                <i class="fas fa-id-card"></i>
+                <span>Passport Registry</span>
+                <span class="nav-badge" id="passportCount">0</span>
+            </li>
+            <li class="nav-item" data-section="services">
+                <i class="fas fa-award"></i>
+                <span>Service Registry</span>
+                <span class="nav-badge" id="serviceCount">0</span>
+            </li>
+            
+            <li class="nav-category">Database Management</li>
+            <li class="nav-item" data-section="all-tables">
+                <i class="fas fa-table"></i>
+                <span>All Tables</span>
+                <span class="nav-badge" id="tableCount">0</span>
+            </li>
+            <li class="nav-item" data-section="trading-data">
+                <i class="fas fa-chart-line"></i>
+                <span>Trading Data</span>
+            </li>
+            <li class="nav-item" data-section="ai-learning">
+                <i class="fas fa-brain"></i>
+                <span>AI Learning</span>
+            </li>
+            <li class="nav-item" data-section="risk-analysis">
+                <i class="fas fa-shield-alt"></i>
+                <span>Risk Analysis</span>
+            </li>
+            
+            <li class="nav-category">Cloud Integration</li>
+            <li class="nav-item" data-section="supabase-sync">
+                <i class="fas fa-cloud"></i>
+                <span>Supabase Sync</span>
+                <span class="nav-badge" id="syncStatus">SYNC</span>
+            </li>
+            <li class="nav-item" data-section="backup">
+                <i class="fas fa-save"></i>
+                <span>Backup & Archive</span>
+            </li>
+            
+            <li class="nav-category">System</li>
+            <li class="nav-item" data-section="settings">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </li>
+            <li class="nav-item" data-section="logs">
+                <i class="fas fa-file-alt"></i>
+                <span>System Logs</span>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <!-- Header -->
+        <div class="header">
+            <button class="sidebar-toggle" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <div class="header-title">
+                <h1 id="pageTitle">Dashboard Overview</h1>
+                <p id="pageSubtitle">Complete database management and monitoring</p>
+            </div>
+            
+            <div class="header-actions">
+                <button class="action-btn" onclick="refreshAllData()">
+                    <i class="fas fa-sync"></i> Refresh
+                </button>
+                <button class="action-btn success" onclick="triggerSync()">
+                    <i class="fas fa-cloud-upload-alt"></i> Sync Cloud
+                </button>
+                <button class="action-btn warning" onclick="showSettings()">
+                    <i class="fas fa-cog"></i> Settings
+                </button>
+            </div>
+        </div>
+
+        <!-- Status Bar -->
+        <div class="status-bar">
+            <div class="status-item">
+                <div class="status-indicator status-connected" id="connectionStatus"></div>
+                <span>Database Service: <strong id="serviceStatus">Connected</strong></span>
+            </div>
+            <div class="status-item">
+                <div class="status-indicator status-connected" id="supabaseStatus"></div>
+                <span>Supabase: <strong id="cloudStatus">Connected</strong></span>
+            </div>
+            <div class="status-item">
+                <i class="fas fa-clock"></i>
+                <span>Last Update: <strong id="lastUpdate">--:--</strong></span>
+            </div>
+            <div class="status-item">
+                <i class="fas fa-server"></i>
+                <span>Active Tables: <strong id="activeTables">0</strong></span>
+            </div>
+        </div>
+
+        <!-- Content Area -->
+        <div class="content-area">
+            <div id="messages"></div>
+            
+            <!-- Overview Section (Default) -->
+            <div id="overview-section" class="content-section">
+                <!-- Metrics Grid -->
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-value" id="totalDatabases">0</div>
+                        <div class="metric-label">Total Databases</div>
+                        <div class="metric-change" id="dbChange">+0 this week</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value" id="totalRecords">0</div>
+                        <div class="metric-label">Total Records</div>
+                        <div class="metric-change" id="recordChange">+0 today</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value" id="avgHealth">0%</div>
+                        <div class="metric-label">Average Health</div>
+                        <div class="metric-change" id="healthChange">stable</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value" id="totalSize">0</div>
+                        <div class="metric-label">Total Size (MB)</div>
+                        <div class="metric-change" id="sizeChange">+0 MB</div>
+                    </div>
+                </div>
+
+                <!-- Dashboard Grid -->
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <i class="fas fa-heartbeat"></i>
+                                Database Health
+                            </div>
+                            <button class="card-action" onclick="refreshHealthData()">
+                                <i class="fas fa-sync"></i>
+                            </button>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="healthChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <i class="fas fa-pie-chart"></i>
+                                Category Distribution
+                            </div>
+                            <button class="card-action" onclick="refreshCategoryData()">
+                                <i class="fas fa-sync"></i>
+                            </button>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="categoryChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <i class="fas fa-chart-line"></i>
+                                Recent Activity
+                            </div>
+                            <button class="card-action" onclick="refreshActivityData()">
+                                <i class="fas fa-sync"></i>
+                            </button>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="activityChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <i class="fas fa-trophy"></i>
+                                Top Performing Tables
+                            </div>
+                            <button class="card-action" onclick="viewAllTables()">
+                                <i class="fas fa-external-link-alt"></i>
+                            </button>
+                        </div>
+                        <div id="topTablesContent">
+                            <div class="loading">
+                                <i class="fas fa-spinner"></i>
+                                Loading top tables...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- All Tables Section -->
+            <div id="all-tables-section" class="content-section" style="display: none;">
+                <div class="filter-group">
+                    <input type="text" class="search-bar" placeholder="Search tables..." id="tableSearch">
+                    <select class="search-bar" style="max-width: 200px;" id="categoryFilter">
+                        <option value="">All Categories</option>
+                        <option value="service_lifecycle">Service Lifecycle</option>
+                        <option value="trading_data">Trading Data</option>
+                        <option value="ai_learning">AI Learning</option>
+                        <option value="risk_analysis">Risk Analysis</option>
+                        <option value="infrastructure">Infrastructure</option>
+                    </select>
+                    <button class="action-btn" onclick="exportTableData()">
+                        <i class="fas fa-download"></i> Export
+                    </button>
+                    <button class="action-btn success" onclick="addNewTable()">
+                        <i class="fas fa-plus"></i> Add Table
+                    </button>
+                </div>
+                
+                <div id="allTablesContent">
+                    <div class="loading">
+                        <i class="fas fa-spinner"></i>
+                        Loading all tables...
+                    </div>
+                </div>
+            </div>
+
+            <!-- Service Lifecycle Sections -->
+            <div id="discovery-section" class="content-section" style="display: none;">
+                <h2><i class="fas fa-search"></i> Discovery Registry</h2>
+                <p>Level 1: Services discovered but not yet active</p>
+                <div id="discoveryContent">
+                    <div class="loading">
+                        <i class="fas fa-spinner"></i>
+                        Loading discovery data...
+                    </div>
+                </div>
+            </div>
+
+            <div id="passport-section" class="content-section" style="display: none;">
+                <h2><i class="fas fa-id-card"></i> Passport Registry</h2>
+                <p>Level 2: Services with system interaction and passports</p>
+                <div id="passportContent">
+                    <div class="loading">
+                        <i class="fas fa-spinner"></i>
+                        Loading passport data...
+                    </div>
+                </div>
+            </div>
+
+            <div id="services-section" class="content-section" style="display: none;">
+                <h2><i class="fas fa-award"></i> Service Registry</h2>
+                <p>Level 3: Fully certified and registered services</p>
+                <div id="servicesContent">
+                    <div class="loading">
+                        <i class="fas fa-spinner"></i>
+                        Loading services data...
+                    </div>
+                </div>
+            </div>
+
+            <!-- Other sections will be added here -->
+            <div id="analytics-section" class="content-section" style="display: none;">
+                <h2><i class="fas fa-chart-bar"></i> Advanced Analytics</h2>
+                <!-- Analytics content -->
+            </div>
+
+            <div id="monitoring-section" class="content-section" style="display: none;">
+                <h2><i class="fas fa-heartbeat"></i> Health Monitoring</h2>
+                <!-- Monitoring content -->
+            </div>
+
+            <div id="supabase-sync-section" class="content-section" style="display: none;">
+                <h2><i class="fas fa-cloud"></i> Supabase Synchronization</h2>
+                <!-- Supabase sync content -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Table Details -->
+    <div id="tableModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Table Details</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalContent">
+                <!-- Modal content will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const SUPABASE_URL = 'https://asjtxrmftmutcsnqgidy.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFzanR4cm1mdG11dGNzbnFnaWR5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk1Nzc4NjgsImV4cCI6MjA2NTE1Mzg2OH0.ScIz31CxgxC2Knya-oHtMw5GQ7QL4QUHky-cEUdqpFM';
+        const DATABASE_SERVICE_URL = 'http://127.0.0.1:8900';
+
+        // Global variables
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        let charts = {};
+        let dashboardData = {};
+        let currentSection = 'overview';
+
+        // Initialize Dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeDashboard();
+            setupEventListeners();
+            startAutoRefresh();
+        });
+
+        function initializeDashboard() {
+            showMessage('Initializing Dashboard Management System...', 'info');
+            refreshAllData();
+        }
+
+        function setupEventListeners() {
+            // Sidebar toggle
+            document.getElementById('sidebarToggle').addEventListener('click', toggleSidebar);
+
+            // Navigation items
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const section = item.dataset.section;
+                    if (section) {
+                        switchSection(section);
+                    }
+                });
+            });
+
+            // Search functionality
+            const searchBar = document.getElementById('tableSearch');
+            if (searchBar) {
+                searchBar.addEventListener('input', filterTables);
+            }
+
+            // Category filter
+            const categoryFilter = document.getElementById('categoryFilter');
+            if (categoryFilter) {
+                categoryFilter.addEventListener('change', filterTables);
+            }
+
+            // Close modal on outside click
+            window.addEventListener('click', (event) => {
+                const modal = document.getElementById('tableModal');
+                if (event.target === modal) {
+                    closeModal();
+                }
+            });
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            
+            sidebar.classList.toggle('collapsed');
+            mainContent.classList.toggle('expanded');
+        }
+
+        function switchSection(sectionName) {
+            // Update navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.querySelector(`[data-section="${sectionName}"]`).classList.add('active');
+
+            // Hide all sections
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.style.display = 'none';
+            });
+
+            // Show selected section
+            const targetSection = document.getElementById(`${sectionName}-section`);
+            if (targetSection) {
+                targetSection.style.display = 'block';
+                currentSection = sectionName;
+                updatePageTitle(sectionName);
+                loadSectionData(sectionName);
+            }
+        }
+
+        function updatePageTitle(section) {
+            const titles = {
+                'overview': { title: 'Dashboard Overview', subtitle: 'Complete database management and monitoring' },
+                'all-tables': { title: 'All Database Tables', subtitle: 'Comprehensive table management and overview' },
+                'discovery': { title: 'Discovery Registry', subtitle: 'Level 1: Discovered services' },
+                'passport': { title: 'Passport Registry', subtitle: 'Level 2: Services with passports' },
+                'services': { title: 'Service Registry', subtitle: 'Level 3: Certified services' },
+                'analytics': { title: 'Advanced Analytics', subtitle: 'Deep insights and trend analysis' },
+                'monitoring': { title: 'Health Monitoring', subtitle: 'Real-time system health tracking' },
+                'supabase-sync': { title: 'Supabase Sync', subtitle: 'Cloud synchronization management' }
+            };
+
+            const titleInfo = titles[section] || { title: 'Dashboard', subtitle: 'Database Management System' };
+            document.getElementById('pageTitle').textContent = titleInfo.title;
+            document.getElementById('pageSubtitle').textContent = titleInfo.subtitle;
+        }
+
+        async function loadSectionData(section) {
+            switch (section) {
+                case 'all-tables':
+                    await loadAllTablesData();
+                    break;
+                case 'discovery':
+                    await loadDiscoveryData();
+                    break;
+                case 'passport':
+                    await loadPassportData();
+                    break;
+                case 'services':
+                    await loadServicesData();
+                    break;
+                // Add more cases as needed
+            }
+        }
+
+        async function refreshAllData() {
+            try {
+                showMessage('Refreshing all data...', 'info');
+
+                // Fetch data from multiple sources
+                const [localData, cloudData] = await Promise.all([
+                    fetchLocalData(),
+                    fetchCloudData()
+                ]);
+
+                dashboardData = { local: localData, cloud: cloudData };
+
+                // Update UI components
+                updateMetrics();
+                updateStatusBar();
+                updateNavigationBadges();
+                updateCharts();
+                
+                if (currentSection === 'overview') {
+                    updateTopTables();
+                } else {
+                    loadSectionData(currentSection);
+                }
+
+                showMessage('Data refreshed successfully!', 'success');
+            } catch (error) {
+                console.error('Error refreshing data:', error);
+                showMessage('Error refreshing data: ' + error.message, 'error');
+            }
+        }
+
+        async function fetchLocalData() {
+            try {
+                const response = await fetch(`${DATABASE_SERVICE_URL}/api/system/overview`);
+                return response.ok ? await response.json() : null;
+            } catch (error) {
+                console.error('Local data fetch failed:', error);
+                return null;
+            }
+        }
+
+        async function fetchCloudData() {
+            try {
+                const { data, error } = await supabase
+                    .from('database_registry')
+                    .select('*')
+                    .order('updated_at', { ascending: false });
+                
+                return error ? [] : data;
+            } catch (error) {
+                console.error('Cloud data fetch failed:', error);
+                return [];
+            }
+        }
+
+        function updateMetrics() {
+            const stats = dashboardData.local?.database_statistics || {};
+            const cloudData = dashboardData.cloud || [];
+
+            document.getElementById('totalDatabases').textContent = cloudData.length || stats.total_databases || 0;
+            document.getElementById('totalRecords').textContent = (stats.total_records || 0).toLocaleString();
+            document.getElementById('avgHealth').textContent = `${(stats.average_health || 0).toFixed(1)}%`;
+            document.getElementById('totalSize').textContent = `${(stats.total_size_mb || 0).toFixed(1)} MB`;
+        }
+
+        function updateStatusBar() {
+            document.getElementById('lastUpdate').textContent = new Date().toLocaleTimeString();
+            document.getElementById('activeTables').textContent = (dashboardData.cloud?.length || 0);
+
+            // Update connection status
+            const serviceStatus = dashboardData.local ? 'Connected' : 'Disconnected';
+            const cloudStatus = dashboardData.cloud ? 'Connected' : 'Disconnected';
+            
+            document.getElementById('serviceStatus').textContent = serviceStatus;
+            document.getElementById('cloudStatus').textContent = cloudStatus;
+        }
+
+        function updateNavigationBadges() {
+            const cloudData = dashboardData.cloud || [];
+            const lifecycle = dashboardData.local?.service_lifecycle || {};
+
+            document.getElementById('totalDbCount').textContent = cloudData.length;
+            document.getElementById('discoveryCount').textContent = lifecycle.discovery_services || 0;
+            document.getElementById('passportCount').textContent = lifecycle.passport_services || 0;
+            document.getElementById('serviceCount').textContent = lifecycle.registered_services || 0;
+            
+            // Calculate total tables from all databases
+            const totalTables = cloudData.reduce((sum, db) => sum + (db.table_count || 0), 0);
+            document.getElementById('tableCount').textContent = totalTables;
+        }
+
+        function updateCharts() {
+            if (currentSection === 'overview') {
+                createHealthChart();
+                createCategoryChart();
+                createActivityChart();
+            }
+        }
+
+        function createHealthChart() {
+            const cloudData = dashboardData.cloud || [];
+            if (cloudData.length === 0) return;
+
+            const healthDistribution = { 'Excellent': 0, 'Good': 0, 'Fair': 0, 'Poor': 0 };
+
+            cloudData.forEach(db => {
+                const score = db.health_score || 0;
+                if (score >= 90) healthDistribution.Excellent++;
+                else if (score >= 75) healthDistribution.Good++;
+                else if (score >= 50) healthDistribution.Fair++;
+                else healthDistribution.Poor++;
+            });
+
+            const ctx = document.getElementById('healthChart');
+            if (!ctx) return;
+
+            if (charts.healthChart) charts.healthChart.destroy();
+
+            charts.healthChart = new Chart(ctx.getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(healthDistribution),
+                    datasets: [{
+                        data: Object.values(healthDistribution),
+                        backgroundColor: ['#4caf50', '#8bc34a', '#ff9800', '#f44336'],
+                        borderWidth: 3,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom' },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = ((context.raw / total) * 100).toFixed(1);
+                                    return `${context.label}: ${context.raw} (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function createCategoryChart() {
+            const cloudData = dashboardData.cloud || [];
+            if (cloudData.length === 0) return;
+
+            const categoryCount = {};
+            cloudData.forEach(db => {
+                const category = db.category || 'unknown';
+                categoryCount[category] = (categoryCount[category] || 0) + 1;
+            });
+
+            const ctx = document.getElementById('categoryChart');
+            if (!ctx) return;
+
+            if (charts.categoryChart) charts.categoryChart.destroy();
+
+            const colors = ['#667eea', '#764ba2', '#f093fb', '#f5576c', '#4facfe', '#00f2fe'];
+
+            charts.categoryChart = new Chart(ctx.getContext('2d'), {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(categoryCount),
+                    datasets: [{
+                        data: Object.values(categoryCount),
+                        backgroundColor: colors.slice(0, Object.keys(categoryCount).length),
+                        borderWidth: 3,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
+                }
+            });
+        }
+
+        function createActivityChart() {
+            // Create a mock activity chart for now
+            const ctx = document.getElementById('activityChart');
+            if (!ctx) return;
+
+            if (charts.activityChart) charts.activityChart.destroy();
+
+            const last7Days = Array.from({length: 7}, (_, i) => {
+                const date = new Date();
+                date.setDate(date.getDate() - i);
+                return date.toLocaleDateString();
+            }).reverse();
+
+            charts.activityChart = new Chart(ctx.getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels: last7Days,
+                    datasets: [{
+                        label: 'Database Activity',
+                        data: [12, 19, 15, 25, 22, 18, 24],
+                        borderColor: '#667eea',
+                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+        }
+
+        function updateTopTables() {
+            const cloudData = dashboardData.cloud || [];
+            const topTables = cloudData
+                .sort((a, b) => (b.health_score || 0) - (a.health_score || 0))
+                .slice(0, 5);
+
+            const container = document.getElementById('topTablesContent');
+            if (!container) return;
+
+            if (topTables.length === 0) {
+                container.innerHTML = '<p>No table data available</p>';
+                return;
+            }
+
+            let html = '<div style="space-y: 10px;">';
+            topTables.forEach(table => {
+                const healthClass = getHealthBadgeClass(table.health_score || 0);
+                html += `
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 8px; margin-bottom: 10px; cursor: pointer;" onclick="showTableDetails('${table.name}')">
+                        <div>
+                            <strong>${table.name}</strong><br>
+                            <small class="badge ${healthClass}">${table.category || 'unknown'}</small>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-weight: bold; color: #667eea;">${(table.health_score || 0).toFixed(1)}%</div>
+                            <small>${(table.row_count || 0).toLocaleString()} records</small>
+                        </div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+
+            container.innerHTML = html;
+        }
+
+        async function loadAllTablesData() {
+            const cloudData = dashboardData.cloud || [];
+            const container = document.getElementById('allTablesContent');
+
+            if (cloudData.length === 0) {
+                container.innerHTML = '<div class="message warning">No table data available. Try syncing with the cloud first.</div>';
+                return;
+            }
+
+            let html = `
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Table Name</th>
+                            <th>Category</th>
+                            <th>Health Score</th>
+                            <th>Records</th>
+                            <th>Size (MB)</th>
+                            <th>Last Updated</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            cloudData.forEach(table => {
+                const healthClass = getHealthBadgeClass(table.health_score || 0);
+                const size = table.size_bytes ? (table.size_bytes / (1024 * 1024)).toFixed(2) : '0.00';
+                const lastUpdated = table.updated_at ? new Date(table.updated_at).toLocaleDateString() : 'N/A';
+
+                html += `
+                    <tr>
+                        <td><strong>${table.name}</strong></td>
+                        <td><span class="badge ${healthClass}">${table.category || 'unknown'}</span></td>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <div style="width: 50px; height: 8px; background: #e9ecef; border-radius: 4px; overflow: hidden;">
+                                    <div style="width: ${table.health_score || 0}%; height: 100%; background: ${getHealthColor(table.health_score || 0)};"></div>
+                                </div>
+                                ${(table.health_score || 0).toFixed(1)}%
+                            </div>
+                        </td>
+                        <td>${(table.row_count || 0).toLocaleString()}</td>
+                        <td>${size}</td>
+                        <td>${lastUpdated}</td>
+                        <td>
+                            <button class="action-btn" style="padding: 5px 10px; font-size: 0.8rem;" onclick="showTableDetails('${table.name}')">
+                                <i class="fas fa-eye"></i> View
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+
+        function getHealthBadgeClass(score) {
+            if (score >= 90) return 'success';
+            if (score >= 75) return 'info';
+            if (score >= 50) return 'warning';
+            return 'danger';
+        }
+
+        function getHealthColor(score) {
+            if (score >= 90) return '#4caf50';
+            if (score >= 75) return '#2196f3';
+            if (score >= 50) return '#ff9800';
+            return '#f44336';
+        }
+
+        function showTableDetails(tableName) {
+            const table = dashboardData.cloud?.find(t => t.name === tableName);
+            if (!table) return;
+
+            const modal = document.getElementById('tableModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalContent = document.getElementById('modalContent');
+
+            modalTitle.textContent = `Table Details: ${tableName}`;
+            
+            modalContent.innerHTML = `
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 20px;">
+                    <div class="metric-card">
+                        <div class="metric-value">${(table.health_score || 0).toFixed(1)}%</div>
+                        <div class="metric-label">Health Score</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">${(table.row_count || 0).toLocaleString()}</div>
+                        <div class="metric-label">Total Records</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">${table.table_count || 0}</div>
+                        <div class="metric-label">Table Count</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">${table.size_bytes ? (table.size_bytes / (1024 * 1024)).toFixed(2) : '0.00'}</div>
+                        <div class="metric-label">Size (MB)</div>
+                    </div>
+                </div>
+                
+                <h4>Table Information</h4>
+                <table class="data-table" style="margin-top: 10px;">
+                    <tr><th>Property</th><th>Value</th></tr>
+                    <tr><td>Name</td><td>${table.name}</td></tr>
+                    <tr><td>Category</td><td><span class="badge ${getHealthBadgeClass(table.health_score || 0)}">${table.category || 'unknown'}</span></td></tr>
+                    <tr><td>Path</td><td><code>${table.path || 'N/A'}</code></td></tr>
+                    <tr><td>Created</td><td>${table.created_at ? new Date(table.created_at).toLocaleString() : 'N/A'}</td></tr>
+                    <tr><td>Last Updated</td><td>${table.updated_at ? new Date(table.updated_at).toLocaleString() : 'N/A'}</td></tr>
+                    <tr><td>Sync Status</td><td><span class="badge success">${table.sync_status || 'unknown'}</span></td></tr>
+                </table>
+                
+                <div style="margin-top: 20px; display: flex; gap: 10px;">
+                    <button class="action-btn" onclick="syncSingleTable('${tableName}')">
+                        <i class="fas fa-sync"></i> Sync Table
+                    </button>
+                    <button class="action-btn warning" onclick="exportSingleTable('${tableName}')">
+                        <i class="fas fa-download"></i> Export Data
+                    </button>
+                </div>
+            `;
+
+            modal.style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('tableModal').style.display = 'none';
+        }
+
+        function filterTables() {
+            const searchTerm = document.getElementById('tableSearch')?.value.toLowerCase() || '';
+            const categoryFilter = document.getElementById('categoryFilter')?.value || '';
+            
+            const rows = document.querySelectorAll('#allTablesContent tbody tr');
+            
+            rows.forEach(row => {
+                const tableName = row.cells[0].textContent.toLowerCase();
+                const category = row.cells[1].textContent.toLowerCase();
+                
+                const matchesSearch = tableName.includes(searchTerm);
+                const matchesCategory = !categoryFilter || category.includes(categoryFilter);
+                
+                row.style.display = (matchesSearch && matchesCategory) ? '' : 'none';
+            });
+        }
+
+        async function triggerSync() {
+            try {
+                showMessage('Triggering cloud synchronization...', 'info');
+                
+                const response = await fetch(`${DATABASE_SERVICE_URL}/api/cloud/sync`, {
+                    method: 'POST'
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showMessage(`Successfully synced ${result.databases_synced} databases!`, 'success');
+                    setTimeout(refreshAllData, 2000);
+                } else {
+                    showMessage(`Sync failed: ${result.error}`, 'error');
+                }
+            } catch (error) {
+                showMessage(`Sync error: ${error.message}`, 'error');
+            }
+        }
+
+        function startAutoRefresh() {
+            setInterval(() => {
+                if (document.visibilityState === 'visible') {
+                    refreshAllData();
+                }
+            }, 60000); // Refresh every minute
+        }
+
+        function showMessage(message, type = 'info') {
+            const messagesDiv = document.getElementById('messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            messageDiv.textContent = message;
+            
+            messagesDiv.appendChild(messageDiv);
+            
+            setTimeout(() => {
+                messageDiv.remove();
+            }, 5000);
+        }
+
+        // Additional utility functions
+        function exportTableData() {
+            // Implementation for exporting table data
+            showMessage('Export functionality coming soon!', 'info');
+        }
+
+        function addNewTable() {
+            // Implementation for adding new table
+            showMessage('Add table functionality coming soon!', 'info');
+        }
+
+        function showSettings() {
+            // Implementation for settings
+            showMessage('Settings panel coming soon!', 'info');
+        }
+
+        // Initialize with error handling
+        window.addEventListener('error', function(e) {
+            console.error('Dashboard error:', e);
+            showMessage('An error occurred. Check console for details.', 'error');
+        });
+    </script>
+</body>
+</html>

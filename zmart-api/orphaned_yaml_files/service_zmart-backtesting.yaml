@@ -1,0 +1,85 @@
+name: zmart_backtesting
+version: 1.0.0
+description: ZmartBot Backtesting Service - Strategy testing and performance analysis
+type: backend
+port: 8013
+status: active
+config:
+  environment: production
+  debug: false
+  host: 127.0.0.1
+  port: 8013
+health:
+  endpoint: /health
+  readiness_endpoint: /ready
+  timeout: 30s
+  interval: 10s
+dependencies:
+- name: zmart-api
+  port: 8000
+  required: true
+- name: master-orchestration-agent
+  port: 8002
+  required: true
+endpoints:
+- path: /health
+  method: GET
+  description: Health check endpoint
+- path: /ready
+  method: GET
+  description: Readiness check endpoint
+- path: /api/v1/backtest/run
+  method: POST
+  description: Run backtest strategy
+- path: /api/v1/backtest/results
+  method: GET
+  description: Get backtest results
+- path: /api/v1/backtest/optimize
+  method: POST
+  description: Optimize strategy parameters
+- path: /api/v1/backtest/compare
+  method: POST
+  description: Compare multiple strategies
+backtesting_features:
+- name: Strategy Testing
+  description: Historical strategy performance testing
+  status: active
+- name: Parameter Optimization
+  description: Strategy parameter optimization
+  status: active
+- name: Performance Analysis
+  description: Comprehensive performance metrics
+  status: active
+- name: Risk Analysis
+  description: Risk metrics and analysis
+  status: active
+- name: Strategy Comparison
+  description: Multiple strategy comparison
+  status: active
+data_sources:
+- name: Historical Data
+  type: market
+  status: active
+- name: Strategy Data
+  type: trading
+  status: active
+- name: Performance Data
+  type: analytics
+  status: active
+monitoring:
+  metrics: /metrics
+  dashboard: /dashboard
+  alerts: /alerts
+security:
+  authentication: required
+  authorization: role-based
+  encryption: enabled
+performance:
+  caching: enabled
+  optimization: active
+  scaling: horizontal
+rollback:
+  snapshots: enabled
+  data_backup: automatic
+  configuration: versioned
+service_name: zmart-backtesting

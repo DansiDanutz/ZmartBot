@@ -1,0 +1,94 @@
+{
+  "symbol": "SUI",
+  "symbol_name": "Sui",
+  "birth_date": "2023-05-03",
+  "total_days": 865,
+  "band_coefficients": {
+    "0.0-0.1": {
+      "days_in_band": 25,
+      "percentage": 2.89,
+      "coefficient": 0.001445,
+      "band_center": 0.05,
+      "lower": 0.0,
+      "upper": 0.1
+    },
+    "0.1-0.2": {
+      "days_in_band": 86,
+      "percentage": 9.94,
+      "coefficient": 0.014913,
+      "band_center": 0.15000000000000002,
+      "lower": 0.1,
+      "upper": 0.2
+    },
+    "0.2-0.3": {
+      "days_in_band": 112,
+      "percentage": 12.95,
+      "coefficient": 0.03237,
+      "band_center": 0.25,
+      "lower": 0.2,
+      "upper": 0.3
+    },
+    "0.3-0.4": {
+      "days_in_band": 138,
+      "percentage": 15.95,
+      "coefficient": 0.055838,
+      "band_center": 0.35,
+      "lower": 0.3,
+      "upper": 0.4
+    },
+    "0.4-0.5": {
+      "days_in_band": 173,
+      "percentage": 20.0,
+      "coefficient": 0.09,
+      "band_center": 0.45,
+      "lower": 0.4,
+      "upper": 0.5
+    },
+    "0.5-0.6": {
+      "days_in_band": 190,
+      "percentage": 21.97,
+      "coefficient": 0.120809,
+      "band_center": 0.55,
+      "lower": 0.5,
+      "upper": 0.6
+    },
+    "0.6-0.7": {
+      "days_in_band": 112,
+      "percentage": 12.95,
+      "coefficient": 0.084162,
+      "band_center": 0.6499999999999999,
+      "lower": 0.6,
+      "upper": 0.7
+    },
+    "0.7-0.8": {
+      "days_in_band": 60,
+      "percentage": 6.94,
+      "coefficient": 0.052023,
+      "band_center": 0.75,
+      "lower": 0.7,
+      "upper": 0.8
+    },
+    "0.8-0.9": {
+      "days_in_band": 34,
+      "percentage": 3.93,
+      "coefficient": 0.03341,
+      "band_center": 0.8500000000000001,
+      "lower": 0.8,
+      "upper": 0.9
+    },
+    "0.9-1.0": {
+      "days_in_band": 17,
+      "percentage": 1.97,
+      "coefficient": 0.018671,
+      "band_center": 0.95,
+      "lower": 0.9,
+      "upper": 1.0
+    }
+  },
+  "weighted_risk_score": 0.5036,
+  "current_risk_level": 0.55,
+  "current_risk_band": "0.5-0.6",
+  "confidence_level": 7,
+  "data_type": "estimated",
+  "calculated_at": "2025-09-14T22:51:01.267067"
+}

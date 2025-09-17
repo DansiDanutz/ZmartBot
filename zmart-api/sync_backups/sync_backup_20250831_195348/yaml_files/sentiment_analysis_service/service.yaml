@@ -1,0 +1,30 @@
+service_name: sentiment-analysis-service
+service_type: backend
+version: 1.0.0
+owner: zmartbot
+description: Sentiment analysis service - needs ZMBT passport
+port: 8097
+passport_id: ZMBT-SRV-20250828-F2685E
+status: ACTIVE
+registered_at: '2025-08-31'
+health_url: http://localhost:8097/health
+start_cmd: python3 sentiment_analysis_service_server.py --port 8097
+stop_cmd: pkill -f 'sentiment_analysis_service_server.py'
+dependencies:
+- zmart-api
+tags:
+- backend
+- sentiment-analysis-service
+lifecycle:
+  startup_grace_seconds: 30
+  shutdown_timeout_seconds: 15
+  health_check_interval: 30
+monitoring:
+  metrics_endpoint: /metrics
+  logs_path: logs/sentiment-analysis-service.log
+  dashboard_url: http://localhost:8097/dashboard
+security:
+  cors_enabled: true
+  token_required: false
+  scopes:
+  - backend

@@ -9,9 +9,18 @@ import time
 import subprocess
 import signal
 import sys
+import asyncio
 from pathlib import Path
 from datetime import datetime
 import json
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+
+# Import MDC Connection Agent
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
+from src.services.mdc_connection_agent import MDCConnectionAgent
 
 class BackgroundMDCAgent:
     def __init__(self):
@@ -23,6 +32,12 @@ class BackgroundMDCAgent:
         self.last_update = None
         self.update_interval = 300  # 5 minutes
         self.log_file = self.agent_dir / "background_mdc_agent.log"
+        
+        # Initialize MDC Connection Agent
+        self.connection_agent = None
+        self.connection_agent_enabled = True
+        self.last_connection_scan = None
+        self.connection_scan_interval = 3600  # 1 hour
         
     def log(self, message):
         """Log message with timestamp"""
@@ -137,16 +152,74 @@ class BackgroundMDCAgent:
         stat = self.claude_file.stat()
         age_hours = (time.time() - stat.st_mtime) / 3600
         
-        # If CLAUDE.md is older than 24 hours, force update
-        if age_hours > 24:
+        # If CLAUDE.md is older than 1 hour, force update (high-activity system)
+        if age_hours > 1:
             self.log(f"CLAUDE.md is {age_hours:.1f} hours old, forcing update")
             return True
         
         return False
     
+    def initialize_connection_agent(self):
+        """Initialize the MDC Connection Agent"""
+        try:
+            if self.connection_agent_enabled and not self.connection_agent:
+                self.log("Initializing MDC Connection Agent...")
+                
+                # Get OpenAI API key if available
+                openai_key = os.getenv('OPENAI_API_KEY')
+                if not openai_key:
+                    self.log("No OpenAI API key found, using rule-based connections only")
+                
+                # Initialize agent
+                self.connection_agent = MDCConnectionAgent(str(self.mdc_dir), openai_key)
+                self.connection_agent.start_watching()
+                
+                self.log("MDC Connection Agent initialized and file watching started")
+                return True
+                
+        except Exception as e:
+            self.log(f"Error initializing connection agent: {e}")
+            self.connection_agent_enabled = False
+            return False
+    
+    async def run_connection_analysis(self):
+        """Run connection analysis on all MDC files"""
+        try:
+            if not self.connection_agent:
+                return False
+                
+            self.log("Running MDC connection analysis...")
+            
+            # Discover connections for all services
+            connections = await self.connection_agent.discover_all_connections()
+            
+            total_connections = sum(len(conns) for conns in connections.values())
+            self.log(f"Connection analysis complete: {len(connections)} services, {total_connections} connections")
+            
+            self.last_connection_scan = time.time()
+            return True
+            
+        except Exception as e:
+            self.log(f"Error in connection analysis: {e}")
+            return False
+    
+    def should_run_connection_scan(self):
+        """Check if connection scan should be run"""
+        if not self.connection_agent_enabled or not self.connection_agent:
+            return False
+            
+        if not self.last_connection_scan:
+            return True
+            
+        return (time.time() - self.last_connection_scan) > self.connection_scan_interval
+    
     def run_cycle(self):
         """Run one monitoring cycle"""
         try:
+            # Initialize connection agent if needed
+            if not self.connection_agent and self.connection_agent_enabled:
+                self.initialize_connection_agent()
+            
             # Get current MDC files info
             current_info = self.get_mdc_files_info()
             
@@ -157,9 +230,19 @@ class BackgroundMDCAgent:
             # Check if CLAUDE.md is stale
             is_stale = self.check_claude_md_age()
             
+            # Check if connection scan should run
+            should_scan_connections = self.should_run_connection_scan()
+            
             # Update if needed
             if has_changes or is_stale:
                 self.log(f"Changes detected or CLAUDE.md stale. MDC files: {len(current_info)}")
+                
+                # Run connection analysis if changes detected
+                if has_changes and self.connection_agent:
+                    try:
+                        asyncio.run(self.run_connection_analysis())
+                    except Exception as e:
+                        self.log(f"Error in connection analysis: {e}")
                 
                 # Update CLAUDE.md
                 if self.update_claude_md():
@@ -167,6 +250,13 @@ class BackgroundMDCAgent:
                     self.update_master_orchestration()
                 else:
                     self.log("Failed to update CLAUDE.md, skipping Master Orchestration update")
+            elif should_scan_connections:
+                # Run periodic connection scan
+                self.log("Running scheduled connection analysis...")
+                try:
+                    asyncio.run(self.run_connection_analysis())
+                except Exception as e:
+                    self.log(f"Error in scheduled connection analysis: {e}")
             else:
                 self.log(f"No changes detected. MDC files: {len(current_info)}")
                 
@@ -176,6 +266,15 @@ class BackgroundMDCAgent:
     def signal_handler(self, signum, frame):
         """Handle shutdown signals"""
         self.log("Received shutdown signal, stopping agent...")
+        
+        # Stop connection agent
+        if self.connection_agent:
+            try:
+                self.connection_agent.stop_watching()
+                self.log("Connection agent file watcher stopped")
+            except Exception as e:
+                self.log(f"Error stopping connection agent: {e}")
+        
         self.running = False
     
     def run(self):
@@ -183,6 +282,8 @@ class BackgroundMDCAgent:
         self.log("Background MDC Agent starting...")
         self.log(f"Monitoring directory: {self.mdc_dir}")
         self.log(f"Update interval: {self.update_interval} seconds")
+        self.log(f"Connection agent enabled: {self.connection_agent_enabled}")
+        self.log(f"Connection scan interval: {self.connection_scan_interval} seconds")
         
         # Set up signal handlers
         signal.signal(signal.SIGINT, self.signal_handler)

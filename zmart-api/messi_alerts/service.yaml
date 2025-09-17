@@ -1,0 +1,19 @@
+endpoints:
+  health: http://127.0.0.1:8214/health
+  metrics: http://127.0.0.1:8214/metrics
+  ready: http://127.0.0.1:8214/ready
+lifecycle:
+  health_check: curl -f http://127.0.0.1:8214/health
+  start_command: python3 messi_alerts_server.py
+  stop_command: pkill -f messi-alerts
+metadata:
+  description: Messi High-Frequency Trading Alerts
+  owner: zmartbot
+  version: 1.0.0
+service:
+  level: 3
+  name: messi-alerts
+  passport: ZMBT-ALT-20250831-F3C985
+  port: 8214
+  status: ACTIVE
+  type: backend

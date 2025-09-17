@@ -1,0 +1,61 @@
+{
+  "extraction_date": "2025-09-16",
+  "source": "IntoTheCryptoverse",
+  "symbols": {
+    "SUI": {
+      "current_price": 3.58,
+      "current_fiat_risk": 0.390,
+      "fiat_risk_zone": "TRANSITION",
+      "last_updated": "2025-09-15"
+    },
+    "HBAR": {
+      "current_price": 0.235,
+      "current_fiat_risk": 0.521,
+      "fiat_risk_zone": "TRANSITION",
+      "last_updated": "2025-09-15"
+    },
+    "RENDER": {
+      "current_price": 3.82,
+      "current_fiat_risk": 0.363,
+      "fiat_risk_zone": "TRANSITION",
+      "last_updated": "2025-09-15"
+    },
+    "TON": {
+      "current_price": 3.17,
+      "current_fiat_risk": 0.234,
+      "fiat_risk_zone": "ACCUMULATION",
+      "last_updated": "2025-09-15"
+    },
+    "ALGO": {
+      "current_price": 0.242,
+      "current_fiat_risk": 0.299,
+      "fiat_risk_zone": "ACCUMULATION",
+      "last_updated": "2025-09-08",
+      "note": "From existing JSON file"
+    },
+    "VET": {
+      "current_price": 0.0255,
+      "current_fiat_risk": 0.303,
+      "fiat_risk_zone": "TRANSITION",
+      "last_updated": "2025-09-08",
+      "note": "From existing JSON file"
+    },
+    "XLM": {
+      "current_price": 0.0926,
+      "current_fiat_risk": 0.120,
+      "fiat_risk_zone": "ACCUMULATION",
+      "last_updated": "2025-09-08",
+      "note": "From existing JSON file"
+    }
+  },
+  "summary": {
+    "total_symbols_extracted": 7,
+    "new_symbols": ["SUI", "HBAR", "RENDER", "TON"],
+    "updated_symbols": ["ALGO", "VET", "XLM"],
+    "risk_zones": {
+      "ACCUMULATION": ["TON", "ALGO", "XLM"],
+      "TRANSITION": ["SUI", "HBAR", "RENDER", "VET"],
+      "DISTRIBUTION": []
+    }
+  }
+}

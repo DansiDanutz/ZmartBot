@@ -1,0 +1,16 @@
+service_name: system-protection-service
+service_type: protection
+port: 8999
+description: "System protection and security monitoring service"
+status: ACTIVE
+passport_id: ZMBT-PROTECTION-20250826-2C0587
+registered_at: "2025-08-26"
+health_url: "http://localhost:8999/health"
+start_cmd: "python3 system_protection_service.py"
+stop_cmd: "pkill -f 'system_protection_service.py'"
+dependencies:
+  - zmart-api
+tags:
+  - security
+  - protection
+  - monitoring

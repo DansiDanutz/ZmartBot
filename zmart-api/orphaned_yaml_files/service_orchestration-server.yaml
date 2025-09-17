@@ -1,0 +1,30 @@
+service_name: orchestration-server
+service_type: orchestration
+version: 1.0.0
+owner: zmartbot
+description: Orchestration server
+port: 8551
+passport_id: ZMBT-ORC-20250831-G8H9I1
+status: ACTIVE
+registered_at: '2025-08-31'
+health_url: http://localhost:8551/health
+start_cmd: python3 orchestration_server_server.py --port 8551
+stop_cmd: pkill -f 'orchestration_server_server.py'
+dependencies:
+- zmart-api
+tags:
+- orchestration
+- orchestration-server
+lifecycle:
+  startup_grace_seconds: 30
+  shutdown_timeout_seconds: 15
+  health_check_interval: 30
+monitoring:
+  metrics_endpoint: /metrics
+  logs_path: logs/orchestration-server.log
+  dashboard_url: http://localhost:8551/dashboard
+security:
+  cors_enabled: true
+  token_required: false
+  scopes:
+  - orchestration

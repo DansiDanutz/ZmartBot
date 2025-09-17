@@ -1,0 +1,99 @@
+{
+  "symbol": "ETH",
+  "current_price": 3500,
+  "risk_assessment": {
+    "risk_value": 0.7149958700043685,
+    "risk_band": "0.7-0.8",
+    "market_bias": "SHORT"
+  },
+  "position_sizing": {
+    "method": "Doubling Strategy",
+    "entries": {
+      "entry_1": {
+        "percentage": "2%",
+        "amount": 200.0,
+        "cumulative": 200.0
+      },
+      "entry_2": {
+        "percentage": "4%",
+        "amount": 400.0,
+        "cumulative": 600.0
+      },
+      "entry_3": {
+        "percentage": "8%",
+        "amount": 800.0,
+        "cumulative": 1400.0
+      },
+      "entry_4": {
+        "percentage": "16%",
+        "amount": 1600.0,
+        "cumulative": 3000.0
+      },
+      "margin_addition": {
+        "percentage": "Up to 50% total",
+        "available": 2000.0,
+        "note": "Add margin as position moves in favor"
+      }
+    },
+    "rule": "2% \u2192 4% \u2192 8% \u2192 16% \u2192 Add Margin to 50%"
+  },
+  "leverage": {
+    "recommended": 5,
+    "options": {
+      "ultra_high": 20,
+      "high": 10,
+      "medium": 5,
+      "low": 2
+    },
+    "rule": "NO 7X! Only 20X, 10X, 5X, 2X"
+  },
+  "strategies": {
+    "scalp": {
+      "position": "SHORT",
+      "win_rate": "65%",
+      "leverage": 20,
+      "duration": "5-15 minutes",
+      "entry": "Sell at market or limit at resistance",
+      "exit": "Target: -0.5-1%, Stop: +0.3%",
+      "target": "0.5-1%",
+      "stop": "0.3%"
+    },
+    "intraday": {
+      "position": "SHORT",
+      "win_rate": "68%",
+      "leverage": 10,
+      "duration": "1-4 hours",
+      "entry": "Sell at market or limit at resistance",
+      "exit": "Target: -2-3%, Stop: +1%",
+      "target": "2-3%",
+      "stop": "1%"
+    },
+    "swing": {
+      "position": "SHORT",
+      "win_rate": "72%",
+      "leverage": 5,
+      "duration": "2-5 days",
+      "entry": "Sell at market or limit at resistance",
+      "exit": "Target: -5-10%, Stop: +3%",
+      "target": "5-10%",
+      "stop": "3%"
+    },
+    "position": {
+      "position": "SHORT",
+      "win_rate": "75%",
+      "leverage": 2,
+      "duration": "1-4 weeks",
+      "entry": "Sell at market or limit at resistance",
+      "exit": "Target: -15-30%, Stop: +5%",
+      "target": "15-30%",
+      "stop": "5%"
+    }
+  },
+  "execution_rules": {
+    "entry_method": "Scale in using doubling strategy",
+    "risk_management": "Never exceed 50% of capital including margin",
+    "profit_taking": "Take partial profits at each target level",
+    "stop_loss": "Always use stops, trail after in profit"
+  },
+  "timestamp": "2025-09-14T14:03:43.441833"
+}

@@ -1,0 +1,6 @@
+service_name: achievements
+port: 8903
+type: backend
+description: Achievements tracking and management service
+health_url: http://localhost:8903/health
+start_cmd: python3 services/achievements/achievements_service.py --port 8903

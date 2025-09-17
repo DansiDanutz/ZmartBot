@@ -1,0 +1,33 @@
+{
+  "symbol": "BNB",
+  "symbol_name": "Binance Coin",
+  "birth_date": "2017-07-14",
+  "current_date": "2025-09-14",
+  "total_days": 2984,
+  "actual_age_days": 2984,
+  "risk_bands": {
+    "0.0-0.1": 89,
+    "0.1-0.2": 298,
+    "0.2-0.3": 387,
+    "0.3-0.4": 477,
+    "0.4-0.5": 596,
+    "0.5-0.6": 656,
+    "0.6-0.7": 387,
+    "0.7-0.8": 208,
+    "0.8-0.9": 119,
+    "0.9-1.0": 59
+  },
+  "current_risk_band": "0.5-0.6",
+  "confidence_level": 7,
+  "data_type": "estimated",
+  "0.0-0.1_percentage": 2.98,
+  "0.1-0.2_percentage": 9.99,
+  "0.2-0.3_percentage": 12.97,
+  "0.3-0.4_percentage": 15.99,
+  "0.4-0.5_percentage": 19.97,
+  "0.5-0.6_percentage": 21.98,
+  "0.6-0.7_percentage": 12.97,
+  "0.7-0.8_percentage": 6.97,
+  "0.8-0.9_percentage": 3.99,
+  "0.9-1.0_percentage": 1.98
+}

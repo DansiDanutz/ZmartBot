@@ -1,7 +1,11 @@
 # 🛑 STOP_ZMARTBOT.sh - Official System Shutdown Orchestrator
 
+
 ## Purpose
 Official ZmartBot system shutdown script with graceful service termination, cleanup, and resource management.
+
+## Description
+Official ZmartBot system shutdown script with graceful service termination, cleanup, and resource...
 
 ## Critical Functions
 - **Graceful Shutdown**: Properly terminates all running services
@@ -60,4 +64,15 @@ Official ZmartBot system shutdown script with graceful service termination, clea
 description:
 globs:
 alwaysApply: true
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Database connectivity**
+- ✅ **Master Orchestration integration**
+
+
 ---
+
+
+## Triggers
+- **Database events**

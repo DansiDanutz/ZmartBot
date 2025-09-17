@@ -1,0 +1,33 @@
+# YAMLValidator.mdc
+> Type: library | Version: 1.0.0 | Owner: zmartbot | Port: N/A | Level: 2
+
+## Purpose
+YAML Validator - Comprehensive validation library providing schema-based YAML validation, structure verification, and compliance checking against ZmartBot configuration standards with production-ready validation engines and error reporting.
+
+## Description
+Production-ready validation library offering comprehensive YAML validation capabilities including schema validation, structure verification, compliance checking, and detailed error reporting for all YAML configuration files within the ZmartBot ecosystem.
+
+## Overview
+Core validation library component providing the validation engine for all YAML governance operations. Offers multiple validation modes, comprehensive error reporting, and integration with governance workflows.
+
+## Critical Functions
+- **Schema Validation**: Validate YAML against predefined schemas
+- **Structure Verification**: Verify required fields and data types
+- **Compliance Checking**: Enforce ZmartBot configuration standards  
+- **Error Reporting**: Detailed validation error messages with line numbers
+- **Custom Rules**: Extensible validation rule system
+- **Integration API**: Library interface for external validation consumers
+
+## Architecture & Integration
+- **Service Type:** library
+- **Dependencies:** yaml, jsonschema, pathlib
+- **Integration:** Used by YAMLGovernanceService, monitoring systems, pre-commit hooks
+- **Lifecycle:** Imported as library module - no standalone execution
+- **Usage:** `from yaml_validator import YAMLValidator`
+
+## Deployment Notes
+- **Status:** LIBRARY - Core validation library
+- **Passport:** YAML-VALIDATOR-LIB-L2
+- **Owner:** zmartbot-system
+- **Priority:** CRITICAL - Core validation engine
+- **Distribution:** Included in all YAML governance components

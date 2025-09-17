@@ -2,65 +2,46 @@
 
 ## frontend
 **File**: .cursor/rules/frontend.mdc
-**Relevance**: 30
-**Size**: 21188 bytes
+**Relevance**: 0
+**Size**: 21542 bytes
 
-**Summary**: # Service Overview ## Name Frontend ## Service Classification Foundation ## Criticality Level CRITICAL ## Business Impact
+**Summary**: ## Description | Core service component of the ZmartBot ecosystem providing essential functionality. | # Service Overview | ## Name | Frontend | Foundation
 
 ---
 
 ## ControlUI
 **File**: .cursor/rules/ControlUI.mdc
-**Relevance**: 30
-**Size**: 5724 bytes
+**Relevance**: 0
+**Size**: 6113 bytes
 
-**Content**:
-```
-As an AI, I'm unable to generate the detailed information required for the MDC file as I don't have access to the specific details of the ControlUI service. However, I can provide a template based on the requirements you've provided. 
+**Summary**: ## Description | Core service component of the ZmartBot ecosystem providing essential functionality. | ```markdown | - **Name**: ControlUI | - **Data Structures**: N/A | - **Database Dependencies**: N...
+**Compressed**: 
 
-```markdown
-# ControlUI Masterpiece Documentation
+---
 
-## 1. Service Overview
-- **Name**: ControlUI
-- **Service Classification**: Foundation
-- **Criticality Level**: HIGH
-- **Business Impact**: If this service fails, the ability to save and undo operations will be lost, potentially leading to data loss or incorrect data states.
-- **System Role**: The ControlUI service provides a user interface for managing save and undo operations in the ZmartBot ecosystem.
+## integration-frontend-my-symbols-extended-service
+**File**: .cursor/rules/discovery/integrations/winners/integration-frontend-my-symbols-extended-service.mdc
+**Relevance**: 0
+**Size**: 4034 bytes
 
-## 2. Service Architecture
-- **Technical Foundation**: Python, FastAPI
-- **Core Components**: FastAPI application, HTML interface, Token validation
-- **Data Structures**: N/A
-- **Integration Ecosystem**: Service Registry
-- **Design Patterns**: Microservice architecture
+**Content**: # integration-frontend-my-symbols-extended-service.mdc
+> Type: integration | Version: 1.0.0 | Owner: zmartbot | Components: frontend + my-symbols-extended-service
+> Winner: Selected from automated analysis (Score: 90)
 
-## 3. CRITICAL SERVICE CHARACTERISTICS FOR MASTER ORCHESTRATION
+## Purpose
+The integration of the frontend service with the my-symbols-extended-service is highly recommended. Despite the potential challenges, the benefits of improved user experience, increased functionality, and enhanced efficiency make this integration worthwhile.
 
-### Service Dependencies
-- **Required Python Modules**: FastAPI, uvicorn
-- **Database Dependencies**: N/A
-- **External Service Dependencies**: Service Registry
-- **File System Dependencies**: N/A
-- **Network Dependencies**: Port 8620
-- **Environment Dependencies**: REGISTRY_TOKEN, UI_TOKEN
+## Integration Analysis
+**Score**: 90/100
+**Complexity**: Medium
+**Pattern**: API Gateway Integration Pattern would be ideal for this scenario. The frontend service can communicate with the my-symbols-extended-service through an API gateway, which would handle request routing, composition, and protocol translation.
 
-### Inter-Service Operation Patterns
-- **Provides Services To**: N/A
-- **Depends On Services**: Service Registry
-- **Communication Protocols**: HTTP
-- **Data Exchange Patterns**: JSON
-- **Failure Impact Analysis**: MEDIUM
-- **Cascade Failure Patterns**: If ControlUI fails, the ability to save and undo operations will be lost.
-- **Recovery Coordination**: Restart the ControlUI service
+## Key Benefits
+- Enhanced User Experience: The integration of these services would provide users with advanced symbol management and extended market data analysis directly on the frontend, enhancing the overall user experience.
+- Improved Efficiency: The integration would streamline the process of fetching and updating data, reducing latency and improving the efficiency of the trading platform.
+- Increased Functionality: The my-symbols-extended-service can provide additional features to the frontend such as portfolio tracking and comprehensive portfolio analytics.
 
-### Service Lifecycle Behavior
-- **Startup Time**: 5 seconds
-- **Startup Dependencies**: Service Registry
-- **Startup Sequence**: Start FastAPI application, bind to host and port, serve HTML interface
-- **Initialization Checks**: Validate REGISTRY_TOKEN and UI_TOKEN
-- **Shutdown Behavior*
-```
+## ...
 
 ---
 

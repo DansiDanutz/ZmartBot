@@ -1,16 +1,60 @@
 # Trading Domain Context
 
+## WhaleAlerts
+**File**: .cursor/rules/WhaleAlerts.mdc
+**Relevance**: 0
+**Size**: 4012 bytes
+
+**Content**: 
+## Description
+Core service component of the ZmartBot ecosystem providing essential functionality.
+
+
+
+
+## ...
+
+---
+
+## MySymbolsDatabase
+**File**: .cursor/rules/MySymbolsDatabase.mdc
+**Relevance**: 0
+**Size**: 31943 bytes
+
+**Summary**: ## Description | Core service component of the ZmartBot ecosystem providing essential functionality. | @agent: SymbolValidator | - **File Path**: `src/data/my_symbols.db` | - **Database Type**: SQLite...
+**Key Info**: All database access requires valid API key | Backend validates request and permissions
+
+---
+
+## LiveAlerts
+**File**: .cursor/rules/LiveAlerts.mdc
+**Relevance**: 0
+**Size**: 2071 bytes
+
+**Content**: 
+## Description
+Core service component of the ZmartBot ecosystem providing essential functionality.
+
+
+
+
+## ...
+
+---
+
 ## MySymbolsService
 **File**: .cursor/rules/MySymbolsService.mdc
-**Relevance**: 30
-**Size**: 2946 bytes
+**Relevance**: 0
+**Size**: 3180 bytes
 
-**Content**:
-```
-# 🗄️ My Symbols Service - Portfolio Management Database
+**Content**: # 🗄️ My Symbols Service - Portfolio Management Database
+
 
 ## Purpose
 My Symbols service manages the core portfolio database, symbol tracking, and portfolio analytics for ZmartBot trading operations.
+
+## Description
+My Symbols service manages the core portfolio database, symbol tracking, and portfolio analytics ...
 
 ## Critical Functions
 - **Portfolio Management**: Symbol portfolio tracking and management
@@ -35,69 +79,115 @@ My Symbols service manages the core portfolio database, symbol tracking, and por
 - **Data Integrity**: ACID compliance and data validation
 - **Backup & Recovery**: Automated backup and recovery procedures
 
-## Portfolio Management
-- **Symbol Addition**: Add new symbols to portfolio
-- **Symbol Removal**: Remove symbols from portfolio
-- **Position Tracking**: Real-time position monitoring
-- **Performance Tracking**: Portfolio performance metrics
-- **Risk Monitoring**: Portfolio risk assessment
-
-## Data Operations
-- **CRUD Operations**: Create, read, update, delete operations
-- **Bulk Operations**: Efficient bulk data operations
-- **Query Optimization**: Optimized database queries
-- **Indexing**: Strategic database indexing for performance
-- **Caching**: Intelligent data caching strategies
-
-## Analytics & Reporting
-- **Performance Metrics**: Portfolio performance calculations
-- **Risk Analytics**: Risk asse
-```
+## ...
 
 ---
 
 ## MySymbols
 **File**: .cursor/rules/MySymbols.mdc
-**Relevance**: 30
-**Size**: 21953 bytes
+**Relevance**: 0
+**Size**: 22212 bytes
 
-**Summary**: @agent: SymbolValidator # MySymbols - Trading Symbol Management System ## Overview
+**Summary**: ## Description | Core service component of the ZmartBot ecosystem providing essential functionality. | @agent: SymbolValidator | - **Binance Futures**: Must be available on Binance Futures market
 
 ---
 
 ## MessiAlerts
 **File**: .cursor/rules/MessiAlerts.mdc
-**Relevance**: 30
-**Size**: 23893 bytes
+**Relevance**: 0
+**Size**: 2063 bytes
 
-**Summary**: @trigger: event_detection_engine # Messi Alerts - High-Frequency Trading Pattern System ## Overview
+**Content**: 
+## Description
+Core service component of the ZmartBot ecosystem providing essential functionality.
 
----
 
-## WhaleAlerts
-**File**: .cursor/rules/WhaleAlerts.mdc
-**Relevance**: 10
-**Size**: 37481 bytes
 
-**Summary**: @trigger: event_detection_engine # Whale Flow Alerts - Large Money Movement Pattern System ## Overview
+
+## ...
 
 ---
 
-## MySymbolsDatabase
-**File**: .cursor/rules/MySymbolsDatabase.mdc
-**Relevance**: 10
-**Size**: 31629 bytes
+## integration-NewService-MySymbolsDatabase
+**File**: .cursor/rules/integration/winners/integration-NewService-MySymbolsDatabase.mdc
+**Relevance**: 0
+**Size**: 3149 bytes
 
-**Summary**: @agent: SymbolValidator # MySymbolsDatabase - Core Trading Portfolio Database ## Overview
+**Content**: # integration-NewService-MySymbolsDatabase.mdc
+> Type: integration | Version: 1.0.0 | Owner: zmartbot | Components: NewService + MySymbolsDatabase
+> Winner: Selected from automated analysis (Score: 90)
+
+## Purpose
+The integration of NewService and MySymbolsDatabase could provide significant benefits for the ZmartBot system, including unified service management, enhanced system stability, and improved service tracking and symbol management. However, the integration process would require careful planning and execution to ensure compliance with all rules and avoid system crashes. Despite the medium level of implementation complexity, the potential benefits make this integration highly recommended.
+
+## Integration Analysis
+**Score**: 90/100
+**Complexity**: Medium
+**Pattern**: Service Orchestration
+
+## Key Benefits
+- Unified service management and symbol database
+- Enhanced system stability and reliability
+- Improved service tracking and symbol management
+
+## Implementation Details
+**Complexity Reason**: While the services are well-defined and follow strict rules, the integration process will require careful planning and execution to ensure compliance with all rules and avoid system crashes. The need for port and passport assignments adds an extra layer of complexity.
+
+## Potential Challenges
+- Ensuring all rules are followed during integration
+- Managing port and passport assignments
+- Maintaining system stability during integration
+
+## ...
 
 ---
 
-## LiveAlerts
-**File**: .cursor/rules/LiveAlerts.mdc
-**Relevance**: 10
-**Size**: 32176 bytes
+## integration-driver-MySymbols
+**File**: .cursor/rules/discovery/integrations/winners/integration-driver-MySymbols.mdc
+**Relevance**: 0
+**Size**: 3428 bytes
 
-**Summary**: @trigger: event_detection_engine # Live Alerts - Real-Time Alert System ## Overview
+**Content**: # integration-driver-MySymbols.mdc
+> Type: integration | Version: 1.0.0 | Owner: zmartbot | Components: driver + MySymbols
+> Winner: Selected from automated analysis (Score: 75)
+
+## Purpose
+The integration of the driver and MySymbols services presents a promising opportunity to enhance the functionality and efficiency of the ZmartBot ecosystem. However, careful consideration should be given to the potential challenges and complexities involved in the integration process.
+
+## Integration Analysis
+**Score**: 75/100
+**Complexity**: Medium
+**Pattern**: API Gateway Integration Pattern would be best suited for this scenario. The driver service can act as a gateway for the MySymbols service, handling requests and responses between the service and the ZmartBot ecosystem.
+
+## Key Benefits
+- Increased efficiency in symbol validation and parsing
+- Improved system observability and error handling through the integration of the driver's logging and notification systems
+- Enhanced system scalability due to the microservice architecture
+
+## Implementation Details
+**Complexity Reason**: While the services seem to be designed with integration in mind, there are still areas that require manual review and configuration. Additionally, the driver service's dependencies and environment variables are yet to be determined, which could potentially complicate the integration process.
+
+## ...
+
+---
+
+## winner-driver-MySymbols-20250827-160211
+**File**: .cursor/rules/discovery/integrations/winners/winner-driver-MySymbols-20250827-160211.mdc
+**Relevance**: 0
+**Size**: 7556 bytes
+
+**Summary**: # winner-driver-MySymbols-20250827-160211.mdc | ## 🏆 WINNER INTEGRATION - Official Selection | > Type: integration-winner | Version: 1.0.0 | Owner: zmartbot | Status: SELECTED
+**Compressed**: 
+
+---
+
+## mysymbols_server
+**File**: .cursor/rules/discovery/services/mysymbols_server.mdc
+**Relevance**: 0
+**Size**: 54235 bytes
+
+**Summary**: # Mysymbols_Server - Merged MDC Configuration | ## 🔗 Merged from 3 duplicate files | Get database connection | - **Dependencies:** To be determined | - **Env Vars:** To be determined
+**Key Info**: 8201 | backend
 
 ---
 

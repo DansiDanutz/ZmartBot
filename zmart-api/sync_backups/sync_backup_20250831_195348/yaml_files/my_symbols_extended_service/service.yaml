@@ -1,0 +1,30 @@
+service_name: my-symbols-extended-service
+service_type: backend
+version: 1.0.0
+owner: zmartbot
+description: Extended symbol management and analysis
+port: 8005
+passport_id: ZMBT-SRV-20250826-45620A
+status: ACTIVE
+registered_at: '2025-08-31'
+health_url: http://localhost:8005/health
+start_cmd: python3 my_symbols_extended_service_server.py --port 8005
+stop_cmd: pkill -f 'my_symbols_extended_service_server.py'
+dependencies:
+- zmart-api
+tags:
+- backend
+- my-symbols-extended-service
+lifecycle:
+  startup_grace_seconds: 30
+  shutdown_timeout_seconds: 15
+  health_check_interval: 30
+monitoring:
+  metrics_endpoint: /metrics
+  logs_path: logs/my-symbols-extended-service.log
+  dashboard_url: http://localhost:8005/dashboard
+security:
+  cors_enabled: true
+  token_required: false
+  scopes:
+  - backend

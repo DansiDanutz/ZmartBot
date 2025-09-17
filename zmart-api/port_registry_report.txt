@@ -1,0 +1,86 @@
+======================================================================
+ZMARTBOT PORT REGISTRY REPORT
+======================================================================
+Generated: 2025-09-14 23:06:30
+Total Registered Ports: 31
+
+ACTIVE SERVICES (23 running):
+----------------------------------------
+  ✅ Port  5432 : PostgreSQL
+              Primary relational database
+  ✅ Port  6379 : Redis
+              Cache and session storage
+  ✅ Port  8000 : Main API Server
+              ZmartBot FastAPI backend
+  ✅ Port  8006 : Service 8006
+              Unknown service
+  ✅ Port  8007 : Service 8007
+              Unknown service
+  ✅ Port  8008 : Service 8008
+              Unknown service
+  ✅ Port  8009 : Service 8009
+              Unknown service
+  ✅ Port  8010 : Service 8010
+              Unknown service
+  ✅ Port  8012 : Service 8012
+              Unknown service
+  ✅ Port  8013 : Service 8013
+              Unknown service
+  ✅ Port  8015 : Service 8015
+              Unknown service
+  ✅ Port  8016 : Service 8016
+              Unknown service
+  ✅ Port  8017 : Service 8017
+              Unknown service
+  ✅ Port  8018 : Service 8018
+              Unknown service
+  ✅ Port  8019 : Service 8019
+              Unknown service
+  ✅ Port  8020 : Service 8020
+              Unknown service
+  ✅ Port  8050 : Service 8050
+              Unknown service
+  ✅ Port  8080 : Service Dashboard
+              Service monitoring dashboard
+  ✅ Port  8085 : Port Manager UI
+              Port management interface
+  ✅ Port  8086 : InfluxDB
+              Time-series metrics database
+  ✅ Port  8098 : KingFisher AI Server
+              AI-powered trading analysis
+  ✅ Port  8555 : Manus/Simple Webhook
+              Webhook receiver service
+  ✅ Port  8556 : Simple RiskMetric
+              Basic risk calculation service
+
+REGISTERED BUT NOT RUNNING:
+----------------------------------------
+  ⚠️  Port  3000 : Grafana
+              Metrics visualization
+  ⚠️  Port  5173 : Vite Dev Server
+              React frontend development server
+  ⚠️  Port  5672 : RabbitMQ
+              Message broker
+  ⚠️  Port  8557 : Enhanced RiskMetric
+              Advanced risk calculation with ML
+  ⚠️  Port  8558 : Strategy RiskMetric
+              Strategy-based risk assessment
+  ⚠️  Port  8559 : MDC Background Agent
+              MDC file monitoring and updates
+  ⚠️  Port  9090 : Prometheus
+              Metrics collection and alerting
+  ⚠️  Port 15672 : RabbitMQ Management
+              RabbitMQ management interface
+
+PORT ALLOCATION BY RANGE:
+----------------------------------------
+  Core API (8000-8099)           : 19 ports registered
+  Internal Services (8500-8599)  : 5 ports registered
+  Monitoring (8080-8089, 9090)   : 4 ports registered
+  Databases (5432, 6379, 5672)   : 3 ports registered
+  Frontend (3000-3999, 5173)     : 2 ports registered
+
+======================================================================
+RECOMMENDATION: Services should always check port availability
+                before binding to prevent conflicts.
+======================================================================

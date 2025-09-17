@@ -1,0 +1,33 @@
+# YAMLPreCommitHook.mdc
+> Type: hook | Version: 1.0.0 | Owner: zmartbot | Port: N/A | Level: 2
+
+## Purpose
+YAML Pre-commit Hook - Git integration component that enforces YAML governance standards before code commits, preventing configuration chaos and ensuring compliance with ZmartBot YAML standards through pre-commit validation workflows.
+
+## Description
+Production-ready Git pre-commit hook providing automated YAML validation and governance enforcement during the development workflow. Prevents commits containing YAML violations and ensures configuration integrity at the source control level.
+
+## Overview
+Essential development workflow component that integrates YAML governance into the Git workflow. Provides automated validation, violation detection, and commit prevention for non-compliant YAML configurations.
+
+## Critical Functions
+- **Pre-commit Validation**: Automatic YAML validation before commits
+- **Violation Detection**: Detect governance violations in staged files
+- **Commit Prevention**: Block commits with YAML violations
+- **Developer Feedback**: Provide clear feedback on validation failures
+- **Integration**: Seamless integration with Git workflow
+- **Bypass Controls**: Emergency bypass capabilities for critical fixes
+
+## Architecture & Integration
+- **Service Type:** hook
+- **Dependencies:** git, yaml_validator library, yaml_governance_service
+- **Integration:** Git pre-commit hook system, YAML Governance Service
+- **Installation:** `.git/hooks/pre-commit` or pre-commit framework
+- **Lifecycle:** Triggered automatically on `git commit` operations
+
+## Deployment Notes
+- **Status:** HOOK - Git workflow integration
+- **Passport:** YAML-PRECOMMIT-HOOK-L2
+- **Owner:** zmartbot-system
+- **Priority:** HIGH - Critical for development workflow governance
+- **Installation:** Required in all developer environments

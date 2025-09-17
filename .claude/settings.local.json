@@ -1,8 +1,20 @@
 {
   "permissions": {
-    "defaultMode": "acceptEdits",
     "allow": [
-      "Bash(cp:*)"
-    ]
-  }
+      "Bash(cp:*)",
+      "Bash(python3:*)",
+      "Bash(curl:*)",
+      "Bash(pkill:*)",
+      "mcp__browsermcp__browser_snapshot"
+    ],
+    "defaultMode": "acceptEdits"
+  },
+  "enabledMcpjsonServers": [
+    "supabase",
+    "zmartbot-mcp",
+    "zmartbot-agents",
+    "browsermcp",
+    "shadcn",
+    "firecrawl-mcp"
+  ]
 }

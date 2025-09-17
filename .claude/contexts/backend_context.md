@@ -2,131 +2,158 @@
 
 ## BackendDoctorPack
 **File**: .cursor/rules/BackendDoctorPack.mdc
-**Relevance**: 30
-**Size**: 18706 bytes
+**Relevance**: 0
+**Size**: 1198 bytes
 
-**Summary**: # BackendDoctorPack.mdc ## Overview
+**Content**: # BackendDoctorPack.mdc
+
+
+**BackendDoctorPack and BackendDoctorAgent ensure ZmartBot system reliability through comprehensive health monitoring, intelligent diagnostics, automatic problem resolution, and continuous system protection. The BackendDoctorAgent provides real-time monitoring and auto-recovery capabilities for optimal system performance.**
+
+## @step: report_status_to_registry (optional)
+- When a service becomes healthy for the first time → POST /services/{name}/status {"status":"TESTED"}.
+- On repeated failures beyond policy → optionally set "DISABLED" and log event.
+
+@step: monitor_state_snapshots
+- Monitor state snapshot creation and loading processes
+- Verify cached data availability during startup
+- Ensure smooth transition from cached to live data
+- Report any snapshot-related issues to system logs
+description:
+globs:
+alwaysApply: true
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Database connectivity**
+- ✅ **Complete MDC documentation**
+- ✅ **Health endpoint implementation**
+- ✅ **Master Orchestration integration**
+
+
+---
+# Test update Sun Aug 24 01:22:52 EEST 2025
+
+
+## Triggers
+- **API endpoint requests**
+- **Database events**
+- **Health check requests**
+
 
 ---
 
 ## BackendFrontendProtection
 **File**: .cursor/rules/BackendFrontendProtection.mdc
-**Relevance**: 30
-**Size**: 8866 bytes
+**Relevance**: 0
+**Size**: 345 bytes
 
-**Content**:
-```
+**Content**: 
+## Description
+Core backend service component of the ZmartBot ecosystem providing essential functionality.
+
 @agent: BackendFrontendProtectionAgent
 
-# Backend & Frontend Protection System - CRITICAL COMPONENT
+description:
+globs:
+alwaysApply: true
 
-## Overview
-The **Backend & Frontend Protection System** is a critical security component that prevents deletion, replacement, or unauthorized modifications of the most important ZmartBot components. This system MUST be run manually and cannot be automated or replaced.
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Complete MDC documentation**
 
-## 🚨 CRITICAL IMPORTANCE
 
-### **Why This Protection is Essential**
-- **Backend (run_dev.py + src/main.py)**: Core API server with all trading operations
-- **Frontend (professional_dashboard_server.py + components)**: User interface and trading platform
-- **Prevents**: Accidental deletion, malicious replacement, unauthorized modifications
-- **Ensures**: System integrity and operational continuity
-- **Requires**: Manual intervention for any changes
+---
 
-## 🔒 Protection Components
 
-### **Backend Protection System**
-- **File**: `protect_backend.py`
-- **Purpose**: Protects critical backend files from modification/deletion
-- **Protected Files**:
-  - `run_dev.py` - Backend startup script (CRITICAL)
-  - `src/main.py` - Main FastAPI application (CRITICAL)
-  - `src/routes/` - API routes directory (CRITICAL)
-  - `src/services/` - Services directory (CRITICAL)
-  - `src/config/` - Configuration directory (CRITICAL)
+## Triggers
+- **API endpoint requests**
+- **Workflow transitions**
 
-### **Frontend Protection System**
-- **File**: `protect_frontend.py`
-- **Purpose**: Protects critical frontend files from modification/deletion
-- **Protected Files**:
-  - `professional_dashboard_server.py` - Frontend server (CRITICAL)
-  - `professional_dashboard/App.jsx` - Main React app (CRITICAL)
-  - `professional_dashboard/api-proxy.js` - API proxy (CRITICAL)
-  - `professional_dashboard/components/` - React components (CRITICAL)
-  - `professional_dashboard/App.css` - Main styling (CRITICAL)
-  - `professional_dashboard/index.html` - HTML entry (CRITICAL)
-  - `professional_dashboard/main.jsx` - React entry (CRITICAL)
-
-## 🛡️ Protection Features
-
-### **File Integrity Monitoring**
-- **SHA256 Hashing**: Calcu
-```
 
 ---
 
 ## Backend
 **File**: .cursor/rules/Backend.mdc
-**Relevance**: 30
-**Size**: 9272 bytes
+**Relevance**: 0
+**Size**: 224 bytes
 
-**Content**:
-```
+**Content**: 
+## Description
+Core backend service component of the ZmartBot ecosystem providing essential functionality.
+
 @agent: BackendService
 
-# Backend - FastAPI Server (Port 8000)
 
-## Overview
-The **official backend** of the ZmartBot project is the **FastAPI Server** running on **port 8000**. This is the core API server that provides all trading operations, data processing, external API integrations, and business logic for the entire ZmartBot platform.
+## Triggers
+- **API endpoint requests**
+- **Database events**
+- **Health check requests**
 
-## Backend Architecture
-
-### **Core Framework**
-- **Framework**: FastAPI (Python 3.11+)
-- **Port**: 8000 (official backend port)
-- **Architecture**: RESTful API with WebSocket support
-- **Database**: PostgreSQL, Redis, InfluxDB, SQLite
-- **Authentication**: JWT-based authentication system
-
-### **API Structure**
-- **Base URL**: `http://localhost:8000`
-- **API Version**: `/api/v1/`
-- **Documentation**: `/docs` (Swagger UI)
-- **Health Check**: `/health`
-
-## Backend Components
-
-### 1. **Trading API Endpoints**
-- **My Symbols**: `/api/v1/trading/my-symbols` - Manage trading symbols
-- **Portfolio**: `/api/v1/portfolio` - Portfolio management and tracking
-- **Orders**: `/api/v1/orders` - Order placement and management
-- **Positions**: `/api/v1/positions` - Position tracking and management
-- **Risk Management**: `/api/v1/risk` - Risk assessment and controls
-
-### 2. **Market Data Services**
-- **Real-time Prices**: `/api/v1/market/prices` - Live price feeds
-- **Historical Data**: `/api/v1/market/history` - Historical price data
-- **Market Indicators**: `/api/v1/market/indicators` - Technical indicators
-- **Market Sentiment**: `/api/v1/market/sentiment` - Market sentiment analysis
-
-### 3. **Alert System**
-- **Enhanced Alerts**: `/api/v1/alerts/enhanced` - Advanced trading alerts
-- **Technical Alerts**: `/api/v1/alerts/technical` - Technical analysis alerts
-- **Risk Alerts**: `/api/v1/alerts/risk` - Risk management alerts
-- **Alert History**: `/api/v1/alerts/history` - Alert performance tracking
-
-### 4. **External API Integrations**
-- **KuCoin API**: Futures trading, account management, market data
-- **Binance API**: Market data, price feeds, 
-```
 
 ---
 
 ## API-Manager
 **File**: .cursor/rules/API-Manager.mdc
-**Relevance**: 30
-**Size**: 10477 bytes
+**Relevance**: 0
+**Size**: 10830 bytes
 
-**Summary**: @agent: APIHandler # API Manager - External Service Integration System ## Overview
+**Summary**: @agent: APIHandler | # API Manager - External Service Integration System | ## Overview | - **Access Control**: Centralized management prevents credential exposure
+**Compressed**: 
+
+---
+
+## start_backend_safe
+**File**: .cursor/rules/discovery/tools/start_backend_safe.mdc
+**Relevance**: 0
+**Size**: 3686 bytes
+
+**Content**: # start_backend_safe.mdc
+> Type: frontend | Version: 1.0.0 | Owner: zmartbot | Port: 8000
+
+## Purpose
+ZmartBot Main API Server
+Provides trading, market data, and system management endpoints
+
+## Overview
+Auto-discovered service managed by MDC-Dashboard system. This service was identified during automated system scanning and requires manual review and enhancement.
+
+## Critical Functions
+- Auto-discovered service functionality (requires manual documentation)
+- Service integration with ZmartBot ecosystem
+
+## Architecture & Integration
+- **Service Type:** frontend
+- **Dependencies:** To be determined
+- **Env Vars:** To be determined  
+- **Lifecycle:** start=`python3 /Users/dansidanutz/Desktop/ZmartBot/zmart-api/system_backups/initial_startup_backup/system_backups/initial_startup_backup/start_backend_safe.py.py` | stop=`pkill -f start_backend_safe` | migrate=`n/a`
+
+## API Endpoints
+*Endpoints to be documented during manual review*
+
+## Health & Readiness
+- Liveness: To be configured
+- Readiness: To be configured
+- Timeouts: startup_grace=30s, http_timeout=30s
+
+## Observability
+- Metrics: To be configured
+- Logs: format=python-logging
+- Dashboards: To be created
+
+
+
+## ...
+
+---
+
+## winner-test_risk_management_server-test_BackendDoctorPack-20250827-160211
+**File**: .cursor/rules/discovery/integrations/winners/winner-test_risk_management_server-test_BackendDoctorPack-20250827-160211.mdc
+**Relevance**: 0
+**Size**: 6263 bytes
+
+**Summary**: # winner-test_risk_management_server-test_BackendDoctorPack-20250827-160211.mdc | ## 🏆 WINNER INTEGRATION - Official Selection
+**Compressed**: 
 
 ---
 

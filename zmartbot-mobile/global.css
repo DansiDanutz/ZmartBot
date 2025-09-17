@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Binance Dark Theme Global Styles */
+@layer base {
+  * {
+    @apply text-binance-text-primary;
+  }
+  
+  body {
+    @apply bg-binance-bg-primary;
+  }
+}
+
+/* Custom scrollbar styles for web */
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}

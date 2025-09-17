@@ -1,0 +1,19 @@
+endpoints:
+  health: http://127.0.0.1:8901/health
+  metrics: http://127.0.0.1:8901/metrics
+  ready: http://127.0.0.1:8901/ready
+lifecycle:
+  health_check: curl -f http://127.0.0.1:8901/health
+  start_command: null
+  stop_command: pkill -f certification
+metadata:
+  description: Certification Service - Issues production certificates
+  owner: zmartbot
+  version: 1.0.0
+service:
+  level: 3
+  name: certification
+  passport: ZMBT-SRV-20250828-C37C30
+  port: 8901
+  status: ACTIVE
+  type: backend

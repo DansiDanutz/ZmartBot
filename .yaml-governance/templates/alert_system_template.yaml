@@ -1,0 +1,37 @@
+service_name: '[SERVICE_NAME]'
+service_type: alert_system
+version: 1.0.0
+owner: zmartbot
+description: '[SERVICE_NAME] alert system for ZmartBot platform'
+port: '[PORT]'
+passport_id: '[PASSPORT_ID]'
+status: ACTIVE
+registered_at: '[DATE]'
+health_url: http://localhost:[PORT]/health
+start_cmd: python3 [SERVICE_NAME]_alerts.py --port [PORT]
+stop_cmd: pkill -f '[SERVICE_NAME]_alerts.py'
+dependencies:
+- zmart-api
+- zmart-websocket
+tags:
+- alerts
+- '[SERVICE_NAME]'
+alert_config:
+  notification_channels:
+  - webhook
+  - websocket
+  severity_levels:
+  - low
+  - medium
+  - high
+  - critical
+  rate_limits:
+    max_alerts_per_minute: 60
+    cooldown_seconds: 5
+lifecycle:
+  startup_grace_seconds: 15
+  shutdown_timeout_seconds: 10
+  health_check_interval: 15
+monitoring:
+  metrics_endpoint: /metrics
+  logs_path: logs/[SERVICE_NAME]_alerts.log

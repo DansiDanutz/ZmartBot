@@ -1,0 +1,30 @@
+service_name: WhaleAlerts
+service_type: alert_system
+version: 1.0.0
+owner: zmartbot
+description: Whale movement detection
+port: 8018
+passport_id: ZMBT-WHALE-20250830-8018
+status: ACTIVE
+registered_at: '2025-08-31'
+health_url: http://localhost:8018/health
+start_cmd: python3 whalealerts_server.py --port 8018
+stop_cmd: pkill -f 'whalealerts_server.py'
+dependencies:
+- zmart-api
+tags:
+- alert_system
+- whalealerts
+lifecycle:
+  startup_grace_seconds: 30
+  shutdown_timeout_seconds: 15
+  health_check_interval: 30
+monitoring:
+  metrics_endpoint: /metrics
+  logs_path: logs/whalealerts.log
+  dashboard_url: http://localhost:8018/dashboard
+security:
+  cors_enabled: true
+  token_required: false
+  scopes:
+  - alert_system

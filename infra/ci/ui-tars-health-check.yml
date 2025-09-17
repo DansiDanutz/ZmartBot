@@ -1,0 +1,12 @@
+name: UI-TARS Sanity
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  sanity:
+    runs-on: ubuntu-latest
+    steps:
+      - name: No-op
+        run: echo "Add playwright/puppeteer checks when containerized."

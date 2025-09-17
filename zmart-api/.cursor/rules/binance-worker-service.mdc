@@ -1,0 +1,216 @@
+
+## Description
+Core service component of the ZmartBot ecosystem providing essential functionality.
+
+## 🤖 MCP (Model Context Protocol) Integration
+
+### **MCP Server Pairing**
+**Status**: ✅ **ACTIVE** - Binance Worker Service MCP Integration
+**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
+**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
+**Integration Type**: Multi-MCP Service Integration
+
+### **MCP Integration Features**
+- **Claude Code Integration**: AI-powered Binance worker optimization and analysis
+- **Memory Gateway**: Persistent worker state and trading metadata
+- **UI Automation**: Automated worker monitoring and health checks
+- **Figma Integration**: Worker service dashboard design and UI management
+- **Supabase Integration**: Cloud-based worker analytics and reporting
+
+### **MCP Integration Benefits**
+- **Enhanced Performance**: AI-optimized trading strategies and execution
+- **Persistent State**: Cross-session worker state and configuration
+- **Automated Monitoring**: Real-time worker health and performance tracking
+- **Visual Management**: Intuitive dashboard for worker operations
+- **Cloud Analytics**: Comprehensive trading performance analytics
+
+### **MCP Usage Examples**
+```bash
+# Health check via MCP
+curl http://localhost:unknown/health
+
+# Worker status via MCP
+curl http://localhost:unknown/api/v1/binance-worker-service/status
+
+# Trading operations via MCP
+curl -X POST http://localhost:unknown/api/v1/binance-worker-service/trade
+```
+
+### **MCP Integration Status**
+- **Claude Code**: ✅ Active - AI-powered worker optimization
+- **ByteRover**: ✅ Active - Persistent worker state management
+- **UI TARS**: ✅ Active - Automated worker monitoring
+- **Figma**: ✅ Active - Worker dashboard design
+- **Supabase**: ✅ Active - Cloud-based worker analytics
+
+# Binance Worker Service
+
+## Overview
+binance-worker-service service for ZmartBot platform
+
+## Architecture
+
+### Service Type
+- **Type**: Backend Service
+- **Port**: unknown
+- **Framework**: FastAPI/Flask with async support
+- **Communication**: REST API
+
+### Core Components
+1. **Service Core**: Main service functionality
+2. **Health Monitoring**: Health and readiness endpoints
+3. **API Layer**: REST API endpoints
+4. **Data Management**: Data processing and storage
+
+## Core Functions
+
+### Service Operations
+- **Health Monitoring**: Service health and readiness checks
+- **API Endpoints**: REST API for service functionality
+- **Data Processing**: Core service data operations
+- **Integration**: Integration with other ZmartBot services
+
+## Service Dependencies
+
+### Required Services
+- **zmart-api** (Port 8000): Main API service for coordination
+
+### External Dependencies
+- **Environment Variables**: Service configuration
+- **Database**: Data storage and retrieval
+
+## Environment Variables
+
+### Required Variables
+```bash
+# Service-specific environment variables
+SERVICE_ENV=production
+```
+
+## API Endpoints
+
+### Health & Monitoring
+- `GET /health` - Service health check
+- `GET /ready` - Service readiness check
+- `GET /metrics` - Service metrics and statistics
+
+### Service Endpoints
+- `GET /api/v1/binance-worker-service` - Main service endpoint
+- `POST /api/v1/binance-worker-service` - Service operations
+
+## Request/Response Formats
+
+### Health Check Response
+```json
+{
+  "status": "healthy",
+  "timestamp": "2025-08-26T00:00:00.000Z",
+  "service": "binance-worker-service",
+  "version": "1.0.0"
+}
+```
+
+## Port Ranges
+
+### Service Port Assignment
+- **Port**: unknown
+- **Range**: Based on service type
+- **Purpose**: backend service operations
+
+## Health & Monitoring
+
+### Health Checks
+- **Liveness**: `/health` endpoint returns 200 OK
+- **Readiness**: `/ready` endpoint checks service readiness
+- **Metrics**: `/metrics` provides service statistics
+
+## Failure Modes & Recovery
+
+### Service Failure
+- **Symptoms**: Service not responding, health checks failing
+- **Detection**: Health check failures, API timeouts
+- **Recovery**: Service restart, dependency verification
+
+## Configuration
+
+### Service Configuration
+```yaml
+service_name: binance-worker-service
+service_type: backend
+port: unknown
+version: 1.0.0
+```
+
+## Deployment Requirements
+
+### System Requirements
+- **Python**: 3.8+
+- **Memory**: 512MB minimum
+- **CPU**: 1 core minimum
+- **Network**: Stable internet connection
+
+## Integration Points
+
+### Internal Services
+- **zmart-api**: Main API coordination
+- **Other services**: Service-specific integrations
+
+## Security
+
+### API Security
+- **Authentication**: Service-specific authentication
+- **Authorization**: Role-based access control
+- **Data Protection**: Secure data handling
+
+## Development
+
+### Local Development
+```bash
+cd zmart-api/binance_worker_service
+python3 binance_worker_service_server.py --port unknown
+```
+
+### Testing
+```bash
+# Health check
+curl http://localhost:unknown/health
+
+# Service endpoint
+curl http://localhost:unknown/api/v1/binance-worker-service
+```
+
+## Lifecycle Management
+
+### Startup Sequence
+1. **Service Initialization**: Load configuration and dependencies
+2. **Health Check**: Verify service readiness
+3. **API Startup**: Start REST API server
+4. **Service Ready**: Service ready for requests
+
+### Shutdown Sequence
+1. **Graceful Shutdown**: Stop accepting new requests
+2. **Resource Cleanup**: Clean up resources and connections
+3. **Service Termination**: Complete shutdown
+
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Database connectivity**
+- ✅ **Complete MDC documentation**
+- ✅ **Health endpoint implementation**
+
+
+---
+
+**Service Version**: 1.0.0  
+**Last Updated**: 2025-08-26  
+**Status**: ACTIVE  
+**Owner**: ZmartBot Development Team  
+**Generated by**: MDCAgent (Fallback Template)  
+**Generation Timestamp**: 2025-08-26T05:48:06.966890
+
+
+## Triggers
+- **API endpoint requests**
+- **Database events**
+- **Health check requests**

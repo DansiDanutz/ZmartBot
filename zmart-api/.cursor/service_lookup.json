@@ -1,0 +1,386 @@
+{
+  "achievements": {
+    "level": 3,
+    "port": 8026,
+    "passport": "ZMBT-SYSTEM-20250828-AB513A",
+    "status": "certified"
+  },
+  "api-keys-manager-service": {
+    "level": 3,
+    "port": 8006,
+    "passport": "ZMBT-SRV-20250826-3B1EF4",
+    "status": "certified"
+  },
+  "binance": {
+    "level": 3,
+    "port": 8303,
+    "passport": "ZMBT-SRV-20250826-7070E8",
+    "status": "certified"
+  },
+  "certification": {
+    "level": 3,
+    "port": 8901,
+    "passport": "ZMBT-SRV-20250828-C37C30",
+    "status": "certified"
+  },
+  "database-service": {
+    "level": 3,
+    "port": 8900,
+    "passport": "ZMBT-DB-20250831-469198",
+    "status": "certified"
+  },
+  "doctor-service": {
+    "level": 3,
+    "port": 8700,
+    "passport": "ZMBT-SRV-20250826-51B6B9",
+    "status": "certified"
+  },
+  "enhanced-mdc-monitor": {
+    "level": 3,
+    "port": 8101,
+    "passport": "ZMBT-SRV-20250831-32D03B",
+    "status": "certified"
+  },
+  "grok-x-module": {
+    "level": 3,
+    "port": 8092,
+    "passport": "ZMBT-SRV-20250828-0E8507",
+    "status": "certified"
+  },
+  "kingfisher-ai": {
+    "level": 3,
+    "port": 8098,
+    "passport": "ZMBT-AGT-20250831-051C78",
+    "status": "certified"
+  },
+  "kucoin": {
+    "level": 3,
+    "port": 8302,
+    "passport": "ZMBT-SRV-20250826-BAABBC",
+    "status": "certified"
+  },
+  "live-alerts": {
+    "level": 3,
+    "port": 8217,
+    "passport": "ZMBT-ALT-20250831-D1ACC0",
+    "status": "certified"
+  },
+  "maradona-alerts": {
+    "level": 3,
+    "port": 8016,
+    "passport": "ZMBT-ALT-20250831-FA44D3",
+    "status": "certified"
+  },
+  "market-data-service": {
+    "level": 3,
+    "port": 8095,
+    "passport": "ZMBT-SRV-20250828-0F0DF4",
+    "status": "certified"
+  },
+  "master-orchestration-agent": {
+    "level": 3,
+    "port": 8002,
+    "passport": "ZMBT-AGT-20250826-430BAD",
+    "status": "certified"
+  },
+  "mdc-dashboard": {
+    "level": 3,
+    "port": 8090,
+    "passport": "ZMBT-SRV-20250828-D78DDE",
+    "status": "certified"
+  },
+  "mdc-orchestration-agent": {
+    "level": 3,
+    "port": 8615,
+    "passport": "ZMBT-AGT-20250826-CAD9CD",
+    "status": "certified"
+  },
+  "messi-alerts": {
+    "level": 3,
+    "port": 8214,
+    "passport": "ZMBT-ALT-20250831-F3C985",
+    "status": "certified"
+  },
+  "my-symbols-extended-service": {
+    "level": 3,
+    "port": 8005,
+    "passport": "ZMBT-SRV-20250826-45620A",
+    "status": "certified"
+  },
+  "mysymbols": {
+    "level": 3,
+    "port": 8201,
+    "passport": "ZMBT-API-20250826-108804",
+    "status": "certified"
+  },
+  "optimization-claude-service": {
+    "level": 3,
+    "port": 8080,
+    "passport": "ZMBT-SRV-20250826-513E16",
+    "status": "certified"
+  },
+  "passport-service": {
+    "level": 3,
+    "port": 8620,
+    "passport": "ZMBT-SRV-20250826-467E65",
+    "status": "certified"
+  },
+  "pele-alerts": {
+    "level": 3,
+    "port": 8215,
+    "passport": "ZMBT-ALT-20250831-950779",
+    "status": "certified"
+  },
+  "port-manager-service": {
+    "level": 3,
+    "port": 8050,
+    "passport": "ZMBT-AGT-20250826-EBA047",
+    "status": "certified"
+  },
+  "service-dashboard": {
+    "level": 3,
+    "port": 3000,
+    "passport": "ZMBT-FRE-20250826-D347BE",
+    "status": "certified"
+  },
+  "service-discovery": {
+    "level": 3,
+    "port": 8550,
+    "passport": "ZMBT-ORC-20250827-AD7F65",
+    "status": "certified"
+  },
+  "service-lifecycle-manager": {
+    "level": 3,
+    "port": 8920,
+    "passport": "ZMBT-SRV-20250831-02880A",
+    "status": "certified"
+  },
+  "servicelog-service": {
+    "level": 3,
+    "port": 8750,
+    "passport": "ZMBT-SRV-20250828-21FEC7",
+    "status": "certified"
+  },
+  "snapshot-service": {
+    "level": 3,
+    "port": 8085,
+    "passport": "ZMBT-SRV-20250826-0D2B65",
+    "status": "certified"
+  },
+  "system-protection-service": {
+    "level": 3,
+    "port": 8999,
+    "passport": "ZMBT-PROTECTION-20250826-2C0587",
+    "status": "certified"
+  },
+  "test-service": {
+    "level": 3,
+    "port": 8301,
+    "passport": "ZMBT-SRV-20250826-97C6AB",
+    "status": "certified"
+  },
+  "whale-alerts": {
+    "level": 3,
+    "port": 8018,
+    "passport": "ZMBT-ALT-20250831-72918A",
+    "status": "certified"
+  },
+  "ziva-agent": {
+    "level": 3,
+    "port": 8930,
+    "passport": "ZMBT-AGT-20250831-F6C2B5",
+    "status": "certified"
+  },
+  "zmart-api": {
+    "level": 3,
+    "port": 8000,
+    "passport": "ZMBT-API-20250826-2AF672",
+    "status": "certified"
+  },
+  "zmart-dashboard": {
+    "level": 3,
+    "port": 3400,
+    "passport": "ZMBT-SRV-20250826-5E1452",
+    "status": "certified"
+  },
+  "zmart-notification": {
+    "level": 3,
+    "port": 8008,
+    "passport": "ZMBT-SRV-20250826-337DFE",
+    "status": "certified"
+  },
+  "zmart-websocket": {
+    "level": 3,
+    "port": 8009,
+    "passport": "ZMBT-SRV-20250826-6532E8",
+    "status": "certified"
+  },
+  "zmart_alert_system": {
+    "level": 3,
+    "port": 8012,
+    "passport": "ZMBT-SRV-20250826-EADCA5",
+    "status": "certified"
+  },
+  "zmart_analytics": {
+    "level": 3,
+    "port": 8007,
+    "passport": "ZMBT-ENG-20250831-DBC22A",
+    "status": "certified"
+  },
+  "zmart_backtesting": {
+    "level": 3,
+    "port": 8013,
+    "passport": "ZMBT-ENG-20250826-FB4140",
+    "status": "certified"
+  },
+  "zmart_data_warehouse": {
+    "level": 3,
+    "port": 8015,
+    "passport": "ZMBT-DB-20250826-325722",
+    "status": "certified"
+  },
+  "zmart_machine_learning": {
+    "level": 3,
+    "port": 8014,
+    "passport": "ZMBT-ENG-20250826-5C28B0",
+    "status": "certified"
+  },
+  "zmart_risk_management": {
+    "level": 3,
+    "port": 8010,
+    "passport": "ZMBT-SRV-20250826-D05686",
+    "status": "certified"
+  },
+  "zmart_technical_analysis": {
+    "level": 3,
+    "port": 8011,
+    "passport": "ZMBT-ENG-20250826-641E1D",
+    "status": "certified"
+  },
+  "TradingStrategy": {
+    "level": 2,
+    "port": 8888,
+    "passport": "PASS_TradingStrategy_20250831_021012",
+    "status": "active"
+  },
+  "background-mdc-agent": {
+    "level": 2,
+    "port": 8091,
+    "passport": "ZMBT-SRV-20250828-4CAB2B",
+    "status": "active"
+  },
+  "binance-worker": {
+    "level": 2,
+    "port": 8304,
+    "passport": "ZMBT-SRV-20250828-5C8742",
+    "status": "active"
+  },
+  "cryptometer-service": {
+    "level": 2,
+    "port": 8093,
+    "passport": "ZMBT-SRV-20250828-0FAF7F",
+    "status": "active"
+  },
+  "discovery-database-service": {
+    "level": 2,
+    "port": 8780,
+    "passport": "ZMBT-SRV-20250829-DISCOVERY",
+    "status": "active"
+  },
+  "explainability-service": {
+    "level": 2,
+    "port": 8099,
+    "passport": "ZMBT-SRV-20250828-D32189",
+    "status": "active"
+  },
+  "gpt-mds-agent": {
+    "level": 2,
+    "port": 8701,
+    "passport": "ZMBT-SRV-20250828-GPTMDS",
+    "status": "active"
+  },
+  "historical-data-service": {
+    "level": 2,
+    "port": 8094,
+    "passport": "ZMBT-SRV-20250828-4636B5",
+    "status": "active"
+  },
+  "orchestration-start-service": {
+    "level": 2,
+    "port": 8616,
+    "passport": null,
+    "status": "active"
+  },
+  "pattern-recognition-service": {
+    "level": 2,
+    "port": 8096,
+    "passport": "ZMBT-SRV-20250828-5E3119",
+    "status": "active"
+  },
+  "professional-dashboard": {
+    "level": 2,
+    "port": 3434,
+    "passport": "ZMBT-FRE-20250828-2CF1D7",
+    "status": "active"
+  },
+  "registration-service": {
+    "level": 2,
+    "port": 8902,
+    "passport": "ZMBT-BACKEND-20250828-061012",
+    "status": "active"
+  },
+  "registry-consolidator": {
+    "level": 2,
+    "port": 8898,
+    "passport": null,
+    "status": "active"
+  },
+  "scoring-service": {
+    "level": 2,
+    "port": 8199,
+    "passport": "ZMBT-SRV-20250828-0BFC67",
+    "status": "active"
+  },
+  "sentiment-analysis-service": {
+    "level": 2,
+    "port": 8097,
+    "passport": "ZMBT-SRV-20250828-F2685E",
+    "status": "active"
+  },
+  "test-analytics-service": {
+    "level": 2,
+    "port": 8003,
+    "passport": "ZMBT-SRV-20250826-11C2AA",
+    "status": "active"
+  },
+  "test-websocket-service": {
+    "level": 2,
+    "port": 8004,
+    "passport": "ZMBT-SRV-20250826-B47240",
+    "status": "active"
+  },
+  "trading-orchestration-agent": {
+    "level": 2,
+    "port": 8777,
+    "passport": "PASS_TradingOrchestrationAgent_20250831_051516",
+    "status": "active"
+  },
+  "yaml-governance-service": {
+    "level": 2,
+    "port": 8897,
+    "passport": null,
+    "status": "active"
+  },
+  "yaml-monitoring-daemon": {
+    "level": 2,
+    "port": 8899,
+    "passport": null,
+    "status": "active"
+  },
+  "kingfisher-module": {
+    "level": 1,
+    "port": 8100,
+    "passport": "ZMBT-SRV-20250826-5D5AA0",
+    "status": "discovery"
+  }
+}

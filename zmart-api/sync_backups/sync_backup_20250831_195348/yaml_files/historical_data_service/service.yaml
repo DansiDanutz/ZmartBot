@@ -1,0 +1,30 @@
+service_name: historical-data-service
+service_type: backend
+version: 1.0.0
+owner: zmartbot
+description: Historical data service - needs ZMBT passport
+port: 8094
+passport_id: ZMBT-SRV-20250828-4636B5
+status: ACTIVE
+registered_at: '2025-08-31'
+health_url: http://localhost:8094/health
+start_cmd: python3 historical_data_service_server.py --port 8094
+stop_cmd: pkill -f 'historical_data_service_server.py'
+dependencies:
+- zmart-api
+tags:
+- backend
+- historical-data-service
+lifecycle:
+  startup_grace_seconds: 30
+  shutdown_timeout_seconds: 15
+  health_check_interval: 30
+monitoring:
+  metrics_endpoint: /metrics
+  logs_path: logs/historical-data-service.log
+  dashboard_url: http://localhost:8094/dashboard
+security:
+  cors_enabled: true
+  token_required: false
+  scopes:
+  - backend

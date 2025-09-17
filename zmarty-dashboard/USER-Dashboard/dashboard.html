@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZmartBot - Professional Trading Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <style>
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .hover-scale { transition: all 0.3s ease; }
+        .hover-scale:hover { transform: scale(1.05); }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        .hidden { display: none; }
+        .sidebar-item { 
+            padding: 12px 16px; 
+            margin: 4px 0; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .sidebar-item:hover { background: rgba(59, 130, 246, 0.1); }
+        .sidebar-item.active { background: rgba(59, 130, 246, 0.2); border-left: 3px solid #3b82f6; }
+    </style>
+</head>
+<body>
+    <!-- Login/Register Screen -->
+    <div id="authScreen" class="min-h-screen flex items-center justify-center p-6">
+        <div class="w-full max-w-md">
+            <!-- Logo Section -->
+            <div class="text-center mb-8 animate-float">
+                <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl mx-auto mb-4 flex items-center justify-center shadow-2xl">
+                    <span class="text-3xl font-bold text-white">Z</span>
+                </div>
+                <h1 class="text-4xl font-bold text-white mb-2">ZmartBot</h1>
+                <p class="text-slate-300">Professional Trading Intelligence</p>
+            </div>
+
+            <!-- Auth Forms -->
+            <div class="glass rounded-2xl p-8 shadow-2xl">
+                <!-- Login Form -->
+                <div id="loginForm">
+                    <h2 class="text-2xl font-bold text-white mb-6 text-center">Welcome Back</h2>
+                    <form onsubmit="handleLogin(event)">
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-slate-300 mb-2">Email</label>
+                                <input type="email" id="loginEmail" required 
+                                    class="w-full px-4 py-3 bg-slate-800 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    placeholder="your@email.com">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-300 mb-2">Password</label>
+                                <input type="password" id="loginPassword" required
+                                    class="w-full px-4 py-3 bg-slate-800 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    placeholder="••••••••">
+                            </div>
+                        </div>
+                        <button type="submit" 
+                            class="w-full mt-6 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-3 rounded-xl font-medium transition-all hover-scale">
+                            Sign In 🚀
+                        </button>
+                    </form>
+                    <p class="text-center text-slate-400 mt-4">
+                        Don't have an account? 
+                        <span onclick="showRegister()" class="text-blue-400 cursor-pointer hover:text-blue-300">Sign up</span>
+                    </p>
+                </div>
+
+                <!-- Register Form -->
+                <div id="registerForm" class="hidden">
+                    <h2 class="text-2xl font-bold text-white mb-6 text-center">Create Account</h2>
+                    <form onsubmit="handleRegister(event)">
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-slate-300 mb-2">Full Name</label>
+                                <input type="text" id="registerName" required
+                                    class="w-full px-4 py-3 bg-slate-800 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    placeholder="John Doe">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-300 mb-2">Email</label>
+                                <input type="email" id="registerEmail" required
+                                    class="w-full px-4 py-3 bg-slate-800 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    placeholder="your@email.com">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-300 mb-2">Password</label>
+                                <input type="password" id="registerPassword" required
+                                    class="w-full px-4 py-3 bg-slate-800 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    placeholder="••••••••">
+                            </div>
+                        </div>
+                        <button type="submit"
+                            class="w-full mt-6 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white py-3 rounded-xl font-medium transition-all hover-scale">
+                            Create Account ✨
+                        </button>
+                    </form>
+                    <p class="text-center text-slate-400 mt-4">
+                        Already have an account? 
+                        <span onclick="showLogin()" class="text-blue-400 cursor-pointer hover:text-blue-300">Sign in</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div id="dashboardScreen" class="hidden min-h-screen flex">
+        <!-- Sidebar -->
+        <div class="w-64 glass border-r border-slate-700 p-6">
+            <!-- User Profile -->
+            <div class="mb-8">
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                        <span id="userInitial" class="text-white font-semibold">U</span>
+                    </div>
+                    <div>
+                        <p id="userName" class="text-white font-medium">User</p>
+                        <p class="text-slate-400 text-sm">Premium Member</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="space-y-2">
+                <div class="sidebar-item active" onclick="showTab('chat')">
+                    <span class="text-xl">💬</span>
+                    <span class="text-white">Zmarty Chat</span>
+                </div>
+                <div class="sidebar-item" onclick="showTab('crypto')">
+                    <span class="text-xl">₿</span>
+                    <span class="text-white">Crypto</span>
+                </div>
+                <div class="sidebar-item" onclick="showTab('settings')">
+                    <span class="text-xl">⚙️</span>
+                    <span class="text-white">Settings</span>
+                </div>
+                <div class="sidebar-item" onclick="showTab('profile')">
+                    <span class="text-xl">👤</span>
+                    <span class="text-white">Profile</span>
+                </div>
+            </nav>
+
+            <!-- Logout -->
+            <div class="mt-8 pt-8 border-t border-slate-700">
+                <div class="sidebar-item" onclick="handleLogout()">
+                    <span class="text-xl">🚪</span>
+                    <span class="text-white">Logout</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 p-6">
+            <!-- Chat Tab -->
+            <div id="chatTab" class="tab-content">
+                <div class="max-w-4xl mx-auto">
+                    <div class="mb-6">
+                        <h1 class="text-3xl font-bold text-white mb-2">💬 Zmarty AI Assistant</h1>
+                        <p class="text-slate-300">Your intelligent trading companion connected to all exchange APIs</p>
+                    </div>
+
+                    <!-- Chat Container -->
+                    <div class="glass rounded-2xl p-6 h-[600px] flex flex-col">
+                        <div id="chatMessages" class="flex-1 overflow-y-auto mb-4 space-y-4">
+                            <div class="flex">
+                                <div class="bg-gradient-to-r from-purple-600 to-blue-600 p-4 rounded-2xl max-w-xs">
+                                    <p class="text-white text-sm">🤖 <strong>Zmarty:</strong> Hello! I'm your AI trading assistant. I'm connected to KuCoin, Binance, and Trading Orchestration services. How can I help you today?</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Chat Input -->
+                        <div class="flex space-x-4">
+                            <input type="text" id="chatInput" placeholder="Ask about market trends, portfolio analysis, trading strategies..."
+                                class="flex-1 bg-slate-800 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                onkeypress="if(event.key==='Enter') sendMessage()">
+                            <button onclick="sendMessage()" 
+                                class="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl font-medium hover:from-blue-700 hover:to-purple-700 transition-all">
+                                Send 🚀
+                            </button>
+                        </div>
+
+                        <!-- Quick Actions -->
+                        <div class="flex flex-wrap gap-2 mt-4">
+                            <button onclick="quickMessage('Market analysis')" class="bg-slate-700 hover:bg-slate-600 text-slate-200 px-3 py-1 rounded-lg text-sm transition-colors">📊 Market Analysis</button>
+                            <button onclick="quickMessage('Portfolio status')" class="bg-slate-700 hover:bg-slate-600 text-slate-200 px-3 py-1 rounded-lg text-sm transition-colors">💰 Portfolio Status</button>
+                            <button onclick="quickMessage('Trading signals')" class="bg-slate-700 hover:bg-slate-600 text-slate-200 px-3 py-1 rounded-lg text-sm transition-colors">📈 Trading Signals</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Crypto Tab -->
+            <div id="cryptoTab" class="tab-content hidden">
+                <div class="max-w-6xl mx-auto">
+                    <h1 class="text-3xl font-bold text-white mb-6">₿ Cryptocurrency Overview</h1>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="glass rounded-2xl p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-semibold text-white">Bitcoin</h3>
+                                <span class="text-orange-400 text-2xl">₿</span>
+                            </div>
+                            <p class="text-3xl font-bold text-white mb-2">$43,250.00</p>
+                            <p class="text-green-400 text-sm">+2.5% (24h)</p>
+                        </div>
+                        
+                        <div class="glass rounded-2xl p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-semibold text-white">Ethereum</h3>
+                                <span class="text-blue-400 text-2xl">Ξ</span>
+                            </div>
+                            <p class="text-3xl font-bold text-white mb-2">$2,650.00</p>
+                            <p class="text-green-400 text-sm">+3.1% (24h)</p>
+                        </div>
+                        
+                        <div class="glass rounded-2xl p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-semibold text-white">Solana</h3>
+                                <span class="text-purple-400 text-2xl">◎</span>
+                            </div>
+                            <p class="text-3xl font-bold text-white mb-2">$95.20</p>
+                            <p class="text-red-400 text-sm">-1.2% (24h)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div id="settingsTab" class="tab-content hidden">
+                <div class="max-w-4xl mx-auto">
+                    <h1 class="text-3xl font-bold text-white mb-6">⚙️ Settings</h1>
+                    
+                    <div class="glass rounded-2xl p-6">
+                        <div class="space-y-6">
+                            <div>
+                                <h3 class="text-xl font-semibold text-white mb-4">API Configuration</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <div class="bg-slate-800 p-4 rounded-xl">
+                                        <h4 class="text-green-400 font-medium">KuCoin API</h4>
+                                        <p class="text-white">✅ Connected</p>
+                                        <p class="text-slate-400 text-sm">Port: 8302</p>
+                                    </div>
+                                    <div class="bg-slate-800 p-4 rounded-xl">
+                                        <h4 class="text-green-400 font-medium">Binance API</h4>
+                                        <p class="text-white">✅ Connected</p>
+                                        <p class="text-slate-400 text-sm">Port: 8303</p>
+                                    </div>
+                                    <div class="bg-slate-800 p-4 rounded-xl">
+                                        <h4 class="text-blue-400 font-medium">Trading AI</h4>
+                                        <p class="text-white">⚡ Active</p>
+                                        <p class="text-slate-400 text-sm">Port: 8200</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h3 class="text-xl font-semibold text-white mb-4">Preferences</h3>
+                                <div class="space-y-4">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-white">Dark Mode</span>
+                                        <div class="bg-blue-600 w-12 h-6 rounded-full p-1">
+                                            <div class="bg-white w-4 h-4 rounded-full ml-6"></div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-white">Real-time Notifications</span>
+                                        <div class="bg-blue-600 w-12 h-6 rounded-full p-1">
+                                            <div class="bg-white w-4 h-4 rounded-full ml-6"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Tab -->
+            <div id="profileTab" class="tab-content hidden">
+                <div class="max-w-4xl mx-auto">
+                    <h1 class="text-3xl font-bold text-white mb-6">👤 Profile</h1>
+                    
+                    <div class="glass rounded-2xl p-6">
+                        <div class="flex items-center space-x-6 mb-8">
+                            <div class="w-24 h-24 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                                <span id="profileInitial" class="text-3xl font-bold text-white">U</span>
+                            </div>
+                            <div>
+                                <h2 id="profileName" class="text-2xl font-bold text-white">User Name</h2>
+                                <p id="profileEmail" class="text-slate-400">user@email.com</p>
+                                <span class="bg-gradient-to-r from-yellow-400 to-orange-500 text-black px-3 py-1 rounded-full text-sm font-medium">Premium Member</span>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <h3 class="text-lg font-semibold text-white mb-4">Account Statistics</h3>
+                                <div class="space-y-3">
+                                    <div class="flex justify-between">
+                                        <span class="text-slate-400">Member Since</span>
+                                        <span class="text-white">Today</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-slate-400">Total Trades</span>
+                                        <span class="text-white">0</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-slate-400">Win Rate</span>
+                                        <span class="text-green-400">N/A</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h3 class="text-lg font-semibold text-white mb-4">Quick Actions</h3>
+                                <div class="space-y-3">
+                                    <button class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition-colors">Edit Profile</button>
+                                    <button class="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-lg transition-colors">Change Password</button>
+                                    <button class="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg transition-colors">Upgrade Plan</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Supabase (demo credentials - replace with your own)
+        const { createClient } = supabase;
+        const supabaseUrl = "https://your-project-url.supabase.co";
+        const supabaseKey = "your-anon-key";
+        // For demo purposes, use localStorage
+        
+        let currentUser = null;
+        let messageCount = 0;
+
+        // Auth Functions
+        function showLogin() {
+            document.getElementById("loginForm").classList.remove("hidden");
+            document.getElementById("registerForm").classList.add("hidden");
+        }
+
+        function showRegister() {
+            document.getElementById("loginForm").classList.add("hidden");
+            document.getElementById("registerForm").classList.remove("hidden");
+        }
+
+        async function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById("loginEmail").value;
+            const password = document.getElementById("loginPassword").value;
+            
+            // Demo authentication - in production use Supabase
+            if (email && password) {
+                const user = { email, name: "Demo User" };
+                localStorage.setItem("currentUser", JSON.stringify(user));
+                loginUser(user);
+            } else {
+                alert("Please enter valid credentials");
+            }
+        }
+
+        async function handleRegister(event) {
+            event.preventDefault();
+            const name = document.getElementById("registerName").value;
+            const email = document.getElementById("registerEmail").value;
+            const password = document.getElementById("registerPassword").value;
+            
+            // Demo registration - in production use Supabase
+            if (name && email && password) {
+                const user = { email, name };
+                localStorage.setItem("currentUser", JSON.stringify(user));
+                loginUser(user);
+            } else {
+                alert("Please fill all fields");
+            }
+        }
+
+        function loginUser(user) {
+            currentUser = user;
+            
+            // Update UI with user info
+            document.getElementById("userName").textContent = user.name;
+            document.getElementById("userInitial").textContent = user.name.charAt(0).toUpperCase();
+            document.getElementById("profileName").textContent = user.name;
+            document.getElementById("profileEmail").textContent = user.email;
+            document.getElementById("profileInitial").textContent = user.name.charAt(0).toUpperCase();
+            
+            // Switch to dashboard
+            document.getElementById("authScreen").classList.add("hidden");
+            document.getElementById("dashboardScreen").classList.remove("hidden");
+        }
+
+        function handleLogout() {
+            localStorage.removeItem("currentUser");
+            currentUser = null;
+            document.getElementById("authScreen").classList.remove("hidden");
+            document.getElementById("dashboardScreen").classList.add("hidden");
+            showLogin();
+        }
+
+        // Tab Navigation
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll(".tab-content").forEach(tab => tab.classList.add("hidden"));
+            
+            // Remove active class from all sidebar items
+            document.querySelectorAll(".sidebar-item").forEach(item => item.classList.remove("active"));
+            
+            // Show selected tab
+            document.getElementById(tabName + "Tab").classList.remove("hidden");
+            
+            // Add active class to clicked sidebar item
+            event.target.closest(".sidebar-item").classList.add("active");
+        }
+
+        // Chat Functions
+        function sendMessage() {
+            const input = document.getElementById("chatInput");
+            const message = input.value.trim();
+            if (!message) return;
+            
+            addMessage(message, "user");
+            input.value = "";
+            
+            // Simulate AI response
+            setTimeout(() => {
+                const responses = [
+                    "I'm analyzing your request using data from KuCoin and Binance APIs. Based on current market conditions, I can provide detailed insights.",
+                    "Great question! I'm processing real-time data from your Trading Orchestration service. The current market shows promising opportunities.",
+                    "I've identified several key patterns in the market data. Your trading strategy suggests this could be a strategic move. Shall I run a full analysis?",
+                    "Excellent inquiry! My AI models are showing strong correlations with successful trading patterns. Based on your preferences, this aligns well with profitable strategies."
+                ];
+                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                addMessage(randomResponse, "ai");
+            }, 1000);
+        }
+
+        function quickMessage(message) {
+            document.getElementById("chatInput").value = message;
+            sendMessage();
+        }
+
+        function addMessage(text, sender) {
+            const chatMessages = document.getElementById("chatMessages");
+            const messageDiv = document.createElement("div");
+            messageDiv.className = "flex " + (sender === "user" ? "justify-end" : "justify-start");
+            
+            const isUser = sender === "user";
+            const bgColor = isUser ? "bg-gradient-to-r from-blue-600 to-purple-600" : "bg-gradient-to-r from-purple-600 to-blue-600";
+            const align = isUser ? "ml-12" : "mr-12";
+            
+            messageDiv.innerHTML = `
+                <div class="${bgColor} p-4 rounded-2xl max-w-xs ${align}">
+                    <p class="text-white text-sm">
+                        ${isUser ? "<strong>You:</strong>" : "🤖 <strong>Zmarty:</strong>"} ${text}
+                    </p>
+                </div>
+            `;
+            
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Check for existing session on page load
+        window.addEventListener("load", () => {
+            const savedUser = localStorage.getItem("currentUser");
+            if (savedUser) {
+                const user = JSON.parse(savedUser);
+                loginUser(user);
+            }
+        });
+    </script>
+</body>
+</html>

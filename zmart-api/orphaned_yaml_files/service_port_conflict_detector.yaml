@@ -1,0 +1,30 @@
+service_name: port_conflict_detector
+service_type: infrastructure
+version: 1.0.0
+owner: zmartbot
+description: Port conflict detection service (corrected passport)
+port: 8895
+passport_id: ZMBT-INF-20250831-C2D3E4
+status: ACTIVE
+registered_at: '2025-08-31'
+health_url: http://localhost:8895/health
+start_cmd: python3 port_conflict_detector_server.py --port 8895
+stop_cmd: pkill -f 'port_conflict_detector_server.py'
+dependencies:
+- zmart-api
+tags:
+- infrastructure
+- port_conflict_detector
+lifecycle:
+  startup_grace_seconds: 30
+  shutdown_timeout_seconds: 15
+  health_check_interval: 30
+monitoring:
+  metrics_endpoint: /metrics
+  logs_path: logs/port_conflict_detector.log
+  dashboard_url: http://localhost:8895/dashboard
+security:
+  cors_enabled: true
+  token_required: false
+  scopes:
+  - infrastructure

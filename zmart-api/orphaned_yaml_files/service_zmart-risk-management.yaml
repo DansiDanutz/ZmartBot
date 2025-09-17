@@ -1,0 +1,85 @@
+name: zmart_risk_management
+version: 1.0.0
+description: ZmartBot Risk Management Service - Advanced risk assessment and management
+type: backend
+port: 8010
+status: active
+config:
+  environment: production
+  debug: false
+  host: 127.0.0.1
+  port: 8010
+health:
+  endpoint: /health
+  readiness_endpoint: /ready
+  timeout: 30s
+  interval: 10s
+dependencies:
+- name: zmart-api
+  port: 8000
+  required: true
+- name: master-orchestration-agent
+  port: 8002
+  required: true
+endpoints:
+- path: /health
+  method: GET
+  description: Health check endpoint
+- path: /ready
+  method: GET
+  description: Readiness check endpoint
+- path: /api/v1/risk/assessment
+  method: POST
+  description: Risk assessment endpoint
+- path: /api/v1/risk/metrics
+  method: GET
+  description: Risk metrics endpoint
+- path: /api/v1/risk/alerts
+  method: GET
+  description: Risk alerts endpoint
+- path: /api/v1/risk/limits
+  method: POST
+  description: Risk limits management
+risk_features:
+- name: Portfolio Risk Assessment
+  description: Comprehensive portfolio risk analysis
+  status: active
+- name: Position Risk Monitoring
+  description: Real-time position risk tracking
+  status: active
+- name: VaR Calculations
+  description: Value at Risk calculations
+  status: active
+- name: Stress Testing
+  description: Portfolio stress testing scenarios
+  status: active
+- name: Risk Limits Management
+  description: Dynamic risk limits enforcement
+  status: active
+data_sources:
+- name: Market Data
+  type: real-time
+  status: active
+- name: Portfolio Data
+  type: trading
+  status: active
+- name: Historical Data
+  type: analytics
+  status: active
+monitoring:
+  metrics: /metrics
+  dashboard: /dashboard
+  alerts: /alerts
+security:
+  authentication: required
+  authorization: role-based
+  encryption: enabled
+performance:
+  caching: enabled
+  optimization: active
+  scaling: horizontal
+rollback:
+  snapshots: enabled
+  data_backup: automatic
+  configuration: versioned
+service_name: zmart-risk-management

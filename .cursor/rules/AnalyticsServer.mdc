@@ -1,0 +1,175 @@
+# AnalyticsServer.mdc
+
+
+## Purpose
+Technical analysis and analytics service for ZmartBot trading system, providing comprehensive market analysis and indicator calculations for trading decisions.
+
+## Description
+Technical analysis and analytics service for ZmartBot trading system, providing comprehensive mar...
+
+## Core Functions
+- **Technical Analysis**: 21+ technical indicators per symbol
+- **Market Analytics**: Comprehensive market sentiment analysis
+- **Symbol Analysis**: Real-time technical data for all active symbols
+- **Market Overview**: Aggregate market sentiment and trends
+
+## Service Architecture
+- **Service Name**: zmart-analytics
+- **Default Port**: 8007
+- **Host**: 127.0.0.1
+- **Protocol**: HTTP/FastAPI
+- **Version**: 1.0.0
+
+## API Endpoints
+
+### Health & Monitoring
+- `GET /health` - Liveness probe endpoint
+- `GET /ready` - Readiness probe with database connectivity check
+- `GET /metrics` - Service metrics including active symbols count
+
+### Technical Analysis
+- `GET /api/technical/{symbol}` - Complete technical analysis for symbol
+- `GET /api/analytics/symbols` - All symbols with analytics data
+- `GET /api/analytics/market-overview` - Market sentiment analysis
+
+## Technical Indicators Provided
+- **RSI** (Relative Strength Index) with oversold/overbought signals
+- **MACD** (Moving Average Convergence Divergence) with bullish/bearish signals
+- **EMA** (Exponential Moving Average) with trend analysis
+- **Bollinger Bands** (Upper, Middle, Lower bands)
+- **Stochastic Oscillator** with momentum signals
+- **Williams %R** for momentum analysis
+- **ATR** (Average True Range) for volatility
+- **ADX** (Average Directional Index) for trend strength
+- **CCI** (Commodity Channel Index)
+- **Parabolic SAR** for trend reversal points
+- **Stochastic RSI** for fine-tuned momentum
+- **Momentum** indicator for price velocity
+- **Price Channels** (Upper/Lower resistance/support)
+- **Fibonacci Levels** (0.618, 0.786, 1.0, 1.618)
+- **Ichimoku Cloud** (Tenkan, Kijun, Senkou A/B)
+- **Volume Analysis** with volume patterns
+- **Price Patterns** recognition (double top, support levels)
+- **Bollinger Squeeze** detection
+- **RSI Divergence** analysis
+
+## Key Features
+- **Real-time Analysis**: Live technical indicator calculations
+- **Database Integration**: SQLite connection to my_symbols_v2.db
+- **Market Sentiment**: Aggregate bullish/bearish/neutral signals
+- **Confidence Scoring**: Analysis confidence levels
+- **Trend Identification**: Uptrend/downtrend classification
+- **CORS Support**: Full cross-origin request support
+
+## Dependencies
+- **Database**: SQLite connection to symbols database
+- **Framework**: FastAPI for REST API
+- **Server**: uvicorn ASGI server
+- **Analysis**: Custom technical indicator calculations
+- **Logging**: Comprehensive error and performance logging
+
+## Service Registry Integration
+- **Service ID**: zmart-analytics
+- **Health Check**: /health endpoint with database validation
+- **Metrics Export**: Active symbols and analysis counts
+- **Auto-discovery**: Kubernetes service discovery compatible
+
+## Database Schema Integration
+```sql
+-- Connects to my_symbols_v2.db
+SELECT symbol, exchange, status FROM my_symbols WHERE status = 'active'
+```
+
+## Analysis Output Format
+```json
+{
+  "symbol": "BTCUSDT",
+  "indicators": {
+    "rsi": {"value": 45.2, "signal": "neutral"},
+    "macd": {"value": 0.0012, "signal": "bullish"},
+    "ema": {"value": 67150.25, "signal": "bearish"},
+    "bollinger_bands": {"upper": 68340.0, "middle": 67000.0, "lower": 65660.0}
+  },
+  "summary": {
+    "overall_signal": "bullish",
+    "confidence": 75.5,
+    "trend": "uptrend"
+  }
+}
+```
+
+## Market Sentiment Calculation
+- **Bullish**: Count of symbols with bullish overall signal
+- **Bearish**: Count of symbols with bearish overall signal
+- **Neutral**: Count of symbols with neutral signal
+- **Percentages**: Calculated distribution across all active symbols
+
+## Configuration
+```python
+SERVICE_CONFIG = {
+    "name": "zmart-analytics",
+    "version": "1.0.0", 
+    "port": 8007,
+    "host": "127.0.0.1"
+}
+```
+
+## Error Handling & Resilience
+- Database connection failure handling
+- Graceful degradation to default symbols
+- Global exception handler for unhandled errors
+- Service readiness validation
+- Fallback data for disconnected database
+
+## Integration Points
+- **Symbol Database**: Active symbol list and metadata
+- **Price Feeds**: Real-time price data for calculations
+- **Trading Engine**: Technical signals for trading decisions
+- **Alert System**: Threshold-based technical alerts
+- **Dashboard**: Visual analytics display
+
+## Performance Characteristics
+- **Startup Time**: < 3 seconds
+- **Response Time**: < 200ms per symbol analysis
+- **Throughput**: 100+ analyses per second
+- **Memory Usage**: < 200MB with full symbol set
+- **Database**: SQLite for high-speed local queries
+
+## Usage Example
+```bash
+# Start Analytics Service
+python analytics_server.py --port 8007 --host 127.0.0.1
+
+# Get technical analysis
+curl http://127.0.0.1:8007/api/technical/BTCUSDT
+
+# Get market overview
+curl http://127.0.0.1:8007/api/analytics/market-overview
+```
+
+## Security Features
+- Database path validation
+- SQL injection prevention
+- CORS middleware configuration
+- Request/response logging
+- Service authentication ready
+
+## Deployment Requirements
+- Python 3.8+
+- FastAPI and uvicorn
+- SQLite database access
+- Network access to port 8007
+- ZmartBot symbols database connectivity
+- Sufficient CPU for real-time calculations
+
+## Triggers
+- **API endpoint requests**
+- **Database events**
+- **Health check requests**
+
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Database connectivity**
+- ✅ **Complete MDC documentation**
+- ✅ **Health endpoint implementation**

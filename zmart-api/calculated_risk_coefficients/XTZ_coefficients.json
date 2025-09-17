@@ -1,0 +1,94 @@
+{
+  "symbol": "XTZ",
+  "symbol_name": "Tezos",
+  "birth_date": "2018-06-30",
+  "total_days": 2633,
+  "band_coefficients": {
+    "0.0-0.1": {
+      "days_in_band": 78,
+      "percentage": 2.96,
+      "coefficient": 0.001481,
+      "band_center": 0.05,
+      "lower": 0.0,
+      "upper": 0.1
+    },
+    "0.1-0.2": {
+      "days_in_band": 263,
+      "percentage": 9.99,
+      "coefficient": 0.014983,
+      "band_center": 0.15000000000000002,
+      "lower": 0.1,
+      "upper": 0.2
+    },
+    "0.2-0.3": {
+      "days_in_band": 342,
+      "percentage": 12.99,
+      "coefficient": 0.032472,
+      "band_center": 0.25,
+      "lower": 0.2,
+      "upper": 0.3
+    },
+    "0.3-0.4": {
+      "days_in_band": 421,
+      "percentage": 15.99,
+      "coefficient": 0.055963,
+      "band_center": 0.35,
+      "lower": 0.3,
+      "upper": 0.4
+    },
+    "0.4-0.5": {
+      "days_in_band": 526,
+      "percentage": 19.98,
+      "coefficient": 0.089897,
+      "band_center": 0.45,
+      "lower": 0.4,
+      "upper": 0.5
+    },
+    "0.5-0.6": {
+      "days_in_band": 579,
+      "percentage": 21.99,
+      "coefficient": 0.120946,
+      "band_center": 0.55,
+      "lower": 0.5,
+      "upper": 0.6
+    },
+    "0.6-0.7": {
+      "days_in_band": 342,
+      "percentage": 12.99,
+      "coefficient": 0.084428,
+      "band_center": 0.6499999999999999,
+      "lower": 0.6,
+      "upper": 0.7
+    },
+    "0.7-0.8": {
+      "days_in_band": 184,
+      "percentage": 6.99,
+      "coefficient": 0.052412,
+      "band_center": 0.75,
+      "lower": 0.7,
+      "upper": 0.8
+    },
+    "0.8-0.9": {
+      "days_in_band": 105,
+      "percentage": 3.99,
+      "coefficient": 0.033897,
+      "band_center": 0.8500000000000001,
+      "lower": 0.8,
+      "upper": 0.9
+    },
+    "0.9-1.0": {
+      "days_in_band": 52,
+      "percentage": 1.97,
+      "coefficient": 0.018762,
+      "band_center": 0.95,
+      "lower": 0.9,
+      "upper": 1.0
+    }
+  },
+  "weighted_risk_score": 0.5052,
+  "current_risk_level": 0.55,
+  "current_risk_band": "0.5-0.6",
+  "confidence_level": 7,
+  "data_type": "estimated",
+  "calculated_at": "2025-09-14T22:51:01.266240"
+}

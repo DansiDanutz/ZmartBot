@@ -1,0 +1,283 @@
+# RiskMetric.mdc
+> Type: system | Version: 2.0.0 | Owner: zmartbot | Status: Production | Level: 1
+
+## 🎯 Purpose
+Complete autonomous risk metric system that tracks cryptocurrency risk levels using real-time Binance prices, historical time distribution analysis, and rarity-based coefficients for generating trading signals.
+
+## 📊 System Overview
+The RiskMetric system combines three databases to create a comprehensive risk analysis platform:
+1. **Risk Grid Database** - Price-to-risk mappings (41 points from 0.000 to 1.000)
+2. **Time Bands Database** - Historical time spent in each risk band
+3. **Coefficients System** - Rarity-based multipliers (1.00 to 1.60)
+
+## 🗄️ Database Architecture
+
+### 1. FIAT Risk Grid Table: `cryptoverse_risk_grid`
+```sql
+- id: SERIAL PRIMARY KEY
+- symbol: VARCHAR(10) -- BTC, ETH, SOL, etc.
+- price_usd: DECIMAL(20, 2) -- Price at risk level
+- fiat_risk: DECIMAL(5, 3) -- Risk value (0.000 to 1.000)
+- UNIQUE(symbol, fiat_risk)
+```
+**Data**: 1,025 rows (25 symbols × 41 risk points)
+**Purpose**: Maps prices to risk levels using 0.025 increments
+
+### 2. BTC Risk Grid Table: `cryptoverse_btc_risk_grid`
+```sql
+- id: SERIAL PRIMARY KEY
+- symbol: VARCHAR(10) -- ETH, SOL, ADA, etc. (not BTC)
+- price_btc: DECIMAL(20, 8) -- Price in BTC terms
+- btc_risk: DECIMAL(5, 3) -- Risk relative to BTC
+- UNIQUE(symbol, btc_risk)
+```
+**Data**: 410 rows (10 symbols × 41 risk points)
+**Purpose**: Tracks altcoin risk relative to Bitcoin
+
+### 3. Time Bands Table: `cryptoverse_risk_time_bands_v2`
+```sql
+- symbol: VARCHAR(10) PRIMARY KEY
+- total_days: INTEGER -- Life age of symbol
+- band_0_10 to band_90_100: INTEGER -- Days in each band
+- coef_0_10 to coef_90_100: DECIMAL(4,3) -- Coefficients
+- current_risk: DECIMAL(5,3)
+- current_risk_band: VARCHAR(10)
+```
+**Data**: 25 symbols with complete time distribution
+**Updates**: Daily via pg_cron at midnight UTC
+
+### 4. Current Risk Data: `cryptoverse_risk_data`
+```sql
+- symbol: VARCHAR(10) UNIQUE
+- price_usd: DECIMAL(20, 2)
+- fiat_risk: DECIMAL(5, 3)
+- btc_risk: DECIMAL(5, 3)
+- eth_risk: DECIMAL(5, 3)
+- last_updated: TIMESTAMP
+```
+**Updates**: Hourly from Binance API
+
+### 5. Daily History: `risk_band_daily_history`
+```sql
+- symbol: VARCHAR(10)
+- date: DATE
+- risk_value: DECIMAL(5, 3)
+- risk_band: VARCHAR(10)
+- price_usd: DECIMAL(20, 2)
+- coefficient_applied: DECIMAL(4, 3)
+- UNIQUE(symbol, date)
+```
+**Purpose**: Complete audit trail of daily risk positions
+
+## 📐 Core Calculations
+
+### 1. Risk Value from Price
+```sql
+FUNCTION get_risk_at_price(symbol, price, type)
+-- Linear interpolation between grid points
+-- Returns risk value (0.000 to 1.000)
+```
+**Example**: SOL at $245.03 → Risk = 0.715
+
+### 2. Price from Risk Value
+```sql
+FUNCTION get_price_at_risk(symbol, risk, type)
+-- Reverse interpolation
+-- Returns price at specific risk level
+```
+**Example**: SOL at 0.5 risk → Price = $102.05
+
+### 3. Risk Band Assignment
+```sql
+FUNCTION get_current_risk_band(risk_value)
+-- Returns band: '0.0-0.1', '0.1-0.2', ..., '0.9-1.0'
+```
+Risk Zones:
+- 🟢 **Accumulation**: 0.0-0.3 (Buy zone)
+- 🟡 **Transition**: 0.3-0.7 (Hold zone)
+- 🔴 **Distribution**: 0.7-1.0 (Sell zone)
+
+## 🔢 Coefficient System
+
+### Formula
+```
+Coefficient = 1.60 - ((days_in_band - min_days) × 0.60 / (max_days - min_days))
+```
+
+### Rules
+- **Most Common Band**: Coefficient = 1.00
+- **Rarest Band**: Coefficient = 1.60
+- **Inverse Relationship**: Fewer days = Higher coefficient
+
+### Example: SOL
+| Risk Band | Days | Coefficient | Rarity |
+|-----------|------|------------|--------|
+| 0.9-1.0   | 40   | 1.600      | RAREST |
+| 0.0-0.1   | 60   | 1.570      | 2nd    |
+| 0.7-0.8   | 140  | 1.450      | 4th    |
+| 0.5-0.6   | 441  | 1.000      | COMMON |
+
+## 🤖 Automation System
+
+### 1. Daily Band Update (Midnight UTC)
+```sql
+FUNCTION daily_risk_update_master()
+-- Adds +1 day to current risk band
+-- Increments total_days
+-- Recalculates all coefficients
+-- Triggered by: pg_cron 'daily-risk-band-update'
+```
+
+### 2. Hourly Price Update (Every Hour)
+```sql
+FUNCTION update_risk_from_binance()
+-- Fetches real-time Binance prices
+-- Calculates current risk values
+-- Updates trading signals
+-- Triggered by: pg_cron 'hourly-binance-risk-update'
+```
+
+### 3. Coefficient Recalculation (Automatic)
+```sql
+FUNCTION recalculate_trading_coefficients()
+-- Triggered when band days change
+-- Maintains 1.00-1.60 range
+-- Updates all 10 band coefficients
+```
+
+## 📊 Trading Signals
+
+### Signal Generation Logic
+```
+Adjusted Risk = Current Risk × Coefficient
+
+If Coefficient >= 1.5 (Very Rare):
+  - Risk < 0.2: 🔥 STRONG BUY
+  - Risk > 0.8: ⚠️ STRONG SELL
+
+If Coefficient >= 1.3 (Rare):
+  - Risk < 0.3: ✅ BUY
+  - Risk > 0.7: 📉 SELL
+
+Else (Common):
+  - Risk < 0.3: 💰 ACCUMULATE
+  - Risk > 0.7: 💸 TAKE PROFIT
+  - Otherwise: ⏸️ HOLD
+```
+
+## 🔄 Data Flow
+
+```mermaid
+graph LR
+    A[Binance API] -->|Hourly| B[Current Price]
+    B --> C[Risk Calculation]
+    C --> D[Risk Band]
+    D --> E[Coefficient]
+    E --> F[Trading Signal]
+
+    G[Daily Update] -->|Midnight| H[+1 Day to Band]
+    H --> I[Recalc Coefficients]
+    I --> J[New Signals]
+```
+
+## 📈 Key Metrics
+
+### Current Example: SOL
+- **Birth Date**: 2020-03-16
+- **Total Days**: 2,008
+- **Current Price**: $245.03
+- **Current Risk**: 0.715 (71.5%)
+- **Current Band**: 0.7-0.8
+- **Days in Band**: 140
+- **Coefficient**: 1.450
+- **Signal**: 📉 SELL (Rare distribution zone)
+
+### Time Distribution: SOL
+- **Most Time**: 0.5-0.6 band (441 days, 21.96%)
+- **Current Position**: 0.7-0.8 band (140 days, 6.97%)
+- **Implication**: High probability of reversion
+
+## 🛠️ Setup Requirements
+
+### 1. Supabase Extensions
+```sql
+CREATE EXTENSION IF NOT EXISTS pg_cron;  -- For automation
+CREATE EXTENSION IF NOT EXISTS http;      -- For API calls
+```
+
+### 2. Environment Variables
+```bash
+SUPABASE_URL=your_supabase_url
+SUPABASE_KEY=your_supabase_key
+```
+
+### 3. Cron Jobs
+```sql
+-- Daily band update
+SELECT cron.schedule('daily-risk-band-update', '0 0 * * *',
+    $$SELECT daily_risk_update_master();$$);
+
+-- Hourly price update
+SELECT cron.schedule('hourly-binance-risk-update', '0 * * * *',
+    $$SELECT update_risk_from_binance();$$);
+```
+
+## 🔍 Monitoring Queries
+
+### Check System Status
+```sql
+SELECT * FROM v_risk_trading_signals
+WHERE symbol IN ('BTC', 'ETH', 'SOL');
+```
+
+### View Top Opportunities
+```sql
+SELECT * FROM v_current_risk_status
+WHERE current_coefficient >= 1.3
+ORDER BY adjusted_risk DESC;
+```
+
+### Validate Calculations
+```sql
+SELECT * FROM validate_risk_calculations();
+```
+
+## 📋 Critical Functions Summary
+
+| Function | Purpose | Frequency |
+|----------|---------|-----------|
+| `get_risk_at_price()` | Calculate risk from price | Real-time |
+| `get_price_at_risk()` | Calculate price from risk | Real-time |
+| `update_daily_risk_bands()` | Update band counters | Daily |
+| `recalculate_trading_coefficients()` | Update coefficients | Daily |
+| `update_risk_from_binance()` | Fetch live prices | Hourly |
+| `get_trading_signal()` | Generate signals | On-demand |
+
+## 🎯 Business Value
+
+1. **Automated Risk Tracking**: 24/7 monitoring without manual intervention
+2. **Rarity-Based Signals**: Higher confidence in rare market conditions
+3. **Historical Learning**: Improves accuracy over time
+4. **Multi-Timeframe Analysis**: Combines short-term price with long-term patterns
+5. **Objective Decision Making**: Math-based signals remove emotion
+
+## 🔐 Security & Performance
+
+- **RLS**: Row-level security on all tables
+- **Indexes**: On symbol, date, and risk columns
+- **Caching**: 15-minute cache for API calls
+- **Rate Limiting**: Respects Binance API limits
+- **Audit Trail**: Complete history in `risk_band_daily_history`
+
+## 📝 Notes & Warnings
+
+⚠️ **Initial Data**: System needs historical data for accurate coefficients
+⚠️ **Time Zones**: All cron jobs run in UTC
+⚠️ **API Limits**: Binance has rate limits (weight: 1200/min)
+✅ **Self-Healing**: System continues if API fails, using last known values
+✅ **Autonomous**: Once configured, runs indefinitely without intervention
+
+---
+**Last Updated**: 2025-09-16
+**Maintainer**: ZmartBot Team
+**Status**: PRODUCTION READY

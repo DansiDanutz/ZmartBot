@@ -1,0 +1,144 @@
+# ClaudeProjectInstructions.mdc
+
+
+## Summary
+ZmartBot project instructions file that serves as the central configuration for Claude AI development assistance, containing system overview, critical rules, MDC includes, and context management.
+
+## Purpose
+- Provides centralized development guidelines and rules for the ZmartBot project
+- Manages MDC file inclusions and context aggregation
+- Enforces security requirements and development standards
+- Optimizes AI assistant context for efficient development work
+
+## Description
+- Provides centralized development guidelines and rules for the ZmartBot project
+- Manages MDC fi...
+
+## Location
+`/Users/dansidanutz/Desktop/ZmartBot/CLAUDE.md`
+
+## Key Components
+
+### System Overview
+- **Last Updated**: Auto-generated timestamp (2025-08-25T12:22:19.020693)
+- **Focus Domain**: Core development context
+- **Total MDC Files**: 67 documented components
+- **Current Task**: General Development
+
+### Critical Rules Framework
+
+#### Security & Secrets Management
+- **Secret Scanning**: All commits must pass secret scanning before merge
+- **API Key Management**: Environment variables or secure vault storage only
+- **Data Protection**: Encryption at rest and in transit for all sensitive data
+- **Access Control**: Principle of least privilege for all API access
+
+#### Command Guardrails (Hard-Blocked Commands)
+- Destructive filesystem operations (`rm -rf /`, `chmod -R 777 /`)
+- Blind remote execution (`curl * | bash`, `wget * -O- | bash`)
+- Device/disk writes (`dd if=/dev/* of=/dev/*`)
+- Unscoped process kills (`pkill -f python`, `kill -9 -1`)
+- Kernel/system config writes (outside containers)
+- Secrets exfiltration (env var dumps, secret file access)
+
+#### Confirmation-Required Commands
+- Git force operations (`git push --force`, `git reset --hard`)
+- Docker system operations (`docker system prune -a`)
+- Mass file operations (bulk moves/deletes)
+
+### MDC Includes System
+The file includes 25+ core MDC components:
+- **Database Components**: 2IndicatorsDatabase.mdc, MySymbolsDatabase.mdc, PortManagerDatabase.mdc
+- **API Management**: API-Manager.mdc, Backend.mdc, BackendDoctorPack.mdc
+- **Orchestration**: MasterOrchestrationAgent.mdc, OrchestrationStart.mdc
+- **Monitoring**: LiveAlerts.mdc, MesseiAlerts.mdc, WhaleAlerts.mdc
+- **Services**: ProcessReaper.mdc, ServiceRegistry.mdc, StartGuard.mdc
+- **UI Components**: IndicatorCard.mdc, ControlUI.mdc
+- **System Scripts**: START_zmartbot.mdc, STOP_zmartbot.mdc
+
+### Context Management System
+
+#### Available Contexts (8 Domains)
+- **Core**: 3 files - System foundations and project structure
+- **Trading**: 6 files - Trading algorithms and market data
+- **Monitoring**: 3 files - System health and performance tracking
+- **Orchestration**: 3 files - Service coordination and management
+- **Services**: 5 files - Microservice components and APIs
+- **Data**: 3 files - Database and data processing
+- **Backend**: 4 files - Server-side application logic
+- **Frontend**: 2 files - User interface and dashboard
+
+#### Performance Metrics
+- **Current Size**: 3,866 characters
+- **Size Limit**: 40,000 characters (90% headroom available)
+- **Performance Status**: ✅ Optimal
+- **Update Frequency**: Every 30 seconds
+
+### Auto-Generation Features
+- **Timestamp Tracking**: Automatic last-updated timestamps
+- **Size Monitoring**: Real-time character count and limit tracking
+- **Context Optimization**: Automatic content aggregation and optimization
+- **Performance Tracking**: Context loading and processing metrics
+
+## Integration Points
+
+### Development Workflow
+- Central reference point for all Claude AI interactions
+- Enforces consistent development patterns and security practices
+- Provides context-aware assistance based on current task domain
+- Maintains project coherence across multiple development sessions
+
+### Security Integration
+- Pre-commit hook enforcement through rule specifications
+- API key and secrets management guidelines
+- Access control policy definitions
+- Security scanning requirements
+
+### Context Optimization
+- Domain-specific context loading based on current task
+- Intelligent context switching for different development phases
+- Memory-efficient context management for large project scale
+- Real-time context updates and synchronization
+
+## Dependencies
+- **MDC Files**: 67 component files in `.cursor/rules/` directory
+- **Context Files**: Domain-specific contexts in `.claude/contexts/`
+- **Security Tools**: gitleaks, detect-secrets for secret scanning
+- **Git Hooks**: Pre-commit validation and enforcement
+
+## Configuration Options
+- Focus domain switching (Core, Trading, Monitoring, etc.)
+- Context size optimization and limits
+- MDC file inclusion/exclusion management
+- Security rule enforcement levels
+
+## Error Handling
+- Graceful degradation when MDC files are missing
+- Context size overflow management
+- Invalid rule detection and reporting
+- Automatic context recovery and regeneration
+
+## Performance Considerations
+- Context loading optimization for 67 MDC files
+- Memory-efficient context aggregation
+- Real-time performance monitoring
+- Automatic optimization triggers at size thresholds
+
+## Security Considerations
+- Rule enforcement prevents dangerous command execution
+- Secret detection and prevention mechanisms
+- Access control for sensitive development operations
+- Audit trail for all development actions and rule violations
+
+## Triggers
+- **API endpoint requests**
+- **Database events**
+- **Workflow transitions**
+
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Database connectivity**
+- ✅ **Complete MDC documentation**
+- ✅ **Health endpoint implementation**
+- ✅ **Master Orchestration integration**

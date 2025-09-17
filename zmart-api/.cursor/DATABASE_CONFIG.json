@@ -1,0 +1,28 @@
+{
+  "CRITICAL_NOTICE": "CURSOR MUST USE THIS DATABASE CONFIGURATION",
+  "master_database": {
+    "path": "src/data/service_registry.db",
+    "description": "OFFICIAL master database with all 64 services",
+    "tables": ["service_registry"],
+    "status": "ACTIVE",
+    "last_updated": "2025-08-31T18:28:00Z"
+  },
+  "deprecated_databases": {
+    "CERT.db": "OLD - DO NOT USE - Only has 5 services",
+    "authentication.db": "DEPRECATED",
+    "database/master_database_registry.db": "BACKUP ONLY"
+  },
+  "service_counts": {
+    "total_services": 64,
+    "level_1": 1,
+    "level_2": 20,
+    "level_3": 43,
+    "services_with_passports": 63
+  },
+  "cursor_instructions": {
+    "MANDATORY": "Always use src/data/service_registry.db",
+    "NEVER_USE": ["CERT.db", "authentication.db"],
+    "SQL_QUERY": "SELECT * FROM service_registry WHERE certification_level = 3",
+    "VERIFICATION": "Should return 43 Level 3 services"
+  }
+}

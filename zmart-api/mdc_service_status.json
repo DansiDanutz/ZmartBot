@@ -1,0 +1,9 @@
+{
+  "status": "stopped",
+  "message": "Service stopped",
+  "timestamp": "2025-09-15T04:24:22.723108",
+  "pid": null,
+  "mdc_directory": "/Users/dansidanutz/Desktop/ZmartBot/.cursor/rules",
+  "scan_interval": 3600,
+  "use_llm": true
+}

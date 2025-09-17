@@ -1,4 +1,9 @@
+
+## Description
+Core service component of the ZmartBot ecosystem providing essential functionality.
+
 @agent: IndicatorEngine
+
 
 # Indicator Card - Technical Analysis Display System
 
@@ -400,4 +405,12 @@ The Indicator Card system provides **comprehensive visual feedback** for all tec
 description:
 globs:
 alwaysApply: true
+
+## Requirements
+- ✅ **Unique port assignment**
+
+
 ---
+
+## Triggers
+- **API endpoint requests**

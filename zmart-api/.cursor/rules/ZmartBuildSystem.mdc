@@ -1,0 +1,280 @@
+# ZmartBuildSystem.mdc
+
+## 🤖 MCP (Model Context Protocol) Integration
+
+### **MCP Server Pairing**
+**Status**: ✅ **ACTIVE** - ZmartBuildSystem MCP Integration
+**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
+**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
+**Integration Type**: Multi-MCP Service Integration
+
+### **MCP Integration Features**
+- **Claude Code Integration**: AI-powered build system orchestration and automation
+- **Memory Gateway**: Persistent build system state and metadata
+- **UI Automation**: Automated build system monitoring and health checks
+- **Figma Integration**: Build system dashboard design and UI management
+- **Supabase Integration**: Cloud-based build system analytics and reporting
+
+### **MCP Integration Benefits**
+- **AI-Powered Build System**: Intelligent build orchestration and automation
+- **Persistent State**: Build system process state and metadata storage
+- **Automated Monitoring**: Real-time build system progress and error detection
+- **Visual Dashboard**: Build system process visualization and status tracking
+- **Cloud Analytics**: Build system performance metrics and optimization insights
+
+### **MCP Usage Examples**
+```bash
+# Health check via MCP
+curl -X GET "http://127.0.0.1:8000/health" \
+  -H "Content-Type: application/json"
+
+# Build system orchestration via MCP
+curl -X POST "http://127.0.0.1:8000/build-system" \
+  -H "Content-Type: application/json" \
+  -d '{"command": "diana-up", "services": ["all"]}'
+```
+
+### **MCP Status**
+- **Claude Code**: ✅ Active - AI-powered build system orchestration
+- **ByteRover**: ✅ Active - Persistent build system state management
+- **UI TARS**: ✅ Active - Automated build system monitoring
+- **Figma**: ✅ Active - Build system dashboard design
+- **Supabase**: ✅ Active - Cloud-based build system analytics
+
+---
+
+## Summary
+ZmartBot Makefile-based build system providing comprehensive development, deployment, and maintenance commands including DIANA platform infrastructure, security scanning, and context management automation.
+
+## Purpose
+- Provides standardized build and deployment automation for ZmartBot
+- Manages DIANA platform infrastructure with Docker Compose
+- Integrates security scanning and compliance checks
+- Offers context management and optimization tools
+- Streamlines development workflow with consistent commands
+
+## Description
+- Provides standardized build and deployment automation for ZmartBot
+- Manages DIANA platform inf...
+
+## Location
+`/Users/dansidanutz/Desktop/ZmartBot/Makefile`
+
+## Core Commands Structure
+
+### DIANA Platform Management
+
+#### Infrastructure Commands
+```make
+diana-up: infra-up diana-status
+    # Launches complete DIANA platform in 2 minutes
+    
+infra-up:
+    # Starts all infrastructure services with Docker Compose
+    docker compose -f infra/compose.yml up -d
+    # 30-second wait for service readiness
+
+infra-down:
+    # Stops all infrastructure services and removes volumes
+    docker compose -f infra/compose.yml down -v
+
+infra-logs:
+    # Displays infrastructure service logs with 200-line tail
+    docker compose -f infra/compose.yml logs -f --tail=200
+```
+
+#### Service Status and Health Monitoring
+```make
+diana-status:
+    # Quick status display for all DIANA services
+    RabbitMQ UI:  http://localhost:15672 (guest/guest)
+    Jaeger UI:    http://localhost:16686
+    Prometheus:   http://localhost:9090
+    Grafana:      http://localhost:3000 (admin/admin)
+    PostgreSQL:   localhost:5432 (zmart/zmart/zmart_core)
+    Redis:        localhost:6379
+
+diana-status-full:
+    # Comprehensive status report with all service endpoints
+    # Infrastructure, Observability, Platform Services, ZmartBot Integration
+```
+
+#### Health Testing and Validation
+```make
+diana-test:
+    # Automated health checks for all DIANA services
+    # JSON API validation for RabbitMQ, Jaeger, Prometheus
+    # Grafana and Config Server health endpoints
+    # Consul leadership and API Gateway status
+```
+
+### Security Management
+
+#### Security Scanning Commands
+```make
+security-check:
+    # Simple security validation
+    ./simple_security_check.sh
+
+security-full:
+    # Comprehensive security scan with gitleaks
+    ./security_scan.sh --gitleaks-only
+
+setup-security:
+    # Configures daily automated security checks
+    ./setup_daily_security.sh
+```
+
+### Application Lifecycle
+
+#### Startup and Validation
+```make
+start: security-check
+    # Secure startup with pre-flight security validation
+    ./START_ZMARTBOT.sh
+
+check: security-check
+    # Alias for security validation
+
+scan: security-full
+    # Alias for comprehensive security scan
+```
+
+### Context Management System
+
+#### Context Optimization Commands
+```make
+cleanup-context:
+    # Smart context optimization preserving MDC Agent
+    ./smart_context_optimizer.sh
+
+cleanup-context-aggressive:
+    # Aggressive cleanup with potential MDC Agent impact
+    ./cleanup_context.sh
+
+optimize-claude:
+    # CLAUDE.md optimization with backup creation
+    cp CLAUDE.md CLAUDE_BACKUP.md 2>/dev/null || true
+    cp CLAUDE_OPTIMIZED.md CLAUDE.md
+
+restore-claude:
+    # Restore original CLAUDE.md from backup
+    cp CLAUDE_BACKUP.md CLAUDE.md 2>/dev/null || echo "No backup found"
+```
+
+#### Context Status Monitoring
+```make
+context-status:
+    # Comprehensive context system status report
+    # File sizes, counts, and background processes
+    CLAUDE.md size: $(wc -c < CLAUDE.md) characters
+    Context files: $(find .claude/contexts -name '*.md' | wc -l) files
+    MDC files: $(find .cursor/rules -name '*.mdc' | wc -l) files
+    Total .claude size: $(du -sh .claude/ | cut -f1)
+    Background processes: $(ps aux | grep -c 'mdc_agent|context')
+```
+
+## Service Architecture Integration
+
+### Infrastructure Stack
+- **PostgreSQL**: Database service on port 5432
+- **Redis**: Cache and session store on port 6379  
+- **RabbitMQ**: Message queue with management UI on ports 5672/15672
+- **InfluxDB**: Time series database for metrics
+- **Prometheus**: Metrics collection on port 9090
+- **Grafana**: Visualization dashboard on port 3000
+- **Jaeger**: Distributed tracing on port 16686
+
+### ZmartBot Integration Points
+- **Main API**: http://localhost:8000
+- **Dashboard**: http://localhost:3400
+- **Config Server**: http://localhost:8080
+- **Consul UI**: http://localhost:8500
+- **API Gateway**: http://localhost
+
+### Docker Compose Configuration
+- **Compose File**: `infra/compose.yml`
+- **Network Management**: Automatic service discovery
+- **Volume Persistence**: Data persistence across restarts
+- **Health Checks**: Built-in service health validation
+
+## Build System Features
+
+### Automation Capabilities
+- **One-Command Deployment**: Complete DIANA platform in single command
+- **Health Validation**: Automated service health verification
+- **Security Integration**: Pre-deployment security scanning
+- **Context Optimization**: Intelligent context management
+- **Log Management**: Centralized log access and monitoring
+
+### Development Workflow Integration
+- **Consistent Environment**: Standardized development setup
+- **Security-First**: Security checks integrated into startup
+- **Observability**: Complete monitoring and tracing stack
+- **Service Mesh**: Integrated service discovery and management
+
+### Error Handling and Recovery
+- **Graceful Shutdown**: Clean service termination with volume cleanup
+- **Service Restart**: diana-restart for complete environment refresh
+- **Log Access**: Real-time log streaming for debugging
+- **Health Recovery**: Automated service health recovery
+
+## Security Integration
+
+### Pre-Deployment Validation
+- **Secret Scanning**: Gitleaks integration for security validation
+- **Compliance Checks**: Security policy enforcement
+- **Automated Scanning**: Daily security check setup
+- **Risk Assessment**: Comprehensive security analysis
+
+### Access Control
+- **Service Authentication**: Default credentials for development
+- **Network Security**: Service isolation and access controls
+- **Audit Logging**: Security event tracking and monitoring
+
+## Performance Optimization
+
+### Build Efficiency
+- **Parallel Execution**: Concurrent service startup
+- **Resource Management**: Optimized container resource allocation
+- **Cache Utilization**: Docker layer caching for faster builds
+- **Service Dependencies**: Proper service startup ordering
+
+### Monitoring and Observability
+- **Real-time Metrics**: Prometheus-based performance monitoring
+- **Distributed Tracing**: Jaeger integration for request tracing
+- **Log Aggregation**: Centralized logging with structured output
+- **Dashboard Visualization**: Grafana dashboards for system insights
+
+## Maintenance and Operations
+
+### Routine Operations
+- **System Health**: Regular health check execution
+- **Log Rotation**: Automated log management
+- **Context Cleanup**: Regular context optimization
+- **Security Updates**: Automated security scanning
+
+### Troubleshooting Support
+- **Service Logs**: Easy access to service-specific logs
+- **Status Reporting**: Comprehensive system status information
+- **Health Diagnostics**: Automated service health validation
+- **Recovery Procedures**: Standardized recovery commands
+
+## Integration Dependencies
+- **Docker Compose**: Container orchestration platform
+- **Security Tools**: gitleaks, security scanning utilities
+- **Shell Scripts**: Custom automation scripts integration
+- **Context Management**: MDC Agent and context optimization tools
+
+## Triggers
+- **API endpoint requests**
+- **Database events**
+- **Workflow transitions**
+
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Database connectivity**
+- ✅ **Complete MDC documentation**
+- ✅ **Health endpoint implementation**
+- ✅ **Master Orchestration integration**

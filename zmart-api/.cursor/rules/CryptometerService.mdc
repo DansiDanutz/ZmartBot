@@ -1,0 +1,126 @@
+# 🔌 Cryptometer Service - Market Data API Integration
+
+## 🤖 MCP (Model Context Protocol) Integration
+
+### **MCP Server Pairing**
+**Status**: ✅ **ACTIVE** - Cryptometer Service MCP Integration
+**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
+**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
+**Integration Type**: Multi-MCP Service Integration
+
+### **MCP Integration Features**
+- **Claude Code Integration**: AI-powered market data analysis and optimization
+- **Memory Gateway**: Persistent market data state and analysis metadata
+- **UI Automation**: Automated market data monitoring and health checks
+- **Figma Integration**: Market data dashboard design and UI management
+- **Supabase Integration**: Cloud-based market data analytics and reporting
+
+### **MCP Integration Benefits**
+- **Enhanced Analysis**: AI-powered market data interpretation and insights
+- **Persistent State**: Market data caching and analysis history preservation
+- **Automated Monitoring**: Real-time market data health and performance tracking
+- **Visual Design**: Professional market data dashboard and chart design
+- **Cloud Analytics**: Advanced market data analytics and reporting
+
+### **MCP Usage Examples**
+```bash
+# Health check via MCP
+curl -X GET "http://127.0.0.1:8007/health"
+
+# Market data analysis via MCP
+curl -X POST "http://127.0.0.1:8007/analyze" \
+  -H "Content-Type: application/json" \
+  -d '{"symbol": "BTCUSDT", "timeframe": "1h"}'
+```
+
+### **MCP Status**
+- **Claude Code**: ✅ Active - AI-powered market data analysis
+- **ByteRover**: ✅ Active - Market data state persistence
+- **UI TARS**: ✅ Active - Market data monitoring automation
+- **Figma**: ✅ Active - Market data dashboard design
+- **Supabase**: ✅ Active - Market data cloud analytics
+
+---
+
+## Purpose
+Cryptometer API integration service providing real-time market data, technical indicators, and comprehensive market analysis for ZmartBot trading operations.
+
+## Description
+Cryptometer API integration service providing real-time market data, technical indicators, and co...
+
+## Critical Functions
+- **Market Data Retrieval**: Real-time price data and market information
+- **Technical Indicators**: 21+ technical indicators calculation and analysis
+- **Multi-timeframe Analysis**: 15m, 1h, 4h, 1d timeframe support
+- **Rate Limiting**: Intelligent API rate limiting and quota management
+- **Data Caching**: Performance optimization through intelligent caching
+- **Error Handling**: Robust error handling and fallback mechanisms
+
+## API Endpoints
+- **Market Data**: Real-time price and volume data
+- **Technical Indicators**: RSI, MACD, EMA, Bollinger Bands, etc.
+- **Multi-timeframe**: Support for multiple timeframes
+- **Symbol Information**: Comprehensive symbol metadata
+- **Market Analysis**: Advanced market analysis and insights
+
+## Key Features
+- **Real-time Data**: Live market data with minimal latency
+- **Comprehensive Indicators**: 21+ technical indicators
+- **Multi-timeframe Support**: 15m, 1h, 4h, 1d timeframes
+- **Intelligent Caching**: 5-minute cache with smart invalidation
+- **Rate Limiting**: API quota management and optimization
+- **Error Recovery**: Automatic retry and fallback mechanisms
+
+## Data Processing
+- **Price Data**: Real-time price feeds and historical data
+- **Volume Analysis**: Volume-based analysis and insights
+- **Technical Analysis**: Comprehensive technical indicator calculations
+- **Market Sentiment**: Market sentiment analysis and scoring
+- **Pattern Recognition**: Chart pattern identification and analysis
+
+## Performance Optimization
+- **Caching Strategy**: Intelligent data caching for performance
+- **Rate Limiting**: API quota optimization and management
+- **Batch Processing**: Efficient batch data processing
+- **Memory Management**: Optimized memory usage and cleanup
+- **Response Time**: Sub-second response times for critical data
+
+## Error Handling
+- **API Failures**: Graceful handling of API failures
+- **Rate Limit Exceeded**: Intelligent rate limit management
+- **Network Issues**: Network error recovery and retry logic
+- **Data Validation**: Comprehensive data validation and sanitization
+- **Fallback Mechanisms**: Alternative data sources when available
+
+## Integration
+- **Frontend Dashboard**: Real-time data display and visualization
+- **Trading Engine**: Market data for trading decisions
+- **Alert System**: Market condition alerts and notifications
+- **Database**: Historical data storage and retrieval
+- **Analytics**: Market analysis and reporting
+
+## Configuration
+- **API Keys**: Secure API key management
+- **Rate Limits**: Configurable rate limiting settings
+- **Cache Settings**: Cache duration and invalidation rules
+- **Timeout Settings**: Request timeout configurations
+- **Retry Logic**: Retry attempt and backoff settings
+
+## Status
+✅ **ACTIVE** - Core market data service with comprehensive API integration
+
+description:
+globs:
+alwaysApply: true
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Database connectivity**
+
+
+---
+
+
+## Triggers
+- **API endpoint requests**
+- **Database events**

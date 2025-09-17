@@ -1,0 +1,889 @@
+{
+  "metadata": {
+    "source": "IntoTheCryptoverse",
+    "risk_levels": [
+      0.0,
+      0.025,
+      0.05,
+      0.075,
+      0.1,
+      0.125,
+      0.15,
+      0.175,
+      0.2,
+      0.225,
+      0.25,
+      0.275,
+      0.3,
+      0.325,
+      0.35,
+      0.375,
+      0.4,
+      0.425,
+      0.45,
+      0.475,
+      0.5,
+      0.525,
+      0.55,
+      0.575,
+      0.6,
+      0.625,
+      0.65,
+      0.675,
+      0.7,
+      0.725,
+      0.75,
+      0.775,
+      0.8,
+      0.825,
+      0.85,
+      0.875,
+      0.9,
+      0.925,
+      0.95,
+      0.975,
+      1.0
+    ],
+    "total_levels": 41,
+    "increment": 0.025
+  },
+  "symbols": {
+    "BTC": {
+      "fiat_risk_grid": [
+        {
+          "price": 10000,
+          "risk_value": 0.0
+        },
+        {
+          "price": 12000,
+          "risk_value": 0.025
+        },
+        {
+          "price": 15000,
+          "risk_value": 0.05
+        },
+        {
+          "price": 18000,
+          "risk_value": 0.075
+        },
+        {
+          "price": 20000,
+          "risk_value": 0.1
+        },
+        {
+          "price": 23000,
+          "risk_value": 0.125
+        },
+        {
+          "price": 26000,
+          "risk_value": 0.15
+        },
+        {
+          "price": 29000,
+          "risk_value": 0.175
+        },
+        {
+          "price": 32000,
+          "risk_value": 0.2
+        },
+        {
+          "price": 35000,
+          "risk_value": 0.225
+        },
+        {
+          "price": 38000,
+          "risk_value": 0.25
+        },
+        {
+          "price": 42000,
+          "risk_value": 0.275
+        },
+        {
+          "price": 46000,
+          "risk_value": 0.3
+        },
+        {
+          "price": 50000,
+          "risk_value": 0.325
+        },
+        {
+          "price": 55000,
+          "risk_value": 0.35
+        },
+        {
+          "price": 60000,
+          "risk_value": 0.375
+        },
+        {
+          "price": 65000,
+          "risk_value": 0.4
+        },
+        {
+          "price": 70000,
+          "risk_value": 0.425
+        },
+        {
+          "price": 75000,
+          "risk_value": 0.45
+        },
+        {
+          "price": 80000,
+          "risk_value": 0.475
+        },
+        {
+          "price": 85000,
+          "risk_value": 0.5
+        },
+        {
+          "price": 90000,
+          "risk_value": 0.525
+        },
+        {
+          "price": 95000,
+          "risk_value": 0.55
+        },
+        {
+          "price": 100000,
+          "risk_value": 0.575
+        },
+        {
+          "price": 110000,
+          "risk_value": 0.6
+        },
+        {
+          "price": 120000,
+          "risk_value": 0.625
+        },
+        {
+          "price": 130000,
+          "risk_value": 0.65
+        },
+        {
+          "price": 140000,
+          "risk_value": 0.675
+        },
+        {
+          "price": 150000,
+          "risk_value": 0.7
+        },
+        {
+          "price": 170000,
+          "risk_value": 0.725
+        },
+        {
+          "price": 190000,
+          "risk_value": 0.75
+        },
+        {
+          "price": 210000,
+          "risk_value": 0.775
+        },
+        {
+          "price": 230000,
+          "risk_value": 0.8
+        },
+        {
+          "price": 250000,
+          "risk_value": 0.825
+        },
+        {
+          "price": 280000,
+          "risk_value": 0.85
+        },
+        {
+          "price": 320000,
+          "risk_value": 0.875
+        },
+        {
+          "price": 360000,
+          "risk_value": 0.9
+        },
+        {
+          "price": 420000,
+          "risk_value": 0.925
+        },
+        {
+          "price": 500000,
+          "risk_value": 0.95
+        },
+        {
+          "price": 600000,
+          "risk_value": 0.975
+        },
+        {
+          "price": 750000,
+          "risk_value": 1.0
+        }
+      ],
+      "btc_risk_grid": []
+    },
+    "ETH": {
+      "fiat_risk_grid": [
+        {
+          "price": 500,
+          "risk_value": 0.0
+        },
+        {
+          "price": 600,
+          "risk_value": 0.025
+        },
+        {
+          "price": 700,
+          "risk_value": 0.05
+        },
+        {
+          "price": 800,
+          "risk_value": 0.075
+        },
+        {
+          "price": 900,
+          "risk_value": 0.1
+        },
+        {
+          "price": 1000,
+          "risk_value": 0.125
+        },
+        {
+          "price": 1200,
+          "risk_value": 0.15
+        },
+        {
+          "price": 1400,
+          "risk_value": 0.175
+        },
+        {
+          "price": 1600,
+          "risk_value": 0.2
+        },
+        {
+          "price": 1800,
+          "risk_value": 0.225
+        },
+        {
+          "price": 2000,
+          "risk_value": 0.25
+        },
+        {
+          "price": 2300,
+          "risk_value": 0.275
+        },
+        {
+          "price": 2600,
+          "risk_value": 0.3
+        },
+        {
+          "price": 2900,
+          "risk_value": 0.325
+        },
+        {
+          "price": 3200,
+          "risk_value": 0.35
+        },
+        {
+          "price": 3500,
+          "risk_value": 0.375
+        },
+        {
+          "price": 3800,
+          "risk_value": 0.4
+        },
+        {
+          "price": 4200,
+          "risk_value": 0.425
+        },
+        {
+          "price": 4600,
+          "risk_value": 0.45
+        },
+        {
+          "price": 5000,
+          "risk_value": 0.475
+        },
+        {
+          "price": 5500,
+          "risk_value": 0.5
+        },
+        {
+          "price": 6000,
+          "risk_value": 0.525
+        },
+        {
+          "price": 6500,
+          "risk_value": 0.55
+        },
+        {
+          "price": 7000,
+          "risk_value": 0.575
+        },
+        {
+          "price": 8000,
+          "risk_value": 0.6
+        },
+        {
+          "price": 9000,
+          "risk_value": 0.625
+        },
+        {
+          "price": 10000,
+          "risk_value": 0.65
+        },
+        {
+          "price": 11000,
+          "risk_value": 0.675
+        },
+        {
+          "price": 12000,
+          "risk_value": 0.7
+        },
+        {
+          "price": 13500,
+          "risk_value": 0.725
+        },
+        {
+          "price": 15000,
+          "risk_value": 0.75
+        },
+        {
+          "price": 17000,
+          "risk_value": 0.775
+        },
+        {
+          "price": 19000,
+          "risk_value": 0.8
+        },
+        {
+          "price": 22000,
+          "risk_value": 0.825
+        },
+        {
+          "price": 25000,
+          "risk_value": 0.85
+        },
+        {
+          "price": 28000,
+          "risk_value": 0.875
+        },
+        {
+          "price": 32000,
+          "risk_value": 0.9
+        },
+        {
+          "price": 36000,
+          "risk_value": 0.925
+        },
+        {
+          "price": 42000,
+          "risk_value": 0.95
+        },
+        {
+          "price": 50000,
+          "risk_value": 0.975
+        },
+        {
+          "price": 60000,
+          "risk_value": 1.0
+        }
+      ],
+      "btc_risk_grid": [
+        {
+          "price": 0.005,
+          "risk_value": 0.0
+        },
+        {
+          "price": 0.007,
+          "risk_value": 0.025
+        },
+        {
+          "price": 0.009,
+          "risk_value": 0.05
+        },
+        {
+          "price": 0.011,
+          "risk_value": 0.075
+        },
+        {
+          "price": 0.013,
+          "risk_value": 0.1
+        },
+        {
+          "price": 0.015,
+          "risk_value": 0.125
+        },
+        {
+          "price": 0.018,
+          "risk_value": 0.15
+        },
+        {
+          "price": 0.021,
+          "risk_value": 0.175
+        },
+        {
+          "price": 0.024,
+          "risk_value": 0.2
+        },
+        {
+          "price": 0.027,
+          "risk_value": 0.225
+        },
+        {
+          "price": 0.03,
+          "risk_value": 0.25
+        },
+        {
+          "price": 0.033,
+          "risk_value": 0.275
+        },
+        {
+          "price": 0.036,
+          "risk_value": 0.3
+        },
+        {
+          "price": 0.038,
+          "risk_value": 0.325
+        },
+        {
+          "price": 0.04,
+          "risk_value": 0.35
+        },
+        {
+          "price": 0.042,
+          "risk_value": 0.375
+        },
+        {
+          "price": 0.045,
+          "risk_value": 0.4
+        },
+        {
+          "price": 0.048,
+          "risk_value": 0.425
+        },
+        {
+          "price": 0.051,
+          "risk_value": 0.45
+        },
+        {
+          "price": 0.055,
+          "risk_value": 0.475
+        },
+        {
+          "price": 0.06,
+          "risk_value": 0.5
+        },
+        {
+          "price": 0.065,
+          "risk_value": 0.525
+        },
+        {
+          "price": 0.07,
+          "risk_value": 0.55
+        },
+        {
+          "price": 0.075,
+          "risk_value": 0.575
+        },
+        {
+          "price": 0.08,
+          "risk_value": 0.6
+        },
+        {
+          "price": 0.085,
+          "risk_value": 0.625
+        },
+        {
+          "price": 0.09,
+          "risk_value": 0.65
+        },
+        {
+          "price": 0.095,
+          "risk_value": 0.675
+        },
+        {
+          "price": 0.1,
+          "risk_value": 0.7
+        },
+        {
+          "price": 0.11,
+          "risk_value": 0.725
+        },
+        {
+          "price": 0.12,
+          "risk_value": 0.75
+        },
+        {
+          "price": 0.13,
+          "risk_value": 0.775
+        },
+        {
+          "price": 0.14,
+          "risk_value": 0.8
+        },
+        {
+          "price": 0.15,
+          "risk_value": 0.825
+        },
+        {
+          "price": 0.165,
+          "risk_value": 0.85
+        },
+        {
+          "price": 0.18,
+          "risk_value": 0.875
+        },
+        {
+          "price": 0.2,
+          "risk_value": 0.9
+        },
+        {
+          "price": 0.22,
+          "risk_value": 0.925
+        },
+        {
+          "price": 0.25,
+          "risk_value": 0.95
+        },
+        {
+          "price": 0.28,
+          "risk_value": 0.975
+        },
+        {
+          "price": 0.32,
+          "risk_value": 1.0
+        }
+      ]
+    },
+    "SOL": {
+      "fiat_risk_grid": [
+        {
+          "price": 5,
+          "risk_value": 0.0
+        },
+        {
+          "price": 8,
+          "risk_value": 0.025
+        },
+        {
+          "price": 12,
+          "risk_value": 0.05
+        },
+        {
+          "price": 16,
+          "risk_value": 0.075
+        },
+        {
+          "price": 20,
+          "risk_value": 0.1
+        },
+        {
+          "price": 25,
+          "risk_value": 0.125
+        },
+        {
+          "price": 30,
+          "risk_value": 0.15
+        },
+        {
+          "price": 35,
+          "risk_value": 0.175
+        },
+        {
+          "price": 42,
+          "risk_value": 0.2
+        },
+        {
+          "price": 50,
+          "risk_value": 0.225
+        },
+        {
+          "price": 60,
+          "risk_value": 0.25
+        },
+        {
+          "price": 75,
+          "risk_value": 0.275
+        },
+        {
+          "price": 90,
+          "risk_value": 0.3
+        },
+        {
+          "price": 110,
+          "risk_value": 0.325
+        },
+        {
+          "price": 130,
+          "risk_value": 0.35
+        },
+        {
+          "price": 150,
+          "risk_value": 0.375
+        },
+        {
+          "price": 175,
+          "risk_value": 0.4
+        },
+        {
+          "price": 200,
+          "risk_value": 0.425
+        },
+        {
+          "price": 225,
+          "risk_value": 0.45
+        },
+        {
+          "price": 235,
+          "risk_value": 0.475
+        },
+        {
+          "price": 245,
+          "risk_value": 0.5
+        },
+        {
+          "price": 260,
+          "risk_value": 0.525
+        },
+        {
+          "price": 280,
+          "risk_value": 0.55
+        },
+        {
+          "price": 300,
+          "risk_value": 0.575
+        },
+        {
+          "price": 330,
+          "risk_value": 0.6
+        },
+        {
+          "price": 360,
+          "risk_value": 0.625
+        },
+        {
+          "price": 400,
+          "risk_value": 0.65
+        },
+        {
+          "price": 450,
+          "risk_value": 0.675
+        },
+        {
+          "price": 500,
+          "risk_value": 0.7
+        },
+        {
+          "price": 550,
+          "risk_value": 0.725
+        },
+        {
+          "price": 600,
+          "risk_value": 0.75
+        },
+        {
+          "price": 700,
+          "risk_value": 0.775
+        },
+        {
+          "price": 800,
+          "risk_value": 0.8
+        },
+        {
+          "price": 900,
+          "risk_value": 0.825
+        },
+        {
+          "price": 1000,
+          "risk_value": 0.85
+        },
+        {
+          "price": 1200,
+          "risk_value": 0.875
+        },
+        {
+          "price": 1400,
+          "risk_value": 0.9
+        },
+        {
+          "price": 1600,
+          "risk_value": 0.925
+        },
+        {
+          "price": 1800,
+          "risk_value": 0.95
+        },
+        {
+          "price": 2000,
+          "risk_value": 0.975
+        },
+        {
+          "price": 2500,
+          "risk_value": 1.0
+        }
+      ],
+      "btc_risk_grid": [
+        {
+          "price": 0.0001,
+          "risk_value": 0.0
+        },
+        {
+          "price": 0.0002,
+          "risk_value": 0.025
+        },
+        {
+          "price": 0.0003,
+          "risk_value": 0.05
+        },
+        {
+          "price": 0.0004,
+          "risk_value": 0.075
+        },
+        {
+          "price": 0.0005,
+          "risk_value": 0.1
+        },
+        {
+          "price": 0.0006,
+          "risk_value": 0.125
+        },
+        {
+          "price": 0.0007,
+          "risk_value": 0.15
+        },
+        {
+          "price": 0.0008,
+          "risk_value": 0.175
+        },
+        {
+          "price": 0.0009,
+          "risk_value": 0.2
+        },
+        {
+          "price": 0.001,
+          "risk_value": 0.225
+        },
+        {
+          "price": 0.0012,
+          "risk_value": 0.25
+        },
+        {
+          "price": 0.0014,
+          "risk_value": 0.275
+        },
+        {
+          "price": 0.0016,
+          "risk_value": 0.3
+        },
+        {
+          "price": 0.0018,
+          "risk_value": 0.325
+        },
+        {
+          "price": 0.002,
+          "risk_value": 0.35
+        },
+        {
+          "price": 0.0022,
+          "risk_value": 0.375
+        },
+        {
+          "price": 0.0024,
+          "risk_value": 0.4
+        },
+        {
+          "price": 0.0026,
+          "risk_value": 0.425
+        },
+        {
+          "price": 0.0028,
+          "risk_value": 0.45
+        },
+        {
+          "price": 0.003,
+          "risk_value": 0.475
+        },
+        {
+          "price": 0.0033,
+          "risk_value": 0.5
+        },
+        {
+          "price": 0.0036,
+          "risk_value": 0.525
+        },
+        {
+          "price": 0.004,
+          "risk_value": 0.55
+        },
+        {
+          "price": 0.0044,
+          "risk_value": 0.575
+        },
+        {
+          "price": 0.0048,
+          "risk_value": 0.6
+        },
+        {
+          "price": 0.0052,
+          "risk_value": 0.625
+        },
+        {
+          "price": 0.0056,
+          "risk_value": 0.65
+        },
+        {
+          "price": 0.006,
+          "risk_value": 0.675
+        },
+        {
+          "price": 0.0065,
+          "risk_value": 0.7
+        },
+        {
+          "price": 0.007,
+          "risk_value": 0.725
+        },
+        {
+          "price": 0.0075,
+          "risk_value": 0.75
+        },
+        {
+          "price": 0.008,
+          "risk_value": 0.775
+        },
+        {
+          "price": 0.0085,
+          "risk_value": 0.8
+        },
+        {
+          "price": 0.009,
+          "risk_value": 0.825
+        },
+        {
+          "price": 0.0095,
+          "risk_value": 0.85
+        },
+        {
+          "price": 0.01,
+          "risk_value": 0.875
+        },
+        {
+          "price": 0.011,
+          "risk_value": 0.9
+        },
+        {
+          "price": 0.012,
+          "risk_value": 0.925
+        },
+        {
+          "price": 0.013,
+          "risk_value": 0.95
+        },
+        {
+          "price": 0.014,
+          "risk_value": 0.975
+        },
+        {
+          "price": 0.015,
+          "risk_value": 1.0
+        }
+      ]
+    }
+  }
+}

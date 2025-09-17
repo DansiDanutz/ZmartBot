@@ -1,7 +1,11 @@
 # 🔌 Cryptometer Service - Market Data API Integration
 
+
 ## Purpose
 Cryptometer API integration service providing real-time market data, technical indicators, and comprehensive market analysis for ZmartBot trading operations.
+
+## Description
+Cryptometer API integration service providing real-time market data, technical indicators, and co...
 
 ## Critical Functions
 - **Market Data Retrieval**: Real-time price data and market information
@@ -67,4 +71,15 @@ Cryptometer API integration service providing real-time market data, technical i
 description:
 globs:
 alwaysApply: true
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Database connectivity**
+
+
 ---
+
+
+## Triggers
+- **API endpoint requests**
+- **Database events**

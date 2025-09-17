@@ -1,0 +1,33 @@
+# YAMLMonitoringDaemon.mdc
+> Type: daemon | Version: 1.0.0 | Owner: zmartbot | Port: 8899 | Level: 2
+
+## Purpose
+YAML Monitoring Daemon - Continuous YAML governance monitoring service that provides real-time file system monitoring for YAML configuration changes, automatic validation triggering, and governance violation alerting across the ZmartBot platform.
+
+## Description
+Production-ready background daemon service providing continuous monitoring of YAML configuration files with real-time change detection, automatic validation workflows, and comprehensive alerting system for governance violations and configuration integrity issues.
+
+## Overview
+Essential monitoring daemon serving as the watchdog for all YAML configuration changes. Provides file system monitoring, change detection, validation triggering, and alert management with integration to YAML Governance Service and notification systems.
+
+## Critical Functions
+- **File System Monitoring**: Real-time monitoring of all YAML files for changes
+- **Change Detection**: Intelligent change detection with content hashing
+- **Validation Triggering**: Automatic validation workflow initiation on changes
+- **Alert Management**: Comprehensive alerting for governance violations
+- **Event Logging**: Detailed event logging and audit trail
+- **Integration Coordination**: Coordination with YAML Governance Service
+
+## Architecture & Integration
+- **Service Type:** daemon
+- **Dependencies:** watchdog, requests, json, logging
+- **Monitoring Port:** 8899 (status and control interface)
+- **Integration:** Coordinates with YAMLGovernanceService (8897)
+- **Lifecycle:** start=`python3 monitoring_daemon.py --daemon` | stop=`pkill -f monitoring_daemon` | status=`curl localhost:8899/status`
+
+## Deployment Notes
+- **Status:** DAEMON - Background monitoring service
+- **Passport:** YAML-MONITOR-8899-L2
+- **Owner:** zmartbot-system
+- **Priority:** HIGH - Critical for real-time governance enforcement
+- **Scaling:** Single instance sufficient for platform monitoring

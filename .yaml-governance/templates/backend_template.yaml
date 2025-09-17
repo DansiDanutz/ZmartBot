@@ -1,0 +1,30 @@
+service_name: '[SERVICE_NAME]'
+service_type: backend
+version: 1.0.0
+owner: zmartbot
+description: '[SERVICE_DESCRIPTION]'
+port: '[PORT]'
+passport_id: '[PASSPORT_ID]'
+status: ACTIVE
+registered_at: '[DATE]'
+health_url: http://localhost:[PORT]/health
+start_cmd: python3 [SERVICE_NAME]_server.py --port [PORT]
+stop_cmd: pkill -f '[SERVICE_NAME]_server.py'
+dependencies:
+- zmart-api
+tags:
+- backend
+- '[SERVICE_NAME]'
+lifecycle:
+  startup_grace_seconds: 30
+  shutdown_timeout_seconds: 15
+  health_check_interval: 30
+monitoring:
+  metrics_endpoint: /metrics
+  logs_path: logs/[SERVICE_NAME].log
+  dashboard_url: http://localhost:[PORT]/dashboard
+security:
+  cors_enabled: true
+  token_required: false
+  scopes:
+  - backend

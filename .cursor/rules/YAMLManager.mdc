@@ -1,0 +1,61 @@
+# YAMLManager.mdc
+> Type: library | Version: 1.0.0 | Owner: zmartbot | Port: N/A | Level: 2
+
+## Purpose
+YAML Manager - Core library component for centralized YAML configuration management, providing standardized YAML operations, validation, and governance compliance across the ZmartBot platform with production-ready configuration handling capabilities.
+
+## Description
+Production-ready Python library providing comprehensive YAML configuration management functionality. Offers standardized methods for creating, reading, updating, validating, and maintaining YAML files with built-in governance compliance and error handling.
+
+## Overview
+Essential library component serving as the foundation for all YAML operations within the ZmartBot ecosystem. Provides unified API for configuration management with built-in validation, standardization, and governance integration.
+
+## Critical Functions
+- **YAML Creation**: Standardized YAML file generation with templates
+- **Configuration Validation**: Schema-based YAML structure validation
+- **File Operations**: Safe read/write operations with error handling
+- **Template Management**: Reusable YAML templates for common configurations
+- **Governance Integration**: Built-in compliance with YAML governance standards
+- **Error Handling**: Comprehensive error detection and recovery
+
+## Architecture & Integration
+- **Service Type:** library
+- **Dependencies:** yaml, pathlib, json
+- **Integration:** Used by YAMLGovernanceService, monitoring systems, and configuration tools
+- **Lifecycle:** Imported as library module - no standalone execution
+- **Usage:** `from yaml_manager import YAMLManager`
+
+## Library API
+**Core Classes:**
+- `YAMLManager()` - Main configuration manager
+- `YAMLValidator()` - Schema validation engine
+- `YAMLTemplate()` - Template generation system
+
+**Key Methods:**
+- `load_yaml(filepath)` - Safe YAML loading with validation
+- `save_yaml(data, filepath)` - Standardized YAML writing
+- `validate_structure(yaml_content)` - Configuration validation
+- `create_from_template(template_name, params)` - Template-based creation
+- `merge_configs(base_config, override_config)` - Configuration merging
+
+## Security & Compliance
+- **Safe Loading:** yaml.safe_load() for secure parsing
+- **Input Validation:** Comprehensive validation of all YAML inputs
+- **Error Isolation:** Prevent configuration corruption through validation
+- **Standard Compliance:** Enforces ZmartBot YAML standards
+
+## Integration Points
+- **YAML Governance Service:** Primary consumer for validation operations
+- **Service Configuration:** Used by all services for configuration management
+- **Monitoring Systems:** Configuration monitoring and validation
+- **Development Tools:** Integration with pre-commit hooks and validation
+
+## Deployment Notes
+- **Status:** LIBRARY - Active library component
+- **Passport:** YAML-MANAGER-LIB-L2
+- **Owner:** zmartbot-system
+- **Priority:** CRITICAL - Core library for configuration management
+- **Distribution:** Included in all services requiring YAML operations
+
+---
+

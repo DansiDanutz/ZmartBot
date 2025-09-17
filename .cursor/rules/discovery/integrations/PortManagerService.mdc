@@ -1,0 +1,827 @@
+# Portmanagerservice - Merged MDC Configuration
+
+## 🔗 Merged from 3 duplicate files
+**Merged Files**: PortManagerService.mdc, port_manager_server.mdc, port-manager-service.mdc
+**Merge Date**: 2025-08-27 10:39:58
+**Primary Source**: PortManagerService.mdc
+
+## 📋 Primary Configuration
+# Portmanagerservice - Merged MDC Configuration
+
+## 🔗 Merged from 3 duplicate files
+**Merged Files**: PortManagerService.mdc, port_manager_server.mdc, port-manager-service.mdc
+**Merge Date**: 2025-08-26 09:03:52
+**Primary Source**: PortManagerService.mdc
+
+## 📋 Primary Configuration
+# PortManagerService.mdc
+> Purpose: Centralized port management service that prevents conflicts and ensures proper service isolation for all ZmartBot services.
+> Type: orchestration | Version: 1.0.0 | Port: 8610
+
+## Overview
+The Port Manager Service is the central registry and management system for all port assignments in the ZmartBot ecosystem. It prevents port conflicts, manages dynamic port assignments, and ensures proper service isolation across the entire platform.
+
+## Architecture & Integration
+
+### Core Functions
+1. **Port Assignment Management** - Dynamic port allocation for new services
+2. **Conflict Prevention** - Prevents duplicate port assignments and service names
+3. **Service Registry** - Central database of all service port assignments
+4. **Port Range Management** - Manages port ranges for different service types
+5. **Health Monitoring** - Tracks service status and port availability
+
+### Service Dependencies
+- **Port Registry Database**: SQLite database for port assignments
+- **Master Orchestration Agent**: High-level system coordination
+- **MDC Orchestration Agent**: Documentation and connection management
+- **All ZmartBot Services**: Port assignment and conflict resolution
+
+### Environment Variables
+- `PORT_MANAGER_DB_PATH`: Path to port registry database
+- `PROJECT_ROOT`: ZmartBot project root path
+- `PORT_MANAGER_PORT`: Service port (default: 8610)
+
+## API Endpoints
+
+### Health & Status
+- `GET /health` - Health check endpoint
+- `GET /ready` - Readiness check with database connectivity
+- `GET /status` - Complete system status and port assignments
+
+### Port Management
+- `POST /assign` - Assign port to new service
+- `GET /services` - Get all registered services
+- `GET /services/{service_name}` - Get specific service information
+- `GET /ports/available` - Get available ports by service type
+
+### Port Assignment Request Format
+```json
+{
+  "service_name": "new-service-name",
+  "service_type": "backend|frontend|worker|orchestration|internal_api"
+}
+```
+
+### Port Assignment Response Format
+```json
+{
+  "success": true,
+  "service_name": "new-service-name",
+  "port": 8016,
+  "service_type": "backend",
+  "message": "Port 8016 assigned to new-service-name"
+}
+```
+
+## Port Ranges
+
+### Service Type Port Ranges
+- **Frontend Services**: 3400-3499
+- **Backend Services**: 8000-8099
+- **Internal API Services**: 8200-8299
+- **Worker Services**: 8300-8399
+- **Orchestration Services**: 8500-8599
+- **Management Services**: 8600-8699
+
+### Reserved Ports
+- **Port 8000**: Main Backend API Server
+- **Port 3400**: Frontend Dashboard Server
+- **Port 8002**: Master Orchestration Agent
+- **Port 8610**: Port Manager Service
+- **Port 8615**: MDC Orchestration Agent
+
+## Database Schema
+
+### Port Assignments Table
+```sql
+CREATE TABLE port_assignments (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    service_name TEXT UNIQUE NOT NULL,
+    port INTEGER UNIQUE NOT NULL,
+    service_type TEXT NOT NULL,
+    status TEXT DEFAULT 'active',
+    pid INTEGER,
+    assigned_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    description TEXT
+);
+```
+
+## Conflict Prevention
+
+### Duplicate Service Prevention
+- **Service Name Validation**: Ensures unique service names
+- **Port Conflict Detection**: Prevents duplicate port assignments
+- **Instant Removal**: Automatically removes duplicate services
+- **Conflict Resolution**: Assigns new ports for conflicts
+
+### Validation Rules
+1. **Service Name Uniqueness**: No two services can have the same name
+2. **Port Uniqueness**: No two services can have the same port
+3. **Service Type Validation**: Ensures valid service type
+4. **Port Range Validation**: Ensures port is within valid range
+
+## Health & Monitoring
+
+### Health Checks
+- **Liveness**: `/health` - Basic service availability
+- **Readiness**: `/ready` - Database connectivity and service readiness
+- **Deep Health**: `/status` - Complete system status
+
+### Metrics & Observability
+- Total registered services count
+- Active services count
+- Port assignment success/failure rates
+- Database connection status
+- Port range utilization
+
+### Performance Targets
+- Port assignment: <1 second
+- Service registration: <2 seconds
+- Conflict detection: <500ms
+- Database operations: <100ms
+
+## Failure Modes & Recovery
+
+### Common Failures
+1. **Database Connection Failures**
+   - Symptoms: Cannot access port registry, assignment failures
+   - Remediation: Check database path, restart service, verify permissions
+
+2. **Port Exhaustion**
+   - Symptoms: No available ports for service type
+   - Remediation: Review port ranges, clean up inactive services
+
+3. **Duplicate Service Detection**
+   - Symptoms: Service registration conflicts
+   - Remediation: Remove duplicate services, verify service names
+
+### Recovery Strategies
+```yaml
+recovery:
+  database_fallback:
+    - Use backup database if available
+    - Rebuild database from service logs
+    - Restore from last known good state
+  
+  port_management:
+    - Clean up inactive services
+    - Reassign ports if conflicts detected
+    - Expand port ranges if needed
+  
+  service_validation:
+    - Validate all registered services
+    - Remove orphaned entries
+    - Rebuild service registry
+```
+
+## Configuration & Deployment
+
+### Service Configuration
+```yaml
+port_manager:
+  port: 8610
+  host: "localhost"
+  
+  database:
+    path: "/Users/dansidanutz/Desktop/ZmartBot/zmart-api/port_registry.db"
+    backup_enabled: true
+    auto_cleanup: true
+    
+  port_ranges:
+    frontend: [3400, 3499]
+    backend: [8000, 8099]
+    internal_api: [8200, 8299]
+    worker: [8300, 8399]
+    orchestration: [8500, 8599]
+    management: [8600, 8699]
+    
+  monitoring:
+    metrics_enabled: true
+    detailed_logging: true
+    health_check_interval: 30
+```
+
+### Deployment Requirements
+- Python 3.9+ with Flask support
+- SQLite database access
+- File system write permissions
+- Network access for service communication
+
+## Integration Points
+
+### Master Orchestration Agent
+- Service lifecycle coordination
+- Port assignment requests
+- System-wide health monitoring
+
+### MDC Orchestration Agent
+- Service documentation updates
+- Connection discovery integration
+- Context optimization
+
+### Service Registry Integration
+- Automatic service discovery
+- Real-time port assignment updates
+- Health status synchronization
+
+## Security & Compliance
+
+### API Security
+- JWT token authentication
+- Role-based access control
+- Rate limiting and throttling
+- Input validation and sanitization
+
+### Data Protection
+- Database encryption at rest
+- Secure communication protocols
+- Audit logging for all operations
+- Backup and recovery procedures
+
+## Development & Extensibility
+
+### Plugin Architecture
+- Configurable port ranges
+- Custom service type definitions
+- Extensible validation rules
+- Third-party integration hooks
+
+### Testing Strategy
+- Unit tests for all core functions
+- Integration tests with real services
+- Performance benchmarking
+- Conflict scenario testing
+
+## Lifecycle Management
+
+### Startup Sequence
+1. Load configuration and validate environment
+2. Initialize database connection
+3. Verify port registry integrity
+4. Start API endpoints
+5. Begin service monitoring
+
+### Shutdown Sequence
+1. Stop accepting new requests
+2. Complete in-progress operations
+3. Save database state
+4. Clean shutdown of all components
+
+### Maintenance Operations
+- Database cleanup and optimization
+- Log rotation and archival
+- Performance metrics collection
+- System health reporting
+
+## Changelog
+- v1.0.0 (2025-08-26): Initial implementation with port management and conflict prevention
+
+
+
+
+## Service Connections & Dependencies
+
+### Current Active Connections
+- **port-8610** ✅ **ACTIVE** - network connection
+- **port-8610** ✅ **ACTIVE** - network connection
+- **port-8610** ✅ **ACTIVE** - network connection
+- ****** ✅ **ACTIVE** - dependency connection
+
+### Potential Connections
+- **my-symbols-extended-service** ⏳ **POTENTIAL** - High-potential integration between PortManagerService and my-symbols-extended-service - Strong synergy opportunity (Confidence: 100%)
+- **PortManager** ⏳ **POTENTIAL** - High-potential integration between PortManagerService and PortManager - Strong synergy opportunity (Confidence: 100%)
+- **SecurityScanService** ⏳ **POTENTIAL** - High-potential integration between PortManagerService and SecurityScanService - Strong synergy opportunity (Confidence: 100%)
+- **HealthCheckService** ⏳ **POTENTIAL** - High-potential integration between PortManagerService and HealthCheckService - Strong synergy opportunity (Confidence: 100%)
+- **KuCoinService** ⏳ **POTENTIAL** - High-potential integration between PortManagerService and KuCoinService - Strong synergy opportunity (Confidence: 100%)
+
+### Priority Connections
+- **optimization-target-8** 🔥 **PRIORITY #8** - Top #8 priority for system optimization - Score: 1.80 - Score: 1.00
+  - **Optimization Impact**: 0.80
+  - **Priority Score**: 0.50
+
+### Connection Summary
+- **Current Active**: 4
+- **Potential**: 5  
+- **Priority**: 1
+- **Total Discovered**: 10
+- **Last Discovery Scan**: Auto-updated on system initialization
+- **Discovery Method**: Multi-phase automated analysis with diamond pattern extraction
+- **Update Policy**: Real-time updates during workflow execution
+## 📄 Additional Content from port_manager_server.mdc
+# port_manager_server.mdc
+> Type: frontend | Version: 1.0.0 | Owner: zmartbot | Port: 8610
+
+## Purpose
+Represents a port assignment
+
+## Overview
+Auto-discovered service managed by MDC-Dashboard system. This service was identified during automated system scanning and requires manual review and enhancement.
+
+## Critical Functions
+- Auto-discovered service functionality (requires manual documentation)
+- Service integration with ZmartBot ecosystem
+
+## Architecture & Integration
+- **Service Type:** frontend
+- **Dependencies:** To be determined
+- **Env Vars:** To be determined  
+- **Lifecycle:** start=`python3 /Users/dansidanutz/Desktop/ZmartBot/zmart-api/system_backups/initial_startup_backup/system_backups/initial_startup_backup/port_manager/port_manager_server.py.py` | stop=`pkill -f port_manager_server` | migrate=`n/a`
+
+## API Endpoints
+*Endpoints to be documented during manual review*
+
+## Health & Readiness
+- Liveness: To be configured
+- Readiness: To be configured
+- Timeouts: startup_grace=30s, http_timeout=30s
+
+## Observability
+- Metrics: To be configured
+- Logs: format=python-logging
+- Dashboards: To be created
+
+
+
+## Service Connections & Dependencies
+
+### Current Active Connections
+- **port-8610** ✅ **ACTIVE** - network connection
+- **port-8610** ✅ **ACTIVE** - network connection
+- **port-8610** ✅ **ACTIVE** - network connection
+- ****** ✅ **ACTIVE** - dependency connection
+
+### Potential Connections
+- **my-symbols-extended-service** ⏳ **POTENTIAL** - High-potential integration between PortManagerService and my-symbols-extended-service - Strong synergy opportunity (Confidence: 100%)
+- **PortManager** ⏳ **POTENTIAL** - High-potential integration between PortManagerService and PortManager - Strong synergy opportunity (Confidence: 100%)
+- **SecurityScanService** ⏳ **POTENTIAL** - High-potential integration between PortManagerService and SecurityScanService - Strong synergy opportunity (Confidence: 100%)
+- **HealthCheckService** ⏳ **POTENTIAL** - High-potential integration between PortManagerService and HealthCheckService - Strong synergy opportunity (Confidence: 100%)
+- **KuCoinService** ⏳ **POTENTIAL** - High-potential integration between PortManagerService and KuCoinService - Strong synergy opportunity (Confidence: 100%)
+
+### Priority Connections
+- **optimization-target-8** 🔥 **PRIORITY #8** - Top #8 priority for system optimization - Score: 1.80 - Score: 1.00
+  - **Optimization Impact**: 0.80
+  - **Priority Score**: 0.50
+
+### Connection Summary
+- **Current Active**: 4
+- **Potential**: 5  
+- **Priority**: 1
+- **Total Discovered**: 10
+- **Last Discovery Scan**: Auto-updated on system initialization
+- **Discovery Method**: Multi-phase automated analysis with diamond pattern extraction
+- **Update Policy**: Real-time updates during workflow execution
+## Orchestration & Ordering
+- Basic Integration: Enabled
+- Master Agent Linked: No
+- Ordering Hints: To be determined
+
+## Performance & SLO
+- Baseline p95 (ms): To be measured
+- Notes: Auto-discovered service requiring performance baseline establishment
+
+## Failure Modes & Runbooks
+*To be documented during manual review*
+
+## Rollback
+- Snapshot required: To be determined
+- Playbook: To be determined
+
+## Load Balancing
+- Enabled: To be determined
+- Pool: To be determined
+
+## Known Issues
+- Auto-generated MDC file requiring manual review and enhancement
+- Service functionality and dependencies need documentation
+
+## Changelog
+- 1.0.0 (2025-08-26): Auto-discovered service, MDC file generated by MDC-Dashboard system
+
+---
+*Auto-generated by MDC-Dashboard orphan service discovery on 2025-08-26*
+description: Auto-discovered service requiring manual documentation
+globs: ["/Users/dansidanutz/Desktop/ZmartBot/zmart-api/system_backups/initial_startup_backup/system_backups/initial_startup_backup/port_manager/port_manager_server.py"]
+alwaysApply: true
+---
+
+## 📄 Additional Content from port-manager-service.mdc
+# Port Manager Service
+
+## Overview
+port-manager-service service for ZmartBot platform
+
+## Architecture
+
+### Service Type
+- **Type**: Backend Service
+- **Port**: unknown
+- **Framework**: FastAPI/Flask with async support
+- **Communication**: REST API
+
+### Core Components
+1. **Service Core**: Main service functionality
+2. **Health Monitoring**: Health and readiness endpoints
+3. **API Layer**: REST API endpoints
+4. **Data Management**: Data processing and storage
+
+## Core Functions
+
+### Service Operations
+- **Health Monitoring**: Service health and readiness checks
+- **API Endpoints**: REST API for service functionality
+- **Data Processing**: Core service data operations
+- **Integration**: Integration with other ZmartBot services
+
+## Service Dependencies
+
+### Required Services
+- **zmart-api** (Port 8000): Main API service for coordination
+
+### External Dependencies
+- **Environment Variables**: Service configuration
+- **Database**: Data storage and retrieval
+
+## Environment Variables
+
+### Required Variables
+```bash
+# Service-specific environment variables
+SERVICE_ENV=production
+```
+
+## API Endpoints
+
+### Health & Monitoring
+- `GET /health` - Service health check
+- `GET /ready` - Service readiness check
+- `GET /metrics` - Service metrics and statistics
+
+### Service Endpoints
+- `GET /api/v1/port-manager-service` - Main service endpoint
+- `POST /api/v1/port-manager-service` - Service operations
+
+## Request/Response Formats
+
+### Health Check Response
+```json
+{
+  "status": "healthy",
+  "timestamp": "2025-08-26T00:00:00.000Z",
+  "service": "port-manager-service",
+  "version": "1.0.0"
+}
+```
+
+## Port Ranges
+
+### Service Port Assignment
+- **Port**: unknown
+- **Range**: Based on service type
+- **Purpose**: backend service operations
+
+## Health & Monitoring
+
+### Health Checks
+- **Liveness**: `/health` endpoint returns 200 OK
+- **Readiness**: `/ready` endpoint checks service readiness
+- **Metrics**: `/metrics` provides service statistics
+
+## Failure Modes & Recovery
+
+### Service Failure
+- **Symptoms**: Service not responding, health checks failing
+- **Detection**: Health check failures, API timeouts
+- **Recovery**: Service restart, dependency verification
+
+## Configuration
+
+### Service Configuration
+```yaml
+service_name: port-manager-service
+service_type: backend
+port: unknown
+version: 1.0.0
+```
+
+## Deployment Requirements
+
+### System Requirements
+- **Python**: 3.8+
+- **Memory**: 512MB minimum
+- **CPU**: 1 core minimum
+- **Network**: Stable internet connection
+
+## Integration Points
+
+### Internal Services
+- **zmart-api**: Main API coordination
+- **Other services**: Service-specific integrations
+
+## Security
+
+### API Security
+- **Authentication**: Service-specific authentication
+- **Authorization**: Role-based access control
+- **Data Protection**: Secure data handling
+
+## Development
+
+### Local Development
+```bash
+cd zmart-api/port_manager_service
+python3 port_manager_service_server.py --port unknown
+```
+
+### Testing
+```bash
+# Health check
+curl http://localhost:unknown/health
+
+# Service endpoint
+curl http://localhost:unknown/api/v1/port-manager-service
+```
+
+## Lifecycle Management
+
+### Startup Sequence
+1. **Service Initialization**: Load configuration and dependencies
+2. **Health Check**: Verify service readiness
+3. **API Startup**: Start REST API server
+4. **Service Ready**: Service ready for requests
+
+### Shutdown Sequence
+1. **Graceful Shutdown**: Stop accepting new requests
+2. **Resource Cleanup**: Clean up resources and connections
+3. **Service Termination**: Complete shutdown
+
+---
+
+**Service Version**: 1.0.0  
+**Last Updated**: 2025-08-26  
+**Status**: ACTIVE  
+**Owner**: ZmartBot Development Team  
+**Generated by**: MDCAgent (Fallback Template)  
+**Generation Timestamp**: 2025-08-26T05:48:03.936358
+
+
+---
+**Merge Summary**: Combined 3 files into unified MDC configuration
+**Generated**: 2025-08-26T09:03:52.857831
+
+## 📄 Additional Content from port_manager_server.mdc
+# port_manager_server.mdc
+> Type: frontend | Version: 1.0.0 | Owner: zmartbot | Port: 8610
+
+## Purpose
+Represents a port assignment
+
+## Overview
+Auto-discovered service managed by MDC-Dashboard system. This service was identified during automated system scanning and requires manual review and enhancement.
+
+## Critical Functions
+- Auto-discovered service functionality (requires manual documentation)
+- Service integration with ZmartBot ecosystem
+
+## Architecture & Integration
+- **Service Type:** frontend
+- **Dependencies:** To be determined
+- **Env Vars:** To be determined  
+- **Lifecycle:** start=`python3 /Users/dansidanutz/Desktop/ZmartBot/zmart-api/system_backups/initial_startup_backup/system_backups/initial_startup_backup/port_manager/port_manager_server.py.py` | stop=`pkill -f port_manager_server` | migrate=`n/a`
+
+## API Endpoints
+*Endpoints to be documented during manual review*
+
+## Health & Readiness
+- Liveness: To be configured
+- Readiness: To be configured
+- Timeouts: startup_grace=30s, http_timeout=30s
+
+## Observability
+- Metrics: To be configured
+- Logs: format=python-logging
+- Dashboards: To be created
+
+
+
+## Service Connections & Dependencies
+
+### Current Active Connections
+- **port-8610** ✅ **ACTIVE** - network connection
+- ****** ✅ **ACTIVE** - dependency connection
+
+### Potential Connections
+- **PortManagerService** ⏳ **POTENTIAL** - High-potential integration between port_manager_server and PortManagerService - Strong synergy opportunity (Confidence: 100%)
+- **my-symbols-extended-service** ⏳ **POTENTIAL** - High-potential integration between port_manager_server and my-symbols-extended-service - Strong synergy opportunity (Confidence: 100%)
+- **PortManager** ⏳ **POTENTIAL** - High-potential integration between port_manager_server and PortManager - Strong synergy opportunity (Confidence: 100%)
+- **ServiceDiscovery** ⏳ **POTENTIAL** - High-potential integration between port_manager_server and ServiceDiscovery - Strong synergy opportunity (Confidence: 100%)
+- **binance-worker-service** ⏳ **POTENTIAL** - High-potential integration between port_manager_server and binance-worker-service - Strong synergy opportunity (Confidence: 100%)
+
+### Priority Connections
+*Will be populated automatically during Phase 4 if service qualifies for top 10 priority services*
+
+### Connection Summary
+- **Current Active**: 2
+- **Potential**: 5  
+- **Priority**: 0
+- **Total Discovered**: 2
+- **Last Discovery Scan**: Auto-updated on system initialization
+- **Discovery Method**: Multi-phase automated analysis with diamond pattern extraction
+- **Update Policy**: Real-time updates during workflow execution
+## Orchestration & Ordering
+- Basic Integration: Enabled
+- Master Agent Linked: No
+- Ordering Hints: To be determined
+
+## Performance & SLO
+- Baseline p95 (ms): To be measured
+- Notes: Auto-discovered service requiring performance baseline establishment
+
+## Failure Modes & Runbooks
+*To be documented during manual review*
+
+## Rollback
+- Snapshot required: To be determined
+- Playbook: To be determined
+
+## Load Balancing
+- Enabled: To be determined
+- Pool: To be determined
+
+## Known Issues
+- Auto-generated MDC file requiring manual review and enhancement
+- Service functionality and dependencies need documentation
+
+## Changelog
+- 1.0.0 (2025-08-26): Auto-discovered service, MDC file generated by MDC-Dashboard system
+
+---
+*Auto-generated by MDC-Dashboard orphan service discovery on 2025-08-26*
+description: Auto-discovered service requiring manual documentation
+globs: ["/Users/dansidanutz/Desktop/ZmartBot/zmart-api/system_backups/initial_startup_backup/system_backups/initial_startup_backup/port_manager/port_manager_server.py"]
+alwaysApply: true
+---
+
+## 📄 Additional Content from port-manager-service.mdc
+# Port Manager Service
+
+## Overview
+port-manager-service service for ZmartBot platform
+
+## Architecture
+
+### Service Type
+- **Type**: Backend Service
+- **Port**: unknown
+- **Framework**: FastAPI/Flask with async support
+- **Communication**: REST API
+
+### Core Components
+1. **Service Core**: Main service functionality
+2. **Health Monitoring**: Health and readiness endpoints
+3. **API Layer**: REST API endpoints
+4. **Data Management**: Data processing and storage
+
+## Core Functions
+
+### Service Operations
+- **Health Monitoring**: Service health and readiness checks
+- **API Endpoints**: REST API for service functionality
+- **Data Processing**: Core service data operations
+- **Integration**: Integration with other ZmartBot services
+
+## Service Dependencies
+
+### Required Services
+- **zmart-api** (Port 8000): Main API service for coordination
+
+### External Dependencies
+- **Environment Variables**: Service configuration
+- **Database**: Data storage and retrieval
+
+## Environment Variables
+
+### Required Variables
+```bash
+# Service-specific environment variables
+SERVICE_ENV=production
+```
+
+## API Endpoints
+
+### Health & Monitoring
+- `GET /health` - Service health check
+- `GET /ready` - Service readiness check
+- `GET /metrics` - Service metrics and statistics
+
+### Service Endpoints
+- `GET /api/v1/port-manager-service` - Main service endpoint
+- `POST /api/v1/port-manager-service` - Service operations
+
+## Request/Response Formats
+
+### Health Check Response
+```json
+{
+  "status": "healthy",
+  "timestamp": "2025-08-26T00:00:00.000Z",
+  "service": "port-manager-service",
+  "version": "1.0.0"
+}
+```
+
+## Port Ranges
+
+### Service Port Assignment
+- **Port**: unknown
+- **Range**: Based on service type
+- **Purpose**: backend service operations
+
+## Health & Monitoring
+
+### Health Checks
+- **Liveness**: `/health` endpoint returns 200 OK
+- **Readiness**: `/ready` endpoint checks service readiness
+- **Metrics**: `/metrics` provides service statistics
+
+## Failure Modes & Recovery
+
+### Service Failure
+- **Symptoms**: Service not responding, health checks failing
+- **Detection**: Health check failures, API timeouts
+- **Recovery**: Service restart, dependency verification
+
+## Configuration
+
+### Service Configuration
+```yaml
+service_name: port-manager-service
+service_type: backend
+port: unknown
+version: 1.0.0
+```
+
+## Deployment Requirements
+
+### System Requirements
+- **Python**: 3.8+
+- **Memory**: 512MB minimum
+- **CPU**: 1 core minimum
+- **Network**: Stable internet connection
+
+## Integration Points
+
+### Internal Services
+- **zmart-api**: Main API coordination
+- **Other services**: Service-specific integrations
+
+## Security
+
+### API Security
+- **Authentication**: Service-specific authentication
+- **Authorization**: Role-based access control
+- **Data Protection**: Secure data handling
+
+## Development
+
+### Local Development
+```bash
+cd zmart-api/port_manager_service
+python3 port_manager_service_server.py --port unknown
+```
+
+### Testing
+```bash
+# Health check
+curl http://localhost:unknown/health
+
+# Service endpoint
+curl http://localhost:unknown/api/v1/port-manager-service
+```
+
+## Lifecycle Management
+
+### Startup Sequence
+1. **Service Initialization**: Load configuration and dependencies
+2. **Health Check**: Verify service readiness
+3. **API Startup**: Start REST API server
+4. **Service Ready**: Service ready for requests
+
+### Shutdown Sequence
+1. **Graceful Shutdown**: Stop accepting new requests
+2. **Resource Cleanup**: Clean up resources and connections
+3. **Service Termination**: Complete shutdown
+
+---
+
+**Service Version**: 1.0.0  
+**Last Updated**: 2025-08-26  
+**Status**: ACTIVE  
+**Owner**: ZmartBot Development Team  
+**Generated by**: MDCAgent (Fallback Template)  
+**Generation Timestamp**: 2025-08-26T05:48:03.936358
+
+
+---
+**Merge Summary**: Combined 3 files into unified MDC configuration
+**Generated**: 2025-08-27T10:39:58.303847

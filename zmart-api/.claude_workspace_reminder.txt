@@ -1,0 +1,19 @@
+🎯 CLAUDE WORKSPACE REMINDER
+===========================
+
+You are working in the zmart-api folder only.
+Working Directory: /Users/dansidanutz/Desktop/ZmartBot/zmart-api
+
+RULES:
+✅ Use relative paths only (./dashboard/, src/, etc.)
+❌ Never use /Users/dansidanutz/Desktop/ZmartBot/anything-outside-zmart-api/
+❌ Never reference parent directories with ../
+
+QUICK COMMANDS:
+• ./service_health_check.py
+• ./fix_services.sh
+• ./start_service_dashboard.sh
+
+DASHBOARD: http://localhost:3401
+
+Generated: Thu Aug 28 20:48:13 CDT 2025

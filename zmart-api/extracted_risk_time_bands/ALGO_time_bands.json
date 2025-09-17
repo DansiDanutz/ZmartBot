@@ -1,0 +1,33 @@
+{
+  "symbol": "ALGO",
+  "symbol_name": "Algorand",
+  "birth_date": "2019-06-19",
+  "current_date": "2025-09-14",
+  "total_days": 2279,
+  "actual_age_days": 2279,
+  "risk_bands": {
+    "0.0-0.1": 68,
+    "0.1-0.2": 227,
+    "0.2-0.3": 296,
+    "0.3-0.4": 364,
+    "0.4-0.5": 455,
+    "0.5-0.6": 501,
+    "0.6-0.7": 296,
+    "0.7-0.8": 159,
+    "0.8-0.9": 91,
+    "0.9-1.0": 45
+  },
+  "current_risk_band": "0.5-0.6",
+  "confidence_level": 7,
+  "data_type": "estimated",
+  "0.0-0.1_percentage": 2.98,
+  "0.1-0.2_percentage": 9.96,
+  "0.2-0.3_percentage": 12.99,
+  "0.3-0.4_percentage": 15.97,
+  "0.4-0.5_percentage": 19.96,
+  "0.5-0.6_percentage": 21.98,
+  "0.6-0.7_percentage": 12.99,
+  "0.7-0.8_percentage": 6.98,
+  "0.8-0.9_percentage": 3.99,
+  "0.9-1.0_percentage": 1.97
+}

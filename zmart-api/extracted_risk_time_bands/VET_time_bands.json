@@ -1,0 +1,33 @@
+{
+  "symbol": "VET",
+  "symbol_name": "VeChain",
+  "birth_date": "2017-08-18",
+  "current_date": "2025-09-14",
+  "total_days": 2949,
+  "actual_age_days": 2949,
+  "risk_bands": {
+    "0.0-0.1": 88,
+    "0.1-0.2": 294,
+    "0.2-0.3": 383,
+    "0.3-0.4": 471,
+    "0.4-0.5": 589,
+    "0.5-0.6": 648,
+    "0.6-0.7": 383,
+    "0.7-0.8": 206,
+    "0.8-0.9": 117,
+    "0.9-1.0": 58
+  },
+  "current_risk_band": "0.5-0.6",
+  "confidence_level": 7,
+  "data_type": "estimated",
+  "0.0-0.1_percentage": 2.98,
+  "0.1-0.2_percentage": 9.97,
+  "0.2-0.3_percentage": 12.99,
+  "0.3-0.4_percentage": 15.97,
+  "0.4-0.5_percentage": 19.97,
+  "0.5-0.6_percentage": 21.97,
+  "0.6-0.7_percentage": 12.99,
+  "0.7-0.8_percentage": 6.99,
+  "0.8-0.9_percentage": 3.97,
+  "0.9-1.0_percentage": 1.97
+}

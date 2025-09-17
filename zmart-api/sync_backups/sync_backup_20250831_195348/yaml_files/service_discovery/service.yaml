@@ -1,0 +1,19 @@
+service_name: service-discovery
+service_type: orchestration
+port: 8550
+description: "Service discovery and registration service"
+status: ACTIVE
+passport_id: ZMBT-ORC-20250827-AD7F65
+registered_at: "2025-08-27"
+health_url: "http://localhost:8550/health"
+start_cmd: "python3 service_discovery.py"
+stop_cmd: "pkill -f 'service_discovery.py'"
+dependencies:
+  - zmart-api
+  - master-orchestration-agent
+tags:
+  - discovery
+  - orchestration
+  - registration
+
+

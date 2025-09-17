@@ -24,6 +24,13 @@ pkill -f "professional_dashboard_server.py" 2>/dev/null && echo -e "${GREEN}✅ 
 echo -e "${YELLOW}Stopping Orchestration Agent...${NC}"
 pkill -f "orchestration_agent" 2>/dev/null && echo -e "${GREEN}✅ Orchestration Agent stopped${NC}" || echo -e "${YELLOW}⚠️ No Orchestration Agent running${NC}"
 
+echo -e "${YELLOW}Stopping Auto-Sync Service...${NC}"
+if [ -x "./sync_always.sh" ]; then
+    ./sync_always.sh stop
+else
+    echo -e "${YELLOW}⚠️ Auto-sync script not found${NC}"
+fi
+
 # Clean up PID files
 rm -f /Users/dansidanutz/Desktop/ZmartBot/project/backend/api/api_server.pid 2>/dev/null
 rm -f /Users/dansidanutz/Desktop/ZmartBot/project/backend/api/dashboard_server.pid 2>/dev/null

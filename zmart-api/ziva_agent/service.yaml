@@ -1,0 +1,19 @@
+endpoints:
+  health: http://127.0.0.1:8930/health
+  metrics: http://127.0.0.1:8930/metrics
+  ready: http://127.0.0.1:8930/ready
+lifecycle:
+  health_check: curl -f http://127.0.0.1:8930/health
+  start_command: null
+  stop_command: pkill -f ziva-agent
+metadata:
+  description: Service ziva-agent
+  owner: zmartbot
+  version: 1.0.0
+service:
+  level: 3
+  name: ziva-agent
+  passport: ZMBT-AGT-20250831-F6C2B5
+  port: 8930
+  status: ACTIVE
+  type: orchestration

@@ -1,0 +1,1191 @@
+{
+  "cleanup_timestamp": "2025-08-31T16:29:13.249981",
+  "summary": {
+    "databases_deleted": 30,
+    "databases_preserved": 12,
+    "active_databases_remaining": 65,
+    "total_size_after_cleanup_mb": 92.07
+  },
+  "deleted_databases": [
+    "/Users/dansidanutz/Desktop/ZmartBot/service_registry.db",
+    "/Users/dansidanutz/Desktop/ZmartBot/zmart-api/comprehensive_riskmetric.db",
+    "/Users/dansidanutz/Desktop/ZmartBot/zmart-api/risk_bands.db",
+    "/Users/dansidanutz/Desktop/ZmartBot/zmart-api/port_registry.db",
+    "/Users/dansidanutz/Desktop/ZmartBot/zmart-api/discovery_registry.db",
+    "/Users/dansidanutz/Desktop/ZmartBot/zmart-api/service_registry.db",
+    "/Users/dansidanutz/Desktop/ZmartBot/zmart-api/GOODDatabase.db",
+    "/Users/dansidanutz/Desktop/ZmartBot/zmart-api/database/master_database_registry.db",
+    "/Users/dansidanutz/Desktop/ZmartBot/zmart-api/data/riskmetric.db",
+    "/Users/dansidanutz/Desktop/ZmartBot/zmart-api/data/passport_registry.db",
+    "/Users/dansidanutz/Desktop/ZmartBot/zmart-api/data/risk_band_daily_updates.db",
+    "/Users/dansidanutz/Desktop/ZmartBot/zmart-api/data/port_manager.db",
+    "/Users/dansidanutz/Desktop/ZmartBot/zmart-api/src/data/level3.db",
+    "/Users/dansidanutz/Desktop/ZmartBot/zmart-api/src/routes/risk_bands.db",
+    "/Users/dansidanutz/Desktop/ZmartBot/data/passport_service.db",
+    "/Users/dansidanutz/Desktop/ZmartBot/data/service_registry.db",
+    "/Users/dansidanutz/Desktop/ZmartBot/zmart-api/professional_dashboard/my_symbols_v2.db",
+    "/Users/dansidanutz/Desktop/ZmartBot/zmart-api/learning_data_ADA-USDT.db",
+    "/Users/dansidanutz/Desktop/ZmartBot/zmart-api/test_historical_check.db",
+    "/Users/dansidanutz/Desktop/ZmartBot/zmart-api/test_learning.db",
+    "/Users/dansidanutz/Desktop/ZmartBot/zmart-api/cryptoverse_data.db",
+    "/Users/dansidanutz/Desktop/ZmartBot/zmart-api/zmart-api/achievements.db",
+    "/Users/dansidanutz/Desktop/ZmartBot/zmart-api/learning_data_BTC-USDT.db",
+    "/Users/dansidanutz/Desktop/ZmartBot/zmart-api/test_comprehensive_riskmetric.db",
+    "/Users/dansidanutz/Desktop/ZmartBot/zmart-api/learning_data_SOL_USDT.db",
+    "/Users/dansidanutz/Desktop/ZmartBot/zmart-api/Documentation/Archives/RiskMetric_V1_Archive_20250812_012847/cowen_riskmetric.db",
+    "/Users/dansidanutz/Desktop/ZmartBot/zmart-api/Documentation/Archives/RiskMetric_V1_Archive_20250812_012847/riskmetric_qa.db",
+    "/Users/dansidanutz/Desktop/ZmartBot/services/doctor-service/doctor.db",
+    "/Users/dansidanutz/Desktop/ZmartBot/zmart-api/learning_data_ETH_USDT.db",
+    "/Users/dansidanutz/Desktop/ZmartBot/zmart-api/learning_data_DOT-USDT.db"
+  ],
+  "preserved_databases": [
+    "/Users/dansidanutz/Desktop/ZmartBot/passport_registry.db",
+    "/Users/dansidanutz/Desktop/ZmartBot/zmart-api/learning_data_ETH_USDT.db",
+    "/Users/dansidanutz/Desktop/ZmartBot/zmart-api/test_config_check.db",
+    "/Users/dansidanutz/Desktop/ZmartBot/zmart-api/learning_data.db",
+    "/Users/dansidanutz/Desktop/ZmartBot/zmart-api/cryptoverse-module/cryptoverse_data.db",
+    "/Users/dansidanutz/Desktop/ZmartBot/zmart-api/achievements.db",
+    "/Users/dansidanutz/Desktop/ZmartBot/zmart-api/learning_data_ETH-USDT.db",
+    "/Users/dansidanutz/Desktop/ZmartBot/zmart-api/Documentation/Archives/RiskMetric_V1_Archive_20250812_012847/comprehensive_riskmetric.db",
+    "/Users/dansidanutz/Desktop/ZmartBot/zmart-api/learning_data_DOT-USDT.db",
+    "/Users/dansidanutz/Desktop/ZmartBot/zmart-api/data/cowen_riskmetric.db",
+    "/Users/dansidanutz/Desktop/ZmartBot/zmart-api/data/riskmetric_qa.db",
+    "/Users/dansidanutz/Desktop/ZmartBot/data/doctor_service.db"
+  ],
+  "cleanup_log": [
+    {
+      "timestamp": "2025-08-31T16:29:13.107845",
+      "action": "DELETED_EMPTY",
+      "database": "service_registry.db",
+      "details": "Empty duplicate removed from /Users/dansidanutz/Desktop/ZmartBot/service_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.107898",
+      "action": "DELETED_EMPTY",
+      "database": "comprehensive_riskmetric.db",
+      "details": "Empty duplicate removed from /Users/dansidanutz/Desktop/ZmartBot/zmart-api/comprehensive_riskmetric.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.107937",
+      "action": "DELETED_EMPTY",
+      "database": "risk_bands.db",
+      "details": "Empty duplicate removed from /Users/dansidanutz/Desktop/ZmartBot/zmart-api/risk_bands.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.107969",
+      "action": "DELETED_EMPTY",
+      "database": "port_registry.db",
+      "details": "Empty duplicate removed from /Users/dansidanutz/Desktop/ZmartBot/zmart-api/port_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.107998",
+      "action": "DELETED_EMPTY",
+      "database": "discovery_registry.db",
+      "details": "Empty duplicate removed from /Users/dansidanutz/Desktop/ZmartBot/zmart-api/discovery_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.108025",
+      "action": "DELETED_EMPTY",
+      "database": "service_registry.db",
+      "details": "Empty duplicate removed from /Users/dansidanutz/Desktop/ZmartBot/zmart-api/service_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.108347",
+      "action": "DELETED_EMPTY",
+      "database": "GOODDatabase.db",
+      "details": "Empty duplicate removed from /Users/dansidanutz/Desktop/ZmartBot/zmart-api/GOODDatabase.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.108474",
+      "action": "DELETED_EMPTY",
+      "database": "master_database_registry.db",
+      "details": "Empty duplicate removed from /Users/dansidanutz/Desktop/ZmartBot/zmart-api/database/master_database_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.108508",
+      "action": "DELETED_EMPTY",
+      "database": "riskmetric.db",
+      "details": "Empty duplicate removed from /Users/dansidanutz/Desktop/ZmartBot/zmart-api/data/riskmetric.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.108539",
+      "action": "DELETED_EMPTY",
+      "database": "passport_registry.db",
+      "details": "Empty duplicate removed from /Users/dansidanutz/Desktop/ZmartBot/zmart-api/data/passport_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.108572",
+      "action": "DELETED_EMPTY",
+      "database": "risk_band_daily_updates.db",
+      "details": "Empty duplicate removed from /Users/dansidanutz/Desktop/ZmartBot/zmart-api/data/risk_band_daily_updates.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.108712",
+      "action": "DELETED_EMPTY",
+      "database": "port_manager.db",
+      "details": "Empty duplicate removed from /Users/dansidanutz/Desktop/ZmartBot/zmart-api/data/port_manager.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.109348",
+      "action": "DELETED_EMPTY",
+      "database": "level3.db",
+      "details": "Empty duplicate removed from /Users/dansidanutz/Desktop/ZmartBot/zmart-api/src/data/level3.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.109416",
+      "action": "DELETED_EMPTY",
+      "database": "risk_bands.db",
+      "details": "Empty duplicate removed from /Users/dansidanutz/Desktop/ZmartBot/zmart-api/src/routes/risk_bands.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.109574",
+      "action": "DELETED_EMPTY",
+      "database": "passport_service.db",
+      "details": "Empty duplicate removed from /Users/dansidanutz/Desktop/ZmartBot/data/passport_service.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.109873",
+      "action": "DELETED_EMPTY",
+      "database": "service_registry.db",
+      "details": "Empty duplicate removed from /Users/dansidanutz/Desktop/ZmartBot/data/service_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.110965",
+      "action": "SKIPPED",
+      "database": "service_registry.db",
+      "details": "Delete database does not exist: /Users/dansidanutz/Desktop/ZmartBot/service_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.110983",
+      "action": "SKIPPED",
+      "database": "service_registry.db",
+      "details": "Delete database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/service_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.110995",
+      "action": "SKIPPED",
+      "database": "service_registry.db",
+      "details": "Delete database does not exist: /Users/dansidanutz/Desktop/ZmartBot/data/service_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.111004",
+      "action": "ERROR",
+      "database": "passport_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/data/passport_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.111017",
+      "action": "SKIPPED",
+      "database": "comprehensive_riskmetric.db",
+      "details": "Delete database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/comprehensive_riskmetric.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.111028",
+      "action": "SKIPPED",
+      "database": "risk_bands.db",
+      "details": "Delete database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/risk_bands.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.111039",
+      "action": "SKIPPED",
+      "database": "risk_bands.db",
+      "details": "Delete database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/src/routes/risk_bands.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.111046",
+      "action": "ERROR",
+      "database": "passport_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/data/passport_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.111057",
+      "action": "SKIPPED",
+      "database": "port_registry.db",
+      "details": "Delete database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/port_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.111066",
+      "action": "SKIPPED",
+      "database": "discovery_registry.db",
+      "details": "Delete database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/discovery_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.111075",
+      "action": "SKIPPED",
+      "database": "GOODDatabase.db",
+      "details": "Delete database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/GOODDatabase.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.111086",
+      "action": "SKIPPED",
+      "database": "master_database_registry.db",
+      "details": "Delete database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/database/master_database_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.111150",
+      "action": "DELETED_DUPLICATE",
+      "database": "my_symbols_v2.db",
+      "details": "Removed duplicate (kept: passport_registry.db)"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.111161",
+      "action": "ERROR",
+      "database": "passport_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/data/passport_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.111168",
+      "action": "ERROR",
+      "database": "passport_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/data/passport_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.111175",
+      "action": "ERROR",
+      "database": "passport_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/data/passport_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.111182",
+      "action": "ERROR",
+      "database": "level3.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/src/data/level3.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.111189",
+      "action": "ERROR",
+      "database": "passport_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/data/passport_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.111195",
+      "action": "ERROR",
+      "database": "service_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/service_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.111201",
+      "action": "ERROR",
+      "database": "service_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/service_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.111208",
+      "action": "ERROR",
+      "database": "service_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/service_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.111214",
+      "action": "ERROR",
+      "database": "service_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/service_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.111220",
+      "action": "ERROR",
+      "database": "service_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/service_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.111226",
+      "action": "ERROR",
+      "database": "service_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/service_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.111234",
+      "action": "ERROR",
+      "database": "service_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/service_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.111240",
+      "action": "ERROR",
+      "database": "service_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/service_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.111246",
+      "action": "ERROR",
+      "database": "service_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/service_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.111251",
+      "action": "ERROR",
+      "database": "service_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/service_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.111257",
+      "action": "ERROR",
+      "database": "service_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/service_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.111263",
+      "action": "ERROR",
+      "database": "service_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/service_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.111269",
+      "action": "ERROR",
+      "database": "service_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/service_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.111276",
+      "action": "ERROR",
+      "database": "service_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/service_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.111281",
+      "action": "ERROR",
+      "database": "service_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/service_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.111287",
+      "action": "ERROR",
+      "database": "service_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/service_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.111293",
+      "action": "ERROR",
+      "database": "service_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/service_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.111299",
+      "action": "ERROR",
+      "database": "service_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/service_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.111305",
+      "action": "ERROR",
+      "database": "service_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/service_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.111310",
+      "action": "ERROR",
+      "database": "service_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/service_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.111316",
+      "action": "ERROR",
+      "database": "service_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/service_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.111321",
+      "action": "ERROR",
+      "database": "service_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/service_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.111327",
+      "action": "ERROR",
+      "database": "service_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/service_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.111333",
+      "action": "ERROR",
+      "database": "level3.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/src/data/level3.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.111337",
+      "action": "ERROR",
+      "database": "level3.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/src/data/level3.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.111343",
+      "action": "ERROR",
+      "database": "service_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/service_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.111349",
+      "action": "ERROR",
+      "database": "service_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/service_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.111849",
+      "action": "BACKED_UP",
+      "database": "learning_data_ADA-USDT.db",
+      "details": "Backup created: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/learning_data_ADA-USDT.db.cleanup_backup_20250831_162913"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.112103",
+      "action": "DELETED_DUPLICATE",
+      "database": "learning_data_ADA-USDT.db",
+      "details": "Removed duplicate (kept: learning_data_ETH_USDT.db)"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.112524",
+      "action": "BACKED_UP",
+      "database": "test_historical_check.db",
+      "details": "Backup created: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/test_historical_check.db.cleanup_backup_20250831_162913"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.112928",
+      "action": "DELETED_DUPLICATE",
+      "database": "test_historical_check.db",
+      "details": "Removed duplicate (kept: test_config_check.db)"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.113319",
+      "action": "BACKED_UP",
+      "database": "test_learning.db",
+      "details": "Backup created: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/test_learning.db.cleanup_backup_20250831_162913"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.113561",
+      "action": "DELETED_DUPLICATE",
+      "database": "test_learning.db",
+      "details": "Removed duplicate (kept: learning_data.db)"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.113580",
+      "action": "ERROR",
+      "database": "comprehensive_riskmetric.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/comprehensive_riskmetric.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.113589",
+      "action": "ERROR",
+      "database": "comprehensive_riskmetric.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/comprehensive_riskmetric.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.113596",
+      "action": "ERROR",
+      "database": "comprehensive_riskmetric.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/comprehensive_riskmetric.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.113602",
+      "action": "ERROR",
+      "database": "comprehensive_riskmetric.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/comprehensive_riskmetric.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.113609",
+      "action": "ERROR",
+      "database": "comprehensive_riskmetric.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/comprehensive_riskmetric.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.113617",
+      "action": "ERROR",
+      "database": "comprehensive_riskmetric.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/comprehensive_riskmetric.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.113627",
+      "action": "ERROR",
+      "database": "comprehensive_riskmetric.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/comprehensive_riskmetric.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.113634",
+      "action": "ERROR",
+      "database": "comprehensive_riskmetric.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/comprehensive_riskmetric.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.113645",
+      "action": "ERROR",
+      "database": "comprehensive_riskmetric.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/comprehensive_riskmetric.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.113654",
+      "action": "ERROR",
+      "database": "comprehensive_riskmetric.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/comprehensive_riskmetric.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.113661",
+      "action": "ERROR",
+      "database": "comprehensive_riskmetric.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/comprehensive_riskmetric.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.113671",
+      "action": "ERROR",
+      "database": "comprehensive_riskmetric.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/comprehensive_riskmetric.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.113677",
+      "action": "ERROR",
+      "database": "comprehensive_riskmetric.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/comprehensive_riskmetric.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.113683",
+      "action": "ERROR",
+      "database": "level3.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/src/data/level3.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.113690",
+      "action": "ERROR",
+      "database": "comprehensive_riskmetric.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/comprehensive_riskmetric.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.114186",
+      "action": "BACKED_UP",
+      "database": "cryptoverse_data.db",
+      "details": "Backup created: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/cryptoverse_data.db.cleanup_backup_20250831_162913"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.114621",
+      "action": "DELETED_DUPLICATE",
+      "database": "cryptoverse_data.db",
+      "details": "Removed duplicate (kept: cryptoverse_data.db)"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.115001",
+      "action": "BACKED_UP",
+      "database": "achievements.db",
+      "details": "Backup created: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/zmart-api/achievements.db.cleanup_backup_20250831_162913"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.116629",
+      "action": "DELETED_DUPLICATE",
+      "database": "achievements.db",
+      "details": "Removed duplicate (kept: achievements.db)"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.117086",
+      "action": "BACKED_UP",
+      "database": "learning_data_BTC-USDT.db",
+      "details": "Backup created: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/learning_data_BTC-USDT.db.cleanup_backup_20250831_162913"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.117130",
+      "action": "DELETED_DUPLICATE",
+      "database": "learning_data_BTC-USDT.db",
+      "details": "Removed duplicate (kept: learning_data_ETH-USDT.db)"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.117146",
+      "action": "ERROR",
+      "database": "risk_bands.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/risk_bands.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.117154",
+      "action": "ERROR",
+      "database": "risk_bands.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/risk_bands.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.117161",
+      "action": "ERROR",
+      "database": "risk_bands.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/risk_bands.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.117167",
+      "action": "ERROR",
+      "database": "risk_bands.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/risk_bands.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.117176",
+      "action": "ERROR",
+      "database": "risk_bands.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/src/routes/risk_bands.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.117183",
+      "action": "ERROR",
+      "database": "risk_bands.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/risk_bands.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.117189",
+      "action": "ERROR",
+      "database": "risk_bands.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/risk_bands.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.117195",
+      "action": "ERROR",
+      "database": "risk_bands.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/risk_bands.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.117201",
+      "action": "ERROR",
+      "database": "risk_bands.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/risk_bands.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.117208",
+      "action": "ERROR",
+      "database": "risk_bands.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/risk_bands.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.117214",
+      "action": "ERROR",
+      "database": "risk_bands.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/risk_bands.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.117219",
+      "action": "ERROR",
+      "database": "risk_bands.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/risk_bands.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.117225",
+      "action": "ERROR",
+      "database": "level3.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/src/data/level3.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.117231",
+      "action": "ERROR",
+      "database": "risk_bands.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/risk_bands.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.117237",
+      "action": "ERROR",
+      "database": "risk_bands.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/risk_bands.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.117248",
+      "action": "ERROR",
+      "database": "risk_bands.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/src/routes/risk_bands.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.117258",
+      "action": "ERROR",
+      "database": "port_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/port_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.117265",
+      "action": "ERROR",
+      "database": "port_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/port_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.117271",
+      "action": "ERROR",
+      "database": "port_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/port_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.117277",
+      "action": "ERROR",
+      "database": "port_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/port_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.117284",
+      "action": "ERROR",
+      "database": "port_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/port_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.117290",
+      "action": "ERROR",
+      "database": "port_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/port_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.117296",
+      "action": "ERROR",
+      "database": "port_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/port_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.117302",
+      "action": "ERROR",
+      "database": "port_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/port_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.117308",
+      "action": "ERROR",
+      "database": "port_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/port_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.117314",
+      "action": "ERROR",
+      "database": "port_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/port_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.117318",
+      "action": "ERROR",
+      "database": "level3.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/src/data/level3.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.117324",
+      "action": "ERROR",
+      "database": "port_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/port_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.117330",
+      "action": "ERROR",
+      "database": "port_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/port_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.117856",
+      "action": "BACKED_UP",
+      "database": "test_comprehensive_riskmetric.db",
+      "details": "Backup created: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/test_comprehensive_riskmetric.db.cleanup_backup_20250831_162913"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.118036",
+      "action": "DELETED_DUPLICATE",
+      "database": "test_comprehensive_riskmetric.db",
+      "details": "Removed duplicate (kept: comprehensive_riskmetric.db)"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.118352",
+      "action": "BACKED_UP",
+      "database": "learning_data_SOL_USDT.db",
+      "details": "Backup created: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/learning_data_SOL_USDT.db.cleanup_backup_20250831_162913"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.119028",
+      "action": "DELETED_DUPLICATE",
+      "database": "learning_data_SOL_USDT.db",
+      "details": "Removed duplicate (kept: learning_data_DOT-USDT.db)"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.119053",
+      "action": "ERROR",
+      "database": "discovery_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/discovery_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.119066",
+      "action": "ERROR",
+      "database": "discovery_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/discovery_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.119077",
+      "action": "ERROR",
+      "database": "discovery_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/discovery_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.119084",
+      "action": "ERROR",
+      "database": "discovery_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/discovery_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.119102",
+      "action": "ERROR",
+      "database": "discovery_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/discovery_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.119113",
+      "action": "ERROR",
+      "database": "discovery_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/discovery_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.119124",
+      "action": "ERROR",
+      "database": "discovery_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/discovery_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.119134",
+      "action": "ERROR",
+      "database": "discovery_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/discovery_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.119141",
+      "action": "ERROR",
+      "database": "discovery_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/discovery_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.119150",
+      "action": "ERROR",
+      "database": "level3.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/src/data/level3.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.119160",
+      "action": "ERROR",
+      "database": "discovery_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/discovery_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.119169",
+      "action": "ERROR",
+      "database": "discovery_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/discovery_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.119183",
+      "action": "ERROR",
+      "database": "GOODDatabase.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/GOODDatabase.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.119200",
+      "action": "ERROR",
+      "database": "GOODDatabase.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/GOODDatabase.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.119734",
+      "action": "ERROR",
+      "database": "GOODDatabase.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/GOODDatabase.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.119741",
+      "action": "ERROR",
+      "database": "GOODDatabase.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/GOODDatabase.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.119748",
+      "action": "ERROR",
+      "database": "GOODDatabase.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/GOODDatabase.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.119754",
+      "action": "ERROR",
+      "database": "GOODDatabase.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/GOODDatabase.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.119758",
+      "action": "ERROR",
+      "database": "level3.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/src/data/level3.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.119764",
+      "action": "ERROR",
+      "database": "GOODDatabase.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/GOODDatabase.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.119770",
+      "action": "ERROR",
+      "database": "GOODDatabase.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/GOODDatabase.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.119776",
+      "action": "ERROR",
+      "database": "GOODDatabase.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/GOODDatabase.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.119784",
+      "action": "ERROR",
+      "database": "master_database_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/database/master_database_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.119791",
+      "action": "ERROR",
+      "database": "master_database_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/database/master_database_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.119798",
+      "action": "ERROR",
+      "database": "master_database_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/database/master_database_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.119804",
+      "action": "ERROR",
+      "database": "master_database_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/database/master_database_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.119810",
+      "action": "ERROR",
+      "database": "master_database_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/database/master_database_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.119814",
+      "action": "ERROR",
+      "database": "level3.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/src/data/level3.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.119820",
+      "action": "ERROR",
+      "database": "master_database_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/database/master_database_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.119826",
+      "action": "ERROR",
+      "database": "master_database_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/database/master_database_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.119832",
+      "action": "ERROR",
+      "database": "master_database_registry.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/database/master_database_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.119845",
+      "action": "SKIPPED_IMPORTANT",
+      "database": "ultimate_riskmetric.db",
+      "details": "Important database with data preserved (size: 225280, tables: 15)"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.120346",
+      "action": "BACKED_UP",
+      "database": "cowen_riskmetric.db",
+      "details": "Backup created: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/Documentation/Archives/RiskMetric_V1_Archive_20250812_012847/cowen_riskmetric.db.cleanup_backup_20250831_162913"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.120630",
+      "action": "DELETED_DUPLICATE",
+      "database": "cowen_riskmetric.db",
+      "details": "Removed duplicate (kept: cowen_riskmetric.db)"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.121135",
+      "action": "BACKED_UP",
+      "database": "riskmetric_qa.db",
+      "details": "Backup created: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/Documentation/Archives/RiskMetric_V1_Archive_20250812_012847/riskmetric_qa.db.cleanup_backup_20250831_162913"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.121255",
+      "action": "DELETED_DUPLICATE",
+      "database": "riskmetric_qa.db",
+      "details": "Removed duplicate (kept: riskmetric_qa.db)"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.121269",
+      "action": "ERROR",
+      "database": "riskmetric.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/data/riskmetric.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.121275",
+      "action": "ERROR",
+      "database": "riskmetric.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/data/riskmetric.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.121281",
+      "action": "ERROR",
+      "database": "riskmetric.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/data/riskmetric.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.121287",
+      "action": "ERROR",
+      "database": "riskmetric.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/data/riskmetric.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.121292",
+      "action": "ERROR",
+      "database": "level3.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/src/data/level3.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.121298",
+      "action": "ERROR",
+      "database": "riskmetric.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/data/riskmetric.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.121305",
+      "action": "ERROR",
+      "database": "riskmetric.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/data/riskmetric.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.121311",
+      "action": "ERROR",
+      "database": "riskmetric.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/data/riskmetric.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.121318",
+      "action": "ERROR",
+      "database": "risk_band_daily_updates.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/data/risk_band_daily_updates.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.121324",
+      "action": "ERROR",
+      "database": "risk_band_daily_updates.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/data/risk_band_daily_updates.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.121329",
+      "action": "ERROR",
+      "database": "level3.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/src/data/level3.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.121335",
+      "action": "ERROR",
+      "database": "risk_band_daily_updates.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/data/risk_band_daily_updates.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.121340",
+      "action": "ERROR",
+      "database": "risk_band_daily_updates.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/data/risk_band_daily_updates.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.121346",
+      "action": "ERROR",
+      "database": "risk_band_daily_updates.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/data/risk_band_daily_updates.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.121352",
+      "action": "ERROR",
+      "database": "port_manager.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/data/port_manager.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.121357",
+      "action": "ERROR",
+      "database": "level3.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/src/data/level3.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.121363",
+      "action": "ERROR",
+      "database": "port_manager.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/data/port_manager.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.121369",
+      "action": "ERROR",
+      "database": "port_manager.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/data/port_manager.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.121374",
+      "action": "ERROR",
+      "database": "port_manager.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/data/port_manager.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.121378",
+      "action": "ERROR",
+      "database": "level3.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/src/data/level3.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.121388",
+      "action": "SKIPPED",
+      "database": "risk_bands.db",
+      "details": "Delete database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/src/routes/risk_bands.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.121396",
+      "action": "SKIPPED",
+      "database": "passport_service.db",
+      "details": "Delete database does not exist: /Users/dansidanutz/Desktop/ZmartBot/data/passport_service.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.121404",
+      "action": "SKIPPED",
+      "database": "service_registry.db",
+      "details": "Delete database does not exist: /Users/dansidanutz/Desktop/ZmartBot/data/service_registry.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.121408",
+      "action": "ERROR",
+      "database": "level3.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/src/data/level3.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.121412",
+      "action": "ERROR",
+      "database": "level3.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/src/data/level3.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.121416",
+      "action": "ERROR",
+      "database": "level3.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/src/data/level3.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.121422",
+      "action": "ERROR",
+      "database": "passport_service.db",
+      "details": "Keep database does not exist: /Users/dansidanutz/Desktop/ZmartBot/data/passport_service.db"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.122980",
+      "action": "BACKED_UP",
+      "database": "doctor.db",
+      "details": "Backup created: /Users/dansidanutz/Desktop/ZmartBot/services/doctor-service/doctor.db.cleanup_backup_20250831_162913"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.125139",
+      "action": "DELETED_DUPLICATE",
+      "database": "doctor.db",
+      "details": "Removed duplicate (kept: doctor_service.db)"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.248621",
+      "action": "DELETED_LEARNING",
+      "database": "learning_data_ETH_USDT.db",
+      "details": "Learning duplicate removed (kept: learning_data_ETH-USDT.db)"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.248819",
+      "action": "DELETED_LEARNING",
+      "database": "learning_data_DOT-USDT.db",
+      "details": "Learning duplicate removed (kept: learning_data_ETH_USDT.db)"
+    },
+    {
+      "timestamp": "2025-08-31T16:29:13.249734",
+      "action": "REGISTRY_UPDATED",
+      "database": "master_registry",
+      "details": "Updated registry for 30 deleted databases"
+    }
+  ]
+}

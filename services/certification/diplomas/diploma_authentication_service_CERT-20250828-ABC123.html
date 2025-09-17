@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZmartBot Service Certification Diploma</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .diploma-container {
+            background: #ffffff;
+            width: 800px;
+            height: 600px;
+            padding: 40px;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            border: 8px solid #2c3e50;
+            overflow: hidden;
+        }
+        
+        .diploma-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(102, 126, 234, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(118, 75, 162, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        
+        .diploma-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .header {
+            margin-bottom: 20px;
+        }
+        
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .organization {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2c3e50;
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 5px;
+        }
+        
+        .subtitle {
+            font-size: 14px;
+            color: #7f8c8d;
+            font-weight: 400;
+        }
+        
+        .certificate-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin: 20px 0;
+            font-family: 'Playfair Display', serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .recipient-section {
+            margin: 30px 0;
+        }
+        
+        .recipient-text {
+            font-size: 18px;
+            color: #34495e;
+            margin-bottom: 15px;
+        }
+        
+        .service-name {
+            font-size: 28px;
+            font-weight: 600;
+            color: #667eea;
+            font-family: 'Playfair Display', serif;
+            text-decoration: underline;
+            text-decoration-color: #764ba2;
+            margin: 10px 0;
+        }
+        
+        .certification-details {
+            margin: 25px 0;
+            padding: 20px;
+            background: rgba(102, 126, 234, 0.05);
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .cert-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .cert-item {
+            text-align: left;
+        }
+        
+        .cert-label {
+            font-size: 12px;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .cert-value {
+            font-size: 14px;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+        
+        .description-text {
+            font-size: 16px;
+            color: #34495e;
+            line-height: 1.6;
+            margin: 20px 0;
+        }
+        
+        .signatures {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-top: 40px;
+        }
+        
+        .signature {
+            text-align: center;
+            flex: 1;
+        }
+        
+        .signature-line {
+            width: 150px;
+            height: 1px;
+            background: #bdc3c7;
+            margin: 0 auto 10px;
+        }
+        
+        .signature-title {
+            font-size: 12px;
+            color: #7f8c8d;
+            font-weight: 600;
+        }
+        
+        .signature-name {
+            font-size: 14px;
+            color: #2c3e50;
+            font-weight: 500;
+            margin-top: 5px;
+        }
+        
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: 120px;
+            color: rgba(102, 126, 234, 0.03);
+            font-weight: 900;
+            z-index: 0;
+            user-select: none;
+            pointer-events: none;
+        }
+        
+        .security-features {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 10px;
+            color: #bdc3c7;
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .diploma-container {
+                box-shadow: none;
+                border: 2px solid #2c3e50;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="diploma-container">
+        <div class="watermark">CERTIFIED</div>
+        
+        <div class="diploma-content">
+            <div class="header">
+                <div class="logo">Z</div>
+                <div class="organization">ZmartBot Platform</div>
+                <div class="subtitle">Advanced Cryptocurrency Trading System</div>
+            </div>
+            
+            <div class="certificate-title">Certificate of Compliance</div>
+            
+            <div class="recipient-section">
+                <div class="recipient-text">This is to certify that the service</div>
+                <div class="service-name">Authentication Service</div>
+                <div class="recipient-text">has successfully met all requirements and standards for</div>
+            </div>
+            
+            <div class="certification-details">
+                <div class="description-text">
+                    <strong>Security Compliance Certification</strong><br>
+                    This service has been thoroughly evaluated and meets all security, performance, 
+                    and operational standards required for production deployment in the ZmartBot ecosystem.
+                </div>
+                
+                <div class="cert-info">
+                    <div class="cert-item">
+                        <div class="cert-label">Certificate ID</div>
+                        <div class="cert-value">CERT-20250828-ABC123</div>
+                    </div>
+                    <div class="cert-item">
+                        <div class="cert-label">Service Port</div>
+                        <div class="cert-value">8443</div>
+                    </div>
+                    <div class="cert-item">
+                        <div class="cert-label">Issue Date</div>
+                        <div class="cert-value">August 28, 2025</div>
+                    </div>
+                    <div class="cert-item">
+                        <div class="cert-label">Expiry Date</div>
+                        <div class="cert-value">August 28, 2026</div>
+                    </div>
+                    <div class="cert-item">
+                        <div class="cert-label">Security Level</div>
+                        <div class="cert-value">Enterprise</div>
+                    </div>
+                    <div class="cert-item">
+                        <div class="cert-label">Compliance Score</div>
+                        <div class="cert-value">98/100</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="signatures">
+                <div class="signature">
+                    <div class="signature-line"></div>
+                    <div class="signature-title">System Administrator</div>
+                    <div class="signature-name">ZmartBot Platform</div>
+                </div>
+                <div class="signature">
+                    <div class="signature-line"></div>
+                    <div class="signature-title">Certification Authority</div>
+                    <div class="signature-name">2025-08-28 15:30:00</div>
+                </div>
+                <div class="signature">
+                    <div class="signature-line"></div>
+                    <div class="signature-title">Quality Assurance</div>
+                    <div class="signature-name">Automated Verification</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="security-features">
+            Security Hash: 88159182F0DB3C0C | Verification: https://zmartbot.verify/CERT-20250828-ABC123
+        </div>
+    </div>
+</body>
+</html>

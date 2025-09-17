@@ -1,0 +1,19 @@
+services:
+  memory-gateway:
+    image: node:20
+    container_name: zmart-memory-gateway
+    working_dir: /app
+    command: bash -lc "npm install && npm start"
+    ports:
+      - "8295:8295"
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - .:/app
+      - ./data:/app/data
+    healthcheck:
+      test: ["CMD", "bash", "-lc", "curl -fsS http://127.0.0.1:8295/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 10

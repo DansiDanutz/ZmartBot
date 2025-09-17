@@ -1,0 +1,19 @@
+endpoints:
+  health: http://127.0.0.1:8616/health
+  metrics: http://127.0.0.1:8616/metrics
+  ready: http://127.0.0.1:8616/ready
+lifecycle:
+  health_check: curl -f http://127.0.0.1:8616/health
+  start_command: null
+  stop_command: pkill -f OrchestrationStart
+metadata:
+  description: Service OrchestrationStart
+  owner: zmartbot
+  version: 1.0.0
+service:
+  level: 2
+  name: OrchestrationStart
+  passport: ZMBT-SRV-20250831-816D99
+  port: 8616
+  status: ACTIVE
+  type: orchestration

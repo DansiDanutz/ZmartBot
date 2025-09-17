@@ -1,0 +1,213 @@
+
+## Description
+Core service component of the ZmartBot ecosystem providing essential functionality.
+
+## 🤖 MCP (Model Context Protocol) Integration
+
+### **MCP Server Pairing**
+**Status**: ✅ **ACTIVE** - Claude MDC Update MCP Integration
+**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
+**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
+**Integration Type**: Multi-MCP Service Integration
+
+### **MCP Integration Features**
+- **Claude Code Integration**: AI-powered documentation synchronization and optimization
+- **Memory Gateway**: Persistent documentation state and update metadata
+- **UI Automation**: Automated documentation monitoring and health checks
+- **Figma Integration**: Documentation dashboard design and UI management
+- **Supabase Integration**: Cloud-based documentation analytics and reporting
+
+### **MCP Integration Benefits**
+- **Enhanced Synchronization**: AI-powered documentation update optimization
+- **Persistent State**: Documentation update history and metadata preservation
+- **Automated Monitoring**: Real-time documentation health and performance tracking
+- **Visual Design**: Professional documentation dashboard and UI design
+- **Cloud Analytics**: Advanced documentation analytics and reporting
+
+### **MCP Usage Examples**
+```bash
+# Health check via MCP
+curl -X GET "http://127.0.0.1:8000/health"
+
+# Documentation update via MCP
+curl -X POST "http://127.0.0.1:8000/update" \
+  -H "Content-Type: application/json" \
+  -d '{"file": "service.mdc", "action": "sync"}'
+```
+
+### **MCP Status**
+- **Claude Code**: ✅ Active - AI-powered documentation synchronization
+- **ByteRover**: ✅ Active - Documentation state persistence
+- **UI TARS**: ✅ Active - Documentation monitoring automation
+- **Figma**: ✅ Active - Documentation dashboard design
+- **Supabase**: ✅ Active - Documentation cloud analytics
+
+---
+
+# Claude MDC Update System - Autonomous Documentation Synchronization
+
+## 1. Service Overview
+
+- **Name**: ClaudeMDCUpdate
+- **Service Classification**: Core
+- **Criticality Level**: HIGH
+- **Business Impact**: If this service fails, the documentation synchronization process will be halted, leading to outdated or incorrect information being used by the ZmartBot system. This could result in inefficient operations, incorrect decision-making, and potential system failures.
+- **System Role**: The ClaudeMDCUpdate service plays a crucial role in the ZmartBot ecosystem by ensuring that the documentation is always up-to-date and synchronized across all MDC files.
+
+## 2. Service Architecture
+
+- **Technical Foundation**: Python, watchdog library
+- **Core Components**: Core Update Script, File Watcher Scripts
+- **Data Structures**: Uses file-based data structures to read and write MDC files
+- **Integration Ecosystem**: Integrated with all services that use MDC files for documentation
+- **Design Patterns**: Observer pattern for file watching, Command pattern for updates
+
+## 3. Critical Service Characteristics for Master Orchestration
+
+### Service Dependencies
+
+- **Required Python Modules**: Python 3, watchdog
+- **Database Dependencies**: None
+- **External Service Dependencies**: None
+- **File System Dependencies**: Access to `.cursor/rules/` directory and all `.mdc` files
+- **Network Dependencies**: None
+- **Environment Dependencies**: Python 3 environment
+
+### Inter-Service Operation Patterns
+
+- **Provides Services To**: All services that use MDC files for documentation
+- **Depends On Services**: None
+- **Communication Protocols**: File-based communication
+- **Data Exchange Patterns**: Reads MDC files, writes to CLAUDE.md
+- **Failure Impact Analysis**: MEDIUM - outdated or incorrect documentation
+- **Cascade Failure Patterns**: Potential incorrect operation of dependent services
+- **Recovery Coordination**: Manual recovery required
+
+### Service Lifecycle Behavior
+
+- **Startup Time**: Instantaneous
+- **Startup Dependencies**: None
+- **Startup Sequence**: Starts with system boot or manual command
+- **Initialization Checks**: Checks for MDC directory and files
+- **Shutdown Behavior**: Can be stopped at any time without data loss
+- **Shutdown Priority**: 10 - can be safely shut down last
+- **State Persistence**: None - stateless service
+- **Recovery Patterns**: Manual restart
+
+### Runtime Characteristics
+
+- **Memory Usage**: Minimal - only needs to load current MDC file into memory
+- **CPU Usage**: Low - only active during updates
+- **Network Usage**: None
+- **Disk I/O**: Read/write operations during updates
+- **Concurrency Model**: Single-threaded operation
+- **Performance Characteristics**: Fast updates, limited by disk I/O speed
+- **Resource Scaling**: Not applicable - fixed resource usage
+- **Performance Optimization**: None
+
+### Error Conditions & Recovery
+
+- **Failure Modes**: File access errors, Python errors
+- **Failure Detection**: Error messages during updates
+- **Failure Impact**: Outdated or incorrect documentation
+- **Recovery Strategies**: Fix errors and restart service
+- **Circuit Breaker Patterns**: None
+- **Fallback Mechanisms**: Manual documentation update
+- **Disaster Recovery**: Restore MDC files from backup
+- **Health Check Patterns**: Successful completion of updates
+
+### Monitoring & Observability
+
+- **Health Check Endpoints**: None
+- **Performance Metrics**: Update completion status, error messages
+- **Log Analysis**: Check logs for errors and update status
+- **Alert Conditions**: Update failures
+- **Diagnostic Procedures**: Check logs, verify file access and Python environment
+- **Performance Baselines**: Regular successful updates
+- **Monitoring Integration**: Log-based monitoring
+
+### Master Orchestration Integration Points
+
+- **Service Discovery**: Manual registration with orchestration system
+- **Health Monitoring**: Log-based health monitoring
+- **Lifecycle Management**: Manual start/stop commands
+- **Resource Coordination**: Fixed resource allocation
+- **Dependency Management**: No dependencies
+- **Configuration Management**: Configuration via Python scripts
+- **Security Coordination**: File access permissions
+
+### Critical Decision Patterns for Orchestration
+
+- **Startup Priority**: 10 - can be started last
+- **Startup Conditions**: MDC directory and files must be accessible
+- **Shutdown Priority**: 10 - can be shut down last
+- **Restart Strategy**: Immediate restart on failure
+- **Scaling Strategy**: Not applicable - fixed resource usage
+- **Resource Allocation**: Minimal CPU and memory, disk I/O during updates
+- **Update Strategy**: Immediate update on MDC file changes
+- **Backup Strategy**: Backup of CLAUDE.md before each update
+- **Security Strategy**: File access permissions
+
+## 4. API Endpoints
+
+- Not applicable - no API endpoints
+
+## 5. Security Features
+
+- **Authentication Mechanisms**: None
+- **Authorization Patterns**: File access permissions
+- **Encryption Standards**: None
+- **Security Controls**: File access permissions
+- **Compliance Requirements**: Compliance with company data handling policies
+- **Threat Model**: Unauthorized file access, data corruption
+- **Security Monitoring**: File access monitoring
+
+## 6. Development Guidelines
+
+- **Coding Standards**: PEP 8 Python coding standards
+- **Architecture Patterns**: Observer pattern for file watching, Command pattern for updates
+- **Testing Requirements**: Unit tests for update scripts
+- **Code Quality**: Code review, static analysis with pylint
+- **Documentation Standards**: Docstrings for all functions, comments for complex code
+- **Configuration Management**: Configuration via Python scripts
+- **Deployment Standards**: Deployment with system startup scripts
+
+## 7. Deployment Considerations
+
+- **Infrastructure Requirements**: Python 3 environment, disk space for MDC files and CLAUDE.md
+- **Environment Configurations**: None
+- **Deployment Patterns**: Deployment with system startup scripts
+- **Scaling Considerations**: Not applicable - fixed resource usage
+- **Monitoring Requirements**: Log-based monitoring
+- **Disaster Recovery**: Restore MDC files from backup
+- **Capacity Planning**: Sufficient disk space for MDC files and CLAUDE.md
+
+description: Autonomous MDC to CLAUDE.md synchronization system
+globs: ["zmart-api/update_claude_mdc.py", "zmart-api/watch_mdc_changes*.py", "CLAUDE.md"]
+alwaysApply: true
+
+## Requirements
+- ✅ **Database connectivity**
+- ✅ **Complete MDC documentation**
+- ✅ **Health endpoint implementation**
+- ✅ **Master Orchestration integration**
+
+
+---
+description:
+globs:
+alwaysApply: true
+
+## Requirements
+- ✅ **Database connectivity**
+- ✅ **Complete MDC documentation**
+- ✅ **Health endpoint implementation**
+- ✅ **Master Orchestration integration**
+
+
+---
+
+## Triggers
+- **API endpoint requests**
+- **File system changes**
+- **Database events**

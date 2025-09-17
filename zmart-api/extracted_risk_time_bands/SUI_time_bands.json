@@ -1,0 +1,33 @@
+{
+  "symbol": "SUI",
+  "symbol_name": "Sui",
+  "birth_date": "2023-05-03",
+  "current_date": "2025-09-14",
+  "total_days": 865,
+  "actual_age_days": 865,
+  "risk_bands": {
+    "0.0-0.1": 25,
+    "0.1-0.2": 86,
+    "0.2-0.3": 112,
+    "0.3-0.4": 138,
+    "0.4-0.5": 173,
+    "0.5-0.6": 190,
+    "0.6-0.7": 112,
+    "0.7-0.8": 60,
+    "0.8-0.9": 34,
+    "0.9-1.0": 17
+  },
+  "current_risk_band": "0.5-0.6",
+  "confidence_level": 7,
+  "data_type": "estimated",
+  "0.0-0.1_percentage": 2.89,
+  "0.1-0.2_percentage": 9.94,
+  "0.2-0.3_percentage": 12.95,
+  "0.3-0.4_percentage": 15.95,
+  "0.4-0.5_percentage": 20.0,
+  "0.5-0.6_percentage": 21.97,
+  "0.6-0.7_percentage": 12.95,
+  "0.7-0.8_percentage": 6.94,
+  "0.8-0.9_percentage": 3.93,
+  "0.9-1.0_percentage": 1.97
+}

@@ -1,0 +1,30 @@
+service_name: service-lifecycle-manager
+service_type: backend
+version: 1.0.0
+owner: zmartbot
+description: Dynamic Service Lifecycle Management
+port: 8920
+passport_id: ZMBT-SLM-20250830-939462
+status: ACTIVE
+registered_at: '2025-08-31'
+health_url: http://localhost:8920/health
+start_cmd: python3 service_lifecycle_manager_server.py --port 8920
+stop_cmd: pkill -f 'service_lifecycle_manager_server.py'
+dependencies:
+- zmart-api
+tags:
+- backend
+- service-lifecycle-manager
+lifecycle:
+  startup_grace_seconds: 30
+  shutdown_timeout_seconds: 15
+  health_check_interval: 30
+monitoring:
+  metrics_endpoint: /metrics
+  logs_path: logs/service-lifecycle-manager.log
+  dashboard_url: http://localhost:8920/dashboard
+security:
+  cors_enabled: true
+  token_required: false
+  scopes:
+  - backend
