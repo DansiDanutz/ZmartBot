@@ -1,0 +1,334 @@
+/* ErrorBoundary.css - Error boundary styling for different error levels */
+
+.error-boundary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  text-align: center;
+  color: white;
+}
+
+.error-container {
+  max-width: 500px;
+  width: 100%;
+}
+
+/* App Level Error (Critical) */
+.error-boundary.app-level {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+  z-index: 9999;
+  padding: 40px 20px;
+}
+
+.error-boundary.app-level .error-icon {
+  font-size: 64px;
+  margin-bottom: 20px;
+  animation: shake 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(4px); }
+}
+
+.error-boundary.app-level h1 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: white;
+}
+
+.error-boundary.app-level .error-message {
+  font-size: 16px;
+  margin-bottom: 24px;
+  opacity: 0.9;
+  line-height: 1.5;
+}
+
+/* Page Level Error (Major) */
+.error-boundary.page-level {
+  min-height: 50vh;
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  border-radius: 16px;
+  margin: 20px;
+}
+
+.error-boundary.page-level .error-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.error-boundary.page-level h2 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: white;
+}
+
+.error-boundary.page-level .error-message {
+  font-size: 14px;
+  margin-bottom: 20px;
+  opacity: 0.9;
+}
+
+/* Component Level Error (Minor) */
+.error-boundary.component-level {
+  min-height: 120px;
+  background: rgba(107, 114, 128, 0.1);
+  border: 1px solid rgba(107, 114, 128, 0.3);
+  border-radius: 12px;
+  margin: 10px 0;
+  color: #374151;
+}
+
+.error-boundary.component-level .error-icon {
+  font-size: 32px;
+  margin-bottom: 12px;
+  opacity: 0.7;
+}
+
+.error-boundary.component-level h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #374151;
+}
+
+.error-boundary.component-level .error-message {
+  font-size: 13px;
+  margin-bottom: 16px;
+  opacity: 0.7;
+}
+
+/* Error Actions */
+.error-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.error-btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 100px;
+  justify-content: center;
+}
+
+.error-btn.primary {
+  background: rgba(255, 255, 255, 0.9);
+  color: #1f2937;
+}
+
+.error-btn.primary:hover {
+  background: white;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.error-btn.secondary {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.error-btn.secondary:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+.error-btn.tertiary {
+  background: transparent;
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.error-btn.tertiary:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.error-btn.small {
+  padding: 8px 16px;
+  font-size: 12px;
+  min-width: 80px;
+}
+
+/* Error Details */
+.error-details {
+  margin-top: 20px;
+  text-align: left;
+}
+
+.error-details details {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.error-details summary {
+  cursor: pointer;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.error-details summary:hover {
+  color: white;
+}
+
+.error-info {
+  margin-top: 8px;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.error-info p {
+  margin: 4px 0;
+  word-break: break-word;
+}
+
+.error-stack {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 8px;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 10px;
+  white-space: pre-wrap;
+  overflow-x: auto;
+  max-height: 200px;
+  overflow-y: auto;
+  margin-top: 8px;
+}
+
+/* Support Info */
+.support-info {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.support-info code {
+  background: rgba(0, 0, 0, 0.2);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-weight: 600;
+}
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+  .error-boundary.app-level {
+    padding: 20px 16px;
+  }
+
+  .error-boundary.app-level h1 {
+    font-size: 24px;
+  }
+
+  .error-boundary.app-level .error-message {
+    font-size: 14px;
+  }
+
+  .error-boundary.page-level {
+    margin: 16px;
+  }
+
+  .error-boundary.page-level h2 {
+    font-size: 20px;
+  }
+
+  .error-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .error-btn {
+    width: 100%;
+    max-width: 200px;
+  }
+
+  .error-stack {
+    font-size: 9px;
+    max-height: 150px;
+  }
+}
+
+/* Dark mode adjustments */
+@media (prefers-color-scheme: dark) {
+  .error-boundary.component-level {
+    background: rgba(55, 65, 81, 0.1);
+    border-color: rgba(55, 65, 81, 0.3);
+    color: #d1d5db;
+  }
+
+  .error-boundary.component-level h3 {
+    color: #d1d5db;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .error-boundary {
+    border: 2px solid;
+  }
+
+  .error-btn {
+    border-width: 2px;
+  }
+
+  .error-details details {
+    border: 1px solid rgba(255, 255, 255, 0.5);
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .error-boundary.app-level .error-icon {
+    animation: none;
+  }
+
+  .error-btn:hover {
+    transform: none;
+  }
+}
+
+/* Loading state for error recovery */
+.error-boundary.recovering {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.error-boundary.recovering::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

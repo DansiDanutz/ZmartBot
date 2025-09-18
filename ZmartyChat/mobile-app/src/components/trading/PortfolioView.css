@@ -1,0 +1,475 @@
+/* PortfolioView.css - Mobile portfolio interface styles */
+
+.portfolio-view {
+  height: 100vh;
+  height: 100dvh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.portfolio-view.loading {
+  overflow: hidden;
+}
+
+/* Header */
+.portfolio-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 20px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.back-btn, .refresh-btn {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.back-btn:hover, .refresh-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(1.05);
+}
+
+.portfolio-header h1 {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Loading State */
+.loading-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top: 3px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-content p {
+  font-size: 16px;
+  opacity: 0.8;
+}
+
+/* Total Value Card */
+.total-value-card {
+  margin: 20px;
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.total-value h2 {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+  letter-spacing: -0.5px;
+}
+
+.total-pnl {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.total-pnl.positive {
+  color: #10b981;
+}
+
+.total-pnl.negative {
+  color: #ef4444;
+}
+
+.pnl-amount {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.pnl-percent {
+  font-size: 16px;
+  opacity: 0.9;
+}
+
+/* Portfolio Actions */
+.portfolio-actions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.action-btn {
+  padding: 12px 16px;
+  border-radius: 14px;
+  border: none;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.action-btn.buy {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+}
+
+.action-btn.sell {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+}
+
+.action-btn.swap {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  color: white;
+}
+
+.action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Performance Section */
+.performance-section {
+  margin: 0 20px 20px 20px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.timeframe-selector {
+  display: flex;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 4px;
+  margin-bottom: 16px;
+}
+
+.timeframe-btn {
+  flex: 1;
+  padding: 8px 12px;
+  background: transparent;
+  border: none;
+  color: white;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.timeframe-btn.active {
+  background: rgba(255, 255, 255, 0.2);
+  font-weight: 600;
+}
+
+.performance-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.metric {
+  text-align: center;
+}
+
+.metric-label {
+  display: block;
+  font-size: 12px;
+  opacity: 0.7;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.metric-value {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.metric-value.positive {
+  color: #10b981;
+}
+
+.metric-value.negative {
+  color: #ef4444;
+}
+
+/* Holdings Section */
+.holdings-section {
+  flex: 1;
+  margin: 0 20px;
+}
+
+.holdings-section h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  opacity: 0.9;
+}
+
+.holdings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.holding-item {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.holding-item:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.holding-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin-right: 12px;
+}
+
+.holding-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.holding-primary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.holding-primary h4 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.holding-amount {
+  font-size: 14px;
+  opacity: 0.8;
+  font-weight: 500;
+}
+
+.holding-secondary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.holding-name {
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+.holding-price {
+  font-size: 13px;
+  opacity: 0.8;
+  font-weight: 500;
+}
+
+.holding-performance {
+  text-align: right;
+  min-width: 100px;
+}
+
+.holding-value {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.holding-pnl {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 4px;
+}
+
+.holding-pnl.positive {
+  color: #10b981;
+}
+
+.holding-pnl.negative {
+  color: #ef4444;
+}
+
+.holding-pnl .pnl-amount {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.holding-pnl .pnl-percent {
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+.price-change {
+  font-size: 11px;
+  opacity: 0.8;
+}
+
+.price-change.positive {
+  color: #10b981;
+}
+
+.price-change.negative {
+  color: #ef4444;
+}
+
+/* Quick Actions */
+.quick-actions-portfolio {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 20px;
+  padding-bottom: 20px;
+}
+
+.portfolio-action-btn {
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 14px;
+  color: white;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.portfolio-action-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+}
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+  .portfolio-header {
+    padding: 12px 16px;
+  }
+
+  .total-value-card {
+    margin: 16px;
+    padding: 20px;
+  }
+
+  .total-value h2 {
+    font-size: 28px;
+  }
+
+  .performance-section {
+    margin: 0 16px 16px 16px;
+    padding: 16px;
+  }
+
+  .holdings-section {
+    margin: 0 16px;
+  }
+
+  .holding-item {
+    padding: 12px;
+  }
+
+  .holding-icon {
+    width: 44px;
+    height: 44px;
+    font-size: 20px;
+  }
+
+  .quick-actions-portfolio {
+    margin: 16px;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .portfolio-view {
+    background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .portfolio-header,
+  .total-value-card,
+  .performance-section,
+  .holding-item,
+  .portfolio-action-btn {
+    border-width: 2px;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .loading-spinner {
+    animation: none;
+  }
+
+  .back-btn:hover,
+  .refresh-btn:hover,
+  .action-btn:hover,
+  .portfolio-action-btn:hover {
+    transform: none;
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "name": "zmartychat",
+  "version": "1.0.0",
+  "description": "AI-powered trading companion with addiction-based engagement",
+  "main": "src/main-integration.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/main-integration.js",
+    "dev": "nodemon src/main-integration.js",
+    "background": "node src/user-agent-background.js",
+    "mcp:user": "node mcp-servers/user-data-server.js",
+    "mcp:credit": "node mcp-servers/credit-server.js",
+    "mcp:all": "npm-run-all --parallel mcp:*",
+    "db:migrate": "node database/migrate.js",
+    "test": "jest",
+    "serve": "http-server -p 8080"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.24.3",
+    "@modelcontextprotocol/sdk": "^0.5.0",
+    "@stripe/stripe-js": "^2.2.0",
+    "@supabase/supabase-js": "^2.39.0",
+    "axios": "^1.6.2",
+    "bcryptjs": "^2.4.3",
+    "cheerio": "^1.1.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "events": "^3.3.0",
+    "express": "^4.18.2",
+    "jsdom": "^27.0.0",
+    "marked": "^16.3.0",
+    "node-cron": "^3.0.3",
+    "openai": "^5.21.0",
+    "socket.io": "^4.6.0",
+    "socket.io-client": "^4.6.0",
+    "stripe": "^14.10.0",
+    "turndown": "^7.2.1",
+    "uuid": "^9.0.1",
+    "ws": "^8.14.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.8.0",
+    "http-server": "^14.1.1",
+    "jest": "^29.7.0",
+    "nodemon": "^3.0.1",
+    "npm-run-all": "^4.1.5"
+  },
+  "keywords": [
+    "ai",
+    "chat",
+    "claude",
+    "mcp",
+    "trading",
+    "cryptocurrency",
+    "supabase",
+    "stripe"
+  ],
+  "author": "ZmartBot",
+  "license": "MIT"
+}

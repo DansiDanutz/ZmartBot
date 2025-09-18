@@ -1,0 +1,195 @@
+{
+  "tools": [
+    {
+      "name": "get_market_data",
+      "description": "Get real-time cryptocurrency market data including price, volume, and 24h change",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "symbol": {
+            "type": "string",
+            "description": "Cryptocurrency symbol like BTC, ETH, SOL, DOGE"
+          }
+        },
+        "required": ["symbol"]
+      }
+    },
+    {
+      "name": "technical_analysis",
+      "description": "Perform technical analysis with indicators like RSI, MACD, moving averages",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "symbol": {
+            "type": "string",
+            "description": "Cryptocurrency symbol"
+          },
+          "timeframe": {
+            "type": "string",
+            "description": "Time period: 1m, 5m, 15m, 1h, 4h, or 1d",
+            "enum": ["1m", "5m", "15m", "1h", "4h", "1d"]
+          }
+        },
+        "required": ["symbol"]
+      }
+    },
+    {
+      "name": "check_credits",
+      "description": "Check user's credit balance and usage",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "description": "User identifier"
+          }
+        },
+        "required": ["userId"]
+      }
+    },
+    {
+      "name": "multi_agent_consensus",
+      "description": "Get trading consensus from multiple AI agents for better decision making",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Trading question or analysis request"
+          },
+          "symbol": {
+            "type": "string",
+            "description": "Optional cryptocurrency symbol for focused analysis"
+          }
+        },
+        "required": ["query"]
+      }
+    },
+    {
+      "name": "set_price_alert",
+      "description": "Set a price alert notification for when a cryptocurrency reaches a target price",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "symbol": {
+            "type": "string",
+            "description": "Cryptocurrency symbol"
+          },
+          "targetPrice": {
+            "type": "number",
+            "description": "Target price in USD"
+          },
+          "direction": {
+            "type": "string",
+            "description": "Trigger when price goes above or below target",
+            "enum": ["above", "below"]
+          }
+        },
+        "required": ["symbol", "targetPrice", "direction"]
+      }
+    },
+    {
+      "name": "portfolio_analysis",
+      "description": "Analyze portfolio performance, allocation, and get recommendations",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "description": "User identifier"
+          }
+        },
+        "required": ["userId"]
+      }
+    },
+    {
+      "name": "get_trading_signals",
+      "description": "Get AI-powered buy/sell signals based on market conditions",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "symbols": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of cryptocurrency symbols to analyze"
+          },
+          "riskLevel": {
+            "type": "string",
+            "description": "Risk tolerance level",
+            "enum": ["conservative", "moderate", "aggressive"]
+          }
+        },
+        "required": ["symbols"]
+      }
+    },
+    {
+      "name": "execute_trade",
+      "description": "Execute a simulated paper trade for practice and tracking",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "symbol": {
+            "type": "string",
+            "description": "Cryptocurrency symbol"
+          },
+          "action": {
+            "type": "string",
+            "description": "Trade action",
+            "enum": ["buy", "sell"]
+          },
+          "amount": {
+            "type": "number",
+            "description": "Amount in USD or quantity"
+          },
+          "userId": {
+            "type": "string",
+            "description": "User identifier"
+          }
+        },
+        "required": ["symbol", "action", "amount", "userId"]
+      }
+    },
+    {
+      "name": "get_market_sentiment",
+      "description": "Analyze overall market sentiment from news and social media",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "symbol": {
+            "type": "string",
+            "description": "Optional symbol for specific sentiment"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "calculate_position_size",
+      "description": "Calculate optimal position size based on risk management rules",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "accountBalance": {
+            "type": "number",
+            "description": "Total account balance"
+          },
+          "riskPercentage": {
+            "type": "number",
+            "description": "Risk percentage per trade (1-5)"
+          },
+          "entryPrice": {
+            "type": "number",
+            "description": "Entry price for the trade"
+          },
+          "stopLoss": {
+            "type": "number",
+            "description": "Stop loss price"
+          }
+        },
+        "required": ["accountBalance", "riskPercentage", "entryPrice", "stopLoss"]
+      }
+    }
+  ]
+}

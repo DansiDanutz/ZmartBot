@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZmartyChat - Account Setup</title>
+    <link rel="stylesheet" href="onboarding.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+</head>
+<body>
+    <!-- Progress Bar -->
+    <div class="progress-container">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div class="progress-steps">
+            <div class="step active" data-step="1">
+                <span class="step-number">1</span>
+                <span class="step-label">Welcome</span>
+            </div>
+            <div class="step" data-step="2">
+                <span class="step-number">2</span>
+                <span class="step-label">Account</span>
+            </div>
+            <div class="step" data-step="3">
+                <span class="step-number">3</span>
+                <span class="step-label">Verification</span>
+            </div>
+            <div class="step" data-step="4">
+                <span class="step-number">4</span>
+                <span class="step-label">Profile</span>
+            </div>
+            <div class="step" data-step="5">
+                <span class="step-number">5</span>
+                <span class="step-label">Security</span>
+            </div>
+            <div class="step" data-step="6">
+                <span class="step-number">6</span>
+                <span class="step-label">Complete</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="onboarding-container">
+        <!-- Step 1: Welcome -->
+        <div class="step-content active" id="step-1">
+            <div class="welcome-screen">
+                <div class="welcome-logo">
+                    <span class="logo-icon">🤖</span>
+                    <h1>Welcome to ZmartyChat</h1>
+                </div>
+                <div class="welcome-content">
+                    <h2>Your AI-Powered Crypto Trading Companion</h2>
+                    <p class="welcome-description">
+                        Join thousands of traders who are already using ZmartyChat to make smarter trading decisions
+                        with the power of 4 advanced AI models working together.
+                    </p>
+
+                    <div class="feature-highlights">
+                        <div class="highlight-item">
+                            <span class="highlight-icon">🧠</span>
+                            <div class="highlight-text">
+                                <h3>Multi-AI Analysis</h3>
+                                <p>OpenAI, Claude, Grok & Gemini combined</p>
+                            </div>
+                        </div>
+                        <div class="highlight-item">
+                            <span class="highlight-icon">🐋</span>
+                            <div class="highlight-text">
+                                <h3>Real-time Whale Alerts</h3>
+                                <p>Track large transactions as they happen</p>
+                            </div>
+                        </div>
+                        <div class="highlight-item">
+                            <span class="highlight-icon">📊</span>
+                            <div class="highlight-text">
+                                <h3>Advanced Analytics</h3>
+                                <p>Professional-grade trading insights</p>
+                            </div>
+                        </div>
+                        <div class="highlight-item">
+                            <span class="highlight-icon">💰</span>
+                            <div class="highlight-text">
+                                <h3>Earn Commissions</h3>
+                                <p>Get paid for successful referrals</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="account-type-selection">
+                        <h3>Choose Your Account Type</h3>
+                        <div class="account-types">
+                            <div class="account-type-card" data-type="free">
+                                <div class="card-header">
+                                    <h4>Free Starter</h4>
+                                    <div class="price">$0<span>/month</span></div>
+                                </div>
+                                <ul class="features">
+                                    <li>✓ Basic AI insights</li>
+                                    <li>✓ 10 AI queries/day</li>
+                                    <li>✓ Basic whale alerts</li>
+                                    <li>✓ Community access</li>
+                                </ul>
+                                <button class="select-plan-btn" data-plan="free">Get Started Free</button>
+                            </div>
+
+                            <div class="account-type-card featured" data-type="pro">
+                                <div class="badge">Most Popular</div>
+                                <div class="card-header">
+                                    <h4>Pro Trader</h4>
+                                    <div class="price">$29<span>/month</span></div>
+                                </div>
+                                <ul class="features">
+                                    <li>✓ Advanced AI analysis</li>
+                                    <li>✓ Unlimited AI queries</li>
+                                    <li>✓ Real-time whale alerts</li>
+                                    <li>✓ Portfolio tracking</li>
+                                    <li>✓ Commission earnings</li>
+                                    <li>✓ Priority support</li>
+                                </ul>
+                                <button class="select-plan-btn featured" data-plan="pro">Start Pro Trial</button>
+                            </div>
+
+                            <div class="account-type-card" data-type="enterprise">
+                                <div class="card-header">
+                                    <h4>Enterprise</h4>
+                                    <div class="price">$99<span>/month</span></div>
+                                </div>
+                                <ul class="features">
+                                    <li>✓ Everything in Pro</li>
+                                    <li>✓ White-label solution</li>
+                                    <li>✓ Custom integrations</li>
+                                    <li>✓ Dedicated support</li>
+                                    <li>✓ Advanced analytics</li>
+                                    <li>✓ Team management</li>
+                                </ul>
+                                <button class="select-plan-btn" data-plan="enterprise">Contact Sales</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 2: Account Creation -->
+        <div class="step-content" id="step-2">
+            <div class="form-container">
+                <div class="form-header">
+                    <h2>Create Your Account</h2>
+                    <p>Set up your ZmartyChat account to get started</p>
+                </div>
+
+                <form class="onboarding-form" id="accountForm">
+                    <div class="form-section">
+                        <h3>Personal Information</h3>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName">First Name *</label>
+                                <input type="text" id="firstName" name="firstName" required>
+                                <span class="error-message" id="firstNameError"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last Name *</label>
+                                <input type="text" id="lastName" name="lastName" required>
+                                <span class="error-message" id="lastNameError"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" name="email" required>
+                            <span class="form-hint">We'll use this for account notifications and security alerts</span>
+                            <span class="error-message" id="emailError"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <div class="phone-input">
+                                <select id="countryCode" name="countryCode">
+                                    <option value="+1">🇺🇸 +1</option>
+                                    <option value="+44">🇬🇧 +44</option>
+                                    <option value="+49">🇩🇪 +49</option>
+                                    <option value="+33">🇫🇷 +33</option>
+                                    <option value="+39">🇮🇹 +39</option>
+                                    <option value="+34">🇪🇸 +34</option>
+                                    <option value="+81">🇯🇵 +81</option>
+                                    <option value="+86">🇨🇳 +86</option>
+                                </select>
+                                <input type="tel" id="phone" name="phone" placeholder="555-123-4567">
+                            </div>
+                            <span class="form-hint">Optional: For enhanced security and SMS alerts</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="dateOfBirth">Date of Birth *</label>
+                            <input type="date" id="dateOfBirth" name="dateOfBirth" required>
+                            <span class="form-hint">Required for compliance verification</span>
+                            <span class="error-message" id="dobError"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="country">Country/Region *</label>
+                            <select id="country" name="country" required>
+                                <option value="">Select your country</option>
+                                <option value="US">United States</option>
+                                <option value="CA">Canada</option>
+                                <option value="GB">United Kingdom</option>
+                                <option value="DE">Germany</option>
+                                <option value="FR">France</option>
+                                <option value="IT">Italy</option>
+                                <option value="ES">Spain</option>
+                                <option value="JP">Japan</option>
+                                <option value="AU">Australia</option>
+                                <option value="SG">Singapore</option>
+                            </select>
+                            <span class="error-message" id="countryError"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Account Security</h3>
+
+                        <div class="form-group">
+                            <label for="password">Password *</label>
+                            <div class="password-input">
+                                <input type="password" id="password" name="password" required>
+                                <button type="button" class="password-toggle" onclick="togglePassword('password')">👁️</button>
+                            </div>
+                            <div class="password-strength" id="passwordStrength">
+                                <div class="strength-bar">
+                                    <div class="strength-fill"></div>
+                                </div>
+                                <span class="strength-text">Password strength</span>
+                            </div>
+                            <span class="error-message" id="passwordError"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm Password *</label>
+                            <div class="password-input">
+                                <input type="password" id="confirmPassword" name="confirmPassword" required>
+                                <button type="button" class="password-toggle" onclick="togglePassword('confirmPassword')">👁️</button>
+                            </div>
+                            <span class="error-message" id="confirmPasswordError"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="terms" name="terms" required>
+                                <span class="checkmark"></span>
+                                I agree to the <a href="/terms" target="_blank">Terms of Service</a> and <a href="/privacy" target="_blank">Privacy Policy</a> *
+                            </label>
+                            <span class="error-message" id="termsError"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="marketing" name="marketing">
+                                <span class="checkmark"></span>
+                                I would like to receive market insights and product updates via email
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Step 3: Identity Verification (KYC) -->
+        <div class="step-content" id="step-3">
+            <div class="form-container">
+                <div class="form-header">
+                    <h2>Identity Verification</h2>
+                    <p>To comply with financial regulations, we need to verify your identity</p>
+                    <div class="security-badges">
+                        <span class="badge">🔒 Bank-level Security</span>
+                        <span class="badge">✅ Compliance Verified</span>
+                        <span class="badge">🛡️ Data Protected</span>
+                    </div>
+                </div>
+
+                <div class="kyc-container">
+                    <div class="kyc-steps">
+                        <div class="kyc-step active" id="kycStep1">
+                            <div class="kyc-step-header">
+                                <span class="step-icon">📱</span>
+                                <h3>Step 1: Document Type</h3>
+                                <p>Choose a government-issued ID to verify your identity</p>
+                            </div>
+
+                            <div class="document-types">
+                                <div class="document-type" data-type="passport">
+                                    <div class="doc-icon">📔</div>
+                                    <h4>Passport</h4>
+                                    <p>International travel document</p>
+                                    <ul>
+                                        <li>✓ Fastest verification</li>
+                                        <li>✓ Accepted worldwide</li>
+                                        <li>✓ Single document needed</li>
+                                    </ul>
+                                </div>
+
+                                <div class="document-type" data-type="license">
+                                    <div class="doc-icon">🪪</div>
+                                    <h4>Driver's License</h4>
+                                    <p>Government-issued driver's license</p>
+                                    <ul>
+                                        <li>✓ Most common choice</li>
+                                        <li>✓ Quick verification</li>
+                                        <li>✓ Valid photo ID</li>
+                                    </ul>
+                                </div>
+
+                                <div class="document-type" data-type="national-id">
+                                    <div class="doc-icon">🆔</div>
+                                    <h4>National ID Card</h4>
+                                    <p>Government-issued identification card</p>
+                                    <ul>
+                                        <li>✓ Official government ID</li>
+                                        <li>✓ Secure verification</li>
+                                        <li>✓ Widely accepted</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="kyc-step" id="kycStep2">
+                            <div class="kyc-step-header">
+                                <span class="step-icon">📷</span>
+                                <h3>Step 2: Document Upload</h3>
+                                <p>Take clear photos of your selected document</p>
+                            </div>
+
+                            <div class="upload-instructions">
+                                <div class="instruction-card">
+                                    <div class="instruction-icon">✨</div>
+                                    <h4>Photo Requirements</h4>
+                                    <ul>
+                                        <li>Clear, high-quality images</li>
+                                        <li>All text must be readable</li>
+                                        <li>No glare or shadows</li>
+                                        <li>Document edges fully visible</li>
+                                        <li>Recent, unexpired documents only</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="upload-areas">
+                                <div class="upload-area" id="frontUpload">
+                                    <div class="upload-placeholder">
+                                        <span class="upload-icon">📸</span>
+                                        <h4>Front Side</h4>
+                                        <p>Upload front of document</p>
+                                        <button class="upload-btn">Choose File</button>
+                                        <input type="file" id="frontFile" accept="image/*" hidden>
+                                    </div>
+                                    <div class="upload-preview" style="display: none;">
+                                        <img id="frontPreview" alt="Front preview">
+                                        <button class="remove-btn" onclick="removeFile('front')">Remove</button>
+                                    </div>
+                                </div>
+
+                                <div class="upload-area" id="backUpload">
+                                    <div class="upload-placeholder">
+                                        <span class="upload-icon">📸</span>
+                                        <h4>Back Side</h4>
+                                        <p>Upload back of document</p>
+                                        <button class="upload-btn">Choose File</button>
+                                        <input type="file" id="backFile" accept="image/*" hidden>
+                                    </div>
+                                    <div class="upload-preview" style="display: none;">
+                                        <img id="backPreview" alt="Back preview">
+                                        <button class="remove-btn" onclick="removeFile('back')">Remove</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="kyc-step" id="kycStep3">
+                            <div class="kyc-step-header">
+                                <span class="step-icon">🤳</span>
+                                <h3>Step 3: Selfie Verification</h3>
+                                <p>Take a selfie to confirm your identity matches your document</p>
+                            </div>
+
+                            <div class="selfie-container">
+                                <div class="selfie-instructions">
+                                    <h4>Selfie Guidelines</h4>
+                                    <ul>
+                                        <li>Look directly at the camera</li>
+                                        <li>Ensure good lighting</li>
+                                        <li>Remove sunglasses or hats</li>
+                                        <li>Keep a neutral expression</li>
+                                        <li>Make sure your face is clearly visible</li>
+                                    </ul>
+                                </div>
+
+                                <div class="selfie-capture">
+                                    <div class="camera-frame">
+                                        <div class="face-outline"></div>
+                                        <video id="cameraFeed" autoplay playsinline style="display: none;"></video>
+                                        <canvas id="captureCanvas" style="display: none;"></canvas>
+                                        <div class="camera-placeholder" id="cameraPlaceholder">
+                                            <span class="camera-icon">📷</span>
+                                            <p>Camera will appear here</p>
+                                            <button class="start-camera-btn" id="startCamera">Start Camera</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="capture-controls" id="captureControls" style="display: none;">
+                                        <button class="capture-btn" id="captureBtn">Take Photo</button>
+                                        <button class="retake-btn" id="retakeBtn" style="display: none;">Retake</button>
+                                    </div>
+
+                                    <div class="selfie-preview" id="selfiePreview" style="display: none;">
+                                        <img id="selfieImage" alt="Selfie preview">
+                                        <div class="preview-actions">
+                                            <button class="retake-btn" onclick="retakeSelfie()">Retake</button>
+                                            <button class="confirm-btn" onclick="confirmSelfie()">Use This Photo</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="kyc-step" id="kycStep4">
+                            <div class="kyc-step-header">
+                                <span class="step-icon">⏳</span>
+                                <h3>Verification in Progress</h3>
+                                <p>We're processing your documents. This usually takes 1-5 minutes.</p>
+                            </div>
+
+                            <div class="verification-status">
+                                <div class="status-animation">
+                                    <div class="verification-spinner"></div>
+                                </div>
+
+                                <div class="status-steps">
+                                    <div class="status-step completed">
+                                        <span class="status-icon">✅</span>
+                                        <span class="status-text">Documents received</span>
+                                    </div>
+                                    <div class="status-step active">
+                                        <span class="status-icon">🔍</span>
+                                        <span class="status-text">Analyzing documents</span>
+                                    </div>
+                                    <div class="status-step">
+                                        <span class="status-icon">⏳</span>
+                                        <span class="status-text">Verifying identity</span>
+                                    </div>
+                                    <div class="status-step">
+                                        <span class="status-icon">🎉</span>
+                                        <span class="status-text">Verification complete</span>
+                                    </div>
+                                </div>
+
+                                <div class="status-message">
+                                    <p>Please wait while we verify your documents. You'll receive an email confirmation once complete.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 4: Profile Setup -->
+        <div class="step-content" id="step-4">
+            <div class="form-container">
+                <div class="form-header">
+                    <h2>Complete Your Profile</h2>
+                    <p>Tell us about your trading experience and preferences</p>
+                </div>
+
+                <form class="onboarding-form" id="profileForm">
+                    <div class="form-section">
+                        <h3>Trading Experience</h3>
+
+                        <div class="form-group">
+                            <label>How long have you been trading cryptocurrencies? *</label>
+                            <div class="radio-group">
+                                <label class="radio-label">
+                                    <input type="radio" name="experience" value="beginner" required>
+                                    <span class="radio-custom"></span>
+                                    <div class="radio-content">
+                                        <strong>Beginner (Less than 1 year)</strong>
+                                        <p>Just getting started with crypto trading</p>
+                                    </div>
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="experience" value="intermediate" required>
+                                    <span class="radio-custom"></span>
+                                    <div class="radio-content">
+                                        <strong>Intermediate (1-3 years)</strong>
+                                        <p>Some experience with trading and market analysis</p>
+                                    </div>
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="experience" value="advanced" required>
+                                    <span class="radio-custom"></span>
+                                    <div class="radio-content">
+                                        <strong>Advanced (3+ years)</strong>
+                                        <p>Experienced trader with strong market knowledge</p>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>What's your typical investment size per trade? *</label>
+                            <select name="investmentSize" required>
+                                <option value="">Select range</option>
+                                <option value="under-100">Under $100</option>
+                                <option value="100-500">$100 - $500</option>
+                                <option value="500-1000">$500 - $1,000</option>
+                                <option value="1000-5000">$1,000 - $5,000</option>
+                                <option value="5000-10000">$5,000 - $10,000</option>
+                                <option value="over-10000">Over $10,000</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Which cryptocurrencies are you most interested in? (Select all that apply)</label>
+                            <div class="checkbox-grid">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="interests" value="bitcoin">
+                                    <span class="checkmark"></span>
+                                    Bitcoin (BTC)
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="interests" value="ethereum">
+                                    <span class="checkmark"></span>
+                                    Ethereum (ETH)
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="interests" value="altcoins">
+                                    <span class="checkmark"></span>
+                                    Major Altcoins
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="interests" value="defi">
+                                    <span class="checkmark"></span>
+                                    DeFi Tokens
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="interests" value="nft">
+                                    <span class="checkmark"></span>
+                                    NFT Projects
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="interests" value="meme">
+                                    <span class="checkmark"></span>
+                                    Meme Coins
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Notification Preferences</h3>
+
+                        <div class="form-group">
+                            <label>How would you like to receive alerts?</label>
+                            <div class="checkbox-grid">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="notifications" value="email" checked>
+                                    <span class="checkmark"></span>
+                                    📧 Email notifications
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="notifications" value="sms">
+                                    <span class="checkmark"></span>
+                                    📱 SMS alerts (Premium)
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="notifications" value="push">
+                                    <span class="checkmark"></span>
+                                    🔔 Browser push notifications
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="notifications" value="discord">
+                                    <span class="checkmark"></span>
+                                    💬 Discord webhooks
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>What types of alerts interest you most?</label>
+                            <div class="checkbox-grid">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="alertTypes" value="whale" checked>
+                                    <span class="checkmark"></span>
+                                    🐋 Whale movement alerts
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="alertTypes" value="price" checked>
+                                    <span class="checkmark"></span>
+                                    💰 Price alerts
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="alertTypes" value="ai">
+                                    <span class="checkmark"></span>
+                                    🤖 AI trading signals
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="alertTypes" value="news">
+                                    <span class="checkmark"></span>
+                                    📰 Market news
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="alertTypes" value="technical">
+                                    <span class="checkmark"></span>
+                                    📊 Technical analysis updates
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Referral Information</h3>
+
+                        <div class="form-group">
+                            <label for="referralCode">Referral Code (Optional)</label>
+                            <input type="text" id="referralCode" name="referralCode" placeholder="Enter referral code">
+                            <span class="form-hint">If someone referred you, enter their code to earn them commission</span>
+                        </div>
+
+                        <div class="referral-info">
+                            <h4>Earn by Referring Others</h4>
+                            <p>Start earning commissions when you refer new users to ZmartyChat:</p>
+                            <ul>
+                                <li>🥉 <strong>Bronze (0-9 referrals):</strong> 5% commission</li>
+                                <li>🥈 <strong>Silver (10-24 referrals):</strong> 8% commission</li>
+                                <li>🥇 <strong>Gold (25-49 referrals):</strong> 12% commission</li>
+                                <li>💎 <strong>Diamond (50+ referrals):</strong> 15% commission</li>
+                            </ul>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Step 5: Security Setup -->
+        <div class="step-content" id="step-5">
+            <div class="form-container">
+                <div class="form-header">
+                    <h2>Secure Your Account</h2>
+                    <p>Add extra security layers to protect your trading account</p>
+                </div>
+
+                <div class="security-setup">
+                    <div class="security-option">
+                        <div class="security-header">
+                            <span class="security-icon">📱</span>
+                            <div class="security-info">
+                                <h3>Two-Factor Authentication (2FA)</h3>
+                                <p>Add an extra layer of security to your account</p>
+                            </div>
+                            <div class="security-toggle">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="enable2FA">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="security-content" id="twoFASetup" style="display: none;">
+                            <div class="auth-methods">
+                                <div class="auth-method" data-method="app">
+                                    <div class="method-icon">📱</div>
+                                    <h4>Authenticator App</h4>
+                                    <p>Use Google Authenticator, Authy, or similar</p>
+                                    <button class="setup-btn">Setup</button>
+                                </div>
+                                <div class="auth-method" data-method="sms">
+                                    <div class="method-icon">💬</div>
+                                    <h4>SMS Verification</h4>
+                                    <p>Receive codes via text message</p>
+                                    <button class="setup-btn">Setup</button>
+                                </div>
+                            </div>
+
+                            <div class="qr-setup" id="qrSetup" style="display: none;">
+                                <h4>Scan QR Code</h4>
+                                <div class="qr-container">
+                                    <div class="qr-code" id="qrCode">
+                                        <!-- QR code will be generated here -->
+                                        <div class="qr-placeholder">QR Code</div>
+                                    </div>
+                                    <div class="qr-instructions">
+                                        <p>1. Open your authenticator app</p>
+                                        <p>2. Scan this QR code</p>
+                                        <p>3. Enter the 6-digit code below</p>
+                                    </div>
+                                </div>
+                                <div class="verification-input">
+                                    <label for="authCode">Verification Code</label>
+                                    <input type="text" id="authCode" placeholder="000000" maxlength="6">
+                                    <button class="verify-btn">Verify & Enable</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="security-option">
+                        <div class="security-header">
+                            <span class="security-icon">🔐</span>
+                            <div class="security-info">
+                                <h3>API Key Management</h3>
+                                <p>Connect your exchange accounts securely</p>
+                            </div>
+                            <button class="setup-btn" id="setupAPI">Setup Later</button>
+                        </div>
+                    </div>
+
+                    <div class="security-option">
+                        <div class="security-header">
+                            <span class="security-icon">📧</span>
+                            <div class="security-info">
+                                <h3>Email Verification</h3>
+                                <p>Verify your email address for account security</p>
+                            </div>
+                            <button class="verify-email-btn" id="verifyEmail">Send Verification</button>
+                        </div>
+
+                        <div class="email-verification" id="emailVerification" style="display: none;">
+                            <p>We've sent a verification email to <strong id="userEmail">your email</strong></p>
+                            <p>Click the link in your email to verify your account.</p>
+                            <button class="resend-btn" id="resendEmail">Resend Email</button>
+                        </div>
+                    </div>
+
+                    <div class="security-recommendations">
+                        <h3>Security Recommendations</h3>
+                        <ul>
+                            <li>✅ Use a strong, unique password</li>
+                            <li>✅ Enable two-factor authentication</li>
+                            <li>✅ Verify your email address</li>
+                            <li>⚠️ Never share your login credentials</li>
+                            <li>⚠️ Always log out on shared devices</li>
+                            <li>⚠️ Be cautious of phishing attempts</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 6: Completion -->
+        <div class="step-content" id="step-6">
+            <div class="completion-screen">
+                <div class="completion-animation">
+                    <div class="success-icon">🎉</div>
+                </div>
+
+                <div class="completion-content">
+                    <h1>Welcome to ZmartyChat!</h1>
+                    <p class="completion-subtitle">Your account has been successfully created and verified</p>
+
+                    <div class="account-summary">
+                        <div class="summary-card">
+                            <h3>Your Account Details</h3>
+                            <div class="detail-item">
+                                <span class="label">Plan:</span>
+                                <span class="value" id="selectedPlan">Pro Trader</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="label">Verification:</span>
+                                <span class="value verified">✅ Verified</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="label">2FA:</span>
+                                <span class="value" id="twoFAStatus">⚠️ Not Set</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="label">Referral Code:</span>
+                                <span class="value code" id="userReferralCode">ZC-ABC123</span>
+                            </div>
+                        </div>
+
+                        <div class="next-steps">
+                            <h3>What's Next?</h3>
+                            <div class="step-list">
+                                <div class="next-step">
+                                    <span class="step-icon">🎯</span>
+                                    <div class="step-info">
+                                        <h4>Explore the Dashboard</h4>
+                                        <p>Get familiar with AI insights and trading tools</p>
+                                    </div>
+                                </div>
+                                <div class="next-step">
+                                    <span class="step-icon">🤖</span>
+                                    <div class="step-info">
+                                        <h4>Try AI Analysis</h4>
+                                        <p>Ask our AI about market conditions and get insights</p>
+                                    </div>
+                                </div>
+                                <div class="next-step">
+                                    <span class="step-icon">🔗</span>
+                                    <div class="step-info">
+                                        <h4>Connect Exchanges</h4>
+                                        <p>Link your trading accounts for portfolio tracking</p>
+                                    </div>
+                                </div>
+                                <div class="next-step">
+                                    <span class="step-icon">👥</span>
+                                    <div class="step-info">
+                                        <h4>Join the Community</h4>
+                                        <p>Connect with other traders and share insights</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="completion-actions">
+                        <button class="primary-action" onclick="goToDashboard()">
+                            Go to Dashboard
+                        </button>
+                        <button class="secondary-action" onclick="takeTour()">
+                            Take a Tour
+                        </button>
+                    </div>
+
+                    <div class="bonus-offer">
+                        <div class="bonus-content">
+                            <h4>🎁 Welcome Bonus!</h4>
+                            <p>You've been credited with <strong>100 free AI queries</strong> to get started</p>
+                            <p>Plus, your first month of Pro features is on us!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="navigation-buttons">
+            <button class="nav-btn secondary" id="backBtn" style="display: none;">
+                ← Back
+            </button>
+            <button class="nav-btn primary" id="nextBtn">
+                Next →
+            </button>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <p>Processing your information...</p>
+        </div>
+    </div>
+
+    <script src="onboarding.js"></script>
+</body>
+</html>

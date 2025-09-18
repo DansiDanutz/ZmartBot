@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZmartyChat Admin - System Control Center</title>
+    <link rel="stylesheet" href="admin.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+</head>
+<body>
+    <!-- Admin Header -->
+    <header class="admin-header">
+        <div class="header-left">
+            <div class="logo">
+                <span class="logo-icon">⚡</span>
+                <span class="logo-text">ZmartyChat Admin</span>
+            </div>
+            <div class="system-status">
+                <span class="status-indicator active"></span>
+                <span class="status-text">All Systems Operational</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="admin-info">
+                <span class="admin-role">Super Admin</span>
+                <span class="admin-name">Admin User</span>
+                <img src="https://via.placeholder.com/32" alt="Admin" class="admin-avatar">
+            </div>
+            <button class="logout-btn">Logout</button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="admin-container">
+        <!-- Sidebar Navigation -->
+        <aside class="admin-sidebar">
+            <nav class="admin-nav">
+                <div class="nav-section">
+                    <div class="nav-title">Monitoring</div>
+                    <a href="#overview" class="nav-item active">
+                        <span class="nav-icon">📊</span>
+                        System Overview
+                    </a>
+                    <a href="#health" class="nav-item">
+                        <span class="nav-icon">❤️</span>
+                        Health Monitor
+                    </a>
+                    <a href="#circuit-breakers" class="nav-item">
+                        <span class="nav-icon">🔌</span>
+                        Circuit Breakers
+                    </a>
+                    <a href="#performance" class="nav-item">
+                        <span class="nav-icon">⚡</span>
+                        Performance
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-title">Management</div>
+                    <a href="#users" class="nav-item">
+                        <span class="nav-icon">👥</span>
+                        User Management
+                    </a>
+                    <a href="#transactions" class="nav-item">
+                        <span class="nav-icon">💰</span>
+                        Transactions
+                    </a>
+                    <a href="#api-keys" class="nav-item">
+                        <span class="nav-icon">🔑</span>
+                        API Keys
+                    </a>
+                    <a href="#kyc" class="nav-item">
+                        <span class="nav-icon">🆔</span>
+                        KYC Verification
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-title">Analytics</div>
+                    <a href="#revenue" class="nav-item">
+                        <span class="nav-icon">💹</span>
+                        Revenue Analytics
+                    </a>
+                    <a href="#usage" class="nav-item">
+                        <span class="nav-icon">📈</span>
+                        Usage Statistics
+                    </a>
+                    <a href="#ai-metrics" class="nav-item">
+                        <span class="nav-icon">🤖</span>
+                        AI Provider Metrics
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-title">Security</div>
+                    <a href="#audit-log" class="nav-item">
+                        <span class="nav-icon">📜</span>
+                        Audit Log
+                    </a>
+                    <a href="#security-alerts" class="nav-item">
+                        <span class="nav-icon">🚨</span>
+                        Security Alerts
+                    </a>
+                    <a href="#config" class="nav-item">
+                        <span class="nav-icon">⚙️</span>
+                        Configuration
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-content">
+            <!-- System Overview Section -->
+            <section id="overview-section" class="content-section active">
+                <div class="section-header">
+                    <h1>System Overview</h1>
+                    <div class="header-actions">
+                        <button class="refresh-btn">🔄 Refresh</button>
+                        <button class="export-btn">📊 Export Report</button>
+                    </div>
+                </div>
+
+                <!-- Critical Metrics Grid -->
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <span class="metric-label">Total Users</span>
+                            <span class="metric-icon">👥</span>
+                        </div>
+                        <div class="metric-value">24,567</div>
+                        <div class="metric-change positive">+12.5% this week</div>
+                        <div class="metric-chart">
+                            <canvas id="usersChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <span class="metric-label">Active Sessions</span>
+                            <span class="metric-icon">🟢</span>
+                        </div>
+                        <div class="metric-value">3,842</div>
+                        <div class="metric-change positive">+5.2% from average</div>
+                        <div class="metric-chart">
+                            <canvas id="sessionsChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <span class="metric-label">API Requests/min</span>
+                            <span class="metric-icon">🚀</span>
+                        </div>
+                        <div class="metric-value">15,234</div>
+                        <div class="metric-change neutral">Normal load</div>
+                        <div class="metric-chart">
+                            <canvas id="apiChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="metric-card alert">
+                        <div class="metric-header">
+                            <span class="metric-label">Error Rate</span>
+                            <span class="metric-icon">⚠️</span>
+                        </div>
+                        <div class="metric-value">0.12%</div>
+                        <div class="metric-change negative">+0.05% spike detected</div>
+                        <div class="metric-chart">
+                            <canvas id="errorChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- System Health Grid -->
+                <div class="health-grid">
+                    <div class="health-card">
+                        <h3>Service Health</h3>
+                        <div class="service-list">
+                            <div class="service-item">
+                                <span class="service-name">Main API Server</span>
+                                <span class="service-status operational">Operational</span>
+                                <span class="service-uptime">99.99%</span>
+                            </div>
+                            <div class="service-item">
+                                <span class="service-name">WebSocket Server</span>
+                                <span class="service-status operational">Operational</span>
+                                <span class="service-uptime">99.95%</span>
+                            </div>
+                            <div class="service-item">
+                                <span class="service-name">Database Cluster</span>
+                                <span class="service-status operational">Operational</span>
+                                <span class="service-uptime">100%</span>
+                            </div>
+                            <div class="service-item">
+                                <span class="service-name">Redis Cache</span>
+                                <span class="service-status degraded">Degraded</span>
+                                <span class="service-uptime">98.5%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="health-card">
+                        <h3>AI Provider Status</h3>
+                        <div class="provider-grid">
+                            <div class="provider-status">
+                                <div class="provider-name">OpenAI</div>
+                                <div class="provider-indicator active"></div>
+                                <div class="provider-metrics">
+                                    <span>Latency: 245ms</span>
+                                    <span>Success: 99.8%</span>
+                                </div>
+                            </div>
+                            <div class="provider-status">
+                                <div class="provider-name">Claude</div>
+                                <div class="provider-indicator active"></div>
+                                <div class="provider-metrics">
+                                    <span>Latency: 312ms</span>
+                                    <span>Success: 99.5%</span>
+                                </div>
+                            </div>
+                            <div class="provider-status">
+                                <div class="provider-name">Grok</div>
+                                <div class="provider-indicator active"></div>
+                                <div class="provider-metrics">
+                                    <span>Latency: 198ms</span>
+                                    <span>Success: 99.9%</span>
+                                </div>
+                            </div>
+                            <div class="provider-status">
+                                <div class="provider-name">Gemini</div>
+                                <div class="provider-indicator warning"></div>
+                                <div class="provider-metrics">
+                                    <span>Latency: 520ms</span>
+                                    <span>Success: 97.2%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Activity Feed -->
+                <div class="activity-feed">
+                    <h3>Live Activity Feed</h3>
+                    <div class="feed-controls">
+                        <button class="filter-btn active" data-filter="all">All</button>
+                        <button class="filter-btn" data-filter="users">Users</button>
+                        <button class="filter-btn" data-filter="transactions">Transactions</button>
+                        <button class="filter-btn" data-filter="errors">Errors</button>
+                        <button class="filter-btn" data-filter="security">Security</button>
+                    </div>
+                    <div class="feed-list">
+                        <div class="feed-item success">
+                            <span class="feed-time">12:34:56</span>
+                            <span class="feed-icon">✅</span>
+                            <span class="feed-message">New user registration: john.doe@email.com</span>
+                        </div>
+                        <div class="feed-item transaction">
+                            <span class="feed-time">12:34:45</span>
+                            <span class="feed-icon">💰</span>
+                            <span class="feed-message">Transaction completed: $29.00 Pro subscription</span>
+                        </div>
+                        <div class="feed-item warning">
+                            <span class="feed-time">12:34:32</span>
+                            <span class="feed-icon">⚠️</span>
+                            <span class="feed-message">High latency detected on Gemini API</span>
+                        </div>
+                        <div class="feed-item error">
+                            <span class="feed-time">12:34:28</span>
+                            <span class="feed-icon">❌</span>
+                            <span class="feed-message">Failed login attempt from IP: 192.168.1.1</span>
+                        </div>
+                        <div class="feed-item info">
+                            <span class="feed-time">12:34:15</span>
+                            <span class="feed-icon">ℹ️</span>
+                            <span class="feed-message">Circuit breaker opened for OpenAI provider</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Circuit Breakers Section -->
+            <section id="circuit-breakers-section" class="content-section">
+                <div class="section-header">
+                    <h1>Circuit Breaker Status</h1>
+                    <div class="header-actions">
+                        <button class="reset-all-btn">Reset All Breakers</button>
+                    </div>
+                </div>
+
+                <div class="breaker-grid">
+                    <div class="breaker-card">
+                        <div class="breaker-header">
+                            <h3>OpenAI Circuit Breaker</h3>
+                            <div class="breaker-state closed">CLOSED</div>
+                        </div>
+                        <div class="breaker-metrics">
+                            <div class="breaker-metric">
+                                <span class="label">Failure Count</span>
+                                <span class="value">2</span>
+                            </div>
+                            <div class="breaker-metric">
+                                <span class="label">Success Rate</span>
+                                <span class="value">99.8%</span>
+                            </div>
+                            <div class="breaker-metric">
+                                <span class="label">Avg Response</span>
+                                <span class="value">245ms</span>
+                            </div>
+                            <div class="breaker-metric">
+                                <span class="label">Last Failure</span>
+                                <span class="value">5 min ago</span>
+                            </div>
+                        </div>
+                        <div class="breaker-actions">
+                            <button class="breaker-btn force-open">Force Open</button>
+                            <button class="breaker-btn reset">Reset</button>
+                        </div>
+                    </div>
+
+                    <div class="breaker-card">
+                        <div class="breaker-header">
+                            <h3>Claude Circuit Breaker</h3>
+                            <div class="breaker-state closed">CLOSED</div>
+                        </div>
+                        <div class="breaker-metrics">
+                            <div class="breaker-metric">
+                                <span class="label">Failure Count</span>
+                                <span class="value">0</span>
+                            </div>
+                            <div class="breaker-metric">
+                                <span class="label">Success Rate</span>
+                                <span class="value">99.5%</span>
+                            </div>
+                            <div class="breaker-metric">
+                                <span class="label">Avg Response</span>
+                                <span class="value">312ms</span>
+                            </div>
+                            <div class="breaker-metric">
+                                <span class="label">Last Failure</span>
+                                <span class="value">2 hours ago</span>
+                            </div>
+                        </div>
+                        <div class="breaker-actions">
+                            <button class="breaker-btn force-open">Force Open</button>
+                            <button class="breaker-btn reset">Reset</button>
+                        </div>
+                    </div>
+
+                    <div class="breaker-card">
+                        <div class="breaker-header">
+                            <h3>Database Circuit Breaker</h3>
+                            <div class="breaker-state closed">CLOSED</div>
+                        </div>
+                        <div class="breaker-metrics">
+                            <div class="breaker-metric">
+                                <span class="label">Failure Count</span>
+                                <span class="value">0</span>
+                            </div>
+                            <div class="breaker-metric">
+                                <span class="label">Success Rate</span>
+                                <span class="value">100%</span>
+                            </div>
+                            <div class="breaker-metric">
+                                <span class="label">Avg Response</span>
+                                <span class="value">12ms</span>
+                            </div>
+                            <div class="breaker-metric">
+                                <span class="label">Last Failure</span>
+                                <span class="value">Never</span>
+                            </div>
+                        </div>
+                        <div class="breaker-actions">
+                            <button class="breaker-btn force-open">Force Open</button>
+                            <button class="breaker-btn reset">Reset</button>
+                        </div>
+                    </div>
+
+                    <div class="breaker-card warning">
+                        <div class="breaker-header">
+                            <h3>Gemini Circuit Breaker</h3>
+                            <div class="breaker-state half-open">HALF-OPEN</div>
+                        </div>
+                        <div class="breaker-metrics">
+                            <div class="breaker-metric">
+                                <span class="label">Failure Count</span>
+                                <span class="value">4</span>
+                            </div>
+                            <div class="breaker-metric">
+                                <span class="label">Success Rate</span>
+                                <span class="value">97.2%</span>
+                            </div>
+                            <div class="breaker-metric">
+                                <span class="label">Avg Response</span>
+                                <span class="value">520ms</span>
+                            </div>
+                            <div class="breaker-metric">
+                                <span class="label">Last Failure</span>
+                                <span class="value">30 sec ago</span>
+                            </div>
+                        </div>
+                        <div class="breaker-actions">
+                            <button class="breaker-btn force-close">Force Close</button>
+                            <button class="breaker-btn reset">Reset</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Breaker Configuration -->
+                <div class="breaker-config">
+                    <h3>Circuit Breaker Configuration</h3>
+                    <div class="config-grid">
+                        <div class="config-item">
+                            <label>Failure Threshold</label>
+                            <input type="number" value="5" min="1" max="100">
+                            <span class="config-hint">Number of failures before opening</span>
+                        </div>
+                        <div class="config-item">
+                            <label>Recovery Timeout (ms)</label>
+                            <input type="number" value="30000" min="1000" max="300000">
+                            <span class="config-hint">Time before attempting recovery</span>
+                        </div>
+                        <div class="config-item">
+                            <label>Success Threshold</label>
+                            <input type="number" value="3" min="1" max="10">
+                            <span class="config-hint">Successes needed to close from half-open</span>
+                        </div>
+                        <div class="config-item">
+                            <label>Request Timeout (ms)</label>
+                            <input type="number" value="10000" min="100" max="60000">
+                            <span class="config-hint">Max time for request before timeout</span>
+                        </div>
+                    </div>
+                    <button class="save-config-btn">Save Configuration</button>
+                </div>
+            </section>
+
+            <!-- User Management Section -->
+            <section id="users-section" class="content-section">
+                <div class="section-header">
+                    <h1>User Management</h1>
+                    <div class="header-actions">
+                        <input type="search" placeholder="Search users..." class="search-input">
+                        <button class="add-user-btn">+ Add User</button>
+                    </div>
+                </div>
+
+                <!-- User Stats -->
+                <div class="user-stats">
+                    <div class="stat-card">
+                        <div class="stat-value">24,567</div>
+                        <div class="stat-label">Total Users</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">18,234</div>
+                        <div class="stat-label">Verified Users</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">5,892</div>
+                        <div class="stat-label">Pro Subscribers</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">1,245</div>
+                        <div class="stat-label">Enterprise Users</div>
+                    </div>
+                </div>
+
+                <!-- User Table -->
+                <div class="data-table-container">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" class="select-all"></th>
+                                <th>User ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Plan</th>
+                                <th>Status</th>
+                                <th>KYC</th>
+                                <th>Joined</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td class="user-id">#USR-001234</td>
+                                <td class="user-name">
+                                    <img src="https://via.placeholder.com/32" alt="User" class="user-avatar">
+                                    <span>John Doe</span>
+                                </td>
+                                <td>john.doe@email.com</td>
+                                <td><span class="plan-badge pro">Pro</span></td>
+                                <td><span class="status-badge active">Active</span></td>
+                                <td><span class="kyc-badge verified">Verified</span></td>
+                                <td>2024-01-15</td>
+                                <td class="actions">
+                                    <button class="action-btn view">👁️</button>
+                                    <button class="action-btn edit">✏️</button>
+                                    <button class="action-btn suspend">⚠️</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td class="user-id">#USR-001235</td>
+                                <td class="user-name">
+                                    <img src="https://via.placeholder.com/32" alt="User" class="user-avatar">
+                                    <span>Jane Smith</span>
+                                </td>
+                                <td>jane.smith@email.com</td>
+                                <td><span class="plan-badge enterprise">Enterprise</span></td>
+                                <td><span class="status-badge active">Active</span></td>
+                                <td><span class="kyc-badge verified">Verified</span></td>
+                                <td>2024-01-10</td>
+                                <td class="actions">
+                                    <button class="action-btn view">👁️</button>
+                                    <button class="action-btn edit">✏️</button>
+                                    <button class="action-btn suspend">⚠️</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td class="user-id">#USR-001236</td>
+                                <td class="user-name">
+                                    <img src="https://via.placeholder.com/32" alt="User" class="user-avatar">
+                                    <span>Bob Johnson</span>
+                                </td>
+                                <td>bob.johnson@email.com</td>
+                                <td><span class="plan-badge free">Free</span></td>
+                                <td><span class="status-badge suspended">Suspended</span></td>
+                                <td><span class="kyc-badge pending">Pending</span></td>
+                                <td>2024-01-20</td>
+                                <td class="actions">
+                                    <button class="action-btn view">👁️</button>
+                                    <button class="action-btn edit">✏️</button>
+                                    <button class="action-btn activate">✅</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="table-pagination">
+                        <div class="pagination-info">Showing 1-10 of 24,567 users</div>
+                        <div class="pagination-controls">
+                            <button class="page-btn" disabled>Previous</button>
+                            <button class="page-number active">1</button>
+                            <button class="page-number">2</button>
+                            <button class="page-number">3</button>
+                            <span>...</span>
+                            <button class="page-number">2457</button>
+                            <button class="page-btn">Next</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Transactions Section -->
+            <section id="transactions-section" class="content-section">
+                <div class="section-header">
+                    <h1>Transaction Ledger</h1>
+                    <div class="header-actions">
+                        <input type="date" class="date-filter">
+                        <span>to</span>
+                        <input type="date" class="date-filter">
+                        <button class="filter-btn">Apply Filter</button>
+                        <button class="export-btn">Export CSV</button>
+                    </div>
+                </div>
+
+                <!-- Financial Summary -->
+                <div class="financial-summary">
+                    <div class="summary-card">
+                        <h3>Today's Revenue</h3>
+                        <div class="summary-value">$12,456.78</div>
+                        <div class="summary-change positive">+23.5% vs yesterday</div>
+                    </div>
+                    <div class="summary-card">
+                        <h3>Monthly Revenue</h3>
+                        <div class="summary-value">$287,654.32</div>
+                        <div class="summary-change positive">+15.2% vs last month</div>
+                    </div>
+                    <div class="summary-card">
+                        <h3>Pending Transactions</h3>
+                        <div class="summary-value">45</div>
+                        <div class="summary-change">$3,456.00 total</div>
+                    </div>
+                    <div class="summary-card">
+                        <h3>Failed Transactions</h3>
+                        <div class="summary-value">12</div>
+                        <div class="summary-change negative">0.05% fail rate</div>
+                    </div>
+                </div>
+
+                <!-- Transaction Table -->
+                <div class="data-table-container">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Transaction ID</th>
+                                <th>User</th>
+                                <th>Type</th>
+                                <th>Amount</th>
+                                <th>Credits</th>
+                                <th>Status</th>
+                                <th>Provider</th>
+                                <th>Timestamp</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="tx-id">#TXN-789456123</td>
+                                <td>john.doe@email.com</td>
+                                <td><span class="tx-type purchase">Purchase</span></td>
+                                <td class="amount">$29.00</td>
+                                <td>2,900</td>
+                                <td><span class="status-badge success">Completed</span></td>
+                                <td>Stripe</td>
+                                <td>2024-01-18 14:32:15</td>
+                                <td class="actions">
+                                    <button class="action-btn view">View</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="tx-id">#TXN-789456124</td>
+                                <td>jane.smith@email.com</td>
+                                <td><span class="tx-type usage">AI Usage</span></td>
+                                <td>-</td>
+                                <td>-150</td>
+                                <td><span class="status-badge success">Completed</span></td>
+                                <td>OpenAI</td>
+                                <td>2024-01-18 14:31:45</td>
+                                <td class="actions">
+                                    <button class="action-btn view">View</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="tx-id">#TXN-789456125</td>
+                                <td>bob.johnson@email.com</td>
+                                <td><span class="tx-type refund">Refund</span></td>
+                                <td>-$19.00</td>
+                                <td>1,900</td>
+                                <td><span class="status-badge pending">Pending</span></td>
+                                <td>Stripe</td>
+                                <td>2024-01-18 14:30:22</td>
+                                <td class="actions">
+                                    <button class="action-btn approve">Approve</button>
+                                    <button class="action-btn reject">Reject</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- AI Provider Metrics Section -->
+            <section id="ai-metrics-section" class="content-section">
+                <div class="section-header">
+                    <h1>AI Provider Analytics</h1>
+                    <div class="header-actions">
+                        <select class="time-range">
+                            <option>Last 24 hours</option>
+                            <option>Last 7 days</option>
+                            <option>Last 30 days</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="provider-metrics-grid">
+                    <div class="provider-card">
+                        <div class="provider-header">
+                            <img src="https://via.placeholder.com/40" alt="OpenAI" class="provider-logo">
+                            <h3>OpenAI</h3>
+                        </div>
+                        <div class="provider-stats">
+                            <div class="stat">
+                                <span class="label">Requests</span>
+                                <span class="value">125,234</span>
+                            </div>
+                            <div class="stat">
+                                <span class="label">Success Rate</span>
+                                <span class="value">99.8%</span>
+                            </div>
+                            <div class="stat">
+                                <span class="label">Avg Latency</span>
+                                <span class="value">245ms</span>
+                            </div>
+                            <div class="stat">
+                                <span class="label">Cost</span>
+                                <span class="value">$1,234.56</span>
+                            </div>
+                        </div>
+                        <div class="provider-chart">
+                            <canvas id="openaiChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="provider-card">
+                        <div class="provider-header">
+                            <img src="https://via.placeholder.com/40" alt="Claude" class="provider-logo">
+                            <h3>Claude</h3>
+                        </div>
+                        <div class="provider-stats">
+                            <div class="stat">
+                                <span class="label">Requests</span>
+                                <span class="value">98,456</span>
+                            </div>
+                            <div class="stat">
+                                <span class="label">Success Rate</span>
+                                <span class="value">99.5%</span>
+                            </div>
+                            <div class="stat">
+                                <span class="label">Avg Latency</span>
+                                <span class="value">312ms</span>
+                            </div>
+                            <div class="stat">
+                                <span class="label">Cost</span>
+                                <span class="value">$987.65</span>
+                            </div>
+                        </div>
+                        <div class="provider-chart">
+                            <canvas id="claudeChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="provider-card">
+                        <div class="provider-header">
+                            <img src="https://via.placeholder.com/40" alt="Grok" class="provider-logo">
+                            <h3>Grok</h3>
+                        </div>
+                        <div class="provider-stats">
+                            <div class="stat">
+                                <span class="label">Requests</span>
+                                <span class="value">76,543</span>
+                            </div>
+                            <div class="stat">
+                                <span class="label">Success Rate</span>
+                                <span class="value">99.9%</span>
+                            </div>
+                            <div class="stat">
+                                <span class="label">Avg Latency</span>
+                                <span class="value">198ms</span>
+                            </div>
+                            <div class="stat">
+                                <span class="label">Cost</span>
+                                <span class="value">$654.32</span>
+                            </div>
+                        </div>
+                        <div class="provider-chart">
+                            <canvas id="grokChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="provider-card">
+                        <div class="provider-header">
+                            <img src="https://via.placeholder.com/40" alt="Gemini" class="provider-logo">
+                            <h3>Gemini</h3>
+                        </div>
+                        <div class="provider-stats">
+                            <div class="stat">
+                                <span class="label">Requests</span>
+                                <span class="value">45,678</span>
+                            </div>
+                            <div class="stat">
+                                <span class="label">Success Rate</span>
+                                <span class="value">97.2%</span>
+                            </div>
+                            <div class="stat">
+                                <span class="label">Avg Latency</span>
+                                <span class="value">520ms</span>
+                            </div>
+                            <div class="stat">
+                                <span class="label">Cost</span>
+                                <span class="value">$432.10</span>
+                            </div>
+                        </div>
+                        <div class="provider-chart">
+                            <canvas id="geminiChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cost Analysis -->
+                <div class="cost-analysis">
+                    <h3>Cost Breakdown & Optimization</h3>
+                    <div class="cost-chart-container">
+                        <canvas id="costBreakdownChart"></canvas>
+                    </div>
+                    <div class="optimization-suggestions">
+                        <h4>Optimization Suggestions</h4>
+                        <ul>
+                            <li>🔴 High Gemini latency detected - consider routing more requests to Grok</li>
+                            <li>🟡 OpenAI usage is 35% above average - implement caching for common queries</li>
+                            <li>🟢 Claude showing excellent performance - increase allocation by 10%</li>
+                            <li>🔵 Consider implementing request batching during peak hours (2-4 PM UTC)</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Security & Audit Log Section -->
+            <section id="audit-log-section" class="content-section">
+                <div class="section-header">
+                    <h1>Security Audit Log</h1>
+                    <div class="header-actions">
+                        <select class="log-filter">
+                            <option>All Events</option>
+                            <option>Authentication</option>
+                            <option>Authorization</option>
+                            <option>Data Access</option>
+                            <option>Configuration</option>
+                        </select>
+                        <button class="export-btn">Export Log</button>
+                    </div>
+                </div>
+
+                <div class="security-alerts">
+                    <div class="alert-banner warning">
+                        <span class="alert-icon">⚠️</span>
+                        <span class="alert-text">5 suspicious login attempts detected in the last hour</span>
+                        <button class="alert-action">Investigate</button>
+                    </div>
+                </div>
+
+                <div class="audit-log-container">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>Event Type</th>
+                                <th>User/System</th>
+                                <th>IP Address</th>
+                                <th>Action</th>
+                                <th>Result</th>
+                                <th>Details</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="log-error">
+                                <td>2024-01-18 14:35:22</td>
+                                <td><span class="event-type auth">Authentication</span></td>
+                                <td>unknown@suspicious.com</td>
+                                <td>192.168.1.100</td>
+                                <td>Login Attempt</td>
+                                <td><span class="result failed">Failed</span></td>
+                                <td><button class="details-btn">View</button></td>
+                            </tr>
+                            <tr class="log-success">
+                                <td>2024-01-18 14:34:15</td>
+                                <td><span class="event-type config">Configuration</span></td>
+                                <td>admin@zmartychat.com</td>
+                                <td>10.0.0.5</td>
+                                <td>Update Circuit Breaker</td>
+                                <td><span class="result success">Success</span></td>
+                                <td><button class="details-btn">View</button></td>
+                            </tr>
+                            <tr class="log-warning">
+                                <td>2024-01-18 14:33:08</td>
+                                <td><span class="event-type data">Data Access</span></td>
+                                <td>john.doe@email.com</td>
+                                <td>172.16.0.25</td>
+                                <td>Export User Data</td>
+                                <td><span class="result success">Success</span></td>
+                                <td><button class="details-btn">View</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <div class="modal" id="userModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>User Details</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- User details will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Real-time Status Bar -->
+    <div class="status-bar">
+        <div class="status-item">
+            <span class="status-label">Server Time:</span>
+            <span class="status-value" id="serverTime">14:35:42 UTC</span>
+        </div>
+        <div class="status-item">
+            <span class="status-label">Active Connections:</span>
+            <span class="status-value" id="activeConnections">3,842</span>
+        </div>
+        <div class="status-item">
+            <span class="status-label">Queue Size:</span>
+            <span class="status-value" id="queueSize">127</span>
+        </div>
+        <div class="status-item">
+            <span class="status-label">Memory Usage:</span>
+            <span class="status-value" id="memoryUsage">4.2GB / 16GB</span>
+        </div>
+        <div class="status-item">
+            <span class="status-label">CPU Load:</span>
+            <span class="status-value" id="cpuLoad">42%</span>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>

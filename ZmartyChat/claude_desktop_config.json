@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "zmartychat": {
+      "command": "node",
+      "args": ["/Users/dansidanutz/Desktop/ZmartBot/ZmartyChat/mcp-server.js"],
+      "env": {}
+    }
+  }
+}

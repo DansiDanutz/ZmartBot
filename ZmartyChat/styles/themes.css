@@ -1,0 +1,312 @@
+/* Theme Variables */
+:root {
+    /* Brand Colors */
+    --brand-orange: #FF6B35;
+    --brand-orange-light: #FF8A5B;
+    --brand-orange-dark: #E55A2B;
+    --brand-orange-rgb: 255, 107, 53;
+
+    --brand-green: #00D084;
+    --brand-green-light: #00F5A0;
+    --brand-green-dark: #00B371;
+    --brand-green-rgb: 0, 208, 132;
+
+    /* Gradients */
+    --gradient-orange: linear-gradient(135deg, #FF6B35 0%, #FF8A5B 100%);
+    --gradient-green: linear-gradient(135deg, #00D084 0%, #00F5A0 100%);
+    --gradient-primary: linear-gradient(135deg, #FF6B35 0%, #FF8A5B 50%, #00D084 100%);
+}
+
+/* Light Theme */
+.theme-light {
+    /* Backgrounds */
+    --bg-primary: #FFFFFF;
+    --bg-secondary: #F7F8FA;
+    --bg-tertiary: #E5E5EA;
+    --bg-chat: #F0F0F0;
+    --bg-input: #FFFFFF;
+    --bg-card: #FFFFFF;
+    --bg-overlay: rgba(0, 0, 0, 0.5);
+
+    /* Text Colors */
+    --text-primary: #111B21;
+    --text-secondary: #667781;
+    --text-muted: #8696A0;
+    --text-inverse: #FFFFFF;
+    --text-link: var(--brand-orange);
+
+    /* Message Bubbles */
+    --bubble-sent: var(--brand-orange);
+    --bubble-sent-text: #FFFFFF;
+    --bubble-received: #FFFFFF;
+    --bubble-received-text: #111B21;
+
+    /* Borders */
+    --border-primary: #E9EDEF;
+    --border-secondary: #D1D7DB;
+    --border-focus: var(--brand-orange);
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+    --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.15);
+
+    /* Status Colors */
+    --status-online: var(--brand-green);
+    --status-typing: var(--brand-green);
+    --status-error: #DC2626;
+    --status-warning: #F59E0B;
+
+    /* Component Specific */
+    --header-bg: #FFFFFF;
+    --header-border: #E9EDEF;
+    --input-bar-bg: #F0F2F5;
+    --scrollbar-thumb: #BCC0C4;
+    --scrollbar-track: transparent;
+}
+
+/* Dark Theme */
+.theme-dark {
+    /* Backgrounds */
+    --bg-primary: #0B0E11;
+    --bg-secondary: #111B21;
+    --bg-tertiary: #1F2C33;
+    --bg-chat: #0B141A;
+    --bg-input: #1F2C33;
+    --bg-card: #111B21;
+    --bg-overlay: rgba(0, 0, 0, 0.85);
+
+    /* Text Colors */
+    --text-primary: #E9EDEF;
+    --text-secondary: #8696A0;
+    --text-muted: #667781;
+    --text-inverse: #111B21;
+    --text-link: var(--brand-orange-light);
+
+    /* Message Bubbles */
+    --bubble-sent: var(--brand-orange);
+    --bubble-sent-text: #FFFFFF;
+    --bubble-received: #1F2C33;
+    --bubble-received-text: #E9EDEF;
+
+    /* Borders */
+    --border-primary: #2A3942;
+    --border-secondary: #1F2C33;
+    --border-focus: var(--brand-orange);
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.5);
+    --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.6);
+
+    /* Status Colors */
+    --status-online: var(--brand-green);
+    --status-typing: var(--brand-green);
+    --status-error: #EF4444;
+    --status-warning: #F59E0B;
+
+    /* Component Specific */
+    --header-bg: #1F2C33;
+    --header-border: #2A3942;
+    --input-bar-bg: #1F2C33;
+    --scrollbar-thumb: #394B53;
+    --scrollbar-track: #111B21;
+}
+
+/* Transitions for Theme Switching */
+body,
+.app-container,
+.chat-header,
+.messages-container,
+.input-bar,
+.message-bubble,
+.onboarding-screen {
+    transition: background-color 0.3s ease,
+                color 0.3s ease,
+                border-color 0.3s ease;
+}
+
+/* Brand Color Classes */
+.text-orange { color: var(--brand-orange) !important; }
+.text-green { color: var(--brand-green) !important; }
+.bg-orange { background-color: var(--brand-orange) !important; }
+.bg-green { background-color: var(--brand-green) !important; }
+.border-orange { border-color: var(--brand-orange) !important; }
+.border-green { border-color: var(--brand-green) !important; }
+
+/* Gradient Backgrounds */
+.gradient-orange { background: var(--gradient-orange) !important; }
+.gradient-green { background: var(--gradient-green) !important; }
+.gradient-primary { background: var(--gradient-primary) !important; }
+
+/* Theme Toggle Button */
+.theme-button {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--bg-card);
+    border: 2px solid var(--border-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    box-shadow: var(--shadow-lg);
+}
+
+.theme-button:hover {
+    transform: scale(1.1);
+    box-shadow: var(--shadow-xl);
+}
+
+.theme-button svg {
+    width: 24px;
+    height: 24px;
+    stroke: var(--text-primary);
+    transition: all 0.3s ease;
+}
+
+.theme-light .sun-icon { display: none; }
+.theme-light .moon-icon { display: block; }
+.theme-dark .sun-icon { display: block; }
+.theme-dark .moon-icon { display: none; }
+
+/* Accent Colors for Interactive Elements */
+.primary-button {
+    background: var(--gradient-orange);
+    color: white;
+    box-shadow: 0 4px 14px rgba(var(--brand-orange-rgb), 0.4);
+}
+
+.primary-button:hover {
+    box-shadow: 0 6px 20px rgba(var(--brand-orange-rgb), 0.6);
+    transform: translateY(-2px);
+}
+
+.secondary-button {
+    background: var(--gradient-green);
+    color: white;
+    box-shadow: 0 4px 14px rgba(var(--brand-green-rgb), 0.4);
+}
+
+.secondary-button:hover {
+    box-shadow: 0 6px 20px rgba(var(--brand-green-rgb), 0.6);
+    transform: translateY(-2px);
+}
+
+/* Input Focus States */
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: var(--brand-orange);
+    box-shadow: 0 0 0 3px rgba(var(--brand-orange-rgb), 0.1);
+}
+
+/* Selection Colors */
+::selection {
+    background-color: rgba(var(--brand-orange-rgb), 0.3);
+    color: var(--text-primary);
+}
+
+::-moz-selection {
+    background-color: rgba(var(--brand-orange-rgb), 0.3);
+    color: var(--text-primary);
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
+}
+
+/* Status Indicators */
+.online-indicator {
+    width: 12px;
+    height: 12px;
+    background: var(--status-online);
+    border-radius: 50%;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    border: 2px solid var(--bg-primary);
+    animation: pulse-green 2s infinite;
+}
+
+@keyframes pulse-green {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(var(--brand-green-rgb), 0.7);
+    }
+    50% {
+        box-shadow: 0 0 0 10px rgba(var(--brand-green-rgb), 0);
+    }
+}
+
+/* Message Status Icons */
+.message-status {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin-left: 4px;
+}
+
+.message-status.read {
+    color: var(--brand-green);
+}
+
+/* Links */
+a {
+    color: var(--text-link);
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+}
+
+a:hover {
+    opacity: 0.8;
+    text-decoration: underline;
+}
+
+/* Loading States */
+.skeleton {
+    background: linear-gradient(
+        90deg,
+        var(--bg-tertiary) 0%,
+        var(--bg-secondary) 50%,
+        var(--bg-tertiary) 100%
+    );
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s ease-in-out infinite;
+}
+
+@keyframes skeleton-loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* Hover States with Brand Colors */
+.hover-orange:hover {
+    background: rgba(var(--brand-orange-rgb), 0.1);
+    border-color: var(--brand-orange);
+}
+
+.hover-green:hover {
+    background: rgba(var(--brand-green-rgb), 0.1);
+    border-color: var(--brand-green);
+}

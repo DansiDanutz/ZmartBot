@@ -1,0 +1,18 @@
+version: "3"
+agent:
+  authtoken: "32gX7v5iUOQgNd1bFMA2pgNdxoF_JL1hMqCD7gohM2U51ZEM"
+
+tunnels:
+  zmarty-webhook:
+    proto: http
+    addr: 3001
+    # Use a permanent domain if available in your ngrok plan
+    # domain: zmarty-api.ngrok.io  # Uncomment if you have a reserved domain
+
+    # Auto-reconnect settings for permanence
+    inspect: false
+
+    # Headers for ElevenLabs
+    request_header:
+      add:
+        - "ngrok-skip-browser-warning: true"

@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZmartyChat API Documentation</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="api-header">
+        <div class="header-content">
+            <div class="logo">
+                <span class="logo-icon">📚</span>
+                <h1>ZmartyChat API</h1>
+                <span class="version">v1.0.0</span>
+            </div>
+            <nav class="header-nav">
+                <a href="#introduction">Introduction</a>
+                <a href="#authentication">Authentication</a>
+                <a href="#endpoints">Endpoints</a>
+                <a href="#websocket">WebSocket</a>
+                <a href="#sdks">SDKs</a>
+                <a href="https://github.com/zmartychat/api" target="_blank">GitHub</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Layout -->
+    <div class="api-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="api-sidebar">
+            <div class="sidebar-section">
+                <h3>Getting Started</h3>
+                <ul>
+                    <li><a href="#introduction" class="active">Introduction</a></li>
+                    <li><a href="#quickstart">Quick Start</a></li>
+                    <li><a href="#authentication">Authentication</a></li>
+                    <li><a href="#rate-limits">Rate Limits</a></li>
+                    <li><a href="#errors">Error Handling</a></li>
+                </ul>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>Core APIs</h3>
+                <ul>
+                    <li><a href="#users">Users</a></li>
+                    <li><a href="#trading">Trading</a></li>
+                    <li><a href="#portfolio">Portfolio</a></li>
+                    <li><a href="#market-data">Market Data</a></li>
+                    <li><a href="#ai-analysis">AI Analysis</a></li>
+                </ul>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>AI Providers</h3>
+                <ul>
+                    <li><a href="#openai">OpenAI Integration</a></li>
+                    <li><a href="#claude">Claude Integration</a></li>
+                    <li><a href="#gemini">Gemini Integration</a></li>
+                    <li><a href="#grok">Grok Integration</a></li>
+                </ul>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>WebSocket</h3>
+                <ul>
+                    <li><a href="#ws-connection">Connection</a></li>
+                    <li><a href="#ws-channels">Channels</a></li>
+                    <li><a href="#ws-events">Events</a></li>
+                    <li><a href="#ws-examples">Examples</a></li>
+                </ul>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="#sdks">SDKs & Libraries</a></li>
+                    <li><a href="#postman">Postman Collection</a></li>
+                    <li><a href="#changelog">Changelog</a></li>
+                    <li><a href="#support">Support</a></li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="api-content">
+            <!-- Introduction Section -->
+            <section id="introduction" class="doc-section">
+                <h2>Introduction</h2>
+                <p class="lead">Welcome to the ZmartyChat API documentation. Our API provides programmatic access to AI-powered cryptocurrency trading, market analysis, and portfolio management.</p>
+
+                <div class="info-box">
+                    <h4>Base URL</h4>
+                    <code>https://api.zmartychat.com/v1</code>
+                </div>
+
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h4>🚀 RESTful API</h4>
+                        <p>Clean and intuitive REST endpoints for all trading operations</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🔄 Real-time WebSocket</h4>
+                        <p>Live market data and trading updates via WebSocket connections</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🤖 Multi-AI Support</h4>
+                        <p>Integrated access to OpenAI, Claude, Gemini, and Grok</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🔐 Secure by Default</h4>
+                        <p>OAuth 2.0, JWT tokens, and end-to-end encryption</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Start Section -->
+            <section id="quickstart" class="doc-section">
+                <h2>Quick Start</h2>
+                <p>Get started with the ZmartyChat API in just a few steps:</p>
+
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>Get API Credentials</h4>
+                            <p>Sign up for an account and generate your API keys from the dashboard.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>Install SDK</h4>
+                            <pre><code class="language-bash">npm install @zmartychat/sdk
+# or
+pip install zmartychat-sdk</code></pre>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>Make Your First Request</h4>
+                            <pre><code class="language-javascript">const ZmartyChat = require('@zmartychat/sdk');
+
+const client = new ZmartyChat({
+    apiKey: 'your-api-key',
+    apiSecret: 'your-api-secret'
+});
+
+// Get market data
+const ticker = await client.market.getTicker('BTC-USD');
+console.log(ticker);</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Authentication Section -->
+            <section id="authentication" class="doc-section">
+                <h2>Authentication</h2>
+                <p>The ZmartyChat API uses API keys to authenticate requests. You can view and manage your API keys in the dashboard.</p>
+
+                <div class="auth-methods">
+                    <div class="method-card">
+                        <h3>API Key Authentication</h3>
+                        <p>Include your API key in the request header:</p>
+                        <pre><code class="language-bash">curl https://api.zmartychat.com/v1/user \
+  -H "Authorization: Bearer YOUR_API_KEY"</code></pre>
+                    </div>
+
+                    <div class="method-card">
+                        <h3>OAuth 2.0</h3>
+                        <p>For user-authorized applications:</p>
+                        <pre><code class="language-javascript">const authUrl = client.oauth.getAuthorizationUrl({
+    redirectUri: 'https://yourapp.com/callback',
+    scopes: ['trading', 'portfolio:read']
+});</code></pre>
+                    </div>
+                </div>
+
+                <div class="warning-box">
+                    <strong>Security Notice:</strong> Never expose your API keys in client-side code or public repositories. Use environment variables and server-side requests for production applications.
+                </div>
+            </section>
+
+            <!-- Endpoints Section -->
+            <section id="endpoints" class="doc-section">
+                <h2>API Endpoints</h2>
+
+                <!-- User Endpoints -->
+                <div class="endpoint-group">
+                    <h3>User Management</h3>
+
+                    <div class="endpoint">
+                        <div class="endpoint-header">
+                            <span class="method get">GET</span>
+                            <span class="path">/user/profile</span>
+                            <span class="description">Get user profile</span>
+                        </div>
+                        <div class="endpoint-content">
+                            <h4>Response</h4>
+                            <pre><code class="language-json">{
+    "id": "user_123456",
+    "email": "user@example.com",
+    "name": "John Doe",
+    "plan": "pro",
+    "balance": {
+        "USD": 50000.00,
+        "BTC": 1.5,
+        "ETH": 20.0
+    },
+    "created_at": "2025-01-01T00:00:00Z"
+}</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="endpoint">
+                        <div class="endpoint-header">
+                            <span class="method put">PUT</span>
+                            <span class="path">/user/profile</span>
+                            <span class="description">Update user profile</span>
+                        </div>
+                        <div class="endpoint-content">
+                            <h4>Request Body</h4>
+                            <pre><code class="language-json">{
+    "name": "Jane Doe",
+    "preferences": {
+        "timezone": "America/New_York",
+        "currency": "USD"
+    }
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Trading Endpoints -->
+                <div class="endpoint-group">
+                    <h3>Trading Operations</h3>
+
+                    <div class="endpoint">
+                        <div class="endpoint-header">
+                            <span class="method post">POST</span>
+                            <span class="path">/orders</span>
+                            <span class="description">Place a new order</span>
+                        </div>
+                        <div class="endpoint-content">
+                            <h4>Request Body</h4>
+                            <pre><code class="language-json">{
+    "symbol": "BTC-USD",
+    "side": "buy",
+    "type": "limit",
+    "price": 45000.00,
+    "quantity": 0.1,
+    "time_in_force": "GTC"
+}</code></pre>
+                            <h4>Response</h4>
+                            <pre><code class="language-json">{
+    "order_id": "ord_789012",
+    "status": "pending",
+    "created_at": "2025-09-18T10:30:00Z"
+}</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="endpoint">
+                        <div class="endpoint-header">
+                            <span class="method get">GET</span>
+                            <span class="path">/orders/{order_id}</span>
+                            <span class="description">Get order details</span>
+                        </div>
+                    </div>
+
+                    <div class="endpoint">
+                        <div class="endpoint-header">
+                            <span class="method delete">DELETE</span>
+                            <span class="path">/orders/{order_id}</span>
+                            <span class="description">Cancel an order</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Analysis Endpoints -->
+                <div class="endpoint-group">
+                    <h3>AI Analysis</h3>
+
+                    <div class="endpoint">
+                        <div class="endpoint-header">
+                            <span class="method post">POST</span>
+                            <span class="path">/ai/analyze</span>
+                            <span class="description">Get AI market analysis</span>
+                        </div>
+                        <div class="endpoint-content">
+                            <h4>Request Body</h4>
+                            <pre><code class="language-json">{
+    "symbol": "BTC-USD",
+    "providers": ["openai", "claude"],
+    "analysis_type": "technical",
+    "timeframe": "4h"
+}</code></pre>
+                            <h4>Response</h4>
+                            <pre><code class="language-json">{
+    "analyses": [
+        {
+            "provider": "openai",
+            "sentiment": "bullish",
+            "confidence": 0.85,
+            "signals": ["buy"],
+            "price_target": 48000,
+            "reasoning": "Strong support at 44k..."
+        },
+        {
+            "provider": "claude",
+            "sentiment": "neutral",
+            "confidence": 0.72,
+            "signals": ["hold"],
+            "reasoning": "Consolidation phase..."
+        }
+    ],
+    "consensus": {
+        "sentiment": "bullish",
+        "confidence": 0.785
+    }
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- WebSocket Section -->
+            <section id="websocket" class="doc-section">
+                <h2>WebSocket API</h2>
+                <p>Connect to our WebSocket API for real-time market data and trading updates.</p>
+
+                <div class="info-box">
+                    <h4>WebSocket URL</h4>
+                    <code>wss://api.zmartychat.com/v1/ws</code>
+                </div>
+
+                <h3>Connection Example</h3>
+                <pre><code class="language-javascript">const ws = new WebSocket('wss://api.zmartychat.com/v1/ws?token=YOUR_API_KEY');
+
+ws.onopen = () => {
+    // Subscribe to channels
+    ws.send(JSON.stringify({
+        type: 'subscribe',
+        channels: ['ticker:BTC-USD', 'trades:BTC-USD']
+    }));
+};
+
+ws.onmessage = (event) => {
+    const data = JSON.parse(event.data);
+    console.log('Received:', data);
+};
+
+ws.onerror = (error) => {
+    console.error('WebSocket error:', error);
+};</code></pre>
+
+                <h3>Available Channels</h3>
+                <div class="channels-grid">
+                    <div class="channel-card">
+                        <h4>ticker:{symbol}</h4>
+                        <p>Real-time price updates</p>
+                        <pre><code class="language-json">{
+    "channel": "ticker:BTC-USD",
+    "data": {
+        "price": 45000.00,
+        "change_24h": 2.5
+    }
+}</code></pre>
+                    </div>
+                    <div class="channel-card">
+                        <h4>trades:{symbol}</h4>
+                        <p>Live trade feed</p>
+                        <pre><code class="language-json">{
+    "channel": "trades:BTC-USD",
+    "data": {
+        "price": 45000.00,
+        "amount": 0.5,
+        "side": "buy"
+    }
+}</code></pre>
+                    </div>
+                    <div class="channel-card">
+                        <h4>orderbook:{symbol}</h4>
+                        <p>Order book updates</p>
+                        <pre><code class="language-json">{
+    "channel": "orderbook:BTC-USD",
+    "data": {
+        "bids": [[45000, 1.5]],
+        "asks": [[45100, 2.0]]
+    }
+}</code></pre>
+                    </div>
+                    <div class="channel-card">
+                        <h4>portfolio:{user_id}</h4>
+                        <p>Portfolio changes</p>
+                        <pre><code class="language-json">{
+    "channel": "portfolio:user123",
+    "data": {
+        "total_value": 125000,
+        "pnl_24h": 2500
+    }
+}</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Rate Limits Section -->
+            <section id="rate-limits" class="doc-section">
+                <h2>Rate Limits</h2>
+                <p>API rate limits vary by plan tier:</p>
+
+                <table class="rate-limits-table">
+                    <thead>
+                        <tr>
+                            <th>Plan</th>
+                            <th>Requests/Second</th>
+                            <th>Requests/Day</th>
+                            <th>WebSocket Connections</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Free</td>
+                            <td>1</td>
+                            <td>1,000</td>
+                            <td>1</td>
+                        </tr>
+                        <tr>
+                            <td>Pro</td>
+                            <td>10</td>
+                            <td>100,000</td>
+                            <td>5</td>
+                        </tr>
+                        <tr>
+                            <td>Enterprise</td>
+                            <td>100</td>
+                            <td>Unlimited</td>
+                            <td>50</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="info-box">
+                    <h4>Rate Limit Headers</h4>
+                    <p>Check response headers for current limits:</p>
+                    <pre><code>X-RateLimit-Limit: 100
+X-RateLimit-Remaining: 95
+X-RateLimit-Reset: 1695902400</code></pre>
+                </div>
+            </section>
+
+            <!-- Error Handling Section -->
+            <section id="errors" class="doc-section">
+                <h2>Error Handling</h2>
+                <p>The API uses standard HTTP status codes to indicate success or failure of requests.</p>
+
+                <div class="errors-grid">
+                    <div class="error-card">
+                        <h4>200 OK</h4>
+                        <p>Request successful</p>
+                    </div>
+                    <div class="error-card">
+                        <h4>400 Bad Request</h4>
+                        <p>Invalid request parameters</p>
+                    </div>
+                    <div class="error-card">
+                        <h4>401 Unauthorized</h4>
+                        <p>Missing or invalid API key</p>
+                    </div>
+                    <div class="error-card">
+                        <h4>403 Forbidden</h4>
+                        <p>Insufficient permissions</p>
+                    </div>
+                    <div class="error-card">
+                        <h4>404 Not Found</h4>
+                        <p>Resource not found</p>
+                    </div>
+                    <div class="error-card">
+                        <h4>429 Too Many Requests</h4>
+                        <p>Rate limit exceeded</p>
+                    </div>
+                    <div class="error-card">
+                        <h4>500 Server Error</h4>
+                        <p>Internal server error</p>
+                    </div>
+                    <div class="error-card">
+                        <h4>503 Service Unavailable</h4>
+                        <p>Service temporarily unavailable</p>
+                    </div>
+                </div>
+
+                <h3>Error Response Format</h3>
+                <pre><code class="language-json">{
+    "error": {
+        "code": "INSUFFICIENT_FUNDS",
+        "message": "Insufficient balance for this operation",
+        "details": {
+            "required": 1000.00,
+            "available": 500.00
+        }
+    }
+}</code></pre>
+            </section>
+
+            <!-- SDKs Section -->
+            <section id="sdks" class="doc-section">
+                <h2>SDKs & Libraries</h2>
+                <p>Official SDKs for popular programming languages:</p>
+
+                <div class="sdks-grid">
+                    <div class="sdk-card">
+                        <h4>JavaScript/TypeScript</h4>
+                        <pre><code class="language-bash">npm install @zmartychat/sdk</code></pre>
+                        <a href="https://github.com/zmartychat/js-sdk" class="sdk-link">View on GitHub →</a>
+                    </div>
+                    <div class="sdk-card">
+                        <h4>Python</h4>
+                        <pre><code class="language-bash">pip install zmartychat-sdk</code></pre>
+                        <a href="https://github.com/zmartychat/python-sdk" class="sdk-link">View on GitHub →</a>
+                    </div>
+                    <div class="sdk-card">
+                        <h4>Go</h4>
+                        <pre><code class="language-bash">go get github.com/zmartychat/go-sdk</code></pre>
+                        <a href="https://github.com/zmartychat/go-sdk" class="sdk-link">View on GitHub →</a>
+                    </div>
+                    <div class="sdk-card">
+                        <h4>Ruby</h4>
+                        <pre><code class="language-bash">gem install zmartychat</code></pre>
+                        <a href="https://github.com/zmartychat/ruby-sdk" class="sdk-link">View on GitHub →</a>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Right Panel (Try It) -->
+        <aside class="api-try-panel">
+            <div class="try-header">
+                <h3>Try It Out</h3>
+                <select id="environment-select">
+                    <option value="production">Production</option>
+                    <option value="sandbox">Sandbox</option>
+                </select>
+            </div>
+
+            <div class="try-form">
+                <div class="form-group">
+                    <label>API Key</label>
+                    <input type="text" id="api-key" placeholder="Enter your API key">
+                </div>
+
+                <div class="form-group">
+                    <label>Endpoint</label>
+                    <select id="endpoint-select">
+                        <option value="/user/profile">GET /user/profile</option>
+                        <option value="/market/ticker">GET /market/ticker</option>
+                        <option value="/orders">POST /orders</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Parameters</label>
+                    <textarea id="params" rows="5" placeholder='{"symbol": "BTC-USD"}'></textarea>
+                </div>
+
+                <button class="try-button" onclick="sendTestRequest()">Send Request</button>
+
+                <div class="response-section">
+                    <h4>Response</h4>
+                    <pre id="response-output"><code>Response will appear here...</code></pre>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+</body>
+</html>

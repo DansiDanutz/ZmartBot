@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZmartyChat Help Center</title>
+    <link rel="stylesheet" href="help-center.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="help-header">
+        <div class="header-container">
+            <div class="header-left">
+                <a href="/" class="logo">
+                    <span class="logo-icon">🤖</span>
+                    <span>ZmartyChat</span>
+                </a>
+                <span class="divider">|</span>
+                <span class="section-name">Help Center</span>
+            </div>
+            <div class="header-right">
+                <a href="/dashboard" class="nav-link">Dashboard</a>
+                <a href="/api-docs" class="nav-link">API Docs</a>
+                <button class="contact-btn">Contact Support</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="help-hero">
+        <div class="hero-content">
+            <h1>How can we help you?</h1>
+            <div class="search-container">
+                <input type="text" id="help-search" placeholder="Search for answers..." autocomplete="off">
+                <button class="search-btn">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </button>
+            </div>
+            <div class="popular-searches">
+                <span>Popular:</span>
+                <a href="#api-keys">API Keys</a>
+                <a href="#trading">Trading</a>
+                <a href="#ai-providers">AI Providers</a>
+                <a href="#security">Security</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Links -->
+    <section class="quick-links">
+        <div class="container">
+            <div class="links-grid">
+                <a href="#getting-started" class="quick-link-card">
+                    <div class="icon">🚀</div>
+                    <h3>Getting Started</h3>
+                    <p>Learn the basics and set up your account</p>
+                </a>
+                <a href="#trading-guide" class="quick-link-card">
+                    <div class="icon">📊</div>
+                    <h3>Trading Guide</h3>
+                    <p>Master cryptocurrency trading with AI</p>
+                </a>
+                <a href="#api-integration" class="quick-link-card">
+                    <div class="icon">🔌</div>
+                    <h3>API Integration</h3>
+                    <p>Connect and integrate with our APIs</p>
+                </a>
+                <a href="#troubleshooting" class="quick-link-card">
+                    <div class="icon">🔧</div>
+                    <h3>Troubleshooting</h3>
+                    <p>Solve common issues quickly</p>
+                </a>
+                <a href="#billing" class="quick-link-card">
+                    <div class="icon">💳</div>
+                    <h3>Billing & Plans</h3>
+                    <p>Manage subscriptions and payments</p>
+                </a>
+                <a href="#security" class="quick-link-card">
+                    <div class="icon">🔒</div>
+                    <h3>Security</h3>
+                    <p>Keep your account safe and secure</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="help-layout">
+        <!-- Sidebar -->
+        <aside class="help-sidebar">
+            <nav class="help-nav">
+                <div class="nav-section">
+                    <h4>Getting Started</h4>
+                    <ul>
+                        <li><a href="#account-setup">Account Setup</a></li>
+                        <li><a href="#verification">KYC Verification</a></li>
+                        <li><a href="#first-trade">Your First Trade</a></li>
+                        <li><a href="#dashboard-overview">Dashboard Overview</a></li>
+                    </ul>
+                </div>
+
+                <div class="nav-section">
+                    <h4>Trading</h4>
+                    <ul>
+                        <li><a href="#order-types">Order Types</a></li>
+                        <li><a href="#market-analysis">Market Analysis</a></li>
+                        <li><a href="#portfolio">Portfolio Management</a></li>
+                        <li><a href="#risk-management">Risk Management</a></li>
+                    </ul>
+                </div>
+
+                <div class="nav-section">
+                    <h4>AI Features</h4>
+                    <ul>
+                        <li><a href="#ai-signals">AI Trading Signals</a></li>
+                        <li><a href="#sentiment-analysis">Sentiment Analysis</a></li>
+                        <li><a href="#predictive-models">Predictive Models</a></li>
+                        <li><a href="#provider-comparison">Provider Comparison</a></li>
+                    </ul>
+                </div>
+
+                <div class="nav-section">
+                    <h4>API & Development</h4>
+                    <ul>
+                        <li><a href="#api-authentication">Authentication</a></li>
+                        <li><a href="#webhooks">Webhooks</a></li>
+                        <li><a href="#rate-limits">Rate Limits</a></li>
+                        <li><a href="#sdk-libraries">SDK & Libraries</a></li>
+                    </ul>
+                </div>
+
+                <div class="nav-section">
+                    <h4>Account & Settings</h4>
+                    <ul>
+                        <li><a href="#profile-settings">Profile Settings</a></li>
+                        <li><a href="#security-2fa">Two-Factor Auth</a></li>
+                        <li><a href="#api-keys">API Keys</a></li>
+                        <li><a href="#notifications">Notifications</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Content Area -->
+        <main class="help-content">
+            <!-- Getting Started Section -->
+            <article id="getting-started" class="help-article">
+                <h2>Getting Started with ZmartyChat</h2>
+                <div class="article-meta">
+                    <span>Last updated: 2 days ago</span>
+                    <span>•</span>
+                    <span>5 min read</span>
+                </div>
+
+                <div class="article-content">
+                    <p>Welcome to ZmartyChat! This guide will help you get started with our AI-powered cryptocurrency trading platform.</p>
+
+                    <h3>1. Create Your Account</h3>
+                    <p>Sign up for a ZmartyChat account in just a few steps:</p>
+                    <ol>
+                        <li>Visit <a href="/signup">zmartychat.com/signup</a></li>
+                        <li>Enter your email and create a strong password</li>
+                        <li>Verify your email address</li>
+                        <li>Complete your profile information</li>
+                    </ol>
+
+                    <div class="info-callout">
+                        <strong>Pro Tip:</strong> Use a unique password and enable two-factor authentication for maximum security.
+                    </div>
+
+                    <h3>2. Complete KYC Verification</h3>
+                    <p>To comply with regulations and ensure platform security, we require identity verification:</p>
+                    <ul>
+                        <li>Upload a government-issued ID</li>
+                        <li>Provide proof of address</li>
+                        <li>Take a selfie for identity confirmation</li>
+                    </ul>
+
+                    <h3>3. Fund Your Account</h3>
+                    <p>Add funds to start trading:</p>
+                    <ul>
+                        <li><strong>Bank Transfer:</strong> 1-3 business days</li>
+                        <li><strong>Credit/Debit Card:</strong> Instant</li>
+                        <li><strong>Cryptocurrency:</strong> 10-60 minutes</li>
+                    </ul>
+
+                    <h3>4. Configure AI Providers</h3>
+                    <p>Choose which AI providers you want to use for market analysis:</p>
+                    <div class="provider-grid">
+                        <div class="provider-item">
+                            <strong>OpenAI GPT-4</strong>
+                            <p>Advanced pattern recognition</p>
+                        </div>
+                        <div class="provider-item">
+                            <strong>Claude</strong>
+                            <p>Risk assessment specialist</p>
+                        </div>
+                        <div class="provider-item">
+                            <strong>Gemini</strong>
+                            <p>Multi-modal analysis</p>
+                        </div>
+                        <div class="provider-item">
+                            <strong>Grok</strong>
+                            <p>Real-time sentiment</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="article-footer">
+                    <div class="helpful-prompt">
+                        <span>Was this article helpful?</span>
+                        <button class="helpful-btn yes">Yes</button>
+                        <button class="helpful-btn no">No</button>
+                    </div>
+                    <div class="related-articles">
+                        <h4>Related Articles</h4>
+                        <ul>
+                            <li><a href="#verification">KYC Verification Process</a></li>
+                            <li><a href="#first-trade">Making Your First Trade</a></li>
+                            <li><a href="#security-2fa">Setting Up 2FA</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </article>
+
+            <!-- FAQ Section -->
+            <section id="faq" class="faq-section">
+                <h2>Frequently Asked Questions</h2>
+
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>What is ZmartyChat?</span>
+                            <span class="faq-icon">+</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>ZmartyChat is an AI-powered cryptocurrency trading platform that combines multiple AI providers (OpenAI, Claude, Gemini, Grok) to deliver advanced market analysis, trading signals, and automated trading capabilities.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>How do I get API keys?</span>
+                            <span class="faq-icon">+</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>To get your API keys:</p>
+                            <ol>
+                                <li>Go to Dashboard > Settings > API Keys</li>
+                                <li>Click "Generate New Key"</li>
+                                <li>Name your key and set permissions</li>
+                                <li>Copy and securely store your key</li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>What are the fees?</span>
+                            <span class="faq-icon">+</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Our fee structure:</p>
+                            <ul>
+                                <li>Trading fees: 0.1% - 0.25% per trade</li>
+                                <li>AI analysis: Included in Pro/Enterprise plans</li>
+                                <li>Withdrawal fees: Varies by method</li>
+                                <li>No hidden fees or minimum balance requirements</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>Is my data secure?</span>
+                            <span class="faq-icon">+</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Yes! We implement enterprise-grade security:</p>
+                            <ul>
+                                <li>256-bit SSL encryption</li>
+                                <li>Cold storage for 95% of funds</li>
+                                <li>Two-factor authentication</li>
+                                <li>Regular security audits</li>
+                                <li>GDPR and SOC 2 compliant</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>How do AI signals work?</span>
+                            <span class="faq-icon">+</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Our AI signals aggregate analysis from multiple providers to generate trading recommendations. Each AI analyzes market data, sentiment, and patterns, then we combine their insights to provide confidence-weighted signals for buying, selling, or holding positions.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Video Tutorials -->
+            <section id="tutorials" class="tutorials-section">
+                <h2>Video Tutorials</h2>
+                <div class="tutorials-grid">
+                    <div class="tutorial-card">
+                        <div class="tutorial-thumbnail">
+                            <span class="play-icon">▶</span>
+                            <span class="duration">5:23</span>
+                        </div>
+                        <h4>Platform Overview</h4>
+                        <p>Complete walkthrough of ZmartyChat features</p>
+                    </div>
+                    <div class="tutorial-card">
+                        <div class="tutorial-thumbnail">
+                            <span class="play-icon">▶</span>
+                            <span class="duration">3:45</span>
+                        </div>
+                        <h4>Setting Up AI Providers</h4>
+                        <p>Configure and optimize AI analysis</p>
+                    </div>
+                    <div class="tutorial-card">
+                        <div class="tutorial-thumbnail">
+                            <span class="play-icon">▶</span>
+                            <span class="duration">7:12</span>
+                        </div>
+                        <h4>Advanced Trading Strategies</h4>
+                        <p>Leverage AI for profitable trades</p>
+                    </div>
+                    <div class="tutorial-card">
+                        <div class="tutorial-thumbnail">
+                            <span class="play-icon">▶</span>
+                            <span class="duration">4:56</span>
+                        </div>
+                        <h4>API Integration Guide</h4>
+                        <p>Connect your apps to ZmartyChat</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Contact Support -->
+    <section class="contact-support">
+        <div class="container">
+            <h2>Still need help?</h2>
+            <p>Our support team is here to assist you 24/7</p>
+            <div class="contact-options">
+                <div class="contact-card">
+                    <div class="contact-icon">💬</div>
+                    <h3>Live Chat</h3>
+                    <p>Get instant help from our support team</p>
+                    <button class="btn-primary">Start Chat</button>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon">📧</div>
+                    <h3>Email Support</h3>
+                    <p>We'll respond within 24 hours</p>
+                    <button class="btn-secondary">Send Email</button>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon">📞</div>
+                    <h3>Phone Support</h3>
+                    <p>Available for Enterprise customers</p>
+                    <button class="btn-secondary">Call Now</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="help-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Help Center</h4>
+                    <ul>
+                        <li><a href="#getting-started">Getting Started</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                        <li><a href="#tutorials">Video Tutorials</a></li>
+                        <li><a href="#api-docs">API Documentation</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Community</h4>
+                    <ul>
+                        <li><a href="#">Discord</a></li>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Forum</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#">Trading Guide</a></li>
+                        <li><a href="#">Security Best Practices</a></li>
+                        <li><a href="#">API Reference</a></li>
+                        <li><a href="#">System Status</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Risk Disclosure</a></li>
+                        <li><a href="#">Compliance</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 ZmartyChat. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Chat Widget -->
+    <div id="chat-widget" class="chat-widget">
+        <button class="chat-toggle">
+            <span class="chat-icon">💬</span>
+            <span class="chat-text">Need Help?</span>
+        </button>
+        <div class="chat-window">
+            <div class="chat-header">
+                <h4>Support Chat</h4>
+                <button class="chat-close">×</button>
+            </div>
+            <div class="chat-messages">
+                <div class="chat-message bot">
+                    <p>Hi! I'm here to help. What can I assist you with today?</p>
+                </div>
+            </div>
+            <div class="chat-input">
+                <input type="text" placeholder="Type your message...">
+                <button class="send-btn">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="help-center.js"></script>
+</body>
+</html>
