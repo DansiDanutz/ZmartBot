@@ -235,3 +235,4 @@ temp/
 tmp/
 .tmp/
 .temp/
+.env.figma

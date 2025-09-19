@@ -44,6 +44,15 @@
       "args": [
         "@modelcontextprotocol/server-filesystem"
       ]
+    },
+    "figma": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "figma-developer-mcp",
+        "--figma-api-key=figd_5pmO9I1vXoLF5gfw3OdPiQIaakuTRCJut6doJn09",
+        "--stdio"
+      ]
     }
   }
 }

@@ -1,4 +1,16 @@
 api_configs:
+  figma:
+    api_key: gAAAAABozLMGp79Q1buX1B6inilOv-MPxa7pPvAwqRKF_kgNnxLNN6NhZrmve0X3zTwmYKkZuNwW_JmGS1Pe1_JkJb2KptQyJsgUNmgjO9mrqxmlGVybtYaggrkNqiFSncZrk2y2-cvj
+    base_url: https://api.figma.com/v1
+    created_at: '2025-09-19T04:33:58.801564'
+    description: Figma API for design integration and MCP server
+    is_active: true
+    last_used: null
+    passphrase: gAAAAABozLMGy56b1URIkdqDoQ1HHunSYHqOUEmN9tAJaA_5JMhen7oCOx1vVZnv6xIr1MvARP_57zrgW5piFW9OoQNylnYh3gPXBLNjaXFJNivMdWXNRMU=
+    rate_limit: 1000
+    secret_key: gAAAAABozLMGXnlyvOa80MV-fhNI8bOQc86IPSQJwoCxDnfCIUO7jTCW56lCxfC4Pz4vm12dWdoEI3Z0pzjKly7YG4r0lDyVmdxdZbTc75s3n6Q8cjshhw4=
+    service_name: figma
+    usage_count: 0
   openai:
     api_key: gAAAAABorQ5dm276-Quqeffirjic3Il0egY2F39MVmVQQbF1wNfRl7u5AUPsim2pzGq4uEwXo6RVlZe0Byc0ydjellk7nZ5VMrnpvUfEzln-rqcE0pVA1A9RHoiz0dlCy2ehaH2zazeNrWuKAiaPHjb5NhZ1bqH2thj5MW5KiX10SCKckoRvSxy-c5771pY8y_3RRt1k34uw7lIUauiL2X9_koGkwK3TS5q7fI33cdLtWotba86qo-e9iQO091QAJusLWEip1R1BVeCAyWy4aXMIXzaG836c9CnqvYDaCqL_YbVEcvtz3fg=
     base_url: https://api.openai.com/v1
@@ -13,6 +25,6 @@ api_configs:
     usage_count: 0
 exchange_configs: {}
 metadata:
-  created_at: '2025-08-26T04:31:09.753023'
+  created_at: '2025-09-19T04:33:58.803046'
   encrypted: true
   version: '1.0'

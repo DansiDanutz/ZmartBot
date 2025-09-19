@@ -2,7 +2,7 @@
 
 ## OrchestrationStart
 **File**: .cursor/rules/OrchestrationStart.mdc
-**Relevance**: 50
+**Relevance**: 15
 **Size**: 19966 bytes
 
 **Summary**: ## Description | Core orchestration service component of the ZmartBot ecosystem providing essential functionality. | @step: orchestration_flow

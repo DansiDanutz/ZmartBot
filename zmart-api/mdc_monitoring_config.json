@@ -1,0 +1,31 @@
+{
+  "mdc_processing": {
+    "enabled": true,
+    "alert_thresholds": {
+      "processing_time_ms": 5000,
+      "error_rate_percent": 5,
+      "queue_size": 100
+    },
+    "notification_channels": [
+      "log",
+      "webhook",
+      "email"
+    ]
+  },
+  "context_optimization": {
+    "enabled": true,
+    "alert_thresholds": {
+      "claude_size_kb": 50,
+      "optimization_time_ms": 10000,
+      "file_count": 500
+    }
+  },
+  "supabase_operations": {
+    "enabled": true,
+    "alert_thresholds": {
+      "connection_timeout_ms": 3000,
+      "query_timeout_ms": 10000,
+      "error_rate_percent": 2
+    }
+  }
+}
