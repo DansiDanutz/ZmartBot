@@ -21,7 +21,7 @@
         "ref-tools-mcp@latest"
       ],
       "env": {
-        "REF_API_KEY": ""
+        "REF_API_KEY": "ref-5c535e98df41fa8ef0f9"
       }
     },
     "browsermcp": {
