@@ -409,23 +409,26 @@ class KuCoinService:
     # ========== SPOT MARKET DATA (for compatibility) ==========
     
     async def get_market_data(self, symbol: str) -> Optional[KuCoinMarketData]:
-        """Get real-time market data for a symbol (spot)"""
+        """Get real-time market data for a symbol (futures)"""
         try:
-            # Use spot API for market data
-            response = await self._make_request("GET", f"/api/v1/market/orderbook/level1?symbol={symbol}", use_futures=False)
+            # Convert symbol to futures format if needed
+            futures_symbol = self._convert_to_futures_symbol(symbol)
             
-            if response:
+            # Use futures API for market data
+            response = await self._make_request("GET", f"/api/v1/ticker?symbol={futures_symbol}", use_futures=True)
+            
+            if response and isinstance(response, dict):
                 return KuCoinMarketData(
-                    symbol=symbol,
+                    symbol=futures_symbol,
                     price=float(response.get("price", 0)),
-                    volume_24h=float(response.get("size", 0)),
-                    change_24h=0.0,  # Will be calculated separately
-                    high_24h=0.0,    # Will be calculated separately
-                    low_24h=0.0,     # Will be calculated separately
+                    volume_24h=float(response.get("vol", 0)),
+                    change_24h=float(response.get("changeRate", 0)) * 100,  # Convert to percentage
+                    high_24h=float(response.get("high", 0)),
+                    low_24h=float(response.get("low", 0)),
                     timestamp=datetime.utcnow()
                 )
             else:
-                logger.warning(f"Failed to get market data for {symbol}")
+                logger.warning(f"Failed to get market data for {futures_symbol}")
                 return None
                 
         except Exception as e:

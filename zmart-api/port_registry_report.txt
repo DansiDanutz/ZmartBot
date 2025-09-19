@@ -1,11 +1,13 @@
 ======================================================================
 ZMARTBOT PORT REGISTRY REPORT
 ======================================================================
-Generated: 2025-09-14 23:06:30
+Generated: 2025-09-19 04:10:51
 Total Registered Ports: 31
 
-ACTIVE SERVICES (23 running):
+ACTIVE SERVICES (24 running):
 ----------------------------------------
+  ✅ Port  3000 : Grafana
+              Metrics visualization
   ✅ Port  5432 : PostgreSQL
               Primary relational database
   ✅ Port  6379 : Redis
@@ -55,8 +57,6 @@ ACTIVE SERVICES (23 running):
 
 REGISTERED BUT NOT RUNNING:
 ----------------------------------------
-  ⚠️  Port  3000 : Grafana
-              Metrics visualization
   ⚠️  Port  5173 : Vite Dev Server
               React frontend development server
   ⚠️  Port  5672 : RabbitMQ

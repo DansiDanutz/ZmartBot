@@ -138,7 +138,7 @@ async def get_market_data(symbol: str, timeframe: str = "1m"):
     try:
         if kucoin_service:
             # Use real KuCoin service
-            market_data = await kucoin_service.get_market_data(symbol, timeframe)
+            market_data = await kucoin_service.get_market_data(symbol)
             return {
                 "success": True,
                 "data": market_data,

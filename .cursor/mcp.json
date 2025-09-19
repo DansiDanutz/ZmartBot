@@ -18,8 +18,11 @@
     "Ref": {
       "command": "npx",
       "args": [
-        "@ref-mcp/ref-agent"
-      ]
+        "ref-tools-mcp@latest"
+      ],
+      "env": {
+        "REF_API_KEY": ""
+      }
     },
     "browsermcp": {
       "command": "npx",
@@ -39,7 +42,7 @@
     "ide": {
       "command": "npx",
       "args": [
-        "@code-mcp/ide-server"
+        "@modelcontextprotocol/server-filesystem"
       ]
     }
   }

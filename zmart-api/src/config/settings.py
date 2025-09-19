@@ -72,7 +72,7 @@ class Settings(BaseSettings):
     MIN_POSITION_SIZE: float = Field(default=10.0, alias="MIN_POSITION_SIZE")
     RISK_FREE_RATE: float = Field(default=0.02, alias="RISK_FREE_RATE")
     
-        # API Configuration - MUST be set via environment variables
+        # API Configuration - Loaded from API Keys Manager
     KUCOIN_API_KEY: str = Field(default="", alias="KUCOIN_API_KEY")
     KUCOIN_SECRET: str = Field(default="", alias="KUCOIN_SECRET")
     KUCOIN_PASSPHRASE: str = Field(default="", alias="KUCOIN_PASSPHRASE")
@@ -80,6 +80,10 @@ class Settings(BaseSettings):
     KUCOIN_API_PARTNER: str = Field(default="", alias="KUCOIN_API_PARTNER")
     KUCOIN_API_PARTNER_SECRET: str = Field(default="", alias="KUCOIN_API_PARTNER_SECRET")
     CRYPTOMETER_API_KEY: str = Field(default="", alias="CRYPTOMETER_API_KEY")
+    
+    # Supabase Configuration
+    SUPABASE_URL: str = Field(default="https://asjtxrmftmutcsnqgidy.supabase.co", alias="SUPABASE_URL")
+    SUPABASE_ANON_KEY: str = Field(default="", alias="SUPABASE_ANON_KEY")
     
     # Binance API Configuration - MUST be set via environment variables
     BINANCE_API_KEY: str = Field(default="", alias="BINANCE_API_KEY")
@@ -197,6 +201,48 @@ class Settings(BaseSettings):
 
 # Global settings instance
 settings = Settings()
+
+def load_api_keys_from_manager():
+    """Load API keys from API Keys Manager service"""
+    try:
+        import requests
+        
+        # Load KuCoin API keys
+        kucoin_api_response = requests.get("http://localhost:8006/keys/b4ca17e568290443", timeout=5)
+        if kucoin_api_response.status_code == 200:
+            kucoin_api_data = kucoin_api_response.json()
+            settings.KUCOIN_API_KEY = kucoin_api_data.get('api_key', '')
+        
+        kucoin_secret_response = requests.get("http://localhost:8006/keys/048e0229eff8f4c8", timeout=5)
+        if kucoin_secret_response.status_code == 200:
+            kucoin_secret_data = kucoin_secret_response.json()
+            settings.KUCOIN_SECRET = kucoin_secret_data.get('api_key', '')
+        
+        kucoin_passphrase_response = requests.get("http://localhost:8006/keys/855f3c5406856811", timeout=5)
+        if kucoin_passphrase_response.status_code == 200:
+            kucoin_passphrase_data = kucoin_passphrase_response.json()
+            settings.KUCOIN_PASSPHRASE = kucoin_passphrase_data.get('api_key', '')
+        
+        # Load Supabase API key
+        supabase_response = requests.get("http://localhost:8006/keys/73645e8a29fe40bd", timeout=5)
+        if supabase_response.status_code == 200:
+            supabase_data = supabase_response.json()
+            settings.SUPABASE_ANON_KEY = supabase_data.get('api_key', '')
+        
+        # Load Cryptometer API key
+        cryptometer_response = requests.get("http://localhost:8006/keys/b50fc81f12bba24b", timeout=5)
+        if cryptometer_response.status_code == 200:
+            cryptometer_data = cryptometer_response.json()
+            settings.CRYPTOMETER_API_KEY = cryptometer_data.get('api_key', '')
+        
+        print("✅ API keys loaded from API Keys Manager")
+        
+    except Exception as e:
+        print(f"⚠️ Could not load API keys from manager: {e}")
+        print("Using environment variables as fallback")
+
+# Load API keys on startup
+load_api_keys_from_manager()
 
 # Database URL construction
 def get_database_url() -> str:

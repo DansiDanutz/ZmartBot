@@ -6,7 +6,7 @@
     "health_endpoint": "/health",
     "status": "running",
     "registered_at": "2025-09-14T23:06:30.526731",
-    "last_checked": "2025-09-14T23:06:30.527245"
+    "last_checked": "2025-09-19T04:10:51.628004"
   },
   "8098": {
     "service_name": "KingFisher AI Server",
@@ -15,7 +15,7 @@
     "health_endpoint": "/health",
     "status": "running",
     "registered_at": "2025-09-14T23:06:30.526756",
-    "last_checked": "2025-09-14T23:06:30.527388"
+    "last_checked": "2025-09-19T04:10:51.628041"
   },
   "8555": {
     "service_name": "Manus/Simple Webhook",
@@ -24,7 +24,7 @@
     "health_endpoint": "/health",
     "status": "running",
     "registered_at": "2025-09-14T23:06:30.526761",
-    "last_checked": "2025-09-14T23:06:30.527512"
+    "last_checked": "2025-09-19T04:10:51.628077"
   },
   "8556": {
     "service_name": "Simple RiskMetric",
@@ -33,7 +33,7 @@
     "health_endpoint": "/api/v1/health",
     "status": "running",
     "registered_at": "2025-09-14T23:06:30.526764",
-    "last_checked": "2025-09-14T23:06:30.527607"
+    "last_checked": "2025-09-19T04:10:51.628108"
   },
   "8557": {
     "service_name": "Enhanced RiskMetric",
@@ -42,7 +42,7 @@
     "health_endpoint": "/api/v1/health",
     "status": "not_running",
     "registered_at": "2025-09-14T23:06:30.526768",
-    "last_checked": "2025-09-14T23:06:30.527678"
+    "last_checked": "2025-09-19T04:10:51.628134"
   },
   "8558": {
     "service_name": "Strategy RiskMetric",
@@ -51,7 +51,7 @@
     "health_endpoint": "/api/v1/health",
     "status": "not_running",
     "registered_at": "2025-09-14T23:06:30.526771",
-    "last_checked": "2025-09-14T23:06:30.528535"
+    "last_checked": "2025-09-19T04:10:51.628150"
   },
   "8559": {
     "service_name": "MDC Background Agent",
@@ -60,7 +60,7 @@
     "health_endpoint": null,
     "status": "not_running",
     "registered_at": "2025-09-14T23:06:30.526775",
-    "last_checked": "2025-09-14T23:06:30.528703"
+    "last_checked": "2025-09-19T04:10:51.628191"
   },
   "8080": {
     "service_name": "Service Dashboard",
@@ -69,7 +69,7 @@
     "health_endpoint": "/health",
     "status": "running",
     "registered_at": "2025-09-14T23:06:30.526779",
-    "last_checked": "2025-09-14T23:06:30.528976"
+    "last_checked": "2025-09-19T04:10:51.628229"
   },
   "8085": {
     "service_name": "Port Manager UI",
@@ -78,7 +78,7 @@
     "health_endpoint": "/health",
     "status": "running",
     "registered_at": "2025-09-14T23:06:30.526782",
-    "last_checked": "2025-09-14T23:06:30.529236"
+    "last_checked": "2025-09-19T04:10:51.628278"
   },
   "8086": {
     "service_name": "InfluxDB",
@@ -87,7 +87,7 @@
     "health_endpoint": "/ping",
     "status": "running",
     "registered_at": "2025-09-14T23:06:30.526786",
-    "last_checked": "2025-09-14T23:06:30.529524"
+    "last_checked": "2025-09-19T04:10:51.628349"
   },
   "9090": {
     "service_name": "Prometheus",
@@ -96,7 +96,7 @@
     "health_endpoint": "/-/healthy",
     "status": "not_running",
     "registered_at": "2025-09-14T23:06:30.526789",
-    "last_checked": "2025-09-14T23:06:30.529675"
+    "last_checked": "2025-09-19T04:10:51.628379"
   },
   "5432": {
     "service_name": "PostgreSQL",
@@ -105,7 +105,7 @@
     "health_endpoint": null,
     "status": "running",
     "registered_at": "2025-09-14T23:06:30.526793",
-    "last_checked": "2025-09-14T23:06:30.529765"
+    "last_checked": "2025-09-19T04:10:51.628429"
   },
   "6379": {
     "service_name": "Redis",
@@ -114,7 +114,7 @@
     "health_endpoint": null,
     "status": "running",
     "registered_at": "2025-09-14T23:06:30.526797",
-    "last_checked": "2025-09-14T23:06:30.529927"
+    "last_checked": "2025-09-19T04:10:51.628465"
   },
   "5672": {
     "service_name": "RabbitMQ",
@@ -123,7 +123,7 @@
     "health_endpoint": null,
     "status": "not_running",
     "registered_at": "2025-09-14T23:06:30.526800",
-    "last_checked": "2025-09-14T23:06:30.530868"
+    "last_checked": "2025-09-19T04:10:51.628507"
   },
   "15672": {
     "service_name": "RabbitMQ Management",
@@ -132,7 +132,7 @@
     "health_endpoint": "/api/health/checks/alarms",
     "status": "not_running",
     "registered_at": "2025-09-14T23:06:30.526804",
-    "last_checked": "2025-09-14T23:06:30.531058"
+    "last_checked": "2025-09-19T04:10:51.628533"
   },
   "5173": {
     "service_name": "Vite Dev Server",
@@ -141,16 +141,16 @@
     "health_endpoint": null,
     "status": "not_running",
     "registered_at": "2025-09-14T23:06:30.526807",
-    "last_checked": "2025-09-14T23:06:30.531555"
+    "last_checked": "2025-09-19T04:10:51.628551"
   },
   "3000": {
     "service_name": "Grafana",
     "port": 3000,
     "description": "Metrics visualization",
     "health_endpoint": "/api/health",
-    "status": "not_running",
+    "status": "running",
     "registered_at": "2025-09-14T23:06:30.526811",
-    "last_checked": "2025-09-14T23:06:30.632667"
+    "last_checked": "2025-09-19T04:10:51.628579"
   },
   "8006": {
     "service_name": "Service 8006",
@@ -159,7 +159,7 @@
     "health_endpoint": null,
     "status": "running",
     "registered_at": "2025-09-14T23:06:30.526815",
-    "last_checked": "2025-09-14T23:06:30.632884"
+    "last_checked": "2025-09-19T04:10:51.628621"
   },
   "8007": {
     "service_name": "Service 8007",
@@ -168,7 +168,7 @@
     "health_endpoint": null,
     "status": "running",
     "registered_at": "2025-09-14T23:06:30.526818",
-    "last_checked": "2025-09-14T23:06:30.632961"
+    "last_checked": "2025-09-19T04:10:51.628657"
   },
   "8008": {
     "service_name": "Service 8008",
@@ -177,7 +177,7 @@
     "health_endpoint": null,
     "status": "running",
     "registered_at": "2025-09-14T23:06:30.526822",
-    "last_checked": "2025-09-14T23:06:30.633030"
+    "last_checked": "2025-09-19T04:10:51.628685"
   },
   "8009": {
     "service_name": "Service 8009",
@@ -186,7 +186,7 @@
     "health_endpoint": null,
     "status": "running",
     "registered_at": "2025-09-14T23:06:30.526825",
-    "last_checked": "2025-09-14T23:06:30.633081"
+    "last_checked": "2025-09-19T04:10:51.628726"
   },
   "8010": {
     "service_name": "Service 8010",
@@ -195,7 +195,7 @@
     "health_endpoint": null,
     "status": "running",
     "registered_at": "2025-09-14T23:06:30.526828",
-    "last_checked": "2025-09-14T23:06:30.633154"
+    "last_checked": "2025-09-19T04:10:51.628787"
   },
   "8012": {
     "service_name": "Service 8012",
@@ -204,7 +204,7 @@
     "health_endpoint": null,
     "status": "running",
     "registered_at": "2025-09-14T23:06:30.526833",
-    "last_checked": "2025-09-14T23:06:30.633221"
+    "last_checked": "2025-09-19T04:10:51.628833"
   },
   "8013": {
     "service_name": "Service 8013",
@@ -213,7 +213,7 @@
     "health_endpoint": null,
     "status": "running",
     "registered_at": "2025-09-14T23:06:30.526836",
-    "last_checked": "2025-09-14T23:06:30.633284"
+    "last_checked": "2025-09-19T04:10:51.628871"
   },
   "8015": {
     "service_name": "Service 8015",
@@ -222,7 +222,7 @@
     "health_endpoint": null,
     "status": "running",
     "registered_at": "2025-09-14T23:06:30.526840",
-    "last_checked": "2025-09-14T23:06:30.633606"
+    "last_checked": "2025-09-19T04:10:51.628894"
   },
   "8016": {
     "service_name": "Service 8016",
@@ -231,7 +231,7 @@
     "health_endpoint": null,
     "status": "running",
     "registered_at": "2025-09-14T23:06:30.526843",
-    "last_checked": "2025-09-14T23:06:30.633709"
+    "last_checked": "2025-09-19T04:10:51.628918"
   },
   "8017": {
     "service_name": "Service 8017",
@@ -240,7 +240,7 @@
     "health_endpoint": null,
     "status": "running",
     "registered_at": "2025-09-14T23:06:30.526847",
-    "last_checked": "2025-09-14T23:06:30.633785"
+    "last_checked": "2025-09-19T04:10:51.628949"
   },
   "8018": {
     "service_name": "Service 8018",
@@ -249,7 +249,7 @@
     "health_endpoint": null,
     "status": "running",
     "registered_at": "2025-09-14T23:06:30.526850",
-    "last_checked": "2025-09-14T23:06:30.633912"
+    "last_checked": "2025-09-19T04:10:51.628975"
   },
   "8019": {
     "service_name": "Service 8019",
@@ -258,7 +258,7 @@
     "health_endpoint": null,
     "status": "running",
     "registered_at": "2025-09-14T23:06:30.526854",
-    "last_checked": "2025-09-14T23:06:30.634025"
+    "last_checked": "2025-09-19T04:10:51.629003"
   },
   "8020": {
     "service_name": "Service 8020",
@@ -267,7 +267,7 @@
     "health_endpoint": null,
     "status": "running",
     "registered_at": "2025-09-14T23:06:30.526857",
-    "last_checked": "2025-09-14T23:06:30.634136"
+    "last_checked": "2025-09-19T04:10:51.629037"
   },
   "8050": {
     "service_name": "Service 8050",
@@ -276,6 +276,6 @@
     "health_endpoint": null,
     "status": "running",
     "registered_at": "2025-09-14T23:06:30.526861",
-    "last_checked": "2025-09-14T23:06:30.634247"
+    "last_checked": "2025-09-19T04:10:51.629068"
   }
 }
