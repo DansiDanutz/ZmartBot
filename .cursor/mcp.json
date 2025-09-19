@@ -6,6 +6,41 @@
         "shadcn@latest",
         "mcp"
       ]
+    },
+    "supabase": {
+      "command": "npx",
+      "args": [
+        "@supabase/mcp-server-supabase",
+        "--read-only",
+        "--project-ref=asjtxrmftmutcsnqgidy"
+      ]
+    },
+    "Ref": {
+      "command": "npx",
+      "args": [
+        "@ref-mcp/ref-agent"
+      ]
+    },
+    "browsermcp": {
+      "command": "npx",
+      "args": [
+        "@browsermcp/mcp@latest"
+      ]
+    },
+    "firecrawl-mcp": {
+      "command": "npx",
+      "args": [
+        "firecrawl-mcp"
+      ],
+      "env": {
+        "FIRECRAWL_API_KEY": "fc-0b019c4a95b64f488f5c97f387e95b5e"
+      }
+    },
+    "ide": {
+      "command": "npx",
+      "args": [
+        "@code-mcp/ide-server"
+      ]
     }
   }
 }

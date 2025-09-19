@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ZmartyChat - Complete Error Check</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background: #0A0E1B;
+            color: #fff;
+            padding: 20px;
+            margin: 0;
+        }
+        h1 {
+            color: #00FFCC;
+            border-bottom: 2px solid #00FFCC;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #0EA5E9;
+            margin-top: 30px;
+            background: rgba(14, 165, 233, 0.1);
+            padding: 10px;
+            border-left: 4px solid #0EA5E9;
+        }
+        .error {
+            color: #EF4444;
+            background: rgba(239, 68, 68, 0.1);
+            padding: 8px;
+            margin: 5px 0;
+            border-left: 3px solid #EF4444;
+        }
+        .warning {
+            color: #F59E0B;
+            background: rgba(245, 158, 11, 0.1);
+            padding: 8px;
+            margin: 5px 0;
+            border-left: 3px solid #F59E0B;
+        }
+        .success {
+            color: #10B981;
+            background: rgba(16, 185, 129, 0.1);
+            padding: 8px;
+            margin: 5px 0;
+            border-left: 3px solid #10B981;
+        }
+        .info {
+            color: #6B7280;
+            font-size: 12px;
+            margin-left: 20px;
+        }
+        .summary {
+            background: rgba(0, 255, 204, 0.1);
+            border: 1px solid #00FFCC;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        .timestamp {
+            color: #6B7280;
+            font-size: 11px;
+            text-align: right;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 ZmartyChat Complete Error Check</h1>
+    <button onclick="location.reload()" style="
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #00FFCC;
+        color: #0A0E1B;
+        border: none;
+        padding: 12px 24px;
+        font-size: 16px;
+        font-weight: bold;
+        border-radius: 8px;
+        cursor: pointer;
+        z-index: 1000;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0, 255, 204, 0.3);
+    " onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 6px 20px rgba(0, 255, 204, 0.5)'"
+       onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0, 255, 204, 0.3)'">
+        🔄 REFRESH
+    </button>
+    <div class="timestamp">Check started at: <span id="start-time"></span></div>
+
+    <h2>1️⃣ JavaScript Runtime Errors</h2>
+    <div id="runtime-errors"></div>
+
+    <h2>2️⃣ Network Errors (404s, Failed Resources)</h2>
+    <div id="network-errors"></div>
+
+    <h2>3️⃣ Function Availability Check</h2>
+    <div id="function-check"></div>
+
+    <h2>4️⃣ DOM Element Availability</h2>
+    <div id="dom-check"></div>
+
+    <h2>5️⃣ Console Errors/Warnings</h2>
+    <div id="console-errors"></div>
+
+    <h2>6️⃣ Supabase Connection Status</h2>
+    <div id="supabase-check"></div>
+
+    <h2>7️⃣ Local Storage Check</h2>
+    <div id="storage-check"></div>
+
+    <h2>📊 Error Summary</h2>
+    <div id="summary" class="summary"></div>
+
+    <script>
+        // Track all errors
+        let errorCount = 0;
+        let warningCount = 0;
+        let successCount = 0;
+        let networkErrors = [];
+        let consoleErrors = [];
+
+        // Set start time
+        document.getElementById('start-time').textContent = new Date().toLocaleString();
+
+        // 1. Capture JavaScript runtime errors
+        window.addEventListener('error', function(e) {
+            errorCount++;
+            const errorDiv = document.getElementById('runtime-errors');
+            if (e.filename && e.filename.includes('.js')) {
+                errorDiv.innerHTML += `<div class="error">❌ ${e.message}<div class="info">File: ${e.filename}:${e.lineno}:${e.colno}</div></div>`;
+            }
+        });
+
+        // 2. Capture network errors (404s)
+        window.addEventListener('error', function(e) {
+            if (e.target && e.target !== window) {
+                errorCount++;
+                const networkDiv = document.getElementById('network-errors');
+                const src = e.target.src || e.target.href;
+                if (src) {
+                    networkErrors.push(src);
+                    networkDiv.innerHTML += `<div class="error">❌ Failed to load: ${src}</div>`;
+                }
+            }
+        }, true);
+
+        // 3. Override console methods to capture logs
+        const originalError = console.error;
+        const originalWarn = console.warn;
+
+        console.error = function() {
+            errorCount++;
+            consoleErrors.push({type: 'error', args: arguments});
+            const consoleDiv = document.getElementById('console-errors');
+            consoleDiv.innerHTML += `<div class="error">❌ Console Error: ${Array.from(arguments).join(' ')}</div>`;
+            originalError.apply(console, arguments);
+        };
+
+        console.warn = function() {
+            warningCount++;
+            consoleErrors.push({type: 'warn', args: arguments});
+            const consoleDiv = document.getElementById('console-errors');
+            consoleDiv.innerHTML += `<div class="warning">⚠️ Console Warning: ${Array.from(arguments).join(' ')}</div>`;
+            originalWarn.apply(console, arguments);
+        };
+
+        // Wait for scripts to load then run checks
+        setTimeout(() => {
+            // 3. Check all required functions
+            const functionsToCheck = [
+                'nextSlide', 'previousSlide', 'goToSlide', 'skipOnboarding',
+                'selectTier', 'continueWithEmail', 'verifyCode', 'resendCode',
+                'completeProfile', 'quickLogin', 'quickStart', 'showError',
+                'updateNextButton', 'initializeDots', 'handleTouchStart',
+                'handleTouchEnd', 'handleSwipe'
+            ];
+
+            const funcDiv = document.getElementById('function-check');
+            functionsToCheck.forEach(fn => {
+                if (typeof window[fn] === 'undefined') {
+                    errorCount++;
+                    funcDiv.innerHTML += `<div class="error">❌ ${fn} is NOT defined</div>`;
+                } else {
+                    successCount++;
+                    funcDiv.innerHTML += `<div class="success">✅ ${fn} is defined</div>`;
+                }
+            });
+
+            // 4. Check DOM elements that should exist
+            const domElements = [
+                '.slides-wrapper',
+                '.next-btn',
+                '.skip-btn',
+                '.dot',
+                '#slide-1',
+                '#next-text'
+            ];
+
+            const domDiv = document.getElementById('dom-check');
+            domElements.forEach(selector => {
+                const elem = document.querySelector(selector);
+                if (!elem) {
+                    warningCount++;
+                    domDiv.innerHTML += `<div class="warning">⚠️ Element "${selector}" not found (may be normal for this test page)</div>`;
+                } else {
+                    successCount++;
+                    domDiv.innerHTML += `<div class="success">✅ Element "${selector}" exists</div>`;
+                }
+            });
+
+            // 5. Check UserService
+            const funcDiv2 = document.getElementById('function-check');
+            if (typeof UserService === 'undefined') {
+                errorCount++;
+                funcDiv2.innerHTML += `<div class="error">❌ UserService is NOT defined</div>`;
+            } else {
+                successCount++;
+                funcDiv2.innerHTML += `<div class="success">✅ UserService is defined with methods: ${Object.keys(UserService).join(', ')}</div>`;
+            }
+
+            // 6. Check Supabase
+            const supabaseDiv = document.getElementById('supabase-check');
+            if (typeof supabase === 'undefined') {
+                errorCount++;
+                supabaseDiv.innerHTML += `<div class="error">❌ Supabase client NOT initialized</div>`;
+            } else {
+                successCount++;
+                supabaseDiv.innerHTML += `<div class="success">✅ Supabase client is initialized</div>`;
+                if (supabase.auth) {
+                    supabaseDiv.innerHTML += `<div class="success">✅ Supabase auth module loaded</div>`;
+                }
+            }
+
+            // 7. Check localStorage
+            const storageDiv = document.getElementById('storage-check');
+            try {
+                localStorage.setItem('test', 'test');
+                localStorage.removeItem('test');
+                successCount++;
+                storageDiv.innerHTML += `<div class="success">✅ localStorage is available</div>`;
+
+                // Check for any stored user data
+                const userKeys = ['zmarty_temp_email', 'zmarty_email_verified', 'zmarty_session', 'zmarty_user'];
+                userKeys.forEach(key => {
+                    const value = localStorage.getItem(key);
+                    if (value) {
+                        storageDiv.innerHTML += `<div class="info">📦 Found: ${key} = ${value.substring(0, 50)}...</div>`;
+                    }
+                });
+            } catch(e) {
+                errorCount++;
+                storageDiv.innerHTML += `<div class="error">❌ localStorage error: ${e.message}</div>`;
+            }
+
+            // Summary
+            const summaryDiv = document.getElementById('summary');
+            summaryDiv.innerHTML = `
+                <h3>Test Complete!</h3>
+                <div class="error">Errors: ${errorCount}</div>
+                <div class="warning">Warnings: ${warningCount}</div>
+                <div class="success">Success: ${successCount}</div>
+                <div style="margin-top:10px; padding-top:10px; border-top:1px solid #333;">
+                    <strong>Overall Status:</strong> ${errorCount === 0 ? '✅ All Clear!' : '❌ Errors Found - Fix Required'}
+                </div>
+                <div class="timestamp">Completed at: ${new Date().toLocaleString()}</div>
+            `;
+
+            // If no errors in main sections, show success
+            if (document.getElementById('runtime-errors').innerHTML === '') {
+                document.getElementById('runtime-errors').innerHTML = '<div class="success">✅ No runtime errors detected</div>';
+            }
+            if (document.getElementById('network-errors').innerHTML === '') {
+                document.getElementById('network-errors').innerHTML = '<div class="success">✅ No network/404 errors detected</div>';
+            }
+            if (document.getElementById('console-errors').innerHTML === '') {
+                document.getElementById('console-errors').innerHTML = '<div class="success">✅ No console errors or warnings</div>';
+            }
+
+        }, 1500); // Wait for all scripts to load
+
+    </script>
+
+    <!-- Load the actual scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-client.js"></script>
+    <script src="onboarding-slides.js"></script>
+</body>
+</html>

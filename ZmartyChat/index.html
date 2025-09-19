@@ -455,6 +455,52 @@
 
     <!-- Activate Zmarty Integration -->
     <script>
+        // Verification function
+        function verifyCode() {
+            // Skip to main chat for development
+            document.getElementById('onboarding').style.display = 'none';
+            document.getElementById('chat-interface').style.display = 'flex';
+
+            // Initialize chat
+            if (window.zmartApp) {
+                window.zmartApp.showScreen('chat');
+                window.zmartApp.initializeChat();
+            }
+
+            // Show success message
+            const notification = document.createElement('div');
+            notification.className = 'notification success';
+            notification.textContent = 'Welcome to ZmartyChat!';
+            notification.style.cssText = 'position: fixed; top: 20px; right: 20px; background: #10b981; color: white; padding: 12px 24px; border-radius: 8px; z-index: 9999;';
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 3000);
+
+            return false; // Prevent form submission
+        }
+
+        // Enable verify button and auto-fill for development
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const verifyBtn = document.getElementById('verify-btn');
+                const codeInputs = document.querySelectorAll('.code-input');
+
+                // Auto-fill code
+                if (codeInputs.length > 0) {
+                    const testCode = '123456';
+                    codeInputs.forEach((input, i) => {
+                        input.value = testCode[i];
+                    });
+                }
+
+                // Enable button
+                if (verifyBtn) {
+                    verifyBtn.disabled = false;
+                    verifyBtn.style.opacity = '1';
+                    verifyBtn.style.cursor = 'pointer';
+                }
+            }, 1000);
+        });
+
         // Fire userRegistered event after successful registration
         document.addEventListener('DOMContentLoaded', () => {
             // Listen for successful OTP verification

@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ZmartyChat - Welcome</title>
+    <link rel="stylesheet" href="onboarding-slides.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <div class="onboarding-container">
+        <!-- Skip Button -->
+        <button class="skip-btn" onclick="skipOnboarding()">Skip</button>
+
+        <!-- Slides Container -->
+        <div class="slides-wrapper">
+
+            <!-- Slide 1: Welcome -->
+            <div class="slide active" id="slide-1">
+                <div class="slide-content">
+                    <h1 class="slide-title">Welcome to Zmarty</h1>
+                    <p class="slide-subtitle">Your AI Trading Companion</p>
+                    <p class="slide-description">Experience advanced crypto tools with our intelligent assistant that works 24/7 to keep you connected with market changes.</p>
+                    <div class="traits-grid">
+                        <div class="trait-item">
+                            <span class="trait-icon">🧠</span>
+                            <span class="trait-text">Smart</span>
+                        </div>
+                        <div class="trait-item">
+                            <span class="trait-icon">⚡</span>
+                            <span class="trait-text">Adaptive</span>
+                        </div>
+                        <div class="trait-item">
+                            <span class="trait-icon">✨</span>
+                            <span class="trait-text">Organized</span>
+                        </div>
+                        <div class="trait-item">
+                            <span class="trait-icon">🎯</span>
+                            <span class="trait-text">Precise</span>
+                        </div>
+                    </div>
+                    <p class="traits-footer">Powered by advanced AI technology</p>
+                </div>
+            </div>
+
+            <!-- Slide 2: Multi LLM System -->
+            <div class="slide" id="slide-2">
+                <div class="slide-content">
+                    <h1 class="slide-title">Multi LLM System</h1>
+                    <p class="slide-subtitle">AI Detection Power</p>
+                    <p class="slide-description">Four powerful AI models working together for superior insights, giving Zmarty the ability to act geniously.</p>
+                    <div class="ai-logos">
+                        <div class="ai-logo-item">
+                            <svg class="ai-logo" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <rect x="3" y="3" width="18" height="18" rx="3" fill="#00FFCC" opacity="0.2"/>
+                                <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#00FFCC"/>
+                                <path d="M2 17L12 22L22 17M2 12L12 17L22 12" stroke="#00FFCC" stroke-width="2"/>
+                            </svg>
+                            <span>Claude</span>
+                        </div>
+                        <div class="ai-logo-item">
+                            <svg class="ai-logo" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M22.5 12.5c0-1.58-.79-2.93-2-3.78v7.56c1.21-.85 2-2.2 2-3.78M21.19 7c-.56-1.19-1.42-2.25-2.61-3.16L9.3 9.3l9.89-2.3m-7.58-3.5A10 10 0 0 0 12 3.5a10 10 0 0 0-8.5 4.31L12 13.5l1.61-10M3.31 8.5C2.42 9.69 1.56 10.75 1 12c0 1.58.79 2.93 2 3.78V8.22c-.21.15-.42.3-.69.28m.5-1.19l9.89 2.3L4.42 4.16C3.23 5.07 2.37 6.13 1.81 7.31m7.58 13.69A10 10 0 0 0 12 20.5a10 10 0 0 0 8.5-4.31L12 10.5l-1.61 10M20.69 15.5c.89-1.19 1.75-2.25 2.31-3.5c0-1.58-.79-2.93-2-3.78v7.56c.21-.15.42-.3.69-.28" fill="#10B981"/>
+                            </svg>
+                            <span>GPT-5</span>
+                        </div>
+                        <div class="ai-logo-item">
+                            <svg class="ai-logo" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2L2 19.5L12 15L22 19.5L12 2Z" fill="#F59E0B"/>
+                                <circle cx="12" cy="12" r="3" fill="#F59E0B" opacity="0.5"/>
+                            </svg>
+                            <span>Gemini</span>
+                        </div>
+                        <div class="ai-logo-item">
+                            <svg class="ai-logo" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" fill="#0EA5E9"/>
+                            </svg>
+                            <span>Grok</span>
+                        </div>
+                    </div>
+                    <p class="traits-footer">Real-time analysis across all models</p>
+                </div>
+            </div>
+
+            <!-- Slide 3: Crypto Portfolio Features -->
+            <div class="slide" id="slide-3">
+                <div class="slide-content">
+                    <h1 class="slide-title">Crypto Portfolio</h1>
+                    <p class="slide-subtitle">Track Everything</p>
+                    <p class="slide-description">Real-time monitoring across all major exchanges. Technical indicators, liquidation clusters, risk metrics, on-chain movements. Zmarty knows everything.</p>
+                    <div class="crypto-features">
+                        <div class="crypto-feature">
+                            <span class="crypto-icon">🚦</span>
+                            <h3>Live Data</h3>
+                            <p>100+ exchanges</p>
+                        </div>
+                        <div class="crypto-feature">
+                            <span class="crypto-icon">🎯</span>
+                            <h3>Smart Alerts</h3>
+                            <p>AI-powered signals</p>
+                        </div>
+                        <div class="crypto-feature">
+                            <span class="crypto-icon">💼</span>
+                            <h3>Analytics</h3>
+                            <p>P&L tracking</p>
+                        </div>
+                        <div class="crypto-feature">
+                            <span class="crypto-icon">🔔</span>
+                            <h3>24/7 Watch</h3>
+                            <p>Never miss trades</p>
+                        </div>
+                    </div>
+                    <p class="traits-footer">BTC, ETH, SOL + 200 more</p>
+                </div>
+            </div>
+
+            <!-- Slide 4: Registration/Login -->
+            <div class="slide" id="slide-4">
+                <div class="slide-content">
+                    <h1 class="slide-title">Get Started</h1>
+                    <p class="slide-subtitle">Join Zmarty Today</p>
+                    <p class="slide-description">Sign up in seconds with your favorite platform</p>
+
+                    <div class="auth-container">
+                        <div class="quick-auth">
+                            <button class="auth-btn google" onclick="quickLogin('google')">
+                                <div class="auth-icon">
+                                    <svg width="20" height="20" viewBox="0 0 48 48">
+                                        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                                        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                                        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                                        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                                    </svg>
+                                </div>
+                                <span>Google</span>
+                            </button>
+
+                            <button class="auth-btn apple" onclick="quickLogin('apple')">
+                                <div class="auth-icon">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.75 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.13zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
+                                    </svg>
+                                </div>
+                                <span>Apple</span>
+                            </button>
+                        </div>
+
+                        <div class="divider-modern">
+                            <span>OR</span>
+                        </div>
+
+                        <div class="email-auth">
+                            <div class="email-input-group">
+                                <input type="email"
+                                       id="register-email"
+                                       class="modern-email-input"
+                                       placeholder="Enter your email address"
+                                       oninput="showPasswordField()" />
+                            </div>
+
+                            <!-- Password field - OUTSIDE email-input-group but INSIDE email-auth -->
+                            <input type="password"
+                                   id="register-password"
+                                   class="modern-email-input"
+                                   placeholder="Enter your password (min 8 characters)"
+                                   oninput="showConfirmPasswordField()"
+                                   style="margin-top: 12px; display: none; width: 100%; padding: 16px; background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.2); border-radius: 12px; color: white; font-size: 16px;" />
+
+                            <!-- Confirm password field - OUTSIDE email-input-group but INSIDE email-auth -->
+                            <input type="password"
+                                   id="confirm-password"
+                                   class="modern-email-input"
+                                   placeholder="Confirm your password"
+                                   oninput="checkIfCanRegister()"
+                                   style="margin-top: 12px; display: none; width: 100%; padding: 16px; background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.2); border-radius: 12px; color: white; font-size: 16px;" />
+
+                            <!-- Register button - OUTSIDE email-input-group but INSIDE email-auth -->
+                            <button class="email-continue"
+                                    id="email-continue-btn"
+                                    onclick="continueWithEmail()"
+                                    style="display: none; margin-top: 20px; width: 100%; padding: 16px 24px; background: linear-gradient(135deg, #0066ff, #4d94ff); border: none; border-radius: 12px; color: white; font-size: 16px; font-weight: 600; cursor: pointer;">
+                                <span>Register →</span>
+                            </button>
+                            <p class="email-hint">We'll send you a verification code</p>
+
+                            <!-- Forgot Password Link -->
+                            <div style="text-align: center; margin-top: 20px;">
+                                <a href="#" onclick="showForgotPasswordModal(); return false;"
+                                   style="color: var(--primary-blue); text-decoration: none; font-size: 14px;
+                                          opacity: 0.8; transition: opacity 0.2s ease;">
+                                    Already have an account? Sign in
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 5: Confirm Registration -->
+            <div class="slide" id="slide-5">
+                <div class="slide-content">
+                    <h1 class="slide-title">Check Your Email 📧</h1>
+                    <p class="slide-subtitle">Verification Required</p>
+                    <p class="slide-description">
+                        <span style="color: #22c55e; font-weight: 600;">✓ Email sent successfully!</span><br>
+                        <span style="font-size: 13px; opacity: 0.9;">Check your email and click the Magic Link to verify your account.<br>
+                        <strong>OR</strong> enter the code if provided.</span>
+                    </p>
+                    <div class="verification-container">
+                        <div class="code-inputs">
+                            <input type="text" id="code-1" maxlength="1" class="code-input" oninput="moveToNext(this, 'code-2')" />
+                            <input type="text" id="code-2" maxlength="1" class="code-input" oninput="moveToNext(this, 'code-3')" />
+                            <input type="text" id="code-3" maxlength="1" class="code-input" oninput="moveToNext(this, 'code-4')" />
+                            <input type="text" id="code-4" maxlength="1" class="code-input" oninput="moveToNext(this, 'code-5')" />
+                            <input type="text" id="code-5" maxlength="1" class="code-input" oninput="moveToNext(this, 'code-6')" />
+                            <input type="text" id="code-6" maxlength="1" class="code-input" oninput="moveToNext(this, null)" />
+                        </div>
+                        <button class="verify-btn" onclick="verifyCode()">Verify Email</button>
+                        <p class="resend-text">
+                            Didn't receive code?
+                            <a href="#" onclick="resendCode(); return false;" class="resend-link">Resend</a>
+                        </p>
+
+                        <!-- Name and Country inputs (hidden initially) -->
+                        <div class="user-info-container" id="user-info-container" style="display: none;">
+                            <h3 class="info-title">How should Zmarty Call you?</h3>
+                            <p class="info-subtitle">What country you live in? Zmarty wants to know in what language to speak with you</p>
+                            <div class="user-inputs">
+                                <input type="text" id="user-name" class="user-input" placeholder="Your name" />
+                                <input type="text" id="user-country" class="user-input" placeholder="Your country" />
+                            </div>
+                            <button class="continue-btn" onclick="saveUserInfo()">Continue</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 6: Tier Selection -->
+            <div class="slide" id="slide-6">
+                <div class="slide-content">
+                    <h1 class="slide-title">Tier Selection</h1>
+                    <p class="slide-subtitle">Choose Your Plan</p>
+                    <p class="slide-description">You can always upgrade later as your needs grow.</p>
+                    <div class="tier-options">
+                        <button class="tier-option recommended selected" onclick="selectTier('free')">
+                            <span class="tier-badge">DEFAULT - START FREE 🎆</span>
+                            <div class="tier-header">
+                                <span class="tier-name">Free</span>
+                                <span class="tier-price">$0/mo</span>
+                            </div>
+                            <div class="tier-features-grid">
+                                <div class="tier-features-left">
+                                    <span class="tier-feature">✓ Zmarty Chat</span>
+                                    <span class="tier-feature">✓ Daily Report</span>
+                                    <span class="tier-feature">✓ 1 Symbol</span>
+                                </div>
+                                <div class="tier-features-right">
+                                    <span class="tier-feature">✓ 10 Credits Daily</span>
+                                    <span class="tier-feature">✓ Basic Alerts</span>
+                                    <span class="tier-feature">✓ Community Access</span>
+                                </div>
+                            </div>
+                        </button>
+                        <button class="tier-option" onclick="selectTier('gold')">
+                            <div class="tier-header">
+                                <span class="tier-name">Gold</span>
+                                <span class="tier-price">$29/mo</span>
+                            </div>
+                            <div class="tier-features-grid">
+                                <div class="tier-features-left">
+                                    <span class="tier-feature">✓ Zmarty Chat</span>
+                                    <span class="tier-feature">✓ All Reports</span>
+                                    <span class="tier-feature">✓ 3 Symbols</span>
+                                </div>
+                                <div class="tier-features-right">
+                                    <span class="tier-feature">✓ 50 Credits Daily</span>
+                                    <span class="tier-feature">✓ Priority Alerts</span>
+                                    <span class="tier-feature">✓ Referral Bonus</span>
+                                </div>
+                            </div>
+                        </button>
+                        <button class="tier-option" onclick="selectTier('premium')">
+                            <div class="tier-header">
+                                <span class="tier-name">Premium</span>
+                                <span class="tier-price">$99/mo</span>
+                            </div>
+                            <div class="tier-features-grid">
+                                <div class="tier-features-left">
+                                    <span class="tier-feature">✓ Zmarty Chat</span>
+                                    <span class="tier-feature">✓ Unlimited Reports</span>
+                                    <span class="tier-feature">✓ 5 Symbols</span>
+                                </div>
+                                <div class="tier-features-right">
+                                    <span class="tier-feature">✓ 200 Credits Daily</span>
+                                    <span class="tier-feature">✓ VIP Alerts</span>
+                                    <span class="tier-feature">✓ Cashback Rewards</span>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- Slide 7: Congratulations -->
+            <div class="slide" id="slide-7">
+                <div class="slide-content">
+                    <h1 class="slide-title">Congratulations! 🎉</h1>
+                    <p class="slide-subtitle">We Became Friends Forever!</p>
+                    <p class="slide-description">Your account is ready. Welcome to the Zmarty community!</p>
+                    <div class="congrats-content">
+                        <div class="success-icon">✨</div>
+                        <div class="welcome-message">
+                            <h3>You're all set!</h3>
+                            <p>Start exploring your personalized crypto dashboard</p>
+                            <p class="name-request">Tell me your name and where are you from to know in what language to talk with you.</p>
+                        </div>
+                        <button class="dashboard-btn" onclick="goToDashboard()">Go to Dashboard →</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dots Navigation -->
+        <div class="dots-nav">
+            <span class="dot active" onclick="goToSlide(1)"></span>
+            <span class="dot" onclick="goToSlide(2)"></span>
+            <span class="dot" onclick="goToSlide(3)"></span>
+            <span class="dot" onclick="goToSlide(4)"></span>
+            <span class="dot" onclick="goToSlide(5)"></span>
+            <span class="dot" onclick="goToSlide(6)"></span>
+            <span class="dot" onclick="goToSlide(7)"></span>
+        </div>
+
+        <!-- Next Button -->
+        <button class="next-btn" onclick="nextSlide()">
+            <span id="next-text">Next</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+        </button>
+    </div>
+
+    <script src="supabase-client.js"></script>
+    <script src="onboarding-slides.js"></script>
+</body>
+</html>

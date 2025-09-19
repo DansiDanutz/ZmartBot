@@ -1,4 +1,40 @@
-# Data Domain Context\n\n## market_data_aggregator\n**File**: .cursor/rules/market_data_aggregator.mdc\n**Relevance**: 0\n**Size**: 16510 bytes\n\n**Summary**: ## Description | Core service component of the ZmartBot ecosystem providing essential functionality. | - **Claude Code Integration**: AI-powered data aggregation and optimization\n**Key Info**: Binance 24hr ticker statistics | <100ms target\n\n---\n\n## market_data_enhanced_database\n**File**: .cursor/rules/market_data_enhanced_database.mdc\n**Relevance**: 0\n**Size**: 16816 bytes\n\n**Summary**: ## Description | Core service component of the ZmartBot ecosystem providing essential functionality. | - **Claude Code Integration**: AI-powered database optimization and analysis\n\n---\n\n## 21indicatorsDatabase\n**File**: .cursor/rules/21indicatorsDatabase.mdc\n**Relevance**: 0\n**Size**: 17645 bytes\n\n**Summary**: ## Description | Core service component of the ZmartBot ecosystem providing essential functionality. | @datasource: IndicatorsDatabase\n**Key Info**: application | application\n\n---\n\n## integration-zmart-notification-21indicatorsDatabase\n**File**: .cursor/rules/integration/winners/integration-zmart-notification-21indicatorsDatabase.mdc\n**Relevance**: 0\n**Size**: 3142 bytes\n\n**Content**: # integration-zmart-notification-21indicatorsDatabase.mdc
+# Data Domain Context
+
+## market_data_aggregator
+**File**: .cursor/rules/market_data_aggregator.mdc
+**Relevance**: 0
+**Size**: 16510 bytes
+
+**Summary**: ## Description | Core service component of the ZmartBot ecosystem providing essential functionality. | - **Claude Code Integration**: AI-powered data aggregation and optimization
+**Key Info**: Binance 24hr ticker statistics | <100ms target
+
+---
+
+## market_data_enhanced_database
+**File**: .cursor/rules/market_data_enhanced_database.mdc
+**Relevance**: 0
+**Size**: 16816 bytes
+
+**Summary**: ## Description | Core service component of the ZmartBot ecosystem providing essential functionality. | - **Claude Code Integration**: AI-powered database optimization and analysis
+
+---
+
+## 21indicatorsDatabase
+**File**: .cursor/rules/21indicatorsDatabase.mdc
+**Relevance**: 0
+**Size**: 17645 bytes
+
+**Summary**: ## Description | Core service component of the ZmartBot ecosystem providing essential functionality. | @datasource: IndicatorsDatabase
+**Key Info**: application | application
+
+---
+
+## integration-zmart-notification-21indicatorsDatabase
+**File**: .cursor/rules/integration/winners/integration-zmart-notification-21indicatorsDatabase.mdc
+**Relevance**: 0
+**Size**: 3142 bytes
+
+**Content**: # integration-zmart-notification-21indicatorsDatabase.mdc
 > Type: integration | Version: 1.0.0 | Owner: zmartbot | Components: zmart-notification + 21indicatorsDatabase
 > Winner: Selected from automated analysis (Score: 92)
 
@@ -23,7 +59,16 @@ The integration of zmart-notification and 21indicatorsDatabase services could pr
 - Managing potential data conflicts or inconsistencies
 - Dealing with different database systems and data models
 
-## ...\n\n---\n\n## integration-21indicatorsDatabase-zmart-notification\n**File**: .cursor/rules/integration/winners/integration-21indicatorsDatabase-zmart-notification.mdc\n**Relevance**: 0\n**Size**: 3837 bytes\n\n**Content**: # integration-21indicatorsDatabase-zmart-notification.mdc
+## ...
+
+---
+
+## integration-21indicatorsDatabase-zmart-notification
+**File**: .cursor/rules/integration/winners/integration-21indicatorsDatabase-zmart-notification.mdc
+**Relevance**: 0
+**Size**: 3837 bytes
+
+**Content**: # integration-21indicatorsDatabase-zmart-notification.mdc
 > Type: integration | Version: 1.0.0 | Owner: zmartbot | Components: 21indicatorsDatabase + zmart-notification
 > Winner: Selected from automated analysis (Score: 92)
 
@@ -40,7 +85,16 @@ The integration of the 21 Indicators Database and the zmart-notification service
 - Consistent Data Access: With a single source of truth for technical indicators, the notification service can access consistent and reliable data, reducing the risk of errors and improving overall system performance.
 - Improved AI Analysis: The historical data stored in the 21 Indicators Database can be used by the notification service to improve AI pattern recognition and predictive capabilities, leading to more accurate alerts and trading decisions.
 
-## ...\n\n---\n\n## integration-21indicatorsDatabase-CryptometerService\n**File**: .cursor/rules/integration/winners/integration-21indicatorsDatabase-CryptometerService.mdc\n**Relevance**: 0\n**Size**: 3151 bytes\n\n**Content**: # integration-21indicatorsDatabase-CryptometerService.mdc
+## ...
+
+---
+
+## integration-21indicatorsDatabase-CryptometerService
+**File**: .cursor/rules/integration/winners/integration-21indicatorsDatabase-CryptometerService.mdc
+**Relevance**: 0
+**Size**: 3151 bytes
+
+**Content**: # integration-21indicatorsDatabase-CryptometerService.mdc
 > Type: integration | Version: 1.0.0 | Owner: zmartbot | Components: 21indicatorsDatabase + CryptometerService
 > Winner: Selected from automated analysis (Score: 92)
 
@@ -60,4 +114,7 @@ The integration of 21indicatorsDatabase and CryptometerService would significant
 ## Implementation Details
 **Complexity Reason**: While both services are designed with integration in mind, the complexity arises from ensuring real-time data synchronization and handling the large volume of data. Additionally, the integration must be done in a way that doesn't compromise the performance and speed of either service.
 
-## ...\n\n---\n\n
+## ...
+
+---
+

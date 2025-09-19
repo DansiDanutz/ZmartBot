@@ -1,8 +1,44 @@
-# Core Domain Context\n\n## main\n**File**: .cursor/rules/main.mdc\n**Relevance**: 100\n**Size**: 4787 bytes\n\n**Content**: # main.mdc
+# Core Domain Context
+
+## main
+**File**: .cursor/rules/main.mdc
+**Relevance**: 100
+**Size**: 4787 bytes
+
+**Content**: # main.mdc
 > Type: service | Version: 1.0.0 | Owner: zmartbot | Status: Discovery | Level: 1
 Core service component of the ZmartBot ecosystem providing essential functionality.
 
-## ...\n\n---\n\n## MainAPIServer\n**File**: .cursor/rules/MainAPIServer.mdc\n**Relevance**: 100\n**Size**: 17881 bytes\n\n**Summary**: # 🚀 Main API Server - Zmart Trading Bot Platform Core | > Type: backend | Version: 1.0.0 | Owner: zmartbot | Port: 8000 | - **Enhanced Development**: AI-powered code generation and optimization | ```b...\n**Key Info**: 8000 | backend | 40+ API route modules with specialized trading functionality | High-performance async API framework with comprehensive middleware stack\n\n---\n\n## rules\n**File**: .cursor/rules/rules.mdc\n**Relevance**: 80\n**Size**: 41341 bytes\n\n**Summary**: # rules.mdc | > Type: service | Version: 1.0.0 | Owner: zmartbot | Status: Discovery | Level: 1 | - **Claude Code Integration**: AI-powered rules management and optimization\n**Key Info**: service | rule | System Architecture & Service Management | 30+ endpoints for workflow validation and service management | Complete API system for workflow guidance and validation\n\n---\n\n## rule_0_mandatory\n**File**: .cursor/rules/rule_0_mandatory.mdc\n**Relevance**: 100\n**Size**: 11227 bytes\n\n**Summary**: ## Description | Core service component of the ZmartBot ecosystem providing essential functionality. | - **Claude Code Integration**: AI-powered rule enforcement and optimization\n**Compressed**: \n\n---\n\n## integration-rules-ServiceLog\n**File**: .cursor/rules/integration/winners/integration-rules-ServiceLog.mdc\n**Relevance**: 100\n**Size**: 4338 bytes\n\n**Content**: # integration-rules-ServiceLog.mdc
+## ...
+
+---
+
+## MainAPIServer
+**File**: .cursor/rules/MainAPIServer.mdc
+**Relevance**: 100
+**Size**: 17881 bytes
+
+**Summary**: # 🚀 Main API Server - Zmart Trading Bot Platform Core | > Type: backend | Version: 1.0.0 | Owner: zmartbot | Port: 8000 | - **Enhanced Development**: AI-powered code generation and optimization | ```b...
+**Key Info**: 8000 | backend | 40+ API route modules with specialized trading functionality | High-performance async API framework with comprehensive middleware stack
+
+---
+
+## rule_0_mandatory
+**File**: .cursor/rules/rule_0_mandatory.mdc
+**Relevance**: 100
+**Size**: 11227 bytes
+
+**Summary**: ## Description | Core service component of the ZmartBot ecosystem providing essential functionality. | - **Claude Code Integration**: AI-powered rule enforcement and optimization
+**Compressed**: 
+
+---
+
+## integration-rules-ServiceLog
+**File**: .cursor/rules/integration/winners/integration-rules-ServiceLog.mdc
+**Relevance**: 100
+**Size**: 4338 bytes
+
+**Content**: # integration-rules-ServiceLog.mdc
 > Type: integration | Version: 1.0.0 | Owner: zmartbot | Components: rules + ServiceLog
 > Winner: Selected from automated analysis (Score: 92)
 
@@ -14,7 +50,16 @@ The integration of ServiceLog and rules service could bring significant benefits
 **Complexity**: Medium
 **Pattern**: Service orchestration would be the best integration pattern. This approach would allow the services to interact in a coordinated manner, with the ServiceLog acting as the orchestrator that triggers and manages interactions with the rules service based on log analysis results.
 
-## ...\n\n---\n\n## integration-CryptometerService-main\n**File**: .cursor/rules/integration/winners/integration-CryptometerService-main.mdc\n**Relevance**: 100\n**Size**: 3803 bytes\n\n**Content**: # integration-CryptometerService-main.mdc
+## ...
+
+---
+
+## integration-CryptometerService-main
+**File**: .cursor/rules/integration/winners/integration-CryptometerService-main.mdc
+**Relevance**: 100
+**Size**: 3803 bytes
+
+**Content**: # integration-CryptometerService-main.mdc
 > Type: integration | Version: 1.0.0 | Owner: zmartbot | Components: CryptometerService + main
 > Winner: Selected from automated analysis (Score: 92)
 
@@ -31,7 +76,16 @@ The integration of CryptometerService with ZmartBot is highly recommended due to
 - Enhanced Trading Decisions: The technical indicators and multi-timeframe analysis provided by CryptometerService would significantly enhance the trading decisions made by ZmartBot.
 - Optimized Performance: The intelligent caching and rate limiting features of CryptometerService would optimize the performance of ZmartBot, reducing latency and improving user experience.
 
-## ...\n\n---\n\n## gammainc_data\n**File**: .cursor/rules/discovery/libraries/gammainc_data.mdc\n**Relevance**: 100\n**Size**: 2117 bytes\n\n**Content**: # gammainc_data.mdc
+## ...
+
+---
+
+## gammainc_data
+**File**: .cursor/rules/discovery/libraries/gammainc_data.mdc
+**Relevance**: 100
+**Size**: 2117 bytes
+
+**Content**: # gammainc_data.mdc
 > Type: backend | Version: 1.0.0 | Owner: zmartbot | Port: None
 
 ## Purpose
@@ -75,7 +129,16 @@ Auto-discovered service managed by MDC-Dashboard system. This service was identi
 - **Downstream:** To be discovered
 - **Consumers:** To be discovered
 
-## ...\n\n---\n\n## __main__\n**File**: .cursor/rules/discovery/libraries/__main__.mdc\n**Relevance**: 100\n**Size**: 1845 bytes\n\n**Content**: # __main__.mdc
+## ...
+
+---
+
+## __main__
+**File**: .cursor/rules/discovery/libraries/__main__.mdc
+**Relevance**: 100
+**Size**: 1845 bytes
+
+**Content**: # __main__.mdc
 > Type: backend | Version: 1.0.0 | Owner: zmartbot | Port: None
 
 ## Purpose
@@ -122,7 +185,16 @@ Auto-discovered service managed by MDC-Dashboard system. This service was identi
 ## Notes & Todos
 - Service functionality and dependencies need documentation
 
-## ...\n\n---\n\n## gammainc_asy\n**File**: .cursor/rules/discovery/libraries/gammainc_asy.mdc\n**Relevance**: 100\n**Size**: 1890 bytes\n\n**Content**: # gammainc_asy.mdc
+## ...
+
+---
+
+## gammainc_asy
+**File**: .cursor/rules/discovery/libraries/gammainc_asy.mdc
+**Relevance**: 100
+**Size**: 1890 bytes
+
+**Content**: # gammainc_asy.mdc
 > Type: backend | Version: 1.0.0 | Owner: zmartbot | Port: None
 
 ## Purpose
@@ -169,7 +241,26 @@ Auto-discovered service managed by MDC-Dashboard system. This service was identi
 ## Notes & Todos
 - Service functionality and dependencies need documentation
 
-## ...\n\n---\n\n## winner-backtesting_server-rule_0_mandatory-20250827-164659\n**File**: .cursor/rules/discovery/integrations/winners/winner-backtesting_server-rule_0_mandatory-20250827-164659.mdc\n**Relevance**: 100\n**Size**: 7646 bytes\n\n**Summary**: # winner-backtesting_server-rule_0_mandatory-20250827-164659.mdc | ## 🏆 WINNER INTEGRATION - Official Selection | > Type: integration-winner | Version: 1.0.0 | Owner: zmartbot | Status: SELECTED\n**Compressed**: \n\n---\n\n## integration-backtesting_server-rule_0_mandatory\n**File**: .cursor/rules/discovery/integrations/winners/integration-backtesting_server-rule_0_mandatory.mdc\n**Relevance**: 100\n**Size**: 3131 bytes\n\n**Content**: # integration-backtesting_server-rule_0_mandatory.mdc
+## ...
+
+---
+
+## winner-backtesting_server-rule_0_mandatory-20250827-164659
+**File**: .cursor/rules/discovery/integrations/winners/winner-backtesting_server-rule_0_mandatory-20250827-164659.mdc
+**Relevance**: 100
+**Size**: 7646 bytes
+
+**Summary**: # winner-backtesting_server-rule_0_mandatory-20250827-164659.mdc | ## 🏆 WINNER INTEGRATION - Official Selection | > Type: integration-winner | Version: 1.0.0 | Owner: zmartbot | Status: SELECTED
+**Compressed**: 
+
+---
+
+## integration-backtesting_server-rule_0_mandatory
+**File**: .cursor/rules/discovery/integrations/winners/integration-backtesting_server-rule_0_mandatory.mdc
+**Relevance**: 100
+**Size**: 3131 bytes
+
+**Content**: # integration-backtesting_server-rule_0_mandatory.mdc
 > Type: integration | Version: 1.0.0 | Owner: zmartbot | Components: backtesting_server + rule_0_mandatory
 > Winner: Selected from automated analysis (Score: 75)
 
@@ -189,4 +280,17 @@ The integration of the backtesting service with the mandatory core requirements 
 ## Implementation Details
 **Complexity Reason**: The integration involves not only the connection of two services but also the enforcement of security and data protection measures, API key management, and the adherence to platform invariants. Additionally, the backtesting service requires a detailed manual review and enhancement.
 
-## ...\n\n---\n\n
+## ...
+
+---
+
+## rules
+**File**: .cursor/rules/rules.mdc
+**Relevance**: 80
+**Size**: 41341 bytes
+
+**Summary**: # rules.mdc | > Type: service | Version: 1.0.0 | Owner: zmartbot | Status: Discovery | Level: 1 | - **Claude Code Integration**: AI-powered rules management and optimization
+**Key Info**: service | rule | System Architecture & Service Management | 30+ endpoints for workflow validation and service management | Complete API system for workflow guidance and validation
+
+---
+

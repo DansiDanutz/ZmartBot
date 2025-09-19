@@ -32,7 +32,7 @@ app.use(express.static('public'));
 
 // Initialize core systems
 const zmartyAI = new ZmartyAI();
-const manusConnector = new ManusConnector();
+// const manusConnector = new ManusConnector();
 
 // ============= WEBSOCKET CONNECTIONS =============
 

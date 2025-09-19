@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Progressive Reveal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+        }
+        .test-card {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            width: 400px;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+        input {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        input:focus {
+            outline: none;
+            border-color: #0066ff;
+        }
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #0066ff, #4d94ff);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            display: none;
+        }
+        .status {
+            margin-top: 20px;
+            padding: 10px;
+            background: #f0f0f0;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-card">
+        <h1>Progressive Reveal Test</h1>
+
+        <input type="email"
+               id="email"
+               placeholder="Type your email here..."
+               oninput="handleEmailInput()">
+
+        <input type="password"
+               id="password"
+               placeholder="Type your password (8+ chars)..."
+               style="display: none;"
+               oninput="handlePasswordInput()">
+
+        <input type="password"
+               id="confirm"
+               placeholder="Confirm your password..."
+               style="display: none;"
+               oninput="handleConfirmInput()">
+
+        <button id="register">Register</button>
+
+        <div class="status" id="status">Start typing in email field...</div>
+    </div>
+
+    <script>
+        function handleEmailInput() {
+            const email = document.getElementById('email');
+            const password = document.getElementById('password');
+            const status = document.getElementById('status');
+
+            if (email.value.length > 0) {
+                password.style.display = 'block';
+                status.textContent = 'Password field appeared! Now type in password...';
+            } else {
+                password.style.display = 'none';
+                password.value = '';
+                document.getElementById('confirm').style.display = 'none';
+                document.getElementById('confirm').value = '';
+                document.getElementById('register').style.display = 'none';
+                status.textContent = 'Start typing in email field...';
+            }
+        }
+
+        function handlePasswordInput() {
+            const password = document.getElementById('password');
+            const confirm = document.getElementById('confirm');
+            const status = document.getElementById('status');
+
+            if (password.value.length > 0) {
+                confirm.style.display = 'block';
+                status.textContent = 'Confirm password field appeared! Type matching password...';
+            } else {
+                confirm.style.display = 'none';
+                confirm.value = '';
+                document.getElementById('register').style.display = 'none';
+                status.textContent = 'Password field visible. Type password...';
+            }
+        }
+
+        function handleConfirmInput() {
+            const password = document.getElementById('password').value;
+            const confirm = document.getElementById('confirm').value;
+            const register = document.getElementById('register');
+            const status = document.getElementById('status');
+
+            if (password.length >= 8 && password === confirm) {
+                register.style.display = 'block';
+                status.textContent = 'Perfect! Passwords match. Register button is visible!';
+            } else {
+                register.style.display = 'none';
+                if (confirm && password !== confirm) {
+                    status.textContent = 'Passwords do not match!';
+                } else if (password.length < 8) {
+                    status.textContent = 'Password must be at least 8 characters';
+                } else {
+                    status.textContent = 'Keep typing to match passwords...';
+                }
+            }
+        }
+    </script>
+</body>
+</html>

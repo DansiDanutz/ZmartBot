@@ -1,4 +1,31 @@
-# Frontend Domain Context\n\n## frontend\n**File**: .cursor/rules/frontend.mdc\n**Relevance**: 0\n**Size**: 23229 bytes\n\n**Summary**: ## Description | Core service component of the ZmartBot ecosystem providing essential functionality. | - **Claude Code Integration**: AI-powered frontend development and optimization\n**Key Info**: application\n\n---\n\n## ControlUI\n**File**: .cursor/rules/ControlUI.mdc\n**Relevance**: 0\n**Size**: 7790 bytes\n\n**Summary**: ## Description | Core service component of the ZmartBot ecosystem providing essential functionality. | - **Claude Code Integration**: AI-powered UI control and optimization\n**Compressed**: \n\n---\n\n## integration-frontend-my-symbols-extended-service\n**File**: .cursor/rules/discovery/integrations/winners/integration-frontend-my-symbols-extended-service.mdc\n**Relevance**: 0\n**Size**: 4034 bytes\n\n**Content**: # integration-frontend-my-symbols-extended-service.mdc
+# Frontend Domain Context
+
+## frontend
+**File**: .cursor/rules/frontend.mdc
+**Relevance**: 0
+**Size**: 23229 bytes
+
+**Summary**: ## Description | Core service component of the ZmartBot ecosystem providing essential functionality. | - **Claude Code Integration**: AI-powered frontend development and optimization
+**Key Info**: application
+
+---
+
+## ControlUI
+**File**: .cursor/rules/ControlUI.mdc
+**Relevance**: 0
+**Size**: 7790 bytes
+
+**Summary**: ## Description | Core service component of the ZmartBot ecosystem providing essential functionality. | - **Claude Code Integration**: AI-powered UI control and optimization
+**Compressed**: 
+
+---
+
+## integration-frontend-my-symbols-extended-service
+**File**: .cursor/rules/discovery/integrations/winners/integration-frontend-my-symbols-extended-service.mdc
+**Relevance**: 0
+**Size**: 4034 bytes
+
+**Content**: # integration-frontend-my-symbols-extended-service.mdc
 > Type: integration | Version: 1.0.0 | Owner: zmartbot | Components: frontend + my-symbols-extended-service
 > Winner: Selected from automated analysis (Score: 90)
 
@@ -15,4 +42,7 @@ The integration of the frontend service with the my-symbols-extended-service is 
 - Improved Efficiency: The integration would streamline the process of fetching and updating data, reducing latency and improving the efficiency of the trading platform.
 - Increased Functionality: The my-symbols-extended-service can provide additional features to the frontend such as portfolio tracking and comprehensive portfolio analytics.
 
-## ...\n\n---\n\n
+## ...
+
+---
+

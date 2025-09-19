@@ -1,7 +1,7 @@
 // Zmarty - Autonomous AI Trading Assistant with Human-like Personality
 // This is the CORE AI agent that makes Zmarty feel like a real person
 
-class ZmartyAI {
+export class ZmartyAI {
     constructor() {
         this.personality = {
             name: 'Zmarty',
@@ -105,7 +105,7 @@ Current energy level: ${this.personality.energy}%`;
         try {
             // Initialize ElevenLabs for voice synthesis
             this.voiceEngine = {
-                apiKey: process.env.ELEVENLABS_API_KEY || 'demo',
+                apiKey: window.ELEVENLABS_API_KEY || 'demo',
                 voiceId: this.personality.voice.elevenLabsVoiceId,
 
                 async speak(text) {
@@ -685,8 +685,9 @@ Current energy level: ${this.personality.energy}%`;
 }
 
 // Export for use in the app
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = ZmartyAI;
-} else {
+if (typeof window !== 'undefined') {
     window.ZmartyAI = ZmartyAI;
 }
+
+// Export for Node.js
+export default ZmartyAI;

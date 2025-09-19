@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Navigation</title>
+</head>
+<body>
+    <h1>Test Slide Navigation</h1>
+    <button onclick="testNav(1)">Slide 1 - Welcome</button>
+    <button onclick="testNav(2)">Slide 2 - LLM</button>
+    <button onclick="testNav(3)">Slide 3 - Crypto</button>
+    <button onclick="testNav(4)">Slide 4 - Registration</button>
+    <button onclick="testNav(5)">Slide 5 - Verify</button>
+    <button onclick="testNav(6)">Slide 6 - Tier</button>
+    <button onclick="testNav(7)">Slide 7 - Congrats</button>
+    
+    <iframe id="app" src="index.html" width="100%" height="600"></iframe>
+    
+    <script>
+        function testNav(n) {
+            const iframe = document.getElementById('app');
+            iframe.contentWindow.goToSlide(n);
+            console.log('Navigated to slide', n);
+        }
+        
+        // Wait for iframe to load
+        setTimeout(() => {
+            const iframe = document.getElementById('app');
+            console.log('Functions available:', iframe.contentWindow.goToSlide ? 'YES' : 'NO');
+        }, 2000);
+    </script>
+</body>
+</html>

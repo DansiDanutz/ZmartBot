@@ -1,0 +1,33 @@
+/* Settings.css */
+.settings {
+  height: 100vh;
+  background: #0B141A;
+  color: #E9EDEF;
+  padding: 20px;
+}
+
+.settings-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.settings-section {
+  background: #202C33;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.settings-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(134, 150, 160, 0.15);
+}
+
+.settings-item:last-child {
+  border-bottom: none;
+}

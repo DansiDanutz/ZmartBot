@@ -2,7 +2,7 @@
 class AuthManager {
     constructor(app) {
         this.app = app;
-        this.apiUrl = process.env.API_URL || 'http://localhost:8000';
+        this.apiUrl = window.API_URL || 'http://localhost:8000';
         this.token = null;
         this.refreshToken = null;
         this.user = null;

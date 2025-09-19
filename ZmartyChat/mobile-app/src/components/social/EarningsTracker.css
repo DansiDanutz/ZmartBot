@@ -1,0 +1,21 @@
+/* EarningsTracker.css */
+.earnings-tracker {
+  height: 100vh;
+  background: #0B141A;
+  color: #E9EDEF;
+  padding: 20px;
+}
+
+.earnings-summary {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.earnings-amount {
+  font-size: 36px;
+  font-weight: bold;
+  color: white;
+}

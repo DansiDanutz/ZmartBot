@@ -73,7 +73,7 @@ class ZmartyInitializer {
 
     async setupVoiceCapabilities() {
         // Check for ElevenLabs API key
-        const elevenLabsKey = process.env.ELEVENLABS_API_KEY || localStorage.getItem('elevenlabs_key');
+        const elevenLabsKey = window.ELEVENLABS_API_KEY || localStorage.getItem('elevenlabs_key');
 
         if (elevenLabsKey) {
             console.log('Using ElevenLabs for premium voice');

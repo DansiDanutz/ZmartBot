@@ -129,4 +129,4 @@ api-cache/
 
 # Development files
 .env.example.local
-test-config.js
+test-config.js.env.production

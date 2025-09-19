@@ -4,7 +4,7 @@
 class ZmartyManusConnector {
     constructor(zmartyAI) {
         this.zmarty = zmartyAI;
-        this.manusEndpoint = process.env.MANUS_WEBHOOK_URL || 'http://localhost:8000/api/webhooks/manus';
+        this.manusEndpoint = window.MANUS_WEBHOOK_URL || 'http://localhost:8000/api/webhooks/manus';
         this.apiServerUrl = 'http://localhost:8000';
         this.websocketUrl = 'ws://localhost:8000/ws';
 

@@ -62,87 +62,189 @@ export default function Chat() {
   }
 
   return (
-    <View style={{flex: 1, backgroundColor: '#000'}}>
+    <View style={{flex: 1, backgroundColor: '#0A0E1B'}}>
       {/* Header Section with Cards */}
-      <View style={{padding: 16, paddingBottom: 8}}>
+      <View style={{
+        padding: 16,
+        paddingBottom: 8,
+        backgroundColor: 'rgba(15, 23, 42, 0.95)',
+        borderBottomWidth: 1,
+        borderBottomColor: 'rgba(0, 255, 204, 0.1)'
+      }}>
         <View style={{flexDirection: 'row', gap: 12, marginBottom: 16}}>
-          <Pressable 
+          <Pressable
             style={{
-              flex: 1, 
-              backgroundColor: '#0EA5E9', 
-              borderRadius: 16, 
-              padding: 16,
-              alignItems: 'center'
+              flex: 1,
+              backgroundColor: loading ? '#064E73' : '#0EA5E9',
+              borderRadius: 20,
+              padding: 18,
+              alignItems: 'center',
+              shadowColor: '#0EA5E9',
+              shadowOffset: { width: 0, height: 4 },
+              shadowOpacity: 0.3,
+              shadowRadius: 8,
+              elevation: 8,
+              borderWidth: 1,
+              borderColor: 'rgba(14, 165, 233, 0.3)',
+              transform: [{ scale: loading ? 0.98 : 1 }]
             }}
             onPress={winrateNow} 
             disabled={loading}
           >
-            <Text style={{color: 'white', fontWeight: 'bold', fontSize: 14}}>
-              {loading ? 'Working…' : '📊 Win Rate Now'}
+            <Text style={{
+              color: 'white',
+              fontWeight: 'bold',
+              fontSize: 16,
+              textShadowColor: 'rgba(0, 0, 0, 0.5)',
+              textShadowOffset: { width: 0, height: 1 },
+              textShadowRadius: 2
+            }}>
+              {loading ? '⏳ Working…' : '📊 Win Rate Now'}
             </Text>
-            <Text style={{color: '#E0F2FE', fontSize: 12, marginTop: 4}}>1 ⓒ</Text>
+            <Text style={{
+              color: '#BAE6FD',
+              fontSize: 13,
+              marginTop: 6,
+              fontWeight: '600',
+              backgroundColor: 'rgba(0, 0, 0, 0.2)',
+              paddingHorizontal: 8,
+              paddingVertical: 2,
+              borderRadius: 10
+            }}>1 credit</Text>
           </Pressable>
           
-          <Pressable 
+          <Pressable
             style={{
-              flex: 1, 
-              backgroundColor: '#10B981', 
-              borderRadius: 16, 
-              padding: 16,
-              alignItems: 'center'
+              flex: 1,
+              backgroundColor: loading ? '#065F46' : '#10B981',
+              borderRadius: 20,
+              padding: 18,
+              alignItems: 'center',
+              shadowColor: '#10B981',
+              shadowOffset: { width: 0, height: 4 },
+              shadowOpacity: 0.3,
+              shadowRadius: 8,
+              elevation: 8,
+              borderWidth: 1,
+              borderColor: 'rgba(16, 185, 129, 0.3)',
+              transform: [{ scale: loading ? 0.98 : 1 }]
             }}
             onPress={bestEntry} 
             disabled={loading}
           >
-            <Text style={{color: 'white', fontWeight: 'bold', fontSize: 14}}>🎯 Best Entry</Text>
-            <Text style={{color: '#D1FAE5', fontSize: 12, marginTop: 4}}>2 ⓒ</Text>
+            <Text style={{
+              color: 'white',
+              fontWeight: 'bold',
+              fontSize: 16,
+              textShadowColor: 'rgba(0, 0, 0, 0.5)',
+              textShadowOffset: { width: 0, height: 1 },
+              textShadowRadius: 2
+            }}>🎯 Best Entry</Text>
+            <Text style={{
+              color: '#D1FAE5',
+              fontSize: 13,
+              marginTop: 6,
+              fontWeight: '600',
+              backgroundColor: 'rgba(0, 0, 0, 0.2)',
+              paddingHorizontal: 8,
+              paddingVertical: 2,
+              borderRadius: 10
+            }}>2 credits</Text>
           </Pressable>
         </View>
 
         {loading && (
           <View style={{
-            backgroundColor: 'rgba(51, 65, 85, 0.6)', 
-            borderRadius: 16, 
-            padding: 16, 
+            backgroundColor: 'rgba(14, 165, 233, 0.1)',
+            borderRadius: 20,
+            padding: 18,
             marginBottom: 12,
-            flexDirection: 'row', 
-            alignItems: 'center', 
-            justifyContent: 'center'
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderWidth: 1,
+            borderColor: 'rgba(14, 165, 233, 0.2)'
           }}>
-            <ActivityIndicator size="small" color="#0EA5E9" />
-            <Text style={{color: '#CBD5E1', marginLeft: 12, fontWeight: '500'}}>
-              Processing your request...
+            <ActivityIndicator size="small" color="#00FFCC" />
+            <Text style={{
+              color: '#00FFCC',
+              marginLeft: 12,
+              fontWeight: '600',
+              fontSize: 15,
+              letterSpacing: 0.5
+            }}>
+              Analyzing market data...
             </Text>
           </View>
         )}
       </View>
 
       {/* Chat Messages */}
-      <ScrollView 
-        style={{flex: 1, paddingHorizontal: 16}}
-        contentContainerStyle={{paddingBottom: 40}}
+      <ScrollView
+        style={{
+          flex: 1,
+          paddingHorizontal: 16,
+          backgroundColor: 'linear-gradient(180deg, #0A0E1B 0%, #0F172A 100%)'
+        }}
+        contentContainerStyle={{paddingBottom: 40, paddingTop: 16}}
         showsVerticalScrollIndicator={false}
       >
         {bubbles.map((b, i) => (
-          <View 
-            key={i} 
+          <View
+            key={i}
             style={{
-              backgroundColor: 'rgba(51, 65, 85, 0.8)', 
-              borderRadius: 16, 
-              padding: 16, 
-              marginBottom: 12,
+              backgroundColor: i === 0
+                ? 'rgba(14, 165, 233, 0.05)'
+                : 'rgba(30, 41, 59, 0.8)',
+              borderRadius: 20,
+              padding: 18,
+              marginBottom: 16,
               borderWidth: 1,
-              borderColor: 'rgba(71, 85, 105, 0.5)'
+              borderColor: i === 0
+                ? 'rgba(0, 255, 204, 0.3)'
+                : 'rgba(71, 85, 105, 0.3)',
+              shadowColor: i === 0 ? '#00FFCC' : '#000',
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: i === 0 ? 0.2 : 0.1,
+              shadowRadius: 8,
+              elevation: 4
             }}
           >
-            <Text style={{color: '#F1F5F9', lineHeight: 24, fontWeight: '500'}}>{b.text}</Text>
+            <View style={{flexDirection: 'row', alignItems: 'flex-start'}}>
+              <View style={{
+                width: 8,
+                height: 8,
+                borderRadius: 4,
+                backgroundColor: i === 0 ? '#00FFCC' : '#64748B',
+                marginTop: 8,
+                marginRight: 12
+              }} />
+              <Text style={{
+                color: i === 0 ? '#E0F2FE' : '#CBD5E1',
+                lineHeight: 26,
+                fontWeight: i === 0 ? '600' : '500',
+                fontSize: 15,
+                flex: 1,
+                letterSpacing: 0.3
+              }}>{b.text}</Text>
+            </View>
             {b.evidence && (
               <View style={{
-                marginTop: 12, 
-                paddingTop: 12, 
-                borderTopWidth: 1, 
-                borderTopColor: 'rgba(71, 85, 105, 0.5)'
+                marginTop: 16,
+                paddingTop: 16,
+                borderTopWidth: 1,
+                borderTopColor: i === 0
+                  ? 'rgba(0, 255, 204, 0.2)'
+                  : 'rgba(71, 85, 105, 0.3)'
               }}>
+                <Text style={{
+                  color: '#94A3B8',
+                  fontSize: 12,
+                  fontWeight: '600',
+                  letterSpacing: 1,
+                  textTransform: 'uppercase',
+                  marginBottom: 8
+                }}>📍 EVIDENCE</Text>
                 <EvidenceChips evidence={b.evidence} />
               </View>
             )}

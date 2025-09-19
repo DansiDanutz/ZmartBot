@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Navigation</title>
+</head>
+<body>
+    <h1>Navigation Test</h1>
+    <button onclick="window.location='index.html#slide2'">Test Slide 2</button>
+    <script>
+        // Force navigation test
+        setTimeout(() => {
+            console.log('Testing navigation...');
+            if (typeof goToSlide === 'function') {
+                console.log('goToSlide exists, going to slide 2');
+                goToSlide(2);
+            } else {
+                console.error('goToSlide not defined!');
+            }
+        }, 2000);
+    </script>
+</body>
+</html>
