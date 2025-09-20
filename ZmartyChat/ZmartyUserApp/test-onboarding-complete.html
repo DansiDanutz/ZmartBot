@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Complete Onboarding Test Suite</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #1a1a1a;
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+        .status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        .status.running { background: #fef3c7; color: #92400e; }
+        .status.complete { background: #d1fae5; color: #065f46; }
+        .status.error { background: #fee2e2; color: #991b1b; }
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .test-card {
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        .test-card:hover {
+            border-color: #0066ff;
+            box-shadow: 0 10px 30px rgba(0,102,255,0.1);
+        }
+        .test-card h3 {
+            color: #1a1a1a;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        .test-steps {
+            list-style: none;
+            margin: 15px 0;
+        }
+        .test-steps li {
+            padding: 8px 0;
+            color: #6b7280;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+        }
+        .test-steps li:before {
+            content: '▶';
+            margin-right: 10px;
+            color: #0066ff;
+        }
+        .test-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .test-status.pending { background: #f3f4f6; color: #6b7280; }
+        .test-status.testing { background: #fef3c7; color: #92400e; }
+        .test-status.passed { background: #d1fae5; color: #065f46; }
+        .test-status.failed { background: #fee2e2; color: #991b1b; }
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        button {
+            padding: 12px 24px;
+            background: #0066ff;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        button:hover {
+            background: #0052cc;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,102,255,0.3);
+        }
+        button:active { transform: translateY(0); }
+        button.secondary {
+            background: #6b7280;
+        }
+        button.secondary:hover {
+            background: #4b5563;
+        }
+        .iframe-container {
+            width: 100%;
+            height: 700px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 20px 0;
+            display: none;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .log-container {
+            background: #1a1a1a;
+            color: #00ff00;
+            padding: 20px;
+            border-radius: 12px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            max-height: 400px;
+            overflow-y: auto;
+            margin: 20px 0;
+        }
+        .log-entry {
+            padding: 2px 0;
+            white-space: pre-wrap;
+        }
+        .log-entry.error { color: #ff4444; }
+        .log-entry.success { color: #00ff00; }
+        .log-entry.info { color: #ffcc00; }
+        .log-entry.debug { color: #00ccff; }
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #f3f4f6;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #0066ff, #00cc88);
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .results {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 30px 0;
+        }
+        .result-card {
+            text-align: center;
+            padding: 20px;
+            background: #f9fafb;
+            border-radius: 12px;
+        }
+        .result-number {
+            font-size: 36px;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+        .result-label {
+            color: #6b7280;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Complete Onboarding Test Suite</h1>
+        <span class="status running" id="main-status">Ready to Test</span>
+
+        <div class="controls">
+            <button onclick="runAllTests()">🚀 Run All Tests</button>
+            <button onclick="runSelectedTest()" class="secondary">Run Selected</button>
+            <button onclick="openApp()">📱 Open App</button>
+            <button onclick="clearLog()">🗑️ Clear Log</button>
+            <button onclick="exportResults()">📊 Export Results</button>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress" style="width: 0%">0%</div>
+        </div>
+
+        <div class="results">
+            <div class="result-card">
+                <div class="result-number" id="total">0</div>
+                <div class="result-label">Total Tests</div>
+            </div>
+            <div class="result-card">
+                <div class="result-number" id="passed" style="color: #065f46;">0</div>
+                <div class="result-label">Passed</div>
+            </div>
+            <div class="result-card">
+                <div class="result-number" id="failed" style="color: #991b1b;">0</div>
+                <div class="result-label">Failed</div>
+            </div>
+            <div class="result-card">
+                <div class="result-number" id="remaining">17</div>
+                <div class="result-label">Remaining</div>
+            </div>
+        </div>
+
+        <div class="test-grid">
+            <!-- Slide Navigation Tests -->
+            <div class="test-card" data-test="navigation">
+                <h3>📍 Slide Navigation</h3>
+                <ul class="test-steps">
+                    <li>Test forward navigation (1→2→3)</li>
+                    <li>Test backward navigation (3→2→1)</li>
+                    <li>Test skip button → Slide 4</li>
+                    <li>Test dot navigation</li>
+                </ul>
+                <span class="test-status pending">Pending</span>
+            </div>
+
+            <!-- Registration Tests -->
+            <div class="test-card" data-test="registration">
+                <h3>📝 Registration Flow</h3>
+                <ul class="test-steps">
+                    <li>Empty email validation</li>
+                    <li>Invalid email format</li>
+                    <li>Short password (< 8 chars)</li>
+                    <li>Password mismatch</li>
+                    <li>Successful registration</li>
+                </ul>
+                <span class="test-status pending">Pending</span>
+            </div>
+
+            <!-- Progressive Reveal -->
+            <div class="test-card" data-test="progressive">
+                <h3>🎭 Progressive Reveal</h3>
+                <ul class="test-steps">
+                    <li>Password field appears after email</li>
+                    <li>Confirm appears after 8+ chars</li>
+                    <li>Button appears when matching</li>
+                    <li>Hints update correctly</li>
+                </ul>
+                <span class="test-status pending">Pending</span>
+            </div>
+
+            <!-- Verification Tests -->
+            <div class="test-card" data-test="verification">
+                <h3>✉️ Email Verification</h3>
+                <ul class="test-steps">
+                    <li>6 code inputs appear</li>
+                    <li>Auto-advance on input</li>
+                    <li>Backspace navigation</li>
+                    <li>Resend code button</li>
+                    <li>Invalid code error</li>
+                </ul>
+                <span class="test-status pending">Pending</span>
+            </div>
+
+            <!-- Login Modal -->
+            <div class="test-card" data-test="login">
+                <h3>🔐 Login Modal</h3>
+                <ul class="test-steps">
+                    <li>Modal opens on click</li>
+                    <li>Sign in form visible</li>
+                    <li>Password reset form toggle</li>
+                    <li>Close button works</li>
+                    <li>No overlay remnants</li>
+                </ul>
+                <span class="test-status pending">Pending</span>
+            </div>
+
+            <!-- Social Logins -->
+            <div class="test-card" data-test="social">
+                <h3>🌐 Social Logins</h3>
+                <ul class="test-steps">
+                    <li>Google button present</li>
+                    <li>Facebook button present</li>
+                    <li>GitHub button present</li>
+                    <li>Click animations work</li>
+                </ul>
+                <span class="test-status pending">Pending</span>
+            </div>
+
+            <!-- Tier Selection -->
+            <div class="test-card" data-test="tiers">
+                <h3>💎 Tier Selection</h3>
+                <ul class="test-steps">
+                    <li>3 tier cards displayed</li>
+                    <li>Free tier selectable</li>
+                    <li>Pro tier selectable</li>
+                    <li>Premium tier selectable</li>
+                    <li>Selection highlights</li>
+                </ul>
+                <span class="test-status pending">Pending</span>
+            </div>
+
+            <!-- Profile Completion -->
+            <div class="test-card" data-test="profile">
+                <h3>👤 Profile Setup</h3>
+                <ul class="test-steps">
+                    <li>Name input field</li>
+                    <li>Country dropdown</li>
+                    <li>Validation for empty</li>
+                    <li>Complete button</li>
+                    <li>Success message</li>
+                </ul>
+                <span class="test-status pending">Pending</span>
+            </div>
+
+            <!-- Error Handling -->
+            <div class="test-card" data-test="errors">
+                <h3>⚠️ Error Handling</h3>
+                <ul class="test-steps">
+                    <li>Error messages display</li>
+                    <li>Auto-hide after 3s</li>
+                    <li>Multiple errors queue</li>
+                    <li>No console errors</li>
+                </ul>
+                <span class="test-status pending">Pending</span>
+            </div>
+        </div>
+
+        <div class="iframe-container" id="app-frame">
+            <iframe id="test-iframe"></iframe>
+        </div>
+
+        <div class="log-container" id="log-container">
+            <div id="log">Ready to begin testing...</div>
+        </div>
+    </div>
+
+    <script>
+        const APP_URL = 'http://localhost:9000';
+        let testResults = {
+            total: 0,
+            passed: 0,
+            failed: 0,
+            errors: []
+        };
+
+        function log(message, type = 'info') {
+            const logEl = document.getElementById('log');
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            const timestamp = new Date().toLocaleTimeString();
+            entry.textContent = `[${timestamp}] ${message}`;
+            logEl.appendChild(entry);
+            logEl.scrollTop = logEl.scrollHeight;
+        }
+
+        function updateProgress() {
+            const progress = Math.round((testResults.passed + testResults.failed) / testResults.total * 100) || 0;
+            document.getElementById('progress').style.width = `${progress}%`;
+            document.getElementById('progress').textContent = `${progress}%`;
+
+            document.getElementById('total').textContent = testResults.total;
+            document.getElementById('passed').textContent = testResults.passed;
+            document.getElementById('failed').textContent = testResults.failed;
+            document.getElementById('remaining').textContent = Math.max(0, testResults.total - testResults.passed - testResults.failed);
+        }
+
+        function setTestStatus(testName, status) {
+            const card = document.querySelector(`[data-test="${testName}"]`);
+            if (card) {
+                const statusEl = card.querySelector('.test-status');
+                statusEl.className = `test-status ${status}`;
+                statusEl.textContent = status.charAt(0).toUpperCase() + status.slice(1);
+            }
+        }
+
+        async function runTest(testName, testFn) {
+            testResults.total++;
+            log(`Testing: ${testName}`, 'info');
+            setTestStatus(testName, 'testing');
+
+            try {
+                await testFn();
+                testResults.passed++;
+                log(`✅ PASSED: ${testName}`, 'success');
+                setTestStatus(testName, 'passed');
+                updateProgress();
+                return true;
+            } catch (error) {
+                testResults.failed++;
+                log(`❌ FAILED: ${testName} - ${error.message}`, 'error');
+                setTestStatus(testName, 'failed');
+                testResults.errors.push(`${testName}: ${error.message}`);
+                updateProgress();
+                return false;
+            }
+        }
+
+        function openApp() {
+            const container = document.getElementById('app-frame');
+            const iframe = document.getElementById('test-iframe');
+
+            if (container.style.display === 'block') {
+                container.style.display = 'none';
+            } else {
+                iframe.src = APP_URL;
+                container.style.display = 'block';
+                log('App opened in iframe', 'info');
+            }
+        }
+
+        async function testWithIframe(callback) {
+            return new Promise((resolve, reject) => {
+                const iframe = document.getElementById('test-iframe');
+                const container = document.getElementById('app-frame');
+
+                iframe.src = APP_URL;
+                container.style.display = 'block';
+
+                iframe.onload = async () => {
+                    try {
+                        await new Promise(r => setTimeout(r, 1000)); // Wait for app to initialize
+                        const result = await callback(iframe.contentWindow, iframe.contentDocument);
+                        resolve(result);
+                    } catch (error) {
+                        reject(error);
+                    }
+                };
+
+                iframe.onerror = () => reject(new Error('Failed to load app'));
+            });
+        }
+
+        async function runAllTests() {
+            // Reset results
+            testResults = { total: 0, passed: 0, failed: 0, errors: [] };
+            document.getElementById('main-status').className = 'status running';
+            document.getElementById('main-status').textContent = 'Testing in Progress...';
+
+            log('Starting Complete Test Suite', 'info');
+            log('=' .repeat(50), 'debug');
+
+            // Test 1: Navigation
+            await runTest('navigation', async () => {
+                await testWithIframe(async (win, doc) => {
+                    // Test forward navigation
+                    win.goToSlide(1);
+                    await new Promise(r => setTimeout(r, 500));
+                    // Check if currentSlide exists and is correct
+                    if (!win.currentSlide || win.currentSlide !== 1) {
+                        // Try alternative check
+                        const activeSlide = doc.querySelector('.slide.active');
+                        if (!activeSlide || !activeSlide.id.includes('1')) {
+                            throw new Error('Failed to go to slide 1');
+                        }
+                    }
+
+                    win.goToSlide(2);
+                    await new Promise(r => setTimeout(r, 500));
+                    if (win.currentSlide !== 2) throw new Error('Failed to go to slide 2');
+
+                    // Test backward
+                    win.goToSlide(1);
+                    await new Promise(r => setTimeout(r, 500));
+                    if (win.currentSlide !== 1) throw new Error('Failed to go back to slide 1');
+                });
+            });
+
+            // Test 2: Registration
+            await runTest('registration', async () => {
+                await testWithIframe(async (win, doc) => {
+                    win.goToSlide(4);
+                    await new Promise(r => setTimeout(r, 500));
+
+                    // Test empty email
+                    const emailInput = doc.getElementById('register-email');
+                    if (!emailInput) throw new Error('Email input not found');
+
+                    // Test invalid email
+                    emailInput.value = 'invalid-email';
+                    const event = new Event('input', { bubbles: true });
+                    emailInput.dispatchEvent(event);
+                    await new Promise(r => setTimeout(r, 500));
+
+                    // Test valid email
+                    emailInput.value = 'test@example.com';
+                    emailInput.dispatchEvent(event);
+                    await new Promise(r => setTimeout(r, 500));
+
+                    const passwordInput = doc.getElementById('register-password');
+                    if (!passwordInput) throw new Error('Password input not found');
+                });
+            });
+
+            // Test 3: Progressive Reveal
+            await runTest('progressive', async () => {
+                await testWithIframe(async (win, doc) => {
+                    win.goToSlide(4);
+                    await new Promise(r => setTimeout(r, 500));
+
+                    const emailInput = doc.getElementById('register-email');
+                    const passwordInput = doc.getElementById('register-password');
+
+                    // Type email
+                    emailInput.value = 'test@example.com';
+                    emailInput.dispatchEvent(new Event('input', { bubbles: true }));
+                    await new Promise(r => setTimeout(r, 500));
+
+                    // Type short password
+                    passwordInput.value = 'short';
+                    passwordInput.dispatchEvent(new Event('input', { bubbles: true }));
+                    await new Promise(r => setTimeout(r, 500));
+
+                    // Check confirm password visibility
+                    const confirmContainer = doc.querySelector('.confirm-container');
+                    if (confirmContainer && confirmContainer.style.display !== 'none') {
+                        throw new Error('Confirm password shown for short password');
+                    }
+
+                    // Type valid password
+                    passwordInput.value = 'ValidPass123';
+                    passwordInput.dispatchEvent(new Event('input', { bubbles: true }));
+                    await new Promise(r => setTimeout(r, 1000));
+                });
+            });
+
+            // Test 4: Verification
+            await runTest('verification', async () => {
+                await testWithIframe(async (win, doc) => {
+                    win.goToSlide(5);
+                    await new Promise(r => setTimeout(r, 500));
+
+                    // Check for code inputs
+                    const codeInputs = doc.querySelectorAll('[id^="code-"]');
+                    if (codeInputs.length !== 6) throw new Error(`Expected 6 code inputs, found ${codeInputs.length}`);
+
+                    // Test input advancement
+                    const firstInput = doc.getElementById('code-1');
+                    if (!firstInput) throw new Error('First code input not found');
+                });
+            });
+
+            // Test 5: Login Modal
+            await runTest('login', async () => {
+                await testWithIframe(async (win, doc) => {
+                    win.goToSlide(4);
+                    await new Promise(r => setTimeout(r, 500));
+
+                    // Try to open modal
+                    if (win.showForgotPasswordModal) {
+                        win.showForgotPasswordModal();
+                        await new Promise(r => setTimeout(r, 1000));
+
+                        const modal = doc.getElementById('forgot-password-overlay');
+                        if (!modal) throw new Error('Login modal did not appear');
+
+                        // Close modal
+                        if (win.closeForgotPasswordModal) {
+                            win.closeForgotPasswordModal();
+                            await new Promise(r => setTimeout(r, 500));
+                        }
+                    } else {
+                        throw new Error('showForgotPasswordModal function not found');
+                    }
+                });
+            });
+
+            // Test 6: Social Logins
+            await runTest('social', async () => {
+                await testWithIframe(async (win, doc) => {
+                    win.goToSlide(4);
+                    await new Promise(r => setTimeout(r, 500));
+
+                    const socialButtons = doc.querySelectorAll('.auth-btn');
+                    if (socialButtons.length < 2) throw new Error(`Expected at least 2 social buttons, found ${socialButtons.length}`);
+                });
+            });
+
+            // Test 7: Tiers
+            await runTest('tiers', async () => {
+                await testWithIframe(async (win, doc) => {
+                    win.goToSlide(6);
+                    await new Promise(r => setTimeout(r, 500));
+
+                    const tierCards = doc.querySelectorAll('.tier-option');
+                    if (tierCards.length !== 3) throw new Error(`Expected 3 tier options, found ${tierCards.length}`);
+                });
+            });
+
+            // Test 8: Profile
+            await runTest('profile', async () => {
+                await testWithIframe(async (win, doc) => {
+                    win.goToSlide(7);
+                    await new Promise(r => setTimeout(r, 500));
+
+                    const nameInput = doc.getElementById('profile-name');
+                    const countrySelect = doc.getElementById('profile-country');
+
+                    if (!nameInput) throw new Error('Name input not found');
+                    if (!countrySelect) throw new Error('Country select not found');
+                });
+            });
+
+            // Test 9: Error Handling
+            await runTest('errors', async () => {
+                await testWithIframe(async (win, doc) => {
+                    // Test error display
+                    if (win.showError) {
+                        win.showError('Test error message');
+                        await new Promise(r => setTimeout(r, 500));
+
+                        const errorEl = doc.querySelector('.error-toast');
+                        if (!errorEl || errorEl.style.display === 'none') {
+                            throw new Error('Error message not displayed');
+                        }
+                    } else {
+                        throw new Error('showError function not found');
+                    }
+                });
+            });
+
+            // Final status
+            const allPassed = testResults.failed === 0;
+            document.getElementById('main-status').className = allPassed ? 'status complete' : 'status error';
+            document.getElementById('main-status').textContent = allPassed ? 'All Tests Passed!' : `${testResults.failed} Tests Failed`;
+
+            log('=' .repeat(50), 'debug');
+            log(`Test Complete: ${testResults.passed}/${testResults.total} passed`, allPassed ? 'success' : 'error');
+
+            if (testResults.errors.length > 0) {
+                log('Errors found:', 'error');
+                testResults.errors.forEach(err => log(`  - ${err}`, 'error'));
+            }
+        }
+
+        function runSelectedTest() {
+            log('Select a test card to run individual test', 'info');
+        }
+
+        function clearLog() {
+            document.getElementById('log').innerHTML = 'Log cleared. Ready for new tests...';
+        }
+
+        function exportResults() {
+            const results = {
+                timestamp: new Date().toISOString(),
+                results: testResults,
+                successRate: ((testResults.passed / testResults.total) * 100).toFixed(1) + '%'
+            };
+
+            const blob = new Blob([JSON.stringify(results, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `test-results-${Date.now()}.json`;
+            a.click();
+
+            log('Results exported to file', 'success');
+        }
+
+        // Add click handlers to test cards
+        document.querySelectorAll('.test-card').forEach(card => {
+            card.style.cursor = 'pointer';
+            card.addEventListener('click', async () => {
+                const testName = card.dataset.test;
+                log(`Running individual test: ${testName}`, 'info');
+                // Run individual test based on testName
+            });
+        });
+
+        // Initialize
+        log('Test suite loaded and ready', 'success');
+        log('Click "Run All Tests" to begin comprehensive testing', 'info');
+    </script>
+</body>
+</html>

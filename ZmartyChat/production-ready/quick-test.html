@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quick Test</title>
+    <script src="onboarding-fixed.js"></script>
+</head>
+<body>
+    <h1>Quick Function Test</h1>
+    <button onclick="window.nextSlide()">Test nextSlide</button>
+    <button onclick="window.previousSlide()">Test previousSlide</button>
+    <button onclick="window.goToSlide(3)">Test goToSlide(3)</button>
+    <button onclick="window.checkEmailExists()">Test checkEmailExists</button>
+    <button onclick="window.simpleRegister()">Test simpleRegister</button>
+
+    <div id="output"></div>
+
+    <script>
+        window.addEventListener('load', function() {
+            const output = document.getElementById('output');
+
+            // Check all functions
+            const functions = [
+                'nextSlide', 'previousSlide', 'goToSlide',
+                'checkEmailExists', 'simpleRegister',
+                'showConfirmPasswordField', 'checkIfCanRegister'
+            ];
+
+            functions.forEach(fn => {
+                const exists = typeof window[fn] === 'function';
+                output.innerHTML += `<p>${fn}: ${exists ? '✅' : '❌'}</p>`;
+            });
+        });
+    </script>
+</body>
+</html>

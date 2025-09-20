@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supabase Monitor - Live User Creation</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            color: white;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .monitor-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .monitor-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .monitor-card h2 {
+            margin-top: 0;
+            color: #ffd700;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            background: rgba(0, 0, 0, 0.3);
+        }
+        .success {
+            border-left: 4px solid #22c55e;
+        }
+        .error {
+            border-left: 4px solid #ff4757;
+        }
+        .info {
+            border-left: 4px solid #3b82f6;
+        }
+        .user-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .user-item {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 8px;
+        }
+        .btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        .btn:hover {
+            opacity: 0.9;
+        }
+        .logs {
+            background: #1a1a1a;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .log-entry {
+            margin: 5px 0;
+            padding: 5px;
+        }
+        .log-success { color: #22c55e; }
+        .log-error { color: #ff4757; }
+        .log-info { color: #3b82f6; }
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #ffd700;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Supabase Live Monitor</h1>
+
+        <div class="monitor-grid">
+            <!-- Connection Status -->
+            <div class="monitor-card">
+                <h2>📡 Connection Status</h2>
+                <div id="connection-status" class="status info">
+                    Connecting to Supabase...
+                </div>
+                <div class="stats">
+                    <div class="stat-item">
+                        <div class="stat-number" id="total-users">0</div>
+                        <div>Total Users</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="new-today">0</div>
+                        <div>New Today</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Test Registration -->
+            <div class="monitor-card">
+                <h2>🧪 Test Registration</h2>
+                <input type="email" id="test-email" placeholder="test@example.com" style="width: 100%; padding: 10px; margin: 10px 0; border-radius: 5px; border: none;">
+                <input type="password" id="test-password" placeholder="Password123!" style="width: 100%; padding: 10px; margin: 10px 0; border-radius: 5px; border: none;">
+                <button class="btn" onclick="testRegister()">Create Test User</button>
+                <button class="btn" onclick="fetchUsers()">Refresh Users</button>
+                <div id="test-result"></div>
+            </div>
+
+            <!-- Recent Users -->
+            <div class="monitor-card">
+                <h2>👥 Recent Users</h2>
+                <div class="user-list" id="user-list">
+                    <div class="status info">Loading users...</div>
+                </div>
+            </div>
+
+            <!-- Live Logs -->
+            <div class="monitor-card">
+                <h2>📋 Live Activity Logs</h2>
+                <div class="logs" id="logs">
+                    <div class="log-entry log-info">🔄 Monitor started...</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="monitor-card" style="margin-top: 20px;">
+            <h2>🔗 Quick Links</h2>
+            <a href="https://app.supabase.com/project/asjtxrmftmutcsnqgidy/auth/users" target="_blank" class="btn" style="text-decoration: none; display: inline-block;">
+                Open Supabase Dashboard
+            </a>
+            <a href="http://localhost:9000" target="_blank" class="btn" style="text-decoration: none; display: inline-block;">
+                Open Onboarding App
+            </a>
+            <button class="btn" onclick="clearLogs()">Clear Logs</button>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Supabase
+        const SUPABASE_URL = 'https://asjtxrmftmutcsnqgidy.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFzanR4cm1mdG11dGNzbnFnaWR5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk1Nzc4NjgsImV4cCI6MjA2NTE1Mzg2OH0.ScIz31CxgxC2Knya-oHtMw5GQ7QL4QUHky-cEUdqpFM';
+
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // Add log entry
+        function addLog(message, type = 'info') {
+            const logs = document.getElementById('logs');
+            const entry = document.createElement('div');
+            entry.className = `log-entry log-${type}`;
+            const time = new Date().toLocaleTimeString();
+            entry.innerHTML = `[${time}] ${message}`;
+            logs.appendChild(entry);
+            logs.scrollTop = logs.scrollHeight;
+        }
+
+        // Test connection
+        async function testConnection() {
+            try {
+                const { data, error } = await supabase.auth.getSession();
+                if (error) throw error;
+
+                document.getElementById('connection-status').innerHTML =
+                    '<div class="status success">✅ Connected to Supabase</div>';
+                addLog('✅ Connected to Supabase', 'success');
+
+                // Fetch initial users
+                fetchUsers();
+            } catch (error) {
+                document.getElementById('connection-status').innerHTML =
+                    `<div class="status error">❌ Connection Error: ${error.message}</div>`;
+                addLog(`❌ Connection Error: ${error.message}`, 'error');
+            }
+        }
+
+        // Fetch users
+        async function fetchUsers() {
+            try {
+                addLog('🔄 Fetching users...', 'info');
+
+                // Note: This requires service role key for production
+                // For now, we'll show what we can access
+                const { data: session } = await supabase.auth.getSession();
+
+                if (session && session.session) {
+                    const userList = document.getElementById('user-list');
+                    userList.innerHTML = `
+                        <div class="user-item">
+                            <strong>Current User:</strong><br>
+                            Email: ${session.session.user.email}<br>
+                            ID: ${session.session.user.id}<br>
+                            Created: ${new Date(session.session.user.created_at).toLocaleString()}
+                        </div>
+                    `;
+                    addLog(`📧 Current user: ${session.session.user.email}`, 'success');
+                } else {
+                    document.getElementById('user-list').innerHTML =
+                        '<div class="status info">No active session. Register a user to see details.</div>';
+                    addLog('ℹ️ No active session', 'info');
+                }
+
+                // Update stats
+                document.getElementById('total-users').textContent = session ? '1+' : '0';
+
+            } catch (error) {
+                addLog(`❌ Error fetching users: ${error.message}`, 'error');
+            }
+        }
+
+        // Test register
+        async function testRegister() {
+            const email = document.getElementById('test-email').value;
+            const password = document.getElementById('test-password').value;
+
+            if (!email || !password) {
+                alert('Please enter email and password');
+                return;
+            }
+
+            try {
+                addLog(`🚀 Attempting to register: ${email}`, 'info');
+
+                const { data, error } = await supabase.auth.signUp({
+                    email: email,
+                    password: password,
+                    options: {
+                        data: {
+                            tier: 'free',
+                            test_user: true,
+                            created_via: 'monitor'
+                        }
+                    }
+                });
+
+                if (error) throw error;
+
+                document.getElementById('test-result').innerHTML =
+                    `<div class="status success">✅ User created! ID: ${data.user?.id}</div>`;
+
+                addLog(`✅ User created: ${email} (ID: ${data.user?.id})`, 'success');
+                addLog(`📧 Check email for verification`, 'info');
+
+                // Refresh user list
+                setTimeout(fetchUsers, 1000);
+
+            } catch (error) {
+                document.getElementById('test-result').innerHTML =
+                    `<div class="status error">❌ Error: ${error.message}</div>`;
+                addLog(`❌ Registration error: ${error.message}`, 'error');
+            }
+        }
+
+        // Clear logs
+        function clearLogs() {
+            document.getElementById('logs').innerHTML =
+                '<div class="log-entry log-info">🔄 Logs cleared</div>';
+        }
+
+        // Initialize on load
+        window.addEventListener('load', () => {
+            testConnection();
+
+            // Set up real-time subscription (requires additional setup)
+            supabase.auth.onAuthStateChange((event, session) => {
+                addLog(`🔔 Auth Event: ${event}`, 'info');
+                if (session) {
+                    addLog(`👤 User: ${session.user.email}`, 'success');
+                }
+                fetchUsers();
+            });
+        });
+    </script>
+</body>
+</html>

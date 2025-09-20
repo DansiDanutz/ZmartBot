@@ -1,0 +1,52 @@
+{
+  "b4ca17e568290443": {
+    "key_id": "b4ca17e568290443",
+    "key_name": "KuCoin API Key",
+    "rotation_interval_days": 90,
+    "warning_days_before": 7,
+    "auto_rotation_enabled": true,
+    "last_rotated": null,
+    "next_rotation": null,
+    "rotation_count": 0
+  },
+  "048e0229eff8f4c8": {
+    "key_id": "048e0229eff8f4c8",
+    "key_name": "KuCoin Secret",
+    "rotation_interval_days": 90,
+    "warning_days_before": 7,
+    "auto_rotation_enabled": true,
+    "last_rotated": null,
+    "next_rotation": null,
+    "rotation_count": 0
+  },
+  "855f3c5406856811": {
+    "key_id": "855f3c5406856811",
+    "key_name": "KuCoin Passphrase",
+    "rotation_interval_days": 90,
+    "warning_days_before": 7,
+    "auto_rotation_enabled": true,
+    "last_rotated": null,
+    "next_rotation": null,
+    "rotation_count": 0
+  },
+  "73645e8a29fe40bd": {
+    "key_id": "73645e8a29fe40bd",
+    "key_name": "Supabase Anon Key",
+    "rotation_interval_days": 180,
+    "warning_days_before": 14,
+    "auto_rotation_enabled": false,
+    "last_rotated": null,
+    "next_rotation": null,
+    "rotation_count": 0
+  },
+  "b50fc81f12bba24b": {
+    "key_id": "b50fc81f12bba24b",
+    "key_name": "Cryptometer API Key",
+    "rotation_interval_days": 60,
+    "warning_days_before": 5,
+    "auto_rotation_enabled": true,
+    "last_rotated": null,
+    "next_rotation": null,
+    "rotation_count": 0
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "reporting_enabled": true,
+  "report_frequency": "daily",
+  "report_time": "09:00",
+  "email_notifications": {
+    "enabled": false,
+    "smtp_server": "smtp.gmail.com",
+    "smtp_port": 587,
+    "sender_email": "",
+    "sender_password": "",
+    "recipients": []
+  },
+  "webhook_notifications": {
+    "enabled": false,
+    "webhook_url": "",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  },
+  "metrics_to_include": [
+    "system_health",
+    "api_performance",
+    "service_uptime",
+    "error_rates",
+    "resource_usage",
+    "throughput"
+  ],
+  "retention_days": 30,
+  "alert_thresholds": {
+    "system_health_critical": 50,
+    "system_health_warning": 80,
+    "api_response_time_slow": 1000,
+    "error_rate_high": 10,
+    "cpu_usage_critical": 90,
+    "memory_usage_critical": 90,
+    "disk_usage_critical": 90
+  },
+  "report_sections": {
+    "include_summary": true,
+    "include_detailed_metrics": true,
+    "include_recommendations": true,
+    "include_alerts": true,
+    "include_trends": false,
+    "include_comparisons": false
+  }
+}

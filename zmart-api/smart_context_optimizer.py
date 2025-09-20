@@ -551,6 +551,70 @@ Full context available in:
                 break
         
         return self.update_claude_md_smart(focus_domain=focus_domain)
+    
+    def analyze_context(self, current_task: str = "") -> Dict[str, Any]:
+        """Analyze current context and provide optimization recommendations."""
+        try:
+            mdc_files = self.scan_mdc_files_with_relevance(current_task)
+            
+            # Calculate context statistics
+            total_size = sum(f['size'] for f in mdc_files)
+            high_relevance_count = len([f for f in mdc_files if f['relevance'] > 50])
+            domain_distribution = {}
+            
+            for file_info in mdc_files:
+                domain = file_info['domain']
+                domain_distribution[domain] = domain_distribution.get(domain, 0) + 1
+            
+            # Generate recommendations
+            recommendations = []
+            
+            if total_size > 100000:  # 100KB
+                recommendations.append("Consider domain separation for large context")
+            
+            if high_relevance_count < len(mdc_files) * 0.3:
+                recommendations.append("Low relevance files detected - consider cleanup")
+            
+            if len(domain_distribution) > 5:
+                recommendations.append("High domain diversity - consider focus optimization")
+            
+            analysis = {
+                "total_files": len(mdc_files),
+                "total_size": total_size,
+                "high_relevance_files": high_relevance_count,
+                "domain_distribution": domain_distribution,
+                "recommendations": recommendations,
+                "performance_score": min(100, max(0, 100 - (total_size / 1000))),
+                "last_analyzed": datetime.now().isoformat()
+            }
+            
+            self.logger.info(f"Context analysis completed: {len(mdc_files)} files, {total_size} bytes")
+            return analysis
+            
+        except Exception as e:
+            self.logger.error(f"Error analyzing context: {e}")
+            return {
+                "error": str(e),
+                "total_files": 0,
+                "total_size": 0,
+                "performance_score": 0,
+                "last_analyzed": datetime.now().isoformat()
+            }
+    
+    def generate_claude_md(self, current_task: str = "", focus_domain: str = "core") -> bool:
+        """Generate Claude MD file - wrapper for generate_optimized_claude_md"""
+        try:
+            self.logger.info("Generating Claude MD file...")
+            result = self.generate_optimized_claude_md(current_task, focus_domain)
+            if result:
+                self.logger.info("Claude MD file generated successfully")
+                return True
+            else:
+                self.logger.warning("Claude MD file generation returned empty result")
+                return False
+        except Exception as e:
+            self.logger.error(f"Failed to generate Claude MD file: {e}")
+            return False
 
 def main():
     """Main entry point for Smart Context Optimizer."""

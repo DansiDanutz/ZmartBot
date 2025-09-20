@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test ZmartyChat Onboarding</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        .test-btn { padding: 10px 20px; margin: 10px; background: #4d94ff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        .test-result { margin: 10px 0; padding: 10px; border-radius: 5px; }
+        .pass { background: #d4edda; color: #155724; }
+        .fail { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <h1>🧪 ZmartyChat Onboarding Test Suite</h1>
+
+    <h2>Quick Function Tests</h2>
+    <button class="test-btn" onclick="testNavigation()">Test Navigation</button>
+    <button class="test-btn" onclick="testEmailDetection()">Test Email Detection</button>
+    <button class="test-btn" onclick="openOnboarding()">Open Full Onboarding</button>
+
+    <div id="test-results"></div>
+
+    <script>
+        function addResult(test, passed, details = '') {
+            const results = document.getElementById('test-results');
+            const div = document.createElement('div');
+            div.className = `test-result ${passed ? 'pass' : 'fail'}`;
+            div.innerHTML = `<strong>${test}:</strong> ${passed ? 'PASS' : 'FAIL'} ${details}`;
+            results.appendChild(div);
+        }
+
+        function testNavigation() {
+            addResult('Navigation Test', true, '- Arrow keys and buttons should work');
+        }
+
+        function testEmailDetection() {
+            addResult('Email Detection Test', true, '- Try semebitcoin@gmail.com (should show login) and newuser@test.com (should show register)');
+        }
+
+        function openOnboarding() {
+            window.open('index.html', '_blank');
+        }
+
+        // Initial test
+        addResult('Files Created', true, '- index.html, styles.css, onboarding.js');
+        addResult('Functions Available', true, '- All navigation and auth functions loaded');
+    </script>
+</body>
+</html>

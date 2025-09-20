@@ -1,0 +1,18 @@
+{
+  "optimization_script": "comprehensive_optimization_integration.py",
+  "restart_interval": 3600,
+  "health_check_interval": 60,
+  "max_restart_attempts": 3,
+  "auto_start": true,
+  "monitoring": {
+    "enabled": true,
+    "log_rotation": true,
+    "max_log_size_mb": 100
+  },
+  "system_integration": {
+    "create_launchd_plist": true,
+    "create_systemd_service": false,
+    "startup_delay": 30,
+    "auto_start_on_boot": true
+  }
+}

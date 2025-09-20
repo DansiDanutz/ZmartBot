@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZmartyChat - Simple Working Onboarding</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .form-group.show {
+            display: block;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: none;
+            margin-top: 20px;
+        }
+
+        button.show {
+            display: block;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .message {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            display: none;
+        }
+
+        .message.show {
+            display: block;
+        }
+
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .mode-indicator {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .forgot-password {
+            text-align: center;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .forgot-password.show {
+            display: block;
+        }
+
+        .forgot-password a {
+            color: #667eea;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to ZmartyChat</h1>
+
+        <div id="message" class="message"></div>
+
+        <div class="form-group show">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" placeholder="Enter your email" onkeyup="handleEmail()">
+        </div>
+
+        <div id="password-group" class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="Enter password" onkeyup="handlePassword()">
+        </div>
+
+        <div id="confirm-group" class="form-group">
+            <label for="confirm">Confirm Password</label>
+            <input type="password" id="confirm" placeholder="Confirm password" onkeyup="handleConfirm()">
+        </div>
+
+        <div class="mode-indicator" id="mode"></div>
+
+        <button id="auth-btn" onclick="authenticate()">Continue</button>
+
+        <div class="forgot-password" id="forgot">
+            <a href="#" onclick="forgotPassword()">Forgot Password?</a>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Supabase with ZmartyBrain
+        const SUPABASE_URL = 'https://xhskmqsgtdhehzlvtuns.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhoc2ttcXNndGRoZWh6bHZ0dW5zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgxNDkzNTQsImV4cCI6MjA3MzcyNTM1NH0.ULAf9vNHS4nasSnv9UOKS2MCKsSxcMtV3C-R7Wm6qMw';
+
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        let isNewUser = true;
+        let checkTimeout;
+
+        function showMessage(text, type) {
+            const msg = document.getElementById('message');
+            msg.textContent = text;
+            msg.className = `message show ${type}`;
+            setTimeout(() => {
+                msg.className = 'message';
+            }, 5000);
+        }
+
+        async function checkUserExists(email) {
+            try {
+                const { error } = await supabase.auth.signInWithPassword({
+                    email: email,
+                    password: 'checking_if_exists_dummy_123'
+                });
+
+                console.log('Check user response:', error?.message);
+
+                // User EXISTS if we get these specific errors
+                if (error && (
+                    error.message.includes('Invalid login credentials') ||
+                    error.message.includes('Email not confirmed')
+                )) {
+                    console.log('User EXISTS - showing login');
+                    return true;
+                }
+
+                // User DOES NOT exist for any other error
+                console.log('User DOES NOT exist - showing register');
+                return false;
+            } catch {
+                // Default to registration for new users
+                return false;
+            }
+        }
+
+        async function handleEmail() {
+            const email = document.getElementById('email').value.trim();
+            const passwordGroup = document.getElementById('password-group');
+            const confirmGroup = document.getElementById('confirm-group');
+            const authBtn = document.getElementById('auth-btn');
+            const mode = document.getElementById('mode');
+            const forgot = document.getElementById('forgot');
+
+            // Reset everything
+            passwordGroup.className = 'form-group';
+            confirmGroup.className = 'form-group';
+            authBtn.className = '';
+            forgot.className = 'forgot-password';
+            document.getElementById('password').value = '';
+            document.getElementById('confirm').value = '';
+
+            if (email && email.includes('@')) {
+                // Show password field
+                passwordGroup.className = 'form-group show';
+
+                // Check if user exists (debounced)
+                clearTimeout(checkTimeout);
+                checkTimeout = setTimeout(async () => {
+                    const exists = await checkUserExists(email);
+
+                    if (exists) {
+                        // LOGIN MODE
+                        isNewUser = false;
+                        mode.textContent = '🔐 Existing user - Login mode';
+                        authBtn.textContent = 'Login';
+                        forgot.className = 'forgot-password show';
+                    } else {
+                        // REGISTER MODE
+                        isNewUser = true;
+                        mode.textContent = '✨ New user - Registration mode';
+                        authBtn.textContent = 'Register';
+                    }
+                }, 500);
+            }
+        }
+
+        function handlePassword() {
+            const password = document.getElementById('password').value;
+            const confirmGroup = document.getElementById('confirm-group');
+            const authBtn = document.getElementById('auth-btn');
+
+            if (isNewUser) {
+                // For new users, show confirm field when password is 8+ chars
+                if (password.length >= 8) {
+                    confirmGroup.className = 'form-group show';
+                } else {
+                    confirmGroup.className = 'form-group';
+                    authBtn.className = '';
+                }
+            } else {
+                // For existing users, show login button
+                if (password.length > 0) {
+                    authBtn.className = 'show';
+                } else {
+                    authBtn.className = '';
+                }
+            }
+        }
+
+        function handleConfirm() {
+            const password = document.getElementById('password').value;
+            const confirm = document.getElementById('confirm').value;
+            const authBtn = document.getElementById('auth-btn');
+
+            if (isNewUser && password === confirm && password.length >= 8) {
+                authBtn.className = 'show';
+            } else if (isNewUser) {
+                authBtn.className = '';
+            }
+        }
+
+        async function authenticate() {
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+
+            try {
+                if (isNewUser) {
+                    // REGISTER
+                    const { data, error } = await supabase.auth.signUp({
+                        email: email,
+                        password: password,
+                        options: {
+                            emailRedirectTo: window.location.origin + '/dashboard.html'
+                        }
+                    });
+
+                    if (error) throw error;
+
+                    showMessage('✅ Registration successful! Check your email for verification.', 'success');
+
+                    // Clear form
+                    document.getElementById('email').value = '';
+                    document.getElementById('password').value = '';
+                    document.getElementById('confirm').value = '';
+
+                } else {
+                    // LOGIN
+                    const { data, error } = await supabase.auth.signInWithPassword({
+                        email: email,
+                        password: password
+                    });
+
+                    if (error) throw error;
+
+                    showMessage('✅ Login successful! Redirecting...', 'success');
+
+                    setTimeout(() => {
+                        window.location.href = '/dashboard.html';
+                    }, 1500);
+                }
+            } catch (error) {
+                showMessage('❌ ' + error.message, 'error');
+            }
+        }
+
+        async function forgotPassword() {
+            const email = document.getElementById('email').value.trim();
+
+            if (!email) {
+                showMessage('Please enter your email first', 'error');
+                return;
+            }
+
+            try {
+                const { error } = await supabase.auth.resetPasswordForEmail(email, {
+                    redirectTo: window.location.origin + '/reset-password.html'
+                });
+
+                if (error) throw error;
+
+                showMessage('✅ Password reset email sent!', 'success');
+            } catch (error) {
+                showMessage('❌ ' + error.message, 'error');
+            }
+        }
+    </script>
+</body>
+</html>

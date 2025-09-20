@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Onboarding Test Suite - ZmartyChat</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #000428 0%, #004e92 100%);
+            color: white;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .test-section {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        h1, h2 {
+            margin: 0 0 20px 0;
+        }
+
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .test-button {
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            transition: transform 0.2s;
+        }
+
+        .test-button:hover {
+            transform: scale(1.05);
+        }
+
+        .test-button.success {
+            background: linear-gradient(135deg, #00c896 0%, #00a170 100%);
+        }
+
+        .test-button.error {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff4757 100%);
+        }
+
+        .status {
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .status.show {
+            display: block;
+        }
+
+        .status.success {
+            background: rgba(0, 200, 150, 0.2);
+            border: 1px solid #00c896;
+        }
+
+        .status.error {
+            background: rgba(255, 107, 107, 0.2);
+            border: 1px solid #ff6b6b;
+        }
+
+        .status.info {
+            background: rgba(102, 126, 234, 0.2);
+            border: 1px solid #667eea;
+        }
+
+        iframe {
+            width: 100%;
+            height: 700px;
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+
+        .console-output {
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            padding: 15px;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 15px;
+        }
+
+        .console-line {
+            margin: 5px 0;
+            padding: 5px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 4px;
+        }
+
+        .console-line.error {
+            background: rgba(255, 107, 107, 0.1);
+            color: #ff6b6b;
+        }
+
+        .console-line.success {
+            background: rgba(0, 200, 150, 0.1);
+            color: #00c896;
+        }
+
+        .console-line.info {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🧪 ZmartyChat Onboarding Test Suite</h1>
+
+        <!-- Test Status Section -->
+        <div class="test-section">
+            <h2>📊 Test Status</h2>
+            <div id="overall-status" class="status info show">
+                Ready to run tests. Click buttons below to test individual features.
+            </div>
+            <div class="console-output" id="console-output">
+                <div class="console-line info">Console initialized...</div>
+            </div>
+        </div>
+
+        <!-- Navigation Tests -->
+        <div class="test-section">
+            <h2>🧭 Navigation Tests</h2>
+            <div class="test-grid">
+                <button class="test-button" onclick="testArrowKeys()">Test Arrow Keys</button>
+                <button class="test-button" onclick="testNextButton()">Test NEXT Button</button>
+                <button class="test-button" onclick="testDotsNavigation()">Test Dots Navigation</button>
+                <button class="test-button" onclick="testSlideTransitions()">Test Slide Transitions</button>
+            </div>
+            <div id="nav-status" class="status"></div>
+        </div>
+
+        <!-- Email Detection Tests -->
+        <div class="test-section">
+            <h2>📧 Email Detection Tests</h2>
+            <div class="test-grid">
+                <button class="test-button" onclick="testNewUserFlow()">Test New User Detection</button>
+                <button class="test-button" onclick="testExistingUserFlow()">Test Existing User Detection</button>
+                <button class="test-button" onclick="testEmailValidation()">Test Email Validation</button>
+                <button class="test-button" onclick="testPasswordReset()">Test Password Reset</button>
+            </div>
+            <div id="email-status" class="status"></div>
+        </div>
+
+        <!-- Registration Tests -->
+        <div class="test-section">
+            <h2>📝 Registration Flow Tests</h2>
+            <div class="test-grid">
+                <button class="test-button" onclick="testProgressiveReveal()">Test Progressive Reveal</button>
+                <button class="test-button" onclick="testPasswordMatch()">Test Password Matching</button>
+                <button class="test-button" onclick="testRegistrationSubmit()">Test Registration Submit</button>
+                <button class="test-button" onclick="testVerificationFlow()">Test Verification Flow</button>
+            </div>
+            <div id="reg-status" class="status"></div>
+        </div>
+
+        <!-- Function Availability Tests -->
+        <div class="test-section">
+            <h2>⚙️ Function Availability Tests</h2>
+            <div class="test-grid">
+                <button class="test-button" onclick="testAllFunctions()">Test All Functions</button>
+                <button class="test-button" onclick="testSupabaseConnection()">Test Supabase Connection</button>
+                <button class="test-button" onclick="testLocalStorage()">Test Local Storage</button>
+                <button class="test-button" onclick="testSessionStorage()">Test Session Storage</button>
+            </div>
+            <div id="func-status" class="status"></div>
+        </div>
+
+        <!-- Live Preview -->
+        <div class="test-section">
+            <h2>👁️ Live Preview</h2>
+            <button class="test-button" onclick="reloadPreview()">Reload Preview</button>
+            <button class="test-button" onclick="clearAllData()">Clear All Data & Restart</button>
+            <iframe id="preview-frame" src="index.html"></iframe>
+        </div>
+    </div>
+
+    <script>
+        // Console output helper
+        function logToConsole(message, type = 'info') {
+            const consoleOutput = document.getElementById('console-output');
+            const line = document.createElement('div');
+            line.className = `console-line ${type}`;
+            line.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            consoleOutput.appendChild(line);
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        }
+
+        // Status helper
+        function showStatus(elementId, message, type = 'info') {
+            const status = document.getElementById(elementId);
+            status.className = `status ${type} show`;
+            status.textContent = message;
+            logToConsole(message, type);
+        }
+
+        // Get iframe window
+        function getIframeWindow() {
+            return document.getElementById('preview-frame').contentWindow;
+        }
+
+        // Navigation Tests
+        function testArrowKeys() {
+            const iframeWin = getIframeWindow();
+            const currentSlide = iframeWin.currentSlide;
+
+            // Simulate right arrow key
+            const rightEvent = new KeyboardEvent('keydown', { key: 'ArrowRight', keyCode: 39 });
+            iframeWin.document.dispatchEvent(rightEvent);
+
+            setTimeout(() => {
+                const newSlide = iframeWin.currentSlide;
+                if (newSlide === currentSlide + 1) {
+                    showStatus('nav-status', '✅ Arrow key navigation works! Moved from slide ' + currentSlide + ' to ' + newSlide, 'success');
+                } else if (newSlide === currentSlide) {
+                    showStatus('nav-status', '⚠️ Arrow key did not change slide (may be at last slide or blocked)', 'error');
+                } else {
+                    showStatus('nav-status', '✅ Arrow key triggered navigation', 'success');
+                }
+            }, 500);
+        }
+
+        function testNextButton() {
+            const iframeWin = getIframeWindow();
+            const currentSlide = iframeWin.currentSlide;
+
+            if (typeof iframeWin.nextSlide === 'function') {
+                iframeWin.nextSlide();
+                setTimeout(() => {
+                    const newSlide = iframeWin.currentSlide;
+                    if (newSlide !== currentSlide) {
+                        showStatus('nav-status', '✅ NEXT button works! Moved from slide ' + currentSlide + ' to ' + newSlide, 'success');
+                    } else {
+                        showStatus('nav-status', '⚠️ NEXT button did not change slide (may be blocked or at last slide)', 'error');
+                    }
+                }, 500);
+            } else {
+                showStatus('nav-status', '❌ nextSlide function not found!', 'error');
+            }
+        }
+
+        function testDotsNavigation() {
+            const iframeWin = getIframeWindow();
+            if (typeof iframeWin.goToSlide === 'function') {
+                const targetSlide = 3;
+                iframeWin.goToSlide(targetSlide);
+                setTimeout(() => {
+                    const currentSlide = iframeWin.currentSlide;
+                    if (currentSlide === targetSlide) {
+                        showStatus('nav-status', '✅ Dots navigation works! Jumped to slide ' + targetSlide, 'success');
+                    } else {
+                        showStatus('nav-status', '⚠️ Could not navigate to slide ' + targetSlide + ' (current: ' + currentSlide + ')', 'error');
+                    }
+                }, 500);
+            } else {
+                showStatus('nav-status', '❌ goToSlide function not found!', 'error');
+            }
+        }
+
+        function testSlideTransitions() {
+            const iframeWin = getIframeWindow();
+            const slides = iframeWin.document.querySelectorAll('.slide');
+            const activeSlides = Array.from(slides).filter(s => s.classList.contains('active'));
+
+            if (activeSlides.length === 1) {
+                showStatus('nav-status', '✅ Slide transitions correct - only 1 active slide', 'success');
+            } else if (activeSlides.length === 0) {
+                showStatus('nav-status', '❌ No active slide found!', 'error');
+            } else {
+                showStatus('nav-status', '❌ Multiple active slides found: ' + activeSlides.length, 'error');
+            }
+        }
+
+        // Email Detection Tests
+        function testNewUserFlow() {
+            const iframeWin = getIframeWindow();
+            const emailInput = iframeWin.document.getElementById('register-email');
+
+            if (emailInput) {
+                // Test with a new email
+                emailInput.value = 'newuser' + Date.now() + '@test.com';
+                emailInput.dispatchEvent(new Event('input'));
+
+                setTimeout(() => {
+                    const passwordField = iframeWin.document.getElementById('register-password');
+                    if (passwordField && passwordField.style.display !== 'none') {
+                        showStatus('email-status', '✅ New user flow triggered - password field shown', 'success');
+                    } else {
+                        showStatus('email-status', '⚠️ Password field not shown for new user', 'error');
+                    }
+                }, 1000);
+            } else {
+                showStatus('email-status', '❌ Email input field not found!', 'error');
+            }
+        }
+
+        function testExistingUserFlow() {
+            const iframeWin = getIframeWindow();
+            const emailInput = iframeWin.document.getElementById('register-email');
+
+            if (emailInput) {
+                // Test with a known existing email
+                emailInput.value = 'semebitcoin@gmail.com';
+                emailInput.dispatchEvent(new Event('input'));
+
+                setTimeout(() => {
+                    const registerBtn = iframeWin.document.getElementById('email-continue-btn');
+                    if (registerBtn && registerBtn.textContent.includes('Login')) {
+                        showStatus('email-status', '✅ Existing user detected - Login button shown', 'success');
+                    } else {
+                        showStatus('email-status', '⚠️ Login mode not activated for existing user', 'info');
+                    }
+                }, 1500);
+            } else {
+                showStatus('email-status', '❌ Email input field not found!', 'error');
+            }
+        }
+
+        function testEmailValidation() {
+            const iframeWin = getIframeWindow();
+            const emailInput = iframeWin.document.getElementById('register-email');
+
+            if (emailInput) {
+                // Test invalid email
+                emailInput.value = 'invalid-email';
+                emailInput.dispatchEvent(new Event('input'));
+
+                const passwordField = iframeWin.document.getElementById('register-password');
+                if (passwordField && passwordField.style.display === 'none') {
+                    showStatus('email-status', '✅ Invalid email correctly prevents password field', 'success');
+                } else {
+                    showStatus('email-status', '⚠️ Email validation may not be working', 'info');
+                }
+            } else {
+                showStatus('email-status', '❌ Email input field not found!', 'error');
+            }
+        }
+
+        function testPasswordReset() {
+            const iframeWin = getIframeWindow();
+            if (typeof iframeWin.sendPasswordReset === 'function') {
+                showStatus('email-status', '✅ Password reset function available', 'success');
+            } else {
+                showStatus('email-status', '❌ sendPasswordReset function not found!', 'error');
+            }
+        }
+
+        // Registration Tests
+        function testProgressiveReveal() {
+            const iframeWin = getIframeWindow();
+            iframeWin.goToSlide(4); // Go to registration slide
+
+            setTimeout(() => {
+                const emailInput = iframeWin.document.getElementById('register-email');
+                const passwordField = iframeWin.document.getElementById('register-password');
+                const confirmField = iframeWin.document.getElementById('confirm-password');
+
+                if (emailInput && passwordField && confirmField) {
+                    // Type email
+                    emailInput.value = 'test@example.com';
+                    emailInput.dispatchEvent(new Event('input'));
+
+                    setTimeout(() => {
+                        if (passwordField.style.display !== 'none') {
+                            // Type password
+                            passwordField.value = 'password123';
+                            passwordField.dispatchEvent(new Event('input'));
+
+                            setTimeout(() => {
+                                if (confirmField.style.display !== 'none') {
+                                    showStatus('reg-status', '✅ Progressive reveal working correctly', 'success');
+                                } else {
+                                    showStatus('reg-status', '⚠️ Confirm password field not revealed', 'error');
+                                }
+                            }, 500);
+                        } else {
+                            showStatus('reg-status', '⚠️ Password field not revealed after email', 'error');
+                        }
+                    }, 500);
+                } else {
+                    showStatus('reg-status', '❌ Registration fields not found!', 'error');
+                }
+            }, 500);
+        }
+
+        function testPasswordMatch() {
+            const iframeWin = getIframeWindow();
+            const passwordField = iframeWin.document.getElementById('register-password');
+            const confirmField = iframeWin.document.getElementById('confirm-password');
+
+            if (passwordField && confirmField) {
+                passwordField.value = 'TestPassword123';
+                confirmField.value = 'TestPassword123';
+                confirmField.dispatchEvent(new Event('input'));
+
+                setTimeout(() => {
+                    const registerBtn = iframeWin.document.getElementById('email-continue-btn');
+                    if (registerBtn && registerBtn.style.display !== 'none') {
+                        showStatus('reg-status', '✅ Password match detection works - Register button shown', 'success');
+                    } else {
+                        showStatus('reg-status', '⚠️ Register button not shown despite matching passwords', 'error');
+                    }
+                }, 500);
+            } else {
+                showStatus('reg-status', '❌ Password fields not found!', 'error');
+            }
+        }
+
+        function testRegistrationSubmit() {
+            const iframeWin = getIframeWindow();
+            if (typeof iframeWin.continueWithEmail === 'function') {
+                showStatus('reg-status', '✅ Registration submit function (continueWithEmail) available', 'success');
+            } else {
+                showStatus('reg-status', '❌ continueWithEmail function not found!', 'error');
+            }
+
+            if (typeof iframeWin.simpleRegister === 'function') {
+                showStatus('reg-status', '✅ simpleRegister function also available', 'success');
+            } else {
+                showStatus('reg-status', '⚠️ simpleRegister function not found', 'error');
+            }
+        }
+
+        function testVerificationFlow() {
+            const iframeWin = getIframeWindow();
+            if (typeof iframeWin.verifyCode === 'function' && typeof iframeWin.resendCode === 'function') {
+                showStatus('reg-status', '✅ Verification functions available', 'success');
+            } else {
+                showStatus('reg-status', '❌ Verification functions missing!', 'error');
+            }
+        }
+
+        // Function Availability Tests
+        function testAllFunctions() {
+            const iframeWin = getIframeWindow();
+            const requiredFunctions = [
+                'nextSlide', 'previousSlide', 'goToSlide', 'skipOnboarding',
+                'selectTier', 'continueWithEmail', 'verifyCode', 'resendCode',
+                'showError', 'completeProfile', 'quickLogin', 'simpleRegister',
+                'checkEmailExists', 'sendPasswordReset', 'showPasswordField',
+                'showConfirmPasswordField', 'checkIfCanRegister'
+            ];
+
+            let missing = [];
+            let found = [];
+
+            requiredFunctions.forEach(func => {
+                if (typeof iframeWin[func] === 'function') {
+                    found.push(func);
+                } else {
+                    missing.push(func);
+                }
+            });
+
+            if (missing.length === 0) {
+                showStatus('func-status', `✅ All ${requiredFunctions.length} functions are available!`, 'success');
+            } else {
+                showStatus('func-status', `⚠️ Missing functions: ${missing.join(', ')}`, 'error');
+                logToConsole(`Found functions: ${found.join(', ')}`, 'success');
+            }
+        }
+
+        function testSupabaseConnection() {
+            const iframeWin = getIframeWindow();
+            if (iframeWin.supabase && iframeWin.supabase.auth) {
+                showStatus('func-status', '✅ Supabase is initialized and available', 'success');
+            } else {
+                showStatus('func-status', '❌ Supabase not initialized!', 'error');
+            }
+        }
+
+        function testLocalStorage() {
+            try {
+                localStorage.setItem('test_key', 'test_value');
+                const value = localStorage.getItem('test_key');
+                localStorage.removeItem('test_key');
+
+                if (value === 'test_value') {
+                    showStatus('func-status', '✅ LocalStorage is working', 'success');
+                } else {
+                    showStatus('func-status', '❌ LocalStorage read/write issue', 'error');
+                }
+            } catch (e) {
+                showStatus('func-status', '❌ LocalStorage error: ' + e.message, 'error');
+            }
+        }
+
+        function testSessionStorage() {
+            try {
+                sessionStorage.setItem('test_key', 'test_value');
+                const value = sessionStorage.getItem('test_key');
+                sessionStorage.removeItem('test_key');
+
+                if (value === 'test_value') {
+                    showStatus('func-status', '✅ SessionStorage is working', 'success');
+                } else {
+                    showStatus('func-status', '❌ SessionStorage read/write issue', 'error');
+                }
+            } catch (e) {
+                showStatus('func-status', '❌ SessionStorage error: ' + e.message, 'error');
+            }
+        }
+
+        // Utility functions
+        function reloadPreview() {
+            document.getElementById('preview-frame').src = 'index.html?t=' + Date.now();
+            logToConsole('Preview reloaded', 'info');
+        }
+
+        function clearAllData() {
+            const iframeWin = getIframeWindow();
+
+            // Clear localStorage
+            localStorage.clear();
+
+            // Clear sessionStorage
+            sessionStorage.clear();
+
+            // Sign out from Supabase
+            if (iframeWin.supabase && iframeWin.supabase.auth) {
+                iframeWin.supabase.auth.signOut();
+            }
+
+            // Reload the preview
+            reloadPreview();
+
+            showStatus('overall-status', '✅ All data cleared - Fresh start!', 'success');
+        }
+
+        // Auto-run basic tests on load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                logToConsole('Running automatic tests...', 'info');
+                testAllFunctions();
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

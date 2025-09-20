@@ -1,0 +1,122 @@
+-- ============================================
+-- UPDATE EMAIL TEMPLATE IN ZMARTYBRAIN
+-- Run this in ZmartyBrain (xhskmqsgtdhehzlvtuns)
+-- ============================================
+
+-- This updates the email template content in Supabase
+-- Note: You might need to use the Supabase dashboard UI to update templates
+-- This SQL is for reference of what the template should contain
+
+UPDATE auth.email_templates
+SET template = '<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Your Zmarty Account</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, ''Segoe UI'', Roboto, ''Helvetica Neue'', Arial, sans-serif; background-color: #f5f7fa;">
+    <div style="max-width: 600px; margin: 0 auto; padding: 40px 20px;">
+
+        <!-- Header with Logo -->
+        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px; border-radius: 12px 12px 0 0; text-align: center;">
+            <h1 style="color: white; margin: 0; font-size: 32px; font-weight: bold;">
+                🚀 Zmarty
+            </h1>
+            <p style="color: rgba(255,255,255,0.9); margin-top: 10px; font-size: 16px;">
+                Your AI-Powered Trading Assistant
+            </p>
+        </div>
+
+        <!-- Main Content -->
+        <div style="background: white; padding: 40px; border-radius: 0 0 12px 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+
+            <h2 style="color: #333; font-size: 24px; margin-bottom: 20px; text-align: center;">
+                Welcome to Zmarty! 🎉
+            </h2>
+
+            <p style="color: #666; font-size: 16px; line-height: 1.6; margin-bottom: 30px;">
+                Thank you for joining Zmarty! To complete your registration and unlock all the amazing features, please verify your email address using the code below:
+            </p>
+
+            <!-- Verification Code Box -->
+            <div style="background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%); border: 2px solid #667eea; border-radius: 12px; padding: 30px; text-align: center; margin: 30px 0;">
+                <p style="color: #666; font-size: 14px; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;">
+                    Your Verification Code
+                </p>
+                <div style="font-size: 36px; font-weight: bold; color: #667eea; letter-spacing: 8px; font-family: ''Courier New'', monospace;">
+                    {{ .Token }}
+                </div>
+                <p style="color: #999; font-size: 12px; margin-top: 15px;">
+                    This code expires in 60 minutes
+                </p>
+            </div>
+
+            <!-- Or Verify Button -->
+            <div style="text-align: center; margin: 30px 0;">
+                <p style="color: #999; font-size: 14px; margin-bottom: 15px;">
+                    Or click the button below to verify instantly:
+                </p>
+                <a href="{{ .ConfirmationURL }}" style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 16px;">
+                    Verify Email Address
+                </a>
+            </div>
+
+            <!-- Features Section -->
+            <div style="background: #f8f9fa; border-radius: 8px; padding: 20px; margin: 30px 0;">
+                <h3 style="color: #333; font-size: 18px; margin-bottom: 15px;">
+                    🌟 What''s waiting for you:
+                </h3>
+                <ul style="color: #666; line-height: 1.8; margin: 0; padding-left: 20px;">
+                    <li>💬 AI-powered crypto market analysis</li>
+                    <li>📊 Real-time trading signals and alerts</li>
+                    <li>🎯 Personalized portfolio recommendations</li>
+                    <li>🔔 Smart notification system</li>
+                    <li>📈 Advanced charting and technical indicators</li>
+                    <li>🤝 24/7 AI trading assistant</li>
+                </ul>
+            </div>
+
+            <!-- Pro Tip -->
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px; border-radius: 8px; margin-top: 30px; text-align: center;">
+                <strong>💡 Pro Tip:</strong> After verification, take our quick onboarding tour to unlock the full power of Zmarty. It only takes 2 minutes and will show you all the amazing features!
+            </div>
+
+            <!-- Security Notice -->
+            <div style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin-top: 30px; border-radius: 4px;">
+                <p style="color: #856404; font-size: 14px; margin: 0;">
+                    <strong>🔒 Security Notice:</strong> Never share your verification code with anyone. Zmarty team will never ask for your password or verification code via email.
+                </p>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div style="margin-top: 40px; padding-top: 30px; border-top: 2px solid #e0e0e0; text-align: center;">
+            <p style="color: #666; font-size: 14px; line-height: 1.6; margin-bottom: 20px;">
+                If you didn''t request this verification, please ignore this email.
+            </p>
+
+            <div style="margin-top: 30px;">
+                <p style="color: #999; font-size: 12px; margin-bottom: 5px;">
+                    © 2025 Zmarty. All rights reserved.
+                </p>
+                <p style="color: #999; font-size: 12px;">
+                    <a href="https://www.Zmarty.Team/privacy" style="color: #667eea; text-decoration: none;">Privacy Policy</a> |
+                    <a href="https://www.Zmarty.Team/terms" style="color: #667eea; text-decoration: none;">Terms of Service</a> |
+                    <a href="https://www.Zmarty.Team/support" style="color: #667eea; text-decoration: none;">Contact Support</a>
+                </p>
+                <p style="color: #999; font-size: 11px; margin-top: 10px;">
+                    www.Zmarty.Team - Your AI Trading Assistant
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>'
+WHERE template_id = 'confirm_signup';
+
+-- Note: Email templates in Supabase are usually managed through the dashboard
+-- Go to: https://supabase.com/dashboard/project/xhskmqsgtdhehzlvtuns/auth/templates
+-- Click on "Confirm signup" and paste the HTML from zmarty-email-template-final.html
+
+SELECT 'Email template updated to Zmarty branding!' as status;

@@ -10,6 +10,41 @@ Core service component of the ZmartBot ecosystem providing essential functionali
 
 These rules clearly define what Cursor AI is ALLOWED to do and what is CRITICAL to follow.
 
+## 🔌 MCP (Model Context Protocol) INTEGRATIONS
+
+### Available MCP Servers for Enhanced Capabilities
+The following MCP servers are configured in `/Users/dansidanutz/Library/Application Support/Claude/claude_desktop_config.json` and `.cursor/mcp.json`:
+
+1. **Supabase MCP** - Database operations and management
+   - Project: `asjtxrmftmutcsnqgidy`
+   - Commands: `mcp__supabase__*` (list_tables, execute_sql, apply_migration, etc.)
+
+2. **Browser MCP** - Web automation and browsing
+   - Commands: `mcp__browsermcp__browser_*` (navigate, click, type, screenshot)
+
+3. **Firecrawl MCP** - Advanced web scraping and search
+   - API Key: `fc-0b019c4a95b64f488f5c97f387e95b5e`
+   - Commands: `mcp__firecrawl-mcp__firecrawl_*` (search, scrape, map, crawl, extract)
+
+4. **Shadcn Studio MCP** - UI component management
+   - Registries: @shadcn, @acme
+   - Commands: `mcp__shadcn__*` (get_project_registries, list_items, search_items)
+
+5. **Ref (Byterover) MCP** - Documentation search
+   - API Key: `ref-5c535e98df41fa8ef0f9`
+   - Commands: `mcp__Ref__ref_*` (search_documentation, read_url)
+
+6. **IDE MCP** - File system operations
+   - Commands: `mcp__ide__*` (getDiagnostics, executeCode)
+
+7. **Figma MCP** - Design integration
+   - API Key: `figd_5pmO9I1vXoLF5gfw3OdPiQIaakuTRCJut6doJn09`
+
+### Usage Guidelines
+- MCP servers are automatically invoked when their specific functionality is needed
+- They provide extended capabilities beyond standard tools
+- Each MCP has specific command patterns (e.g., `mcp__<server>__<command>`)
+
 ## 🏗️ CRITICAL ARCHITECTURE DISCOVERY
 
 ### Service Classification System

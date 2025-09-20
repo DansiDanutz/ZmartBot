@@ -34,8 +34,28 @@
       "created_at": "2025-08-29 13:56:32",
       "expires_at": null,
       "usage_count": 0
+    },
+    "supabase_zmartybrain_anon": {
+      "status": "active",
+      "service": "Supabase - ZmartyBrain",
+      "project": "xhskmqsgtdhehzlvtuns",
+      "description": "User authentication and management",
+      "last_used": null,
+      "created_at": "2025-09-19 04:35:00",
+      "expires_at": "2073-07-25",
+      "usage_count": 0
+    },
+    "supabase_zmartbot_anon": {
+      "status": "active",
+      "service": "Supabase - ZmartBot",
+      "project": "asjtxrmftmutcsnqgidy",
+      "description": "Crypto trading and market data",
+      "last_used": null,
+      "created_at": "2025-09-19 04:35:00",
+      "expires_at": "2065-01-15",
+      "usage_count": 0
     }
   },
-  "last_check": "2025-09-19T04:26:47.958912",
+  "last_check": "2025-09-19T04:35:24.495163",
   "alerts": []
 }

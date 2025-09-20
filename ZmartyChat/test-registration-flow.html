@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Registration Flow</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            padding: 40px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1 { color: #0066ff; }
+        .test-section {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f5f7fa;
+            border-radius: 10px;
+        }
+        button {
+            background: #0066ff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #0052cc; }
+        #log {
+            background: #1a1a1a;
+            color: #00ff00;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            max-height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+        .error { color: #ff4444; }
+        .success { color: #00ff00; }
+        .info { color: #ffcc00; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Registration Flow Test</h1>
+
+    <div class="test-section">
+        <h2>Test Controls</h2>
+        <button onclick="testRegistration()">Test Registration</button>
+        <button onclick="checkOverlays()">Check for Overlays</button>
+        <button onclick="checkConsoleErrors()">Check Console Errors</button>
+        <button onclick="clearAll()">Clear All</button>
+    </div>
+
+    <div class="test-section">
+        <h2>Test Log</h2>
+        <div id="log"></div>
+    </div>
+
+    <script>
+        const log = document.getElementById('log');
+
+        function addLog(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const className = type === 'error' ? 'error' : type === 'success' ? 'success' : 'info';
+            log.innerHTML += `<span class="${className}">[${timestamp}] ${message}</span>\n`;
+            log.scrollTop = log.scrollHeight;
+        }
+
+        async function testRegistration() {
+            addLog('Starting registration flow test...', 'info');
+
+            // Open the app in an iframe
+            const iframe = document.createElement('iframe');
+            iframe.src = 'http://localhost:9000';
+            iframe.style.width = '100%';
+            iframe.style.height = '600px';
+            iframe.style.border = '1px solid #ddd';
+            iframe.style.borderRadius = '8px';
+            document.body.appendChild(iframe);
+
+            iframe.onload = async () => {
+                addLog('App loaded successfully', 'success');
+
+                // Wait for the app to initialize
+                setTimeout(() => {
+                    const iframeDoc = iframe.contentDocument;
+
+                    // Check for overlays
+                    const overlays = iframeDoc.querySelectorAll('[id*="overlay"]');
+                    if (overlays.length > 0) {
+                        addLog(`Found ${overlays.length} overlay(s):`, 'error');
+                        overlays.forEach(overlay => {
+                            addLog(`  - ${overlay.id || 'unnamed'} (display: ${overlay.style.display})`, 'error');
+                        });
+                    } else {
+                        addLog('No overlays found initially', 'success');
+                    }
+
+                    // Check current slide
+                    const currentSlide = iframeDoc.querySelector('.slide.active');
+                    if (currentSlide) {
+                        addLog(`Current slide: ${currentSlide.id}`, 'info');
+                    }
+
+                    // Try to go to slide 4 (registration)
+                    if (iframe.contentWindow.goToSlide) {
+                        addLog('Navigating to registration slide...', 'info');
+                        iframe.contentWindow.goToSlide(4);
+
+                        setTimeout(() => {
+                            // Fill in registration form
+                            const emailInput = iframeDoc.getElementById('register-email');
+                            const passwordInput = iframeDoc.getElementById('register-password');
+                            const confirmInput = iframeDoc.getElementById('confirm-password');
+
+                            if (emailInput && passwordInput) {
+                                const testEmail = `test${Date.now()}@example.com`;
+                                emailInput.value = testEmail;
+                                passwordInput.value = 'TestPass123';
+                                if (confirmInput) confirmInput.value = 'TestPass123';
+
+                                addLog(`Filled form with email: ${testEmail}`, 'success');
+
+                                // Trigger the continue button
+                                const continueBtn = iframeDoc.getElementById('email-continue-btn');
+                                if (continueBtn) {
+                                    addLog('Clicking register button...', 'info');
+                                    continueBtn.click();
+
+                                    // Check for overlays after click
+                                    setTimeout(() => {
+                                        const postClickOverlays = iframeDoc.querySelectorAll('[id*="overlay"], [style*="fixed"]');
+                                        if (postClickOverlays.length > 0) {
+                                            addLog(`After registration, found ${postClickOverlays.length} overlay(s):`, 'error');
+                                            postClickOverlays.forEach(overlay => {
+                                                addLog(`  - ${overlay.id || 'unnamed'} - innerHTML: ${overlay.innerHTML.substring(0, 100)}`, 'error');
+                                            });
+                                        }
+                                    }, 1000);
+                                } else {
+                                    addLog('Continue button not found!', 'error');
+                                }
+                            } else {
+                                addLog('Registration form fields not found!', 'error');
+                            }
+                        }, 1000);
+                    } else {
+                        addLog('goToSlide function not available!', 'error');
+                    }
+                }, 2000);
+            };
+        }
+
+        function checkOverlays() {
+            const iframes = document.querySelectorAll('iframe');
+            iframes.forEach((iframe, index) => {
+                const iframeDoc = iframe.contentDocument;
+                const overlays = iframeDoc.querySelectorAll('*');
+                let overlayCount = 0;
+
+                Array.from(overlays).forEach(el => {
+                    const style = window.getComputedStyle(el);
+                    if (style.position === 'fixed' && style.zIndex > 1000) {
+                        overlayCount++;
+                        addLog(`Found high z-index element: ${el.tagName} (id: ${el.id}, z-index: ${style.zIndex})`, 'error');
+                    }
+                });
+
+                if (overlayCount === 0) {
+                    addLog('No overlay elements found', 'success');
+                }
+            });
+        }
+
+        function checkConsoleErrors() {
+            // Check iframe console
+            const iframes = document.querySelectorAll('iframe');
+            iframes.forEach((iframe, index) => {
+                if (iframe.contentWindow) {
+                    // Override console.error in iframe
+                    const originalError = iframe.contentWindow.console.error;
+                    iframe.contentWindow.console.error = function(...args) {
+                        addLog(`Console Error: ${args.join(' ')}`, 'error');
+                        originalError.apply(this, args);
+                    };
+                    addLog('Console error monitoring enabled', 'info');
+                }
+            });
+        }
+
+        function clearAll() {
+            log.innerHTML = '';
+            const iframes = document.querySelectorAll('iframe');
+            iframes.forEach(iframe => iframe.remove());
+            addLog('Cleared all tests', 'success');
+        }
+
+        // Start with a clear log
+        addLog('Test page ready. Click "Test Registration" to begin.', 'info');
+    </script>
+</body>
+</html>

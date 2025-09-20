@@ -1,0 +1,59 @@
+{
+  "monitoring": {
+    "check_interval_seconds": 30,
+    "health_check_timeout": 10,
+    "max_retries": 3,
+    "auto_fix_enabled": true
+  },
+  "services": {
+    "background_optimization_agent": {
+      "enabled": true,
+      "process_name": "background_optimization_agent.py",
+      "port": 8950,
+      "health_endpoint": "http://localhost:8950/health",
+      "auto_restart": true,
+      "max_restart_attempts": 5
+    },
+    "comprehensive_optimization": {
+      "enabled": true,
+      "process_name": "comprehensive_optimization_integration.py",
+      "expected_args": ["--daemon"],
+      "auto_restart": true,
+      "max_restart_attempts": 3
+    },
+    "port_conflict_detector": {
+      "enabled": true,
+      "process_name": "port_conflict_detector.py",
+      "expected_args": ["--daemon"],
+      "auto_restart": true,
+      "max_restart_attempts": 3
+    },
+    "run_dev": {
+      "enabled": true,
+      "process_name": "run_dev.py",
+      "port": 8000,
+      "health_endpoint": "http://localhost:8000/health",
+      "auto_restart": true,
+      "max_restart_attempts": 5
+    }
+  },
+  "system_checks": {
+    "memory_threshold_percent": 90,
+    "disk_threshold_percent": 85,
+    "cpu_threshold_percent": 95,
+    "log_rotation_threshold_mb": 5,
+    "auto_cleanup_enabled": true
+  },
+  "alerts": {
+    "enabled": true,
+    "email_notifications": false,
+    "log_alerts": true,
+    "critical_threshold": 3
+  },
+  "auto_fixes": {
+    "restart_failed_services": true,
+    "cleanup_large_logs": true,
+    "kill_zombie_processes": true,
+    "restart_high_memory_processes": true
+  }
+}

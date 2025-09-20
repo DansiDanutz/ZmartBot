@@ -1,0 +1,36 @@
+{
+  "check_interval": 30,
+  "timeout": 5,
+  "retry_count": 3,
+  "alert_threshold": 3,
+  "monitoring_enabled": true,
+  "services_to_monitor": [
+    {
+      "name": "KuCoinService",
+      "url": "http://localhost:8302/health",
+      "type": "http"
+    },
+    {
+      "name": "CryptometerService",
+      "url": "http://localhost:8303/health",
+      "type": "http"
+    },
+    {
+      "name": "MasterOrchestrationAgent",
+      "url": "http://localhost:8000/health",
+      "type": "http"
+    },
+    {
+      "name": "APIKeysManagerService",
+      "url": "http://localhost:8006/health",
+      "type": "http"
+    },
+    {
+      "name": "MDCFileCreator",
+      "url": "http://localhost:8007/health",
+      "type": "http"
+    }
+  ],
+  "performance_tracking": true,
+  "resource_monitoring": true
+}

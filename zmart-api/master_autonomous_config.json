@@ -1,0 +1,39 @@
+{
+  "system": {
+    "auto_start_all_services": true,
+    "check_interval_seconds": 60,
+    "max_restart_attempts": 5,
+    "graceful_shutdown_timeout": 30
+  },
+  "components": {
+    "background_optimization_agent": {
+      "enabled": true,
+      "script": "background_optimization_agent.py",
+      "args": [
+        "--daemon"
+      ],
+      "auto_restart": true
+    },
+    "autonomous_health_monitor": {
+      "enabled": true,
+      "script": "autonomous_health_monitor.py",
+      "args": [
+        "--daemon"
+      ],
+      "auto_restart": true
+    },
+    "log_rotation_manager": {
+      "enabled": true,
+      "script": "log_rotation_manager.py",
+      "args": [
+        "--daemon"
+      ],
+      "auto_restart": true
+    }
+  },
+  "monitoring": {
+    "health_check_interval": 30,
+    "performance_check_interval": 300,
+    "auto_optimization_enabled": true
+  }
+}

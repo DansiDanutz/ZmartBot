@@ -10,6 +10,7 @@
 | **8000** | ZmartBot API | /zmart-api | Reserved | Python API |
 | **8080** | Web Dashboard | /ZmartyChat/web-app | Reserved | `python3 -m http.server 8080` |
 | **8081** | Admin Dashboard | /ZmartyChat/admin | Reserved | `python3 -m http.server 8081` |
+| **9000** | ZmartyChat UserApp | /ZmartyChat/ZmartyUserApp | Reserved | `node server-port-9000.js` |
 | **5173** | Vite Dev Server | Various | Reserved | `npm run dev` |
 | **7777** | Mobile Service | /src/services | Reserved | Mobile backend |
 

@@ -1,0 +1,72 @@
+{
+  "optimization_enabled": true,
+  "monitoring_interval": 60,
+  "auto_optimization": true,
+  "components": {
+    "mdc_monitoring": {
+      "enabled": true,
+      "config_file": "mdc_monitoring_config.json"
+    },
+    "performance_dashboard": {
+      "enabled": true,
+      "refresh_interval": 5
+    },
+    "alert_handling": {
+      "enabled": true,
+      "config_file": "mdc_monitoring_config.json"
+    },
+    "api_key_monitoring": {
+      "enabled": true,
+      "config_file": "api_key_monitoring_config.json"
+    },
+    "performance_reporting": {
+      "enabled": true,
+      "config_file": "performance_reporting_config.json",
+      "report_frequency": "daily"
+    },
+    "expanded_monitoring": {
+      "enabled": true,
+      "config_file": "expanded_monitoring_config.json"
+    }
+  },
+  "optimization_rules": {
+    "auto_restart_unhealthy_services": true,
+    "auto_scale_on_high_load": false,
+    "auto_cleanup_old_logs": true,
+    "auto_optimize_mdc_files": true,
+    "auto_generate_performance_reports": true,
+    "auto_rotate_api_keys": false,
+    "auto_optimize_database_queries": false
+  },
+  "thresholds": {
+    "cpu_usage_warning": 80,
+    "cpu_usage_critical": 90,
+    "memory_usage_warning": 80,
+    "memory_usage_critical": 90,
+    "disk_usage_warning": 80,
+    "disk_usage_critical": 90,
+    "api_response_time_warning": 1000,
+    "api_response_time_critical": 5000,
+    "error_rate_warning": 5,
+    "error_rate_critical": 10
+  },
+  "notifications": {
+    "email_alerts": {
+      "enabled": false,
+      "recipients": []
+    },
+    "webhook_alerts": {
+      "enabled": false,
+      "url": ""
+    },
+    "console_alerts": {
+      "enabled": true
+    }
+  },
+  "maintenance": {
+    "log_retention_days": 7,
+    "report_retention_days": 30,
+    "cleanup_interval_hours": 24,
+    "backup_interval_hours": 6
+  }
+}

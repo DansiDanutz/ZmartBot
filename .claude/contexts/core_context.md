@@ -289,11 +289,11 @@ The integration of the backtesting service with the mandatory core requirements 
 
 ## rules
 **File**: .cursor/rules/rules.mdc
-**Relevance**: 95
-**Size**: 39714 bytes
+**Relevance**: 80
+**Size**: 41238 bytes
 
-**Summary**: # rules.mdc | > Type: service | Version: 1.0.0 | Owner: zmartbot | Status: Discovery | Level: 1 | - **Definition**: Tested, well-designed, and approved for production
-**Key Info**: service | rule | System Architecture & Service Management | 30+ endpoints for workflow validation and service management | Complete API system for workflow guidance and validation
+**Summary**: # rules.mdc | > Type: service | Version: 1.0.0 | Owner: zmartbot | Status: Discovery | Level: 1 | 1. **Supabase MCP** - Database operations and management | - Project: `asjtxrmftmutcsnqgidy`
+**Key Info**: service | rule | System Architecture & Service Management | `fc-0b019c4a95b64f488f5c97f387e95b5e` | `ref-5c535e98df41fa8ef0f9`
 
 ---
 

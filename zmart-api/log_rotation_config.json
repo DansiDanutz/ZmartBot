@@ -1,0 +1,44 @@
+{
+  "log_files": [
+    {
+      "path": "logs/mdc_dashboard_8090.log",
+      "max_size_mb": 5,
+      "max_files": 3,
+      "compress": true,
+      "enabled": true
+    },
+    {
+      "path": "logs/mdc_dashboard.log",
+      "max_size_mb": 5,
+      "max_files": 3,
+      "compress": true,
+      "enabled": true
+    },
+    {
+      "path": "logs/cryptometer-service.log",
+      "max_size_mb": 10,
+      "max_files": 5,
+      "compress": true,
+      "enabled": true
+    },
+    {
+      "path": "logs/background_optimization_agent.log",
+      "max_size_mb": 2,
+      "max_files": 3,
+      "compress": true,
+      "enabled": true
+    },
+    {
+      "path": "logs/system_optimization.log",
+      "max_size_mb": 5,
+      "max_files": 3,
+      "compress": true,
+      "enabled": true
+    }
+  ],
+  "global_settings": {
+    "check_interval_minutes": 60,
+    "cleanup_old_logs_days": 30,
+    "backup_dir": "logs/backups"
+  }
+}

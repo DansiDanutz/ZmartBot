@@ -137,7 +137,7 @@ window.addEventListener('load', function() {
 
 // Slide navigation with swipe support
 let currentSlide = 1;
-const totalSlides = 7; // Updated to match new flow: Welcome, AI, Crypto, Email, Verify, Tier, Profile
+const totalSlides = 8; // Updated to include login slide: Welcome, AI, Crypto, Register, Verify, Tier, Profile, Login
 let touchStartX = 0;
 let touchEndX = 0;
 let selectedTier = null;
@@ -150,16 +150,128 @@ const STRIPE_LINKS = {
     demoMode: true // Set to false when you have real Stripe links
 };
 
+// Check for magic link in URL and handle it properly
+function handleMagicLink() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const error = urlParams.get('error');
+    const errorDescription = urlParams.get('error_description');
+
+    // Check if this is a magic link callback
+    if (window.location.hash && window.location.hash.includes('access_token')) {
+        console.log('Magic link clicked - auto-verifying...');
+
+        // Extract the access token
+        const hashParams = new URLSearchParams(window.location.hash.substring(1));
+        const accessToken = hashParams.get('access_token');
+
+        // Clear the URL to remove the token
+        window.history.replaceState({}, document.title, window.location.pathname);
+
+        // Since they clicked the magic link, they're verified
+        localStorage.setItem('zmarty_email_verified', 'true');
+
+        // Clean up verification states
+        sessionStorage.removeItem('verification_code');
+        sessionStorage.removeItem('pending_verification');
+
+        // Go directly to tier selection (slide 6) since they're verified
+        goToSlide(6);
+        showError('✅ Email verified! Choose your plan to continue.');
+
+        return true;
+    }
+
+    if (error) {
+        console.error('Auth error:', errorDescription);
+        showError(errorDescription || 'Authentication error occurred');
+        return true;
+    }
+
+    return false;
+}
+
 // Initialize
 document.addEventListener('DOMContentLoaded', async function() {
     console.log('=== PAGE LOADED ===');
     console.log('URL:', window.location.href);
 
-    // Check for auth callback in URL (from Magic Link)
+    // CLEAR EVERYTHING FOR FRESH START
+    // Comment this line if you want to preserve login state
+    await supabase.auth.signOut();
+    sessionStorage.clear();
+    localStorage.removeItem('zmarty_email_verified');
+    localStorage.removeItem('zmarty_temp_email');
+    localStorage.removeItem('zmarty_temp_tier');
+    currentSlide = 1;
+
+    // First check for magic link and redirect appropriately
+    if (handleMagicLink()) {
+        return;
+    }
+
+    // Clean up any stray overlays, modals, error messages, and unwanted elements
+    const strayElements = document.querySelectorAll('[id*="overlay"], .modal-overlay, .login-modal, [class*="modal"], .error-toast');
+    strayElements.forEach(element => {
+        console.warn('Removing stray element on load:', element.className || element.id);
+        element.remove();
+    });
+
+    // Prevent clicks on slide backgrounds from triggering unwanted behaviors
+    document.querySelectorAll('.slide').forEach(slide => {
+        slide.addEventListener('click', function(e) {
+            // Allow navigation elements to work
+            if (e.target.closest('.next-btn') ||
+                e.target.closest('.dots-container') ||
+                e.target.closest('.skip-btn')) {
+                return; // Allow these clicks through
+            }
+
+            // Check if click is outside slide-content
+            if (!e.target.closest('.slide-content')) {
+                e.stopPropagation();
+                e.stopImmediatePropagation();
+                e.preventDefault();
+                console.log('Click outside slide-content blocked');
+                return false;
+            }
+
+            // Only allow clicks to bubble if they're on interactive elements
+            const target = e.target;
+            const isInteractive = target.matches('button, a, input, select, textarea, .tier-option, .auth-btn, .get-started-btn') ||
+                                target.closest('button, a, input, select, textarea, .tier-option, .auth-btn, .get-started-btn');
+
+            if (!isInteractive && e.target.closest('.slide-content')) {
+                // Click is inside slide-content but not on interactive element - allow it
+                return true;
+            }
+        }, true);  // Use capture phase
+    });
+
+    // Prevent any global click handlers from showing modals or errors
+    document.addEventListener('click', function(e) {
+        // Allow clicks on navigation elements
+        if (e.target.closest('.next-btn') ||
+            e.target.closest('.dots-container') ||
+            e.target.closest('.skip-btn')) {
+            return; // Allow these clicks through
+        }
+
+        // If clicking outside of slide content, block it completely
+        if (!e.target.closest('.slide-content')) {
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+            e.preventDefault();
+            console.log('Global click outside slide-content blocked');
+            return false;
+        }
+    }, true);  // Use capture phase to catch early
+
+    // ONLY process magic link if we have BOTH access_token AND it's a real verification
     const hashParams = new URLSearchParams(window.location.hash.substring(1));
     const accessToken = hashParams.get('access_token');
+    const isVerificationCallback = window.location.hash.includes('access_token') && window.location.hash.includes('type=signup');
 
-    if (accessToken) {
+    if (accessToken && isVerificationCallback) {
         console.log('Magic Link detected! Processing authentication...');
 
         // Wait for Supabase to process the Magic Link
@@ -211,27 +323,19 @@ document.addEventListener('DOMContentLoaded', async function() {
         return;
     }
 
-    // Check if already logged in
+    // Check if already logged in - BUT DON'T AUTO-JUMP TO TIER SCREEN
     const { data: { session } } = await supabase.auth.getSession();
     console.log('Existing session:', session);
 
-    if (session) {
-        // Already logged in, skip to tier selection
-        currentSlide = 6;
-        const slide6 = document.getElementById('slide-6');
-        if (slide6) {
-            document.querySelectorAll('.slide').forEach(s => {
-                s.classList.remove('active');
-                s.style.opacity = '0';
-            });
-            slide6.classList.add('active');
-            slide6.style.opacity = '1';
-            slide6.style.transform = 'translateX(0)';
-        }
-        updateDots();
-        showError('Welcome back! Continue setting up your account.');
+    // REMOVED AUTO-JUMP - Let user navigate through slides normally
+    // If you want to skip logged-in users to dashboard, uncomment below:
+    /*
+    if (session && session.user?.user_metadata?.profile_completed) {
+        // Only redirect if profile is complete
+        window.location.href = 'dashboard.html';
         return;
     }
+    */
 
     // Normal flow - start from slide 1
     const slide1 = document.getElementById('slide-1');
@@ -308,10 +412,13 @@ function goToSlide(slideNumber) {
     // Validate slide number
     if (slideNumber < 1 || slideNumber > totalSlides) return;
 
-    // Block navigation to slide 5 unless coming from slide 4 with email process or going back
+    // Allow navigation to slide 5 if coming from slide 4 or if there's a pending verification
     if (slideNumber === 5 && currentSlide !== 4 && slideNumber > currentSlide) {
         const isVerified = localStorage.getItem('zmarty_email_verified');
-        if (!isVerified) {
+        const hasPendingVerification = sessionStorage.getItem('pending_verification');
+        const hasVerificationEmail = localStorage.getItem('zmarty_verification_email');
+
+        if (!isVerified && !hasPendingVerification && !hasVerificationEmail) {
             showError('Please complete email registration first');
             return;
         }
@@ -388,9 +495,12 @@ function nextSlide() {
 
     if (currentSlide < totalSlides) {
         goToSlide(currentSlide + 1);
-    } else if (currentSlide === totalSlides) {
-        // On last slide, next button acts as get started
-        quickStart();
+    } else if (currentSlide === 7) {
+        // On slide 7 (Profile), complete profile
+        completeProfile();
+    } else if (currentSlide === 8) {
+        // On slide 8 (Login), handle sign in
+        return;
     }
 }
 
@@ -426,9 +536,23 @@ function skipOnboarding() {
 }
 
 // Quick login with provider
-async function quickLogin(provider) {
-    // Animate button
-    event.target.style.transform = 'scale(0.95)';
+async function quickLogin(provider, evt) {
+    // Prevent any bubbling or propagation
+    if (evt) {
+        evt.stopPropagation();
+        evt.preventDefault();
+    }
+
+    // Only proceed if we have a valid provider
+    if (!provider || (provider !== 'google' && provider !== 'apple')) {
+        console.error('Invalid provider:', provider);
+        return;
+    }
+
+    // Animate button if we have a valid event target
+    if (evt && evt.target) {
+        evt.target.style.transform = 'scale(0.95)';
+    }
 
     setTimeout(async () => {
         try {
@@ -457,7 +581,7 @@ async function quickLogin(provider) {
 }
 
 // Select tier
-function selectTier(tier) {
+async function selectTier(tier) {
     selectedTier = tier;
 
     // Update UI
@@ -468,34 +592,19 @@ function selectTier(tier) {
         event.target.closest('.tier-option').classList.add('selected');
     }
 
-    // Handle different tiers - user ALREADY has account at this point!
-    if (tier === 'free') {
-        // Free tier goes straight to profile completion
-        showError('Great choice! Your free account is ready.');
-        localStorage.setItem('zmarty_tier', 'free');
-        setTimeout(() => goToSlide(7), 500); // Go to profile completion
-    } else if (tier === 'gold') {
-        // Gold tier goes to Stripe
-        showError('Redirecting to secure payment...');
-        setTimeout(() => {
-            if (STRIPE_LINKS.demoMode) {
-                alert('Demo: Would redirect to Stripe for $29/mo Gold tier\n\nIn production, this would go to:\n' + STRIPE_LINKS.gold);
-                nextSlide(); // Continue to registration after payment
-            } else {
-                window.location.href = STRIPE_LINKS.gold;
-            }
-        }, 1000);
-    } else if (tier === 'premium') {
-        // Premium tier goes to Stripe
-        showError('Redirecting to secure payment...');
-        setTimeout(() => {
-            if (STRIPE_LINKS.demoMode) {
-                alert('Demo: Would redirect to Stripe for $99/mo Premium tier\n\nIn production, this would go to:\n' + STRIPE_LINKS.premium);
-                nextSlide(); // Continue to registration after payment
-            } else {
-                window.location.href = STRIPE_LINKS.premium;
-            }
-        }, 1000);
+    // Save tier selection
+    sessionStorage.setItem('selected_tier', tier);
+    localStorage.setItem('zmarty_tier', tier);
+
+    // Update user profile with selected tier
+    const result = await UserService.updateTier(tier);
+
+    if (result.success) {
+        showError(`${tier.charAt(0).toUpperCase() + tier.slice(1)} tier selected!`);
+        // Move to profile setup (slide 7)
+        setTimeout(() => nextSlide(), 500);
+    } else {
+        showError('Failed to update tier. Please try again.');
     }
 }
 
@@ -529,11 +638,11 @@ async function continueWithEmail() {
         return;
     }
 
-    // Check if passwords match - show popup only on submit attempt
+    // Check if passwords match - only check, don't show popup unless critical
     if (password !== confirmPassword) {
-        // This should only happen if button was somehow clicked with mismatched passwords
-        // The button should be hidden when passwords don't match, but check anyway for safety
-        showPasswordMismatchPopup();
+        // Don't show popup, just show inline error
+        showError('Passwords do not match. Please check and try again.');
+        confirmPasswordInput.classList.add('error');
         return;
     }
 
@@ -562,18 +671,43 @@ async function continueWithEmail() {
 
         if (result.success) {
             console.log('Registration successful!');
-            showError(`✅ Success! Verification email sent to ${email}. Check your inbox!`);
 
-            // Save user ID for later
-            localStorage.setItem('zmarty_temp_user_id', result.userId);
+            // Store email for verification step
+            localStorage.setItem('zmarty_verification_email', email);
+            localStorage.setItem('zmarty_temp_email', email);
 
-            // Go to email verification (slide 5 in correct flow)
-            setTimeout(() => goToSlide(5), 2000);
+            // Restore button state BEFORE transitioning
+            registerBtn.innerHTML = originalText;
+            registerBtn.disabled = false;
+
+            // Immediately go to email verification slide (slide 5)
+            console.log('Transitioning to slide 5 (verification)...');
+            goToSlide(5);
+
+            // Show success message after slide transition
+            setTimeout(() => {
+                showError(`✅ Verification code sent to ${email}! Check your inbox.`);
+            }, 500);
         } else {
             showError(result.error || 'Failed to send verification email');
+            // Restore button state
+            registerBtn.innerHTML = originalText;
+            registerBtn.disabled = false;
+
+            // If rate limited, show countdown
+            if (result.isRateLimit) {
+                const waitMatch = result.error.match(/\d+/);
+                if (waitMatch) {
+                    const seconds = parseInt(waitMatch[0]);
+                    startRateLimitCountdown(registerBtn, seconds);
+                }
+            }
         }
     } catch (error) {
         showError('Failed to send verification email: ' + error.message);
+        // Restore button state
+        registerBtn.innerHTML = originalText;
+        registerBtn.disabled = false;
     }
 }
 
@@ -619,7 +753,8 @@ async function verifyCode() {
         return;
     }
 
-    const email = localStorage.getItem('zmarty_temp_email');
+    // Try both keys for backward compatibility
+    const email = localStorage.getItem('zmarty_verification_email') || localStorage.getItem('zmarty_temp_email');
     if (!email) {
         showError('Session expired. Please start over.');
         goToSlide(4); // Go back to email registration slide
@@ -663,7 +798,7 @@ async function verifyCode() {
 
 // Resend verification code
 async function resendCode() {
-    const email = localStorage.getItem('zmarty_temp_email');
+    const email = localStorage.getItem('zmarty_verification_email') || localStorage.getItem('zmarty_temp_email');
 
     try {
         const result = await UserService.resendCode(email);
@@ -1146,8 +1281,91 @@ function goToDashboard() {
     window.location.href = 'dashboard.html';
 }
 
-// Show forgot password / sign in modal
+// Show countdown timer for rate limiting
+function startRateLimitCountdown(button, seconds) {
+    let timeLeft = seconds;
+    const originalText = button.innerHTML;
+
+    button.disabled = true;
+
+    const countdown = setInterval(() => {
+        if (timeLeft > 0) {
+            button.innerHTML = `Wait ${timeLeft}s...`;
+            timeLeft--;
+        } else {
+            clearInterval(countdown);
+            button.innerHTML = originalText;
+            button.disabled = false;
+            showError('You can now try registering again');
+        }
+    }, 1000);
+}
+
+// Handle sign in from slide 8
+async function handleSignIn(event) {
+    event.preventDefault();
+
+    const emailInput = document.getElementById('login-email');
+    const passwordInput = document.getElementById('login-password');
+    const signInBtn = event.target;
+
+    const email = emailInput.value.trim();
+    const password = passwordInput.value;
+
+    if (!email || !password) {
+        showError('Please enter both email and password');
+        return;
+    }
+
+    // Show loading state
+    const originalText = signInBtn.textContent;
+    signInBtn.textContent = 'Signing In...';
+    signInBtn.disabled = true;
+
+    try {
+        // Sign in with Supabase using the correct method name
+        const result = await UserService.login(email, password);
+
+        if (result.success) {
+            showError('✅ Sign in successful! Redirecting...');
+
+            // Store session
+            localStorage.setItem('zmarty_session', JSON.stringify(result.session));
+            localStorage.setItem('zmarty_user_email', email);
+            localStorage.setItem('zmarty_user_id', result.user?.id);
+            localStorage.setItem('zmarty_onboarding_complete', 'true');
+
+            // Redirect to dashboard
+            setTimeout(() => {
+                window.location.href = 'dashboard.html';
+            }, 1000);
+        } else {
+            showError(result.error || 'Invalid email or password');
+            signInBtn.textContent = originalText;
+            signInBtn.disabled = false;
+        }
+    } catch (error) {
+        console.error('Sign in error:', error);
+        showError('Sign in failed. Please check your credentials.');
+        signInBtn.textContent = originalText;
+        signInBtn.disabled = false;
+    }
+}
+
+// Show forgot password slide (for future implementation)
+function showForgotPasswordSlide() {
+    // For now, show the modal, but could be Slide 9 in future
+    showForgotPasswordModal();
+}
+
+// Show forgot password / sign in modal (DEPRECATED - will be replaced with slide)
 function showForgotPasswordModal() {
+    // Check if overlay already exists and remove it
+    const existingOverlay = document.getElementById('forgot-password-overlay');
+    if (existingOverlay) {
+        existingOverlay.remove();
+    }
+
     // Create overlay
     const overlay = document.createElement('div');
     overlay.id = 'forgot-password-overlay';
@@ -1368,9 +1586,20 @@ function closeForgotPasswordModal() {
 
 // Show reset password form
 function showResetPasswordForm() {
-    document.getElementById('signin-form').style.display = 'none';
-    document.getElementById('reset-password-form').style.display = 'block';
-    document.getElementById('reset-success').style.display = 'none';
+    // Check if the overlay exists first
+    const overlay = document.getElementById('forgot-password-overlay');
+    if (!overlay) {
+        console.error('Forgot password overlay not found');
+        return;
+    }
+
+    const signinForm = document.getElementById('signin-form');
+    const resetForm = document.getElementById('reset-password-form');
+    const resetSuccess = document.getElementById('reset-success');
+
+    if (signinForm) signinForm.style.display = 'none';
+    if (resetForm) resetForm.style.display = 'block';
+    if (resetSuccess) resetSuccess.style.display = 'none';
 
     // Update title
     const modal = document.querySelector('#forgot-password-overlay h2');
@@ -1384,15 +1613,27 @@ function showResetPasswordForm() {
 
     // Focus on reset email field
     setTimeout(() => {
-        document.getElementById('reset-email').focus();
+        const resetEmail = document.getElementById('reset-email');
+        if (resetEmail) resetEmail.focus();
     }, 100);
 }
 
 // Show sign in form
 function showSignInForm() {
-    document.getElementById('signin-form').style.display = 'block';
-    document.getElementById('reset-password-form').style.display = 'none';
-    document.getElementById('reset-success').style.display = 'none';
+    // Check if the overlay exists first
+    const overlay = document.getElementById('forgot-password-overlay');
+    if (!overlay) {
+        console.error('Forgot password overlay not found');
+        return;
+    }
+
+    const signinForm = document.getElementById('signin-form');
+    const resetForm = document.getElementById('reset-password-form');
+    const resetSuccess = document.getElementById('reset-success');
+
+    if (signinForm) signinForm.style.display = 'block';
+    if (resetForm) resetForm.style.display = 'none';
+    if (resetSuccess) resetSuccess.style.display = 'none';
 
     // Update title back
     const modal = document.querySelector('#forgot-password-overlay h2');
@@ -1506,6 +1747,12 @@ window.selectTier = selectTier;
 window.continueWithEmail = continueWithEmail;
 window.verifyCode = verifyCode;
 window.resendCode = resendCode;
+window.showError = showError;
+// Make currentSlide a getter so it always returns the current value
+Object.defineProperty(window, 'currentSlide', {
+    get: function() { return currentSlide; },
+    set: function(value) { currentSlide = value; }
+});
 window.completeProfile = completeProfile;
 window.quickLogin = quickLogin;
 window.quickStart = quickStart;
@@ -1515,6 +1762,8 @@ window.checkPasswordStrength = checkPasswordStrength;
 window.saveUserInfo = saveUserInfo;
 window.goToDashboard = goToDashboard;
 window.showForgotPasswordModal = showForgotPasswordModal;
+window.showForgotPasswordSlide = showForgotPasswordSlide;
+window.handleSignIn = handleSignIn;
 window.closeForgotPasswordModal = closeForgotPasswordModal;
 window.showResetPasswordForm = showResetPasswordForm;
 window.showSignInForm = showSignInForm;

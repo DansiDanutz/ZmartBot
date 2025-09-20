@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Email Registration - ZmartyChat</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .test-container {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+        }
+        h1 {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        input {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            background: rgba(255,255,255,0.1);
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 10px;
+            color: white;
+            font-size: 16px;
+        }
+        input::placeholder {
+            color: rgba(255,255,255,0.6);
+        }
+        button {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            background: linear-gradient(135deg, #0066ff, #4d94ff);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        button:hover {
+            transform: scale(1.05);
+        }
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            display: none;
+        }
+        .status.success {
+            background: rgba(0, 255, 0, 0.2);
+            border: 1px solid #00ff00;
+            display: block;
+        }
+        .status.error {
+            background: rgba(255, 0, 0, 0.2);
+            border: 1px solid #ff0000;
+            display: block;
+        }
+        .status.info {
+            background: rgba(0, 100, 255, 0.2);
+            border: 1px solid #0066ff;
+            display: block;
+        }
+        .log {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>📧 Test Email Registration</h1>
+
+        <form id="registration-form">
+            <input type="email"
+                   id="email"
+                   placeholder="Enter your email (semebitcoin@gmail.com)"
+                   value="semebitcoin@gmail.com"
+                   required>
+
+            <input type="password"
+                   id="password"
+                   placeholder="Enter password (min 8 characters)"
+                   value="TestPassword123!"
+                   required>
+
+            <button type="submit" id="register-btn">
+                Send Confirmation Email to semebitcoin@gmail.com
+            </button>
+        </form>
+
+        <div id="status" class="status"></div>
+        <div id="log" class="log"></div>
+    </div>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script>
+        // Initialize Supabase - ZmartyBrain for users
+        const SUPABASE_URL = 'https://xhskmqsgtdhehzlvtuns.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhoc2ttcXNndGRoZWh6bHZ0dW5zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgxNDkzNTQsImV4cCI6MjA3MzcyNTM1NH0.ULAf9vNHS4nasSnv9UOKS2MCKsSxcMtV3C-R7Wm6qMw';
+
+        const { createClient } = supabase;
+        const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // Logging function
+        function log(message, type = 'info') {
+            const logDiv = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString();
+            logDiv.innerHTML += `[${timestamp}] ${message}<br>`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+            console.log(`[${type}]`, message);
+        }
+
+        // Show status
+        function showStatus(message, type = 'info') {
+            const statusDiv = document.getElementById('status');
+            statusDiv.className = `status ${type}`;
+            statusDiv.textContent = message;
+            statusDiv.style.display = 'block';
+            log(message, type);
+        }
+
+        // Handle registration
+        document.getElementById('registration-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const btn = document.getElementById('register-btn');
+
+            log(`Starting registration for: ${email}`);
+            btn.disabled = true;
+            btn.textContent = 'Sending email...';
+
+            try {
+                // First, try to sign up
+                log('Calling Supabase signUp...');
+                const { data, error } = await supabaseClient.auth.signUp({
+                    email: email,
+                    password: password,
+                    options: {
+                        emailRedirectTo: window.location.origin + '/dashboard.html',
+                        data: {
+                            source: 'test-registration',
+                            timestamp: new Date().toISOString()
+                        }
+                    }
+                });
+
+                if (error) {
+                    log(`Error: ${error.message}`, 'error');
+
+                    if (error.message.includes('already registered')) {
+                        showStatus('⚠️ This email is already registered. Trying to resend confirmation...', 'info');
+
+                        // Try to resend confirmation
+                        log('Attempting to resend confirmation email...');
+                        const { error: resendError } = await supabaseClient.auth.resend({
+                            type: 'signup',
+                            email: email
+                        });
+
+                        if (resendError) {
+                            showStatus(`❌ Error: ${resendError.message}`, 'error');
+                        } else {
+                            showStatus('✅ Confirmation email resent! Check your inbox.', 'success');
+                        }
+                    } else {
+                        showStatus(`❌ Error: ${error.message}`, 'error');
+                    }
+                } else {
+                    log(`Success! User ID: ${data.user?.id}`);
+                    log(`Email sent: ${data.user?.email}`);
+                    log(`Confirmation sent at: ${data.user?.created_at}`);
+
+                    showStatus(`✅ Success! Confirmation email sent to ${email}. Please check your inbox (and spam folder).`, 'success');
+
+                    // Show additional info
+                    setTimeout(() => {
+                        showStatus(`📧 Email sent to: ${email}\n⏰ Check your inbox now!\n📂 Also check spam/junk folder`, 'info');
+                    }, 3000);
+                }
+
+            } catch (error) {
+                log(`Unexpected error: ${error.message}`, 'error');
+                showStatus(`❌ Unexpected error: ${error.message}`, 'error');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Send Another Test Email';
+            }
+        });
+
+        // Check current session on load
+        window.addEventListener('load', async () => {
+            log('Page loaded, checking current session...');
+
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            if (session) {
+                log(`Existing session found for: ${session.user.email}`);
+                showStatus(`ℹ️ You're already logged in as: ${session.user.email}`, 'info');
+            } else {
+                log('No existing session found');
+            }
+
+            // Set up auth state listener
+            supabaseClient.auth.onAuthStateChange((event, session) => {
+                log(`Auth state changed: ${event}`);
+                if (session) {
+                    log(`User authenticated: ${session.user.email}`);
+                }
+            });
+        });
+
+        // Test Supabase connection
+        log('Testing Supabase connection...');
+        supabaseClient.from('users').select('count').limit(1).then(({ error }) => {
+            if (error) {
+                log(`Supabase connection test failed: ${error.message}`, 'error');
+            } else {
+                log('✅ Supabase connection successful!');
+            }
+        });
+    </script>
+</body>
+</html>
