@@ -623,65 +623,68 @@ async function saveTierSelection() {
 // Profile Setup
 async function saveProfile(event) {
     event.preventDefault();
-    
+
     const form = event.target;
     const fullName = form.fullname.value.trim();
-    const experience = form.experience.value;
-    const pairs = Array.from(form.querySelectorAll('input[name="pairs"]:checked'))
-        .map(input => input.value);
-    const risk = form.risk.value;
-    const notifications = Array.from(form.querySelectorAll('input[name="notifications"]:checked'))
-        .map(input => input.value);
-    
+    const country = form.country ? form.country.value : '';
+
     // Validate required fields
-    if (!fullName || !experience || pairs.length === 0) {
+    if (!fullName || !country) {
         alert('Please fill in all required fields');
         return;
     }
-    
+
     // Update state
     OnboardingState.userData.fullName = fullName;
-    OnboardingState.userData.experience = experience;
-    OnboardingState.userData.tradingPairs = pairs;
-    OnboardingState.userData.riskTolerance = parseInt(risk);
-    OnboardingState.userData.notifications = notifications;
-    
+    OnboardingState.userData.country = country;
+
     const button = event.target.querySelector('button[type="submit"]');
     const originalText = button.innerHTML;
     button.innerHTML = 'Saving...';
     button.disabled = true;
-    
+
     try {
         // Save profile to database
         const { data: { user } } = await supabase.auth.getUser();
-        
+
         if (user) {
+            // Update zmartychat_users table
             const { error } = await supabase
-                .from('user_profiles')
-                .upsert({
-                    user_id: user.id,
+                .from('zmartychat_users')
+                .update({
                     full_name: fullName,
-                    experience_level: experience,
-                    preferred_pairs: pairs,
-                    risk_tolerance: risk,
-                    notification_preferences: notifications,
+                    country: country,
+                    onboarding_completed: true,
                     updated_at: new Date().toISOString()
-                });
-            
+                })
+                .eq('auth_id', user.id);
+
             if (error) {
-                throw error;
+                console.error('Database error:', error);
+                // Try alternative approach - might be in different table
+                const { error: altError } = await supabase
+                    .from('user_profiles')
+                    .upsert({
+                        user_id: user.id,
+                        full_name: fullName,
+                        country: country,
+                        updated_at: new Date().toISOString()
+                    });
+
+                if (altError) {
+                    throw altError;
+                }
             }
         }
-        
+
         trackEvent('profile_completed', {
-            experience: experience,
-            pairs_count: pairs.length,
-            risk_tolerance: risk
+            country: country,
+            has_name: !!fullName
         });
-        
+
         // Move to success slide
         goToSlide(9);
-        
+
     } catch (error) {
         console.error('Profile save error:', error);
         trackError('profile_save_failed', error);

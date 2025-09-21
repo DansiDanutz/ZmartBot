@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Registration</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <h1>Test Registration for seme@kryptostack.com</h1>
+    <div id="result"></div>
+
+    <script>
+        // Direct test of registration
+        const ZMARTY_CONFIG = {
+            AUTH: {
+                URL: 'https://xhskmqsgtdhehzlvtuns.supabase.co',
+                ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhoc2ttcXNndGRoZWh6bHZ0dW5zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgxNDkzNTQsImV4cCI6MjA3MzcyNTM1NH0.ULAf9vNHS4nasSnv9UOKS2MCKsSxcMtV3C-R7Wm6qMw'
+            }
+        };
+
+        const supabaseAuth = window.supabase.createClient(
+            ZMARTY_CONFIG.AUTH.URL,
+            ZMARTY_CONFIG.AUTH.ANON_KEY
+        );
+
+        async function testRegistration() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '<p>Testing registration...</p>';
+
+            try {
+                // First, check if user exists
+                const checkResult = await supabaseAuth.auth.signInWithPassword({
+                    email: 'seme@kryptostack.com',
+                    password: 'TestPassword123!'
+                });
+
+                if (checkResult.data.user) {
+                    resultDiv.innerHTML += '<p style="color: orange;">User already exists and can sign in!</p>';
+                    console.log('Sign in successful:', checkResult.data);
+                    return;
+                }
+            } catch (e) {
+                console.log('User does not exist or wrong password, proceeding with registration test');
+            }
+
+            try {
+                const { data, error } = await supabaseAuth.auth.signUp({
+                    email: 'seme@kryptostack.com',
+                    password: 'TestPassword123!',
+                    options: {
+                        emailRedirectTo: `${window.location.origin}/verify`
+                    }
+                });
+
+                if (error) {
+                    resultDiv.innerHTML += `<p style="color: red;">Registration Error: ${error.message}</p>`;
+                    console.error('Full error:', error);
+
+                    // Additional debugging
+                    if (error.status) {
+                        resultDiv.innerHTML += `<p>Error Status: ${error.status}</p>`;
+                    }
+                    if (error.code) {
+                        resultDiv.innerHTML += `<p>Error Code: ${error.code}</p>`;
+                    }
+                } else {
+                    resultDiv.innerHTML += '<p style="color: green;">Registration successful!</p>';
+                    console.log('Registration data:', data);
+
+                    if (data.user) {
+                        resultDiv.innerHTML += `<p>User ID: ${data.user.id}</p>`;
+                        resultDiv.innerHTML += `<p>Email: ${data.user.email}</p>`;
+                        resultDiv.innerHTML += `<p>Confirmation required: ${!data.user.email_confirmed_at}</p>`;
+                    }
+                }
+            } catch (error) {
+                resultDiv.innerHTML += `<p style="color: red;">Unexpected Error: ${error.message}</p>`;
+                console.error('Unexpected error:', error);
+            }
+        }
+
+        // Run test immediately
+        testRegistration();
+    </script>
+</body>
+</html>
