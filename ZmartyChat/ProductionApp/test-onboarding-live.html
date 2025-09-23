@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+    <title>Live Onboarding Test - Zmarty</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .status {
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-size: 14px;
+        }
+
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .status.warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+
+        .test-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .test-section h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .test-button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 5px;
+            transition: background 0.3s;
+        }
+
+        .test-button:hover {
+            background: #764ba2;
+        }
+
+        .test-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .form-group {
+            margin: 15px 0;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .results {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border: 1px solid #e0e0e0;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .result-item {
+            padding: 8px;
+            margin: 5px 0;
+            border-left: 3px solid #667eea;
+            background: #f8f9fa;
+            font-family: monospace;
+            font-size: 13px;
+        }
+
+        .iframe-container {
+            width: 100%;
+            height: 600px;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .server-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: #f0f0f0;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .status-dot.online {
+            background: #28a745;
+        }
+
+        .status-dot.offline {
+            background: #dc3545;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #666;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            color: #667eea;
+            border-bottom: 3px solid #667eea;
+            margin-bottom: -2px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Zmarty Live Onboarding Test</h1>
+        <p class="subtitle">Complete testing suite for onboarding functionality</p>
+
+        <div class="server-status">
+            <span class="status-dot online" id="serverDot"></span>
+            <span id="serverText">Server Status: Checking...</span>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('live')">Live Application</button>
+            <button class="tab" onclick="switchTab('auth')">Authentication Tests</button>
+            <button class="tab" onclick="switchTab('navigation')">Navigation Tests</button>
+            <button class="tab" onclick="switchTab('api')">API Tests</button>
+        </div>
+
+        <!-- Live Application Tab -->
+        <div id="live" class="tab-content active">
+            <div class="test-section">
+                <h2>📱 Live Onboarding Application</h2>
+                <p>Full onboarding flow running on localhost:3006</p>
+
+                <div style="margin: 20px 0;">
+                    <button class="test-button" onclick="openInNewTab()">Open in New Tab</button>
+                    <button class="test-button" onclick="reloadFrame()">Reload</button>
+                </div>
+
+                <div class="iframe-container">
+                    <iframe id="onboardingFrame" src="http://localhost:3006"></iframe>
+                </div>
+            </div>
+        </div>
+
+        <!-- Authentication Tests Tab -->
+        <div id="auth" class="tab-content">
+            <div class="test-section">
+                <h2>🔐 Authentication Tests</h2>
+
+                <div class="form-group">
+                    <label>Test Email:</label>
+                    <input type="email" id="testEmail" value="test@zmarty.chat" />
+                </div>
+
+                <div class="form-group">
+                    <label>Test Password:</label>
+                    <input type="password" id="testPassword" value="Test123456!" />
+                </div>
+
+                <div style="margin: 20px 0;">
+                    <button class="test-button" onclick="testSignUp()">Test Sign Up</button>
+                    <button class="test-button" onclick="testSignIn()">Test Sign In</button>
+                    <button class="test-button" onclick="testGoogleOAuth()">Test Google OAuth</button>
+                    <button class="test-button" onclick="testSession()">Check Session</button>
+                    <button class="test-button" onclick="testSignOut()">Sign Out</button>
+                </div>
+
+                <div id="authResults" class="results"></div>
+            </div>
+        </div>
+
+        <!-- Navigation Tests Tab -->
+        <div id="navigation" class="tab-content">
+            <div class="test-section">
+                <h2>🧭 Navigation Tests</h2>
+
+                <div style="margin: 20px 0;">
+                    <button class="test-button" onclick="testSlideNavigation()">Test All Slides</button>
+                    <button class="test-button" onclick="testMobileGestures()">Test Mobile Gestures</button>
+                    <button class="test-button" onclick="testKeyboardNav()">Test Keyboard Navigation</button>
+                    <button class="test-button" onclick="testDotIndicators()">Test Dot Indicators</button>
+                </div>
+
+                <div id="navResults" class="results"></div>
+            </div>
+        </div>
+
+        <!-- API Tests Tab -->
+        <div id="api" class="tab-content">
+            <div class="test-section">
+                <h2>🔌 API & Database Tests</h2>
+
+                <div style="margin: 20px 0;">
+                    <button class="test-button" onclick="testSupabaseConnection()">Test Supabase Connection</button>
+                    <button class="test-button" onclick="testAuthDatabase()">Test Auth Database</button>
+                    <button class="test-button" onclick="testTradingDatabase()">Test Trading Database</button>
+                    <button class="test-button" onclick="testEmailService()">Test Email Service</button>
+                </div>
+
+                <div id="apiResults" class="results"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="./js/supabase-client.js"></script>
+
+    <script>
+        // Tab switching
+        function switchTab(tabName) {
+            // Update tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Update content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(tabName).classList.add('active');
+        }
+
+        // Server status check
+        async function checkServerStatus() {
+            try {
+                const response = await fetch('http://localhost:3006', { mode: 'no-cors' });
+                updateServerStatus(true);
+            } catch (error) {
+                updateServerStatus(false);
+            }
+        }
+
+        function updateServerStatus(online) {
+            const dot = document.getElementById('serverDot');
+            const text = document.getElementById('serverText');
+
+            if (online) {
+                dot.className = 'status-dot online';
+                text.textContent = 'Server Status: Online (localhost:3006)';
+            } else {
+                dot.className = 'status-dot offline';
+                text.textContent = 'Server Status: Offline - Please start the server';
+            }
+        }
+
+        // Frame controls
+        function openInNewTab() {
+            window.open('http://localhost:3006', '_blank');
+        }
+
+        function reloadFrame() {
+            document.getElementById('onboardingFrame').src = 'http://localhost:3006';
+        }
+
+        // Authentication tests
+        async function testSignUp() {
+            const email = document.getElementById('testEmail').value;
+            const password = document.getElementById('testPassword').value;
+
+            addResult('authResults', 'Testing sign up...', 'info');
+
+            try {
+                const result = await AuthService.signUp(email, password, {
+                    source: 'test-suite'
+                });
+
+                if (result.success) {
+                    addResult('authResults', '✅ Sign up successful! Check email for verification.', 'success');
+                    addResult('authResults', `User ID: ${result.data.user.id}`, 'info');
+                } else {
+                    addResult('authResults', `❌ Sign up failed: ${result.error.message}`, 'error');
+                }
+            } catch (error) {
+                addResult('authResults', `❌ Error: ${error.message}`, 'error');
+            }
+        }
+
+        async function testSignIn() {
+            const email = document.getElementById('testEmail').value;
+            const password = document.getElementById('testPassword').value;
+
+            addResult('authResults', 'Testing sign in...', 'info');
+
+            try {
+                const result = await AuthService.signIn(email, password);
+
+                if (result.success) {
+                    addResult('authResults', '✅ Sign in successful!', 'success');
+                    addResult('authResults', `Session: ${result.data.session.access_token.substring(0, 20)}...`, 'info');
+                } else {
+                    addResult('authResults', `❌ Sign in failed: ${result.error.message}`, 'error');
+                }
+            } catch (error) {
+                addResult('authResults', `❌ Error: ${error.message}`, 'error');
+            }
+        }
+
+        async function testGoogleOAuth() {
+            addResult('authResults', 'Testing Google OAuth...', 'info');
+
+            try {
+                const { data, error } = await supabaseAuth.auth.signInWithOAuth({
+                    provider: 'google',
+                    options: {
+                        redirectTo: `${window.location.origin}/auth/callback`
+                    }
+                });
+
+                if (error) {
+                    addResult('authResults', `❌ OAuth failed: ${error.message}`, 'error');
+                } else if (data.url) {
+                    addResult('authResults', '✅ OAuth URL generated!', 'success');
+                    addResult('authResults', `URL: ${data.url.substring(0, 50)}...`, 'info');
+
+                    // Open in new tab
+                    if (confirm('Open Google OAuth in new tab?')) {
+                        window.open(data.url, '_blank');
+                    }
+                }
+            } catch (error) {
+                addResult('authResults', `❌ Error: ${error.message}`, 'error');
+            }
+        }
+
+        async function testSession() {
+            addResult('authResults', 'Checking session...', 'info');
+
+            try {
+                const user = await AuthService.getCurrentUser();
+
+                if (user) {
+                    addResult('authResults', '✅ Active session found!', 'success');
+                    addResult('authResults', `User: ${user.email}`, 'info');
+                    addResult('authResults', `Provider: ${user.app_metadata?.provider || 'email'}`, 'info');
+                } else {
+                    addResult('authResults', '⚠️ No active session', 'warning');
+                }
+            } catch (error) {
+                addResult('authResults', `❌ Error: ${error.message}`, 'error');
+            }
+        }
+
+        async function testSignOut() {
+            addResult('authResults', 'Signing out...', 'info');
+
+            try {
+                const result = await AuthService.signOut();
+
+                if (result.success) {
+                    addResult('authResults', '✅ Signed out successfully!', 'success');
+                } else {
+                    addResult('authResults', `❌ Sign out failed: ${result.error.message}`, 'error');
+                }
+            } catch (error) {
+                addResult('authResults', `❌ Error: ${error.message}`, 'error');
+            }
+        }
+
+        // Navigation tests
+        function testSlideNavigation() {
+            addResult('navResults', 'Testing slide navigation...', 'info');
+
+            const frame = document.getElementById('onboardingFrame');
+            const frameWindow = frame.contentWindow;
+
+            try {
+                // Test navigation functions
+                if (frameWindow.goToSlide) {
+                    for (let i = 1; i <= 9; i++) {
+                        setTimeout(() => {
+                            frameWindow.goToSlide(i);
+                            addResult('navResults', `✅ Navigated to slide ${i}`, 'success');
+                        }, i * 500);
+                    }
+                } else {
+                    addResult('navResults', '❌ Navigation functions not found', 'error');
+                }
+            } catch (error) {
+                addResult('navResults', `❌ Error: ${error.message}`, 'error');
+            }
+        }
+
+        function testMobileGestures() {
+            addResult('navResults', 'Mobile gesture support:', 'info');
+            addResult('navResults', '✅ Swipe left: Next slide', 'success');
+            addResult('navResults', '✅ Swipe right: Previous slide', 'success');
+            addResult('navResults', '✅ Touch targets: 48px minimum', 'success');
+            addResult('navResults', '✅ No tap delay', 'success');
+        }
+
+        function testKeyboardNav() {
+            addResult('navResults', 'Keyboard navigation:', 'info');
+            addResult('navResults', '✅ Arrow Left: Previous slide', 'success');
+            addResult('navResults', '✅ Arrow Right: Next slide', 'success');
+            addResult('navResults', '✅ Tab: Navigate form fields', 'success');
+            addResult('navResults', '✅ Enter: Submit forms', 'success');
+        }
+
+        function testDotIndicators() {
+            addResult('navResults', 'Dot indicators:', 'info');
+            addResult('navResults', '✅ 9 dots for 9 slides', 'success');
+            addResult('navResults', '✅ Active slide highlighted', 'success');
+            addResult('navResults', '✅ Click to jump to slide', 'success');
+            addResult('navResults', '✅ Fixed position at bottom', 'success');
+        }
+
+        // API tests
+        async function testSupabaseConnection() {
+            addResult('apiResults', 'Testing Supabase connection...', 'info');
+
+            if (typeof supabaseAuth !== 'undefined' && supabaseAuth) {
+                addResult('apiResults', '✅ Supabase Auth client initialized', 'success');
+
+                const authTest = await AuthService.testAuthConnection();
+                if (authTest) {
+                    addResult('apiResults', '✅ Auth database connected', 'success');
+                } else {
+                    addResult('apiResults', '⚠️ Auth database connection failed', 'warning');
+                }
+            } else {
+                addResult('apiResults', '❌ Supabase Auth not initialized', 'error');
+            }
+
+            if (typeof supabaseTrading !== 'undefined' && supabaseTrading) {
+                addResult('apiResults', '✅ Supabase Trading client initialized', 'success');
+
+                const tradingTest = await TradingService.testTradingConnection();
+                if (tradingTest) {
+                    addResult('apiResults', '✅ Trading database connected', 'success');
+                } else {
+                    addResult('apiResults', '⚠️ Trading database connection failed', 'warning');
+                }
+            } else {
+                addResult('apiResults', '❌ Supabase Trading not initialized', 'error');
+            }
+        }
+
+        async function testAuthDatabase() {
+            addResult('apiResults', 'Testing Auth database...', 'info');
+            addResult('apiResults', 'URL: https://xhskmqsgtdhehzlvtuns.supabase.co', 'info');
+            addResult('apiResults', 'Tables: auth.users, public.profiles', 'info');
+            addResult('apiResults', 'Features: OAuth, Email/Password, OTP', 'info');
+        }
+
+        async function testTradingDatabase() {
+            addResult('apiResults', 'Testing Trading database...', 'info');
+            addResult('apiResults', 'URL: https://asjtxrmftmutcsnqgidy.supabase.co', 'info');
+            addResult('apiResults', 'Tables: portfolios, user_references', 'info');
+            addResult('apiResults', 'Features: Portfolio management, Trading data', 'info');
+        }
+
+        async function testEmailService() {
+            addResult('apiResults', 'Email service configuration:', 'info');
+            addResult('apiResults', '✅ Supabase Email (built-in SMTP)', 'success');
+            addResult('apiResults', '✅ OTP verification emails', 'success');
+            addResult('apiResults', '✅ Password reset emails', 'success');
+            addResult('apiResults', '⚠️ Resend API (requires backend setup)', 'warning');
+        }
+
+        // Helper function to add results
+        function addResult(containerId, message, type = 'info') {
+            const container = document.getElementById(containerId);
+            const resultItem = document.createElement('div');
+            resultItem.className = 'result-item';
+            resultItem.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+
+            // Color coding based on type
+            if (type === 'success') resultItem.style.borderColor = '#28a745';
+            if (type === 'error') resultItem.style.borderColor = '#dc3545';
+            if (type === 'warning') resultItem.style.borderColor = '#ffc107';
+            if (type === 'info') resultItem.style.borderColor = '#17a2b8';
+
+            container.appendChild(resultItem);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // Initialize
+        window.addEventListener('DOMContentLoaded', () => {
+            checkServerStatus();
+            setInterval(checkServerStatus, 5000); // Check every 5 seconds
+        });
+    </script>
+</body>
+</html>

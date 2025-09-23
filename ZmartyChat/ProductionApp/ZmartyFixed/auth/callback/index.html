@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authenticating... - Zmarty</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .callback-container {
+            text-align: center;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 90%;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        h1 {
+            margin: 0 0 10px;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        p {
+            margin: 0;
+            opacity: 0.8;
+            font-size: 16px;
+        }
+        
+        .error {
+            background: rgba(245, 101, 101, 0.2);
+            border: 1px solid rgba(245, 101, 101, 0.3);
+            padding: 16px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .success {
+            background: rgba(72, 187, 120, 0.2);
+            border: 1px solid rgba(72, 187, 120, 0.3);
+            padding: 16px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .retry-btn {
+            background: white;
+            color: #667eea;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .retry-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="callback-container">
+        <div class="spinner"></div>
+        <h1>Authenticating...</h1>
+        <p>Please wait while we complete your sign-in</p>
+        <div id="status"></div>
+    </div>
+
+    <!-- Supabase Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <script>
+        // Initialize Supabase with the same configuration as main app
+        const supabaseUrl = 'https://xhskmqsgtdhehzlvtuns.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhoc2ttcXNndGRoZWh6bHZ0dW5zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgxNDkzNTQsImV4cCI6MjA3MzcyNTM1NH0.ULAf9vNHS4nasSnv9UOKS2MCKsSxcMtV3C-R7Wm6qMw';
+        
+        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+        
+        // Status display functions
+        function showStatus(message, type = 'info') {
+            const statusDiv = document.getElementById('status');
+            statusDiv.className = type;
+            statusDiv.innerHTML = `<p>${message}</p>`;
+        }
+        
+        function showError(message) {
+            document.querySelector('.spinner').style.display = 'none';
+            document.querySelector('h1').textContent = 'Authentication Failed';
+            document.querySelector('p').textContent = 'There was a problem signing you in';
+            showStatus(message + '<br><button class="retry-btn" onclick="retryAuth()">Try Again</button>', 'error');
+        }
+        
+        function showSuccess(message) {
+            document.querySelector('.spinner').style.display = 'none';
+            document.querySelector('h1').textContent = 'Success!';
+            document.querySelector('p').textContent = 'Redirecting to your account...';
+            showStatus(message, 'success');
+        }
+        
+        function retryAuth() {
+            window.location.href = '/';
+        }
+        
+        // Main callback handler
+        async function handleCallback() {
+            console.log('OAuth callback handler started');
+            console.log('Current URL:', window.location.href);
+            console.log('Hash:', window.location.hash);
+            console.log('Search:', window.location.search);
+            
+            try {
+                // Check for error parameters first
+                const urlParams = new URLSearchParams(window.location.search);
+                const error = urlParams.get('error');
+                const errorDescription = urlParams.get('error_description');
+                
+                if (error) {
+                    console.error('OAuth error from URL:', error, errorDescription);
+                    throw new Error(errorDescription || error);
+                }
+                
+                // Wait a moment for Supabase to process the callback
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                // Get the current session
+                const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+                
+                if (sessionError) {
+                    console.error('Session error:', sessionError);
+                    throw sessionError;
+                }
+                
+                if (session && session.user) {
+                    console.log('OAuth authentication successful!', {
+                        email: session.user.email,
+                        provider: session.user.app_metadata?.provider,
+                        userId: session.user.id
+                    });
+                    
+                    // Show success message
+                    showSuccess(`Welcome ${session.user.email}!`);
+                    
+                    // Store user info in localStorage for the main app
+                    const userData = {
+                        email: session.user.email,
+                        authProvider: session.user.app_metadata?.provider,
+                        userId: session.user.id,
+                        fullName: session.user.user_metadata?.full_name || 
+                                 session.user.user_metadata?.name || '',
+                        isAuthenticated: true,
+                        timestamp: Date.now()
+                    };
+                    
+                    localStorage.setItem('zmarty_oauth_success', JSON.stringify(userData));
+                    
+                    // Redirect to main app with success indicator
+                    setTimeout(() => {
+                        window.location.href = '/?slide=6&oauth=success';
+                    }, 2000);
+                    
+                } else {
+                    console.error('No session found after OAuth callback');
+                    throw new Error('Authentication failed - no session was created. Please try again.');
+                }
+                
+            } catch (error) {
+                console.error('OAuth callback error:', error);
+                
+                // Show user-friendly error message
+                let errorMessage = error.message || 'An unexpected error occurred';
+                
+                if (errorMessage.includes('access_denied')) {
+                    errorMessage = 'You cancelled the authentication. Please try again if you want to sign in.';
+                } else if (errorMessage.includes('invalid_request')) {
+                    errorMessage = 'Invalid authentication request. Please try again.';
+                } else if (errorMessage.includes('network')) {
+                    errorMessage = 'Network error. Please check your connection and try again.';
+                }
+                
+                showError(errorMessage);
+                
+                // Auto-redirect after 5 seconds
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 5000);
+            }
+        }
+        
+        // Start the callback handling when page loads
+        window.addEventListener('load', handleCallback);
+        
+        // Also handle if the page is already loaded
+        if (document.readyState === 'complete') {
+            handleCallback();
+        }
+        
+        // Debug information
+        console.log('OAuth callback page loaded');
+        console.log('Supabase client initialized:', !!supabase);
+    </script>
+</body>
+</html>

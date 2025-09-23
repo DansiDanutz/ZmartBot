@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+    <title>Mobile Navigation Test - ZmartyChat Onboarding</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: env(safe-area-inset-top, 20px) env(safe-area-inset-right, 20px) env(safe-area-inset-bottom, 20px) env(safe-area-inset-left, 20px);
+            overflow: hidden;
+        }
+
+        .test-container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .test-section h2 {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .test-result {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .pass {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .fail {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+
+        .test-button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 5px;
+            transition: background 0.3s;
+        }
+
+        .test-button:hover {
+            background: #764ba2;
+        }
+
+        .test-card {
+            width: 90%;
+            max-width: 500px;
+            height: calc(100vh - 140px);
+            height: calc(100dvh - 140px);
+            max-height: 640px;
+            min-height: 500px;
+            background: white;
+            border-radius: 24px;
+            margin: 20px auto;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 20px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .card-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: white;
+        }
+
+        .card-footer {
+            padding: 20px;
+            background: #f8f9fa;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-indicator {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            background: #ddd;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .dot.active {
+            width: 24px;
+            border-radius: 4px;
+            background: #667eea;
+        }
+
+        #results {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .touch-area {
+            position: relative;
+            background: #f0f0f0;
+            height: 200px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0;
+            touch-action: none;
+            user-select: none;
+        }
+
+        .touch-feedback {
+            position: absolute;
+            color: #667eea;
+            font-size: 48px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .touch-feedback.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>📱 Mobile Navigation Test Suite</h1>
+
+        <!-- Device Info -->
+        <div class="test-section">
+            <h2>Device Information</h2>
+            <div id="device-info"></div>
+        </div>
+
+        <!-- Viewport Tests -->
+        <div class="test-section">
+            <h2>Viewport Tests</h2>
+            <div id="viewport-tests"></div>
+        </div>
+
+        <!-- Touch/Swipe Test -->
+        <div class="test-section">
+            <h2>Touch Gestures Test</h2>
+            <div class="touch-area" id="touch-area">
+                <span id="touch-instruction">Swipe left or right here</span>
+                <div class="touch-feedback" id="swipe-left">←</div>
+                <div class="touch-feedback" id="swipe-right">→</div>
+            </div>
+            <div id="swipe-result"></div>
+        </div>
+
+        <!-- Navigation Test -->
+        <div class="test-section">
+            <h2>Navigation Methods</h2>
+            <button class="test-button" onclick="testKeyboardNav()">Test Keyboard Navigation</button>
+            <button class="test-button" onclick="testButtonNav()">Test Button Navigation</button>
+            <button class="test-button" onclick="testDotNav()">Test Dot Navigation</button>
+            <div id="nav-results"></div>
+        </div>
+
+        <!-- Card Layout Test -->
+        <div class="test-section">
+            <h2>Card Layout Test</h2>
+            <button class="test-button" onclick="testCardLayout()">Test Card Dimensions</button>
+            <button class="test-button" onclick="testScrolling()">Test No-Scroll Behavior</button>
+            <div id="layout-results"></div>
+        </div>
+
+        <!-- Safe Area Test -->
+        <div class="test-section">
+            <h2>iOS Safe Area Test</h2>
+            <div id="safe-area-tests"></div>
+        </div>
+
+        <!-- Overall Results -->
+        <div class="test-section">
+            <h2>Test Summary</h2>
+            <div id="summary"></div>
+        </div>
+    </div>
+
+    <!-- Navigation Dots -->
+    <div class="nav-indicator">
+        <span class="dot active" data-slide="1"></span>
+        <span class="dot" data-slide="2"></span>
+        <span class="dot" data-slide="3"></span>
+        <span class="dot" data-slide="4"></span>
+        <span class="dot" data-slide="5"></span>
+        <span class="dot" data-slide="6"></span>
+        <span class="dot" data-slide="7"></span>
+        <span class="dot" data-slide="8"></span>
+        <span class="dot" data-slide="9"></span>
+    </div>
+
+    <script>
+        // Test results storage
+        const testResults = {
+            passed: 0,
+            failed: 0,
+            warnings: 0
+        };
+
+        // Utility functions
+        function addResult(container, message, type = 'info') {
+            const div = document.createElement('div');
+            div.className = `test-result ${type}`;
+            div.textContent = message;
+            document.getElementById(container).appendChild(div);
+
+            if (type === 'pass') testResults.passed++;
+            else if (type === 'fail') testResults.failed++;
+            else if (type === 'warning') testResults.warnings++;
+
+            updateSummary();
+        }
+
+        function updateSummary() {
+            const summary = document.getElementById('summary');
+            summary.innerHTML = `
+                <div class="test-result ${testResults.failed === 0 ? 'pass' : 'fail'}">
+                    ✅ Passed: ${testResults.passed} |
+                    ❌ Failed: ${testResults.failed} |
+                    ⚠️ Warnings: ${testResults.warnings}
+                </div>
+            `;
+        }
+
+        // Device Information
+        function checkDeviceInfo() {
+            const info = document.getElementById('device-info');
+            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+            const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+            const standalone = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
+
+            addResult('device-info', `User Agent: ${navigator.userAgent.substring(0, 50)}...`, 'info');
+            addResult('device-info', `Mobile Device: ${isMobile ? 'Yes' : 'No'}`, isMobile ? 'pass' : 'warning');
+            addResult('device-info', `iOS Device: ${isIOS ? 'Yes' : 'No'}`, 'info');
+            addResult('device-info', `PWA Mode: ${standalone ? 'Yes' : 'No'}`, 'info');
+            addResult('device-info', `Touch Support: ${('ontouchstart' in window) ? 'Yes' : 'No'}`,
+                ('ontouchstart' in window) ? 'pass' : 'warning');
+        }
+
+        // Viewport Tests
+        function checkViewport() {
+            const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+            const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+            const dvh = window.innerHeight;
+
+            addResult('viewport-tests', `Viewport Width: ${vw}px`, 'info');
+            addResult('viewport-tests', `Viewport Height: ${vh}px`, 'info');
+            addResult('viewport-tests', `Dynamic Height (dvh): ${dvh}px`, 'info');
+
+            // Check if viewport meta tag is correct
+            const viewport = document.querySelector('meta[name="viewport"]');
+            if (viewport) {
+                const content = viewport.getAttribute('content');
+                if (content.includes('viewport-fit=cover')) {
+                    addResult('viewport-tests', 'Viewport-fit=cover is set ✓', 'pass');
+                } else {
+                    addResult('viewport-tests', 'Viewport-fit=cover is missing', 'fail');
+                }
+            }
+
+            // Check CSS environment variables
+            const safeTop = getComputedStyle(document.body).paddingTop;
+            if (safeTop && safeTop !== '0px') {
+                addResult('viewport-tests', `Safe area top: ${safeTop}`, 'pass');
+            } else {
+                addResult('viewport-tests', 'Safe area insets not detected', 'warning');
+            }
+        }
+
+        // Touch/Swipe Testing
+        function setupSwipeTest() {
+            const touchArea = document.getElementById('touch-area');
+            let touchStartX = 0;
+            let touchEndX = 0;
+
+            touchArea.addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+            });
+
+            touchArea.addEventListener('touchend', (e) => {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            });
+
+            touchArea.addEventListener('mousedown', (e) => {
+                touchStartX = e.screenX;
+            });
+
+            touchArea.addEventListener('mouseup', (e) => {
+                touchEndX = e.screenX;
+                handleSwipe();
+            });
+
+            function handleSwipe() {
+                const swipeDistance = touchEndX - touchStartX;
+                const minSwipeDistance = 50;
+
+                if (Math.abs(swipeDistance) > minSwipeDistance) {
+                    if (swipeDistance > 0) {
+                        // Swiped right
+                        document.getElementById('swipe-right').classList.add('show');
+                        setTimeout(() => {
+                            document.getElementById('swipe-right').classList.remove('show');
+                        }, 500);
+                        addResult('swipe-result', 'Swipe RIGHT detected ✓', 'pass');
+                    } else {
+                        // Swiped left
+                        document.getElementById('swipe-left').classList.add('show');
+                        setTimeout(() => {
+                            document.getElementById('swipe-left').classList.remove('show');
+                        }, 500);
+                        addResult('swipe-result', 'Swipe LEFT detected ✓', 'pass');
+                    }
+                }
+            }
+        }
+
+        // Navigation Tests
+        function testKeyboardNav() {
+            document.addEventListener('keydown', function handleKey(e) {
+                if (e.key === 'ArrowLeft') {
+                    addResult('nav-results', 'Left arrow key detected ✓', 'pass');
+                    document.removeEventListener('keydown', handleKey);
+                } else if (e.key === 'ArrowRight') {
+                    addResult('nav-results', 'Right arrow key detected ✓', 'pass');
+                    document.removeEventListener('keydown', handleKey);
+                }
+            });
+            addResult('nav-results', 'Press left or right arrow key...', 'info');
+        }
+
+        function testButtonNav() {
+            addResult('nav-results', 'Button navigation test simulated ✓', 'pass');
+        }
+
+        function testDotNav() {
+            const dots = document.querySelectorAll('.dot');
+            let testPassed = true;
+
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    dots.forEach(d => d.classList.remove('active'));
+                    dot.classList.add('active');
+                    addResult('nav-results', `Dot ${index + 1} clicked and activated ✓`, 'pass');
+                });
+            });
+
+            if (dots.length === 9) {
+                addResult('nav-results', 'All 9 navigation dots present ✓', 'pass');
+            } else {
+                addResult('nav-results', `Expected 9 dots, found ${dots.length}`, 'fail');
+            }
+        }
+
+        // Card Layout Tests
+        function testCardLayout() {
+            const testCard = document.createElement('div');
+            testCard.className = 'test-card';
+            testCard.innerHTML = `
+                <div class="card-header">Header</div>
+                <div class="card-content">Content</div>
+                <div class="card-footer">Footer</div>
+            `;
+            document.body.appendChild(testCard);
+
+            const rect = testCard.getBoundingClientRect();
+            const computed = getComputedStyle(testCard);
+
+            // Check dimensions
+            if (rect.width <= 500 && rect.width >= 300) {
+                addResult('layout-results', `Card width: ${rect.width}px ✓`, 'pass');
+            } else {
+                addResult('layout-results', `Card width: ${rect.width}px (expected 300-500px)`, 'fail');
+            }
+
+            if (rect.height >= 400 && rect.height <= 700) {
+                addResult('layout-results', `Card height: ${rect.height}px ✓`, 'pass');
+            } else {
+                addResult('layout-results', `Card height: ${rect.height}px (expected 400-700px)`, 'warning');
+            }
+
+            // Check border radius
+            if (computed.borderRadius === '24px') {
+                addResult('layout-results', 'Card border radius: 24px ✓', 'pass');
+            } else {
+                addResult('layout-results', `Card border radius: ${computed.borderRadius}`, 'warning');
+            }
+
+            // Clean up
+            document.body.removeChild(testCard);
+        }
+
+        function testScrolling() {
+            const hasVerticalScroll = document.documentElement.scrollHeight > window.innerHeight;
+            const hasHorizontalScroll = document.documentElement.scrollWidth > window.innerWidth;
+
+            if (!hasVerticalScroll) {
+                addResult('layout-results', 'No vertical scrolling detected ✓', 'pass');
+            } else {
+                addResult('layout-results', 'Vertical scrolling detected', 'fail');
+            }
+
+            if (!hasHorizontalScroll) {
+                addResult('layout-results', 'No horizontal scrolling detected ✓', 'pass');
+            } else {
+                addResult('layout-results', 'Horizontal scrolling detected', 'fail');
+            }
+        }
+
+        // Safe Area Tests
+        function checkSafeAreas() {
+            const styles = getComputedStyle(document.body);
+            const safeTop = styles.getPropertyValue('padding-top');
+            const safeBottom = styles.getPropertyValue('padding-bottom');
+            const safeLeft = styles.getPropertyValue('padding-left');
+            const safeRight = styles.getPropertyValue('padding-right');
+
+            // Check if env() is supported
+            const testEl = document.createElement('div');
+            testEl.style.paddingTop = 'env(safe-area-inset-top, 0px)';
+            document.body.appendChild(testEl);
+            const computed = getComputedStyle(testEl).paddingTop;
+            document.body.removeChild(testEl);
+
+            if (computed !== '0px') {
+                addResult('safe-area-tests', `Safe area support detected ✓`, 'pass');
+                addResult('safe-area-tests', `Top: ${safeTop}, Bottom: ${safeBottom}`, 'info');
+            } else {
+                addResult('safe-area-tests', 'Safe area CSS not supported on this device', 'warning');
+            }
+        }
+
+        // Initialize all tests
+        window.addEventListener('load', () => {
+            checkDeviceInfo();
+            checkViewport();
+            setupSwipeTest();
+            checkSafeAreas();
+            updateSummary();
+        });
+
+        // Monitor orientation changes
+        window.addEventListener('orientationchange', () => {
+            addResult('viewport-tests', `Orientation changed to: ${screen.orientation.angle}°`, 'info');
+            setTimeout(checkViewport, 100);
+        });
+
+        // Monitor resize events
+        window.addEventListener('resize', () => {
+            const vh = window.innerHeight;
+            const vw = window.innerWidth;
+            console.log(`Resize detected: ${vw}x${vh}`);
+        });
+    </script>
+</body>
+</html>

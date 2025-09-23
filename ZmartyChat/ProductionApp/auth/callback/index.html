@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Authenticating...</title>
+    <script>
+        // Handle OAuth callback by redirecting to main page with hash params
+        const hash = window.location.hash;
+        const search = window.location.search;
+
+        // Redirect to main page preserving the auth tokens
+        window.location.replace('/' + hash + search);
+    </script>
+</head>
+<body>
+    <div style="display: flex; align-items: center; justify-content: center; height: 100vh; font-family: system-ui;">
+        <div style="text-align: center;">
+            <h2>Authenticating...</h2>
+            <p>Please wait while we sign you in.</p>
+        </div>
+    </div>
+</body>
+</html>
