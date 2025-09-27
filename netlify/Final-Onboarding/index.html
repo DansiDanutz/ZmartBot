@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>ZmartyBrain - Professional Onboarding</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            overflow-x: hidden;
+        }
+
+        .onboarding-container {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 32px 64px rgba(0, 0, 0, 0.12);
+            max-width: 520px;
+            width: 100%;
+            min-height: 600px;
+            position: relative;
+            overflow: hidden;
+            touch-action: pan-y;
+        }
+
+        .progress-header {
+            padding: 20px 24px 16px;
+            border-bottom: 1px solid #f1f5f9;
+            position: relative;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #f1f5f9;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 4px;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 0%;
+        }
+
+        .progress-text {
+            font-size: 14px;
+            color: #64748b;
+            text-align: center;
+        }
+
+        .navigation-arrows {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            right: 20px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-arrow {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .nav-arrow:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+
+        .nav-arrow.disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .nav-arrow.disabled:hover {
+            background: #f8fafc;
+            border-color: #e2e8f0;
+        }
+
+        .slides-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .step {
+            display: none;
+            padding: 24px 32px 32px;
+            min-height: 500px;
+            animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            touch-action: pan-y;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        .step.slide-left {
+            animation: slideLeft 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .step.slide-right {
+            animation: slideRight 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes slideLeft {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+
+        @keyframes slideRight {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(0); }
+        }
+
+        .swipe-indicator {
+            position: absolute;
+            bottom: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            color: #94a3b8;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .logo {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 16px;
+            margin: 0 auto 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        h1 {
+            color: #1e293b;
+            font-size: 28px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 8px;
+            line-height: 1.2;
+        }
+
+        h2 {
+            color: #1e293b;
+            font-size: 24px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 12px;
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            color: #64748b;
+            font-size: 16px;
+            text-align: center;
+            margin-bottom: 32px;
+            line-height: 1.5;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px 24px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 16px;
+            min-height: 56px;
+            touch-action: manipulation;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-primary:hover, .btn-primary:active {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f8fafc;
+            color: #475569;
+            border: 2px solid #e2e8f0;
+        }
+
+        .btn-secondary:hover, .btn-secondary:active {
+            background: #f1f5f9;
+        }
+
+        .btn-google {
+            background: white;
+            color: #374151;
+            border: 2px solid #e5e7eb;
+            font-weight: 500;
+        }
+
+        .btn-google:hover, .btn-google:active {
+            background: #f9fafb;
+            border-color: #d1d5db;
+        }
+
+        .google-icon {
+            width: 20px;
+            height: 20px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="%234285f4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="%2334a853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="%23fbbc05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="%23ea4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>') center/contain no-repeat;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #374151;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.2s ease;
+            background: white;
+            min-height: 52px;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .verification-card {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        .verification-icon {
+            width: 64px;
+            height: 64px;
+            background: #dbeafe;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 24px;
+        }
+
+        .user-info {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 24px 0;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .user-avatar {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .user-details h3 {
+            color: #1e293b;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .user-details p {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .pricing-card {
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            background: white;
+            touch-action: manipulation;
+        }
+
+        .pricing-card:hover, .pricing-card:active {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .pricing-card.selected {
+            border-color: #667eea;
+            background: #fafbff;
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.2);
+        }
+
+        .pricing-card.popular::before {
+            content: 'Most Popular';
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .plan-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+
+        .plan-price {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 16px;
+        }
+
+        .plan-price .period {
+            font-size: 14px;
+            color: #64748b;
+            font-weight: 400;
+        }
+
+        .plan-features {
+            list-style: none;
+            text-align: left;
+        }
+
+        .plan-features li {
+            padding: 4px 0;
+            color: #475569;
+            font-size: 14px;
+        }
+
+        .plan-features li::before {
+            content: '✓';
+            color: #10b981;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .alert {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+            font-size: 14px;
+            display: none;
+        }
+
+        .alert.success {
+            background: #f0fdf4;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+
+        .alert.error {
+            background: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+        }
+
+        .loading-spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ffffff40;
+            border-top: 2px solid #ffffff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .step-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin: 20px 0;
+        }
+
+        .step-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            transition: all 0.2s ease;
+        }
+
+        .step-dot.active {
+            background: #667eea;
+            transform: scale(1.2);
+        }
+
+        .step-dot.completed {
+            background: #10b981;
+        }
+
+        /* Mobile Optimizations */
+        @media (max-width: 768px) {
+            body {
+                padding: 5px;
+            }
+            
+            .onboarding-container {
+                border-radius: 16px;
+                margin: 0;
+                min-height: calc(100vh - 10px);
+            }
+            
+            .progress-header {
+                padding: 16px 20px 12px;
+            }
+            
+            .step {
+                padding: 20px 24px 24px;
+                min-height: calc(100vh - 140px);
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            h2 {
+                font-size: 20px;
+            }
+            
+            .subtitle {
+                font-size: 14px;
+                margin-bottom: 24px;
+            }
+            
+            .btn {
+                padding: 18px 24px;
+                font-size: 16px;
+                min-height: 56px;
+            }
+            
+            .navigation-arrows {
+                display: none;
+            }
+            
+            .swipe-indicator {
+                display: flex;
+            }
+            
+            .pricing-grid {
+                gap: 12px;
+            }
+            
+            .pricing-card {
+                padding: 16px;
+            }
+            
+            .user-info {
+                padding: 16px;
+                gap: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .step {
+                padding: 16px 20px 20px;
+            }
+            
+            .form-group input, .form-group select {
+                padding: 16px 14px;
+                font-size: 16px; /* Prevents zoom on iOS */
+            }
+            
+            .verification-card {
+                padding: 20px 16px;
+            }
+        }
+
+        /* Landscape mobile */
+        @media (max-height: 600px) and (orientation: landscape) {
+            .step {
+                min-height: auto;
+                padding: 16px 24px;
+            }
+            
+            .logo {
+                width: 48px;
+                height: 48px;
+                font-size: 20px;
+                margin-bottom: 16px;
+            }
+            
+            h1, h2 {
+                margin-bottom: 8px;
+            }
+            
+            .subtitle {
+                margin-bottom: 20px;
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="onboarding-container">
+        <!-- Progress Header -->
+        <div class="progress-header">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-text" id="progressText">Step 1 of 7</div>
+            
+            <!-- Navigation Arrows -->
+            <div class="navigation-arrows">
+                <div class="nav-arrow" id="prevArrow" onclick="prevStep()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M15 18l-6-6 6-6"></path>
+                    </svg>
+                </div>
+                <div class="nav-arrow" id="nextArrow" onclick="nextStep()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 18l6-6-6-6"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="slides-container" id="slidesContainer">
+            <!-- Step 1: Welcome -->
+            <div class="step active" id="step1">
+                <div class="logo">ZB</div>
+                <h1>Welcome to ZmartyBrain</h1>
+                <p class="subtitle">Transform your business with AI-powered insights. Let's get you set up in under 2 minutes.</p>
+                
+                <div style="margin: 32px 0; text-align: left;">
+                    <div style="display: flex; align-items: center; margin-bottom: 16px;">
+                        <div style="width: 32px; height: 32px; background: #dbeafe; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 12px; color: #1d4ed8; font-weight: bold; flex-shrink: 0;">1</div>
+                        <span style="color: #374151;">Connect with Google (30 seconds)</span>
+                    </div>
+                    <div style="display: flex; align-items: center; margin-bottom: 16px;">
+                        <div style="width: 32px; height: 32px; background: #dbeafe; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 12px; color: #1d4ed8; font-weight: bold; flex-shrink: 0;">2</div>
+                        <span style="color: #374151;">Choose your plan (1 minute)</span>
+                    </div>
+                    <div style="display: flex; align-items: center;">
+                        <div style="width: 32px; height: 32px; background: #dbeafe; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 12px; color: #1d4ed8; font-weight: bold; flex-shrink: 0;">3</div>
+                        <span style="color: #374151;">Complete your profile (30 seconds)</span>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" onclick="nextStep()">
+                    Get Started
+                </button>
+                
+                <div class="swipe-indicator">
+                    👈 Swipe to navigate
+                </div>
+            </div>
+
+            <!-- Step 2: Authentication -->
+            <div class="step" id="step2">
+                <div class="logo">ZB</div>
+                <h2>Sign in with Google</h2>
+                <p class="subtitle">We'll use your Google account to create your secure ZmartyBrain profile.</p>
+                
+                <button class="btn btn-google" id="googleLoginBtn">
+                    <div class="google-icon"></div>
+                    Continue with Google
+                </button>
+
+                <div class="alert" id="authAlert"></div>
+
+                <div style="text-align: center; margin-top: 24px;">
+                    <p style="font-size: 12px; color: #6b7280;">
+                        By continuing, you agree to our Terms of Service and Privacy Policy
+                    </p>
+                </div>
+
+                <button class="btn btn-secondary" onclick="prevStep()">Back</button>
+            </div>
+
+            <!-- Step 3: Email Confirmation -->
+            <div class="step" id="step3">
+                <div class="logo">ZB</div>
+                <h2>Continue with this account?</h2>
+                <p class="subtitle">We found your Google account. Confirm to proceed with your ZmartyBrain setup.</p>
+
+                <div class="user-info" id="userInfo">
+                    <div class="user-avatar" id="userAvatar">👤</div>
+                    <div class="user-details">
+                        <h3 id="userName">Loading...</h3>
+                        <p id="userEmail">Loading...</p>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" onclick="confirmEmailAndContinue()">
+                    Yes, Continue with this Account
+                </button>
+                <button class="btn btn-secondary" onclick="signOutAndRestart()">
+                    Use Different Account
+                </button>
+            </div>
+
+            <!-- Step 4: Email Verification -->
+            <div class="step" id="step4">
+                <div class="logo">ZB</div>
+                <h2>Verify Your Email</h2>
+                <p class="subtitle">We've sent a verification link to <strong id="verificationEmail">your email</strong>. Please check your inbox.</p>
+
+                <div class="verification-card">
+                    <div class="verification-icon">📧</div>
+                    <h3 style="color: #1e293b; margin-bottom: 8px;">Check Your Email</h3>
+                    <p style="color: #64748b; font-size: 14px; margin-bottom: 20px;">
+                        Click the verification link in the email we just sent you.
+                    </p>
+                    <div style="background: white; padding: 16px; border-radius: 8px; margin-top: 16px;">
+                        <p style="color: #374151; font-size: 13px; font-weight: 500;">Didn't receive it?</p>
+                        <ul style="text-align: left; margin: 8px 0; color: #6b7280; font-size: 12px;">
+                            <li>Check your spam folder</li>
+                            <li>Make sure the email address is correct</li>
+                            <li>Wait a few minutes and try again</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" onclick="checkEmailVerification()">
+                    I've Verified My Email
+                </button>
+                <button class="btn btn-secondary" onclick="resendVerificationEmail()" id="resendBtn">
+                    Resend Email
+                </button>
+            </div>
+
+            <!-- Step 5: Tier Selection -->
+            <div class="step" id="step5">
+                <h2>Choose Your Plan</h2>
+                <p class="subtitle">Select the plan that fits your needs. You can upgrade or downgrade anytime.</p>
+
+                <div class="pricing-grid">
+                    <div class="pricing-card" data-plan="starter" onclick="selectPlan('starter')">
+                        <div class="plan-name">Starter</div>
+                        <div class="plan-price">$0 <span class="period">/month</span></div>
+                        <ul class="plan-features">
+                            <li>Up to 1,000 AI queries</li>
+                            <li>Basic analytics</li>
+                            <li>Email support</li>
+                            <li>1 project</li>
+                        </ul>
+                    </div>
+
+                    <div class="pricing-card popular" data-plan="professional" onclick="selectPlan('professional')">
+                        <div class="plan-name">Professional</div>
+                        <div class="plan-price">$29 <span class="period">/month</span></div>
+                        <ul class="plan-features">
+                            <li>Up to 25,000 AI queries</li>
+                            <li>Advanced analytics</li>
+                            <li>Priority support</li>
+                            <li>Unlimited projects</li>
+                            <li>Team collaboration</li>
+                            <li>Custom integrations</li>
+                        </ul>
+                    </div>
+
+                    <div class="pricing-card" data-plan="enterprise" onclick="selectPlan('enterprise')">
+                        <div class="plan-name">Enterprise</div>
+                        <div class="plan-price">$99 <span class="period">/month</span></div>
+                        <ul class="plan-features">
+                            <li>Unlimited AI queries</li>
+                            <li>Enterprise analytics</li>
+                            <li>24/7 dedicated support</li>
+                            <li>Unlimited projects</li>
+                            <li>Advanced security</li>
+                            <li>Custom AI models</li>
+                            <li>API access</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="alert" id="tierAlert"></div>
+
+                <button class="btn btn-primary" id="selectPlanBtn" onclick="confirmPlanSelection()" disabled style="opacity: 0.5;">
+                    Continue with Selected Plan
+                </button>
+                <button class="btn btn-secondary" onclick="prevStep()">Back</button>
+            </div>
+
+            <!-- Step 6: Profile Completion -->
+            <div class="step" id="step6">
+                <h2>Complete Your Profile</h2>
+                <p class="subtitle">Just a few more details to personalize your ZmartyBrain experience.</p>
+
+                <form id="profileForm">
+                    <div class="form-group">
+                        <label for="fullName">Full Name *</label>
+                        <input type="text" id="fullName" name="fullName" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="jobTitle">Job Title</label>
+                        <input type="text" id="jobTitle" name="jobTitle" placeholder="e.g., Product Manager, CEO">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="company">Company</label>
+                        <input type="text" id="company" name="company" placeholder="Your company name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="industry">Industry</label>
+                        <select id="industry" name="industry">
+                            <option value="">Select your industry</option>
+                            <option value="technology">Technology</option>
+                            <option value="healthcare">Healthcare</option>
+                            <option value="finance">Finance</option>
+                            <option value="retail">Retail</option>
+                            <option value="manufacturing">Manufacturing</option>
+                            <option value="education">Education</option>
+                            <option value="consulting">Consulting</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </form>
+
+                <div class="alert" id="profileAlert"></div>
+
+                <button class="btn btn-primary" onclick="completeProfile()">
+                    Complete Setup
+                </button>
+                <button class="btn btn-secondary" onclick="prevStep()">Back</button>
+            </div>
+
+            <!-- Step 7: Welcome Complete -->
+            <div class="step" id="step7">
+                <div class="verification-card">
+                    <div class="verification-icon">🎉</div>
+                    <h2 style="color: #1e293b; margin-bottom: 16px;">Welcome to ZmartyBrain!</h2>
+                    <p style="color: #64748b; margin-bottom: 24px;">
+                        Your account is ready. Let's explore your personalized dashboard.
+                    </p>
+
+                    <div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                            <span style="color: #374151; font-weight: 500;">✓ Account created</span>
+                            <span style="color: #10b981;">Complete</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                            <span style="color: #374151; font-weight: 500;">✓ Email verified</span>
+                            <span style="color: #10b981;">Complete</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="color: #374151; font-weight: 500;">✓ Profile setup</span>
+                            <span style="color: #10b981;">Complete</span>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" onclick="goToDashboard()">
+                    Launch Dashboard
+                </button>
+            </div>
+        </div>
+
+        <!-- Step Dots for mobile -->
+        <div class="step-dots" id="stepDots">
+            <div class="step-dot active"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Supabase
+        const SUPABASE_URL = 'https://xhskmqsgtdhehzlvtuns.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhoc2ttcXNndGRoZWh6bHZ0dW5zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjcyOTcyMzQsImV4cCI6MjA0Mjg3MzIzNH0.ULAf9vNHS4nasSnv9UOKS2MCKsSxcMtV3C-R7Wm6qMw';
+        
+        const { createClient } = supabase;
+        const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // Global state management
+        class OnboardingState {
+            constructor() {
+                this.currentStep = 1;
+                this.totalSteps = 7;
+                this.user = null;
+                this.userData = {};
+                this.selectedPlan = null;
+                this.completedSteps = new Set();
+                this.direction = 'forward';
+                this.initializeFromStorage();
+                this.initializeSwipeHandlers();
+            }
+
+            initializeFromStorage() {
+                const savedState = sessionStorage.getItem('onboarding_state');
+                if (savedState) {
+                    const data = JSON.parse(savedState);
+                    this.currentStep = data.currentStep || 1;
+                    this.userData = data.userData || {};
+                    this.selectedPlan = data.selectedPlan;
+                    this.completedSteps = new Set(data.completedSteps || []);
+                }
+            }
+
+            saveToStorage() {
+                const state = {
+                    currentStep: this.currentStep,
+                    userData: this.userData,
+                    selectedPlan: this.selectedPlan,
+                    completedSteps: Array.from(this.completedSteps)
+                };
+                sessionStorage.setItem('onboarding_state', JSON.stringify(state));
+            }
+
+            goToStep(step, direction = 'forward') {
+                if (step < 1 || step > this.totalSteps) return;
+
+                // Hide current step with animation
+                const currentStepEl = document.getElementById(`step${this.currentStep}`);
+                currentStepEl.classList.remove('active');
+                
+                // Mark previous step as completed
+                if (step > this.currentStep) {
+                    this.completedSteps.add(this.currentStep);
+                }
+                
+                // Update direction and current step
+                this.direction = direction;
+                this.currentStep = step;
+                
+                // Show new step with animation
+                const newStepEl = document.getElementById(`step${this.currentStep}`);
+                newStepEl.classList.add('active');
+                if (direction === 'forward') {
+                    newStepEl.classList.add('slide-left');
+                } else {
+                    newStepEl.classList.add('slide-right');
+                }
+                
+                // Remove animation classes after animation completes
+                setTimeout(() => {
+                    newStepEl.classList.remove('slide-left', 'slide-right');
+                }, 400);
+                
+                // Update progress and navigation
+                this.updateProgress();
+                this.updateNavigation();
+                this.updateStepDots();
+                this.saveToStorage();
+            }
+
+            updateProgress() {
+                const progress = (this.currentStep / this.totalSteps) * 100;
+                document.getElementById('progressFill').style.width = `${progress}%`;
+                document.getElementById('progressText').textContent = `Step ${this.currentStep} of ${this.totalSteps}`;
+            }
+
+            updateNavigation() {
+                const prevArrow = document.getElementById('prevArrow');
+                const nextArrow = document.getElementById('nextArrow');
+                
+                if (this.currentStep === 1) {
+                    prevArrow.classList.add('disabled');
+                } else {
+                    prevArrow.classList.remove('disabled');
+                }
+                
+                if (this.currentStep === this.totalSteps) {
+                    nextArrow.classList.add('disabled');
+                } else {
+                    nextArrow.classList.remove('disabled');
+                }
+            }
+
+            updateStepDots() {
+                const dots = document.querySelectorAll('.step-dot');
+                dots.forEach((dot, index) => {
+                    dot.classList.remove('active', 'completed');
+                    if (index + 1 < this.currentStep) {
+                        dot.classList.add('completed');
+                    } else if (index + 1 === this.currentStep) {
+                        dot.classList.add('active');
+                    }
+                });
+            }
+
+            initializeSwipeHandlers() {
+                const container = document.getElementById('slidesContainer');
+                let startX = 0;
+                let currentX = 0;
+                let isSwipeEnabled = true;
+
+                container.addEventListener('touchstart', (e) => {
+                    if (!isSwipeEnabled) return;
+                    startX = e.touches[0].clientX;
+                }, { passive: true });
+
+                container.addEventListener('touchmove', (e) => {
+                    if (!isSwipeEnabled) return;
+                    currentX = e.touches[0].clientX;
+                }, { passive: true });
+
+                container.addEventListener('touchend', (e) => {
+                    if (!isSwipeEnabled) return;
+                    
+                    const diffX = startX - currentX;
+                    const threshold = 50; // Minimum swipe distance
+
+                    if (Math.abs(diffX) > threshold) {
+                        if (diffX > 0) {
+                            // Swipe left - next step
+                            this.nextStep();
+                        } else {
+                            // Swipe right - previous step
+                            this.prevStep();
+                        }
+                    }
+                }, { passive: true });
+
+                // Disable swipe during certain interactions
+                const disableSwipeElements = container.querySelectorAll('input, select, button, .pricing-card');
+                disableSwipeElements.forEach(el => {
+                    el.addEventListener('touchstart', () => {
+                        isSwipeEnabled = false;
+                    });
+                    el.addEventListener('touchend', () => {
+                        setTimeout(() => {
+                            isSwipeEnabled = true;
+                        }, 100);
+                    });
+                });
+            }
+
+            nextStep() {
+                if (this.currentStep < this.totalSteps) {
+                    this.goToStep(this.currentStep + 1, 'forward');
+                }
+            }
+
+            prevStep() {
+                if (this.currentStep > 1) {
+                    this.goToStep(this.currentStep - 1, 'backward');
+                }
+            }
+        }
+
+        // Initialize state
+        const state = new OnboardingState();
+
+        // Navigation functions
+        function nextStep() {
+            state.nextStep();
+        }
+
+        function prevStep() {
+            state.prevStep();
+        }
+
+        // Utility functions
+        function showAlert(elementId, message, type = 'error') {
+            const alert = document.getElementById(elementId);
+            alert.textContent = message;
+            alert.className = `alert ${type}`;
+            alert.style.display = 'block';
+            
+            if (type === 'success') {
+                setTimeout(() => {
+                    alert.style.display = 'none';
+                }, 3000);
+            }
+        }
+
+        function hideAlert(elementId) {
+            document.getElementById(elementId).style.display = 'none';
+        }
+
+        function setButtonLoading(buttonId, loading = true) {
+            const button = document.getElementById(buttonId);
+            if (loading) {
+                button.innerHTML = '<div class="loading-spinner"></div> Processing...';
+                button.disabled = true;
+            } else {
+                button.disabled = false;
+            }
+        }
+
+        // Authentication functions
+        async function initializeGoogleAuth() {
+            const googleLoginBtn = document.getElementById('googleLoginBtn');
+            if (googleLoginBtn) {
+                googleLoginBtn.addEventListener('click', signInWithGoogle);
+            }
+        }
+
+        async function signInWithGoogle() {
+            try {
+                setButtonLoading('googleLoginBtn');
+                hideAlert('authAlert');
+
+                const { data, error } = await supabaseClient.auth.signInWithOAuth({
+                    provider: 'google',
+                    options: {
+                        redirectTo: window.location.origin + window.location.pathname,
+                        queryParams: {
+                            access_type: 'offline',
+                            prompt: 'consent',
+                        }
+                    }
+                });
+
+                if (error) throw error;
+
+                showAlert('authAlert', 'Redirecting to Google...', 'success');
+
+            } catch (error) {
+                console.error('OAuth Error:', error);
+                setButtonLoading('googleLoginBtn', false);
+                showAlert('authAlert', `Authentication failed: ${error.message}`);
+            }
+        }
+
+        async function signOutAndRestart() {
+            try {
+                await supabaseClient.auth.signOut();
+                state.user = null;
+                state.userData = {};
+                sessionStorage.removeItem('onboarding_state');
+                state.goToStep(2);
+            } catch (error) {
+                console.error('Error signing out:', error);
+            }
+        }
+
+        function confirmEmailAndContinue() {
+            if (!state.user) {
+                showAlert('authAlert', 'Please sign in first');
+                return;
+            }
+
+            if (state.user.email_confirmed_at) {
+                console.log('Email already verified, skipping verification step');
+                state.goToStep(5);
+            } else {
+                console.log('Email verification required');
+                document.getElementById('verificationEmail').textContent = state.userData.email;
+                state.goToStep(4);
+            }
+        }
+
+        // Email verification functions
+        async function checkEmailVerification() {
+            try {
+                const { data: { user }, error } = await supabaseClient.auth.getUser();
+                
+                if (error) throw error;
+                
+                if (user?.email_confirmed_at) {
+                    state.user = user;
+                    showAlert('tierAlert', 'Email verified successfully!', 'success');
+                    setTimeout(() => {
+                        state.goToStep(5);
+                    }, 1500);
+                } else {
+                    showAlert('tierAlert', 'Email not yet verified. Please check your inbox and click the verification link.');
+                }
+            } catch (error) {
+                console.error('Error checking verification:', error);
+                showAlert('tierAlert', 'Error checking verification status. Please try again.');
+            }
+        }
+
+        async function resendVerificationEmail() {
+            try {
+                const resendBtn = document.getElementById('resendBtn');
+                setButtonLoading('resendBtn');
+
+                const { error } = await supabaseClient.auth.resend({
+                    type: 'signup',
+                    email: state.userData.email
+                });
+
+                if (error) throw error;
+
+                showAlert('tierAlert', 'Verification email sent again!', 'success');
+                
+                setTimeout(() => {
+                    setButtonLoading('resendBtn', false);
+                }, 3000);
+
+            } catch (error) {
+                console.error('Error resending email:', error);
+                showAlert('tierAlert', 'Error sending email. Please try again.');
+                setButtonLoading('resendBtn', false);
+            }
+        }
+
+        // Plan selection functions
+        function selectPlan(planId) {
+            document.querySelectorAll('.pricing-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+
+            const selectedCard = document.querySelector(`[data-plan="${planId}"]`);
+            selectedCard.classList.add('selected');
+
+            state.selectedPlan = planId;
+            state.saveToStorage();
+
+            const selectBtn = document.getElementById('selectPlanBtn');
+            selectBtn.disabled = false;
+            selectBtn.style.opacity = '1';
+            selectBtn.textContent = `Continue with ${planId.charAt(0).toUpperCase() + planId.slice(1)} Plan`;
+        }
+
+        function confirmPlanSelection() {
+            if (!state.selectedPlan) {
+                showAlert('tierAlert', 'Please select a plan to continue.');
+                return;
+            }
+
+            state.userData.plan = state.selectedPlan;
+            state.saveToStorage();
+
+            setTimeout(() => {
+                if (state.userData.name) {
+                    document.getElementById('fullName').value = state.userData.name;
+                }
+            }, 100);
+
+            nextStep();
+        }
+
+        // Profile completion
+        async function completeProfile() {
+            try {
+                const form = document.getElementById('profileForm');
+                const formData = new FormData(form);
+
+                if (!formData.get('fullName')) {
+                    showAlert('profileAlert', 'Please enter your full name');
+                    return;
+                }
+
+                state.userData.fullName = formData.get('fullName');
+                state.userData.jobTitle = formData.get('jobTitle');
+                state.userData.company = formData.get('company');
+                state.userData.industry = formData.get('industry');
+
+                try {
+                    if (state.user?.id) {
+                        const { error } = await supabaseClient
+                            .from('profiles')
+                            .upsert({
+                                id: state.user.id,
+                                full_name: state.userData.fullName,
+                                job_title: state.userData.jobTitle,
+                                company: state.userData.company,
+                                industry: state.userData.industry,
+                                selected_plan: state.selectedPlan,
+                                onboarding_completed: true,
+                                updated_at: new Date().toISOString()
+                            });
+
+                        if (error && error.code !== '42P01') {
+                            console.warn('Database save failed:', error);
+                        }
+                    }
+                } catch (dbError) {
+                    console.warn('Database operation failed:', dbError);
+                }
+
+                state.saveToStorage();
+                nextStep();
+
+            } catch (error) {
+                console.error('Error completing profile:', error);
+                showAlert('profileAlert', 'Error saving profile. Please try again.');
+            }
+        }
+
+        function goToDashboard() {
+            localStorage.setItem('onboardingComplete', 'true');
+            localStorage.setItem('userData', JSON.stringify(state.userData));
+            sessionStorage.removeItem('onboarding_state');
+
+            alert('Onboarding Complete! 🎉\n\nIn a real application, you would now be redirected to your dashboard.');
+        }
+
+        // Auth state management
+        supabaseClient.auth.onAuthStateChange(async (event, session) => {
+            console.log('Auth state changed:', event, session);
+
+            if (event === 'SIGNED_IN' && session) {
+                state.user = session.user;
+                state.userData.email = session.user.email;
+                state.userData.name = session.user.user_metadata?.full_name || session.user.email;
+
+                updateUserInfo();
+
+                if (state.currentStep === 2) {
+                    showAlert('authAlert', 'Authentication successful!', 'success');
+                    setTimeout(() => {
+                        state.goToStep(3);
+                    }, 1500);
+                }
+            }
+
+            if (event === 'SIGNED_OUT') {
+                state.user = null;
+                state.userData = {};
+            }
+        });
+
+        function updateUserInfo() {
+            if (state.user && state.userData.email) {
+                const userAvatar = document.getElementById('userAvatar');
+                const userName = document.getElementById('userName');
+                const userEmail = document.getElementById('userEmail');
+
+                if (userAvatar && userName && userEmail) {
+                    userAvatar.textContent = state.userData.name ? state.userData.name.charAt(0).toUpperCase() : '👤';
+                    userName.textContent = state.userData.name || 'User';
+                    userEmail.textContent = state.userData.email;
+                }
+            }
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', async () => {
+            state.updateProgress();
+            state.updateNavigation();
+            state.updateStepDots();
+            
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            
+            if (session?.user) {
+                state.user = session.user;
+                state.userData.email = session.user.email;
+                state.userData.name = session.user.user_metadata?.full_name || session.user.email;
+                
+                if (state.currentStep <= 2) {
+                    updateUserInfo();
+                    state.goToStep(3);
+                }
+            }
+
+            initializeGoogleAuth();
+
+            console.log('ZmartyBrain Mobile Onboarding initialized');
+        });
+
+        // Prevent browser back button
+        window.addEventListener('popstate', (event) => {
+            history.pushState(null, null, window.location.href);
+        });
+
+        history.pushState(null, null, window.location.href);
+    </script>
+</body>
+</html>

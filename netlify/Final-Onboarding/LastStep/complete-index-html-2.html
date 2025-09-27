@@ -1,0 +1,2167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>ZmartyBrain - Professional Onboarding</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            overflow-x: hidden;
+        }
+
+        .onboarding-container {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 32px 64px rgba(0, 0, 0, 0.12);
+            max-width: 420px;
+            width: 100%;
+            height: 700px;
+            position: relative;
+            overflow: hidden;
+            touch-action: pan-y;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .progress-header {
+            padding: 16px 20px 12px;
+            border-bottom: 1px solid #f1f5f9;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #f1f5f9;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 4px;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 0%;
+        }
+
+        .progress-text {
+            font-size: 14px;
+            color: #64748b;
+            text-align: center;
+        }
+
+        .navigation-arrows {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            right: 20px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-arrow {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+            opacity: 1;
+        }
+
+        .nav-arrow:hover:not(.disabled) {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+            transform: scale(1.05);
+        }
+
+        .nav-arrow.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .nav-arrow svg {
+            color: #64748b;
+        }
+
+        .nav-arrow:hover:not(.disabled) svg {
+            color: #475569;
+        }
+
+        .slides-container {
+            position: relative;
+            width: 100%;
+            flex: 1;
+            overflow: hidden;
+            display: flex;
+        }
+
+        .step {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 20px 24px 60px;
+            overflow-y: auto;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .step.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(0);
+            z-index: 10;
+        }
+
+        .step.prev {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(-100%);
+            z-index: 1;
+        }
+
+        .step.next {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(100%);
+            z-index: 1;
+        }
+
+        .swipe-indicator {
+            position: absolute;
+            bottom: 90px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            color: #94a3b8;
+            display: none;
+            align-items: center;
+            gap: 4px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 8px 12px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 16px;
+            margin: 0 auto 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        h1 {
+            color: #1e293b;
+            font-size: 24px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 8px;
+            line-height: 1.2;
+        }
+
+        h2 {
+            color: #1e293b;
+            font-size: 20px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 12px;
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            color: #64748b;
+            font-size: 14px;
+            text-align: center;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px 24px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 16px;
+            min-height: 56px;
+            touch-action: manipulation;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-primary:hover, .btn-primary:active {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f8fafc;
+            color: #475569;
+            border: 2px solid #e2e8f0;
+        }
+
+        .btn-secondary:hover, .btn-secondary:active {
+            background: #f1f5f9;
+        }
+
+        .btn-google {
+            background: white;
+            color: #374151;
+            border: 2px solid #e5e7eb;
+            font-weight: 500;
+        }
+
+        .btn-google:hover, .btn-google:active {
+            background: #f9fafb;
+            border-color: #d1d5db;
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-danger:hover, .btn-danger:active {
+            background: #dc2626;
+        }
+
+        .google-icon {
+            width: 20px;
+            height: 20px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="%234285f4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="%2334a853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="%23fbbc05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="%23ea4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>') center/contain no-repeat;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #374151;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.2s ease;
+            background: white;
+            min-height: 52px;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .verification-card {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        .verification-icon {
+            width: 64px;
+            height: 64px;
+            background: #dbeafe;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 24px;
+        }
+
+        .user-info {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 24px 0;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .user-avatar {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .user-details h3 {
+            color: #1e293b;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .user-details p {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin: 16px 0;
+        }
+
+        .pricing-card {
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            background: white;
+            touch-action: manipulation;
+        }
+
+        .pricing-card:hover, .pricing-card:active {
+            border-color: #667eea;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .pricing-card.selected {
+            border-color: #667eea;
+            background: #fafbff;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+
+        .pricing-card.popular::before {
+            content: 'Most Popular';
+            position: absolute;
+            top: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .plan-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 6px;
+        }
+
+        .plan-price {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 12px;
+        }
+
+        .plan-price .period {
+            font-size: 12px;
+            color: #64748b;
+            font-weight: 400;
+        }
+
+        .plan-features {
+            list-style: none;
+            text-align: left;
+        }
+
+        .plan-features li {
+            padding: 2px 0;
+            color: #475569;
+            font-size: 12px;
+        }
+
+        .plan-features li::before {
+            content: '✓';
+            color: #10b981;
+            font-weight: bold;
+            margin-right: 6px;
+        }
+
+        .alert {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+            font-size: 14px;
+            display: none;
+        }
+
+        .alert.success {
+            background: #f0fdf4;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+
+        .alert.error {
+            background: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+        }
+
+        .alert.warning {
+            background: #fffbeb;
+            color: #92400e;
+            border: 1px solid #fde68a;
+        }
+
+        .loading-spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ffffff40;
+            border-top: 2px solid #ffffff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .step-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            padding: 16px 0;
+            background: white;
+            flex-shrink: 0;
+        }
+
+        .step-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            transition: all 0.2s ease;
+        }
+
+        .step-dot.active {
+            background: #667eea;
+            transform: scale(1.2);
+        }
+
+        .step-dot.completed {
+            background: #10b981;
+        }
+
+        .auth-tabs {
+            display: flex;
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 4px;
+            margin-bottom: 24px;
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            color: #64748b;
+        }
+
+        .auth-tab.active {
+            background: white;
+            color: #1e293b;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .forgot-password-link {
+            text-align: center;
+            margin-top: 16px;
+        }
+
+        .forgot-password-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .forgot-password-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Mobile Optimizations */
+        @media (max-width: 768px) {
+            body {
+                padding: 5px;
+            }
+            
+            .onboarding-container {
+                border-radius: 16px;
+                margin: 0;
+                height: calc(100vh - 10px);
+                max-height: 100vh;
+            }
+            
+            .progress-header {
+                padding: 12px 16px 8px;
+            }
+            
+            .step {
+                padding: 16px 20px 60px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            h2 {
+                font-size: 20px;
+            }
+            
+            .subtitle {
+                font-size: 14px;
+                margin-bottom: 20px;
+            }
+            
+            .btn {
+                padding: 16px 20px;
+                font-size: 16px;
+                min-height: 52px;
+            }
+            
+            .navigation-arrows {
+                display: none;
+            }
+            
+            .swipe-indicator {
+                display: flex;
+            }
+            
+            .pricing-grid {
+                gap: 12px;
+            }
+            
+            .pricing-card {
+                padding: 16px;
+            }
+            
+            .user-info {
+                padding: 16px;
+                gap: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .step {
+                padding: 12px 16px 50px;
+            }
+            
+            .form-group input, .form-group select {
+                padding: 14px 12px;
+                font-size: 16px;
+            }
+            
+            .verification-card {
+                padding: 16px 12px;
+            }
+        }
+
+        @media (max-height: 600px) and (orientation: landscape) {
+            .onboarding-container {
+                height: calc(100vh - 10px);
+            }
+            
+            .step {
+                padding: 12px 20px 40px;
+            }
+            
+            .logo {
+                width: 48px;
+                height: 48px;
+                font-size: 20px;
+                margin-bottom: 12px;
+            }
+            
+            h1, h2 {
+                margin-bottom: 6px;
+            }
+            
+            .subtitle {
+                margin-bottom: 16px;
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="onboarding-container">
+        <!-- Progress Header -->
+        <div class="progress-header">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-text" id="progressText">Step 1 of 9</div>
+            
+            <!-- Navigation Arrows -->
+            <div class="navigation-arrows">
+                <div class="nav-arrow" id="prevArrow" onclick="prevStep()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M15 18l-6-6 6-6"></path>
+                    </svg>
+                </div>
+                <div class="nav-arrow" id="nextArrow" onclick="nextStep()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 18l6-6-6-6"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="slides-container" id="slidesContainer">
+            <!-- Step 1: Welcome -->
+            <div class="step active" id="step1">
+                <div class="logo">ZB</div>
+                <h1>Welcome to ZmartyBrain</h1>
+                <p class="subtitle">Transform your business with AI-powered insights. Let's get you set up in under 3 minutes.</p>
+                
+                <div style="margin: 32px 0; text-align: left;">
+                    <div style="display: flex; align-items: center; margin-bottom: 16px;">
+                        <div style="width: 32px; height: 32px; background: #dbeafe; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 12px; color: #1d4ed8; font-weight: bold; flex-shrink: 0;">1</div>
+                        <span style="color: #374151;">Create your account (1 minute)</span>
+                    </div>
+                    <div style="display: flex; align-items: center; margin-bottom: 16px;">
+                        <div style="width: 32px; height: 32px; background: #dbeafe; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 12px; color: #1d4ed8; font-weight: bold; flex-shrink: 0;">2</div>
+                        <span style="color: #374151;">Verify your email (30 seconds)</span>
+                    </div>
+                    <div style="display: flex; align-items: center; margin-bottom: 16px;">
+                        <div style="width: 32px; height: 32px; background: #dbeafe; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 12px; color: #1d4ed8; font-weight: bold; flex-shrink: 0;">3</div>
+                        <span style="color: #374151;">Choose your plan (1 minute)</span>
+                    </div>
+                    <div style="display: flex; align-items: center;">
+                        <div style="width: 32px; height: 32px; background: #dbeafe; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 12px; color: #1d4ed8; font-weight: bold; flex-shrink: 0;">4</div>
+                        <span style="color: #374151;">Complete your profile (30 seconds)</span>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" onclick="nextStep()">
+                    Get Started
+                </button>
+                
+                <div class="swipe-indicator">
+                    👈 Swipe to navigate
+                </div>
+            </div>
+
+            <!-- Step 2: Authentication Choice -->
+            <div class="step" id="step2">
+                <div class="logo">ZB</div>
+                <h2>Create Your Account</h2>
+                <p class="subtitle">Choose how you'd like to sign up for ZmartyBrain.</p>
+                
+                <div class="auth-tabs">
+                    <div class="auth-tab active" id="emailTab" onclick="switchAuthMethod('email')">Email</div>
+                    <div class="auth-tab" id="googleTab" onclick="switchAuthMethod('google')">Google</div>
+                </div>
+
+                <!-- Email Registration Form -->
+                <div id="emailAuth">
+                    <form id="registrationForm">
+                        <div class="form-group">
+                            <label for="regEmail">Email Address</label>
+                            <input type="email" id="regEmail" name="email" required placeholder="your.email@domain.com">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="regPassword">Password</label>
+                            <input type="password" id="regPassword" name="password" required placeholder="At least 8 characters">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="regConfirmPassword">Confirm Password</label>
+                            <input type="password" id="regConfirmPassword" name="confirmPassword" required placeholder="Confirm your password">
+                        </div>
+                    </form>
+
+                    <button class="btn btn-primary" id="regEmailBtn" onclick="registerWithEmail()">
+                        Create Account
+                    </button>
+
+                    <div class="forgot-password-link">
+                        <a href="#" onclick="showForgotPassword()">Already have an account? Sign in</a>
+                    </div>
+                </div>
+
+                <!-- Google Authentication -->
+                <div id="googleAuth" class="hidden">
+                    <button class="btn btn-google" id="googleLoginBtn" onclick="signInWithGoogle()">
+                        <div class="google-icon"></div>
+                        Continue with Google
+                    </button>
+                    
+                    <div style="text-align: center; margin-top: 24px;">
+                        <p style="font-size: 12px; color: #6b7280;">
+                            We'll use your Google account to create your secure ZmartyBrain profile.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="alert" id="authAlert"></div>
+
+                <div style="text-align: center; margin-top: 24px;">
+                    <p style="font-size: 12px; color: #6b7280;">
+                        By continuing, you agree to our Terms of Service and Privacy Policy
+                    </p>
+                </div>
+
+                <button class="btn btn-secondary" onclick="prevStep()">Back</button>
+            </div>
+
+            <!-- Step 3: Email Confirmation -->
+            <div class="step" id="step3">
+                <div class="logo">ZB</div>
+                <h2>Continue with this account?</h2>
+                <p class="subtitle">We found your Google account. Confirm to proceed with your ZmartyBrain setup.</p>
+
+                <div class="user-info" id="userInfo">
+                    <div class="user-avatar" id="userAvatar">👤</div>
+                    <div class="user-details">
+                        <h3 id="userName">Loading...</h3>
+                        <p id="userEmail">Loading...</p>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" onclick="confirmAccountAndContinue()">
+                    Yes, Continue with this Account
+                </button>
+                <button class="btn btn-secondary" onclick="signOutAndRestart()">
+                    Use Different Account
+                </button>
+            </div>
+
+            <!-- Step 4: Email Verification -->
+            <div class="step" id="step4">
+                <div class="logo">ZB</div>
+                <h2>Verify Your Email</h2>
+                <p class="subtitle">We've sent a 6-digit verification code to <strong id="verificationEmail">your email</strong>.</p>
+
+                <div class="verification-card">
+                    <div class="verification-icon">🔢</div>
+                    <h3 style="color: #1e293b; margin-bottom: 8px;">Enter Verification Code</h3>
+                    <p style="color: #64748b; font-size: 14px; margin-bottom: 20px;">
+                        Check your email for a 6-digit code and enter it below.
+                    </p>
+                    
+                    <!-- 6-Digit Code Input -->
+                    <div style="display: flex; gap: 8px; justify-content: center; margin: 20px 0;">
+                        <input type="text" id="code1" maxlength="1" style="width: 40px; height: 50px; text-align: center; font-size: 20px; font-weight: bold; border: 2px solid #e5e7eb; border-radius: 8px;" oninput="moveToNext(this, 'code2')" onkeydown="moveToPrev(event, this, null)">
+                        <input type="text" id="code2" maxlength="1" style="width: 40px; height: 50px; text-align: center; font-size: 20px; font-weight: bold; border: 2px solid #e5e7eb; border-radius: 8px;" oninput="moveToNext(this, 'code3')" onkeydown="moveToPrev(event, this, 'code1')">
+                        <input type="text" id="code3" maxlength="1" style="width: 40px; height: 50px; text-align: center; font-size: 20px; font-weight: bold; border: 2px solid #e5e7eb; border-radius: 8px;" oninput="moveToNext(this, 'code4')" onkeydown="moveToPrev(event, this, 'code2')">
+                        <input type="text" id="code4" maxlength="1" style="width: 40px; height: 50px; text-align: center; font-size: 20px; font-weight: bold; border: 2px solid #e5e7eb; border-radius: 8px;" oninput="moveToNext(this, 'code5')" onkeydown="moveToPrev(event, this, 'code3')">
+                        <input type="text" id="code5" maxlength="1" style="width: 40px; height: 50px; text-align: center; font-size: 20px; font-weight: bold; border: 2px solid #e5e7eb; border-radius: 8px;" oninput="moveToNext(this, 'code6')" onkeydown="moveToPrev(event, this, 'code4')">
+                        <input type="text" id="code6" maxlength="1" style="width: 40px; height: 50px; text-align: center; font-size: 20px; font-weight: bold; border: 2px solid #e5e7eb; border-radius: 8px;" oninput="verifyCode()" onkeydown="moveToPrev(event, this, 'code5')">
+                    </div>
+                    
+                    <div style="background: white; padding: 16px; border-radius: 8px; margin-top: 16px;">
+                        <p style="color: #374151; font-size: 13px; font-weight: 500;">Alternative: Magic Link</p>
+                        <p style="color: #6b7280; font-size: 12px; margin: 8px 0;">
+                            You can also click the magic link in your email to verify instantly.
+                        </p>
+                        <p style="color: #374151; font-size: 13px; font-weight: 500;">Didn't receive it?</p>
+                        <ul style="text-align: left; margin: 8px 0; color: #6b7280; font-size: 12px;">
+                            <li>Check your spam/junk folder</li>
+                            <li>Wait 2-3 minutes for delivery</li>
+                            <li>Make sure the email address is correct</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Email Status Indicator -->
+                    <div id="emailStatus" style="margin-top: 12px; padding: 8px; border-radius: 6px; font-size: 12px;">
+                        <span id="emailStatusText">Waiting for verification...</span>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" onclick="verifyEmailCode()" id="verifyCodeBtn">
+                    Verify Code
+                </button>
+                <button class="btn btn-secondary" onclick="checkEmailVerification()">
+                    I Used Magic Link
+                </button>
+                <button class="btn btn-secondary" onclick="resendVerificationEmail()" id="resendBtn">
+                    Resend Code & Link
+                </button>
+                <button class="btn btn-secondary" onclick="changeEmail()">
+                    Change Email Address
+                </button>
+            </div>
+
+            <!-- Step 5: Password Reset (if needed) -->
+            <div class="step" id="step5">
+                <div class="logo">ZB</div>
+                <h2>Reset Your Password</h2>
+                <p class="subtitle">Enter your email address and we'll send you a reset link.</p>
+
+                <form id="forgotPasswordForm">
+                    <div class="form-group">
+                        <label for="resetEmail">Email Address</label>
+                        <input type="email" id="resetEmail" name="email" required placeholder="your.email@domain.com">
+                    </div>
+                </form>
+
+                <button class="btn btn-primary" id="sendResetBtn" onclick="sendPasswordReset()">
+                    Send Reset Link
+                </button>
+                
+                <div class="alert" id="resetAlert"></div>
+
+                <button class="btn btn-secondary" onclick="goToAuth()">
+                    Back to Sign In
+                </button>
+            </div>
+
+            <!-- Step 6: New Password (from reset link) -->
+            <div class="step" id="step6">
+                <div class="logo">ZB</div>
+                <h2>Set New Password</h2>
+                <p class="subtitle">Enter your new password to complete the reset process.</p>
+
+                <form id="newPasswordForm">
+                    <div class="form-group">
+                        <label for="newPassword">New Password</label>
+                        <input type="password" id="newPassword" name="password" required placeholder="At least 8 characters">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirmNewPassword">Confirm New Password</label>
+                        <input type="password" id="confirmNewPassword" name="confirmPassword" required placeholder="Confirm your new password">
+                    </div>
+                </form>
+
+                <button class="btn btn-primary" id="updatePasswordBtn" onclick="updatePassword()">
+                    Update Password
+                </button>
+                
+                <div class="alert" id="passwordAlert"></div>
+
+                <button class="btn btn-secondary" onclick="goToAuth()">
+                    Back to Sign In
+                </button>
+            </div>
+
+            <!-- Step 7: Tier Selection -->
+            <div class="step" id="step7">
+                <h2>Choose Your Plan</h2>
+                <p class="subtitle">Select the plan that fits your needs. You can upgrade or downgrade anytime.</p>
+
+                <div class="pricing-grid">
+                    <div class="pricing-card" data-plan="starter" onclick="selectPlan('starter')">
+                        <div class="plan-name">Starter</div>
+                        <div class="plan-price">$0 <span class="period">/month</span></div>
+                        <ul class="plan-features">
+                            <li>Up to 1,000 AI queries</li>
+                            <li>Basic analytics</li>
+                            <li>Email support</li>
+                            <li>1 project</li>
+                        </ul>
+                    </div>
+
+                    <div class="pricing-card popular" data-plan="professional" onclick="selectPlan('professional')">
+                        <div class="plan-name">Professional</div>
+                        <div class="plan-price">$29 <span class="period">/month</span></div>
+                        <ul class="plan-features">
+                            <li>Up to 25,000 AI queries</li>
+                            <li>Advanced analytics</li>
+                            <li>Priority support</li>
+                            <li>Unlimited projects</li>
+                            <li>Team collaboration</li>
+                            <li>Custom integrations</li>
+                        </ul>
+                    </div>
+
+                    <div class="pricing-card" data-plan="enterprise" onclick="selectPlan('enterprise')">
+                        <div class="plan-name">Enterprise</div>
+                        <div class="plan-price">$99 <span class="period">/month</span></div>
+                        <ul class="plan-features">
+                            <li>Unlimited AI queries</li>
+                            <li>Enterprise analytics</li>
+                            <li>24/7 dedicated support</li>
+                            <li>Unlimited projects</li>
+                            <li>Advanced security</li>
+                            <li>Custom AI models</li>
+                            <li>API access</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="alert" id="tierAlert"></div>
+
+                <button class="btn btn-primary" id="selectPlanBtn" onclick="confirmPlanSelection()" disabled style="opacity: 0.5;">
+                    Continue with Selected Plan
+                </button>
+                <button class="btn btn-secondary" onclick="prevStep()">Back</button>
+            </div>
+
+            <!-- Step 8: Profile Completion -->
+            <div class="step" id="step8">
+                <h2>Complete Your Profile</h2>
+                <p class="subtitle">Just a few more details to personalize your ZmartyBrain experience.</p>
+
+                <form id="profileForm">
+                    <div class="form-group">
+                        <label for="fullName">Full Name *</label>
+                        <input type="text" id="fullName" name="fullName" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="jobTitle">Job Title</label>
+                        <input type="text" id="jobTitle" name="jobTitle" placeholder="e.g., Product Manager, CEO">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="company">Company</label>
+                        <input type="text" id="company" name="company" placeholder="Your company name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="industry">Industry</label>
+                        <select id="industry" name="industry">
+                            <option value="">Select your industry</option>
+                            <option value="technology">Technology</option>
+                            <option value="healthcare">Healthcare</option>
+                            <option value="finance">Finance</option>
+                            <option value="retail">Retail</option>
+                            <option value="manufacturing">Manufacturing</option>
+                            <option value="education">Education</option>
+                            <option value="consulting">Consulting</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </form>
+
+                <div class="alert" id="profileAlert"></div>
+
+                <button class="btn btn-primary" id="completeBtn" onclick="completeProfile()">
+                    Complete Setup
+                </button>
+                <button class="btn btn-secondary" onclick="prevStep()">Back</button>
+            </div>
+
+            <!-- Step 9: Welcome Complete -->
+            <div class="step" id="step9">
+                <div class="verification-card">
+                    <div class="verification-icon">🎉</div>
+                    <h2 style="color: #1e293b; margin-bottom: 16px;">Welcome to ZmartyBrain!</h2>
+                    <p style="color: #64748b; margin-bottom: 24px;">
+                        Your account is ready. Let's explore your personalized dashboard.
+                    </p>
+
+                    <div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                            <span style="color: #374151; font-weight: 500;">✓ Account created</span>
+                            <span style="color: #10b981;">Complete</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                            <span style="color: #374151; font-weight: 500;">✓ Email verified</span>
+                            <span style="color: #10b981;">Complete</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="color: #374151; font-weight: 500;">✓ Profile setup</span>
+                            <span style="color: #10b981;">Complete</span>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" onclick="goToDashboard()">
+                    Launch Dashboard
+                </button>
+            </div>
+        </div>
+
+        <!-- Step Dots for mobile -->
+        <div class="step-dots" id="stepDots">
+            <div class="step-dot active"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Supabase
+        const SUPABASE_URL = 'https://xhskmqsgtdhehzlvtuns.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhoc2ttcXNndGRoZWh6bHZ0dW5zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjcyOTcyMzQsImV4cCI6MjA0Mjg3MzIzNH0.ULAf9vNHS4nasSnv9UOKS2MCKsSxcMtV3C-R7Wm6qMw';
+        
+        const { createClient } = supabase;
+        const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // Global state management
+        class OnboardingState {
+            constructor() {
+                this.currentStep = 1;
+                this.totalSteps = 9;
+                this.user = null;
+                this.userData = {};
+                this.selectedPlan = null;
+                this.completedSteps = new Set();
+                this.direction = 'forward';
+                this.authMethod = 'email';
+                this.initializeFromStorage();
+                this.initializeSwipeHandlers();
+            }
+
+            initializeFromStorage() {
+                const savedState = sessionStorage.getItem('onboarding_state');
+                if (savedState) {
+                    const data = JSON.parse(savedState);
+                    this.currentStep = data.currentStep || 1;
+                    this.userData = data.userData || {};
+                    this.selectedPlan = data.selectedPlan;
+                    this.completedSteps = new Set(data.completedSteps || []);
+                    this.authMethod = data.authMethod || 'email';
+                }
+            }
+
+            saveToStorage() {
+                const state = {
+                    currentStep: this.currentStep,
+                    userData: this.userData,
+                    selectedPlan: this.selectedPlan,
+                    completedSteps: Array.from(this.completedSteps),
+                    authMethod: this.authMethod
+                };
+                sessionStorage.setItem('onboarding_state', JSON.stringify(state));
+            }
+
+            goToStep(step, direction = 'forward', force = false) {
+                if (step < 1 || step > this.totalSteps) return;
+
+                // Check if step transition is allowed (unless forced)
+                if (!force && !this.canNavigateToStep(step)) {
+                    console.log(`Navigation to step ${step} blocked - requirements not met`);
+                    return;
+                }
+
+                const previousStep = this.currentStep;
+                
+                // Mark previous step as completed
+                if (step > previousStep) {
+                    this.completedSteps.add(previousStep);
+                }
+                
+                // Update current step
+                this.currentStep = step;
+                
+                // Apply classes to all steps in one go to prevent flickering
+                document.querySelectorAll('.step').forEach((stepEl, index) => {
+                    const stepNum = index + 1;
+                    
+                    // Remove all classes first
+                    stepEl.classList.remove('active', 'prev', 'next');
+                    
+                    // Apply appropriate class
+                    if (stepNum === this.currentStep) {
+                        stepEl.classList.add('active');
+                    } else if (stepNum < this.currentStep) {
+                        stepEl.classList.add('prev');
+                    } else {
+                        stepEl.classList.add('next');
+                    }
+                });
+                
+                // Update UI
+                this.updateProgress();
+                this.updateNavigation();
+                this.updateStepDots();
+                this.saveToStorage();
+            }
+
+            canNavigateToStep(targetStep) {
+                const currentStep = this.currentStep;
+                
+                // Always allow going backwards
+                if (targetStep < currentStep) {
+                    return true;
+                }
+                
+                // Allow skipping only one step forward (or forced navigation)
+                if (targetStep > currentStep + 1) {
+                    return false;
+                }
+                
+                // Check step-specific requirements
+                switch (currentStep) {
+                    case 1: // Welcome - can always proceed
+                        return true;
+                    
+                    case 2: // Auth - need user to be signed in
+                        return this.user !== null;
+                    
+                    case 3: // Google confirmation - need user confirmed
+                        return this.user !== null;
+                    
+                    case 4: // Email verification - MUST be verified to proceed to tiers
+                        if (targetStep >= 7) {
+                            const isVerified = this.user?.email_confirmed_at !== null;
+                            if (!isVerified) {
+                                console.log('Blocking navigation to tiers - email not verified');
+                                showAlert('tierAlert', 'Please verify your email with the 6-digit code or magic link before selecting a plan.', 'warning');
+                            }
+                            return isVerified;
+                        }
+                        return true;
+                    
+                    case 5: // Password reset request - can always proceed
+                        return true;
+                        
+                    case 6: // Password reset form - can always proceed
+                        return true;
+                    
+                    case 7: // Plan selection - need plan selected
+                        if (targetStep >= 8) {
+                            const hasSelectedPlan = this.selectedPlan !== null;
+                            if (!hasSelectedPlan) {
+                                showAlert('tierAlert', 'Please select a plan to continue.', 'warning');
+                            }
+                            return hasSelectedPlan;
+                        }
+                        return true;
+                    
+                    case 8: // Profile - can always proceed to completion
+                        return true;
+                    
+                    default:
+                        return true;
+                }
+            }
+
+            updateProgress() {
+                const progress = (this.currentStep / this.totalSteps) * 100;
+                const progressFill = document.getElementById('progressFill');
+                const progressText = document.getElementById('progressText');
+                if (progressFill) progressFill.style.width = `${progress}%`;
+                if (progressText) progressText.textContent = `Step ${this.currentStep} of ${this.totalSteps}`;
+            }
+
+            updateNavigation() {
+                const prevArrow = document.getElementById('prevArrow');
+                const nextArrow = document.getElementById('nextArrow');
+                
+                if (prevArrow) {
+                    if (this.currentStep === 1) {
+                        prevArrow.classList.add('disabled');
+                    } else {
+                        prevArrow.classList.remove('disabled');
+                    }
+                }
+                
+                if (nextArrow) {
+                    if (this.currentStep === this.totalSteps) {
+                        nextArrow.classList.add('disabled');
+                    } else {
+                        nextArrow.classList.remove('disabled');
+                    }
+                }
+            }
+
+            updateStepDots() {
+                const dots = document.querySelectorAll('.step-dot');
+                dots.forEach((dot, index) => {
+                    dot.classList.remove('active', 'completed');
+                    if (index + 1 < this.currentStep) {
+                        dot.classList.add('completed');
+                    } else if (index + 1 === this.currentStep) {
+                        dot.classList.add('active');
+                    }
+                });
+            }
+
+            initializeSwipeHandlers() {
+                const container = document.getElementById('slidesContainer');
+                if (!container) return;
+
+                let startX = 0;
+                let startY = 0;
+                let currentX = 0;
+                let currentY = 0;
+                let isSwipeEnabled = true;
+                let isDragging = false;
+
+                const handleTouchStart = (e) => {
+                    if (!isSwipeEnabled) return;
+                    
+                    const touch = e.touches[0];
+                    startX = touch.clientX;
+                    startY = touch.clientY;
+                    isDragging = false;
+                };
+
+                const handleTouchMove = (e) => {
+                    if (!isSwipeEnabled) return;
+                    
+                    const touch = e.touches[0];
+                    currentX = touch.clientX;
+                    currentY = touch.clientY;
+                    
+                    const deltaX = Math.abs(currentX - startX);
+                    const deltaY = Math.abs(currentY - startY);
+                    
+                    // Only consider horizontal swipes
+                    if (deltaX > deltaY && deltaX > 10) {
+                        isDragging = true;
+                        e.preventDefault(); // Prevent scrolling during horizontal swipe
+                    }
+                };
+
+                const handleTouchEnd = (e) => {
+                    if (!isSwipeEnabled || !isDragging) return;
+                    
+                    const diffX = startX - currentX;
+                    const diffY = Math.abs(startY - currentY);
+                    const threshold = 50; // Minimum swipe distance
+                    
+                    // Only process horizontal swipes that are significantly horizontal
+                    if (Math.abs(diffX) > threshold && Math.abs(diffX) > diffY) {
+                        if (diffX > 0 && this.currentStep < this.totalSteps) {
+                            // Swipe left - next step
+                            this.nextStep();
+                        } else if (diffX < 0 && this.currentStep > 1) {
+                            // Swipe right - previous step
+                            this.prevStep();
+                        }
+                    }
+                    
+                    isDragging = false;
+                };
+
+                container.addEventListener('touchstart', handleTouchStart, { passive: true });
+                container.addEventListener('touchmove', handleTouchMove, { passive: false });
+                container.addEventListener('touchend', handleTouchEnd, { passive: true });
+
+                // Disable swipe during form interactions
+                const disableSwipeElements = container.querySelectorAll('input, select, button, .pricing-card, textarea');
+                disableSwipeElements.forEach(el => {
+                    el.addEventListener('touchstart', () => {
+                        isSwipeEnabled = false;
+                    }, { passive: true });
+                    
+                    el.addEventListener('touchend', () => {
+                        setTimeout(() => {
+                            isSwipeEnabled = true;
+                        }, 100);
+                    }, { passive: true });
+                    
+                    // Also disable during focus
+                    el.addEventListener('focus', () => {
+                        isSwipeEnabled = false;
+                    });
+                    
+                    el.addEventListener('blur', () => {
+                        setTimeout(() => {
+                            isSwipeEnabled = true;
+                        }, 100);
+                    });
+                });
+            }
+
+            nextStep() {
+                if (this.currentStep < this.totalSteps) {
+                    this.goToStep(this.currentStep + 1, 'forward');
+                }
+            }
+
+            prevStep() {
+                if (this.currentStep > 1) {
+                    this.goToStep(this.currentStep - 1, 'backward');
+                }
+            }
+        }
+
+        // Initialize state
+        const state = new OnboardingState();
+
+        // Navigation functions with validation
+        function nextStep() {
+            if (state.currentStep < state.totalSteps && state.canNavigateToStep(state.currentStep + 1)) {
+                state.nextStep();
+            } else {
+                console.log('Cannot proceed - requirements not met for next step');
+                // Could show a message to user about what's needed
+            }
+        }
+
+        function prevStep() {
+            if (state.currentStep > 1) {
+                state.prevStep();
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'ArrowRight') {
+                event.preventDefault();
+                nextStep();
+            } else if (event.key === 'ArrowLeft') {
+                event.preventDefault();
+                prevStep();
+            }
+        });
+
+        // Utility functions
+        function showAlert(elementId, message, type = 'error') {
+            const alert = document.getElementById(elementId);
+            if (!alert) return;
+            
+            alert.textContent = message;
+            alert.className = `alert ${type}`;
+            alert.style.display = 'block';
+            
+            if (type === 'success') {
+                setTimeout(() => {
+                    alert.style.display = 'none';
+                }, 4000);
+            }
+        }
+
+        function hideAlert(elementId) {
+            const alert = document.getElementById(elementId);
+            if (alert) alert.style.display = 'none';
+        }
+
+        function setButtonLoading(buttonId, loading = true, originalText = '') {
+            const button = document.getElementById(buttonId);
+            if (!button) return;
+            
+            if (loading) {
+                button.dataset.originalText = button.textContent;
+                button.innerHTML = '<div class="loading-spinner"></div> Processing...';
+                button.disabled = true;
+            } else {
+                button.disabled = false;
+                button.textContent = originalText || button.dataset.originalText || 'Continue';
+            }
+        }
+
+        // Authentication Method Switching
+        function switchAuthMethod(method) {
+            state.authMethod = method;
+            
+            const emailTab = document.getElementById('emailTab');
+            const googleTab = document.getElementById('googleTab');
+            const emailAuth = document.getElementById('emailAuth');
+            const googleAuth = document.getElementById('googleAuth');
+            
+            if (method === 'email') {
+                emailTab.classList.add('active');
+                googleTab.classList.remove('active');
+                emailAuth.classList.remove('hidden');
+                googleAuth.classList.add('hidden');
+            } else {
+                googleTab.classList.add('active');
+                emailTab.classList.remove('active');
+                googleAuth.classList.remove('hidden');
+                emailAuth.classList.add('hidden');
+            }
+            
+            state.saveToStorage();
+        }
+
+        // Email Registration
+        async function registerWithEmail() {
+            try {
+                const email = document.getElementById('regEmail').value;
+                const password = document.getElementById('regPassword').value;
+                const confirmPassword = document.getElementById('regConfirmPassword').value;
+
+                if (!email || !password || !confirmPassword) {
+                    showAlert('authAlert', 'Please fill in all fields');
+                    return;
+                }
+
+                if (password !== confirmPassword) {
+                    showAlert('authAlert', 'Passwords do not match');
+                    return;
+                }
+
+                if (password.length < 8) {
+                    showAlert('authAlert', 'Password must be at least 8 characters long');
+                    return;
+                }
+
+                setButtonLoading('regEmailBtn', true);
+                hideAlert('authAlert');
+
+                console.log('Attempting registration with Resend email system...');
+
+                const { data, error } = await supabaseClient.auth.signUp({
+                    email: email,
+                    password: password,
+                    options: {
+                        emailRedirectTo: `${window.location.origin}${window.location.pathname}?verified=true`,
+                        data: {
+                            full_name: email.split('@')[0] // Basic name from email
+                        }
+                    }
+                });
+
+                if (error) throw error;
+
+                state.user = data.user;
+                state.userData.email = email;
+                state.userData.name = email.split('@')[0];
+
+                console.log('Registration result:', data);
+                console.log('User session:', data.session);
+                console.log('User confirmed:', data.user?.email_confirmed_at);
+
+                if (data.user && !data.session) {
+                    // Email verification required - this is expected with Resend
+                    document.getElementById('verificationEmail').textContent = email;
+                    showAlert('authAlert', 'Account created! Verification email sent via Resend. Check your inbox.', 'success');
+                    
+                    // Store the fact that we sent an email
+                    sessionStorage.setItem('email_sent_time', new Date().toISOString());
+                    sessionStorage.setItem('pending_email', email);
+                    
+                    setTimeout(() => {
+                        state.goToStep(4, 'forward', true); // Force to verification step
+                    }, 2000);
+                } else if (data.session) {
+                    // User immediately signed in (email confirmation disabled)
+                    showAlert('authAlert', 'Account created and logged in! Email confirmation disabled.', 'success');
+                    setTimeout(() => {
+                        state.goToStep(7, 'forward', true); // Skip email verification
+                    }, 1500);
+                } else {
+                    showAlert('authAlert', 'Unexpected registration response. Please try again.', 'warning');
+                }
+
+            } catch (error) {
+                console.error('Registration Error:', error);
+                setButtonLoading('regEmailBtn', false);
+                
+                let errorMessage = error.message;
+                if (error.message.includes('email rate limit')) {
+                    errorMessage = 'Too many email requests. Please wait 60 seconds before trying again.';
+                } else if (error.message.includes('User already registered')) {
+                    errorMessage = 'An account with this email already exists. Try signing in instead.';
+                } else if (error.message.includes('Invalid email')) {
+                    errorMessage = 'Please enter a valid email address.';
+                } else if (error.message.includes('smtp')) {
+                    errorMessage = 'Email service error. Please contact support if this persists.';
+                }
+                
+                showAlert('authAlert', errorMessage);
+            }
+        }
+
+        // Google Authentication
+        async function signInWithGoogle() {
+            try {
+                setButtonLoading('googleLoginBtn');
+                hideAlert('authAlert');
+
+                const { data, error } = await supabaseClient.auth.signInWithOAuth({
+                    provider: 'google',
+                    options: {
+                        redirectTo: `${window.location.origin}${window.location.pathname}?google=true`,
+                        queryParams: {
+                            access_type: 'offline',
+                            prompt: 'consent',
+                        }
+                    }
+                });
+
+                if (error) throw error;
+
+                showAlert('authAlert', 'Redirecting to Google...', 'success');
+
+            } catch (error) {
+                console.error('OAuth Error:', error);
+                setButtonLoading('googleLoginBtn', false);
+                showAlert('authAlert', `Google authentication failed: ${error.message}`);
+            }
+        }
+
+        // Account confirmation for Google users
+        function confirmAccountAndContinue() {
+            console.log('Confirm account called with user:', state.user);
+            
+            if (!state.user) {
+                showAlert('authAlert', 'Please sign in first');
+                return;
+            }
+
+            // Ensure user info is populated
+            if (!state.userData.name || state.userData.name === 'User') {
+                state.userData.name = state.user.user_metadata?.full_name || 
+                                     state.user.user_metadata?.name || 
+                                     state.user.user_metadata?.display_name ||
+                                     state.user.email?.split('@')[0];
+                updateUserInfo();
+            }
+
+            // For Google users, skip email verification if already confirmed
+            if (state.user.email_confirmed_at) {
+                console.log('Google user already verified, proceeding to plan selection');
+                state.goToStep(7, 'forward', true); // Force navigation
+            } else {
+                console.log('Email verification required');
+                document.getElementById('verificationEmail').textContent = state.userData.email;
+                state.goToStep(4, 'forward', true); // Force navigation
+            }
+        }
+
+        function signOutAndRestart() {
+            supabaseClient.auth.signOut().then(() => {
+                state.user = null;
+                state.userData = {};
+                sessionStorage.removeItem('onboarding_state');
+                state.goToStep(2, 'forward', true);
+            }).catch(error => {
+                console.error('Error signing out:', error);
+            });
+        }
+
+        // 6-digit code verification functions
+        function moveToPrev(event, current, prevId) {
+            if (event.key === 'Backspace' && current.value === '' && prevId) {
+                document.getElementById(prevId).focus();
+            }
+        }
+
+        function getVerificationCode() {
+            const code = [];
+            for (let i = 1; i <= 6; i++) {
+                const value = document.getElementById(`code${i}`).value;
+                if (value === '') return null;
+                code.push(value);
+            }
+            return code.join('');
+        }
+
+        function clearVerificationCode() {
+            for (let i = 1; i <= 6; i++) {
+                document.getElementById(`code${i}`).value = '';
+            }
+            document.getElementById('code1').focus();
+        }
+
+        async function verifyCode() {
+            const code = getVerificationCode();
+            if (!code || code.length !== 6) {
+                showAlert('tierAlert', 'Please enter all 6 digits of the verification code.', 'warning');
+                return;
+            }
+
+            try {
+                setButtonLoading('verifyCodeBtn', true);
+                
+                const { data, error } = await supabaseClient.auth.verifyOtp({
+                    email: state.userData.email,
+                    token: code,
+                    type: 'signup'
+                });
+
+                if (error) throw error;
+
+                if (data.session) {
+                    state.user = data.session.user;
+                    showAlert('tierAlert', 'Email verified successfully!', 'success');
+                    setTimeout(() => {
+                        state.goToStep(7, 'forward', true); // Go to tiers
+                    }, 1500);
+                } else {
+                    throw new Error('Verification failed - no session created');
+                }
+
+            } catch (error) {
+                console.error('Code verification error:', error);
+                setButtonLoading('verifyCodeBtn', false);
+                clearVerificationCode();
+                
+                let errorMessage = error.message;
+                if (error.message.includes('invalid')) {
+                    errorMessage = 'Invalid verification code. Please check and try again.';
+                } else if (error.message.includes('expired')) {
+                    errorMessage = 'Verification code has expired. Please request a new one.';
+                }
+                
+                showAlert('tierAlert', errorMessage, 'error');
+            }
+        }
+
+        async function verifyEmailCode() {
+            await verifyCode();
+        }
+
+        // Email verification functions
+        async function checkEmailVerification() {
+            try {
+                // Force refresh the user session
+                const { data: { user }, error } = await supabaseClient.auth.refreshSession();
+                
+                if (error) {
+                    console.log('Refresh error, trying getUser:', error);
+                    const { data: userData, error: getUserError } = await supabaseClient.auth.getUser();
+                    if (getUserError) throw getUserError;
+                    user = userData.user;
+                }
+                
+                console.log('Current user verification status:', user?.email_confirmed_at);
+                
+                if (user?.email_confirmed_at) {
+                    state.user = user;
+                    showAlert('tierAlert', 'Email verified successfully!', 'success');
+                    setTimeout(() => {
+                        state.goToStep(7, 'forward', true); // Force navigation to plans
+                    }, 1500);
+                } else {
+                    showAlert('tierAlert', 'Email not yet verified. Please check your inbox and click the verification link. If you just clicked the link, wait a moment and try again.', 'warning');
+                }
+            } catch (error) {
+                console.error('Error checking verification:', error);
+                showAlert('tierAlert', 'Error checking verification status. Please try again.');
+            }
+        }
+
+        async function resendVerificationEmail() {
+            try {
+                setButtonLoading('resendBtn', true);
+
+                const emailToResend = state.userData.email || state.user?.email || sessionStorage.getItem('pending_email');
+                
+                if (!emailToResend) {
+                    throw new Error('No email address found. Please sign in again.');
+                }
+
+                console.log(`Attempting to resend verification email to: ${emailToResend}`);
+
+                const { error } = await supabaseClient.auth.resend({
+                    type: 'signup',
+                    email: emailToResend
+                });
+
+                if (error) throw error;
+
+                // Track resend attempts
+                const resendCount = parseInt(sessionStorage.getItem('resend_count') || '0') + 1;
+                sessionStorage.setItem('resend_count', resendCount.toString());
+                sessionStorage.setItem('last_resend_time', new Date().toISOString());
+
+                showAlert('tierAlert', 
+                    `Verification email sent again to ${emailToResend}! This is attempt #${resendCount}. Check your inbox and spam folder.`, 
+                    'success'
+                );
+                
+                setTimeout(() => {
+                    setButtonLoading('resendBtn', false, 'Resend Code & Link');
+                }, 3000);
+
+            } catch (error) {
+                console.error('Error resending email:', error);
+                setButtonLoading('resendBtn', false, 'Resend Code & Link');
+                
+                let errorMessage = error.message;
+                if (error.message.includes('email rate limit')) {
+                    errorMessage = 'Email rate limited. Please wait 60 seconds before requesting another email.';
+                } else if (error.message.includes('smtp')) {
+                    errorMessage = 'Email service error. Please contact support or try a different email provider.';
+                }
+                
+                showAlert('tierAlert', `Error sending email: ${errorMessage}`);
+            }
+        }
+
+        function changeEmail() {
+            // Sign out and restart the process
+            signOutAndRestart();
+        }
+
+        // Password Reset Functions
+        function showForgotPassword() {
+            state.goToStep(5, 'forward', true);
+        }
+
+        function goToAuth() {
+            state.goToStep(2, 'backward', true);
+        }
+
+        async function sendPasswordReset() {
+            try {
+                const email = document.getElementById('resetEmail').value;
+                
+                if (!email) {
+                    showAlert('resetAlert', 'Please enter your email address');
+                    return;
+                }
+
+                setButtonLoading('sendResetBtn', true);
+                hideAlert('resetAlert');
+
+                const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+                    redirectTo: `${window.location.origin}${window.location.pathname}?reset=true&step=6`
+                });
+
+                if (error) throw error;
+
+                showAlert('resetAlert', 'Password reset link sent! Check your email inbox and click the link to reset your password.', 'success');
+                
+                setTimeout(() => {
+                    setButtonLoading('sendResetBtn', false, 'Send Reset Link');
+                }, 3000);
+
+            } catch (error) {
+                console.error('Password reset error:', error);
+                setButtonLoading('sendResetBtn', false, 'Send Reset Link');
+                showAlert('resetAlert', `Error: ${error.message}`);
+            }
+        }
+
+        async function updatePassword() {
+            try {
+                const newPassword = document.getElementById('newPassword').value;
+                const confirmPassword = document.getElementById('confirmNewPassword').value;
+
+                if (!newPassword || !confirmPassword) {
+                    showAlert('passwordAlert', 'Please fill in both password fields');
+                    return;
+                }
+
+                if (newPassword !== confirmPassword) {
+                    showAlert('passwordAlert', 'Passwords do not match');
+                    return;
+                }
+
+                if (newPassword.length < 8) {
+                    showAlert('passwordAlert', 'Password must be at least 8 characters long');
+                    return;
+                }
+
+                setButtonLoading('updatePasswordBtn', true);
+                hideAlert('passwordAlert');
+
+                const { data, error } = await supabaseClient.auth.updateUser({
+                    password: newPassword
+                });
+
+                if (error) throw error;
+
+                showAlert('passwordAlert', 'Password updated successfully! You can now sign in with your new password.', 'success');
+                
+                setTimeout(() => {
+                    setButtonLoading('updatePasswordBtn', false);
+                    // Redirect to sign in
+                    state.goToStep(2, 'forward', true);
+                }, 3000);
+
+            } catch (error) {
+                console.error('Password update error:', error);
+                setButtonLoading('updatePasswordBtn', false);
+                showAlert('passwordAlert', `Error updating password: ${error.message}`);
+            }
+        }
+
+        // Auto-check verification when user returns from email
+        async function handleEmailReturn() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const hashParams = new URLSearchParams(window.location.hash.substring(1));
+            
+            // Check for password reset
+            if (urlParams.get('reset') === 'true') {
+                console.log('Password reset detected, going to password form');
+                state.goToStep(6, 'forward', true);
+                return;
+            }
+            
+            // Check for various auth callback parameters
+            const hasAuthCallback = urlParams.get('type') === 'signup' || 
+                                  hashParams.get('type') === 'signup' ||
+                                  urlParams.has('access_token') ||
+                                  hashParams.has('access_token') ||
+                                  urlParams.get('verified') === 'true' ||
+                                  urlParams.get('google') === 'true';
+            
+            if (hasAuthCallback) {
+                console.log('Detected email verification return');
+                
+                // Wait a moment for Supabase to process
+                setTimeout(async () => {
+                    try {
+                        const { data: { user }, error } = await supabaseClient.auth.getUser();
+                        
+                        if (user?.email_confirmed_at) {
+                            console.log('Email verified successfully via URL callback');
+                            state.user = user;
+                            state.userData.email = user.email;
+                            state.userData.name = user.user_metadata?.full_name || user.email;
+                            
+                            // Clear URL parameters
+                            window.history.replaceState({}, document.title, window.location.pathname);
+                            
+                            // Go to plan selection if not already there
+                            if (state.currentStep < 7) {
+                                state.goToStep(7, 'forward', true);
+                                showAlert('tierAlert', 'Email verified successfully!', 'success');
+                            }
+                        }
+                    } catch (error) {
+                        console.error('Error processing email verification callback:', error);
+                    }
+                }, 1000);
+            }
+        }
+
+        // Plan selection functions
+        function selectPlan(planId) {
+            document.querySelectorAll('.pricing-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+
+            const selectedCard = document.querySelector(`[data-plan="${planId}"]`);
+            if (selectedCard) {
+                selectedCard.classList.add('selected');
+            }
+
+            state.selectedPlan = planId;
+            state.saveToStorage();
+
+            const selectBtn = document.getElementById('selectPlanBtn');
+            if (selectBtn) {
+                selectBtn.disabled = false;
+                selectBtn.style.opacity = '1';
+                selectBtn.textContent = `Continue with ${planId.charAt(0).toUpperCase() + planId.slice(1)} Plan`;
+            }
+        }
+
+        function confirmPlanSelection() {
+            if (!state.selectedPlan) {
+                showAlert('tierAlert', 'Please select a plan to continue.');
+                return;
+            }
+
+            state.userData.plan = state.selectedPlan;
+            state.saveToStorage();
+
+            // Pre-fill profile data from Google/Supabase user
+            setTimeout(() => {
+                const nameField = document.getElementById('fullName');
+                if (nameField && state.userData.name) {
+                    nameField.value = state.userData.name;
+                }
+                
+                // Auto-fill other fields if available from user metadata
+                const jobTitleField = document.getElementById('jobTitle');
+                const companyField = document.getElementById('company');
+                
+                if (state.user?.user_metadata) {
+                    if (state.user.user_metadata.job_title && jobTitleField) {
+                        jobTitleField.value = state.user.user_metadata.job_title;
+                    }
+                    if (state.user.user_metadata.company && companyField) {
+                        companyField.value = state.user.user_metadata.company;
+                    }
+                }
+            }, 100);
+
+            state.goToStep(8, 'forward', true); // Force navigation to profile
+        }
+
+        // Profile completion
+        async function completeProfile() {
+            try {
+                const form = document.getElementById('profileForm');
+                const formData = new FormData(form);
+
+                if (!formData.get('fullName')) {
+                    showAlert('profileAlert', 'Please enter your full name');
+                    return;
+                }
+
+                setButtonLoading('completeBtn', true);
+
+                state.userData.fullName = formData.get('fullName');
+                state.userData.jobTitle = formData.get('jobTitle');
+                state.userData.company = formData.get('company');
+                state.userData.industry = formData.get('industry');
+
+                // Try to save to database (optional - won't break if fails)
+                try {
+                    if (state.user?.id) {
+                        const { error } = await supabaseClient
+                            .from('profiles')
+                            .upsert({
+                                id: state.user.id,
+                                full_name: state.userData.fullName,
+                                job_title: state.userData.jobTitle,
+                                company: state.userData.company,
+                                industry: state.userData.industry,
+                                selected_plan: state.selectedPlan,
+                                onboarding_completed: true,
+                                updated_at: new Date().toISOString()
+                            });
+
+                        if (error && error.code !== '42P01') {
+                            console.warn('Database save failed:', error);
+                        }
+                    }
+                } catch (dbError) {
+                    console.warn('Database operation failed:', dbError);
+                }
+
+                state.saveToStorage();
+                
+                setTimeout(() => {
+                    setButtonLoading('completeBtn', false);
+                    state.goToStep(9, 'forward', true);
+                }, 1000);
+
+            } catch (error) {
+                console.error('Error completing profile:', error);
+                setButtonLoading('completeBtn', false);
+                showAlert('profileAlert', 'Error saving profile. Please try again.');
+            }
+        }
+
+        function goToDashboard() {
+            // Save completion status
+            localStorage.setItem('onboardingComplete', 'true');
+            localStorage.setItem('userData', JSON.stringify(state.userData));
+            sessionStorage.removeItem('onboarding_state');
+
+            // In production, redirect to dashboard
+            alert('Onboarding Complete! 🎉\n\nIn a real application, you would now be redirected to your dashboard.');
+            
+            // For demo purposes, reload to start over
+            // window.location.href = '/dashboard';
+        }
+
+        // Auth state management
+        supabaseClient.auth.onAuthStateChange(async (event, session) => {
+            console.log('Auth state changed:', event, session);
+
+            if (event === 'SIGNED_IN' && session) {
+                state.user = session.user;
+                state.userData.email = session.user.email;
+                state.userData.name = session.user.user_metadata?.full_name || 
+                                     session.user.user_metadata?.name || 
+                                     session.user.user_metadata?.display_name ||
+                                     session.user.email?.split('@')[0];
+
+                console.log('User data extracted:', state.userData);
+                updateUserInfo();
+
+                // Handle different sign-in contexts
+                if (state.currentStep === 2) {
+                    showAlert('authAlert', 'Authentication successful!', 'success');
+                    setTimeout(() => {
+                        if (state.authMethod === 'google') {
+                            state.goToStep(3, 'forward', true);
+                        } else {
+                            // For email registration, check if verification is needed
+                            if (session.user.email_confirmed_at) {
+                                state.goToStep(7, 'forward', true);
+                            } else {
+                                state.goToStep(4, 'forward', true);
+                            }
+                        }
+                    }, 1500);
+                } else if (state.currentStep === 3) {
+                    // User info update for step 3
+                    updateUserInfo();
+                }
+            }
+
+            if (event === 'SIGNED_OUT') {
+                state.user = null;
+                state.userData = {};
+            }
+        });
+
+        function updateUserInfo() {
+            console.log('Updating user info with:', state.userData);
+            
+            const userAvatar = document.getElementById('userAvatar');
+            const userName = document.getElementById('userName');
+            const userEmail = document.getElementById('userEmail');
+
+            if (userAvatar && userName && userEmail) {
+                const displayName = state.userData.name || 'User';
+                const displayEmail = state.userData.email || 'No email';
+                
+                userAvatar.textContent = displayName.charAt(0).toUpperCase();
+                userName.textContent = displayName;
+                userEmail.textContent = displayEmail;
+                
+                console.log('User info updated:', { displayName, displayEmail });
+            } else {
+                console.log('User info elements not found');
+            }
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', async () => {
+            // Initialize all steps with proper classes
+            document.querySelectorAll('.step').forEach((step, index) => {
+                step.classList.remove('active', 'prev', 'next');
+                if (index === 0) {
+                    step.classList.add('active');
+                } else {
+                    step.classList.add('next');
+                }
+            });
+
+            state.updateProgress();
+            state.updateNavigation();
+            state.updateStepDots();
+            
+            // Check for email verification callback first
+            handleEmailReturn();
+            
+            // Check for existing session
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            
+            if (session?.user) {
+                console.log('Found existing session:', session.user);
+                
+                state.user = session.user;
+                state.userData.email = session.user.email;
+                state.userData.name = session.user.user_metadata?.full_name || 
+                                     session.user.user_metadata?.name || 
+                                     session.user.user_metadata?.display_name ||
+                                     session.user.email?.split('@')[0];
+                
+                console.log('Session user data:', state.userData);
+                console.log('Email confirmed at:', session.user.email_confirmed_at);
+                
+                // Update user info immediately
+                updateUserInfo();
+                
+                // If user is already authenticated, decide where to go
+                if (state.currentStep <= 2) {
+                    // Check if this was a Google OAuth return
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const hashParams = new URLSearchParams(window.location.hash.substring(1));
+                    
+                    if (urlParams.get('google') === 'true' || hashParams.has('access_token')) {
+                        // This is a Google OAuth return, go to confirmation step
+                        console.log('Google OAuth return detected, going to step 3');
+                        state.goToStep(3, 'forward', true);
+                    } else if (session.user.email_confirmed_at) {
+                        // User is verified, skip to plan selection
+                        console.log('User already verified, skipping to plan selection');
+                        state.goToStep(7, 'forward', true);
+                    } else {
+                        // Need email verification
+                        console.log('User needs email verification, going to step 4');
+                        document.getElementById('verificationEmail').textContent = state.userData.email;
+                        state.goToStep(4, 'forward', true);
+                    }
+                }
+            }
+
+            // Check if we're on the email verification step and update status
+            if (state.currentStep === 4) {
+                updateEmailStatus();
+            }
+
+            console.log('ZmartyBrain Mobile Onboarding initialized');
+        });
+
+        // Update email verification status display
+        function updateEmailStatus() {
+            const statusEl = document.getElementById('emailStatusText');
+            const emailSentTime = sessionStorage.getItem('email_sent_time');
+            const resendCount = sessionStorage.getItem('resend_count') || '0';
+            
+            if (emailSentTime) {
+                const timeSince = Math.floor((new Date() - new Date(emailSentTime)) / 1000 / 60);
+                statusEl.textContent = `Email sent ${timeSince} minutes ago (${resendCount} attempts)`;
+            } else {
+                statusEl.textContent = 'No email sent yet - click "Resend Code & Link"';
+            }
+        }
+    </script>
+</body>
+</html>oNext(current, nextId) {
+            if (current.value.length === 1 && nextId) {
+                document.getElementById(nextId).focus();
+            }
+            if (current.id === 'code6' && current.value.length === 1) {
+                verifyCode();
+            }
+        }
+
+        function moveT
