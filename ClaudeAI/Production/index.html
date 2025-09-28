@@ -1145,7 +1145,48 @@
                 this.updateProgress();
                 this.updateNavigation();
                 this.updateStepDots();
+
+                // Restore step-specific state
+                this.restoreStepState(step);
+
                 this.saveToStorage();
+            }
+
+            // Restore state when navigating to specific steps
+            restoreStepState(step) {
+                if (step === 7 && this.selectedPlan) {
+                    // Restore plan selection visual state
+                    setTimeout(() => {
+                        this.restorePlanSelection();
+                    }, 50);
+                }
+            }
+
+            // Restore plan selection visual state
+            restorePlanSelection() {
+                if (!this.selectedPlan) return;
+
+                console.log('Restoring plan selection:', this.selectedPlan);
+
+                // Clear all selections first
+                document.querySelectorAll('.pricing-card').forEach(card => {
+                    card.classList.remove('selected');
+                });
+
+                // Select the saved plan
+                const selectedCard = document.querySelector(`[data-plan="${this.selectedPlan}"]`);
+                if (selectedCard) {
+                    selectedCard.classList.add('selected');
+                    console.log('Plan selection restored:', this.selectedPlan);
+                }
+
+                // Update button state
+                const selectBtn = document.getElementById('selectPlanBtn');
+                if (selectBtn) {
+                    selectBtn.disabled = false;
+                    selectBtn.style.opacity = '1';
+                    selectBtn.textContent = `Continue with ${this.selectedPlan.charAt(0).toUpperCase() + this.selectedPlan.slice(1)} Plan`;
+                }
             }
 
             canNavigateToStep(targetStep) {
@@ -1954,14 +1995,21 @@
                     description: "Replaced demo verification with real Supabase OTP verification",
                     details: "✅ Real OTP verification ✅ Error handling ✅ Resend functionality",
                     severity: "Critical"
+                },
+                5: {
+                    bugNumber: 5,
+                    title: "Plan Selection State Lost",
+                    description: "Fixed plan selection not visually restored when navigating back",
+                    details: "✅ State restoration ✅ Visual feedback ✅ Button state management",
+                    severity: "Medium"
                 }
             };
 
-            // Check localStorage for latest bug fix or default to Bug #4
-            const storedBugNumber = localStorage.getItem('latest_bug_number') || '4';
+            // Check localStorage for latest bug fix or default to Bug #5
+            const storedBugNumber = localStorage.getItem('latest_bug_number') || '5';
             const bugNumber = parseInt(storedBugNumber);
 
-            return bugFixHistory[bugNumber] || bugFixHistory[4];
+            return bugFixHistory[bugNumber] || bugFixHistory[5];
         }
 
         // Initialize on page load
@@ -1978,7 +2026,7 @@
             const deploymentAge = currentTime - (lastDeployment || 0);
 
             // Show notification if deployment is less than 30 seconds old or first load
-            // Force show for testing Bug #4 notification
+            // Force show for testing Bug #5 notification
             setTimeout(showDeploymentMessage, 500);
             localStorage.setItem('last_deployment_time', currentTime.toString());
         });
