@@ -822,12 +822,12 @@
 
                     <!-- 6-Digit Code Input -->
                     <div style="display: flex; gap: 8px; justify-content: center; margin: 20px 0;">
-                        <input type="text" id="code1" maxlength="1" style="width: 40px; height: 50px; text-align: center; font-size: 20px; font-weight: bold; border: 2px solid #e5e7eb; border-radius: 8px;" oninput="moveToNext(this, 'code2')" onkeydown="moveToPrev(event, this, null)">
-                        <input type="text" id="code2" maxlength="1" style="width: 40px; height: 50px; text-align: center; font-size: 20px; font-weight: bold; border: 2px solid #e5e7eb; border-radius: 8px;" oninput="moveToNext(this, 'code3')" onkeydown="moveToPrev(event, this, 'code1')">
-                        <input type="text" id="code3" maxlength="1" style="width: 40px; height: 50px; text-align: center; font-size: 20px; font-weight: bold; border: 2px solid #e5e7eb; border-radius: 8px;" oninput="moveToNext(this, 'code4')" onkeydown="moveToPrev(event, this, 'code2')">
-                        <input type="text" id="code4" maxlength="1" style="width: 40px; height: 50px; text-align: center; font-size: 20px; font-weight: bold; border: 2px solid #e5e7eb; border-radius: 8px;" oninput="moveToNext(this, 'code5')" onkeydown="moveToPrev(event, this, 'code3')">
-                        <input type="text" id="code5" maxlength="1" style="width: 40px; height: 50px; text-align: center; font-size: 20px; font-weight: bold; border: 2px solid #e5e7eb; border-radius: 8px;" oninput="moveToNext(this, 'code6')" onkeydown="moveToPrev(event, this, 'code4')">
-                        <input type="text" id="code6" maxlength="1" style="width: 40px; height: 50px; text-align: center; font-size: 20px; font-weight: bold; border: 2px solid #e5e7eb; border-radius: 8px;" oninput="verifyCode()" onkeydown="moveToPrev(event, this, 'code5')">
+                        <input type="text" id="code1" maxlength="6" inputmode="numeric" pattern="[0-9]*" style="width: 40px; height: 50px; text-align: center; font-size: 20px; font-weight: bold; border: 2px solid #e5e7eb; border-radius: 8px;" oninput="handleCodeInput(this, 'code2')" onkeydown="moveToPrev(event, this, null)" onpaste="handlePaste(event, this)">
+                        <input type="text" id="code2" maxlength="1" inputmode="numeric" pattern="[0-9]*" style="width: 40px; height: 50px; text-align: center; font-size: 20px; font-weight: bold; border: 2px solid #e5e7eb; border-radius: 8px;" oninput="handleCodeInput(this, 'code3')" onkeydown="moveToPrev(event, this, 'code1')">
+                        <input type="text" id="code3" maxlength="1" inputmode="numeric" pattern="[0-9]*" style="width: 40px; height: 50px; text-align: center; font-size: 20px; font-weight: bold; border: 2px solid #e5e7eb; border-radius: 8px;" oninput="handleCodeInput(this, 'code4')" onkeydown="moveToPrev(event, this, 'code2')">
+                        <input type="text" id="code4" maxlength="1" inputmode="numeric" pattern="[0-9]*" style="width: 40px; height: 50px; text-align: center; font-size: 20px; font-weight: bold; border: 2px solid #e5e7eb; border-radius: 8px;" oninput="handleCodeInput(this, 'code5')" onkeydown="moveToPrev(event, this, 'code3')">
+                        <input type="text" id="code5" maxlength="1" inputmode="numeric" pattern="[0-9]*" style="width: 40px; height: 50px; text-align: center; font-size: 20px; font-weight: bold; border: 2px solid #e5e7eb; border-radius: 8px;" oninput="handleCodeInput(this, 'code6')" onkeydown="moveToPrev(event, this, 'code4')">
+                        <input type="text" id="code6" maxlength="1" inputmode="numeric" pattern="[0-9]*" style="width: 40px; height: 50px; text-align: center; font-size: 20px; font-weight: bold; border: 2px solid #e5e7eb; border-radius: 8px;" oninput="handleCodeInput(this, null)" onkeydown="moveToPrev(event, this, 'code5')">
                     </div>
 
                     <div style="background: white; padding: 16px; border-radius: 8px; margin-top: 16px;">
@@ -1578,13 +1578,45 @@
             state.goToStep(2, 'forward', true);
         }
 
-        // 6-digit code verification functions
-        function moveToNext(current, nextId) {
+        // Enhanced 6-digit code verification functions
+        function handleCodeInput(current, nextId) {
+            // Only allow numeric input
+            current.value = current.value.replace(/[^0-9]/g, '');
+
             if (current.value.length === 1 && nextId) {
                 document.getElementById(nextId).focus();
             }
             if (current.id === 'code6' && current.value.length === 1) {
                 verifyCode();
+            }
+        }
+
+        function handlePaste(event, firstInput) {
+            event.preventDefault();
+            const pasteData = event.clipboardData.getData('text');
+            const digits = pasteData.replace(/[^0-9]/g, '').substring(0, 6);
+
+            if (digits.length === 6) {
+                // Distribute digits across all input fields
+                for (let i = 0; i < 6; i++) {
+                    const input = document.getElementById(`code${i + 1}`);
+                    input.value = digits[i];
+                }
+                // Focus on last input and trigger verification
+                document.getElementById('code6').focus();
+                verifyCode();
+            } else if (digits.length > 0) {
+                // Handle partial paste
+                firstInput.value = digits[0];
+                for (let i = 1; i < Math.min(digits.length, 6); i++) {
+                    const input = document.getElementById(`code${i + 1}`);
+                    if (input) {
+                        input.value = digits[i];
+                    }
+                }
+                // Focus on next empty field or last field
+                const targetField = Math.min(digits.length, 5) + 1;
+                document.getElementById(`code${targetField}`).focus();
             }
         }
 
