@@ -1788,12 +1788,108 @@
             window.location.href = '/dashboard';
         }
 
+        // Deployment notification system with bug tracking
+        function showDeploymentMessage() {
+            // Get current bug fix info from document or localStorage
+            const bugInfo = getBugFixInfo();
+
+            const deploymentBanner = document.createElement('div');
+            deploymentBanner.id = 'deployment-banner';
+            deploymentBanner.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                background: linear-gradient(90deg, #10b981, #059669);
+                color: white;
+                text-align: center;
+                padding: 12px;
+                font-size: 14px;
+                font-weight: 600;
+                z-index: 10000;
+                transform: translateY(-100%);
+                transition: transform 0.3s ease;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            `;
+            deploymentBanner.innerHTML = `
+                <div style="margin-bottom: 4px;">
+                    🐛➜✅ <strong>Bug #${bugInfo.bugNumber}</strong> Fixed: ${bugInfo.title}
+                    <span style="background: rgba(255,255,255,0.2); padding: 2px 6px; border-radius: 12px; font-size: 11px; margin-left: 8px;">${bugInfo.severity}</span>
+                </div>
+                <div style="font-size: 12px; opacity: 0.9; margin-bottom: 2px;">${bugInfo.description}</div>
+                <div style="font-size: 11px; opacity: 0.8;">${bugInfo.details}</div>
+                <div style="font-size: 10px; opacity: 0.7; margin-top: 4px;">🚀 Auto-deployed via Claude Code automation • ${new Date().toLocaleTimeString()}</div>
+            `;
+
+            document.body.appendChild(deploymentBanner);
+
+            // Animate in
+            setTimeout(() => {
+                deploymentBanner.style.transform = 'translateY(0)';
+            }, 100);
+
+            // Auto hide after 5 seconds
+            setTimeout(() => {
+                deploymentBanner.style.transform = 'translateY(-100%)';
+                setTimeout(() => {
+                    if (deploymentBanner.parentNode) {
+                        deploymentBanner.parentNode.removeChild(deploymentBanner);
+                    }
+                }, 300);
+            }, 5000);
+        }
+
+        // Get bug fix information with detailed tracking
+        function getBugFixInfo() {
+            // Bug fix history for deployment notifications
+            const bugFixHistory = {
+                1: {
+                    bugNumber: 1,
+                    title: "Demo Authentication",
+                    description: "Replaced demo email registration with real Supabase authentication",
+                    details: "✅ Real signUp() API ✅ Error handling ✅ User flow management",
+                    severity: "Critical"
+                },
+                2: {
+                    bugNumber: 2,
+                    title: "Google OAuth Stub",
+                    description: "Implemented real Google OAuth with Supabase",
+                    details: "✅ OAuth provider setup ✅ Redirect handling ✅ Error messages",
+                    severity: "High"
+                },
+                3: {
+                    bugNumber: 3,
+                    title: "Code Input UX Issue",
+                    description: "Enhanced 6-digit code input with paste support",
+                    details: "✅ Smart paste handling ✅ Numeric validation ✅ Mobile experience",
+                    severity: "Medium"
+                }
+            };
+
+            // Check localStorage for latest bug fix or default to Bug #3
+            const storedBugNumber = localStorage.getItem('latest_bug_number') || '3';
+            const bugNumber = parseInt(storedBugNumber);
+
+            return bugFixHistory[bugNumber] || bugFixHistory[3];
+        }
+
         // Initialize on page load
         window.addEventListener('load', () => {
             // Check for URL parameters indicating email verification or other callbacks
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.get('verified') === 'true') {
                 state.goToStep(7, 'forward', true);
+            }
+
+            // Check if this is a new deployment
+            const lastDeployment = localStorage.getItem('last_deployment_time');
+            const currentTime = Date.now();
+            const deploymentAge = currentTime - (lastDeployment || 0);
+
+            // Show notification if deployment is less than 30 seconds old or first load
+            if (!lastDeployment || deploymentAge < 30000) {
+                setTimeout(showDeploymentMessage, 500);
+                localStorage.setItem('last_deployment_time', currentTime.toString());
             }
         });
     </script>
