@@ -5,7 +5,14 @@ set -e  # Exit on any error
 
 SITE_ID="vermillion-paprenjak-67497b"
 SITE_URL="https://vermillion-paprenjak-67497b.netlify.app"
-NETLIFY_API_TOKEN=""  # Set this in environment or Netlify CLI
+
+# Load token from .env.local if it exists
+if [ -f .env.local ]; then
+    source .env.local
+fi
+
+# Use token from environment or .env.local
+NETLIFY_API_TOKEN="${NETLIFY_AUTH_TOKEN:-}"
 
 echo "🚀 ZmartBot Professional Auto-Deployment v1.0"
 echo "================================================"
