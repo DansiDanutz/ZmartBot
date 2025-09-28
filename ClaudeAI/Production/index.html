@@ -2026,7 +2026,9 @@
             const deploymentAge = currentTime - (lastDeployment || 0);
 
             // Show notification if deployment is less than 30 seconds old or first load
-            // Force show for testing Bug #5 notification
+            // Force show Bug #5 notification and update localStorage
+            localStorage.setItem('latest_bug_number', '5');
+            console.log('🚀 Forcing Bug #5 notification display');
             setTimeout(showDeploymentMessage, 500);
             localStorage.setItem('last_deployment_time', currentTime.toString());
         });
