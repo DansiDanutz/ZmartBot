@@ -738,6 +738,10 @@
     <!-- Bug Fix #47: Skip navigation link for accessibility -->
     <a href="#main-content" class="skip-link" style="position: absolute; left: -9999px; top: 0; z-index: 999; padding: 10px; background: #3b82f6; color: white; text-decoration: none;" onfocus="this.style.left='10px'" onblur="this.style.left='-9999px'">Skip to main content</a>
     <div class="onboarding-container" id="main-content" role="main" aria-label="Onboarding process">
+        <!-- Bug Fix #50: Progress indicator -->
+        <div class="progress-bar" style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: rgba(59,130,246,0.1); border-radius: 24px 24px 0 0; overflow: hidden; z-index: 100;">
+            <div id="progressFill" style="height: 100%; background: linear-gradient(90deg, #10b981, #3b82f6); width: 11%; transition: width 0.3s;"></div>
+        </div>
         <!-- Progress Header -->
         <div class="progress-header">
             <div class="progress-bar">
@@ -1376,6 +1380,22 @@
 
                 // Update current step
                 this.currentStep = step;
+
+                // Bug Fix #50: Update progress indicator
+                const progressFill = document.getElementById('progressFill');
+                if (progressFill) {
+                    const percentage = (step / this.totalSteps) * 100;
+                    progressFill.style.width = percentage + '%';
+                }
+
+                // Bug Fix #48: Update browser history
+                if (typeof window !== 'undefined' && window.history) {
+                    window.history.pushState(
+                        { step: step },
+                        '',
+                        `#step-${step}`
+                    );
+                }
 
                 // Apply classes to all steps in one go to prevent flickering
                 document.querySelectorAll('.step').forEach((stepEl, index) => {
@@ -2569,6 +2589,37 @@
 
                 // console.log('🔄 Sending password reset to:', email);
 
+                // Bug Fix #49: Password reset rate limiting
+                const resetLimiter = {
+                    key: `reset_${email}`,
+                    getAttempts() {
+                        const data = secureStorage.getItem(this.key) || { attempts: 0, lastAttempt: 0 };
+                        const now = Date.now();
+                        // Reset counter after 5 minutes
+                        if (now - data.lastAttempt > 300000) {
+                            data.attempts = 0;
+                        }
+                        return data;
+                    },
+                    canAttempt() {
+                        const data = this.getAttempts();
+                        return data.attempts < 3;
+                    },
+                    recordAttempt() {
+                        const data = this.getAttempts();
+                        data.attempts++;
+                        data.lastAttempt = Date.now();
+                        secureStorage.setItem(this.key, data);
+                    }
+                };
+
+                // Check rate limit
+                if (!resetLimiter.canAttempt()) {
+                    setButtonLoading('sendResetBtn', false);
+                    showAlert('resetAlert', 'Too many reset attempts. Please wait 5 minutes and try again.', 'error');
+                    return;
+                }
+
                 // Send password reset via Supabase
                 const { data, error } = await supabaseClient.auth.resetPasswordForEmail(email, {
                     redirectTo: `${window.location.origin}${window.location.pathname}?reset=true`
@@ -3020,6 +3071,24 @@
         eventManager.add(window, 'unload', () => {
             eventManager.removeAll();
             // console.log('🧹 Cleaned up all event listeners');
+        });
+
+        // Bug Fix #48: Browser back button handling
+        eventManager.add(window, 'popstate', (event) => {
+            if (event.state && event.state.step) {
+                const requestedStep = event.state.step;
+                // Validate if navigation is allowed
+                if (!state.canNavigateToStep(requestedStep)) {
+                    // Force back to current allowed step
+                    window.history.pushState(
+                        { step: state.currentStep },
+                        '',
+                        `#step-${state.currentStep}`
+                    );
+                } else {
+                    state.navigateToStep(requestedStep, false, 'replace');
+                }
+            }
         });
 
         eventManager.add(window, 'load', async () => {
