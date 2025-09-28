@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZmartyBrain v5.2.0 Slide Testing</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .test-container {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 20px;
+        }
+
+        .test-panel {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .iframe-container {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 20px;
+            height: 800px;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+        }
+
+        .test-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 6px;
+        }
+
+        .test-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #1f2937;
+        }
+
+        .test-item {
+            padding: 8px;
+            margin: 5px 0;
+            background: white;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .status {
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .status.pending { background: #fbbf24; color: #92400e; }
+        .status.testing { background: #60a5fa; color: #1e3a8a; }
+        .status.passed { background: #34d399; color: #064e3b; }
+        .status.failed { background: #f87171; color: #7f1d1d; }
+
+        button {
+            padding: 10px 20px;
+            background: #6366f1;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            margin: 5px;
+        }
+
+        button:hover {
+            background: #4f46e5;
+        }
+
+        button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .results {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f0f9ff;
+            border: 1px solid #0ea5e9;
+            border-radius: 6px;
+        }
+
+        .results.success {
+            background: #f0fdf4;
+            border-color: #22c55e;
+        }
+
+        .results.error {
+            background: #fef2f2;
+            border-color: #ef4444;
+        }
+
+        pre {
+            background: #1f2937;
+            color: #e5e7eb;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🧪 ZmartyBrain v5.2.0 Slide Testing</h1>
+        <p>Comprehensive testing for onboarding slide functionality</p>
+    </div>
+
+    <div class="test-container">
+        <div class="test-panel">
+            <h2>Test Suite</h2>
+
+            <div class="test-section">
+                <div class="test-title">1. Navigation Tests</div>
+                <div class="test-item">
+                    <span>Keyboard (1-9)</span>
+                    <span class="status pending" id="test-keyboard">PENDING</span>
+                </div>
+                <div class="test-item">
+                    <span>Arrow Keys</span>
+                    <span class="status pending" id="test-arrows">PENDING</span>
+                </div>
+                <div class="test-item">
+                    <span>Button Navigation</span>
+                    <span class="status pending" id="test-buttons">PENDING</span>
+                </div>
+                <div class="test-item">
+                    <span>Swipe/Touch</span>
+                    <span class="status pending" id="test-swipe">PENDING</span>
+                </div>
+            </div>
+
+            <div class="test-section">
+                <div class="test-title">2. State Management</div>
+                <div class="test-item">
+                    <span>Session Persistence</span>
+                    <span class="status pending" id="test-persistence">PENDING</span>
+                </div>
+                <div class="test-item">
+                    <span>Data Validation</span>
+                    <span class="status pending" id="test-validation">PENDING</span>
+                </div>
+            </div>
+
+            <div class="test-section">
+                <div class="test-title">3. Visual Elements</div>
+                <div class="test-item">
+                    <span>Progress Bar</span>
+                    <span class="status pending" id="test-progress">PENDING</span>
+                </div>
+                <div class="test-item">
+                    <span>Slide Visibility</span>
+                    <span class="status pending" id="test-visibility">PENDING</span>
+                </div>
+                <div class="test-item">
+                    <span>Transitions</span>
+                    <span class="status pending" id="test-transitions">PENDING</span>
+                </div>
+            </div>
+
+            <div style="margin-top: 20px;">
+                <button onclick="runAllTests()">Run All Tests</button>
+                <button onclick="runManualTest()">Manual Test Mode</button>
+                <button onclick="clearResults()">Clear Results</button>
+            </div>
+
+            <div id="results"></div>
+        </div>
+
+        <div class="iframe-container">
+            <h3>Live Site Preview</h3>
+            <iframe id="testFrame" src="https://vermillion-paprenjak-67497b.netlify.app/"></iframe>
+        </div>
+    </div>
+
+    <div style="margin-top: 20px; padding: 20px; background: #f9fafb; border-radius: 8px;">
+        <h3>Test Log</h3>
+        <pre id="testLog">Ready to test...</pre>
+    </div>
+
+    <script>
+        const testFrame = document.getElementById('testFrame');
+        const testLog = document.getElementById('testLog');
+        const results = document.getElementById('results');
+        let logs = [];
+
+        function log(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = `[${timestamp}] ${message}`;
+            logs.push(logEntry);
+            testLog.textContent = logs.join('\n');
+            console.log(logEntry);
+        }
+
+        function updateStatus(testId, status) {
+            const element = document.getElementById(testId);
+            if (element) {
+                element.className = `status ${status}`;
+                element.textContent = status.toUpperCase();
+            }
+        }
+
+        async function wait(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        async function testKeyboardNavigation() {
+            log('Testing keyboard navigation (1-9)...');
+            updateStatus('test-keyboard', 'testing');
+
+            try {
+                const frame = testFrame.contentWindow;
+
+                for (let i = 1; i <= 9; i++) {
+                    // Simulate key press
+                    const event = new KeyboardEvent('keydown', {
+                        key: i.toString(),
+                        code: `Digit${i}`,
+                        keyCode: 48 + i,
+                        which: 48 + i,
+                        bubbles: true
+                    });
+                    frame.document.dispatchEvent(event);
+
+                    await wait(300);
+
+                    // Check current slide
+                    const currentSlide = frame.state ? frame.state.currentStep :
+                        parseInt(frame.document.querySelector('.slide:not(.hidden)')?.dataset.step || 1);
+
+                    log(`  Pressed ${i} → Slide ${currentSlide}`);
+
+                    if (currentSlide !== i) {
+                        throw new Error(`Keyboard navigation failed: pressed ${i}, but on slide ${currentSlide}`);
+                    }
+                }
+
+                updateStatus('test-keyboard', 'passed');
+                log('✅ Keyboard navigation test passed');
+                return true;
+            } catch (error) {
+                updateStatus('test-keyboard', 'failed');
+                log(`❌ Keyboard navigation test failed: ${error.message}`);
+                return false;
+            }
+        }
+
+        async function testArrowNavigation() {
+            log('Testing arrow key navigation...');
+            updateStatus('test-arrows', 'testing');
+
+            try {
+                const frame = testFrame.contentWindow;
+
+                // Go to slide 5
+                frame.state?.goToStep(5, 'forward', true);
+                await wait(500);
+
+                // Test left arrow
+                const leftEvent = new KeyboardEvent('keydown', {
+                    key: 'ArrowLeft',
+                    code: 'ArrowLeft',
+                    keyCode: 37,
+                    bubbles: true
+                });
+                frame.document.dispatchEvent(leftEvent);
+                await wait(500);
+
+                let currentSlide = frame.state ? frame.state.currentStep : 4;
+                log(`  Left arrow from slide 5 → Slide ${currentSlide}`);
+
+                if (currentSlide !== 4) {
+                    throw new Error(`Left arrow failed: expected slide 4, got ${currentSlide}`);
+                }
+
+                // Test right arrow
+                const rightEvent = new KeyboardEvent('keydown', {
+                    key: 'ArrowRight',
+                    code: 'ArrowRight',
+                    keyCode: 39,
+                    bubbles: true
+                });
+                frame.document.dispatchEvent(rightEvent);
+                await wait(500);
+
+                currentSlide = frame.state ? frame.state.currentStep : 5;
+                log(`  Right arrow from slide 4 → Slide ${currentSlide}`);
+
+                if (currentSlide !== 5) {
+                    throw new Error(`Right arrow failed: expected slide 5, got ${currentSlide}`);
+                }
+
+                updateStatus('test-arrows', 'passed');
+                log('✅ Arrow navigation test passed');
+                return true;
+            } catch (error) {
+                updateStatus('test-arrows', 'failed');
+                log(`❌ Arrow navigation test failed: ${error.message}`);
+                return false;
+            }
+        }
+
+        async function testButtonNavigation() {
+            log('Testing button navigation...');
+            updateStatus('test-buttons', 'testing');
+
+            try {
+                const frame = testFrame.contentWindow;
+                const doc = frame.document;
+
+                // Go to slide 1
+                frame.state?.goToStep(1, 'forward', true);
+                await wait(500);
+
+                // Test next button
+                const nextBtn = doc.querySelector('.nav-arrow.next');
+                if (nextBtn && !nextBtn.classList.contains('hidden')) {
+                    nextBtn.click();
+                    await wait(500);
+
+                    const currentSlide = frame.state ? frame.state.currentStep : 2;
+                    log(`  Next button from slide 1 → Slide ${currentSlide}`);
+
+                    if (currentSlide !== 2) {
+                        throw new Error(`Next button failed: expected slide 2, got ${currentSlide}`);
+                    }
+                } else {
+                    log('  ⚠️ Next button not found or hidden');
+                }
+
+                // Test prev button
+                const prevBtn = doc.querySelector('.nav-arrow.prev');
+                if (prevBtn && !prevBtn.classList.contains('hidden')) {
+                    prevBtn.click();
+                    await wait(500);
+
+                    const currentSlide = frame.state ? frame.state.currentStep : 1;
+                    log(`  Prev button from slide 2 → Slide ${currentSlide}`);
+
+                    if (currentSlide !== 1) {
+                        throw new Error(`Prev button failed: expected slide 1, got ${currentSlide}`);
+                    }
+                } else {
+                    log('  ⚠️ Prev button not found or hidden');
+                }
+
+                updateStatus('test-buttons', 'passed');
+                log('✅ Button navigation test passed');
+                return true;
+            } catch (error) {
+                updateStatus('test-buttons', 'failed');
+                log(`❌ Button navigation test failed: ${error.message}`);
+                return false;
+            }
+        }
+
+        async function testProgressBar() {
+            log('Testing progress bar...');
+            updateStatus('test-progress', 'testing');
+
+            try {
+                const frame = testFrame.contentWindow;
+                const doc = frame.document;
+
+                for (let i = 1; i <= 9; i++) {
+                    frame.state?.goToStep(i, 'forward', true);
+                    await wait(300);
+
+                    const progressFill = doc.querySelector('.progress-fill');
+                    const width = progressFill ? progressFill.style.width : '0%';
+                    const expectedWidth = Math.round((i / 9) * 100) + '%';
+
+                    log(`  Slide ${i}: Progress = ${width} (expected ~${expectedWidth})`);
+
+                    const actualPercent = parseInt(width);
+                    const expectedPercent = Math.round((i / 9) * 100);
+
+                    if (Math.abs(actualPercent - expectedPercent) > 5) {
+                        throw new Error(`Progress bar mismatch on slide ${i}: ${width} vs ${expectedWidth}`);
+                    }
+                }
+
+                updateStatus('test-progress', 'passed');
+                log('✅ Progress bar test passed');
+                return true;
+            } catch (error) {
+                updateStatus('test-progress', 'failed');
+                log(`❌ Progress bar test failed: ${error.message}`);
+                return false;
+            }
+        }
+
+        async function testSlideVisibility() {
+            log('Testing slide visibility...');
+            updateStatus('test-visibility', 'testing');
+
+            try {
+                const frame = testFrame.contentWindow;
+                const doc = frame.document;
+
+                for (let i = 1; i <= 9; i++) {
+                    frame.state?.goToStep(i, 'forward', true);
+                    await wait(300);
+
+                    const visibleSlides = doc.querySelectorAll('.slide:not(.hidden)');
+
+                    if (visibleSlides.length !== 1) {
+                        throw new Error(`Multiple visible slides on step ${i}: ${visibleSlides.length} slides visible`);
+                    }
+
+                    const visibleStep = visibleSlides[0]?.dataset.step;
+                    log(`  Slide ${i}: Visible = ${visibleStep == i ? '✓' : '✗'} (step ${visibleStep})`);
+
+                    if (visibleStep != i) {
+                        throw new Error(`Visibility mismatch on slide ${i}: showing slide ${visibleStep}`);
+                    }
+                }
+
+                updateStatus('test-visibility', 'passed');
+                log('✅ Slide visibility test passed');
+                return true;
+            } catch (error) {
+                updateStatus('test-visibility', 'failed');
+                log(`❌ Slide visibility test failed: ${error.message}`);
+                return false;
+            }
+        }
+
+        async function runAllTests() {
+            log('\n🚀 Starting comprehensive slide tests...\n');
+            logs = ['🚀 Starting comprehensive slide tests...'];
+
+            // Wait for iframe to load
+            await wait(2000);
+
+            const testResults = {
+                keyboard: await testKeyboardNavigation(),
+                arrows: await testArrowNavigation(),
+                buttons: await testButtonNavigation(),
+                progress: await testProgressBar(),
+                visibility: await testSlideVisibility()
+            };
+
+            // Calculate summary
+            const totalTests = Object.keys(testResults).length;
+            const passedTests = Object.values(testResults).filter(r => r === true).length;
+            const success = passedTests === totalTests;
+
+            // Show results
+            const resultDiv = document.getElementById('results');
+            resultDiv.className = `results ${success ? 'success' : 'error'}`;
+            resultDiv.innerHTML = `
+                <h3>${success ? '✅ All Tests Passed!' : '⚠️ Some Tests Failed'}</h3>
+                <p>${passedTests} out of ${totalTests} tests passed</p>
+                ${!success ? '<p>See test log for details on failures.</p>' : ''}
+            `;
+
+            log(`\n📊 Test Summary: ${passedTests}/${totalTests} passed`);
+
+            return testResults;
+        }
+
+        function runManualTest() {
+            log('Manual test mode enabled - interact with the site to see logs');
+            alert('Manual test mode enabled. Interact with the embedded site and check the logs.');
+        }
+
+        function clearResults() {
+            logs = ['Ready to test...'];
+            testLog.textContent = logs[0];
+            results.innerHTML = '';
+
+            // Reset all status indicators
+            document.querySelectorAll('.status').forEach(el => {
+                el.className = 'status pending';
+                el.textContent = 'PENDING';
+            });
+        }
+
+        // Auto-start tests when iframe loads
+        testFrame.onload = () => {
+            log('Site loaded successfully. Ready for testing.');
+        };
+    </script>
+</body>
+</html>

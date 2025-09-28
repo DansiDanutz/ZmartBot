@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zmarty App - Manual Testing</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .test-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .test-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .test-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .test-item:last-child {
+            border-bottom: none;
+        }
+
+        .test-label {
+            color: #555;
+            flex: 1;
+        }
+
+        .test-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .test-btn:hover {
+            background: #5a67d8;
+            transform: translateY(-1px);
+        }
+
+        .test-btn.secondary {
+            background: #48bb78;
+        }
+
+        .test-btn.secondary:hover {
+            background: #38a169;
+        }
+
+        .test-btn.danger {
+            background: #f56565;
+        }
+
+        .test-btn.danger:hover {
+            background: #e53e3e;
+        }
+
+        .status {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .status.success {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+
+        .status.error {
+            background: #fed7d7;
+            color: #742a2a;
+        }
+
+        .status.pending {
+            background: #feebc8;
+            color: #744210;
+        }
+
+        .info-box {
+            background: #edf2ff;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin-top: 30px;
+            border-radius: 8px;
+        }
+
+        .info-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .info-text {
+            color: #555;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .test-credentials {
+            background: #f0f4f8;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .cred-item {
+            margin: 5px 0;
+            color: #2d3748;
+        }
+
+        .live-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .live-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Zmarty App Testing Dashboard</h1>
+        <p class="subtitle">Manual testing interface for Zmarty onboarding flow</p>
+
+        <div class="test-section">
+            <div class="test-title">📱 Live Application</div>
+            <div class="test-item">
+                <span class="test-label">Production Site</span>
+                <a href="https://zmarty.netlify.app" target="_blank" class="test-btn">Open Zmarty App</a>
+            </div>
+            <div class="test-item">
+                <span class="test-label">Alternative URL</span>
+                <a href="https://memoproapp.netlify.app" target="_blank" class="test-btn secondary">Open Alt Site</a>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <div class="test-title">🔐 Test Credentials</div>
+            <div class="test-credentials">
+                <div class="cred-item"><strong>Email:</strong> test@example.com</div>
+                <div class="cred-item"><strong>Password:</strong> TestPassword123!</div>
+                <div class="cred-item"><strong>Name:</strong> Test User</div>
+                <div class="cred-item"><strong>Country:</strong> United States</div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <div class="test-title">✅ Test Checklist</div>
+            <div class="test-item">
+                <span class="test-label">1. Test Registration Flow</span>
+                <span class="status pending">PENDING</span>
+            </div>
+            <div class="test-item">
+                <span class="test-label">2. Test Email Verification</span>
+                <span class="status pending">PENDING</span>
+            </div>
+            <div class="test-item">
+                <span class="test-label">3. Test Login Process</span>
+                <span class="status pending">PENDING</span>
+            </div>
+            <div class="test-item">
+                <span class="test-label">4. Test Google OAuth</span>
+                <span class="status pending">PENDING</span>
+            </div>
+            <div class="test-item">
+                <span class="test-label">5. Test Password Reset</span>
+                <span class="status pending">PENDING</span>
+            </div>
+            <div class="test-item">
+                <span class="test-label">6. Test Plan Selection</span>
+                <span class="status pending">PENDING</span>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <div class="test-title">🛠️ Quick Actions</div>
+            <div class="test-item">
+                <span class="test-label">Open DevTools Console</span>
+                <button onclick="alert('Press F12 or Cmd+Option+I to open DevTools')" class="test-btn">Instructions</button>
+            </div>
+            <div class="test-item">
+                <span class="test-label">Clear Local Storage</span>
+                <button onclick="localStorage.clear(); alert('Local storage cleared!')" class="test-btn danger">Clear</button>
+            </div>
+            <div class="test-item">
+                <span class="test-label">Test API Status</span>
+                <button onclick="testAPI()" class="test-btn secondary">Test</button>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <div class="info-title">📋 Testing Instructions</div>
+            <div class="info-text">
+                1. Click "Open Zmarty App" to access the live application<br>
+                2. Try registering with the test credentials above<br>
+                3. Check email verification (may need real email)<br>
+                4. Test Google sign-in option<br>
+                5. Try password reset flow<br>
+                6. Select a pricing plan<br>
+                7. Monitor browser console for any errors (F12)
+            </div>
+        </div>
+
+        <div class="info-box" style="margin-top: 20px;">
+            <div class="info-title">🔍 What to Look For</div>
+            <div class="info-text">
+                • Smooth transitions between screens<br>
+                • Clear error messages<br>
+                • Successful form submissions<br>
+                • Proper redirects after authentication<br>
+                • Mobile responsiveness<br>
+                • Loading states and feedback
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function testAPI() {
+            try {
+                const response = await fetch('https://zmarty.netlify.app');
+                if (response.ok) {
+                    alert('✅ API is accessible! Status: ' + response.status);
+                } else {
+                    alert('⚠️ API returned status: ' + response.status);
+                }
+            } catch (error) {
+                alert('❌ API test failed: ' + error.message);
+            }
+        }
+
+        // Update status badges based on testing
+        document.querySelectorAll('.test-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                if (e.target.classList.contains('status')) {
+                    if (e.target.classList.contains('pending')) {
+                        e.target.classList.remove('pending');
+                        e.target.classList.add('success');
+                        e.target.textContent = 'PASSED';
+                    } else if (e.target.classList.contains('success')) {
+                        e.target.classList.remove('success');
+                        e.target.classList.add('error');
+                        e.target.textContent = 'FAILED';
+                    } else {
+                        e.target.classList.remove('error');
+                        e.target.classList.add('pending');
+                        e.target.textContent = 'PENDING';
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

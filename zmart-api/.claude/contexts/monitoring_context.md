@@ -3,9 +3,9 @@
 ## ProcessReaper
 **File**: .cursor/rules/ProcessReaper.mdc
 **Relevance**: 0
-**Size**: 9653 bytes
+**Size**: 7869 bytes
 
-**Summary**: ## Description | Core service component of the ZmartBot ecosystem providing essential functionality. | - **Claude Code Integration**: AI-powered process management and optimization
+**Summary**: ## Description | Core service component of the ZmartBot ecosystem providing essential functionality. | # MAXIMUM UPGRADE: ProcessReaper.mdc | - **Name**: ProcessReaper
 **Compressed**: 
 
 ---
@@ -13,19 +13,42 @@
 ## MonitoringMDC
 **File**: .cursor/rules/MonitoringMDC.mdc
 **Relevance**: 0
-**Size**: 16783 bytes
+**Size**: 15070 bytes
 
-**Summary**: # MDC Monitoring System - Comprehensive Documentation | ## 🤖 MCP (Model Context Protocol) Integration | ### **MCP Server Pairing**
+**Summary**: # MDC Monitoring System - Comprehensive Documentation | ## Purpose & Scope | @agent: MonitoringMDC
 
 ---
 
 ## diagnostics
 **File**: .cursor/rules/diagnostics.mdc
 **Relevance**: 0
-**Size**: 5923 bytes
+**Size**: 4220 bytes
 
-**Summary**: ## Description | Core service component of the ZmartBot ecosystem providing essential functionality. | - **Claude Code Integration**: AI-powered diagnostic analysis and optimization
-**Compressed**: 
+**Content**: 
+## Description
+Core service component of the ZmartBot ecosystem providing essential functionality.
+
+
+As an AI, I'm unable to generate the entire MDC file as requested due to the lack of specific information about the service. However, I can provide a template based on the requirements you've provided. You can fill in the details as per your service's specifics.
+
+```markdown
+# Masterpiece Documentation Content (MDC) for Diagnostics Service
+
+## 1. Service Overview
+- **Name**: Diagnostics
+- **Service Classification**: 
+- **Criticality Level**: 
+- **Business Impact**: 
+- **System Role**: 
+
+## 2. Service Architecture
+- **Technical Foundation**: 
+- **Core Components**: 
+- **Data Structures**: 
+- **Integration Ecosystem**: 
+- **Design Patterns**: 
+
+## ...
 
 ---
 

@@ -2,47 +2,6 @@
 ## Description
 Core service component of the ZmartBot ecosystem providing essential functionality.
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - Frontend MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered frontend development and optimization
-- **Memory Gateway**: Persistent frontend state and user session metadata
-- **UI Automation**: Automated frontend monitoring and health checks
-- **Figma Integration**: Frontend design and UI management
-- **Supabase Integration**: Cloud-based frontend analytics and user management
-
-### **MCP Integration Benefits**
-- **Enhanced Development**: AI-powered frontend optimization and development
-- **Persistent State**: Frontend state and user session preservation
-- **Automated Monitoring**: Real-time frontend health and performance tracking
-- **Visual Design**: Professional frontend design and UI management
-- **Cloud Analytics**: Advanced frontend analytics and user behavior tracking
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:3400/health"
-
-# Frontend update via MCP
-curl -X POST "http://127.0.0.1:3400/update" \
-  -H "Content-Type: application/json" \
-  -d '{"component": "dashboard", "action": "refresh"}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered frontend development
-- **ByteRover**: ✅ Active - Frontend state persistence
-- **UI TARS**: ✅ Active - Frontend monitoring automation
-- **Figma**: ✅ Active - Frontend design management
-- **Supabase**: ✅ Active - Frontend cloud analytics
-
----
 
 # Service Overview
 

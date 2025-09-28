@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZmartyBrain Comprehensive Loop Test Runner</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            gap: 20px;
+        }
+        .control-panel {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 24px;
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+        .iframe-container {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        iframe {
+            width: 100%;
+            height: 800px;
+            border: none;
+            border-radius: 12px;
+        }
+        h1 {
+            margin-top: 0;
+            text-align: center;
+            font-size: 28px;
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: white;
+            margin-top: 0;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+        .test-step {
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border-left: 4px solid #10b981;
+        }
+        .test-step.testing {
+            border-left-color: #f59e0b;
+            background: rgba(245, 158, 11, 0.1);
+        }
+        .test-step.completed {
+            border-left-color: #10b981;
+            background: rgba(16, 185, 129, 0.1);
+        }
+        .test-step.failed {
+            border-left-color: #ef4444;
+            background: rgba(239, 68, 68, 0.1);
+        }
+        .test-step h3 {
+            margin: 0 0 8px 0;
+            font-size: 16px;
+        }
+        .test-step p {
+            margin: 0;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 8px;
+        }
+        .status-pending {
+            background: #6b7280;
+            color: white;
+        }
+        .status-testing {
+            background: #f59e0b;
+            color: white;
+        }
+        .status-completed {
+            background: #10b981;
+            color: white;
+        }
+        .status-failed {
+            background: #ef4444;
+            color: white;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 12px;
+            transition: all 0.3s;
+        }
+        button:hover {
+            background: #5a67d8;
+            transform: translateY(-1px);
+        }
+        button:disabled {
+            background: #6b7280;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981, #059669);
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        .results-summary {
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 20px;
+        }
+        .issue-list {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 12px;
+        }
+        .issue-item {
+            background: rgba(255,255,255,0.05);
+            border-radius: 4px;
+            padding: 8px;
+            margin-bottom: 6px;
+            font-size: 13px;
+        }
+        .issue-high {
+            border-left: 3px solid #ef4444;
+        }
+        .issue-medium {
+            border-left: 3px solid #f59e0b;
+        }
+        .issue-low {
+            border-left: 3px solid #10b981;
+        }
+        .console-output {
+            background: #1f2937;
+            color: #d1d5db;
+            border-radius: 8px;
+            padding: 16px;
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 12px;
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 ZmartyBrain Comprehensive Loop Test Runner</h1>
+
+    <div class="container">
+        <div class="control-panel">
+            <h2>Test Control Panel</h2>
+
+            <button onclick="startComprehensiveTest()" id="startTestBtn">🚀 Start Comprehensive Test</button>
+            <button onclick="testCurrentSlide()" id="testSlideBtn">🎯 Test Current Slide</button>
+            <button onclick="testNavigation()" id="testNavBtn">🎮 Test Navigation</button>
+            <button onclick="testMobileView()" id="testMobileBtn">📱 Test Mobile View</button>
+            <button onclick="generateReport()" id="reportBtn" disabled>📊 Generate Final Report</button>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <p id="progressText">Ready to start testing...</p>
+
+            <h3>Test Steps</h3>
+            <div id="testSteps">
+                <div class="test-step" id="step-load">
+                    <h3>Load Page <span class="status-badge status-pending">PENDING</span></h3>
+                    <p>Loading onboarding at http://localhost:8888</p>
+                </div>
+                <div class="test-step" id="step-slide1">
+                    <h3>Slide 1: Welcome <span class="status-badge status-pending">PENDING</span></h3>
+                    <p>Test welcome screen, features, and navigation</p>
+                </div>
+                <div class="test-step" id="step-slide2">
+                    <h3>Slide 2: AI Models <span class="status-badge status-pending">PENDING</span></h3>
+                    <p>Verify AI model cards and descriptions</p>
+                </div>
+                <div class="test-step" id="step-slide3">
+                    <h3>Slide 3: Exchanges <span class="status-badge status-pending">PENDING</span></h3>
+                    <p>Check exchange listings and features</p>
+                </div>
+                <div class="test-step" id="step-navigation">
+                    <h3>Navigation Test <span class="status-badge status-pending">PENDING</span></h3>
+                    <p>Test all navigation methods and controls</p>
+                </div>
+                <div class="test-step" id="step-mobile">
+                    <h3>Mobile Response <span class="status-badge status-pending">PENDING</span></h3>
+                    <p>Test responsive design and mobile layout</p>
+                </div>
+                <div class="test-step" id="step-forms">
+                    <h3>Form Testing <span class="status-badge status-pending">PENDING</span></h3>
+                    <p>Validate form functionality and validation</p>
+                </div>
+            </div>
+
+            <div class="results-summary" id="resultsSummary" style="display: none;">
+                <h3>Test Results Summary</h3>
+                <p id="summaryText">Test not completed yet...</p>
+                <div class="issue-list" id="issueList"></div>
+            </div>
+
+            <div class="console-output" id="consoleOutput" style="display: none;">
+                <h4>Console Output</h4>
+                <div id="consoleLog"></div>
+            </div>
+        </div>
+
+        <div class="iframe-container">
+            <iframe src="http://localhost:8888" id="testFrame" onload="frameLoaded()"></iframe>
+        </div>
+    </div>
+
+    <script>
+        let testResults = {
+            totalTests: 0,
+            passedTests: 0,
+            failedTests: 0,
+            issues: [],
+            currentStep: 0
+        };
+
+        let testFrame = null;
+
+        function frameLoaded() {
+            console.log('📱 Test frame loaded successfully');
+            updateStepStatus('step-load', 'completed', 'Page loaded successfully');
+            testFrame = document.getElementById('testFrame');
+
+            // Enable test buttons
+            document.getElementById('startTestBtn').disabled = false;
+            document.getElementById('testSlideBtn').disabled = false;
+            document.getElementById('testNavBtn').disabled = false;
+            document.getElementById('testMobileBtn').disabled = false;
+        }
+
+        function updateStepStatus(stepId, status, message = '') {
+            const step = document.getElementById(stepId);
+            if (!step) return;
+
+            step.className = `test-step ${status}`;
+            const badge = step.querySelector('.status-badge');
+
+            if (badge) {
+                badge.className = `status-badge status-${status}`;
+                badge.textContent = status.toUpperCase();
+            }
+
+            if (message) {
+                const p = step.querySelector('p');
+                if (p) p.textContent = message;
+            }
+        }
+
+        function updateProgress(percentage, text) {
+            document.getElementById('progressFill').style.width = percentage + '%';
+            document.getElementById('progressText').textContent = text;
+        }
+
+        function logToConsole(message) {
+            const consoleOutput = document.getElementById('consoleOutput');
+            const consoleLog = document.getElementById('consoleLog');
+
+            consoleOutput.style.display = 'block';
+
+            const timestamp = new Date().toLocaleTimeString();
+            consoleLog.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+            consoleLog.scrollTop = consoleLog.scrollHeight;
+        }
+
+        async function startComprehensiveTest() {
+            logToConsole('🧪 Starting comprehensive onboarding test...');
+            updateStepStatus('step-load', 'completed', 'Frame loaded and ready');
+            updateProgress(10, 'Starting comprehensive test...');
+
+            // Test Slide 1
+            await testSlide1();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
+            // Test Slide 2
+            await testSlide2();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
+            // Test Navigation
+            await testNavigationSystem();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
+            // Test Mobile
+            await testMobileResponsiveness();
+
+            // Generate final report
+            generateReport();
+        }
+
+        async function testSlide1() {
+            logToConsole('📍 Testing Slide 1: Welcome');
+            updateStepStatus('step-slide1', 'testing', 'Testing welcome screen...');
+            updateProgress(25, 'Testing Slide 1: Welcome');
+
+            try {
+                // Inject test script into iframe
+                const script = `
+                    // Test main title
+                    const title = document.querySelector('h1');
+                    const hasWelcomeTitle = title && title.textContent.includes('Welcome to Zmarty');
+
+                    // Test subtitle
+                    const subtitle = document.querySelector('.subtitle');
+                    const hasSubtitle = subtitle && subtitle.textContent.includes('AI-Powered Trading Revolution');
+
+                    // Test feature cards
+                    const featureCards = document.querySelectorAll('.feature-card');
+                    const hasFeatureCards = featureCards.length >= 4;
+
+                    // Test rocket emoji
+                    const rocket = document.querySelector('.float');
+                    const hasRocket = rocket && rocket.textContent.includes('🚀');
+
+                    // Test get started button
+                    const button = document.querySelector('.btn-primary');
+                    const hasButton = button && button.textContent.includes('Start Free Trial');
+
+                    JSON.stringify({
+                        title: hasWelcomeTitle,
+                        subtitle: hasSubtitle,
+                        featureCards: hasFeatureCards,
+                        featureCardCount: featureCards.length,
+                        rocket: hasRocket,
+                        button: hasButton
+                    });
+                `;
+
+                const result = JSON.parse(testFrame.contentWindow.eval(script));
+
+                // Analyze results
+                let issues = [];
+                if (!result.title) issues.push({ priority: 'HIGH', description: 'Main title missing or incorrect', type: 'content' });
+                if (!result.subtitle) issues.push({ priority: 'MEDIUM', description: 'Subtitle missing or incorrect', type: 'content' });
+                if (!result.featureCards) issues.push({ priority: 'HIGH', description: `Only ${result.featureCardCount} feature cards found, expected 4`, type: 'layout' });
+                if (!result.rocket) issues.push({ priority: 'LOW', description: 'Floating rocket emoji missing', type: 'visual' });
+                if (!result.button) issues.push({ priority: 'HIGH', description: 'Get Started button missing or incorrect', type: 'functional' });
+
+                if (issues.length === 0) {
+                    updateStepStatus('step-slide1', 'completed', '✅ All tests passed');
+                    logToConsole('  ✅ Slide 1: All tests passed');
+                    testResults.passedTests++;
+                } else {
+                    updateStepStatus('step-slide1', 'failed', `❌ ${issues.length} issues found`);
+                    issues.forEach(issue => {
+                        logToConsole(`  ❌ ${issue.priority}: ${issue.description}`);
+                        testResults.issues.push({...issue, slide: 'Slide 1'});
+                    });
+                    testResults.failedTests++;
+                }
+
+                testResults.totalTests++;
+
+            } catch (error) {
+                updateStepStatus('step-slide1', 'failed', 'Test execution failed');
+                logToConsole(`  ❌ Slide 1 test error: ${error.message}`);
+                testResults.failedTests++;
+            }
+        }
+
+        async function testSlide2() {
+            logToConsole('📍 Testing Slide 2: AI Models');
+            updateStepStatus('step-slide2', 'testing', 'Testing AI models display...');
+            updateProgress(40, 'Testing Slide 2: AI Models');
+
+            try {
+                // Navigate to slide 2 first
+                testFrame.contentWindow.eval('if (window.state && window.state.goToStep) window.state.goToStep(2);');
+
+                await new Promise(resolve => setTimeout(resolve, 500));
+
+                const script = `
+                    // Check if slide 2 exists
+                    const slide2 = document.querySelector('#step2');
+                    const isActive = slide2 && slide2.classList.contains('active');
+
+                    // Check AI models content
+                    const aiTitle = document.querySelector('#step2 h2');
+                    const hasAiTitle = aiTitle && aiTitle.textContent.includes('Powered by Multiple AI Models');
+
+                    // Check AI models grid
+                    const aiGrid = document.querySelector('#step2 .ai-models-grid');
+                    const aiCards = aiGrid ? aiGrid.querySelectorAll('.ai-model-card') : [];
+
+                    JSON.stringify({
+                        slide2Exists: !!slide2,
+                        isActive: isActive,
+                        aiTitle: hasAiTitle,
+                        aiGrid: !!aiGrid,
+                        aiCardCount: aiCards.length
+                    });
+                `;
+
+                const result = JSON.parse(testFrame.contentWindow.eval(script));
+
+                let issues = [];
+                if (!result.slide2Exists) issues.push({ priority: 'HIGH', description: 'Slide 2 DOM element not found', type: 'structural' });
+                if (!result.aiTitle) issues.push({ priority: 'HIGH', description: 'AI Models title missing or incorrect', type: 'content' });
+                if (!result.aiGrid) issues.push({ priority: 'HIGH', description: 'AI models grid not found', type: 'layout' });
+                if (result.aiCardCount < 4) issues.push({ priority: 'MEDIUM', description: `Only ${result.aiCardCount} AI model cards found, expected 4`, type: 'content' });
+
+                if (issues.length === 0) {
+                    updateStepStatus('step-slide2', 'completed', '✅ All tests passed');
+                    logToConsole('  ✅ Slide 2: All tests passed');
+                    testResults.passedTests++;
+                } else {
+                    updateStepStatus('step-slide2', 'failed', `❌ ${issues.length} issues found`);
+                    issues.forEach(issue => {
+                        logToConsole(`  ❌ ${issue.priority}: ${issue.description}`);
+                        testResults.issues.push({...issue, slide: 'Slide 2'});
+                    });
+                    testResults.failedTests++;
+                }
+
+                testResults.totalTests++;
+
+            } catch (error) {
+                updateStepStatus('step-slide2', 'failed', 'Test execution failed');
+                logToConsole(`  ❌ Slide 2 test error: ${error.message}`);
+                testResults.failedTests++;
+            }
+        }
+
+        async function testNavigationSystem() {
+            logToConsole('🎮 Testing Navigation System');
+            updateStepStatus('step-navigation', 'testing', 'Testing navigation controls...');
+            updateProgress(60, 'Testing Navigation System');
+
+            try {
+                const script = `
+                    // Check progress bar
+                    const progressBar = document.querySelector('.progress-bar');
+
+                    // Check navigation buttons
+                    const nextBtn = document.querySelector('.btn-primary');
+                    const prevBtn = document.querySelector('.btn-secondary');
+
+                    // Check step dots
+                    const stepDots = document.querySelectorAll('.step-dot');
+
+                    // Check if navigation functions exist
+                    const hasNextStep = typeof window.nextStep === 'function';
+                    const hasPrevStep = typeof window.prevStep === 'function';
+                    const hasGoToStep = window.state && typeof window.state.goToStep === 'function';
+
+                    JSON.stringify({
+                        progressBar: !!progressBar,
+                        nextBtn: !!nextBtn,
+                        prevBtn: !!prevBtn,
+                        stepDots: stepDots.length,
+                        hasNextStep: hasNextStep,
+                        hasPrevStep: hasPrevStep,
+                        hasGoToStep: hasGoToStep
+                    });
+                `;
+
+                const result = JSON.parse(testFrame.contentWindow.eval(script));
+
+                let issues = [];
+                if (!result.progressBar) issues.push({ priority: 'MEDIUM', description: 'Progress bar not found', type: 'ui' });
+                if (!result.nextBtn) issues.push({ priority: 'HIGH', description: 'Next button not found', type: 'navigation' });
+                if (!result.hasNextStep) issues.push({ priority: 'HIGH', description: 'nextStep function not found', type: 'functional' });
+                if (!result.hasGoToStep) issues.push({ priority: 'HIGH', description: 'goToStep function not found', type: 'functional' });
+
+                if (issues.length === 0) {
+                    updateStepStatus('step-navigation', 'completed', '✅ All navigation tests passed');
+                    logToConsole('  ✅ Navigation: All tests passed');
+                    testResults.passedTests++;
+                } else {
+                    updateStepStatus('step-navigation', 'failed', `❌ ${issues.length} issues found`);
+                    issues.forEach(issue => {
+                        logToConsole(`  ❌ ${issue.priority}: ${issue.description}`);
+                        testResults.issues.push({...issue, slide: 'Navigation'});
+                    });
+                    testResults.failedTests++;
+                }
+
+                testResults.totalTests++;
+
+            } catch (error) {
+                updateStepStatus('step-navigation', 'failed', 'Test execution failed');
+                logToConsole(`  ❌ Navigation test error: ${error.message}`);
+                testResults.failedTests++;
+            }
+        }
+
+        async function testMobileResponsiveness() {
+            logToConsole('📱 Testing Mobile Responsiveness');
+            updateStepStatus('step-mobile', 'testing', 'Testing mobile layout...');
+            updateProgress(80, 'Testing Mobile Responsiveness');
+
+            try {
+                const script = `
+                    // Check viewport meta tag
+                    const viewportMeta = document.querySelector('meta[name="viewport"]');
+
+                    // Check container dimensions
+                    const container = document.querySelector('.onboarding-container');
+                    const containerWidth = container ? container.offsetWidth : 0;
+                    const windowWidth = window.innerWidth;
+
+                    // Check for responsive CSS classes
+                    const hasResponsiveClasses = document.querySelector('[class*="mobile"], [class*="responsive"]');
+
+                    JSON.stringify({
+                        viewportMeta: !!viewportMeta,
+                        containerWidth: containerWidth,
+                        windowWidth: windowWidth,
+                        containerOverflow: containerWidth > windowWidth,
+                        hasResponsiveClasses: !!hasResponsiveClasses
+                    });
+                `;
+
+                const result = JSON.parse(testFrame.contentWindow.eval(script));
+
+                let issues = [];
+                if (!result.viewportMeta) issues.push({ priority: 'MEDIUM', description: 'Viewport meta tag missing', type: 'mobile' });
+                if (result.containerOverflow) issues.push({ priority: 'HIGH', description: 'Container wider than viewport on mobile', type: 'mobile' });
+
+                if (issues.length === 0) {
+                    updateStepStatus('step-mobile', 'completed', '✅ Mobile tests passed');
+                    logToConsole('  ✅ Mobile: All tests passed');
+                    testResults.passedTests++;
+                } else {
+                    updateStepStatus('step-mobile', 'failed', `❌ ${issues.length} issues found`);
+                    issues.forEach(issue => {
+                        logToConsole(`  ❌ ${issue.priority}: ${issue.description}`);
+                        testResults.issues.push({...issue, slide: 'Mobile'});
+                    });
+                    testResults.failedTests++;
+                }
+
+                testResults.totalTests++;
+
+            } catch (error) {
+                updateStepStatus('step-mobile', 'failed', 'Test execution failed');
+                logToConsole(`  ❌ Mobile test error: ${error.message}`);
+                testResults.failedTests++;
+            }
+        }
+
+        function testCurrentSlide() {
+            logToConsole('🎯 Testing current slide only...');
+            // Simplified version of slide 1 test
+            testSlide1();
+        }
+
+        function testNavigation() {
+            logToConsole('🎮 Testing navigation only...');
+            testNavigationSystem();
+        }
+
+        function testMobileView() {
+            logToConsole('📱 Testing mobile view only...');
+            testMobileResponsiveness();
+        }
+
+        function generateReport() {
+            logToConsole('📊 Generating comprehensive test report...');
+            updateProgress(100, 'Test completed - Generating report...');
+
+            const summary = document.getElementById('resultsSummary');
+            const summaryText = document.getElementById('summaryText');
+            const issueList = document.getElementById('issueList');
+
+            summary.style.display = 'block';
+
+            const highPriorityIssues = testResults.issues.filter(issue => issue.priority === 'HIGH').length;
+            const mediumPriorityIssues = testResults.issues.filter(issue => issue.priority === 'MEDIUM').length;
+            const lowPriorityIssues = testResults.issues.filter(issue => issue.priority === 'LOW').length;
+
+            const score = Math.max(0, 100 - (highPriorityIssues * 10) - (mediumPriorityIssues * 5) - (lowPriorityIssues * 2));
+
+            summaryText.innerHTML = `
+                <strong>Overall Score: ${score}%</strong><br>
+                🔴 High Priority: ${highPriorityIssues}<br>
+                🟡 Medium Priority: ${mediumPriorityIssues}<br>
+                🟢 Low Priority: ${lowPriorityIssues}<br>
+                Total Issues: ${testResults.issues.length}
+            `;
+
+            issueList.innerHTML = '';
+            testResults.issues.forEach(issue => {
+                const issueDiv = document.createElement('div');
+                issueDiv.className = `issue-item issue-${issue.priority.toLowerCase()}`;
+                issueDiv.innerHTML = `
+                    <strong>${issue.slide}</strong><br>
+                    ${issue.priority}: ${issue.description}<br>
+                    <small>Type: ${issue.type}</small>
+                `;
+                issueList.appendChild(issueDiv);
+            });
+
+            document.getElementById('reportBtn').disabled = false;
+
+            logToConsole(`📈 Final Score: ${score}%`);
+            if (score >= 95) {
+                logToConsole('🎉 EXCELLENT! Ready for production deployment');
+            } else if (score >= 85) {
+                logToConsole('✅ GOOD! Minor fixes needed');
+            } else if (score >= 70) {
+                logToConsole('⚠️ NEEDS WORK! Several issues need fixing');
+            } else {
+                logToConsole('🔴 CRITICAL! Major issues must be resolved');
+            }
+        }
+
+        // Initialize
+        console.log('🧪 Test Runner initialized');
+        logToConsole('Test Runner loaded and ready');
+    </script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+# Netlify Configuration for ZmartyBrain Onboarding
+
+[build]
+  publish = "."
+
+[build.environment]
+  NODE_VERSION = "18"
+
+# Redirects and rewrites
+[[redirects]]
+  from = "/"
+  to = "/onboarding-enhanced.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/onboarding"
+  to = "/onboarding-enhanced.html"
+  status = 200
+
+[[redirects]]
+  from = "/dashboard"
+  to = "https://app.zmartybrain.com/dashboard"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/login"
+  to = "/login.html"
+  status = 200
+
+[[redirects]]
+  from = "/reset-password"
+  to = "/reset-password.html"
+  status = 200
+
+# API Functions (disabled for now)
+# [[redirects]]
+#   from = "/api/email/send"
+#   to = "/.netlify/functions/email-handler"
+#   status = 200
+
+# Headers for security
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+[[headers]]
+  for = "*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# Environment variables (set these in Netlify dashboard)
+[context.production.environment]
+  SUPABASE_URL = "https://asjtxrmftmutcsnqgidy.supabase.co"
+  NODE_ENV = "production"
+
+[context.deploy-preview.environment]
+  NODE_ENV = "development"
+
+[context.branch-deploy.environment]
+  NODE_ENV = "development"
+
+# Plugins
+[[plugins]]
+  package = "@netlify/plugin-lighthouse"
+
+  [plugins.inputs]
+    output_path = "lighthouse_results.html"
+
+  [plugins.inputs.thresholds]
+    performance = 0.7
+    accessibility = 0.8
+    best-practices = 0.8
+    seo = 0.8

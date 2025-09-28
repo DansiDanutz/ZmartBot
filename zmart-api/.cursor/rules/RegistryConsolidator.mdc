@@ -1,45 +1,6 @@
 # RegistryConsolidator.mdc
 > Type: backend | Version: 1.0.0 | Owner: zmartbot | Port: 8898 | Level: 2
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - Registry Consolidator MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered registry consolidation and optimization
-- **Memory Gateway**: Persistent registry consolidation state and metadata
-- **UI Automation**: Automated registry consolidation monitoring and health checks
-- **Figma Integration**: Registry consolidation dashboard design and UI management
-- **Supabase Integration**: Cloud-based registry consolidation analytics and reporting
-
-### **MCP Integration Benefits**
-- **Enhanced Consolidation**: AI-powered registry consolidation and optimization
-- **Persistent State**: Cross-session registry consolidation state and configuration management
-- **Automated Monitoring**: Real-time registry consolidation health and performance tracking
-- **Visual Dashboard**: Interactive registry consolidation management and testing interface
-- **Cloud Analytics**: Comprehensive registry consolidation usage and performance analytics
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8898/health"
-
-# Registry consolidation via MCP
-curl -X POST "http://127.0.0.1:8898/consolidate" -d '{"action": "consolidate_all"}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered registry consolidation
-- **ByteRover**: ✅ Active - Persistent registry consolidation state management
-- **UI TARS**: ✅ Active - Automated registry consolidation monitoring
-- **Figma**: ✅ Active - Registry consolidation dashboard design
-- **Supabase**: ✅ Active - Cloud-based registry consolidation analytics
-
----
 
 ## Purpose
 Registry Database Consolidator - Comprehensive database organization service that consolidates all scattered registry databases into a single, well-organized system to prevent registry database chaos and ensure unified data management across the ZmartBot platform.

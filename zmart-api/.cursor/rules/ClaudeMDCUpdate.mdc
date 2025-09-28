@@ -2,47 +2,6 @@
 ## Description
 Core service component of the ZmartBot ecosystem providing essential functionality.
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - Claude MDC Update MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered documentation synchronization and optimization
-- **Memory Gateway**: Persistent documentation state and update metadata
-- **UI Automation**: Automated documentation monitoring and health checks
-- **Figma Integration**: Documentation dashboard design and UI management
-- **Supabase Integration**: Cloud-based documentation analytics and reporting
-
-### **MCP Integration Benefits**
-- **Enhanced Synchronization**: AI-powered documentation update optimization
-- **Persistent State**: Documentation update history and metadata preservation
-- **Automated Monitoring**: Real-time documentation health and performance tracking
-- **Visual Design**: Professional documentation dashboard and UI design
-- **Cloud Analytics**: Advanced documentation analytics and reporting
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8000/health"
-
-# Documentation update via MCP
-curl -X POST "http://127.0.0.1:8000/update" \
-  -H "Content-Type: application/json" \
-  -d '{"file": "service.mdc", "action": "sync"}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered documentation synchronization
-- **ByteRover**: ✅ Active - Documentation state persistence
-- **UI TARS**: ✅ Active - Documentation monitoring automation
-- **Figma**: ✅ Active - Documentation dashboard design
-- **Supabase**: ✅ Active - Documentation cloud analytics
-
----
 
 # Claude MDC Update System - Autonomous Documentation Synchronization
 

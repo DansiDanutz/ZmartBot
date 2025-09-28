@@ -1,0 +1,63 @@
+{
+  "accounts": [
+    {
+      "name": "binance_spot",
+      "exchangeId": "binance",
+      "apiKey": "YOUR_BINANCE_API_KEY",
+      "secret": "YOUR_BINANCE_SECRET",
+      "defaultType": "spot"
+    },
+    {
+      "name": "binance_futures",
+      "exchangeId": "binance",
+      "apiKey": "YOUR_BINANCE_FUTURES_API_KEY",
+      "secret": "YOUR_BINANCE_FUTURES_SECRET",
+      "defaultType": "future"
+    },
+    {
+      "name": "bybit_main",
+      "exchangeId": "bybit",
+      "apiKey": "YOUR_BYBIT_API_KEY",
+      "secret": "YOUR_BYBIT_SECRET",
+      "defaultType": "spot"
+    },
+    {
+      "name": "kucoin_main",
+      "exchangeId": "kucoin",
+      "apiKey": "YOUR_KUCOIN_API_KEY",
+      "secret": "YOUR_KUCOIN_SECRET",
+      "passphrase": "YOUR_KUCOIN_PASSPHRASE",
+      "defaultType": "spot"
+    },
+    {
+      "name": "okx_main",
+      "exchangeId": "okx",
+      "apiKey": "YOUR_OKX_API_KEY",
+      "secret": "YOUR_OKX_SECRET",
+      "passphrase": "YOUR_OKX_PASSPHRASE",
+      "defaultType": "spot"
+    },
+    {
+      "name": "bitget_main",
+      "exchangeId": "bitget",
+      "apiKey": "YOUR_BITGET_API_KEY",
+      "secret": "YOUR_BITGET_SECRET",
+      "passphrase": "YOUR_BITGET_PASSPHRASE",
+      "defaultType": "spot"
+    },
+    {
+      "name": "kraken_main",
+      "exchangeId": "kraken",
+      "apiKey": "YOUR_KRAKEN_API_KEY",
+      "secret": "YOUR_KRAKEN_SECRET",
+      "defaultType": "spot"
+    },
+    {
+      "name": "coinbase_main",
+      "exchangeId": "coinbase",
+      "apiKey": "YOUR_COINBASE_API_KEY",
+      "secret": "YOUR_COINBASE_SECRET",
+      "defaultType": "spot"
+    }
+  ]
+}

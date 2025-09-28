@@ -2,48 +2,6 @@
 ## Description
 Core service component of the ZmartBot ecosystem providing essential functionality.
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - StopStartCycle MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered lifecycle management and service orchestration
-- **Memory Gateway**: Persistent lifecycle state and service metadata
-- **UI Automation**: Automated lifecycle monitoring and health checks
-- **Figma Integration**: Lifecycle dashboard design and UI management
-- **Supabase Integration**: Cloud-based lifecycle analytics and reporting
-
-### **MCP Integration Benefits**
-- **AI-Powered Lifecycle**: Intelligent service lifecycle management and orchestration
-- **Persistent State**: Lifecycle process state and service metadata storage
-- **Automated Monitoring**: Real-time lifecycle progress and error detection
-- **Visual Dashboard**: Lifecycle process visualization and status tracking
-- **Cloud Analytics**: Lifecycle performance metrics and optimization insights
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8000/health" \
-  -H "Content-Type: application/json"
-
-# Lifecycle management via MCP
-curl -X POST "http://127.0.0.1:8000/lifecycle" \
-  -H "Content-Type: application/json" \
-  -d '{"action": "stopstart", "services": ["all"]}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered lifecycle management
-- **ByteRover**: ✅ Active - Persistent lifecycle state management
-- **UI TARS**: ✅ Active - Automated lifecycle monitoring
-- **Figma**: ✅ Active - Lifecycle dashboard design
-- **Supabase**: ✅ Active - Cloud-based lifecycle analytics
-
----
 
 # StopStartCycle.mdc
 > Type: rule | Version: 1.2.0 | Owner: zmartbot | Purpose: Service Lifecycle Management

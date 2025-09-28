@@ -2,45 +2,6 @@
 > Type: service | Version: 1.0.0 | Owner: zmartbot | Status: Discovery | Level: 1
 Core service component of the ZmartBot ecosystem providing essential functionality.
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - Rules MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered rules management and optimization
-- **Memory Gateway**: Persistent rules state and metadata
-- **UI Automation**: Automated rules monitoring and health checks
-- **Figma Integration**: Rules dashboard design and UI management
-- **Supabase Integration**: Cloud-based rules analytics and reporting
-
-### **MCP Integration Benefits**
-- **Enhanced Rules Management**: AI-powered rules management and optimization
-- **Persistent State**: Cross-session rules state and configuration management
-- **Automated Monitoring**: Real-time rules health and performance tracking
-- **Visual Dashboard**: Interactive rules management and testing interface
-- **Cloud Analytics**: Comprehensive rules usage and performance analytics
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8000/rules/health"
-
-# Rules management via MCP
-curl -X POST "http://127.0.0.1:8000/rules/validate" -d '{"rule": "all", "action": "check"}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered rules management
-- **ByteRover**: ✅ Active - Persistent rules state management
-- **UI TARS**: ✅ Active - Automated rules monitoring
-- **Figma**: ✅ Active - Rules dashboard design
-- **Supabase**: ✅ Active - Cloud-based rules analytics
-
----
 
 # Cursor Rules & System Architecture — Clear Action Guidelines
 > Type: rule | Version: 1.2.0 | Owner: zmartbot | Purpose: System Architecture & Service Management
@@ -48,6 +9,41 @@ curl -X POST "http://127.0.0.1:8000/rules/validate" -d '{"rule": "all", "action"
 **CRITICAL UPDATE**: Added Rule 1.X - ZmartBot Service Architecture Workflow with Complete Certification Requirements - FORBIDDEN TO IGNORE
 
 These rules clearly define what Cursor AI is ALLOWED to do and what is CRITICAL to follow.
+
+## 🔌 MCP (Model Context Protocol) INTEGRATIONS
+
+### Available MCP Servers for Enhanced Capabilities
+The following MCP servers are configured in `/Users/dansidanutz/Library/Application Support/Claude/claude_desktop_config.json` and `.cursor/mcp.json`:
+
+1. **Supabase MCP** - Database operations and management
+   - Project: `asjtxrmftmutcsnqgidy`
+   - Commands: `mcp__supabase__*` (list_tables, execute_sql, apply_migration, etc.)
+
+2. **Browser MCP** - Web automation and browsing
+   - Commands: `mcp__browsermcp__browser_*` (navigate, click, type, screenshot)
+
+3. **Firecrawl MCP** - Advanced web scraping and search
+   - API Key: `fc-0b019c4a95b64f488f5c97f387e95b5e`
+   - Commands: `mcp__firecrawl-mcp__firecrawl_*` (search, scrape, map, crawl, extract)
+
+4. **Shadcn Studio MCP** - UI component management
+   - Registries: @shadcn, @acme
+   - Commands: `mcp__shadcn__*` (get_project_registries, list_items, search_items)
+
+5. **Ref (Byterover) MCP** - Documentation search
+   - API Key: `ref-5c535e98df41fa8ef0f9`
+   - Commands: `mcp__Ref__ref_*` (search_documentation, read_url)
+
+6. **IDE MCP** - File system operations
+   - Commands: `mcp__ide__*` (getDiagnostics, executeCode)
+
+7. **Figma MCP** - Design integration
+   - API Key: `figd_5pmO9I1vXoLF5gfw3OdPiQIaakuTRCJut6doJn09`
+
+### Usage Guidelines
+- MCP servers are automatically invoked when their specific functionality is needed
+- They provide extended capabilities beyond standard tools
+- Each MCP has specific command patterns (e.g., `mcp__<server>__<command>`)
 
 ## 🏗️ CRITICAL ARCHITECTURE DISCOVERY
 

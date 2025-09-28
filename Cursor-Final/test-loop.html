@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Loop Test</title>
+    <style>
+        body { font-family: Arial; padding: 20px; background: #1a1a1a; color: white; }
+        button { padding: 10px 20px; margin: 5px; background: #667eea; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #5a67d8; }
+        #log { background: #000; padding: 15px; border-radius: 5px; margin-top: 20px; font-family: monospace; max-height: 400px; overflow-y: auto; }
+        .success { color: #10b981; }
+        .error { color: #ef4444; }
+        .info { color: #3b82f6; }
+    </style>
+</head>
+<body>
+    <h1>🔄 Loop Testing</h1>
+    <button onclick="testNavigation()">Test Navigation</button>
+    <button onclick="window.open('http://localhost:8891', '_blank')">Open Onboarding</button>
+    <div id="log"></div>
+
+    <script>
+        function log(msg, type = 'info') {
+            const logEl = document.getElementById('log');
+            const time = new Date().toLocaleTimeString();
+            logEl.innerHTML += `<div class="${type}">[${time}] ${msg}</div>`;
+            logEl.scrollTop = logEl.scrollHeight;
+        }
+
+        async function testNavigation() {
+            log('Starting navigation test...', 'info');
+
+            const win = window.open('http://localhost:8891', '_blank');
+            await new Promise(r => setTimeout(r, 2000));
+
+            // Test step 1
+            log('Testing Step 1...', 'info');
+            const step1 = win.document.getElementById('step1');
+            if (!step1) {
+                log('❌ BUG: Step 1 not found', 'error');
+                return;
+            }
+            if (!step1.classList.contains('active')) {
+                log('❌ BUG: Step 1 not active', 'error');
+                return;
+            }
+            log('✅ Step 1 OK', 'success');
+
+            // Click Get Started
+            const getStartedBtn = win.document.querySelector('#step1 .btn-primary');
+            if (!getStartedBtn) {
+                log('❌ BUG: Get Started button not found', 'error');
+                return;
+            }
+            getStartedBtn.click();
+            await new Promise(r => setTimeout(r, 1000));
+
+            // Test step 2
+            log('Testing Step 2...', 'info');
+            const step2 = win.document.getElementById('step2');
+            if (!step2.classList.contains('active')) {
+                log('❌ BUG: Cannot navigate to Step 2', 'error');
+                return;
+            }
+            log('✅ Step 2 OK', 'success');
+
+            log('✅ All tests passed!', 'success');
+        }
+
+        window.onload = () => {
+            log('Test page ready', 'info');
+        };
+    </script>
+</body>
+</html>

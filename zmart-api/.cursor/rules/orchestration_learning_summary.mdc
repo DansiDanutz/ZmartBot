@@ -2,45 +2,6 @@
 ## Description
 Core orchestration service component of the ZmartBot ecosystem providing essential functionality.
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - Orchestration Learning Summary MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered orchestration learning and optimization
-- **Memory Gateway**: Persistent orchestration learning state and metadata
-- **UI Automation**: Automated orchestration learning monitoring and health checks
-- **Figma Integration**: Orchestration learning dashboard design and UI management
-- **Supabase Integration**: Cloud-based orchestration learning analytics and reporting
-
-### **MCP Integration Benefits**
-- **Enhanced Learning**: AI-powered orchestration learning and optimization
-- **Persistent State**: Cross-session orchestration learning state and configuration management
-- **Automated Monitoring**: Real-time orchestration learning health and performance tracking
-- **Visual Dashboard**: Interactive orchestration learning management and testing interface
-- **Cloud Analytics**: Comprehensive orchestration learning usage and performance analytics
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8000/orchestration/health"
-
-# Orchestration learning via MCP
-curl -X POST "http://127.0.0.1:8000/orchestration/learn" -d '{"action": "analyze_patterns"}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered orchestration learning
-- **ByteRover**: ✅ Active - Persistent orchestration learning state management
-- **UI TARS**: ✅ Active - Automated orchestration learning monitoring
-- **Figma**: ✅ Active - Orchestration learning dashboard design
-- **Supabase**: ✅ Active - Cloud-based orchestration learning analytics
-
----
 
 # Master Orchestration Agent - Complete Learning Integration Summary
 

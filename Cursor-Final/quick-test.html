@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quick Onboarding Test</title>
+    <style>
+        body { font-family: Arial; padding: 20px; background: #1a1a1a; color: white; }
+        button { padding: 10px 20px; margin: 5px; background: #667eea; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #5a67d8; }
+        #log { background: #000; padding: 15px; border-radius: 5px; margin-top: 20px; font-family: monospace; max-height: 400px; overflow-y: auto; }
+        .success { color: #10b981; }
+        .error { color: #ef4444; }
+        .info { color: #3b82f6; }
+    </style>
+</head>
+<body>
+    <h1>🚀 Quick Onboarding Test</h1>
+    <div>
+        <button onclick="testSlides()">Test All Slides</button>
+        <button onclick="testAuth()">Test Authentication</button>
+        <button onclick="window.open('http://localhost:8890', '_blank')">Open Onboarding</button>
+    </div>
+    <div id="log"></div>
+
+    <script>
+        function log(msg, type = 'info') {
+            const logEl = document.getElementById('log');
+            const time = new Date().toLocaleTimeString();
+            logEl.innerHTML += `<div class="${type}">[${time}] ${msg}</div>`;
+            logEl.scrollTop = logEl.scrollHeight;
+        }
+
+        async function testSlides() {
+            log('Starting slide test...', 'info');
+
+            const win = window.open('http://localhost:8890', '_blank');
+            await new Promise(r => setTimeout(r, 2000));
+
+            // Test navigation through slides
+            for (let i = 1; i <= 5; i++) {
+                log(`Testing slide ${i}...`, 'info');
+
+                // Send key press to navigate
+                const event = new win.KeyboardEvent('keydown', { key: i.toString() });
+                win.document.dispatchEvent(event);
+
+                await new Promise(r => setTimeout(r, 1500));
+
+                // Check if slide is active
+                const stepEl = win.document.getElementById(`step${i}`);
+                if (stepEl && stepEl.classList.contains('active')) {
+                    log(`✅ Slide ${i} OK`, 'success');
+                } else {
+                    log(`❌ Slide ${i} FAILED - Navigation broken here!`, 'error');
+                    break;
+                }
+            }
+        }
+
+        async function testAuth() {
+            log('Testing Supabase authentication...', 'info');
+
+            // Load Supabase
+            const script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+            document.head.appendChild(script);
+
+            await new Promise(r => setTimeout(r, 1000));
+
+            // Test connection
+            const supabaseUrl = 'https://asjtxrmftmutcsnqgidy.supabase.co';
+            const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFzanR4cm1mdG11dGNzbnFnaWR5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk1Nzc4NjgsImV4cCI6MjA2NTE1Mzg2OH0.w_S6VaAqJ6xYv0LXBBb5gfOJbKXV3r9EfGwGGxGHOcE';
+
+            try {
+                const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+                const { data, error } = await supabase.auth.getSession();
+
+                if (error) {
+                    log(`❌ Supabase connection error: ${error.message}`, 'error');
+                } else {
+                    log('✅ Supabase connected successfully!', 'success');
+                }
+            } catch (err) {
+                log(`❌ Failed to connect: ${err.message}`, 'error');
+            }
+        }
+
+        // Auto-run on load
+        window.onload = () => {
+            log('Test page ready. Click buttons to test.', 'info');
+        };
+    </script>
+</body>
+</html>

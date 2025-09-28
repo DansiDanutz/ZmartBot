@@ -1,5 +1,36 @@
 # Core Domain Context
 
+## byterover-rules
+**File**: .cursor/rules/byterover-rules.mdc
+**Relevance**: 150
+**Size**: 3665 bytes
+
+**Content**: # Byterover MCP Server Tools Reference
+
+There are two main workflows with Byterover tools and recommended tool call strategies that you **MUST** follow precisely.
+
+## Onboarding workflow
+If users particularly ask you to start the onboarding process, you **MUST STRICTLY** follow these steps.
+1. **ALWAYS USE** **byterover-check-handbook-existence** first to check if the byterover handbook already exists. If not, You **MUST** call **byterover-create-handbook** to create the byterover handbook.
+2. If the byterover handbook already exists, first you **MUST** USE **byterover-check-handbook-sync** to analyze the gap between the current codebase and the existing byterover handbook.
+3. Then **IMMEDIATELY USE** **byterover-update-handbook** to update these changes to the byterover handbook.
+4. During the onboarding, you **MUST** use **byterover-list-modules** **FIRST** to get the available modules, and then **byterover-store-modules** and **byterover-update-modules** if there are new modules or changes to existing modules in the project.
+5. Finally, you **MUST** call **byterover-store-knowledge** to save your new knowledge about the codebase.
+
+## ...
+
+---
+
+## rules
+**File**: .cursor/rules/rules.mdc
+**Relevance**: 130
+**Size**: 41238 bytes
+
+**Summary**: # rules.mdc | > Type: service | Version: 1.0.0 | Owner: zmartbot | Status: Discovery | Level: 1 | 1. **Supabase MCP** - Database operations and management | - Project: `asjtxrmftmutcsnqgidy`
+**Key Info**: service | rule | System Architecture & Service Management | `fc-0b019c4a95b64f488f5c97f387e95b5e` | `ref-5c535e98df41fa8ef0f9`
+
+---
+
 ## main
 **File**: .cursor/rules/main.mdc
 **Relevance**: 100
@@ -284,16 +315,6 @@ The integration of the backtesting service with the mandatory core requirements 
 **Complexity Reason**: The integration involves not only the connection of two services but also the enforcement of security and data protection measures, API key management, and the adherence to platform invariants. Additionally, the backtesting service requires a detailed manual review and enhancement.
 
 ## ...
-
----
-
-## rules
-**File**: .cursor/rules/rules.mdc
-**Relevance**: 80
-**Size**: 41238 bytes
-
-**Summary**: # rules.mdc | > Type: service | Version: 1.0.0 | Owner: zmartbot | Status: Discovery | Level: 1 | 1. **Supabase MCP** - Database operations and management | - Project: `asjtxrmftmutcsnqgidy`
-**Key Info**: service | rule | System Architecture & Service Management | `fc-0b019c4a95b64f488f5c97f387e95b5e` | `ref-5c535e98df41fa8ef0f9`
 
 ---
 

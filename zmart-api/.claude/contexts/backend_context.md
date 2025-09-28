@@ -3,39 +3,102 @@
 ## BackendDoctorPack
 **File**: .cursor/rules/BackendDoctorPack.mdc
 **Relevance**: 0
-**Size**: 21329 bytes
+**Size**: 1198 bytes
 
-**Summary**: # BackendDoctorPack.mdc | ## 🤖 MCP (Model Context Protocol) Integration | ### **MCP Server Pairing** | - **Claude Code Integration**: AI-powered health monitoring and diagnostic analysis
-**Key Info**: application | "comprehensive"}' | Monitor external API usage and limits | str | Health
+**Content**: # BackendDoctorPack.mdc
+
+
+**BackendDoctorPack and BackendDoctorAgent ensure ZmartBot system reliability through comprehensive health monitoring, intelligent diagnostics, automatic problem resolution, and continuous system protection. The BackendDoctorAgent provides real-time monitoring and auto-recovery capabilities for optimal system performance.**
+
+## @step: report_status_to_registry (optional)
+- When a service becomes healthy for the first time → POST /services/{name}/status {"status":"TESTED"}.
+- On repeated failures beyond policy → optionally set "DISABLED" and log event.
+
+@step: monitor_state_snapshots
+- Monitor state snapshot creation and loading processes
+- Verify cached data availability during startup
+- Ensure smooth transition from cached to live data
+- Report any snapshot-related issues to system logs
+description:
+globs:
+alwaysApply: true
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Database connectivity**
+- ✅ **Complete MDC documentation**
+- ✅ **Health endpoint implementation**
+- ✅ **Master Orchestration integration**
+
+
+---
+# Test update Sun Aug 24 01:22:52 EEST 2025
+
+
+## Triggers
+- **API endpoint requests**
+- **Database events**
+- **Health check requests**
+
 
 ---
 
 ## BackendFrontendProtection
 **File**: .cursor/rules/BackendFrontendProtection.mdc
 **Relevance**: 0
-**Size**: 10848 bytes
+**Size**: 345 bytes
 
-**Summary**: ## Description | Core backend service component of the ZmartBot ecosystem providing essential functionality. | @agent: BackendFrontendProtectionAgent
-**Compressed**: 
+**Content**: 
+## Description
+Core backend service component of the ZmartBot ecosystem providing essential functionality.
+
+@agent: BackendFrontendProtectionAgent
+
+description:
+globs:
+alwaysApply: true
+
+## Requirements
+- ✅ **Unique port assignment**
+- ✅ **Complete MDC documentation**
+
+
+---
+
+
+## Triggers
+- **API endpoint requests**
+- **Workflow transitions**
+
 
 ---
 
 ## Backend
 **File**: .cursor/rules/Backend.mdc
 **Relevance**: 0
-**Size**: 11370 bytes
+**Size**: 224 bytes
 
-**Summary**: ## Description | Core backend service component of the ZmartBot ecosystem providing essential functionality. | @agent: BackendService
-**Compressed**: 
+**Content**: 
+## Description
+Core backend service component of the ZmartBot ecosystem providing essential functionality.
+
+@agent: BackendService
+
+
+## Triggers
+- **API endpoint requests**
+- **Database events**
+- **Health check requests**
+
 
 ---
 
 ## API-Manager
 **File**: .cursor/rules/API-Manager.mdc
 **Relevance**: 0
-**Size**: 12513 bytes
+**Size**: 10830 bytes
 
-**Summary**: @agent: APIHandler | ## 🤖 MCP (Model Context Protocol) Integration | ### **MCP Server Pairing** | ```bash | curl -X GET "http://127.0.0.1:8000/health" \ | -H "Content-Type: application/json"
+**Summary**: @agent: APIHandler | # API Manager - External Service Integration System | ## Overview | - **Access Control**: Centralized management prevents credential exposure
 **Compressed**: 
 
 ---

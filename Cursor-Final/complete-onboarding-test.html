@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Onboarding Test - ZmartyBrain</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f0f2f5;
+        }
+        .test-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            gap: 20px;
+        }
+        .control-panel {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+        .iframe-container {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        iframe {
+            width: 100%;
+            height: 800px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+        }
+        h2 {
+            color: #1f2937;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .step-item {
+            padding: 12px;
+            margin: 8px 0;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 3px solid #667eea;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .step-item:hover {
+            background: #e8edff;
+            transform: translateX(5px);
+        }
+        .step-item.active {
+            background: #e8edff;
+            border-left-color: #10b981;
+        }
+        .step-item.completed {
+            opacity: 0.6;
+            border-left-color: #10b981;
+        }
+        .status {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .status.pending { background: #fef3c7; color: #92400e; }
+        .status.active { background: #dbeafe; color: #1e40af; }
+        .status.completed { background: #d1fae5; color: #065f46; }
+        button {
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        button:hover {
+            background: #5a67d8;
+        }
+        .test-data {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .test-data input {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+        }
+        .log {
+            margin-top: 20px;
+            padding: 10px;
+            background: #1f2937;
+            color: #10b981;
+            font-family: 'Monaco', monospace;
+            font-size: 12px;
+            border-radius: 6px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .log-entry {
+            margin: 2px 0;
+        }
+        .success { color: #10b981; }
+        .error { color: #ef4444; }
+        .info { color: #3b82f6; }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <div class="control-panel">
+            <h2>🧪 Onboarding Test Control</h2>
+
+            <div id="steps">
+                <div class="step-item" data-step="1" onclick="goToStep(1)">
+                    1. Welcome Screen
+                    <span class="status pending">PENDING</span>
+                </div>
+                <div class="step-item" data-step="2" onclick="goToStep(2)">
+                    2. AI Models
+                    <span class="status pending">PENDING</span>
+                </div>
+                <div class="step-item" data-step="3" onclick="goToStep(3)">
+                    3. Exchanges
+                    <span class="status pending">PENDING</span>
+                </div>
+                <div class="step-item" data-step="4" onclick="goToStep(4)">
+                    4. Risk Management
+                    <span class="status pending">PENDING</span>
+                </div>
+                <div class="step-item" data-step="5" onclick="goToStep(5)">
+                    5. Authentication
+                    <span class="status pending">PENDING</span>
+                </div>
+                <div class="step-item" data-step="7" onclick="goToStep(7)">
+                    6. Email Verification
+                    <span class="status pending">PENDING</span>
+                </div>
+                <div class="step-item" data-step="10" onclick="goToStep(10)">
+                    7. Tier Selection
+                    <span class="status pending">PENDING</span>
+                </div>
+                <div class="step-item" data-step="11" onclick="goToStep(11)">
+                    8. Profile Setup
+                    <span class="status pending">PENDING</span>
+                </div>
+                <div class="step-item" data-step="12" onclick="goToStep(12)">
+                    9. Success
+                    <span class="status pending">PENDING</span>
+                </div>
+            </div>
+
+            <div class="test-data">
+                <h3>Test Data:</h3>
+                <input type="email" id="testEmail" placeholder="test@example.com" value="test@zmarty.com">
+                <input type="password" id="testPassword" placeholder="password123" value="Test123!@#">
+                <input type="text" id="testName" placeholder="John Doe" value="Test User">
+                <input type="text" id="testCode" placeholder="123456" value="123456">
+            </div>
+
+            <div style="margin-top: 20px;">
+                <button onclick="startFullTest()">🚀 Start Full Test</button>
+                <button onclick="fillCurrentForm()">📝 Fill Form</button>
+                <button onclick="clickNext()">➡️ Next</button>
+                <button onclick="resetTest()">🔄 Reset</button>
+            </div>
+
+            <div class="log" id="log">
+                <div class="log-entry info">Ready to test onboarding flow...</div>
+            </div>
+        </div>
+
+        <div class="iframe-container">
+            <h2>ZmartyBrain Onboarding</h2>
+            <iframe id="onboardingFrame" src="index.html"></iframe>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        const frame = document.getElementById('onboardingFrame');
+
+        function log(message, type = 'info') {
+            const logEl = document.getElementById('log');
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logEl.appendChild(entry);
+            logEl.scrollTop = logEl.scrollHeight;
+        }
+
+        function updateStepStatus(step, status) {
+            const stepEl = document.querySelector(`[data-step="${step}"]`);
+            if (stepEl) {
+                const statusEl = stepEl.querySelector('.status');
+                statusEl.className = `status ${status}`;
+                statusEl.textContent = status.toUpperCase();
+
+                if (status === 'active') {
+                    stepEl.classList.add('active');
+                } else {
+                    stepEl.classList.remove('active');
+                }
+
+                if (status === 'completed') {
+                    stepEl.classList.add('completed');
+                }
+            }
+        }
+
+        function goToStep(step) {
+            const win = frame.contentWindow;
+            const event = new win.KeyboardEvent('keydown', { key: step.toString() });
+            win.document.dispatchEvent(event);
+
+            currentStep = step;
+            log(`Navigated to step ${step}`, 'success');
+
+            // Update status
+            document.querySelectorAll('.step-item').forEach(el => {
+                const s = parseInt(el.dataset.step);
+                if (s < step) {
+                    updateStepStatus(s, 'completed');
+                } else if (s === step) {
+                    updateStepStatus(s, 'active');
+                } else {
+                    updateStepStatus(s, 'pending');
+                }
+            });
+        }
+
+        function fillCurrentForm() {
+            const doc = frame.contentDocument;
+            const email = document.getElementById('testEmail').value;
+            const password = document.getElementById('testPassword').value;
+            const name = document.getElementById('testName').value;
+
+            // Try to fill email field
+            const emailInput = doc.querySelector('input[type="email"], input[name="email"], #email');
+            if (emailInput) {
+                emailInput.value = email;
+                log(`Filled email: ${email}`, 'success');
+            }
+
+            // Try to fill password field
+            const passwordInput = doc.querySelector('input[type="password"], input[name="password"], #password');
+            if (passwordInput) {
+                passwordInput.value = password;
+                log(`Filled password`, 'success');
+            }
+
+            // Try to fill name field
+            const nameInput = doc.querySelector('input[name="full-name"], #full-name, input[placeholder*="name"]');
+            if (nameInput) {
+                nameInput.value = name;
+                log(`Filled name: ${name}`, 'success');
+            }
+
+            // Try to check terms checkbox
+            const termsCheckbox = doc.querySelector('input[type="checkbox"]#terms');
+            if (termsCheckbox && !termsCheckbox.checked) {
+                termsCheckbox.checked = true;
+                log('Checked terms checkbox', 'success');
+            }
+
+            // Try to fill verification code
+            const codeInputs = doc.querySelectorAll('.otp-input');
+            if (codeInputs.length === 6) {
+                const code = document.getElementById('testCode').value;
+                codeInputs.forEach((input, i) => {
+                    input.value = code[i] || '';
+                });
+                log(`Filled verification code: ${code}`, 'success');
+            }
+
+            // Try to select country
+            const countrySelect = doc.querySelector('#country');
+            if (countrySelect) {
+                countrySelect.value = 'US';
+                log('Selected country: US', 'success');
+            }
+
+            // Try to select tier
+            const tierCards = doc.querySelectorAll('.pricing-card');
+            if (tierCards.length > 0) {
+                tierCards[1].click(); // Select middle tier
+                log('Selected Starter tier', 'success');
+            }
+        }
+
+        function clickNext() {
+            const doc = frame.contentDocument;
+
+            // Try various next buttons
+            const buttons = [
+                doc.querySelector('.btn-primary'),
+                doc.querySelector('button[onclick*="nextStep"]'),
+                doc.querySelector('button[onclick*="handleEmailAuth"]'),
+                doc.querySelector('button[onclick*="confirmTierSelection"]'),
+                doc.querySelector('button[onclick*="saveProfile"]'),
+                doc.querySelector('#createAccountBtn'),
+                doc.querySelector('#verifyCodeBtn')
+            ].filter(b => b && b.offsetParent !== null);
+
+            if (buttons.length > 0) {
+                buttons[0].click();
+                log('Clicked next/submit button', 'success');
+            } else {
+                log('No visible button found', 'error');
+            }
+        }
+
+        async function startFullTest() {
+            log('Starting full onboarding test...', 'info');
+
+            // Step 1: Welcome
+            goToStep(1);
+            await sleep(1000);
+            clickNext();
+
+            // Step 2: AI Models
+            await sleep(1500);
+            goToStep(2);
+            await sleep(1000);
+            clickNext();
+
+            // Step 3: Exchanges
+            await sleep(1500);
+            goToStep(3);
+            await sleep(1000);
+            clickNext();
+
+            // Step 4: Risk Management
+            await sleep(1500);
+            goToStep(4);
+            await sleep(1000);
+            clickNext();
+
+            // Step 5: Authentication
+            await sleep(1500);
+            goToStep(5);
+            await sleep(1000);
+            fillCurrentForm();
+            await sleep(500);
+            clickNext();
+
+            // Step 7: Email Verification (skip 6)
+            await sleep(2000);
+            goToStep(7);
+            fillCurrentForm();
+            await sleep(1000);
+            clickNext();
+
+            // Step 10: Tier Selection
+            await sleep(2000);
+            goToStep(10);
+            fillCurrentForm();
+            await sleep(1000);
+            clickNext();
+
+            // Step 11: Profile
+            await sleep(2000);
+            goToStep(11);
+            fillCurrentForm();
+            await sleep(1000);
+            clickNext();
+
+            // Step 12: Success
+            await sleep(2000);
+            goToStep(12);
+            log('✅ Onboarding test complete!', 'success');
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        function resetTest() {
+            frame.src = frame.src;
+            currentStep = 1;
+            document.querySelectorAll('.step-item').forEach(el => {
+                updateStepStatus(parseInt(el.dataset.step), 'pending');
+            });
+            log('Test reset', 'info');
+        }
+
+        // Initialize
+        window.onload = function() {
+            log('Test interface loaded', 'success');
+            updateStepStatus(1, 'active');
+        };
+    </script>
+</body>
+</html>

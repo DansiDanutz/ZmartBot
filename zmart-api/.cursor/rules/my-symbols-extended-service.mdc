@@ -5,45 +5,6 @@
 **Merge Date**: 2025-09-01 00:11:21
 **Primary Source**: my-symbols-extended-service.mdc
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - My Symbols Extended Service MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered symbols service optimization and analysis
-- **Memory Gateway**: Persistent symbols service state and metadata
-- **UI Automation**: Automated symbols service monitoring and health checks
-- **Figma Integration**: Symbols service dashboard design and UI management
-- **Supabase Integration**: Cloud-based symbols service analytics and reporting
-
-### **MCP Integration Benefits**
-- **Enhanced Symbols**: AI-powered symbols service optimization and analysis
-- **Persistent State**: Cross-session symbols service state and configuration management
-- **Automated Monitoring**: Real-time symbols service health and performance tracking
-- **Visual Dashboard**: Interactive symbols service management and testing interface
-- **Cloud Analytics**: Comprehensive symbols service usage and performance analytics
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8005/health"
-
-# Symbols service operation via MCP
-curl -X POST "http://127.0.0.1:8005/symbols/update" -d '{"action": "refresh_all"}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered symbols service optimization
-- **ByteRover**: ✅ Active - Persistent symbols service state management
-- **UI TARS**: ✅ Active - Automated symbols service monitoring
-- **Figma**: ✅ Active - Symbols service dashboard design
-- **Supabase**: ✅ Active - Cloud-based symbols service analytics
-
----
 
 ## 📋 Primary Configuration
 # My-Symbols-Extended-Service - Merged MDC Configuration

@@ -2,45 +2,6 @@
 ## Description
 Core service component of the ZmartBot ecosystem providing essential functionality.
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - Maradona Alerts MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered alert pattern analysis and optimization
-- **Memory Gateway**: Persistent alert state and pattern metadata
-- **UI Automation**: Automated alert monitoring and health checks
-- **Figma Integration**: Alert dashboard design and UI management
-- **Supabase Integration**: Cloud-based alert analytics and reporting
-
-### **MCP Integration Benefits**
-- **Enhanced Analysis**: AI-powered pattern recognition and alert optimization
-- **Persistent State**: Cross-session alert state and configuration management
-- **Automated Monitoring**: Real-time alert health and performance tracking
-- **Visual Dashboard**: Interactive alert management and testing interface
-- **Cloud Analytics**: Comprehensive alert usage and performance analytics
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8000/maradona/health"
-
-# Alert analysis via MCP
-curl -X POST "http://127.0.0.1:8000/maradona/analyze" -d '{"symbol": "BTCUSDT"}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered alert analysis
-- **ByteRover**: ✅ Active - Persistent alert state management
-- **UI TARS**: ✅ Active - Automated alert monitoring
-- **Figma**: ✅ Active - Alert dashboard design
-- **Supabase**: ✅ Active - Cloud-based alert analytics
-
----
 
 # Maradona Alerts - Reversal and Divergence Pattern System
 

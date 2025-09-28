@@ -1,45 +1,6 @@
 # ServiceCertificationAuthority.mdc
 > Type: authority | Version: 1.0.0 | Owner: zmartbot | Port: 8901 | Level: 3
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - Service Certification Authority MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered service certification and optimization
-- **Memory Gateway**: Persistent service certification state and metadata
-- **UI Automation**: Automated service certification monitoring and health checks
-- **Figma Integration**: Service certification dashboard design and UI management
-- **Supabase Integration**: Cloud-based service certification analytics and reporting
-
-### **MCP Integration Benefits**
-- **Enhanced Certification**: AI-powered service certification and optimization
-- **Persistent State**: Cross-session service certification state and configuration management
-- **Automated Monitoring**: Real-time service certification health and performance tracking
-- **Visual Dashboard**: Interactive service certification and testing interface
-- **Cloud Analytics**: Comprehensive service certification usage and performance analytics
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8901/health"
-
-# Service certification via MCP
-curl -X POST "http://127.0.0.1:8901/certify" -d '{"service": "example", "action": "certify"}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered service certification
-- **ByteRover**: ✅ Active - Persistent service certification state management
-- **UI TARS**: ✅ Active - Automated service certification monitoring
-- **Figma**: ✅ Active - Service certification dashboard design
-- **Supabase**: ✅ Active - Cloud-based service certification analytics
-
----
 
 ## Purpose
 Service Certification Authority - The authoritative Level 3 certification system for ZmartBot services that implements comprehensive service evaluation, quality assurance, and certification management with CERT credential issuance for services meeting the highest production standards.

@@ -1,47 +1,5 @@
 # 🛑 STOP_ZMARTBOT.sh - Official System Shutdown Orchestrator
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - STOP ZmartBot MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered shutdown orchestration and resource management
-- **Memory Gateway**: Persistent shutdown state and service metadata
-- **UI Automation**: Automated shutdown monitoring and health checks
-- **Figma Integration**: Shutdown dashboard design and UI management
-- **Supabase Integration**: Cloud-based shutdown analytics and reporting
-
-### **MCP Integration Benefits**
-- **AI-Powered Shutdown**: Intelligent service termination and resource cleanup
-- **Persistent State**: Shutdown process state and service metadata storage
-- **Automated Monitoring**: Real-time shutdown progress and error detection
-- **Visual Dashboard**: Shutdown process visualization and status tracking
-- **Cloud Analytics**: Shutdown performance metrics and optimization insights
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8000/health" \
-  -H "Content-Type: application/json"
-
-# Shutdown orchestration via MCP
-curl -X POST "http://127.0.0.1:8000/shutdown" \
-  -H "Content-Type: application/json" \
-  -d '{"graceful": true, "cleanup": true}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered shutdown orchestration
-- **ByteRover**: ✅ Active - Persistent shutdown state management
-- **UI TARS**: ✅ Active - Automated shutdown monitoring
-- **Figma**: ✅ Active - Shutdown dashboard design
-- **Supabase**: ✅ Active - Cloud-based shutdown analytics
-
----
 
 ## Purpose
 Official ZmartBot system shutdown script with graceful service termination, cleanup, and resource management.

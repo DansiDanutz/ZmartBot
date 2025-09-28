@@ -1,13 +1,47 @@
 # Core Domain Context
 
+## byterover-rules
+**File**: .cursor/rules/byterover-rules.mdc
+**Relevance**: 150
+**Size**: 3665 bytes
+
+**Content**: # Byterover MCP Server Tools Reference
+
+There are two main workflows with Byterover tools and recommended tool call strategies that you **MUST** follow precisely.
+
+## Onboarding workflow
+If users particularly ask you to start the onboarding process, you **MUST STRICTLY** follow these steps.
+1. **ALWAYS USE** **byterover-check-handbook-existence** first to check if the byterover handbook already exists. If not, You **MUST** call **byterover-create-handbook** to create the byterover handbook.
+2. If the byterover handbook already exists, first you **MUST** USE **byterover-check-handbook-sync** to analyze the gap between the current codebase and the existing byterover handbook.
+3. Then **IMMEDIATELY USE** **byterover-update-handbook** to update these changes to the byterover handbook.
+4. During the onboarding, you **MUST** use **byterover-list-modules** **FIRST** to get the available modules, and then **byterover-store-modules** and **byterover-update-modules** if there are new modules or changes to existing modules in the project.
+5. Finally, you **MUST** call **byterover-store-knowledge** to save your new knowledge about the codebase.
+
+## ...
+
+---
+
+## rules
+**File**: .cursor/rules/rules.mdc
+**Relevance**: 130
+**Size**: 41238 bytes
+
+**Summary**: # rules.mdc | > Type: service | Version: 1.0.0 | Owner: zmartbot | Status: Discovery | Level: 1 | 1. **Supabase MCP** - Database operations and management | - Project: `asjtxrmftmutcsnqgidy`
+**Key Info**: service | rule | System Architecture & Service Management | `fc-0b019c4a95b64f488f5c97f387e95b5e` | `ref-5c535e98df41fa8ef0f9`
+
+---
+
 ## main
 **File**: .cursor/rules/main.mdc
 **Relevance**: 100
-**Size**: 4787 bytes
+**Size**: 3045 bytes
 
 **Content**: # main.mdc
 > Type: service | Version: 1.0.0 | Owner: zmartbot | Status: Discovery | Level: 1
 Core service component of the ZmartBot ecosystem providing essential functionality.
+
+
+
 
 ## ...
 
@@ -16,9 +50,9 @@ Core service component of the ZmartBot ecosystem providing essential functionali
 ## MainAPIServer
 **File**: .cursor/rules/MainAPIServer.mdc
 **Relevance**: 100
-**Size**: 17881 bytes
+**Size**: 16293 bytes
 
-**Summary**: # 🚀 Main API Server - Zmart Trading Bot Platform Core | > Type: backend | Version: 1.0.0 | Owner: zmartbot | Port: 8000 | - **Enhanced Development**: AI-powered code generation and optimization | ```b...
+**Summary**: # 🚀 Main API Server - Zmart Trading Bot Platform Core | > Type: backend | Version: 1.0.0 | Owner: zmartbot | Port: 8000 | ## Purpose
 **Key Info**: 8000 | backend | 40+ API route modules with specialized trading functionality | High-performance async API framework with comprehensive middleware stack
 
 ---
@@ -26,9 +60,9 @@ Core service component of the ZmartBot ecosystem providing essential functionali
 ## rule_0_mandatory
 **File**: .cursor/rules/rule_0_mandatory.mdc
 **Relevance**: 100
-**Size**: 11227 bytes
+**Size**: 9464 bytes
 
-**Summary**: ## Description | Core service component of the ZmartBot ecosystem providing essential functionality. | - **Claude Code Integration**: AI-powered rule enforcement and optimization
+**Summary**: ## Description | Core service component of the ZmartBot ecosystem providing essential functionality.
 **Compressed**: 
 
 ---
@@ -281,16 +315,6 @@ The integration of the backtesting service with the mandatory core requirements 
 **Complexity Reason**: The integration involves not only the connection of two services but also the enforcement of security and data protection measures, API key management, and the adherence to platform invariants. Additionally, the backtesting service requires a detailed manual review and enhancement.
 
 ## ...
-
----
-
-## rules
-**File**: .cursor/rules/rules.mdc
-**Relevance**: 80
-**Size**: 41341 bytes
-
-**Summary**: # rules.mdc | > Type: service | Version: 1.0.0 | Owner: zmartbot | Status: Discovery | Level: 1 | - **Claude Code Integration**: AI-powered rules management and optimization
-**Key Info**: service | rule | System Architecture & Service Management | 30+ endpoints for workflow validation and service management | Complete API system for workflow guidance and validation
 
 ---
 

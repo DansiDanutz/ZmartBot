@@ -2,45 +2,6 @@
 ## Description
 Core service component of the ZmartBot ecosystem providing essential functionality.
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - Market Data Enhanced Database MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered database optimization and analysis
-- **Memory Gateway**: Persistent database state and metadata
-- **UI Automation**: Automated database monitoring and health checks
-- **Figma Integration**: Database dashboard design and UI management
-- **Supabase Integration**: Cloud-based database analytics and reporting
-
-### **MCP Integration Benefits**
-- **Enhanced Database**: AI-powered database optimization and analysis
-- **Persistent State**: Cross-session database state and configuration management
-- **Automated Monitoring**: Real-time database health and performance tracking
-- **Visual Dashboard**: Interactive database management and testing interface
-- **Cloud Analytics**: Comprehensive database usage and performance analytics
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8000/database/health"
-
-# Database query via MCP
-curl -X POST "http://127.0.0.1:8000/database/query" -d '{"sql": "SELECT * FROM market_data LIMIT 10"}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered database optimization
-- **ByteRover**: ✅ Active - Persistent database state management
-- **UI TARS**: ✅ Active - Automated database monitoring
-- **Figma**: ✅ Active - Database dashboard design
-- **Supabase**: ✅ Active - Cloud-based database analytics
-
----
 
 # Market Data Enhanced Database - Database Structure MDC File
 

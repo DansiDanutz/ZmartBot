@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Onboarding Test for localhost:8890</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .test-step {
+            margin: 15px 0;
+            padding: 15px;
+            border-left: 4px solid #007bff;
+            background: #f8f9fa;
+        }
+        .bug-found {
+            border-left-color: #dc3545;
+            background: #fff5f5;
+            color: #721c24;
+        }
+        .success {
+            border-left-color: #28a745;
+            background: #f0fff4;
+            color: #155724;
+        }
+        .warning {
+            border-left-color: #ffc107;
+            background: #fffacd;
+            color: #856404;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        #results {
+            margin-top: 20px;
+        }
+        .slide-link {
+            color: #007bff;
+            text-decoration: underline;
+            cursor: pointer;
+            margin: 0 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🧪 Onboarding Flow Test for localhost:8890</h1>
+        <p>This tool will systematically test each slide of the onboarding flow and report the first bug found.</p>
+
+        <div class="test-step">
+            <h3>Quick Links to Test Manually</h3>
+            <span class="slide-link" onclick="window.open('http://localhost:8890', '_blank')">Open Onboarding</span>
+            <span class="slide-link" onclick="testInIframe()">Test in Iframe</span>
+            <span class="slide-link" onclick="runAutomatedTest()">Run Automated Test</span>
+        </div>
+
+        <div class="test-step">
+            <h3>Manual Testing Instructions</h3>
+            <ol>
+                <li><strong>Slide 1 (Welcome):</strong> Check if title loads, features grid visible, "Start Free Trial" button works</li>
+                <li><strong>Slide 2 (AI Models):</strong> Check if 4 AI model cards display (Claude, GPT-4, Gemini, Grok)</li>
+                <li><strong>Slide 3 (Exchanges):</strong> Check if exchange cards show (Binance, Coinbase, Kraken, etc.)</li>
+                <li><strong>Slide 4 (Risk Management):</strong> Check if 4 risk feature cards display with icons</li>
+                <li><strong>Slide 5 (Authentication):</strong> Check if email/password fields and tabs work</li>
+            </ol>
+        </div>
+
+        <iframe id="testFrame" src="" style="width: 100%; height: 600px; border: 1px solid #ddd; margin: 20px 0; display: none;"></iframe>
+
+        <div id="results"></div>
+
+        <script>
+            let currentSlide = 1;
+            let bugsFound = [];
+
+            function log(message, type = 'info') {
+                const results = document.getElementById('results');
+                const div = document.createElement('div');
+                div.className = `test-step ${type}`;
+                div.innerHTML = message;
+                results.appendChild(div);
+                console.log(message);
+            }
+
+            function testInIframe() {
+                const iframe = document.getElementById('testFrame');
+                iframe.src = 'http://localhost:8890';
+                iframe.style.display = 'block';
+                log('🎯 Onboarding loaded in iframe. You can now test manually or click "Run Automated Test"', 'success');
+            }
+
+            function runAutomatedTest() {
+                log('🚀 Starting automated onboarding test...', 'info');
+
+                // Test if we can access the iframe content
+                const iframe = document.getElementById('testFrame');
+                if (iframe.src) {
+                    try {
+                        // Wait a moment for iframe to load, then test
+                        setTimeout(() => {
+                            testSlideInIframe(iframe);
+                        }, 2000);
+                    } catch (error) {
+                        log(`❌ Cannot access iframe due to CORS policy. Please test manually by opening: <a href="http://localhost:8890" target="_blank">http://localhost:8890</a>`, 'bug-found');
+                        showManualTestInstructions();
+                    }
+                } else {
+                    log('❌ Please click "Test in Iframe" first', 'warning');
+                }
+            }
+
+            function testSlideInIframe(iframe) {
+                try {
+                    const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                    if (!iframeDoc) {
+                        log('❌ CORS Policy prevents iframe access. Testing via window.open instead...', 'warning');
+                        testViaPopup();
+                        return;
+                    }
+
+                    // Test Slide 1
+                    testSlide1(iframeDoc);
+
+                } catch (error) {
+                    log(`❌ Error accessing iframe: ${error.message}`, 'bug-found');
+                    log('🔧 Please test manually using the browser console on http://localhost:8890', 'warning');
+                    showBrowserConsoleInstructions();
+                }
+            }
+
+            function testViaPopup() {
+                const popup = window.open('http://localhost:8890', 'onboardingTest', 'width=800,height=900');
+                if (popup) {
+                    log('✅ Opened onboarding in new window. Please test manually following the steps above.', 'success');
+
+                    // Try to inject test script after a delay
+                    setTimeout(() => {
+                        try {
+                            popup.eval(`
+                                console.log('🧪 Starting onboarding test...');
+                                // Test Slide 1
+                                const slide1 = document.querySelector('#step-1, .slide-1, [data-slide="1"]');
+                                if (!slide1) {
+                                    console.log('❌ BUG FOUND: Slide 1 element not found');
+                                } else {
+                                    console.log('✅ Slide 1 element found');
+
+                                    // Test title
+                                    const title = slide1.querySelector('h1, .title, .main-title');
+                                    if (!title || title.offsetWidth === 0) {
+                                        console.log('❌ BUG FOUND: Slide 1 title not visible');
+                                    } else {
+                                        console.log('✅ Slide 1 title visible: ' + title.textContent.trim());
+                                    }
+
+                                    // Test Start button
+                                    const startBtn = slide1.querySelector('button, .btn, [data-action="start"]');
+                                    if (!startBtn) {
+                                        console.log('❌ BUG FOUND: Start button not found on Slide 1');
+                                    } else {
+                                        console.log('✅ Start button found: ' + startBtn.textContent.trim());
+                                    }
+                                }
+
+                                console.log('🔍 Check console above for any bugs found. Continue testing other slides manually.');
+                            `);
+                        } catch (error) {
+                            log('❌ Cannot inject test script due to CORS. Please test manually.', 'warning');
+                        }
+                    }, 3000);
+                } else {
+                    log('❌ Popup blocked. Please allow popups or test manually.', 'bug-found');
+                }
+            }
+
+            function testSlide1(doc) {
+                log('🔍 Testing Slide 1 (Welcome)...', 'info');
+
+                // Look for slide 1 element
+                const slide1 = doc.querySelector('#step-1') ||
+                              doc.querySelector('.slide-1') ||
+                              doc.querySelector('[data-slide="1"]') ||
+                              doc.querySelector('.onboarding-slide:first-child');
+
+                if (!slide1) {
+                    log('❌ **FIRST BUG FOUND**: Slide 1 element not found in DOM', 'bug-found');
+                    log('Expected: #step-1, .slide-1, or [data-slide="1"] element', 'bug-found');
+                    log('Action: Check if slide elements have correct IDs/classes', 'bug-found');
+                    return false;
+                }
+
+                log('✅ Slide 1 element found', 'success');
+
+                // Test if slide is visible
+                if (slide1.offsetWidth === 0 || slide1.offsetHeight === 0) {
+                    log('❌ **FIRST BUG FOUND**: Slide 1 is not visible (width/height = 0)', 'bug-found');
+                    return false;
+                }
+
+                // Test title
+                const title = slide1.querySelector('h1') || slide1.querySelector('.title') || slide1.querySelector('.main-title');
+                if (!title) {
+                    log('❌ **FIRST BUG FOUND**: Slide 1 main title not found', 'bug-found');
+                    log('Expected: h1, .title, or .main-title element', 'bug-found');
+                    return false;
+                }
+
+                if (title.offsetWidth === 0) {
+                    log('❌ **FIRST BUG FOUND**: Slide 1 title is not visible', 'bug-found');
+                    return false;
+                }
+
+                log(`✅ Slide 1 title found and visible: "${title.textContent.trim()}"`, 'success');
+
+                // Continue with more tests...
+                return true;
+            }
+
+            function showManualTestInstructions() {
+                log(`
+                <h3>🔧 Manual Testing Instructions</h3>
+                <p>Since automated testing is blocked by CORS policy, please test manually:</p>
+                <ol>
+                    <li>Open <a href="http://localhost:8890" target="_blank">http://localhost:8890</a> in a new tab</li>
+                    <li>Open Developer Tools (F12)</li>
+                    <li>Go to the Console tab</li>
+                    <li>Paste and run this test script:</li>
+                </ol>
+                <pre style="background:#f1f1f1; padding:10px; overflow-x:auto;">
+// Test Slide 1
+console.log('🧪 Testing Slide 1 (Welcome)...');
+const slide1 = document.querySelector('#step-1, .slide-1, [data-slide="1"]');
+if (!slide1) {
+    console.log('❌ BUG: Slide 1 element not found');
+} else {
+    console.log('✅ Slide 1 found');
+    const title = slide1.querySelector('h1, .title');
+    if (!title || title.offsetWidth === 0) {
+        console.log('❌ BUG: Slide 1 title not visible');
+    } else {
+        console.log('✅ Title visible:', title.textContent);
+    }
+}
+                </pre>
+                `, 'info');
+            }
+
+            function showBrowserConsoleInstructions() {
+                log(`
+                <h3>🔧 Browser Console Testing</h3>
+                <p>Follow these steps to test in browser console:</p>
+                <ol>
+                    <li>Click <a href="http://localhost:8890" target="_blank">this link</a> to open onboarding</li>
+                    <li>Press F12 to open Developer Tools</li>
+                    <li>Click Console tab</li>
+                    <li>Copy and paste the test code below</li>
+                    <li>Press Enter to run</li>
+                    <li>Report the FIRST error you see</li>
+                </ol>
+                `, 'info');
+            }
+
+            // Initialize
+            log('🎯 Onboarding Test Tool Ready', 'success');
+            log('Click "Test in Iframe" to load the onboarding, then "Run Automated Test"', 'info');
+        </script>
+    </div>
+</body>
+</html>

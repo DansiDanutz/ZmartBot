@@ -2,17 +2,42 @@
 
 ## 🎯 System Overview
 
-**Last Updated**: 2025-09-19T04:28:27.172647
+**Last Updated**: 2025-09-25T17:44:23.106012
 **Focus Domain**: Core
-**Total MDC Files**: 249
+**Total MDC Files**: 247
 **Current Task**: General Development
 
 ## 🚨 CRITICAL RULES (Always Active)
+
+### byterover-rules
+# Byterover MCP Server Tools Reference
+
+There are two main workflows with Byterover tools and recommended tool call strategies that you **MUST** follow precisely.
+
+## ...
+
+### rules
+# rules.mdc
+> Type: service | Version: 1.0.0 | Owner: zmartbot | Status: Discovery | Level: 1
+Core service component of the ZmartBot ecosystem providing essential functionality.
+
+
+# Cursor Rules & System Architecture — Clear Action Guidelines
+> Type: rule | Version: 1.2.0 | Owner: zmartbot | Purpose: System Architecture & Service Management
+
+**CRITICAL UPDATE**: Added Rule 1.X - ZmartBot Service Architecture Workflow with Complete Certification Requirements - FORBIDDEN TO IGNORE
+
+These rules clearly define what Cursor AI is ALLOWED to do and what is CRITICAL to follow.
+
+## ...
 
 ### main
 # main.mdc
 > Type: service | Version: 1.0.0 | Owner: zmartbot | Status: Discovery | Level: 1
 Core service component of the ZmartBot ecosystem providing essential functionality.
+
+
+
 
 ## ...
 
@@ -20,12 +45,28 @@ Core service component of the ZmartBot ecosystem providing essential functionali
 # 🚀 Main API Server - Zmart Trading Bot Platform Core
 > Type: backend | Version: 1.0.0 | Owner: zmartbot | Port: 8000
 
+
+## Purpose
+FastAPI-based core API server for the Zmart Trading Bot Platform, providing comprehensive trading capabilities, AI-powered signal processing, orchestration management, and complete cryptocurrency trading infrastructure with advanced security and monitoring.
+
+## Description
+FastAPI-based core API server for the Zmart Trading Bot Platform, providing comprehensive trading...
+
+## Overview
+ZmartBot Main API Server serving as the central backend hub for all trading operations, AI analysis, real-time market data, orchestration control, and comprehensive trading platform functionality with enterprise-grade security and performance.
+
 ## ...
 
 ### rule_0_mandatory
 
 ## Description
 Core service component of the ZmartBot ecosystem providing essential functionality.
+
+
+# Rule 0: ZmartBot Mandatory Core Requirements
+
+## Summary
+Core requirements that MUST be satisfied before any development work can proceed. These are non-negotiable foundational requirements for the ZmartBot orchestration system.
 
 ## ...
 
@@ -180,18 +221,11 @@ The integration of the backtesting service with the mandatory core requirements 
 
 ## ...
 
-### rules
-# rules.mdc
-> Type: service | Version: 1.0.0 | Owner: zmartbot | Status: Discovery | Level: 1
-Core service component of the ZmartBot ecosystem providing essential functionality.
-
-## ...
-
 ## 🔥 High-Relevance Context
 
 ## 📚 Available Contexts
 
-- **Core**: 11 files (see .claude/contexts/core_context.md)
+- **Core**: 12 files (see .claude/contexts/core_context.md)
 - **Trading**: 10 files (see .claude/contexts/trading_context.md)
 - **Monitoring**: 5 files (see .claude/contexts/monitoring_context.md)
 - **Orchestration**: 7 files (see .claude/contexts/orchestration_context.md)
@@ -202,7 +236,7 @@ Core service component of the ZmartBot ecosystem providing essential functionali
 
 ## 📊 System Status
 
-- **CLAUDE.md Size**: 7619 characters
+- **CLAUDE.md Size**: 9090 characters
 - **Size Limit**: 40000 characters
 - **Performance**: ✅ Optimal
 
@@ -213,4 +247,4 @@ This file is automatically optimized for performance. Full context available in:
 - `.cursor/rules/` - Full MDC files
 - Context updates every 120 seconds
 
-**Generated**: 2025-09-19T04:28:27.172839
+**Generated**: 2025-09-25T17:44:23.107290

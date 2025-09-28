@@ -2,45 +2,6 @@
 ## Description
 Core service component of the ZmartBot ecosystem providing essential functionality.
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - Rule 0 Mandatory MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered rule enforcement and optimization
-- **Memory Gateway**: Persistent rule enforcement state and metadata
-- **UI Automation**: Automated rule enforcement monitoring and health checks
-- **Figma Integration**: Rule enforcement dashboard design and UI management
-- **Supabase Integration**: Cloud-based rule enforcement analytics and reporting
-
-### **MCP Integration Benefits**
-- **Enhanced Rule Enforcement**: AI-powered rule enforcement and optimization
-- **Persistent State**: Cross-session rule enforcement state and configuration management
-- **Automated Monitoring**: Real-time rule enforcement health and performance tracking
-- **Visual Dashboard**: Interactive rule enforcement and testing interface
-- **Cloud Analytics**: Comprehensive rule enforcement usage and performance analytics
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8000/rule-0/health"
-
-# Rule enforcement via MCP
-curl -X POST "http://127.0.0.1:8000/rule-0/enforce" -d '{"rule": "all", "action": "validate"}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered rule enforcement
-- **ByteRover**: ✅ Active - Persistent rule enforcement state management
-- **UI TARS**: ✅ Active - Automated rule enforcement monitoring
-- **Figma**: ✅ Active - Rule enforcement dashboard design
-- **Supabase**: ✅ Active - Cloud-based rule enforcement analytics
-
----
 
 # Rule 0: ZmartBot Mandatory Core Requirements
 

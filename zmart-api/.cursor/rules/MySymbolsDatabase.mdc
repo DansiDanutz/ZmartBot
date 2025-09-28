@@ -4,45 +4,6 @@ Core service component of the ZmartBot ecosystem providing essential functionali
 
 @agent: SymbolValidator
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - MySymbolsDatabase MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered symbol database optimization and analysis
-- **Memory Gateway**: Persistent symbol database state and metadata
-- **UI Automation**: Automated symbol database monitoring and health checks
-- **Figma Integration**: Symbol database dashboard design and UI management
-- **Supabase Integration**: Cloud-based symbol database analytics and reporting
-
-### **MCP Integration Benefits**
-- **Enhanced Database**: AI-powered symbol database optimization and analysis
-- **Persistent State**: Cross-session symbol database state and configuration management
-- **Automated Monitoring**: Real-time symbol database health and performance tracking
-- **Visual Dashboard**: Interactive symbol database management and testing interface
-- **Cloud Analytics**: Comprehensive symbol database usage and performance analytics
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8000/symbols-db/health"
-
-# Symbol database operation via MCP
-curl -X POST "http://127.0.0.1:8000/symbols-db/query" -d '{"action": "portfolio_analysis"}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered symbol database optimization
-- **ByteRover**: ✅ Active - Persistent symbol database state management
-- **UI TARS**: ✅ Active - Automated symbol database monitoring
-- **Figma**: ✅ Active - Symbol database dashboard design
-- **Supabase**: ✅ Active - Cloud-based symbol database analytics
-
----
 
 # MySymbolsDatabase - Core Trading Portfolio Database
 

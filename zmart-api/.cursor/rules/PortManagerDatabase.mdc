@@ -4,45 +4,6 @@ Core service component of the ZmartBot ecosystem providing essential functionali
 
 @datasource: PortRegistry
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - Port Manager Database MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered port database optimization and analysis
-- **Memory Gateway**: Persistent port database state and metadata
-- **UI Automation**: Automated port database monitoring and health checks
-- **Figma Integration**: Port database dashboard design and UI management
-- **Supabase Integration**: Cloud-based port database analytics and reporting
-
-### **MCP Integration Benefits**
-- **Enhanced Database**: AI-powered port database optimization and analysis
-- **Persistent State**: Cross-session port database state and configuration management
-- **Automated Monitoring**: Real-time port database health and performance tracking
-- **Visual Dashboard**: Interactive port database management and testing interface
-- **Cloud Analytics**: Comprehensive port database usage and performance analytics
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8000/port-db/health"
-
-# Port database operation via MCP
-curl -X POST "http://127.0.0.1:8000/port-db/query" -d '{"action": "get_available_ports"}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered port database optimization
-- **ByteRover**: ✅ Active - Persistent port database state management
-- **UI TARS**: ✅ Active - Automated port database monitoring
-- **Figma**: ✅ Active - Port database dashboard design
-- **Supabase**: ✅ Active - Cloud-based port database analytics
-
----
 
 # PortManagerDatabase - Service Port Registry
 

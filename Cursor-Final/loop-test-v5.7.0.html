@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loop Test v5.7.0 - ZmartyBrain</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+        }
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .test-card {
+            background: rgba(255,255,255,0.95);
+            color: #333;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .test-card h3 {
+            color: #667eea;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .status.pass {
+            background: #10b981;
+            color: white;
+        }
+        .status.fail {
+            background: #ef4444;
+            color: white;
+        }
+        .status.testing {
+            background: #f59e0b;
+            color: white;
+        }
+        .test-item {
+            margin: 10px 0;
+            padding: 8px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            border-left: 3px solid #667eea;
+        }
+        .test-result {
+            margin-top: 5px;
+            font-size: 14px;
+            color: #666;
+        }
+        iframe {
+            width: 100%;
+            height: 600px;
+            border: 2px solid #667eea;
+            border-radius: 12px;
+            margin: 20px 0;
+            background: white;
+        }
+        .controls {
+            text-align: center;
+            margin: 20px 0;
+        }
+        button {
+            padding: 12px 24px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 0 10px;
+            transition: all 0.3s;
+        }
+        button:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+        }
+        .flow-diagram {
+            background: rgba(255,255,255,0.9);
+            color: #333;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .flow-step {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #667eea;
+            color: white;
+            border-radius: 20px;
+            margin: 5px;
+        }
+        .flow-arrow {
+            display: inline-block;
+            margin: 0 10px;
+            color: #667eea;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🧪 ZmartyBrain v5.7.0 Loop Testing</h1>
+        <p style="text-align: center; font-size: 1.2em;">Comprehensive testing of all 12 slides</p>
+
+        <div class="flow-diagram">
+            <h3 style="color: #667eea;">Expected Flow:</h3>
+            <span class="flow-step">1. Welcome</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step">2. AI Models</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step">3. Exchanges</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step">4. Risk Mgmt</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step">5. Auth</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step">7. Email Verify</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step">10. Tiers</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step">11. Profile</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step">12. Success</span>
+        </div>
+
+        <div class="controls">
+            <button onclick="startTest()">🚀 Start Loop Test</button>
+            <button onclick="testNavigation()">🎮 Test Navigation</button>
+            <button onclick="testMobile()">📱 Test Mobile</button>
+            <button onclick="resetTest()">🔄 Reset</button>
+        </div>
+
+        <iframe id="testFrame" src="index.html"></iframe>
+
+        <div class="test-grid" id="testResults">
+            <!-- Test results will be populated here -->
+        </div>
+    </div>
+
+    <script>
+        const slides = [
+            {
+                number: 1,
+                name: 'Welcome',
+                checks: [
+                    'Welcome to Zmarty title',
+                    'Smart AI feature',
+                    'Liquidation Clusters feature',
+                    'Risk Metrics feature',
+                    'Bank Secure feature',
+                    'Start Free Trial button'
+                ]
+            },
+            {
+                number: 2,
+                name: 'AI Models',
+                checks: [
+                    'Claude (Anthropic)',
+                    'GPT-4 (OpenAI)',
+                    'Gemini (Google)',
+                    'Grok (xAI)',
+                    'Continue button'
+                ]
+            },
+            {
+                number: 3,
+                name: 'Exchanges',
+                checks: [
+                    'Binance',
+                    'Coinbase',
+                    'Kraken',
+                    'Bybit',
+                    'KuCoin',
+                    'OKX',
+                    '+ 94 more exchanges',
+                    'Liquidation Clusters feature'
+                ]
+            },
+            {
+                number: 4,
+                name: 'Risk Management',
+                checks: [
+                    'Real-time Liquidation Clusters',
+                    '20+ Risk Metrics',
+                    'Win Rate Optimization',
+                    'Whale Alerts',
+                    'Continue button'
+                ]
+            },
+            {
+                number: 5,
+                name: 'Authentication',
+                checks: [
+                    'Email/Google tabs',
+                    'Sign Up tab',
+                    'Sign In tab',
+                    'Email input field',
+                    'Password field',
+                    'Terms checkbox'
+                ]
+            },
+            {
+                number: 7,
+                name: 'Email Verification',
+                checks: [
+                    '6-digit code inputs',
+                    'Magic link option',
+                    'Resend button',
+                    'Verify Code button'
+                ]
+            },
+            {
+                number: 10,
+                name: 'Tier Selection',
+                checks: [
+                    'Free Forever $0',
+                    'Starter $50',
+                    'Premium $100',
+                    'Liquidation Clusters in features',
+                    'Risk Metrics in Premium',
+                    'Start Free Trial button'
+                ]
+            },
+            {
+                number: 11,
+                name: 'Profile Setup',
+                checks: [
+                    'Name input field',
+                    'Country dropdown',
+                    'Company field (optional)',
+                    'Save Profile button'
+                ]
+            },
+            {
+                number: 12,
+                name: 'Success',
+                checks: [
+                    'Welcome message',
+                    'Go to Dashboard button',
+                    'Confetti animation'
+                ]
+            }
+        ];
+
+        function startTest() {
+            const results = document.getElementById('testResults');
+            results.innerHTML = '';
+
+            slides.forEach((slide, index) => {
+                setTimeout(() => {
+                    testSlide(slide);
+                }, index * 1000);
+            });
+        }
+
+        function testSlide(slide) {
+            const frame = document.getElementById('testFrame');
+            const doc = frame.contentDocument || frame.contentWindow.document;
+
+            // Navigate to slide
+            const win = frame.contentWindow;
+            const event = new win.KeyboardEvent('keydown', { key: slide.number.toString() });
+            win.document.dispatchEvent(event);
+
+            setTimeout(() => {
+                const content = doc.body.innerHTML;
+                let passedChecks = 0;
+                let failedChecks = [];
+
+                slide.checks.forEach(check => {
+                    if (content.toLowerCase().includes(check.toLowerCase())) {
+                        passedChecks++;
+                    } else {
+                        failedChecks.push(check);
+                    }
+                });
+
+                const status = failedChecks.length === 0 ? 'pass' :
+                               failedChecks.length <= 2 ? 'testing' : 'fail';
+
+                displayResult(slide, passedChecks, failedChecks, status);
+            }, 500);
+        }
+
+        function displayResult(slide, passed, failed, status) {
+            const results = document.getElementById('testResults');
+
+            const card = document.createElement('div');
+            card.className = 'test-card';
+
+            card.innerHTML = `
+                <h3>
+                    Step ${slide.number}: ${slide.name}
+                    <span class="status ${status}">${status.toUpperCase()}</span>
+                </h3>
+                <div class="test-item">
+                    <strong>Passed:</strong> ${passed}/${slide.checks.length} checks
+                    <div class="test-result">
+                        ${failed.length > 0 ? '❌ Missing: ' + failed.join(', ') : '✅ All checks passed'}
+                    </div>
+                </div>
+            `;
+
+            results.appendChild(card);
+        }
+
+        function testNavigation() {
+            const frame = document.getElementById('testFrame');
+            const win = frame.contentWindow;
+
+            console.log('Testing navigation methods...');
+
+            // Test keyboard nav
+            for (let i = 1; i <= 12; i++) {
+                if ([6, 8, 9].includes(i)) continue; // Skip conditional steps
+
+                setTimeout(() => {
+                    const event = new win.KeyboardEvent('keydown', { key: i.toString() });
+                    win.document.dispatchEvent(event);
+                    console.log(`✅ Navigated to step ${i}`);
+                }, i * 500);
+            }
+        }
+
+        function testMobile() {
+            const frame = document.getElementById('testFrame');
+            frame.style.width = '375px';
+            frame.style.height = '667px';
+            alert('📱 Mobile view activated - 375x667 (iPhone size)');
+        }
+
+        function resetTest() {
+            const frame = document.getElementById('testFrame');
+            frame.src = frame.src;
+            document.getElementById('testResults').innerHTML = '';
+            frame.style.width = '100%';
+            frame.style.height = '600px';
+        }
+
+        // Auto-start test on load
+        window.onload = function() {
+            setTimeout(startTest, 2000);
+        };
+    </script>
+</body>
+</html>

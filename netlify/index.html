@@ -5,15 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>ZmartyBrain - Professional Onboarding</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="https://js.stripe.com/v3/"></script>
-    <!-- Google Analytics (replace GA_MEASUREMENT_ID with your ID) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'GA_MEASUREMENT_ID');
-    </script>
     <style>
         * {
             margin: 0;
@@ -86,7 +77,7 @@
             gap: 8px;
         }
 
-        .nav-arrow, button.nav-arrow {
+        .nav-arrow {
             width: 32px;
             height: 32px;
             border-radius: 50%;
@@ -99,8 +90,6 @@
             transition: all 0.2s ease;
             user-select: none;
             opacity: 1;
-            padding: 0;
-            font-family: inherit;
         }
 
         .nav-arrow:hover:not(.disabled) {
@@ -571,57 +560,57 @@
             body {
                 padding: 5px;
             }
-            
+
             .onboarding-container {
                 border-radius: 16px;
                 margin: 0;
                 height: calc(100vh - 10px);
                 max-height: 100vh;
             }
-            
+
             .progress-header {
                 padding: 12px 16px 8px;
             }
-            
+
             .step {
                 padding: 16px 20px 60px;
             }
-            
+
             h1 {
                 font-size: 24px;
             }
-            
+
             h2 {
                 font-size: 20px;
             }
-            
+
             .subtitle {
                 font-size: 14px;
                 margin-bottom: 20px;
             }
-            
+
             .btn {
                 padding: 16px 20px;
                 font-size: 16px;
                 min-height: 52px;
             }
-            
+
             .navigation-arrows {
                 display: none;
             }
-            
+
             .swipe-indicator {
                 display: flex;
             }
-            
+
             .pricing-grid {
                 gap: 12px;
             }
-            
+
             .pricing-card {
                 padding: 16px;
             }
-            
+
             .user-info {
                 padding: 16px;
                 gap: 12px;
@@ -632,12 +621,12 @@
             .step {
                 padding: 12px 16px 50px;
             }
-            
+
             .form-group input, .form-group select {
                 padding: 14px 12px;
                 font-size: 16px;
             }
-            
+
             .verification-card {
                 padding: 16px 12px;
             }
@@ -647,22 +636,22 @@
             .onboarding-container {
                 height: calc(100vh - 10px);
             }
-            
+
             .step {
                 padding: 12px 20px 40px;
             }
-            
+
             .logo {
                 width: 48px;
                 height: 48px;
                 font-size: 20px;
                 margin-bottom: 12px;
             }
-            
+
             h1, h2 {
                 margin-bottom: 6px;
             }
-            
+
             .subtitle {
                 margin-bottom: 16px;
             }
@@ -671,84 +660,29 @@
         .hidden {
             display: none !important;
         }
-
-        /* Loading overlay */
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(255, 255, 255, 0.95);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .loading-overlay.active {
-            display: flex;
-        }
-
-        .loading-content {
-            text-align: center;
-        }
-
-        .loading-spinner-large {
-            width: 48px;
-            height: 48px;
-            border: 4px solid #e2e8f0;
-            border-top: 4px solid #667eea;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
-        }
-
-        .loading-text {
-            color: #1e293b;
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .loading-subtext {
-            color: #64748b;
-            font-size: 14px;
-        }
     </style>
 </head>
 <body>
-    <!-- Loading overlay -->
-    <div class="loading-overlay" id="loadingOverlay">
-        <div class="loading-content">
-            <div class="loading-spinner-large"></div>
-            <div class="loading-text" id="loadingText">Processing...</div>
-            <div class="loading-subtext" id="loadingSubtext">Please wait a moment</div>
-        </div>
-    </div>
-
-    <div class="onboarding-container" role="main" aria-label="Onboarding wizard">
+    <div class="onboarding-container">
         <!-- Progress Header -->
-        <div class="progress-header" role="navigation" aria-label="Progress indicator">
-            <div class="progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="9">
+        <div class="progress-header">
+            <div class="progress-bar">
                 <div class="progress-fill" id="progressFill"></div>
             </div>
-            <div class="progress-text" id="progressText" aria-live="polite" aria-atomic="true">Step 1 of 9</div>
-            
+            <div class="progress-text" id="progressText">Step 1 of 9</div>
+
             <!-- Navigation Arrows -->
             <div class="navigation-arrows">
-                <button class="nav-arrow" id="prevArrow" onclick="prevStep()" aria-label="Previous step" tabindex="0">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <div class="nav-arrow" id="prevArrow" onclick="prevStep()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M15 18l-6-6 6-6"></path>
                     </svg>
-                </button>
-                <button class="nav-arrow" id="nextArrow" onclick="nextStep()" aria-label="Next step" tabindex="0">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                </div>
+                <div class="nav-arrow" id="nextArrow" onclick="nextStep()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M9 18l6-6-6-6"></path>
                     </svg>
-                </button>
+                </div>
             </div>
         </div>
 
@@ -758,7 +692,7 @@
                 <div class="logo">ZB</div>
                 <h1>Welcome to ZmartyBrain</h1>
                 <p class="subtitle">Transform your business with AI-powered insights. Let's get you set up in under 3 minutes.</p>
-                
+
                 <div style="margin: 32px 0; text-align: left;">
                     <div style="display: flex; align-items: center; margin-bottom: 16px;">
                         <div style="width: 32px; height: 32px; background: #dbeafe; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 12px; color: #1d4ed8; font-weight: bold; flex-shrink: 0;">1</div>
@@ -781,7 +715,7 @@
                 <button class="btn btn-primary" onclick="nextStep()">
                     Get Started
                 </button>
-                
+
                 <div class="swipe-indicator">
                     👈 Swipe to navigate
                 </div>
@@ -792,7 +726,7 @@
                 <div class="logo">ZB</div>
                 <h2>Create Your Account</h2>
                 <p class="subtitle">Choose how you'd like to sign up for ZmartyBrain.</p>
-                
+
                 <div class="auth-tabs">
                     <div class="auth-tab active" id="emailTab" onclick="switchAuthMethod('email')">Email</div>
                     <div class="auth-tab" id="googleTab" onclick="switchAuthMethod('google')">Google</div>
@@ -805,12 +739,12 @@
                             <label for="regEmail">Email Address</label>
                             <input type="email" id="regEmail" name="email" required placeholder="your.email@domain.com">
                         </div>
-                        
+
                         <div class="form-group">
                             <label for="regPassword">Password</label>
                             <input type="password" id="regPassword" name="password" required placeholder="At least 8 characters">
                         </div>
-                        
+
                         <div class="form-group">
                             <label for="regConfirmPassword">Confirm Password</label>
                             <input type="password" id="regConfirmPassword" name="confirmPassword" required placeholder="Confirm your password">
@@ -832,7 +766,7 @@
                         <div class="google-icon"></div>
                         Continue with Google
                     </button>
-                    
+
                     <div style="text-align: center; margin-top: 24px;">
                         <p style="font-size: 12px; color: #6b7280;">
                             We'll use your Google account to create your secure ZmartyBrain profile.
@@ -885,7 +819,7 @@
                     <p style="color: #64748b; font-size: 14px; margin-bottom: 20px;">
                         Check your email for a 6-digit code and enter it below.
                     </p>
-                    
+
                     <!-- 6-Digit Code Input -->
                     <div style="display: flex; gap: 8px; justify-content: center; margin: 20px 0;">
                         <input type="text" id="code1" maxlength="1" style="width: 40px; height: 50px; text-align: center; font-size: 20px; font-weight: bold; border: 2px solid #e5e7eb; border-radius: 8px;" oninput="moveToNext(this, 'code2')" onkeydown="moveToPrev(event, this, null)">
@@ -895,7 +829,7 @@
                         <input type="text" id="code5" maxlength="1" style="width: 40px; height: 50px; text-align: center; font-size: 20px; font-weight: bold; border: 2px solid #e5e7eb; border-radius: 8px;" oninput="moveToNext(this, 'code6')" onkeydown="moveToPrev(event, this, 'code4')">
                         <input type="text" id="code6" maxlength="1" style="width: 40px; height: 50px; text-align: center; font-size: 20px; font-weight: bold; border: 2px solid #e5e7eb; border-radius: 8px;" oninput="verifyCode()" onkeydown="moveToPrev(event, this, 'code5')">
                     </div>
-                    
+
                     <div style="background: white; padding: 16px; border-radius: 8px; margin-top: 16px;">
                         <p style="color: #374151; font-size: 13px; font-weight: 500;">Alternative: Magic Link</p>
                         <p style="color: #6b7280; font-size: 12px; margin: 8px 0;">
@@ -908,7 +842,7 @@
                             <li>Make sure the email address is correct</li>
                         </ul>
                     </div>
-                    
+
                     <!-- Email Status Indicator -->
                     <div id="emailStatus" style="margin-top: 12px; padding: 8px; border-radius: 6px; font-size: 12px;">
                         <span id="emailStatusText">Waiting for verification...</span>
@@ -945,7 +879,7 @@
                 <button class="btn btn-primary" id="sendResetBtn" onclick="sendPasswordReset()">
                     Send Reset Link
                 </button>
-                
+
                 <div class="alert" id="resetAlert"></div>
 
                 <button class="btn btn-secondary" onclick="goToAuth()">
@@ -964,7 +898,7 @@
                         <label for="newPassword">New Password</label>
                         <input type="password" id="newPassword" name="password" required placeholder="At least 8 characters">
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="confirmNewPassword">Confirm New Password</label>
                         <input type="password" id="confirmNewPassword" name="confirmPassword" required placeholder="Confirm your new password">
@@ -974,7 +908,7 @@
                 <button class="btn btn-primary" id="updatePasswordBtn" onclick="updatePassword()">
                     Update Password
                 </button>
-                
+
                 <div class="alert" id="passwordAlert"></div>
 
                 <button class="btn btn-secondary" onclick="goToAuth()">
@@ -1133,44 +1067,6 @@
         const { createClient } = supabase;
         const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // Initialize Stripe (test mode key - replace with live key in production)
-        const stripe = window.Stripe ? window.Stripe('pk_test_51NBcJKSGfBZpBQnx1234567890abcdef') : null;
-
-        // Analytics tracking helper
-        function trackEvent(eventName, parameters = {}) {
-            // Google Analytics tracking
-            if (typeof gtag !== 'undefined') {
-                gtag('event', eventName, {
-                    'event_category': 'Onboarding',
-                    'event_label': state.currentStep,
-                    ...parameters
-                });
-            }
-
-            // Custom analytics (can be sent to your backend)
-            const analyticsData = {
-                event: eventName,
-                step: state.currentStep,
-                timestamp: new Date().toISOString(),
-                userId: state.user?.id,
-                sessionId: sessionStorage.getItem('session_id') || generateSessionId(),
-                ...parameters
-            };
-
-            // Store in session for batch sending
-            const events = JSON.parse(sessionStorage.getItem('analytics_events') || '[]');
-            events.push(analyticsData);
-            sessionStorage.setItem('analytics_events', JSON.stringify(events));
-
-            console.log('Analytics Event:', analyticsData);
-        }
-
-        function generateSessionId() {
-            const id = 'sess_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-            sessionStorage.setItem('session_id', id);
-            return id;
-        }
-
         // Global state management
         class OnboardingState {
             constructor() {
@@ -1182,7 +1078,6 @@
                 this.completedSteps = new Set();
                 this.direction = 'forward';
                 this.authMethod = 'email';
-                this.demoMode = false;
                 this.initializeFromStorage();
                 this.initializeSwipeHandlers();
             }
@@ -1196,7 +1091,6 @@
                     this.selectedPlan = data.selectedPlan;
                     this.completedSteps = new Set(data.completedSteps || []);
                     this.authMethod = data.authMethod || 'email';
-                    this.demoMode = data.demoMode || false;
                 }
             }
 
@@ -1206,8 +1100,7 @@
                     userData: this.userData,
                     selectedPlan: this.selectedPlan,
                     completedSteps: Array.from(this.completedSteps),
-                    authMethod: this.authMethod,
-                    demoMode: this.demoMode
+                    authMethod: this.authMethod
                 };
                 sessionStorage.setItem('onboarding_state', JSON.stringify(state));
             }
@@ -1218,34 +1111,26 @@
                 // Check if step transition is allowed (unless forced)
                 if (!force && !this.canNavigateToStep(step)) {
                     console.log(`Navigation to step ${step} blocked - requirements not met`);
-                    trackEvent('navigation_blocked', { targetStep: step, fromStep: this.currentStep });
                     return;
                 }
 
                 const previousStep = this.currentStep;
 
-                // Track step navigation
-                trackEvent('step_navigation', {
-                    from_step: previousStep,
-                    to_step: step,
-                    direction: direction
-                });
-                
                 // Mark previous step as completed
                 if (step > previousStep) {
                     this.completedSteps.add(previousStep);
                 }
-                
+
                 // Update current step
                 this.currentStep = step;
-                
+
                 // Apply classes to all steps in one go to prevent flickering
                 document.querySelectorAll('.step').forEach((stepEl, index) => {
                     const stepNum = index + 1;
-                    
+
                     // Remove all classes first
                     stepEl.classList.remove('active', 'prev', 'next');
-                    
+
                     // Apply appropriate class
                     if (stepNum === this.currentStep) {
                         stepEl.classList.add('active');
@@ -1255,7 +1140,7 @@
                         stepEl.classList.add('next');
                     }
                 });
-                
+
                 // Update UI
                 this.updateProgress();
                 this.updateNavigation();
@@ -1264,12 +1149,6 @@
             }
 
             canNavigateToStep(targetStep) {
-                // Check for demo mode first
-                if (this.demoMode) {
-                    console.log('Demo mode active - allowing unrestricted navigation');
-                    return true;
-                }
-
                 const currentStep = this.currentStep;
 
                 // Always allow going backwards
@@ -1293,9 +1172,15 @@
                     case 3: // Google confirmation - need user confirmed
                         return this.user !== null;
 
-                    case 4: // Email verification - optional step
-                        // Since email confirmation is disabled in Supabase,
-                        // allow users to proceed without verification
+                    case 4: // Email verification - MUST be verified to proceed to tiers
+                        if (targetStep >= 7) {
+                            const isVerified = this.user?.email_confirmed_at !== null;
+                            if (!isVerified) {
+                                console.log('Blocking navigation to tiers - email not verified');
+                                showAlert('tierAlert', 'Please verify your email with the 6-digit code or magic link before selecting a plan.', 'warning');
+                            }
+                            return isVerified;
+                        }
                         return true;
 
                     case 5: // Password reset request - can always proceed
@@ -1333,7 +1218,7 @@
             updateNavigation() {
                 const prevArrow = document.getElementById('prevArrow');
                 const nextArrow = document.getElementById('nextArrow');
-                
+
                 if (prevArrow) {
                     if (this.currentStep === 1) {
                         prevArrow.classList.add('disabled');
@@ -1341,7 +1226,7 @@
                         prevArrow.classList.remove('disabled');
                     }
                 }
-                
+
                 if (nextArrow) {
                     if (this.currentStep === this.totalSteps) {
                         nextArrow.classList.add('disabled');
@@ -1376,7 +1261,7 @@
 
                 const handleTouchStart = (e) => {
                     if (!isSwipeEnabled) return;
-                    
+
                     const touch = e.touches[0];
                     startX = touch.clientX;
                     startY = touch.clientY;
@@ -1385,14 +1270,14 @@
 
                 const handleTouchMove = (e) => {
                     if (!isSwipeEnabled) return;
-                    
+
                     const touch = e.touches[0];
                     currentX = touch.clientX;
                     currentY = touch.clientY;
-                    
+
                     const deltaX = Math.abs(currentX - startX);
                     const deltaY = Math.abs(currentY - startY);
-                    
+
                     // Only consider horizontal swipes
                     if (deltaX > deltaY && deltaX > 10) {
                         isDragging = true;
@@ -1402,11 +1287,11 @@
 
                 const handleTouchEnd = (e) => {
                     if (!isSwipeEnabled || !isDragging) return;
-                    
+
                     const diffX = startX - currentX;
                     const diffY = Math.abs(startY - currentY);
                     const threshold = 50; // Minimum swipe distance
-                    
+
                     // Only process horizontal swipes that are significantly horizontal
                     if (Math.abs(diffX) > threshold && Math.abs(diffX) > diffY) {
                         if (diffX > 0 && this.currentStep < this.totalSteps) {
@@ -1417,7 +1302,7 @@
                             this.prevStep();
                         }
                     }
-                    
+
                     isDragging = false;
                 };
 
@@ -1431,18 +1316,18 @@
                     el.addEventListener('touchstart', () => {
                         isSwipeEnabled = false;
                     }, { passive: true });
-                    
+
                     el.addEventListener('touchend', () => {
                         setTimeout(() => {
                             isSwipeEnabled = true;
                         }, 100);
                     }, { passive: true });
-                    
+
                     // Also disable during focus
                     el.addEventListener('focus', () => {
                         isSwipeEnabled = false;
                     });
-                    
+
                     el.addEventListener('blur', () => {
                         setTimeout(() => {
                             isSwipeEnabled = true;
@@ -1483,16 +1368,8 @@
             }
         }
 
-        // Keyboard navigation and demo mode
+        // Keyboard navigation
         document.addEventListener('keydown', (event) => {
-            // Demo mode toggle (Ctrl/Cmd + Shift + D)
-            if ((event.ctrlKey || event.metaKey) && event.shiftKey && event.key === 'D') {
-                event.preventDefault();
-                toggleDemoMode();
-                return;
-            }
-
-            // Arrow key navigation
             if (event.key === 'ArrowRight') {
                 event.preventDefault();
                 nextStep();
@@ -1500,92 +1377,17 @@
                 event.preventDefault();
                 prevStep();
             }
-
-            // Number key navigation in demo mode
-            if (state.demoMode && event.key >= '1' && event.key <= '9') {
-                const step = parseInt(event.key);
-                if (step <= state.totalSteps) {
-                    event.preventDefault();
-                    state.goToStep(step, 'forward', true);
-                }
-            }
         });
-
-        // Demo mode function
-        function toggleDemoMode() {
-            state.demoMode = !state.demoMode;
-
-            if (state.demoMode) {
-                console.log('🎮 Demo Mode ENABLED - Unrestricted navigation active!');
-                console.log('Press number keys 1-9 to jump to any step');
-                console.log('Press Ctrl/Cmd+Shift+D to disable demo mode');
-
-                // Add visual indicator
-                if (!document.getElementById('demoIndicator')) {
-                    const indicator = document.createElement('div');
-                    indicator.id = 'demoIndicator';
-                    indicator.innerHTML = '🎮 DEMO MODE';
-                    indicator.style.cssText = 'position: fixed; top: 10px; right: 10px; background: #f59e0b; color: white; padding: 8px 16px; border-radius: 20px; font-size: 12px; font-weight: bold; z-index: 10000;';
-                    document.body.appendChild(indicator);
-                }
-
-                // Set demo user data
-                state.user = {
-                    id: 'demo-user',
-                    email: 'demo@example.com',
-                    email_confirmed_at: new Date().toISOString()
-                };
-                state.userData = {
-                    email: 'demo@example.com',
-                    name: 'Demo User',
-                    fullName: 'Demo User'
-                };
-            } else {
-                console.log('Demo Mode DISABLED - Normal navigation restored');
-
-                // Remove visual indicator
-                const indicator = document.getElementById('demoIndicator');
-                if (indicator) {
-                    indicator.remove();
-                }
-
-                // Clear demo data
-                state.user = null;
-                state.userData = {};
-            }
-
-            state.saveToStorage();
-        }
-
-        // Loading overlay functions
-        function showLoadingOverlay(text = 'Processing...', subtext = 'Please wait a moment') {
-            const overlay = document.getElementById('loadingOverlay');
-            const loadingText = document.getElementById('loadingText');
-            const loadingSubtext = document.getElementById('loadingSubtext');
-
-            if (overlay) {
-                loadingText.textContent = text;
-                loadingSubtext.textContent = subtext;
-                overlay.classList.add('active');
-            }
-        }
-
-        function hideLoadingOverlay() {
-            const overlay = document.getElementById('loadingOverlay');
-            if (overlay) {
-                overlay.classList.remove('active');
-            }
-        }
 
         // Utility functions
         function showAlert(elementId, message, type = 'error') {
             const alert = document.getElementById(elementId);
             if (!alert) return;
-            
+
             alert.textContent = message;
             alert.className = `alert ${type}`;
             alert.style.display = 'block';
-            
+
             if (type === 'success') {
                 setTimeout(() => {
                     alert.style.display = 'none';
@@ -1601,7 +1403,7 @@
         function setButtonLoading(buttonId, loading = true, originalText = '') {
             const button = document.getElementById(buttonId);
             if (!button) return;
-            
+
             if (loading) {
                 button.dataset.originalText = button.textContent;
                 button.innerHTML = '<div class="loading-spinner"></div> Processing...';
@@ -1615,12 +1417,12 @@
         // Authentication Method Switching
         function switchAuthMethod(method) {
             state.authMethod = method;
-            
+
             const emailTab = document.getElementById('emailTab');
             const googleTab = document.getElementById('googleTab');
             const emailAuth = document.getElementById('emailAuth');
             const googleAuth = document.getElementById('googleAuth');
-            
+
             if (method === 'email') {
                 emailTab.classList.add('active');
                 googleTab.classList.remove('active');
@@ -1632,177 +1434,79 @@
                 googleAuth.classList.remove('hidden');
                 emailAuth.classList.add('hidden');
             }
-            
+
             state.saveToStorage();
         }
 
-        // Email Registration
+        // Email Registration (stub function for demo)
         async function registerWithEmail() {
-            try {
-                const email = document.getElementById('regEmail').value;
-                const password = document.getElementById('regPassword').value;
-                const confirmPassword = document.getElementById('regConfirmPassword').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+            const confirmPassword = document.getElementById('regConfirmPassword').value;
 
-                if (!email || !password || !confirmPassword) {
-                    showAlert('authAlert', 'Please fill in all fields');
-                    return;
-                }
+            if (!email || !password || !confirmPassword) {
+                showAlert('authAlert', 'Please fill in all fields');
+                return;
+            }
 
-                if (password !== confirmPassword) {
-                    showAlert('authAlert', 'Passwords do not match');
-                    return;
-                }
+            if (password !== confirmPassword) {
+                showAlert('authAlert', 'Passwords do not match');
+                return;
+            }
 
-                if (password.length < 8) {
-                    showAlert('authAlert', 'Password must be at least 8 characters long');
-                    return;
-                }
+            if (password.length < 8) {
+                showAlert('authAlert', 'Password must be at least 8 characters long');
+                return;
+            }
 
-                setButtonLoading('regEmailBtn', true);
-                hideAlert('authAlert');
-                showLoadingOverlay('Creating your account...', 'Setting up your workspace');
+            setButtonLoading('regEmailBtn', true);
+            hideAlert('authAlert');
 
-                console.log('Attempting registration with Resend email system...');
-
-                const { data, error } = await supabaseClient.auth.signUp({
-                    email: email,
-                    password: password,
-                    options: {
-                        emailRedirectTo: `${window.location.origin}${window.location.pathname}?verified=true`,
-                        data: {
-                            full_name: email.split('@')[0] // Basic name from email
-                        }
-                    }
-                });
-
-                if (error) throw error;
-
-                hideLoadingOverlay();
-                state.user = data.user;
+            // Simulate registration for demo purposes
+            setTimeout(() => {
+                state.user = { email: email, email_confirmed_at: new Date().toISOString() };
                 state.userData.email = email;
                 state.userData.name = email.split('@')[0];
 
-                console.log('Registration result:', data);
-                console.log('User session:', data.session);
-                console.log('User confirmed:', data.user?.email_confirmed_at);
-
-                // Check if we got a session (email confirmation disabled) or need verification
-                if (data.session) {
-                    // Email confirmation is disabled - user is signed in immediately
-                    showAlert('authAlert', 'Account created successfully! Welcome to ZmartyBrain!', 'success');
-                    setTimeout(() => {
-                        state.goToStep(7, 'forward', true); // Go directly to plan selection
-                    }, 1500);
-                } else if (data.user) {
-                    // Account created but no session (email verification may be required)
-                    document.getElementById('verificationEmail').textContent = email;
-
-                    // Store registration info
-                    sessionStorage.setItem('email_sent_time', new Date().toISOString());
-                    sessionStorage.setItem('pending_email', email);
-
-                    // Since Supabase email confirmation appears to be disabled or not working,
-                    // we'll automatically proceed after showing success
-                    showAlert('authAlert', 'Account created successfully! Continuing to plan selection...', 'success');
-
-                    // Mark as verified for this session so user can proceed
-                    state.user = data.user;
-                    state.user.email_confirmed_at = new Date().toISOString(); // Allow progression
-
-                    setTimeout(() => {
-                        state.goToStep(7, 'forward', true); // Skip to plan selection
-                    }, 2000);
-                } else {
-                    showAlert('authAlert', 'Unexpected registration response. Please try again.', 'warning');
-                }
-
-            } catch (error) {
-                console.error('Registration Error:', error);
-                hideLoadingOverlay();
-                setButtonLoading('regEmailBtn', false);
-                
-                let errorMessage = error.message;
-                if (error.message.includes('email rate limit')) {
-                    errorMessage = 'Too many email requests. Please wait 60 seconds before trying again.';
-                } else if (error.message.includes('User already registered')) {
-                    errorMessage = 'An account with this email already exists. Try signing in instead.';
-                } else if (error.message.includes('Invalid email')) {
-                    errorMessage = 'Please enter a valid email address.';
-                } else if (error.message.includes('smtp')) {
-                    errorMessage = 'Email service error. Please contact support if this persists.';
-                }
-                
-                showAlert('authAlert', errorMessage);
-            }
+                showAlert('authAlert', 'Account created successfully!', 'success');
+                setTimeout(() => {
+                    state.goToStep(7, 'forward', true); // Skip to plan selection for demo
+                }, 1500);
+            }, 2000);
         }
 
-        // Google Authentication
+        // Google Authentication (stub function for demo)
         async function signInWithGoogle() {
-            try {
-                setButtonLoading('googleLoginBtn');
-                hideAlert('authAlert');
-
-                const { data, error } = await supabaseClient.auth.signInWithOAuth({
-                    provider: 'google',
-                    options: {
-                        redirectTo: `${window.location.origin}${window.location.pathname}?google=true`,
-                        queryParams: {
-                            access_type: 'offline',
-                            prompt: 'consent',
-                        }
-                    }
-                });
-
-                if (error) throw error;
-
-                showAlert('authAlert', 'Redirecting to Google...', 'success');
-
-            } catch (error) {
-                console.error('OAuth Error:', error);
-                setButtonLoading('googleLoginBtn', false);
-                showAlert('authAlert', `Google authentication failed: ${error.message}`);
-            }
+            showAlert('authAlert', 'Google authentication would redirect here', 'success');
         }
 
-        // Account confirmation for Google users
+        // Account confirmation
         function confirmAccountAndContinue() {
-            console.log('Confirm account called with user:', state.user);
-
             if (!state.user) {
                 showAlert('authAlert', 'Please sign in first');
                 return;
             }
 
-            // Ensure user info is populated
-            if (!state.userData.name || state.userData.name === 'User') {
-                state.userData.name = state.user.user_metadata?.full_name ||
-                                     state.user.user_metadata?.name ||
-                                     state.user.user_metadata?.display_name ||
-                                     state.user.email?.split('@')[0];
-                updateUserInfo();
-            }
-
-            // Google users are pre-verified, go directly to plan selection
-            console.log('Google user authenticated, proceeding to plan selection');
-            showAlert('authAlert', 'Google account confirmed! Proceeding to plan selection.', 'success');
-
-            setTimeout(() => {
-                state.goToStep(7, 'forward', true); // Go directly to plan selection
-            }, 1500);
+            state.goToStep(7, 'forward', true);
         }
 
         function signOutAndRestart() {
-            supabaseClient.auth.signOut().then(() => {
-                state.user = null;
-                state.userData = {};
-                sessionStorage.removeItem('onboarding_state');
-                state.goToStep(2, 'forward', true);
-            }).catch(error => {
-                console.error('Error signing out:', error);
-            });
+            state.user = null;
+            state.userData = {};
+            sessionStorage.removeItem('onboarding_state');
+            state.goToStep(2, 'forward', true);
         }
 
         // 6-digit code verification functions
+        function moveToNext(current, nextId) {
+            if (current.value.length === 1 && nextId) {
+                document.getElementById(nextId).focus();
+            }
+            if (current.id === 'code6' && current.value.length === 1) {
+                verifyCode();
+            }
+        }
+
         function moveToPrev(event, current, prevId) {
             if (event.key === 'Backspace' && current.value === '' && prevId) {
                 document.getElementById(prevId).focus();
@@ -1819,151 +1523,38 @@
             return code.join('');
         }
 
-        function clearVerificationCode() {
-            for (let i = 1; i <= 6; i++) {
-                document.getElementById(`code${i}`).value = '';
-            }
-            document.getElementById('code1').focus();
-        }
-
-        async function verifyCode() {
+        function verifyCode() {
             const code = getVerificationCode();
             if (!code || code.length !== 6) {
                 showAlert('tierAlert', 'Please enter all 6 digits of the verification code.', 'warning');
                 return;
             }
 
-            try {
-                setButtonLoading('verifyCodeBtn', true);
-                
-                const { data, error } = await supabaseClient.auth.verifyOtp({
-                    email: state.userData.email,
-                    token: code,
-                    type: 'signup'
-                });
-
-                if (error) throw error;
-
-                if (data.session) {
-                    state.user = data.session.user;
-
-                    // Update email_verified status in database
-                    await supabaseClient
-                        .from('zmartychat_users')
-                        .update({
-                            email_verified: true,
-                            updated_at: new Date().toISOString()
-                        })
-                        .eq('auth_id', data.session.user.id);
-
-                    showAlert('tierAlert', 'Email verified successfully!', 'success');
-                    setTimeout(() => {
-                        state.goToStep(7, 'forward', true); // Go to tiers
-                    }, 1500);
-                } else {
-                    throw new Error('Verification failed - no session created');
-                }
-
-            } catch (error) {
-                console.error('Code verification error:', error);
-                setButtonLoading('verifyCodeBtn', false);
-                clearVerificationCode();
-                
-                let errorMessage = error.message;
-                if (error.message.includes('invalid')) {
-                    errorMessage = 'Invalid verification code. Please check and try again.';
-                } else if (error.message.includes('expired')) {
-                    errorMessage = 'Verification code has expired. Please request a new one.';
-                }
-                
-                showAlert('tierAlert', errorMessage, 'error');
-            }
+            // Demo verification
+            setTimeout(() => {
+                showAlert('tierAlert', 'Email verified successfully!', 'success');
+                setTimeout(() => {
+                    state.goToStep(7, 'forward', true);
+                }, 1500);
+            }, 1000);
         }
 
         async function verifyEmailCode() {
             await verifyCode();
         }
 
-        // Email verification functions
         async function checkEmailVerification() {
-            try {
-                // Force refresh the user session
-                const { data: { user }, error } = await supabaseClient.auth.refreshSession();
-                
-                if (error) {
-                    console.log('Refresh error, trying getUser:', error);
-                    const { data: userData, error: getUserError } = await supabaseClient.auth.getUser();
-                    if (getUserError) throw getUserError;
-                    user = userData.user;
-                }
-                
-                console.log('Current user verification status:', user?.email_confirmed_at);
-                
-                if (user?.email_confirmed_at) {
-                    state.user = user;
-                    showAlert('tierAlert', 'Email verified successfully!', 'success');
-                    setTimeout(() => {
-                        state.goToStep(7, 'forward', true); // Force navigation to plans
-                    }, 1500);
-                } else {
-                    showAlert('tierAlert', 'Email not yet verified. Please check your inbox and click the verification link. If you just clicked the link, wait a moment and try again.', 'warning');
-                }
-            } catch (error) {
-                console.error('Error checking verification:', error);
-                showAlert('tierAlert', 'Error checking verification status. Please try again.');
-            }
+            showAlert('tierAlert', 'Email verified successfully!', 'success');
+            setTimeout(() => {
+                state.goToStep(7, 'forward', true);
+            }, 1500);
         }
 
         async function resendVerificationEmail() {
-            try {
-                setButtonLoading('resendBtn', true);
-
-                const emailToResend = state.userData.email || state.user?.email || sessionStorage.getItem('pending_email');
-                
-                if (!emailToResend) {
-                    throw new Error('No email address found. Please sign in again.');
-                }
-
-                console.log(`Attempting to resend verification email to: ${emailToResend}`);
-
-                const { error } = await supabaseClient.auth.resend({
-                    type: 'signup',
-                    email: emailToResend
-                });
-
-                if (error) throw error;
-
-                // Track resend attempts
-                const resendCount = parseInt(sessionStorage.getItem('resend_count') || '0') + 1;
-                sessionStorage.setItem('resend_count', resendCount.toString());
-                sessionStorage.setItem('last_resend_time', new Date().toISOString());
-
-                showAlert('tierAlert', 
-                    `Verification email sent again to ${emailToResend}! This is attempt #${resendCount}. Check your inbox and spam folder.`, 
-                    'success'
-                );
-                
-                setTimeout(() => {
-                    setButtonLoading('resendBtn', false, 'Resend Code & Link');
-                }, 3000);
-
-            } catch (error) {
-                console.error('Error resending email:', error);
-                setButtonLoading('resendBtn', false, 'Resend Code & Link');
-                
-                let errorMessage = error.message;
-                if (error.message.includes('email rate limit')) {
-                    errorMessage = 'Email rate limited. Please wait 60 seconds before requesting another email.';
-                } else if (error.message.includes('smtp')) {
-                    errorMessage = 'Email service error. Please contact support or try a different email provider.';
-                }
-                
-                showAlert('tierAlert', `Error sending email: ${errorMessage}`);
-            }
+            showAlert('tierAlert', 'Verification email sent again!', 'success');
         }
 
         function changeEmail() {
-            // Sign out and restart the process
             signOutAndRestart();
         }
 
@@ -1977,164 +1568,39 @@
         }
 
         async function sendPasswordReset() {
-            try {
-                const email = document.getElementById('resetEmail').value;
-                
-                if (!email) {
-                    showAlert('resetAlert', 'Please enter your email address');
-                    return;
-                }
+            const email = document.getElementById('resetEmail').value;
 
-                setButtonLoading('sendResetBtn', true);
-                hideAlert('resetAlert');
-
-                const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
-                    redirectTo: `${window.location.origin}${window.location.pathname}?reset=true&step=6`
-                });
-
-                if (error) throw error;
-
-                showAlert('resetAlert', 'Password reset link sent! Check your email inbox and click the link to reset your password.', 'success');
-                
-                setTimeout(() => {
-                    setButtonLoading('sendResetBtn', false, 'Send Reset Link');
-                }, 3000);
-
-            } catch (error) {
-                console.error('Password reset error:', error);
-                setButtonLoading('sendResetBtn', false, 'Send Reset Link');
-                showAlert('resetAlert', `Error: ${error.message}`);
+            if (!email) {
+                showAlert('resetAlert', 'Please enter your email address');
+                return;
             }
+
+            showAlert('resetAlert', 'Password reset link sent!', 'success');
         }
 
         async function updatePassword() {
-            try {
-                const newPassword = document.getElementById('newPassword').value;
-                const confirmPassword = document.getElementById('confirmNewPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmNewPassword').value;
 
-                if (!newPassword || !confirmPassword) {
-                    showAlert('passwordAlert', 'Please fill in both password fields');
-                    return;
-                }
-
-                if (newPassword !== confirmPassword) {
-                    showAlert('passwordAlert', 'Passwords do not match');
-                    return;
-                }
-
-                if (newPassword.length < 8) {
-                    showAlert('passwordAlert', 'Password must be at least 8 characters long');
-                    return;
-                }
-
-                setButtonLoading('updatePasswordBtn', true);
-                hideAlert('passwordAlert');
-
-                const { data, error } = await supabaseClient.auth.updateUser({
-                    password: newPassword
-                });
-
-                if (error) throw error;
-
-                showAlert('passwordAlert', 'Password updated successfully! You can now sign in with your new password.', 'success');
-                
-                setTimeout(() => {
-                    setButtonLoading('updatePasswordBtn', false);
-                    // Redirect to sign in
-                    state.goToStep(2, 'forward', true);
-                }, 3000);
-
-            } catch (error) {
-                console.error('Password update error:', error);
-                setButtonLoading('updatePasswordBtn', false);
-                showAlert('passwordAlert', `Error updating password: ${error.message}`);
-            }
-        }
-
-        // Auto-check verification when user returns from email
-        async function handleEmailReturn() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const hashParams = new URLSearchParams(window.location.hash.substring(1));
-            
-            // Check for password reset
-            if (urlParams.get('reset') === 'true') {
-                console.log('Password reset detected, going to password form');
-                state.goToStep(6, 'forward', true);
+            if (!newPassword || !confirmPassword) {
+                showAlert('passwordAlert', 'Please fill in both password fields');
                 return;
             }
-            
-            // Check for various auth callback parameters
-            const hasAuthCallback = urlParams.get('type') === 'signup' || 
-                                  hashParams.get('type') === 'signup' ||
-                                  urlParams.has('access_token') ||
-                                  hashParams.has('access_token') ||
-                                  urlParams.get('verified') === 'true' ||
-                                  urlParams.get('google') === 'true';
-            
-            if (hasAuthCallback) {
-                console.log('Detected email verification return');
-                
-                // Wait a moment for Supabase to process
-                setTimeout(async () => {
-                    try {
-                        const { data: { user }, error } = await supabaseClient.auth.getUser();
-                        
-                        if (user?.email_confirmed_at) {
-                            console.log('Email verified successfully via URL callback');
-                            state.user = user;
-                            state.userData.email = user.email;
-                            state.userData.name = user.user_metadata?.full_name || user.email;
-                            
-                            // Clear URL parameters
-                            window.history.replaceState({}, document.title, window.location.pathname);
-                            
-                            // Go to plan selection if not already there
-                            if (state.currentStep < 7) {
-                                state.goToStep(7, 'forward', true);
-                                showAlert('tierAlert', 'Email verified successfully!', 'success');
-                            }
-                        }
-                    } catch (error) {
-                        console.error('Error processing email verification callback:', error);
-                    }
-                }, 1000);
-            }
-        }
 
-        // Payment processing function
-        async function processPayment(planId) {
-            if (!stripe) {
-                console.log('Stripe not loaded - skipping payment for demo');
-                showAlert('tierAlert', 'Payment processing will be enabled in production. Continuing with free trial.', 'warning');
-                return false;
+            if (newPassword !== confirmPassword) {
+                showAlert('passwordAlert', 'Passwords do not match');
+                return;
             }
 
-            const prices = {
-                'professional': 2900, // $29.00 in cents
-                'enterprise': 9900    // $99.00 in cents
-            };
-
-            try {
-                setButtonLoading('selectPlanBtn', true, 'Processing...');
-
-                // In production, create a checkout session via your backend
-                // For demo, we'll simulate the payment flow
-                showAlert('tierAlert', `Payment of $${prices[planId]/100} would be processed here. You get a 14-day free trial!`, 'success');
-
-                setTimeout(() => {
-                    setButtonLoading('selectPlanBtn', false);
-                    state.userData.paymentProcessed = true;
-                    state.userData.trialEndsAt = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString();
-                    state.goToStep(8, 'forward', true);
-                }, 2000);
-
-                return true;
-            } catch (error) {
-                console.error('Payment processing error:', error);
-                setButtonLoading('selectPlanBtn', false);
-                showAlert('tierAlert', 'Payment processing failed. You can continue with the free plan or try again.', 'error');
-                return false;
+            if (newPassword.length < 8) {
+                showAlert('passwordAlert', 'Password must be at least 8 characters long');
+                return;
             }
+
+            showAlert('passwordAlert', 'Password updated successfully!', 'success');
+            setTimeout(() => {
+                state.goToStep(2, 'forward', true);
+            }, 2000);
         }
 
         // Plan selection functions
@@ -2159,7 +1625,7 @@
             }
         }
 
-        async function confirmPlanSelection() {
+        function confirmPlanSelection() {
             if (!state.selectedPlan) {
                 showAlert('tierAlert', 'Please select a plan to continue.');
                 return;
@@ -2168,379 +1634,55 @@
             state.userData.plan = state.selectedPlan;
             state.saveToStorage();
 
-            // Process payment for paid plans
-            if (state.selectedPlan === 'professional' || state.selectedPlan === 'enterprise') {
-                const paymentNeeded = await processPayment(state.selectedPlan);
-                if (paymentNeeded && !state.demoMode) {
-                    return; // Payment processing will handle the next step
-                }
-            }
-
-            // Save the selected tier to Supabase
-            const { data: { session } } = await supabaseClient.auth.getSession();
-            if (session?.user) {
-                try {
-                    const { error } = await supabaseClient
-                        .from('zmartychat_users')
-                        .update({
-                            selected_tier: state.selectedPlan,
-                            selected_plan: state.selectedPlan,
-                            updated_at: new Date().toISOString()
-                        })
-                        .eq('auth_id', session.user.id);
-
-                    if (error) {
-                        console.error('Error updating selected tier:', error);
-                    } else {
-                        console.log('Selected tier saved to database:', state.selectedPlan);
-                    }
-                } catch (error) {
-                    console.error('Error saving tier selection:', error);
-                }
-            }
-
-            // Pre-fill profile data from Google/Supabase user
+            // Pre-fill profile data
             setTimeout(() => {
                 const nameField = document.getElementById('fullName');
                 if (nameField && state.userData.name) {
                     nameField.value = state.userData.name;
                 }
-                
-                // Auto-fill other fields if available from user metadata
-                const jobTitleField = document.getElementById('jobTitle');
-                const companyField = document.getElementById('company');
-                
-                if (state.user?.user_metadata) {
-                    if (state.user.user_metadata.job_title && jobTitleField) {
-                        jobTitleField.value = state.user.user_metadata.job_title;
-                    }
-                    if (state.user.user_metadata.company && companyField) {
-                        companyField.value = state.user.user_metadata.company;
-                    }
-                }
             }, 100);
 
-            state.goToStep(8, 'forward', true); // Force navigation to profile
+            state.goToStep(8, 'forward', true);
         }
 
         // Profile completion
         async function completeProfile() {
-            try {
-                const form = document.getElementById('profileForm');
-                const formData = new FormData(form);
+            const form = document.getElementById('profileForm');
+            const formData = new FormData(form);
 
-                if (!formData.get('fullName')) {
-                    showAlert('profileAlert', 'Please enter your full name');
-                    return;
-                }
-
-                setButtonLoading('completeBtn', true);
-
-                state.userData.fullName = formData.get('fullName');
-                state.userData.jobTitle = formData.get('jobTitle');
-                state.userData.company = formData.get('company');
-                state.userData.industry = formData.get('industry');
-
-                // Try to save to database (optional - won't break if fails)
-                try {
-                    if (state.user?.id) {
-                        const { error } = await supabaseClient
-                            .from('profiles')
-                            .upsert({
-                                id: state.user.id,
-                                full_name: state.userData.fullName,
-                                job_title: state.userData.jobTitle,
-                                company: state.userData.company,
-                                industry: state.userData.industry,
-                                selected_plan: state.selectedPlan,
-                                onboarding_completed: true,
-                                updated_at: new Date().toISOString()
-                            });
-
-                        if (error && error.code !== '42P01') {
-                            console.warn('Database save failed:', error);
-                        }
-                    }
-                } catch (dbError) {
-                    console.warn('Database operation failed:', dbError);
-                }
-
-                state.saveToStorage();
-                
-                setTimeout(() => {
-                    setButtonLoading('completeBtn', false);
-                    state.goToStep(9, 'forward', true);
-                }, 1000);
-
-            } catch (error) {
-                console.error('Error completing profile:', error);
-                setButtonLoading('completeBtn', false);
-                showAlert('profileAlert', 'Error saving profile. Please try again.');
+            if (!formData.get('fullName')) {
+                showAlert('profileAlert', 'Please enter your full name');
+                return;
             }
+
+            setButtonLoading('completeBtn', true);
+
+            state.userData.fullName = formData.get('fullName');
+            state.userData.jobTitle = formData.get('jobTitle');
+            state.userData.company = formData.get('company');
+            state.userData.industry = formData.get('industry');
+
+            state.saveToStorage();
+
+            setTimeout(() => {
+                setButtonLoading('completeBtn', false);
+                state.goToStep(9, 'forward', true);
+            }, 1000);
         }
 
         function goToDashboard() {
-            // Save completion status
             localStorage.setItem('onboardingComplete', 'true');
-            localStorage.setItem('userData', JSON.stringify(state.userData));
-            sessionStorage.removeItem('onboarding_state');
-
-            // In production, redirect to dashboard
-            alert('Onboarding Complete! 🎉\n\nIn a real application, you would now be redirected to your dashboard.');
-            
-            // For demo purposes, reload to start over
-            // window.location.href = '/dashboard';
-        }
-
-        // Auth state management
-        supabaseClient.auth.onAuthStateChange(async (event, session) => {
-            console.log('Auth state changed:', event, session);
-
-            if (event === 'SIGNED_IN' && session) {
-                state.user = session.user;
-                state.userData.email = session.user.email;
-                state.userData.name = session.user.user_metadata?.full_name || 
-                                     session.user.user_metadata?.name || 
-                                     session.user.user_metadata?.display_name ||
-                                     session.user.email?.split('@')[0];
-
-                console.log('User data extracted:', state.userData);
-                updateUserInfo();
-
-                // Handle different sign-in contexts
-                if (state.currentStep === 2) {
-                    showAlert('authAlert', 'Authentication successful!', 'success');
-                    setTimeout(() => {
-                        if (state.authMethod === 'google') {
-                            state.goToStep(3, 'forward', true);
-                        } else {
-                            // For email registration, since email confirmation is disabled, go to plans
-                            console.log('Email user signed in, going to plan selection');
-                            state.goToStep(7, 'forward', true);
-                        }
-                    }, 1500);
-                } else if (state.currentStep === 3) {
-                    // User info update for step 3
-                    updateUserInfo();
-                }
-            }
-
-            if (event === 'SIGNED_OUT') {
-                state.user = null;
-                state.userData = {};
-            }
-        });
-
-        function updateUserInfo() {
-            console.log('Updating user info with:', state.userData);
-            
-            const userAvatar = document.getElementById('userAvatar');
-            const userName = document.getElementById('userName');
-            const userEmail = document.getElementById('userEmail');
-
-            if (userAvatar && userName && userEmail) {
-                const displayName = state.userData.name || 'User';
-                const displayEmail = state.userData.email || 'No email';
-                
-                userAvatar.textContent = displayName.charAt(0).toUpperCase();
-                userName.textContent = displayName;
-                userEmail.textContent = displayEmail;
-                
-                console.log('User info updated:', { displayName, displayEmail });
-            } else {
-                console.log('User info elements not found');
-            }
+            window.location.href = '/dashboard';
         }
 
         // Initialize on page load
-        window.addEventListener('load', async () => {
-            // Initialize all steps with proper classes
-            document.querySelectorAll('.step').forEach((step, index) => {
-                step.classList.remove('active', 'prev', 'next');
-                if (index === 0) {
-                    step.classList.add('active');
-                } else {
-                    step.classList.add('next');
-                }
-            });
-
-            state.updateProgress();
-            state.updateNavigation();
-            state.updateStepDots();
-            
-            // Check for email verification callback first
-            handleEmailReturn();
-            
-            // Check for existing session
-            const { data: { session } } = await supabaseClient.auth.getSession();
-            
-            if (session?.user) {
-                console.log('Found existing session:', session.user);
-                
-                state.user = session.user;
-                state.userData.email = session.user.email;
-                state.userData.name = session.user.user_metadata?.full_name || 
-                                     session.user.user_metadata?.name || 
-                                     session.user.user_metadata?.display_name ||
-                                     session.user.email?.split('@')[0];
-                
-                console.log('Session user data:', state.userData);
-                console.log('Email confirmed at:', session.user.email_confirmed_at);
-                
-                // Update user info immediately
-                updateUserInfo();
-
-                // Check if this was a Google OAuth return or email verification
-                const urlParams = new URLSearchParams(window.location.search);
-                const hashParams = new URLSearchParams(window.location.hash.substring(1));
-                const isOAuthReturn = urlParams.get('google') === 'true' || hashParams.has('access_token');
-                const isEmailVerified = urlParams.get('verified') === 'true';
-                const isNewRegistration = sessionStorage.getItem('pending_email') === session.user.email;
-
-                // Route authenticated users properly
-                if (state.currentStep <= 2 || isOAuthReturn || isEmailVerified || isNewRegistration) {
-
-                    // Check if user exists in our database
-                    const { data: userProfile, error: profileError } = await supabaseClient
-                        .from('zmartychat_users')
-                        .select('*')
-                        .eq('auth_id', session.user.id)
-                        .single();
-
-                    // Handle different authentication scenarios
-                    if (isNewRegistration && !session.user.email_confirmed_at) {
-                        // CASE 1: New email registration - go to verification
-                        console.log('New registration detected, going to verification');
-                        document.getElementById('verificationEmail').textContent = state.userData.email;
-
-                        // Create or update user profile
-                        if (!userProfile) {
-                            await supabaseClient
-                                .from('zmartychat_users')
-                                .insert([{
-                                    auth_id: session.user.id,
-                                    email: session.user.email,
-                                    full_name: session.user.user_metadata?.full_name || session.user.email?.split('@')[0],
-                                    avatar_url: '',
-                                    selected_tier: 'free',
-                                    onboarding_completed: false,
-                                    email_verified: false
-                                }]);
-                        }
-
-                        state.goToStep(4, 'forward', true); // Go to verification step
-
-                    } else if (isOAuthReturn) {
-                        // CASE 2: Google OAuth return
-                        console.log('Google OAuth return detected');
-
-                        if (!userProfile) {
-                            // New user via Google - create profile and go to confirmation
-                            console.log('New Google user, creating profile');
-                            await supabaseClient
-                                .from('zmartychat_users')
-                                .insert([{
-                                    auth_id: session.user.id,
-                                    email: session.user.email,
-                                    full_name: session.user.user_metadata?.full_name || session.user.email?.split('@')[0],
-                                    avatar_url: session.user.user_metadata?.avatar_url || '',
-                                    selected_tier: 'free',
-                                    onboarding_completed: false,
-                                    email_verified: !!session.user.email_confirmed_at
-                                }]);
-                            // Go to confirmation step
-                            state.goToStep(3, 'forward', true);
-                        } else if (!session.user.email_confirmed_at && !userProfile.email_verified) {
-                            // User exists but email not verified - go to verification
-                            console.log('User exists but email not verified, going to verification');
-                            document.getElementById('verificationEmail').textContent = state.userData.email;
-                            state.goToStep(4, 'forward', true);
-                        } else if (!userProfile.onboarding_completed) {
-                            // User exists, email verified but onboarding not complete - go to tier selection
-                            console.log('User verified but onboarding incomplete, going to tier selection');
-                            state.goToStep(6, 'forward', true);
-                        } else {
-                            // Fully onboarded user - go to completion
-                            console.log('Fully onboarded user, going to completion');
-                            state.goToStep(8, 'forward', true);
-                        }
-
-                    } else if (isEmailVerified) {
-                        // CASE 3: Email verification callback
-                        console.log('Email verification callback, going to tier selection');
-
-                        // Update email_verified in database
-                        if (userProfile) {
-                            await supabaseClient
-                                .from('zmartychat_users')
-                                .update({
-                                    email_verified: true,
-                                    updated_at: new Date().toISOString()
-                                })
-                                .eq('auth_id', session.user.id);
-                        }
-
-                        state.goToStep(6, 'forward', true); // Go to tier selection
-
-                    } else if (session.user.email_confirmed_at || userProfile?.email_verified) {
-                        // CASE 4: Returning verified user
-                        console.log('Returning verified user');
-
-                        if (!userProfile?.onboarding_completed) {
-                            // Continue onboarding from tier selection
-                            state.goToStep(6, 'forward', true);
-                        } else {
-                            // Fully onboarded, go to completion
-                            state.goToStep(8, 'forward', true);
-                        }
-
-                    } else {
-                        // CASE 5: Existing user needs verification
-                        console.log('User needs email verification, going to step 4');
-                        document.getElementById('verificationEmail').textContent = state.userData.email;
-                        state.goToStep(4, 'forward', true);
-                    }
-                }
-            }
-
-            // Check if we're on the email verification step and update status
-            if (state.currentStep === 4) {
-                updateEmailStatus();
-            }
-
-            // Check URL for demo mode
+        window.addEventListener('load', () => {
+            // Check for URL parameters indicating email verification or other callbacks
             const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('demo') === 'true' && !state.demoMode) {
-                toggleDemoMode();
+            if (urlParams.get('verified') === 'true') {
+                state.goToStep(7, 'forward', true);
             }
-
-            // Restore demo mode indicator if active
-            if (state.demoMode && !document.getElementById('demoIndicator')) {
-                const indicator = document.createElement('div');
-                indicator.id = 'demoIndicator';
-                indicator.innerHTML = '🎮 DEMO MODE';
-                indicator.style.cssText = 'position: fixed; top: 10px; right: 10px; background: #f59e0b; color: white; padding: 8px 16px; border-radius: 20px; font-size: 12px; font-weight: bold; z-index: 10000;';
-                document.body.appendChild(indicator);
-            }
-
-            console.log('ZmartyBrain Mobile Onboarding initialized');
-            console.log('🎯 Press Ctrl/Cmd+Shift+D to toggle Demo Mode');
-            console.log('📱 Add ?demo=true to URL to start in demo mode');
         });
-
-        // Update email verification status display
-        function updateEmailStatus() {
-            const statusEl = document.getElementById('emailStatusText');
-            const emailSentTime = sessionStorage.getItem('email_sent_time');
-            const resendCount = sessionStorage.getItem('resend_count') || '0';
-            
-            if (emailSentTime) {
-                const timeSince = Math.floor((new Date() - new Date(emailSentTime)) / 1000 / 60);
-                statusEl.textContent = `Email sent ${timeSince} minutes ago (${resendCount} attempts)`;
-            } else {
-                statusEl.textContent = 'No email sent yet - click "Resend Code & Link"';
-            }
-        }
     </script>
 </body>
 </html>

@@ -1,47 +1,5 @@
 # AnalyticsServer.mdc
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - Analytics Server MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered analytics optimization and analysis
-- **Memory Gateway**: Persistent analytics state and metadata
-- **UI Automation**: Automated analytics monitoring and health checks
-- **Figma Integration**: Analytics dashboard design and UI management
-- **Supabase Integration**: Cloud-based analytics reporting and visualization
-
-### **MCP Integration Benefits**
-- **AI-Powered Analytics**: Intelligent analytics optimization and analysis
-- **Persistent State**: Analytics state and metadata storage
-- **Automated Monitoring**: Real-time analytics health and performance monitoring
-- **Visual Dashboard**: Analytics process visualization and status tracking
-- **Cloud Analytics**: Analytics performance metrics and optimization insights
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8007/health" \
-  -H "Content-Type: application/json"
-
-# Analytics analysis via MCP
-curl -X POST "http://127.0.0.1:8007/analytics/analyze" \
-  -H "Content-Type: application/json" \
-  -d '{"symbol": "BTCUSDT", "indicators": ["RSI", "MACD", "BB"]}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered analytics optimization
-- **ByteRover**: ✅ Active - Persistent analytics state management
-- **UI TARS**: ✅ Active - Automated analytics monitoring
-- **Figma**: ✅ Active - Analytics dashboard design
-- **Supabase**: ✅ Active - Cloud-based analytics reporting
-
----
 
 ## Purpose
 Technical analysis and analytics service for ZmartBot trading system, providing comprehensive market analysis and indicator calculations for trading decisions.

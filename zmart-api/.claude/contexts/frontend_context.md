@@ -3,19 +3,18 @@
 ## frontend
 **File**: .cursor/rules/frontend.mdc
 **Relevance**: 0
-**Size**: 23229 bytes
+**Size**: 21542 bytes
 
-**Summary**: ## Description | Core service component of the ZmartBot ecosystem providing essential functionality. | - **Claude Code Integration**: AI-powered frontend development and optimization
-**Key Info**: application
+**Summary**: ## Description | Core service component of the ZmartBot ecosystem providing essential functionality. | # Service Overview | ## Name | Frontend | Foundation
 
 ---
 
 ## ControlUI
 **File**: .cursor/rules/ControlUI.mdc
 **Relevance**: 0
-**Size**: 7790 bytes
+**Size**: 6113 bytes
 
-**Summary**: ## Description | Core service component of the ZmartBot ecosystem providing essential functionality. | - **Claude Code Integration**: AI-powered UI control and optimization
+**Summary**: ## Description | Core service component of the ZmartBot ecosystem providing essential functionality. | ```markdown | - **Name**: ControlUI | - **Data Structures**: N/A | - **Database Dependencies**: N...
 **Compressed**: 
 
 ---

@@ -1,47 +1,5 @@
 # ZmartDependencies.mdc
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - ZmartDependencies MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered dependency management and optimization
-- **Memory Gateway**: Persistent dependency state and metadata
-- **UI Automation**: Automated dependency monitoring and health checks
-- **Figma Integration**: Dependency management dashboard design and UI management
-- **Supabase Integration**: Cloud-based dependency analytics and reporting
-
-### **MCP Integration Benefits**
-- **AI-Powered Dependency Management**: Intelligent dependency analysis and optimization
-- **Persistent State**: Dependency state and metadata storage
-- **Automated Monitoring**: Real-time dependency health and security monitoring
-- **Visual Dashboard**: Dependency management visualization and status tracking
-- **Cloud Analytics**: Dependency performance metrics and optimization insights
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8000/health" \
-  -H "Content-Type: application/json"
-
-# Dependency management via MCP
-curl -X POST "http://127.0.0.1:8000/dependencies" \
-  -H "Content-Type: application/json" \
-  -d '{"action": "update", "packages": ["fastapi", "uvicorn"]}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered dependency management
-- **ByteRover**: ✅ Active - Persistent dependency state management
-- **UI TARS**: ✅ Active - Automated dependency monitoring
-- **Figma**: ✅ Active - Dependency management dashboard design
-- **Supabase**: ✅ Active - Cloud-based dependency analytics
-
----
 
 ## Summary
 ZmartBot Python dependencies specification defining core framework, database, security, AI/ML, trading APIs, monitoring, and development tools required for the complete trading platform with Python 3.11+ requirement.

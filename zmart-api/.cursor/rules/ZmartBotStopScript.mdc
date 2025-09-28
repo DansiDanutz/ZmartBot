@@ -1,48 +1,6 @@
 # 🛑 ZmartBot Stop Script - Clean System Shutdown
 > Type: orchestration | Version: 1.0.0 | Owner: zmartbot | Port: N/A
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - ZmartBot Stop Script MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered stop script orchestration and service management
-- **Memory Gateway**: Persistent stop script state and service metadata
-- **UI Automation**: Automated stop script monitoring and health checks
-- **Figma Integration**: Stop script dashboard design and UI management
-- **Supabase Integration**: Cloud-based stop script analytics and reporting
-
-### **MCP Integration Benefits**
-- **AI-Powered Stop Script**: Intelligent service termination and resource cleanup
-- **Persistent State**: Stop script process state and service metadata storage
-- **Automated Monitoring**: Real-time stop script progress and error detection
-- **Visual Dashboard**: Stop script process visualization and status tracking
-- **Cloud Analytics**: Stop script performance metrics and optimization insights
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8000/health" \
-  -H "Content-Type: application/json"
-
-# Stop script orchestration via MCP
-curl -X POST "http://127.0.0.1:8000/stop-script" \
-  -H "Content-Type: application/json" \
-  -d '{"script": "zmartbot", "graceful": true}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered stop script orchestration
-- **ByteRover**: ✅ Active - Persistent stop script state management
-- **UI TARS**: ✅ Active - Automated stop script monitoring
-- **Figma**: ✅ Active - Stop script dashboard design
-- **Supabase**: ✅ Active - Cloud-based stop script analytics
-
----
 
 ## Purpose
 Comprehensive system shutdown script providing clean termination of all ZmartBot services, including Backend API server, Dashboard server, and Orchestration agent, with proper cleanup procedures and graceful shutdown confirmation.

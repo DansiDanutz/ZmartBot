@@ -1,44 +1,5 @@
 # Orchestrationstartworkflow - Merged MDC Configuration
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - OrchestrationStartWorkflow MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered orchestration workflow optimization and analysis
-- **Memory Gateway**: Persistent orchestration workflow state and metadata
-- **UI Automation**: Automated orchestration workflow monitoring and health checks
-- **Figma Integration**: Orchestration workflow dashboard design and UI management
-- **Supabase Integration**: Cloud-based orchestration workflow analytics and reporting
-
-### **MCP Integration Benefits**
-- **Enhanced Workflow**: AI-powered orchestration workflow optimization and analysis
-- **Persistent State**: Cross-session orchestration workflow state and configuration management
-- **Automated Monitoring**: Real-time orchestration workflow health and performance tracking
-- **Visual Dashboard**: Interactive orchestration workflow management and testing interface
-- **Cloud Analytics**: Comprehensive orchestration workflow usage and performance analytics
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8000/orchestration-workflow/health"
-
-# Orchestration workflow via MCP
-curl -X POST "http://127.0.0.1:8000/orchestration-workflow/start" -d '{"action": "initialize"}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered orchestration workflow optimization
-- **ByteRover**: ✅ Active - Persistent orchestration workflow state management
-- **UI TARS**: ✅ Active - Automated orchestration workflow monitoring
-- **Figma**: ✅ Active - Orchestration workflow dashboard design
-- **Supabase**: ✅ Active - Cloud-based orchestration workflow analytics
-
----
 
 ## 🔗 Merged from 2 duplicate files
 **Merged Files**: OrchestrationStartWorkflow.mdc, OrchestrationStart.mdc

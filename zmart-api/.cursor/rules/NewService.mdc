@@ -2,45 +2,6 @@
 ## Description
 Core service component of the ZmartBot ecosystem providing essential functionality.
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - NewService MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered new service integration and optimization
-- **Memory Gateway**: Persistent new service state and metadata
-- **UI Automation**: Automated new service monitoring and health checks
-- **Figma Integration**: New service dashboard design and UI management
-- **Supabase Integration**: Cloud-based new service analytics and reporting
-
-### **MCP Integration Benefits**
-- **Enhanced Integration**: AI-powered new service integration and optimization
-- **Persistent State**: Cross-session new service state and configuration management
-- **Automated Monitoring**: Real-time new service health and performance tracking
-- **Visual Dashboard**: Interactive new service management and testing interface
-- **Cloud Analytics**: Comprehensive new service usage and performance analytics
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8000/new-service/health"
-
-# New service integration via MCP
-curl -X POST "http://127.0.0.1:8000/new-service/integrate" -d '{"service": "example", "action": "register"}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered new service integration
-- **ByteRover**: ✅ Active - Persistent new service state management
-- **UI TARS**: ✅ Active - Automated new service monitoring
-- **Figma**: ✅ Active - New service dashboard design
-- **Supabase**: ✅ Active - Cloud-based new service analytics
-
----
 
 # NewService.mdc
 > Purpose: Single source of truth to integrate any new service into ZmartBot — deterministically, safely, and repeatably.

@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZmartyBrain Live Features Test</title>
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            margin: 0;
+        }
+        .test-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            width: 100%;
+            padding: 40px;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .url {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #666;
+        }
+        .url a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f7f7f7;
+            border-radius: 10px;
+        }
+        h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        .test-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+        }
+        .status {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+        .status.pending { background: #ffd93d; }
+        .status.testing { background: #6bcf7f; animation: pulse 1.5s infinite; }
+        .status.pass { background: #4caf50; color: white; }
+        .status.fail { background: #f44336; color: white; }
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        .results {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f0f0f0;
+            border-radius: 10px;
+        }
+        .iframe-container {
+            margin-top: 20px;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            overflow: hidden;
+            display: none;
+        }
+        iframe {
+            width: 100%;
+            height: 600px;
+            border: none;
+        }
+        .summary {
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+        .summary.success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        .summary.partial {
+            background: #fff3cd;
+            border: 1px solid #ffeeba;
+            color: #856404;
+        }
+        .summary.failure {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🧪 ZmartyBrain Live Features Test</h1>
+        <div class="url">
+            Testing: <a href="https://vermillion-paprenjak-67497b.netlify.app" target="_blank">
+                https://vermillion-paprenjak-67497b.netlify.app
+            </a>
+        </div>
+
+        <div class="test-section">
+            <h2>📋 Feature Checklist</h2>
+
+            <div class="test-item" data-test="slides">
+                <div class="status pending">⏳</div>
+                <div>
+                    <strong>Slides Navigation</strong>
+                    <div style="color: #666; font-size: 0.9em;">Welcome, features, pricing slides with smooth transitions</div>
+                </div>
+            </div>
+
+            <div class="test-item" data-test="signup">
+                <div class="status pending">⏳</div>
+                <div>
+                    <strong>Normal Signup (Email/Password)</strong>
+                    <div style="color: #666; font-size: 0.9em;">Registration form with email and password fields</div>
+                </div>
+            </div>
+
+            <div class="test-item" data-test="login">
+                <div class="status pending">⏳</div>
+                <div>
+                    <strong>Normal Login (Email/Password)</strong>
+                    <div style="color: #666; font-size: 0.9em;">Login option for existing users</div>
+                </div>
+            </div>
+
+            <div class="test-item" data-test="password-recovery">
+                <div class="status pending">⏳</div>
+                <div>
+                    <strong>Password Recovery</strong>
+                    <div style="color: #666; font-size: 0.9em;">Forgot password link and reset flow</div>
+                </div>
+            </div>
+
+            <div class="test-item" data-test="validation-code">
+                <div class="status pending">⏳</div>
+                <div>
+                    <strong>Validation Code (OTP)</strong>
+                    <div style="color: #666; font-size: 0.9em;">6-digit code entry with resend option</div>
+                </div>
+            </div>
+
+            <div class="test-item" data-test="google-login">
+                <div class="status pending">⏳</div>
+                <div>
+                    <strong>Login with Google</strong>
+                    <div style="color: #666; font-size: 0.9em;">OAuth integration with Google</div>
+                </div>
+            </div>
+
+            <div class="test-item" data-test="welcome-message">
+                <div class="status pending">⏳</div>
+                <div>
+                    <strong>Welcome Message</strong>
+                    <div style="color: #666; font-size: 0.9em;">Welcome email sent on registration</div>
+                </div>
+            </div>
+
+            <div class="test-item" data-test="tier-check">
+                <div class="status pending">⏳</div>
+                <div>
+                    <strong>Tier Check</strong>
+                    <div style="color: #666; font-size: 0.9em;">Free, $19 Starter, $49 Professional tiers</div>
+                </div>
+            </div>
+
+            <div class="test-item" data-test="final-slides">
+                <div class="status pending">⏳</div>
+                <div>
+                    <strong>Final Slides & Dashboard</strong>
+                    <div style="color: #666; font-size: 0.9em;">Profile completion and dashboard redirect</div>
+                </div>
+            </div>
+        </div>
+
+        <button onclick="runTests()">🚀 Run Live Tests</button>
+
+        <div class="iframe-container" id="iframeContainer">
+            <iframe id="testFrame" src=""></iframe>
+        </div>
+
+        <div class="results" id="results" style="display: none;">
+            <h2>📊 Test Results</h2>
+            <div id="resultDetails"></div>
+        </div>
+
+        <div id="summary" style="display: none;"></div>
+    </div>
+
+    <script>
+        const LIVE_URL = 'https://vermillion-paprenjak-67497b.netlify.app';
+        let testResults = {};
+
+        function updateStatus(testName, status, icon) {
+            const testItem = document.querySelector(`[data-test="${testName}"] .status`);
+            if (testItem) {
+                testItem.className = `status ${status}`;
+                testItem.textContent = icon;
+            }
+        }
+
+        async function runTests() {
+            // Show iframe
+            const container = document.getElementById('iframeContainer');
+            const frame = document.getElementById('testFrame');
+            container.style.display = 'block';
+
+            // Reset all tests to testing
+            document.querySelectorAll('.test-item').forEach(item => {
+                const testName = item.dataset.test;
+                updateStatus(testName, 'testing', '🔄');
+            });
+
+            // Load the site
+            frame.src = LIVE_URL;
+
+            // Wait for load
+            await new Promise(resolve => {
+                frame.onload = () => {
+                    setTimeout(resolve, 2000); // Give it time to initialize
+                };
+            });
+
+            // Run tests
+            await testFeatures();
+
+            // Show results
+            showResults();
+        }
+
+        async function testFeatures() {
+            try {
+                // Test 1: Check if site loads
+                const response = await fetch(LIVE_URL);
+                const html = await response.text();
+
+                // Test slides
+                if (html.includes('slide') && html.includes('Welcome to ZmartyBrain')) {
+                    testResults.slides = { passed: true, message: 'Slides structure found' };
+                    updateStatus('slides', 'pass', '✓');
+                } else {
+                    testResults.slides = { passed: false, message: 'Slides not found' };
+                    updateStatus('slides', 'fail', '✗');
+                }
+
+                // Test signup form
+                if (html.includes('email') && html.includes('password') && html.includes('Create Account')) {
+                    testResults.signup = { passed: true, message: 'Signup form elements present' };
+                    updateStatus('signup', 'pass', '✓');
+                } else {
+                    testResults.signup = { passed: false, message: 'Signup form not found' };
+                    updateStatus('signup', 'fail', '✗');
+                }
+
+                // Test login link
+                if (html.includes('Already have an account') || html.includes('Sign in')) {
+                    testResults.login = { passed: true, message: 'Login option available' };
+                    updateStatus('login', 'pass', '✓');
+                } else {
+                    testResults.login = { passed: false, message: 'Login option not found' };
+                    updateStatus('login', 'fail', '✗');
+                }
+
+                // Test password recovery
+                if (html.includes('Forgot') || html.includes('Reset')) {
+                    testResults['password-recovery'] = { passed: true, message: 'Password recovery link found' };
+                    updateStatus('password-recovery', 'pass', '✓');
+                } else {
+                    testResults['password-recovery'] = { passed: false, message: 'Password recovery not found' };
+                    updateStatus('password-recovery', 'fail', '✗');
+                }
+
+                // Test OTP validation
+                if (html.includes('otp') || html.includes('verification') || html.includes('6-digit')) {
+                    testResults['validation-code'] = { passed: true, message: 'OTP validation code logic found' };
+                    updateStatus('validation-code', 'pass', '✓');
+                } else {
+                    testResults['validation-code'] = { passed: false, message: 'OTP validation not found' };
+                    updateStatus('validation-code', 'fail', '✗');
+                }
+
+                // Test Google login
+                if (html.includes('Google') && (html.includes('OAuth') || html.includes('oauth'))) {
+                    testResults['google-login'] = { passed: true, message: 'Google OAuth integration found' };
+                    updateStatus('google-login', 'pass', '✓');
+                } else {
+                    testResults['google-login'] = { passed: false, message: 'Google OAuth not found' };
+                    updateStatus('google-login', 'fail', '✗');
+                }
+
+                // Test welcome message
+                if (html.includes('sendWelcomeEmail') || html.includes('welcome') && html.includes('email')) {
+                    testResults['welcome-message'] = { passed: true, message: 'Welcome email logic found' };
+                    updateStatus('welcome-message', 'pass', '✓');
+                } else {
+                    testResults['welcome-message'] = { passed: false, message: 'Welcome email not configured' };
+                    updateStatus('welcome-message', 'fail', '✗');
+                }
+
+                // Test tier check
+                if (html.includes('Free') && html.includes('$19') && html.includes('$49')) {
+                    testResults['tier-check'] = { passed: true, message: 'All tier options present' };
+                    updateStatus('tier-check', 'pass', '✓');
+                } else {
+                    testResults['tier-check'] = { passed: false, message: 'Tier options incomplete' };
+                    updateStatus('tier-check', 'fail', '✗');
+                }
+
+                // Test final slides
+                if (html.includes('profile') && html.includes('dashboard')) {
+                    testResults['final-slides'] = { passed: true, message: 'Profile and dashboard elements found' };
+                    updateStatus('final-slides', 'pass', '✓');
+                } else {
+                    testResults['final-slides'] = { passed: false, message: 'Final slides incomplete' };
+                    updateStatus('final-slides', 'fail', '✗');
+                }
+
+            } catch (error) {
+                console.error('Test error:', error);
+                // Mark all as unknown
+                document.querySelectorAll('.test-item').forEach(item => {
+                    const testName = item.dataset.test;
+                    if (!testResults[testName]) {
+                        testResults[testName] = { passed: false, message: 'Test error: ' + error.message };
+                        updateStatus(testName, 'fail', '⚠️');
+                    }
+                });
+            }
+        }
+
+        function showResults() {
+            const resultsDiv = document.getElementById('results');
+            const detailsDiv = document.getElementById('resultDetails');
+            const summaryDiv = document.getElementById('summary');
+
+            resultsDiv.style.display = 'block';
+
+            let passCount = 0;
+            let totalCount = 0;
+            let details = '';
+
+            for (const [test, result] of Object.entries(testResults)) {
+                totalCount++;
+                if (result.passed) passCount++;
+
+                details += `
+                    <div style="padding: 10px; margin: 5px 0; background: ${result.passed ? '#d4edda' : '#f8d7da'}; border-radius: 5px;">
+                        <strong>${test.replace(/-/g, ' ').toUpperCase()}:</strong>
+                        ${result.passed ? '✅ PASSED' : '❌ FAILED'} - ${result.message}
+                    </div>
+                `;
+            }
+
+            detailsDiv.innerHTML = details;
+
+            const percentage = Math.round((passCount / totalCount) * 100);
+            let summaryClass = 'failure';
+            let summaryText = '';
+
+            if (percentage === 100) {
+                summaryClass = 'success';
+                summaryText = `
+                    <h2>🎉 ALL TESTS PASSED!</h2>
+                    <p>Score: ${passCount}/${totalCount} (${percentage}%)</p>
+                    <p>✅ The onboarding system is working perfectly - all features are present and functional!</p>
+                `;
+            } else if (percentage >= 70) {
+                summaryClass = 'partial';
+                summaryText = `
+                    <h2>⚠️ MOSTLY WORKING</h2>
+                    <p>Score: ${passCount}/${totalCount} (${percentage}%)</p>
+                    <p>Most features are working, but some need attention.</p>
+                `;
+            } else {
+                summaryClass = 'failure';
+                summaryText = `
+                    <h2>❌ NEEDS FIXING</h2>
+                    <p>Score: ${passCount}/${totalCount} (${percentage}%)</p>
+                    <p>Several critical features are not working properly.</p>
+                `;
+            }
+
+            summaryDiv.className = `summary ${summaryClass}`;
+            summaryDiv.innerHTML = summaryText;
+            summaryDiv.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

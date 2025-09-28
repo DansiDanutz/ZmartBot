@@ -1,44 +1,5 @@
 # MDC Monitoring System - Comprehensive Documentation
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - Monitoring MDC MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered MDC monitoring and optimization
-- **Memory Gateway**: Persistent MDC monitoring state and metadata
-- **UI Automation**: Automated MDC monitoring and health checks
-- **Figma Integration**: MDC monitoring dashboard design and UI management
-- **Supabase Integration**: Cloud-based MDC monitoring analytics and reporting
-
-### **MCP Integration Benefits**
-- **Enhanced Monitoring**: AI-powered MDC monitoring and optimization
-- **Persistent State**: Cross-session MDC monitoring state and configuration management
-- **Automated Monitoring**: Real-time MDC monitoring health and performance tracking
-- **Visual Dashboard**: Interactive MDC monitoring management and testing interface
-- **Cloud Analytics**: Comprehensive MDC monitoring usage and performance analytics
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8000/monitoring/health"
-
-# MDC monitoring operation via MCP
-curl -X POST "http://127.0.0.1:8000/monitoring/scan" -d '{"action": "full_scan"}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered MDC monitoring
-- **ByteRover**: ✅ Active - Persistent MDC monitoring state management
-- **UI TARS**: ✅ Active - Automated MDC monitoring
-- **Figma**: ✅ Active - MDC monitoring dashboard design
-- **Supabase**: ✅ Active - Cloud-based MDC monitoring analytics
-
----
 
 @agent: MonitoringMDC
 description: "Comprehensive documentation and management of the MDC (Markdown-driven Configuration) monitoring system, including Smart Context Optimization, automatic updates, and integration with CLAUDE.md"

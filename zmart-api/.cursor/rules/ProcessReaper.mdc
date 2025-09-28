@@ -2,45 +2,6 @@
 ## Description
 Core service component of the ZmartBot ecosystem providing essential functionality.
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - Process Reaper MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered process management and optimization
-- **Memory Gateway**: Persistent process management state and metadata
-- **UI Automation**: Automated process monitoring and health checks
-- **Figma Integration**: Process management dashboard design and UI management
-- **Supabase Integration**: Cloud-based process management analytics and reporting
-
-### **MCP Integration Benefits**
-- **Enhanced Management**: AI-powered process management and optimization
-- **Persistent State**: Cross-session process management state and configuration management
-- **Automated Monitoring**: Real-time process management health and performance tracking
-- **Visual Dashboard**: Interactive process management and testing interface
-- **Cloud Analytics**: Comprehensive process management usage and performance analytics
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8000/process-reaper/health"
-
-# Process management via MCP
-curl -X POST "http://127.0.0.1:8000/process-reaper/cleanup" -d '{"action": "cleanup_zombies"}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered process management
-- **ByteRover**: ✅ Active - Persistent process management state management
-- **UI TARS**: ✅ Active - Automated process management monitoring
-- **Figma**: ✅ Active - Process management dashboard design
-- **Supabase**: ✅ Active - Cloud-based process management analytics
-
----
 
 # MAXIMUM UPGRADE: ProcessReaper.mdc
 

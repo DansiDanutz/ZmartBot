@@ -2,45 +2,6 @@
 ## Description
 Core service component of the ZmartBot ecosystem providing essential functionality.
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - MDC Dashboard MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered MDC dashboard development and optimization
-- **Memory Gateway**: Persistent MDC dashboard state and metadata
-- **UI Automation**: Automated MDC dashboard monitoring and health checks
-- **Figma Integration**: MDC dashboard design and UI management
-- **Supabase Integration**: Cloud-based MDC dashboard analytics and reporting
-
-### **MCP Integration Benefits**
-- **Enhanced Dashboard**: AI-powered MDC dashboard development and optimization
-- **Persistent State**: Cross-session MDC dashboard state and configuration management
-- **Automated Monitoring**: Real-time MDC dashboard health and performance tracking
-- **Visual Design**: Interactive MDC dashboard management and testing interface
-- **Cloud Analytics**: Comprehensive MDC dashboard usage and performance analytics
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8090/health"
-
-# MDC dashboard update via MCP
-curl -X POST "http://127.0.0.1:8090/dashboard/update" -d '{"action": "refresh_all"}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered MDC dashboard development
-- **ByteRover**: ✅ Active - Persistent MDC dashboard state management
-- **UI TARS**: ✅ Active - Automated MDC dashboard monitoring
-- **Figma**: ✅ Active - MDC dashboard design
-- **Supabase**: ✅ Active - Cloud-based MDC dashboard analytics
-
----
 
 # MDC-Dashboard.mdc
 > Type: backend | Version: 2.1.0 | Owner: zmartbot | Port: 8090

@@ -1,45 +1,6 @@
 # 🚀 Main API Server - Zmart Trading Bot Platform Core
 > Type: backend | Version: 1.0.0 | Owner: zmartbot | Port: 8000
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - Main API Server MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered API development and optimization
-- **Memory Gateway**: Persistent API state and request metadata
-- **UI Automation**: Automated API monitoring and health checks
-- **Figma Integration**: API documentation dashboard design and UI management
-- **Supabase Integration**: Cloud-based API analytics and user management
-
-### **MCP Integration Benefits**
-- **Enhanced Development**: AI-powered code generation and optimization
-- **Persistent State**: Cross-session API state and configuration management
-- **Automated Monitoring**: Real-time API health and performance tracking
-- **Visual Documentation**: Interactive API documentation and testing interface
-- **Cloud Analytics**: Comprehensive API usage and performance analytics
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8000/health"
-
-# API documentation via MCP
-curl -X GET "http://127.0.0.1:8000/docs"
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered API development
-- **ByteRover**: ✅ Active - Persistent API state management
-- **UI TARS**: ✅ Active - Automated API monitoring
-- **Figma**: ✅ Active - API documentation design
-- **Supabase**: ✅ Active - Cloud-based API analytics
-
----
 
 ## Purpose
 FastAPI-based core API server for the Zmart Trading Bot Platform, providing comprehensive trading capabilities, AI-powered signal processing, orchestration management, and complete cryptocurrency trading infrastructure with advanced security and monitoring.

@@ -1,0 +1,34 @@
+{
+  "name": "zmartybrain-onboarding",
+  "version": "1.0.0",
+  "description": "ZmartyBrain Professional Onboarding Flow",
+  "main": "index2.html",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "serve": "npx serve .",
+    "build": "echo 'No build process needed - static files ready for deployment'"
+  },
+  "keywords": [
+    "onboarding",
+    "zmartybrain",
+    "supabase",
+    "authentication",
+    "react"
+  ],
+  "author": "ZmartBot Development Team",
+  "license": "MIT",
+  "devDependencies": {
+    "canvas": "^3.2.0",
+    "puppeteer": "^24.22.3",
+    "serve": "^14.2.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "dependencies": {
+    "playwright": "^1.55.1"
+  }
+}
+
+
+

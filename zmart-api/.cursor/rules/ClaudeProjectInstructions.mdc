@@ -1,46 +1,5 @@
 # ClaudeProjectInstructions.mdc
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - Claude Project Instructions MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered project instruction management and optimization
-- **Memory Gateway**: Persistent project instruction state and metadata
-- **UI Automation**: Automated project instruction monitoring and health checks
-- **Figma Integration**: Project instruction dashboard design and UI management
-- **Supabase Integration**: Cloud-based project instruction analytics and reporting
-
-### **MCP Integration Benefits**
-- **Enhanced Management**: AI-powered project instruction optimization and updates
-- **Persistent State**: Project instruction history and metadata preservation
-- **Automated Monitoring**: Real-time project instruction health and performance tracking
-- **Visual Design**: Professional project instruction dashboard and UI design
-- **Cloud Analytics**: Advanced project instruction analytics and reporting
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8000/health"
-
-# Project instruction update via MCP
-curl -X POST "http://127.0.0.1:8000/instructions" \
-  -H "Content-Type: application/json" \
-  -d '{"section": "rules", "action": "update"}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered project instruction management
-- **ByteRover**: ✅ Active - Project instruction state persistence
-- **UI TARS**: ✅ Active - Project instruction monitoring automation
-- **Figma**: ✅ Active - Project instruction dashboard design
-- **Supabase**: ✅ Active - Project instruction cloud analytics
-
----
 
 ## Summary
 ZmartBot project instructions file that serves as the central configuration for Claude AI development assistance, containing system overview, critical rules, MDC includes, and context management.

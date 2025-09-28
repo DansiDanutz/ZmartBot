@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Supabase Auth - ZmartyBrain</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #666;
+            font-weight: 600;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 5px;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #5a67d8;
+        }
+        button.secondary {
+            background: #48bb78;
+        }
+        button.secondary:hover {
+            background: #38a169;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+        .success {
+            background: #c6f6d5;
+            color: #22543d;
+            border: 1px solid #9ae6b4;
+        }
+        .error {
+            background: #fed7d7;
+            color: #742a2a;
+            border: 1px solid #fc8181;
+        }
+        .info {
+            background: #e6fffa;
+            color: #234e52;
+            border: 1px solid #81e6d9;
+        }
+        #userInfo {
+            background: #f7fafc;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .status {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        .status.connected {
+            background: #48bb78;
+            color: white;
+        }
+        .status.disconnected {
+            background: #f56565;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ZmartyBrain Auth Test <span class="status disconnected" id="status">Not Connected</span></h1>
+
+        <div class="form-group">
+            <label>Test Email</label>
+            <input type="email" id="email" value="test@example.com" placeholder="your.email@example.com">
+        </div>
+
+        <div class="form-group">
+            <label>Test Password</label>
+            <input type="password" id="password" value="TestPass123!" placeholder="At least 6 characters">
+        </div>
+
+        <div style="margin: 20px 0;">
+            <button onclick="testSignUp()">1. Sign Up</button>
+            <button onclick="testSignIn()" class="secondary">2. Sign In</button>
+            <button onclick="testSignOut()" style="background: #e53e3e;">Sign Out</button>
+        </div>
+
+        <div style="margin: 20px 0;">
+            <button onclick="checkUser()">Check Current User</button>
+            <button onclick="testGoogleAuth()" style="background: #4285f4;">Sign in with Google</button>
+        </div>
+
+        <div id="result" class="result"></div>
+        <div id="userInfo" style="display: none;"></div>
+    </div>
+
+    <script>
+        // Initialize Supabase
+        const SUPABASE_URL = 'https://xhskmqsgtdhehzlvtuns.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhoc2ttcXNndGRoZWh6bHZ0dW5zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjcxNjc3NTAsImV4cCI6MjA0Mjc0Mzc1MH0.vqxY3NZrmqhKaHvZ3T-4MbFVVtqzxDaYEsSGMPeV_jI';
+
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // Check connection
+        async function checkConnection() {
+            try {
+                const { data, error } = await supabase.auth.getSession();
+                const status = document.getElementById('status');
+                if (!error) {
+                    status.textContent = 'Connected';
+                    status.className = 'status connected';
+                    showResult('Supabase connected successfully!', 'success');
+                } else {
+                    status.textContent = 'Error';
+                    status.className = 'status disconnected';
+                }
+            } catch (err) {
+                console.error('Connection error:', err);
+            }
+        }
+
+        async function testSignUp() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            if (!email || !password) {
+                showResult('Please enter email and password', 'error');
+                return;
+            }
+
+            showResult('Signing up...', 'info');
+
+            try {
+                const { data, error } = await supabase.auth.signUp({
+                    email: email,
+                    password: password,
+                    options: {
+                        emailRedirectTo: window.location.origin
+                    }
+                });
+
+                if (error) {
+                    showResult(`Sign up failed: ${error.message}`, 'error');
+                } else if (data.user) {
+                    showResult(`Sign up successful! User ID: ${data.user.id}\n\nCheck your email for verification.`, 'success');
+                    displayUserInfo(data.user);
+                }
+            } catch (err) {
+                showResult(`Error: ${err.message}`, 'error');
+            }
+        }
+
+        async function testSignIn() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            if (!email || !password) {
+                showResult('Please enter email and password', 'error');
+                return;
+            }
+
+            showResult('Signing in...', 'info');
+
+            try {
+                const { data, error } = await supabase.auth.signInWithPassword({
+                    email: email,
+                    password: password
+                });
+
+                if (error) {
+                    showResult(`Sign in failed: ${error.message}`, 'error');
+                } else if (data.user) {
+                    showResult(`Sign in successful! Welcome back, ${data.user.email}`, 'success');
+                    displayUserInfo(data.user);
+                }
+            } catch (err) {
+                showResult(`Error: ${err.message}`, 'error');
+            }
+        }
+
+        async function testSignOut() {
+            showResult('Signing out...', 'info');
+
+            const { error } = await supabase.auth.signOut();
+
+            if (error) {
+                showResult(`Sign out failed: ${error.message}`, 'error');
+            } else {
+                showResult('Signed out successfully!', 'success');
+                document.getElementById('userInfo').style.display = 'none';
+            }
+        }
+
+        async function checkUser() {
+            const { data: { user }, error } = await supabase.auth.getUser();
+
+            if (error) {
+                showResult(`No user logged in: ${error.message}`, 'error');
+            } else if (user) {
+                showResult(`Current user: ${user.email}`, 'success');
+                displayUserInfo(user);
+            } else {
+                showResult('No user currently logged in', 'info');
+            }
+        }
+
+        async function testGoogleAuth() {
+            showResult('Opening Google sign in...', 'info');
+
+            const { data, error } = await supabase.auth.signInWithOAuth({
+                provider: 'google',
+                options: {
+                    redirectTo: window.location.origin
+                }
+            });
+
+            if (error) {
+                showResult(`Google auth failed: ${error.message}`, 'error');
+            }
+        }
+
+        function displayUserInfo(user) {
+            const userInfo = document.getElementById('userInfo');
+            userInfo.style.display = 'block';
+            userInfo.innerHTML = `
+                <h3>User Info</h3>
+                <p><strong>ID:</strong> ${user.id}</p>
+                <p><strong>Email:</strong> ${user.email}</p>
+                <p><strong>Verified:</strong> ${user.email_confirmed_at ? '✅ Yes' : '❌ No'}</p>
+                <p><strong>Created:</strong> ${new Date(user.created_at).toLocaleString()}</p>
+                ${user.user_metadata ? `<p><strong>Metadata:</strong> ${JSON.stringify(user.user_metadata)}</p>` : ''}
+            `;
+        }
+
+        function showResult(message, type) {
+            const result = document.getElementById('result');
+            result.textContent = message;
+            result.className = `result ${type}`;
+            result.style.display = 'block';
+        }
+
+        // Check connection on load
+        checkConnection();
+
+        // Listen for auth changes
+        supabase.auth.onAuthStateChange((event, session) => {
+            console.log('Auth event:', event);
+            if (event === 'SIGNED_IN') {
+                showResult('User signed in!', 'success');
+                if (session?.user) {
+                    displayUserInfo(session.user);
+                }
+            } else if (event === 'SIGNED_OUT') {
+                showResult('User signed out', 'info');
+                document.getElementById('userInfo').style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

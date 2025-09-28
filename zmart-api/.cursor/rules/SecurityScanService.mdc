@@ -1,44 +1,5 @@
 # 🔒 Security Scan Service - Comprehensive Security Monitoring
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - Security Scan Service MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered security scanning and optimization
-- **Memory Gateway**: Persistent security scanning state and metadata
-- **UI Automation**: Automated security scanning monitoring and health checks
-- **Figma Integration**: Security scanning dashboard design and UI management
-- **Supabase Integration**: Cloud-based security scanning analytics and reporting
-
-### **MCP Integration Benefits**
-- **Enhanced Security Scanning**: AI-powered security scanning and optimization
-- **Persistent State**: Cross-session security scanning state and configuration management
-- **Automated Monitoring**: Real-time security scanning health and performance tracking
-- **Visual Dashboard**: Interactive security scanning and testing interface
-- **Cloud Analytics**: Comprehensive security scanning usage and performance analytics
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8000/security-scan/health"
-
-# Security scanning via MCP
-curl -X POST "http://127.0.0.1:8000/security-scan/scan" -d '{"target": "all", "action": "full_scan"}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered security scanning
-- **ByteRover**: ✅ Active - Persistent security scanning state management
-- **UI TARS**: ✅ Active - Automated security scanning monitoring
-- **Figma**: ✅ Active - Security scanning dashboard design
-- **Supabase**: ✅ Active - Cloud-based security scanning analytics
-
----
 
 ## Purpose
 Comprehensive security scanning and monitoring service for ZmartBot system, providing secret detection, vulnerability scanning, and security compliance monitoring.

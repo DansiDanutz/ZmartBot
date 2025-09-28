@@ -1,47 +1,5 @@
 # Zmartbotstartscript - Merged MDC Configuration
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - ZmartBot Start Script MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered start script orchestration and service management
-- **Memory Gateway**: Persistent start script state and service metadata
-- **UI Automation**: Automated start script monitoring and health checks
-- **Figma Integration**: Start script dashboard design and UI management
-- **Supabase Integration**: Cloud-based start script analytics and reporting
-
-### **MCP Integration Benefits**
-- **AI-Powered Start Script**: Intelligent service initialization and resource allocation
-- **Persistent State**: Start script process state and service metadata storage
-- **Automated Monitoring**: Real-time start script progress and error detection
-- **Visual Dashboard**: Start script process visualization and status tracking
-- **Cloud Analytics**: Start script performance metrics and optimization insights
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8000/health" \
-  -H "Content-Type: application/json"
-
-# Start script orchestration via MCP
-curl -X POST "http://127.0.0.1:8000/start-script" \
-  -H "Content-Type: application/json" \
-  -d '{"script": "zmartbot", "services": ["all"]}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered start script orchestration
-- **ByteRover**: ✅ Active - Persistent start script state management
-- **UI TARS**: ✅ Active - Automated start script monitoring
-- **Figma**: ✅ Active - Start script dashboard design
-- **Supabase**: ✅ Active - Cloud-based start script analytics
-
----
 
 ## 🔗 Merged from 2 duplicate files
 **Merged Files**: ZmartBotStartScript.mdc, ZmartBotStopScript.mdc

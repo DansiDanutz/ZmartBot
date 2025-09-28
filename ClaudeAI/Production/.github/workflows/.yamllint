@@ -1,0 +1,29 @@
+extends: default
+rules:
+  line-length:
+    max: 120
+  truthy:
+    allowed-values: ['true', 'false', 'on', 'off']
+  comments:
+    min-spaces-from-content: 1
+  comments-indentation: disable
+  document-start: disable
+  empty-lines:
+    max: 2
+    max-start: 0
+    max-end: 1
+  indentation:
+    spaces: 2
+    indent-sequences: true
+    check-multi-line-strings: false
+  key-duplicates: enable
+  key-ordering: disable
+  octal-values:
+    forbid-implicit-octal: false
+    forbid-explicit-octal: false
+  quoted-strings:
+    quote-type: any
+    check-keys: false
+  trailing-spaces: enable
+  truthy:
+    allowed-values: ['true', 'false', 'on', 'off']

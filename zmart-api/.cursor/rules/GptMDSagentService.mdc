@@ -2,47 +2,6 @@
 ## Description
 Core agent component of the ZmartBot ecosystem providing essential functionality.
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - GPT MDS Agent Service MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered GPT agent optimization and analysis
-- **Memory Gateway**: Persistent GPT agent state and processing metadata
-- **UI Automation**: Automated GPT agent monitoring and health checks
-- **Figma Integration**: GPT agent dashboard design and UI management
-- **Supabase Integration**: Cloud-based GPT agent analytics and reporting
-
-### **MCP Integration Benefits**
-- **Enhanced Processing**: AI-powered GPT agent optimization and document processing
-- **Persistent State**: GPT agent processing history and metadata preservation
-- **Automated Monitoring**: Real-time GPT agent health and performance tracking
-- **Visual Design**: Professional GPT agent dashboard and UI design
-- **Cloud Analytics**: Advanced GPT agent analytics and processing reporting
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8700/health"
-
-# GPT processing via MCP
-curl -X POST "http://127.0.0.1:8700/process" \
-  -H "Content-Type: application/json" \
-  -d '{"document": "service.mdc", "action": "analyze"}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered GPT agent processing
-- **ByteRover**: ✅ Active - GPT agent state persistence
-- **UI TARS**: ✅ Active - GPT agent monitoring automation
-- **Figma**: ✅ Active - GPT agent dashboard design
-- **Supabase**: ✅ Active - GPT agent cloud analytics
-
----
 
 # GptMDSagentService.mdc
 > Service Type: **Core Infrastructure** | Version: **1.0.0** | Owner: **Platform Team** | Port: **8700**

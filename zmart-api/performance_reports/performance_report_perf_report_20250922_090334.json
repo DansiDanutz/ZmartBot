@@ -1,0 +1,61 @@
+{
+  "report_id": "perf_report_20250922_090334",
+  "generated_at": "2025-09-22T09:03:34.802831",
+  "report_type": "performance_summary",
+  "summary": {
+    "system_health": 0.0,
+    "overall_status": "CRITICAL",
+    "total_services": 0,
+    "healthy_services": 0,
+    "average_response_time": 5.03275,
+    "total_errors": 0,
+    "resource_utilization": {
+      "cpu": 28.8,
+      "memory": 80.6,
+      "disk": 7.3
+    }
+  },
+  "detailed_metrics": {
+    "api_response_times": {
+      "zmart-api": -1,
+      "kucoin": 5.0889999999999995,
+      "binance": 4.32,
+      "api-keys-manager": 5.221,
+      "service-discovery": 5.5009999999999994
+    },
+    "service_uptime": {},
+    "error_rates": {},
+    "resource_usage": {
+      "cpu_percent": 28.8,
+      "memory_percent": 80.6,
+      "disk_percent": 7.3,
+      "network_io": {
+        "bytes_sent": 98912368006,
+        "bytes_recv": 197076329592,
+        "packets_sent": 257885151,
+        "packets_recv": 341108233,
+        "errin": 0,
+        "errout": 0,
+        "dropin": 0,
+        "dropout": 0
+      }
+    },
+    "throughput_metrics": {}
+  },
+  "recommendations": [
+    "System health is below optimal. Review service configurations and restart unhealthy services.",
+    "High memory usage detected. Consider memory optimization or scaling."
+  ],
+  "alerts": [
+    {
+      "level": "CRITICAL",
+      "message": "System health critically low: 0.0%",
+      "action_required": "Immediate intervention required"
+    },
+    {
+      "level": "WARNING",
+      "message": "System health below optimal: 0.0%",
+      "action_required": "Monitor closely and consider optimization"
+    }
+  ]
+}

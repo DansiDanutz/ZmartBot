@@ -1,0 +1,61 @@
+-- IMPORTANT: DO NOT DROP THESE INDEXES
+-- =====================================
+
+-- These indexes show as "unused" because they were just created.
+-- They WILL be used once your application starts making queries.
+-- They are REQUIRED for:
+-- 1. Foreign key performance
+-- 2. Query optimization
+-- 3. Preventing slow queries on user lookups
+
+-- The indexes are properly created and working.
+-- They will automatically be marked as "used" when:
+-- - Users log in
+-- - Data is queried
+-- - Foreign key relationships are traversed
+
+-- NO ACTION NEEDED - Your database is optimized correctly!
+
+-- List of indexes that are CORRECTLY in place:
+-- • idx_api_keys_user_id
+-- • idx_brain_categories_parent_id
+-- • idx_brain_knowledge_category_id
+-- • idx_brain_user_interactions_user_id
+-- • idx_brain_user_memory_user_id
+-- • idx_chat_messages_user_id
+-- • idx_commission_transactions_invitation_id
+-- • idx_commission_transactions_invitee_id
+-- • idx_commission_transactions_inviter_id
+-- • idx_credit_purchases_referrer_id
+-- • idx_credit_purchases_user_id
+-- • idx_credit_transactions_user_id
+-- • idx_invitations_invitee_id
+-- • idx_invitations_inviter_id
+-- • idx_milestone_achievements_user_id
+-- • idx_slot_subscriptions_user_id
+-- • idx_trading_signals_user_id
+-- • idx_trigger_alerts_trigger_event_id
+-- • idx_trigger_alerts_user_id
+-- • idx_trigger_events_pattern_id
+-- • idx_trigger_subscriptions_user_id
+-- • idx_user_activity_user_id
+-- • idx_user_api_keys_user_id
+-- • idx_user_credits_user_id
+-- • idx_user_portfolios_user_id
+-- • idx_user_sessions_user_id
+-- • idx_user_strategies_user_id
+-- • idx_user_subscriptions_user_id
+-- • idx_withdrawal_requests_user_id
+-- • idx_zmartychat_referrals_referred_id
+-- • idx_zmartychat_referrals_referrer_id
+-- • idx_zmartychat_user_achievements_achievement_id
+-- • idx_zmartychat_user_achievements_user_id
+-- • idx_zmartychat_user_streaks_user_id
+-- • idx_zmartychat_user_subscriptions_plan_id
+-- • idx_zmartychat_user_subscriptions_user_id
+-- • idx_zmartychat_user_transcripts_user_id
+-- • idx_zmartychat_conversation_messages_user_id
+-- • idx_zmartychat_credit_transactions_user_id
+
+-- These are INFO level warnings, not errors.
+-- Your database is properly optimized!

@@ -1,44 +1,5 @@
 # ProjectInventory.mdc
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - Project Inventory MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered project inventory management and optimization
-- **Memory Gateway**: Persistent project inventory state and metadata
-- **UI Automation**: Automated project inventory monitoring and health checks
-- **Figma Integration**: Project inventory dashboard design and UI management
-- **Supabase Integration**: Cloud-based project inventory analytics and reporting
-
-### **MCP Integration Benefits**
-- **Enhanced Inventory**: AI-powered project inventory management and optimization
-- **Persistent State**: Cross-session project inventory state and configuration management
-- **Automated Monitoring**: Real-time project inventory health and performance tracking
-- **Visual Dashboard**: Interactive project inventory management and testing interface
-- **Cloud Analytics**: Comprehensive project inventory usage and performance analytics
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8000/project-inventory/health"
-
-# Project inventory operation via MCP
-curl -X POST "http://127.0.0.1:8000/project-inventory/scan" -d '{"action": "full_scan"}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered project inventory management
-- **ByteRover**: ✅ Active - Persistent project inventory state management
-- **UI TARS**: ✅ Active - Automated project inventory monitoring
-- **Figma**: ✅ Active - Project inventory dashboard design
-- **Supabase**: ✅ Active - Cloud-based project inventory analytics
-
----
 
 ## Summary
 Comprehensive ZmartBot project inventory and file reference system containing official startup procedures, orchestration scripts, and complete system architecture documentation with 165+ documented files and exact paths.

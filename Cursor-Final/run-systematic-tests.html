@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Systematic Onboarding Tests</title>
+    <style>
+        body {
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            background: #1a1a1a;
+            color: #00ff00;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #333;
+            padding-bottom: 20px;
+        }
+        .test-output {
+            background: #000;
+            border: 1px solid #333;
+            padding: 20px;
+            border-radius: 8px;
+            white-space: pre-wrap;
+            font-size: 14px;
+            height: 600px;
+            overflow-y: auto;
+        }
+        .button {
+            background: #0066cc;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+        }
+        .button:hover {
+            background: #0052a3;
+        }
+        .status {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .status.running {
+            background: #ffa500;
+            color: #000;
+        }
+        .status.complete {
+            background: #008000;
+            color: #fff;
+        }
+        .status.error {
+            background: #ff0000;
+            color: #fff;
+        }
+        iframe {
+            width: 100%;
+            height: 700px;
+            border: 1px solid #333;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 Systematic Onboarding Testing</h1>
+            <p>Comprehensive testing of all onboarding slides to identify bugs</p>
+        </div>
+
+        <div>
+            <button class="button" onclick="runTests()">🚀 Run Systematic Tests</button>
+            <button class="button" onclick="clearOutput()">🗑️ Clear Output</button>
+            <button class="button" onclick="openOnboarding()">📱 Open Onboarding</button>
+        </div>
+
+        <div id="status" class="status" style="display: none;"></div>
+
+        <div class="test-output" id="testOutput">
+Click "Run Systematic Tests" to begin comprehensive onboarding testing...
+        </div>
+
+        <iframe id="onboardingFrame" src="index.html" style="display: none;"></iframe>
+    </div>
+
+    <script>
+        let outputDiv = document.getElementById('testOutput');
+        let statusDiv = document.getElementById('status');
+        let onboardingFrame = document.getElementById('onboardingFrame');
+
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const prefix = type === 'error' ? '❌' : type === 'success' ? '✅' : 'ℹ️';
+            outputDiv.textContent += `[${timestamp}] ${prefix} ${message}\n`;
+            outputDiv.scrollTop = outputDiv.scrollHeight;
+        }
+
+        function setStatus(message, type = 'running') {
+            statusDiv.textContent = message;
+            statusDiv.className = `status ${type}`;
+            statusDiv.style.display = 'block';
+        }
+
+        function clearOutput() {
+            outputDiv.textContent = '';
+            statusDiv.style.display = 'none';
+        }
+
+        function openOnboarding() {
+            onboardingFrame.style.display = onboardingFrame.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // Enhanced testing functions with better selectors
+        function isElementVisible(element) {
+            if (!element) return false;
+            const rect = element.getBoundingClientRect();
+            const style = window.getComputedStyle(element);
+
+            return rect.width > 0 &&
+                   rect.height > 0 &&
+                   style.opacity !== '0' &&
+                   style.visibility !== 'hidden' &&
+                   style.display !== 'none';
+        }
+
+        function testSlideInFrame(slideNumber, testFunction) {
+            return new Promise((resolve) => {
+                try {
+                    const frameDoc = onboardingFrame.contentDocument || onboardingFrame.contentWindow.document;
+                    const slide = frameDoc.querySelector(`#step-${slideNumber}, [data-step="${slideNumber}"]`);
+
+                    if (!slide) {
+                        log(`Slide ${slideNumber} element not found`, 'error');
+                        resolve([{
+                            slide: slideNumber,
+                            description: 'Slide element not found',
+                            priority: 'Critical',
+                            expected: 'Slide should exist',
+                            actual: 'Element missing'
+                        }]);
+                        return;
+                    }
+
+                    const bugs = testFunction(slide, frameDoc);
+                    resolve(bugs);
+                } catch (error) {
+                    log(`Error testing slide ${slideNumber}: ${error.message}`, 'error');
+                    resolve([{
+                        slide: slideNumber,
+                        description: `Testing error: ${error.message}`,
+                        priority: 'Critical'
+                    }]);
+                }
+            });
+        }
+
+        function testSlide1Welcome(slide, doc) {
+            log('Testing SLIDE 1 (Welcome)...');
+            const bugs = [];
+
+            // Test main title/heading
+            const titles = slide.querySelectorAll('h1, h2, .title, .main-title, .welcome-title');
+            let titleVisible = false;
+            titles.forEach(title => {
+                if (isElementVisible(title)) titleVisible = true;
+            });
+
+            if (!titleVisible) {
+                bugs.push({
+                    slide: 1,
+                    description: 'Main title not visible',
+                    priority: 'High',
+                    expected: 'Title should be visible',
+                    actual: 'Title hidden or missing'
+                });
+            } else {
+                log('✅ Main title is visible');
+            }
+
+            // Test Start Free Trial button
+            const startButtons = slide.querySelectorAll('button, .btn, .button, .cta');
+            let startButtonFound = false;
+            startButtons.forEach(btn => {
+                const text = btn.textContent.toLowerCase();
+                if ((text.includes('start') || text.includes('begin') || text.includes('trial')) && isElementVisible(btn)) {
+                    startButtonFound = true;
+                }
+            });
+
+            if (!startButtonFound) {
+                bugs.push({
+                    slide: 1,
+                    description: 'Start Free Trial button not found or visible',
+                    priority: 'Critical',
+                    expected: 'Button should be visible and clickable',
+                    actual: 'Button missing or hidden'
+                });
+            } else {
+                log('✅ Start Free Trial button found');
+            }
+
+            // Test features grid or list
+            const featureContainers = slide.querySelectorAll('.features, .grid, .feature-list, .benefits');
+            if (featureContainers.length === 0) {
+                bugs.push({
+                    slide: 1,
+                    description: 'Features section not found',
+                    priority: 'Medium',
+                    expected: 'Features section should be visible',
+                    actual: 'No features section found'
+                });
+            } else {
+                log('✅ Features section found');
+            }
+
+            return bugs;
+        }
+
+        function testSlide2AIModels(slide, doc) {
+            log('Testing SLIDE 2 (AI Models)...');
+            const bugs = [];
+
+            // Test AI model cards/items
+            const modelCards = slide.querySelectorAll('.card, .model, .ai-model, .option, .choice');
+
+            if (modelCards.length < 3) {
+                bugs.push({
+                    slide: 2,
+                    description: `Too few AI model options found`,
+                    priority: 'High',
+                    expected: 'Multiple AI model options (Claude, GPT-4, etc.)',
+                    actual: `Only ${modelCards.length} options found`
+                });
+            } else {
+                log(`✅ ${modelCards.length} AI model options found`);
+            }
+
+            // Test for common AI model names
+            const slideText = slide.textContent;
+            const aiModels = ['Claude', 'GPT', 'Gemini', 'Grok'];
+            const foundModels = aiModels.filter(model => slideText.includes(model));
+
+            if (foundModels.length < 2) {
+                bugs.push({
+                    slide: 2,
+                    description: 'Expected AI model names not found',
+                    priority: 'Medium',
+                    expected: 'Should mention Claude, GPT-4, Gemini, etc.',
+                    actual: `Only found: ${foundModels.join(', ')}`
+                });
+            } else {
+                log(`✅ Found AI models: ${foundModels.join(', ')}`);
+            }
+
+            // Test Continue button
+            const continueButtons = slide.querySelectorAll('button, .btn');
+            let continueButtonFound = false;
+            continueButtons.forEach(btn => {
+                if (btn.textContent.toLowerCase().includes('continue') && isElementVisible(btn)) {
+                    continueButtonFound = true;
+                }
+            });
+
+            if (!continueButtonFound) {
+                bugs.push({
+                    slide: 2,
+                    description: 'Continue button not found',
+                    priority: 'High'
+                });
+            } else {
+                log('✅ Continue button found');
+            }
+
+            return bugs;
+        }
+
+        function testSlide3Exchanges(slide, doc) {
+            log('Testing SLIDE 3 (Exchanges)...');
+            const bugs = [];
+
+            // Test exchange cards/options
+            const exchangeCards = slide.querySelectorAll('.card, .exchange, .option, .choice');
+
+            if (exchangeCards.length < 3) {
+                bugs.push({
+                    slide: 3,
+                    description: 'Too few exchange options',
+                    priority: 'High',
+                    expected: 'Multiple exchange options',
+                    actual: `Only ${exchangeCards.length} options found`
+                });
+            } else {
+                log(`✅ ${exchangeCards.length} exchange options found`);
+            }
+
+            // Test for common exchange names
+            const slideText = slide.textContent;
+            const exchanges = ['Binance', 'Coinbase', 'Kraken', 'KuCoin'];
+            const foundExchanges = exchanges.filter(exchange => slideText.includes(exchange));
+
+            if (foundExchanges.length < 2) {
+                bugs.push({
+                    slide: 3,
+                    description: 'Expected exchange names not found',
+                    priority: 'Medium',
+                    expected: 'Should mention Binance, Coinbase, Kraken, etc.',
+                    actual: `Only found: ${foundExchanges.join(', ')}`
+                });
+            } else {
+                log(`✅ Found exchanges: ${foundExchanges.join(', ')}`);
+            }
+
+            return bugs;
+        }
+
+        function testSlide4RiskManagement(slide, doc) {
+            log('Testing SLIDE 4 (Risk Management)...');
+            const bugs = [];
+
+            // Test risk feature cards
+            const riskCards = slide.querySelectorAll('.card, .feature, .risk-feature, '.option');
+
+            if (riskCards.length < 3) {
+                bugs.push({
+                    slide: 4,
+                    description: 'Too few risk management features',
+                    priority: 'Medium',
+                    expected: 'Multiple risk management features',
+                    actual: `Only ${riskCards.length} features found`
+                });
+            } else {
+                log(`✅ ${riskCards.length} risk management features found`);
+            }
+
+            // Test for risk-related keywords
+            const slideText = slide.textContent.toLowerCase();
+            const riskKeywords = ['stop loss', 'risk', 'protection', 'limit', 'management'];
+            const foundKeywords = riskKeywords.filter(keyword => slideText.includes(keyword));
+
+            if (foundKeywords.length < 2) {
+                bugs.push({
+                    slide: 4,
+                    description: 'Risk management content seems missing',
+                    priority: 'Medium',
+                    expected: 'Should mention risk management concepts',
+                    actual: `Only found: ${foundKeywords.join(', ')}`
+                });
+            } else {
+                log(`✅ Found risk keywords: ${foundKeywords.join(', ')}`);
+            }
+
+            return bugs;
+        }
+
+        function testSlide5Authentication(slide, doc) {
+            log('Testing SLIDE 5 (Authentication)...');
+            const bugs = [];
+
+            // Test for input fields
+            const inputFields = slide.querySelectorAll('input[type="email"], input[type="text"], input[type="password"]');
+
+            if (inputFields.length < 2) {
+                bugs.push({
+                    slide: 5,
+                    description: 'Missing authentication input fields',
+                    priority: 'Critical',
+                    expected: 'Email and password input fields',
+                    actual: `Only ${inputFields.length} input fields found`
+                });
+            } else {
+                log(`✅ ${inputFields.length} input fields found`);
+            }
+
+            // Test for email input specifically
+            const emailInput = slide.querySelector('input[type="email"]');
+            if (!emailInput) {
+                bugs.push({
+                    slide: 5,
+                    description: 'Email input field not found',
+                    priority: 'High'
+                });
+            } else {
+                log('✅ Email input field found');
+            }
+
+            // Test for authentication buttons
+            const authButtons = slide.querySelectorAll('button, .btn');
+            let authButtonFound = false;
+            authButtons.forEach(btn => {
+                const text = btn.textContent.toLowerCase();
+                if ((text.includes('create') || text.includes('sign') || text.includes('register')) && isElementVisible(btn)) {
+                    authButtonFound = true;
+                }
+            });
+
+            if (!authButtonFound) {
+                bugs.push({
+                    slide: 5,
+                    description: 'Create Account/Register button not found',
+                    priority: 'High'
+                });
+            } else {
+                log('✅ Authentication button found');
+            }
+
+            return bugs;
+        }
+
+        function testSlide7EmailVerification(slide, doc) {
+            log('Testing SLIDE 7 (Email Verification)...');
+            const bugs = [];
+
+            // Test for OTP/verification inputs
+            const otpInputs = slide.querySelectorAll('input[type="text"], input[maxlength="1"], .otp-input');
+
+            if (otpInputs.length < 4) {
+                bugs.push({
+                    slide: 7,
+                    description: 'Not enough OTP input fields',
+                    priority: 'High',
+                    expected: '6 OTP input fields',
+                    actual: `${otpInputs.length} inputs found`
+                });
+            } else {
+                log(`✅ ${otpInputs.length} OTP input fields found`);
+            }
+
+            // Test for verification-related text
+            const slideText = slide.textContent.toLowerCase();
+            if (!slideText.includes('verify') && !slideText.includes('code') && !slideText.includes('email')) {
+                bugs.push({
+                    slide: 7,
+                    description: 'Email verification content missing',
+                    priority: 'Medium',
+                    expected: 'Should mention email verification',
+                    actual: 'No verification-related text found'
+                });
+            } else {
+                log('✅ Email verification content found');
+            }
+
+            return bugs;
+        }
+
+        function testSlide10TierSelection(slide, doc) {
+            log('Testing SLIDE 10 (Tier Selection)...');
+            const bugs = [];
+
+            // Test for pricing cards
+            const pricingCards = slide.querySelectorAll('.card, .tier, .plan, .pricing, .option');
+
+            if (pricingCards.length < 2) {
+                bugs.push({
+                    slide: 10,
+                    description: 'Not enough pricing tiers',
+                    priority: 'High',
+                    expected: 'Multiple pricing tiers (Free, Gold, Premium)',
+                    actual: `Only ${pricingCards.length} tiers found`
+                });
+            } else {
+                log(`✅ ${pricingCards.length} pricing tiers found`);
+            }
+
+            // Test for pricing-related text
+            const slideText = slide.textContent.toLowerCase();
+            const pricingKeywords = ['free', 'gold', 'premium', 'pro', 'basic', 'tier', 'plan'];
+            const foundKeywords = pricingKeywords.filter(keyword => slideText.includes(keyword));
+
+            if (foundKeywords.length < 2) {
+                bugs.push({
+                    slide: 10,
+                    description: 'Pricing tier names not found',
+                    priority: 'Medium',
+                    expected: 'Should mention Free, Gold, Premium tiers',
+                    actual: `Only found: ${foundKeywords.join(', ')}`
+                });
+            } else {
+                log(`✅ Found pricing keywords: ${foundKeywords.join(', ')}`);
+            }
+
+            return bugs;
+        }
+
+        function testSlide11ProfileSetup(slide, doc) {
+            log('Testing SLIDE 11 (Profile Setup)...');
+            const bugs = [];
+
+            // Test for form inputs
+            const formInputs = slide.querySelectorAll('input, select');
+
+            if (formInputs.length < 2) {
+                bugs.push({
+                    slide: 11,
+                    description: 'Not enough profile form fields',
+                    priority: 'High',
+                    expected: 'Name and country fields',
+                    actual: `Only ${formInputs.length} form fields found`
+                });
+            } else {
+                log(`✅ ${formInputs.length} profile form fields found`);
+            }
+
+            // Test for country selection
+            const countrySelect = slide.querySelector('select');
+            if (!countrySelect) {
+                bugs.push({
+                    slide: 11,
+                    description: 'Country dropdown not found',
+                    priority: 'High'
+                });
+            } else {
+                log('✅ Country dropdown found');
+            }
+
+            // Test for completion button
+            const completeButtons = slide.querySelectorAll('button, .btn');
+            let completeButtonFound = false;
+            completeButtons.forEach(btn => {
+                const text = btn.textContent.toLowerCase();
+                if ((text.includes('complete') || text.includes('finish') || text.includes('save')) && isElementVisible(btn)) {
+                    completeButtonFound = true;
+                }
+            });
+
+            if (!completeButtonFound) {
+                bugs.push({
+                    slide: 11,
+                    description: 'Complete Setup button not found',
+                    priority: 'High'
+                });
+            } else {
+                log('✅ Complete Setup button found');
+            }
+
+            return bugs;
+        }
+
+        function testSlide12Success(slide, doc) {
+            log('Testing SLIDE 12 (Success)...');
+            const bugs = [];
+
+            // Test for success message
+            const successElements = slide.querySelectorAll('h1, h2, .title, .success, .complete');
+            let successMessageFound = false;
+            successElements.forEach(element => {
+                const text = element.textContent.toLowerCase();
+                if ((text.includes('success') || text.includes('complete') || text.includes('welcome') || text.includes('congratulations')) && isElementVisible(element)) {
+                    successMessageFound = true;
+                }
+            });
+
+            if (!successMessageFound) {
+                bugs.push({
+                    slide: 12,
+                    description: 'Success completion message not found',
+                    priority: 'High',
+                    expected: 'Should show success/completion message',
+                    actual: 'No success message visible'
+                });
+            } else {
+                log('✅ Success completion message found');
+            }
+
+            // Test for final CTAs
+            const ctaButtons = slide.querySelectorAll('button, .btn, .cta, a[href]');
+            if (ctaButtons.length === 0) {
+                bugs.push({
+                    slide: 12,
+                    description: 'No final CTA buttons found',
+                    priority: 'Medium',
+                    expected: 'Should have final action buttons',
+                    actual: 'No buttons or links found'
+                });
+            } else {
+                log(`✅ ${ctaButtons.length} CTA buttons found`);
+            }
+
+            return bugs;
+        }
+
+        async function runTests() {
+            clearOutput();
+            setStatus('🚀 Starting systematic testing...', 'running');
+
+            log('🔍 Starting Systematic Onboarding Testing...\n');
+            log('Loading onboarding application...');
+
+            // Show the iframe and wait for load
+            onboardingFrame.style.display = 'block';
+
+            await new Promise(resolve => {
+                if (onboardingFrame.contentDocument && onboardingFrame.contentDocument.readyState === 'complete') {
+                    resolve();
+                } else {
+                    onboardingFrame.onload = resolve;
+                }
+            });
+
+            log('✅ Onboarding application loaded');
+
+            // Run all tests
+            const allBugs = [];
+
+            const testFunctions = [
+                { slide: 1, name: 'Welcome', func: testSlide1Welcome },
+                { slide: 2, name: 'AI Models', func: testSlide2AIModels },
+                { slide: 3, name: 'Exchanges', func: testSlide3Exchanges },
+                { slide: 4, name: 'Risk Management', func: testSlide4RiskManagement },
+                { slide: 5, name: 'Authentication', func: testSlide5Authentication },
+                { slide: 7, name: 'Email Verification', func: testSlide7EmailVerification },
+                { slide: 10, name: 'Tier Selection', func: testSlide10TierSelection },
+                { slide: 11, name: 'Profile Setup', func: testSlide11ProfileSetup },
+                { slide: 12, name: 'Success', func: testSlide12Success }
+            ];
+
+            for (const test of testFunctions) {
+                log(`\n--- Testing Slide ${test.slide} (${test.name}) ---`);
+                const bugs = await testSlideInFrame(test.slide, test.func);
+                allBugs.push(...bugs);
+                await new Promise(resolve => setTimeout(resolve, 500)); // Small delay between tests
+            }
+
+            // Generate final report
+            log('\n' + '='.repeat(50));
+            log('📊 SYSTEMATIC TESTING RESULTS');
+            log('='.repeat(50));
+
+            if (allBugs.length === 0) {
+                log('✅ NO BUGS FOUND! Onboarding is working perfectly.');
+                setStatus('✅ Testing completed - No bugs found!', 'complete');
+            } else {
+                log(`🐛 ${allBugs.length} BUGS FOUND:\n`);
+
+                // Group by priority
+                const critical = allBugs.filter(bug => bug.priority === 'Critical');
+                const high = allBugs.filter(bug => bug.priority === 'High');
+                const medium = allBugs.filter(bug => bug.priority === 'Medium');
+                const low = allBugs.filter(bug => bug.priority === 'Low');
+
+                if (critical.length > 0) {
+                    log('🚨 CRITICAL BUGS:');
+                    critical.forEach(bug => log(`   • Slide ${bug.slide}: ${bug.description}`));
+                    log('');
+                }
+
+                if (high.length > 0) {
+                    log('⚠️ HIGH PRIORITY BUGS:');
+                    high.forEach(bug => log(`   • Slide ${bug.slide}: ${bug.description}`));
+                    log('');
+                }
+
+                if (medium.length > 0) {
+                    log('📋 MEDIUM PRIORITY BUGS:');
+                    medium.forEach(bug => log(`   • Slide ${bug.slide}: ${bug.description}`));
+                    log('');
+                }
+
+                if (low.length > 0) {
+                    log('📝 LOW PRIORITY BUGS:');
+                    low.forEach(bug => log(`   • Slide ${bug.slide}: ${bug.description}`));
+                    log('');
+                }
+
+                setStatus(`⚠️ Testing completed - ${allBugs.length} bugs found`, 'error');
+            }
+
+            log('='.repeat(50));
+            log('✅ Systematic testing completed!');
+
+            // Store results for external access
+            window.testResults = allBugs;
+        }
+
+        // Auto-hide iframe on load
+        window.onload = () => {
+            log('Test runner ready. Click "Run Systematic Tests" to begin.');
+        };
+    </script>
+</body>
+</html>

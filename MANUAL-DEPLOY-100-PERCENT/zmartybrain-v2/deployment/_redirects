@@ -1,0 +1,4 @@
+/auth/confirm* /index.html 200
+/verify* /index.html 200
+/*?reset=true* /index.html 200
+/* /index.html 200

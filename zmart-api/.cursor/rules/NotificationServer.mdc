@@ -1,44 +1,5 @@
 # NotificationServer.mdc
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - Notification Server MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered notification management and optimization
-- **Memory Gateway**: Persistent notification state and metadata
-- **UI Automation**: Automated notification monitoring and health checks
-- **Figma Integration**: Notification dashboard design and UI management
-- **Supabase Integration**: Cloud-based notification analytics and reporting
-
-### **MCP Integration Benefits**
-- **Enhanced Notifications**: AI-powered notification management and optimization
-- **Persistent State**: Cross-session notification state and configuration management
-- **Automated Monitoring**: Real-time notification health and performance tracking
-- **Visual Dashboard**: Interactive notification management and testing interface
-- **Cloud Analytics**: Comprehensive notification usage and performance analytics
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8000/notifications/health"
-
-# Notification operation via MCP
-curl -X POST "http://127.0.0.1:8000/notifications/send" -d '{"type": "alert", "message": "test"}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered notification management
-- **ByteRover**: ✅ Active - Persistent notification state management
-- **UI TARS**: ✅ Active - Automated notification monitoring
-- **Figma**: ✅ Active - Notification dashboard design
-- **Supabase**: ✅ Active - Cloud-based notification analytics
-
----
 
 ## Summary
 ZmartBot Notification Service - Comprehensive alerts and notifications system providing real-time trading alerts, system notifications, and multi-channel communication capabilities.

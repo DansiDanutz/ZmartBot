@@ -2,45 +2,6 @@
 > Type: service | Version: 1.0.0 | Owner: zmartbot | Status: ACTIVE | Level: 2 | Port: 8003
 Core service component of the ZmartBot ecosystem providing essential functionality.
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - Test Analytics Service MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered test analytics optimization and analysis
-- **Memory Gateway**: Persistent test analytics state and metadata
-- **UI Automation**: Automated test analytics monitoring and health checks
-- **Figma Integration**: Test analytics dashboard design and UI management
-- **Supabase Integration**: Cloud-based test analytics analytics and reporting
-
-### **MCP Integration Benefits**
-- **Enhanced Analytics**: AI-powered test analytics optimization and analysis
-- **Persistent State**: Cross-session test analytics state and configuration management
-- **Automated Monitoring**: Real-time test analytics health and performance tracking
-- **Visual Dashboard**: Interactive test analytics management and testing interface
-- **Cloud Analytics**: Comprehensive test analytics usage and performance analytics
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8003/health"
-
-# Test analytics operation via MCP
-curl -X POST "http://127.0.0.1:8003/analyze" -d '{"data": "all", "action": "analyze"}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered test analytics optimization
-- **ByteRover**: ✅ Active - Persistent test analytics state management
-- **UI TARS**: ✅ Active - Automated test analytics monitoring
-- **Figma**: ✅ Active - Test analytics dashboard design
-- **Supabase**: ✅ Active - Cloud-based test analytics analytics
-
----
 
 # test-analytics-service.mdc
 > Type: backend | Version: 1.0.0 | Owner: zmartbot | Port: 8003

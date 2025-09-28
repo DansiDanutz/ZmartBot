@@ -2,45 +2,6 @@
 ## Description
 Core service component of the ZmartBot ecosystem providing essential functionality.
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - Service Health Documentation MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered service health documentation and optimization
-- **Memory Gateway**: Persistent service health documentation state and metadata
-- **UI Automation**: Automated service health documentation monitoring and health checks
-- **Figma Integration**: Service health documentation dashboard design and UI management
-- **Supabase Integration**: Cloud-based service health documentation analytics and reporting
-
-### **MCP Integration Benefits**
-- **Enhanced Documentation**: AI-powered service health documentation and optimization
-- **Persistent State**: Cross-session service health documentation state and configuration management
-- **Automated Monitoring**: Real-time service health documentation health and performance tracking
-- **Visual Dashboard**: Interactive service health documentation management and testing interface
-- **Cloud Analytics**: Comprehensive service health documentation usage and performance analytics
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8000/service-health-docs/health"
-
-# Service health documentation via MCP
-curl -X POST "http://127.0.0.1:8000/service-health-docs/update" -d '{"service": "all", "action": "update_docs"}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered service health documentation
-- **ByteRover**: ✅ Active - Persistent service health documentation state management
-- **UI TARS**: ✅ Active - Automated service health documentation monitoring
-- **Figma**: ✅ Active - Service health documentation dashboard design
-- **Supabase**: ✅ Active - Cloud-based service health documentation analytics
-
----
 
 # Service Health Documentation
 > Type: documentation | Version: 1.0.0 | Owner: zmartbot | Updated: 2025-08-26

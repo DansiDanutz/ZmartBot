@@ -1,44 +1,5 @@
 # SymbolsExtendedServer.mdc
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - Symbols Extended Server MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered symbols extended server optimization and analysis
-- **Memory Gateway**: Persistent symbols extended server state and metadata
-- **UI Automation**: Automated symbols extended server monitoring and health checks
-- **Figma Integration**: Symbols extended server dashboard design and UI management
-- **Supabase Integration**: Cloud-based symbols extended server analytics and reporting
-
-### **MCP Integration Benefits**
-- **Enhanced Server**: AI-powered symbols extended server optimization and analysis
-- **Persistent State**: Cross-session symbols extended server state and configuration management
-- **Automated Monitoring**: Real-time symbols extended server health and performance tracking
-- **Visual Dashboard**: Interactive symbols extended server management and testing interface
-- **Cloud Analytics**: Comprehensive symbols extended server usage and performance analytics
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8000/symbols-extended/health"
-
-# Symbols extended server operation via MCP
-curl -X POST "http://127.0.0.1:8000/symbols-extended/extend" -d '{"symbols": "all", "action": "extend"}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered symbols extended server optimization
-- **ByteRover**: ✅ Active - Persistent symbols extended server state management
-- **UI TARS**: ✅ Active - Automated symbols extended server monitoring
-- **Figma**: ✅ Active - Symbols extended server dashboard design
-- **Supabase**: ✅ Active - Cloud-based symbols extended server analytics
-
----
 
 ## Purpose
 Extended symbols management service for ZmartBot trading system - Currently in development/placeholder state.

@@ -3,19 +3,25 @@
 ## WhaleAlerts
 **File**: .cursor/rules/WhaleAlerts.mdc
 **Relevance**: 0
-**Size**: 42945 bytes
+**Size**: 4012 bytes
 
-**Summary**: ## Description | Core service component of the ZmartBot ecosystem providing essential functionality. | - **Claude Code Integration**: AI-powered whale alerts optimization and analysis
-**Key Info**: application
+**Content**: 
+## Description
+Core service component of the ZmartBot ecosystem providing essential functionality.
+
+
+
+
+## ...
 
 ---
 
 ## MySymbolsDatabase
 **File**: .cursor/rules/MySymbolsDatabase.mdc
 **Relevance**: 0
-**Size**: 33736 bytes
+**Size**: 31943 bytes
 
-**Summary**: ## Description | Core service component of the ZmartBot ecosystem providing essential functionality. | @agent: SymbolValidator
+**Summary**: ## Description | Core service component of the ZmartBot ecosystem providing essential functionality. | @agent: SymbolValidator | - **File Path**: `src/data/my_symbols.db` | - **Database Type**: SQLite...
 **Key Info**: All database access requires valid API key | Backend validates request and permissions
 
 ---
@@ -23,19 +29,55 @@
 ## LiveAlerts
 **File**: .cursor/rules/LiveAlerts.mdc
 **Relevance**: 0
-**Size**: 35708 bytes
+**Size**: 2071 bytes
 
-**Summary**: ## Description | Core service component of the ZmartBot ecosystem providing essential functionality. | - **Claude Code Integration**: AI-powered alert system optimization and analysis
-**Key Info**: application
+**Content**: 
+## Description
+Core service component of the ZmartBot ecosystem providing essential functionality.
+
+
+
+
+## ...
 
 ---
 
 ## MySymbolsService
 **File**: .cursor/rules/MySymbolsService.mdc
 **Relevance**: 0
-**Size**: 4974 bytes
+**Size**: 3180 bytes
 
 **Content**: # 🗄️ My Symbols Service - Portfolio Management Database
+
+
+## Purpose
+My Symbols service manages the core portfolio database, symbol tracking, and portfolio analytics for ZmartBot trading operations.
+
+## Description
+My Symbols service manages the core portfolio database, symbol tracking, and portfolio analytics ...
+
+## Critical Functions
+- **Portfolio Management**: Symbol portfolio tracking and management
+- **Symbol Data**: Comprehensive symbol information and metadata
+- **Portfolio Analytics**: Portfolio performance and risk analysis
+- **Data Persistence**: Reliable data storage and retrieval
+- **Real-time Updates**: Live portfolio updates and synchronization
+- **Historical Data**: Historical portfolio and symbol data
+
+## Database Schema
+- **Symbols Table**: Core symbol information and metadata
+- **Portfolio Table**: Portfolio composition and tracking
+- **Performance Table**: Performance metrics and analytics
+- **Risk Table**: Risk metrics and position data
+- **History Table**: Historical data and audit trails
+
+## Key Features
+- **Portfolio Tracking**: Real-time portfolio monitoring
+- **Symbol Management**: Comprehensive symbol data management
+- **Performance Analytics**: Portfolio performance analysis
+- **Risk Management**: Portfolio risk metrics and monitoring
+- **Data Integrity**: ACID compliance and data validation
+- **Backup & Recovery**: Automated backup and recovery procedures
 
 ## ...
 
@@ -44,19 +86,25 @@
 ## MySymbols
 **File**: .cursor/rules/MySymbols.mdc
 **Relevance**: 0
-**Size**: 23851 bytes
+**Size**: 22212 bytes
 
-**Summary**: ## Description | Core service component of the ZmartBot ecosystem providing essential functionality. | @agent: SymbolValidator | - **Claude Code Integration**: AI-powered symbol management and optimiz...
+**Summary**: ## Description | Core service component of the ZmartBot ecosystem providing essential functionality. | @agent: SymbolValidator | - **Binance Futures**: Must be available on Binance Futures market
 
 ---
 
 ## MessiAlerts
 **File**: .cursor/rules/MessiAlerts.mdc
 **Relevance**: 0
-**Size**: 27425 bytes
+**Size**: 2063 bytes
 
-**Summary**: ## Description | Core service component of the ZmartBot ecosystem providing essential functionality. | - **Claude Code Integration**: AI-powered Messi alerts optimization and analysis
-**Key Info**: application | .3f} acceleration",
+**Content**: 
+## Description
+Core service component of the ZmartBot ecosystem providing essential functionality.
+
+
+
+
+## ...
 
 ---
 

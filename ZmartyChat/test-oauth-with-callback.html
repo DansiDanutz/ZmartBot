@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>OAuth Test with Proper Callback - Zmarty</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+        h1 {
+            text-align: center;
+            color: #1a202c;
+            margin-bottom: 30px;
+        }
+        .status {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .status.success { background: #c6f6d5; color: #22543d; }
+        .status.error { background: #fed7d7; color: #742a2a; }
+        .status.info { background: #bee3f8; color: #2c5282; }
+        .status.warning { background: #fef5c3; color: #744210; }
+        .btn {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .btn-google {
+            background: white;
+            border: 2px solid #dadce0;
+            color: #3c4043;
+        }
+        .btn-google:hover { background: #f8f9fa; }
+        .btn-facebook {
+            background: #1877f2;
+            color: white;
+        }
+        .btn-facebook:hover { background: #166fe5; }
+        .btn-logout {
+            background: #ef4444;
+            color: white;
+        }
+        .user-info {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        .user-info h3 { margin-bottom: 15px; color: #2d3748; }
+        .user-info p { margin: 8px 0; color: #4a5568; }
+        .user-info img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-top: 10px;
+        }
+        .hidden { display: none; }
+        .debug-info {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f0f4f8;
+            border-radius: 10px;
+            font-size: 12px;
+            font-family: monospace;
+        }
+        .debug-info h4 { margin-bottom: 10px; font-family: system-ui; }
+        .debug-line { margin: 5px 0; word-break: break-all; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Zmarty OAuth Debug Test</h1>
+
+        <div id="status" class="status info">
+            Initializing...
+        </div>
+
+        <div id="login-section">
+            <button class="btn btn-google" onclick="loginWithGoogle()">
+                <svg width="20" height="20" viewBox="0 0 24 24">
+                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                </svg>
+                Continue with Google
+            </button>
+
+            <button class="btn btn-facebook" onclick="loginWithFacebook()">
+                <svg width="20" height="20" fill="white" viewBox="0 0 24 24">
+                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                </svg>
+                Continue with Facebook
+            </button>
+        </div>
+
+        <div id="user-section" class="hidden">
+            <div class="user-info">
+                <h3>Logged in successfully!</h3>
+                <div id="user-details"></div>
+            </div>
+            <button class="btn btn-logout" onclick="logout()">Logout</button>
+        </div>
+
+        <div class="debug-info">
+            <h4>Debug Information:</h4>
+            <div id="debug-content">
+                <div class="debug-line">Checking...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Supabase
+        const supabaseUrl = 'https://xhskmqsgtdhehzlvtuns.supabase.co';
+        const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhoc2ttcXNndGRoZWh6bHZ0dW5zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgxNDkzNTQsImV4cCI6MjA3MzcyNTM1NH0.ULAf9vNHS4nasSnv9UOKS2MCKsSxcMtV3C-R7Wm6qMw';
+
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
+
+        // Debug function
+        function debug(message, data = null) {
+            console.log(message, data);
+            const debugContent = document.getElementById('debug-content');
+            const line = document.createElement('div');
+            line.className = 'debug-line';
+            const timestamp = new Date().toLocaleTimeString();
+            line.textContent = `[${timestamp}] ${message}`;
+            if (data) {
+                line.textContent += `: ${JSON.stringify(data, null, 2).substring(0, 100)}`;
+            }
+            debugContent.appendChild(line);
+
+            // Keep only last 10 debug lines
+            while (debugContent.children.length > 10) {
+                debugContent.removeChild(debugContent.firstChild);
+            }
+        }
+
+        // Initialize
+        initialize();
+
+        async function initialize() {
+            debug('Initializing...');
+
+            // Check URL for OAuth callback
+            const hashParams = new URLSearchParams(window.location.hash.substring(1));
+            const access_token = hashParams.get('access_token');
+            const error = hashParams.get('error');
+            const error_description = hashParams.get('error_description');
+
+            if (error) {
+                debug('OAuth error in URL', error);
+                setStatus('error', `OAuth error: ${error_description || error}`);
+                // Clear the hash
+                window.location.hash = '';
+                return;
+            }
+
+            if (access_token) {
+                debug('Found access token in URL');
+                setStatus('warning', 'Processing OAuth callback...');
+
+                // Let Supabase handle the token
+                try {
+                    const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+
+                    if (sessionError) {
+                        debug('Session error', sessionError.message);
+                        setStatus('error', 'Failed to establish session');
+                    } else if (session) {
+                        debug('Session established', session.user.email);
+                        showUser(session.user);
+                        setStatus('success', `Logged in as ${session.user.email}`);
+                        // Clear the hash
+                        window.location.hash = '';
+                    } else {
+                        debug('No session after OAuth callback');
+                        // Try to exchange the token manually
+                        await supabase.auth.setSession({
+                            access_token: access_token,
+                            refresh_token: hashParams.get('refresh_token')
+                        });
+                    }
+                } catch (err) {
+                    debug('Error handling OAuth callback', err.message);
+                    setStatus('error', 'Failed to process OAuth callback');
+                }
+            } else {
+                // Normal initialization
+                checkAuth();
+            }
+        }
+
+        async function checkAuth() {
+            debug('Checking authentication...');
+
+            try {
+                const { data: { session }, error } = await supabase.auth.getSession();
+
+                if (error) {
+                    debug('Auth check error', error.message);
+                    setStatus('error', 'Authentication check failed');
+                } else if (session) {
+                    debug('User is logged in', session.user.email);
+                    showUser(session.user);
+                    setStatus('success', `Logged in as ${session.user.email}`);
+                } else {
+                    debug('No active session');
+                    setStatus('info', 'Ready to test OAuth login');
+                }
+            } catch (error) {
+                debug('Unexpected error', error.message);
+                setStatus('error', 'Failed to connect to Supabase');
+            }
+        }
+
+        // Login with Google
+        async function loginWithGoogle() {
+            debug('Starting Google OAuth...');
+            setStatus('info', 'Redirecting to Google...');
+
+            const { data, error } = await supabase.auth.signInWithOAuth({
+                provider: 'google',
+                options: {
+                    redirectTo: window.location.href.split('#')[0], // Current page without hash
+                    queryParams: {
+                        access_type: 'offline',
+                        prompt: 'consent'
+                    }
+                }
+            });
+
+            if (error) {
+                debug('Google OAuth error', error.message);
+                setStatus('error', 'Google login error: ' + error.message);
+            } else {
+                debug('Google OAuth initiated', data);
+            }
+        }
+
+        // Login with Facebook
+        async function loginWithFacebook() {
+            debug('Starting Facebook OAuth...');
+            setStatus('info', 'Redirecting to Facebook...');
+
+            const { data, error } = await supabase.auth.signInWithOAuth({
+                provider: 'facebook',
+                options: {
+                    redirectTo: window.location.href.split('#')[0], // Current page without hash
+                    scopes: 'email public_profile'
+                }
+            });
+
+            if (error) {
+                debug('Facebook OAuth error', error.message);
+                setStatus('error', 'Facebook login error: ' + error.message);
+            } else {
+                debug('Facebook OAuth initiated', data);
+            }
+        }
+
+        // Show user information
+        function showUser(user) {
+            debug('Showing user info', user.email);
+            document.getElementById('login-section').classList.add('hidden');
+            document.getElementById('user-section').classList.remove('hidden');
+
+            const provider = user.app_metadata?.provider || 'unknown';
+            const details = document.getElementById('user-details');
+
+            details.innerHTML = `
+                <p><strong>Email:</strong> ${user.email}</p>
+                <p><strong>Provider:</strong> ${provider.charAt(0).toUpperCase() + provider.slice(1)}</p>
+                <p><strong>User ID:</strong> ${user.id.substring(0, 8)}...</p>
+                ${user.user_metadata?.full_name ? `<p><strong>Name:</strong> ${user.user_metadata.full_name}</p>` : ''}
+                ${user.user_metadata?.avatar_url ? `<img src="${user.user_metadata.avatar_url}" alt="Avatar">` : ''}
+                ${user.user_metadata?.picture ? `<img src="${user.user_metadata.picture}" alt="Picture">` : ''}
+            `;
+        }
+
+        // Logout
+        async function logout() {
+            debug('Logging out...');
+            const { error } = await supabase.auth.signOut();
+
+            if (error) {
+                debug('Logout error', error.message);
+                setStatus('error', 'Logout failed: ' + error.message);
+            } else {
+                debug('Logged out successfully');
+                document.getElementById('login-section').classList.remove('hidden');
+                document.getElementById('user-section').classList.add('hidden');
+                setStatus('info', 'Logged out successfully');
+            }
+        }
+
+        // Set status message
+        function setStatus(type, message) {
+            const status = document.getElementById('status');
+            status.className = 'status ' + type;
+            status.textContent = message;
+        }
+
+        // Listen for auth changes
+        supabase.auth.onAuthStateChange((event, session) => {
+            debug('Auth event', { event, user: session?.user?.email });
+
+            if (event === 'SIGNED_IN' && session) {
+                showUser(session.user);
+                setStatus('success', `Successfully logged in with ${session.user.app_metadata?.provider || 'email'}`);
+            } else if (event === 'SIGNED_OUT') {
+                document.getElementById('login-section').classList.remove('hidden');
+                document.getElementById('user-section').classList.add('hidden');
+            } else if (event === 'TOKEN_REFRESHED') {
+                debug('Token refreshed');
+            } else if (event === 'USER_UPDATED') {
+                debug('User updated');
+                if (session) showUser(session.user);
+            }
+        });
+    </script>
+</body>
+</html>

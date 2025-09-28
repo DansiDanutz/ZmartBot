@@ -3,29 +3,38 @@
 ## market_data_aggregator
 **File**: .cursor/rules/market_data_aggregator.mdc
 **Relevance**: 0
-**Size**: 16510 bytes
+**Size**: 14862 bytes
 
-**Summary**: ## Description | Core service component of the ZmartBot ecosystem providing essential functionality. | - **Claude Code Integration**: AI-powered data aggregation and optimization
-**Key Info**: Binance 24hr ticker statistics | <100ms target
+**Summary**: ## Description | Core service component of the ZmartBot ecosystem providing essential functionality. | - **Name**: Enhanced Market Data Aggregator
+**Compressed**: 
 
 ---
 
 ## market_data_enhanced_database
 **File**: .cursor/rules/market_data_enhanced_database.mdc
 **Relevance**: 0
-**Size**: 16816 bytes
+**Size**: 15118 bytes
 
-**Summary**: ## Description | Core service component of the ZmartBot ecosystem providing essential functionality. | - **Claude Code Integration**: AI-powered database optimization and analysis
+**Summary**: ## Description | Core service component of the ZmartBot ecosystem providing essential functionality. | - **Database Name**: `market_data_enhanced.db` | - **Database Type**: SQLite 3
 
 ---
 
 ## 21indicatorsDatabase
 **File**: .cursor/rules/21indicatorsDatabase.mdc
 **Relevance**: 0
-**Size**: 17645 bytes
+**Size**: 197 bytes
 
-**Summary**: ## Description | Core service component of the ZmartBot ecosystem providing essential functionality. | @datasource: IndicatorsDatabase
-**Key Info**: application | application
+**Content**: 
+## Description
+Core service component of the ZmartBot ecosystem providing essential functionality.
+
+@datasource: IndicatorsDatabase
+
+
+## Triggers
+- **API endpoint requests**
+- **Database events**
+
 
 ---
 

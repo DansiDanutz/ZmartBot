@@ -2,47 +2,6 @@
 ## Description
 Core service component of the ZmartBot ecosystem providing essential functionality.
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - Log Advice MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered log analysis and advice generation
-- **Memory Gateway**: Persistent log advice state and analysis metadata
-- **UI Automation**: Automated log monitoring and advice delivery
-- **Figma Integration**: Log advice dashboard design and UI management
-- **Supabase Integration**: Cloud-based log analytics and advice reporting
-
-### **MCP Integration Benefits**
-- **Enhanced Analysis**: AI-powered log analysis and intelligent advice generation
-- **Persistent State**: Log advice history and analysis metadata preservation
-- **Automated Monitoring**: Real-time log monitoring and advice delivery
-- **Visual Design**: Professional log advice dashboard and UI design
-- **Cloud Analytics**: Advanced log analytics and advice performance reporting
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8000/health"
-
-# Log advice via MCP
-curl -X POST "http://127.0.0.1:8000/advice" \
-  -H "Content-Type: application/json" \
-  -d '{"log_type": "error", "action": "analyze"}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered log analysis
-- **ByteRover**: ✅ Active - Log advice state persistence
-- **UI TARS**: ✅ Active - Log monitoring automation
-- **Figma**: ✅ Active - Log advice dashboard design
-- **Supabase**: ✅ Active - Log analytics cloud reporting
-
----
 
 # 🚨 LogAdvice001 - Database Connection Pool Exhaustion
 > Category: PERFORMANCE | Severity: HIGH | Service: zmart-api | Priority: 87.5

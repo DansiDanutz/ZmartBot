@@ -1,0 +1,219 @@
+# Cursor-Claude Context Optimizer Configuration
+# This file configures the context optimization for Claude running inside Cursor
+
+# Analysis intervals (in seconds)
+context_analysis_interval: 30
+performance_check_interval: 60
+optimization_scan_interval: 300
+
+# File limits
+max_context_files: 50
+max_file_size_kb: 1000  # 1MB
+max_lines_per_file: 1000
+
+# File types to include in context analysis
+include_extensions:
+  - .py
+  - .js
+  - .ts
+  - .jsx
+  - .tsx
+  - .html
+  - .css
+  - .scss
+  - .json
+  - .yaml
+  - .yml
+  - .md
+  - .sql
+  - .sh
+  - .bat
+  - .dockerfile
+  - .env
+  - .gitignore
+  - .gitattributes
+
+# Patterns to exclude from analysis
+exclude_patterns:
+  - __pycache__
+  - .git
+  - node_modules
+  - .venv
+  - venv
+  - env
+  - .env
+  - "*.pyc"
+  - "*.log"
+  - .DS_Store
+  - .vscode
+  - .idea
+  - dist
+  - build
+  - coverage
+  - .coverage
+  - .pytest_cache
+  - .mypy_cache
+  - .tox
+  - .eggs
+  - "*.egg-info"
+
+# Claude context limits (tokens)
+claude_context_limits:
+  max_tokens: 200000      # Claude's maximum context
+  optimal_tokens: 150000  # Optimal for best performance
+  min_tokens: 50000       # Minimum for meaningful context
+  warning_threshold: 180000  # Warn when approaching limit
+
+# Optimization thresholds (0.0 to 1.0)
+optimization_thresholds:
+  context_size: 0.8
+  file_complexity: 0.7
+  project_health: 0.6
+  performance_score: 0.7
+  maintainability_score: 0.6
+
+# Project-specific settings
+project_settings:
+  # ZmartBot specific optimizations
+  zmartbot:
+    trading_apis: true
+    crypto_analysis: true
+    portfolio_management: true
+    risk_metrics: true
+    kingfisher_integration: true
+    
+  # General project optimizations
+  general:
+    code_quality: true
+    performance_monitoring: true
+    architecture_analysis: true
+    dependency_analysis: true
+    security_scanning: true
+
+# Context prioritization
+context_priority:
+  # High priority files (always include if modified recently)
+  high_priority_patterns:
+    - "*.py"
+    - "*.js"
+    - "*.ts"
+    - "*.jsx"
+    - "*.tsx"
+    - "requirements.txt"
+    - "package.json"
+    - "*.md"
+    
+  # Medium priority files
+  medium_priority_patterns:
+    - "*.html"
+    - "*.css"
+    - "*.scss"
+    - "*.json"
+    - "*.yaml"
+    - "*.yml"
+    
+  # Low priority files
+  low_priority_patterns:
+    - "*.log"
+    - "*.tmp"
+    - "*.cache"
+
+# Performance monitoring
+performance_monitoring:
+  enabled: true
+  metrics_to_track:
+    - file_count
+    - total_lines
+    - complexity_score
+    - maintainability_score
+    - performance_score
+    - optimization_score
+    
+  # Alert thresholds
+  alerts:
+    high_complexity: 0.8
+    low_maintainability: 0.4
+    poor_performance: 0.5
+
+# Optimization suggestions
+optimization_suggestions:
+  enabled: true
+  max_suggestions: 5
+  suggestion_types:
+    - performance
+    - maintainability
+    - architecture
+    - security
+    - code_quality
+    - documentation
+    
+  # Suggestion priorities (1 = highest, 5 = lowest)
+  priorities:
+    performance: 1
+    security: 1
+    maintainability: 2
+    architecture: 2
+    code_quality: 3
+    documentation: 4
+
+# Integration settings
+integrations:
+  # Git integration
+  git:
+    enabled: true
+    track_changes: true
+    analyze_commits: true
+    
+  # File system monitoring
+  filesystem:
+    enabled: true
+    watch_patterns:
+      - "*.py"
+      - "*.js"
+      - "*.ts"
+      - "*.jsx"
+      - "*.tsx"
+      
+  # Cursor IDE integration
+  cursor:
+    enabled: true
+    track_active_files: true
+    monitor_editing_sessions: true
+    optimize_for_claude: true
+
+# Logging configuration
+logging:
+  level: INFO
+  file: cursor_claude_optimizer.log
+  max_size_mb: 10
+  backup_count: 5
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
+# Database settings
+database:
+  path: .cursor_claude_context.db
+  backup_enabled: true
+  backup_interval_hours: 24
+  max_snapshots: 1000
+  cleanup_old_data: true
+  cleanup_days: 30
+
+# Advanced features
+advanced:
+  # Machine learning for pattern recognition
+  ml_patterns:
+    enabled: true
+    learning_rate: 0.1
+    pattern_threshold: 0.7
+    
+  # Predictive optimization
+  predictive:
+    enabled: true
+    forecast_hours: 24
+    confidence_threshold: 0.8
+    
+  # Auto-optimization
+  auto_optimize:
+    enabled: false  # Keep disabled for safety
+    max_changes_per_hour: 5
+    require_confirmation: true

@@ -1,46 +1,5 @@
 # 🔌 Cryptometer Service - Market Data API Integration
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - Cryptometer Service MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered market data analysis and optimization
-- **Memory Gateway**: Persistent market data state and analysis metadata
-- **UI Automation**: Automated market data monitoring and health checks
-- **Figma Integration**: Market data dashboard design and UI management
-- **Supabase Integration**: Cloud-based market data analytics and reporting
-
-### **MCP Integration Benefits**
-- **Enhanced Analysis**: AI-powered market data interpretation and insights
-- **Persistent State**: Market data caching and analysis history preservation
-- **Automated Monitoring**: Real-time market data health and performance tracking
-- **Visual Design**: Professional market data dashboard and chart design
-- **Cloud Analytics**: Advanced market data analytics and reporting
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8007/health"
-
-# Market data analysis via MCP
-curl -X POST "http://127.0.0.1:8007/analyze" \
-  -H "Content-Type: application/json" \
-  -d '{"symbol": "BTCUSDT", "timeframe": "1h"}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered market data analysis
-- **ByteRover**: ✅ Active - Market data state persistence
-- **UI TARS**: ✅ Active - Market data monitoring automation
-- **Figma**: ✅ Active - Market data dashboard design
-- **Supabase**: ✅ Active - Market data cloud analytics
-
----
 
 ## Purpose
 Cryptometer API integration service providing real-time market data, technical indicators, and comprehensive market analysis for ZmartBot trading operations.

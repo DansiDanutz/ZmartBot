@@ -1,0 +1,47 @@
+#!/bin/bash
+
+# ZmartBot Auto-Start Script for Cursor/VS Code
+# This script runs automatically when the workspace opens
+
+echo "=========================================="
+echo "🚀 ZmartBot Auto-Start Initializing..."
+echo "=========================================="
+
+# Set working directory
+cd /Users/dansidanutz/Desktop/ZmartBot/zmart-api
+
+# 1. Memory Optimization
+echo ""
+echo "🧹 Step 1: Optimizing Memory..."
+echo "------------------------------------------"
+./optimize_memory.sh
+
+# 2. Start Main API
+echo ""
+echo "🔥 Step 2: Starting Main API Server..."
+echo "------------------------------------------"
+./start_main_api.sh &
+
+# Wait for API to start
+sleep 3
+
+# 3. Health Check
+echo ""
+echo "📊 Step 3: Running Health Check..."
+echo "------------------------------------------"
+python3 system_health_check.py
+
+echo ""
+echo "=========================================="
+echo "✅ ZmartBot Auto-Start Complete!"
+echo "=========================================="
+echo ""
+echo "📌 Available Commands:"
+echo "  • Health Check: python3 system_health_check.py"
+echo "  • Optimize Memory: ./optimize_memory.sh"
+echo "  • API Status: curl http://localhost:8000/health"
+echo ""
+echo "📊 Services Running:"
+echo "  • Main API: http://localhost:8000"
+echo "  • API Keys Manager: http://localhost:8006"
+echo ""

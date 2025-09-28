@@ -1,45 +1,6 @@
 # MDCAgent.mdc
 > Type: agent | Version: 1.0.0 | Owner: zmartbot | Port: 8951
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - MDC Agent MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered MDC agent development and optimization
-- **Memory Gateway**: Persistent MDC agent state and metadata
-- **UI Automation**: Automated MDC agent monitoring and health checks
-- **Figma Integration**: MDC agent dashboard design and UI management
-- **Supabase Integration**: Cloud-based MDC agent analytics and reporting
-
-### **MCP Integration Benefits**
-- **Enhanced Agent**: AI-powered MDC agent development and optimization
-- **Persistent State**: Cross-session MDC agent state and configuration management
-- **Automated Monitoring**: Real-time MDC agent health and performance tracking
-- **Visual Dashboard**: Interactive MDC agent management and testing interface
-- **Cloud Analytics**: Comprehensive MDC agent usage and performance analytics
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8951/health"
-
-# MDC agent operation via MCP
-curl -X POST "http://127.0.0.1:8951/agent/process" -d '{"action": "generate_mdc"}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered MDC agent development
-- **ByteRover**: ✅ Active - Persistent MDC agent state management
-- **UI TARS**: ✅ Active - Automated MDC agent monitoring
-- **Figma**: ✅ Active - MDC agent dashboard design
-- **Supabase**: ✅ Active - Cloud-based MDC agent analytics
-
----
 
 ## Purpose
 Automated MDC (Microservice Documentation Configuration) file generation agent for ZmartBot ecosystem. Discovers new Python files in the system and automatically generates comprehensive MDC files with enhanced Description, Triggers, and Requirements sections, ensuring all services have proper documentation for the 3-database lifecycle workflow with direct WorkflowService integration.

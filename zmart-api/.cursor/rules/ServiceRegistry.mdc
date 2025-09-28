@@ -4,45 +4,6 @@ Core service component of the ZmartBot ecosystem providing essential functionali
 
 @agent: ServiceRegistryAgent
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - Service Registry MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered service registry management and optimization
-- **Memory Gateway**: Persistent service registry state and metadata
-- **UI Automation**: Automated service registry monitoring and health checks
-- **Figma Integration**: Service registry dashboard design and UI management
-- **Supabase Integration**: Cloud-based service registry analytics and reporting
-
-### **MCP Integration Benefits**
-- **Enhanced Registry**: AI-powered service registry management and optimization
-- **Persistent State**: Cross-session service registry state and configuration management
-- **Automated Monitoring**: Real-time service registry health and performance tracking
-- **Visual Dashboard**: Interactive service registry management and testing interface
-- **Cloud Analytics**: Comprehensive service registry usage and performance analytics
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8000/service-registry/health"
-
-# Service registry operation via MCP
-curl -X POST "http://127.0.0.1:8000/service-registry/register" -d '{"service": "example", "action": "register"}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered service registry management
-- **ByteRover**: ✅ Active - Persistent service registry state management
-- **UI TARS**: ✅ Active - Automated service registry monitoring
-- **Figma**: ✅ Active - Service registry dashboard design
-- **Supabase**: ✅ Active - Cloud-based service registry analytics
-
----
 
 # Service Registry – Control Plane
 Manages dynamic service discovery, unique ports, SAVE/UNDO profiles, and dependency-ordered startup.

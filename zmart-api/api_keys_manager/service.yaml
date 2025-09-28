@@ -1,0 +1,93 @@
+name: api-keys-manager
+version: 1.0.0
+type: backend
+owner: zmartbot
+port: 8006
+
+description: |
+  API Keys Manager Service for ZmartBot Platform
+  Secure storage, rotation, and access control for all external API credentials
+  Integrates with MCP servers for unified credential management
+
+dependencies:
+  - database: sqlite
+  - encryption: fernet
+  - framework: flask
+
+env:
+  PORT: 8006
+  DB_PATH: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/api_keys.db
+  ENCRYPTION_KEY_PATH: /Users/dansidanutz/Desktop/ZmartBot/zmart-api/api_keys_manager/.encryption_key
+
+lifecycle:
+  start: python3 /Users/dansidanutz/Desktop/ZmartBot/zmart-api/api_keys_manager/api_keys_manager_server.py --port 8006
+  stop: pkill -f "api_keys_manager_server.py"
+  restart: pkill -f "api_keys_manager_server.py" && sleep 2 && python3 /Users/dansidanutz/Desktop/ZmartBot/zmart-api/api_keys_manager/api_keys_manager_server.py --port 8006
+
+endpoints:
+  health: /health
+  ready: /ready
+  status: /status
+
+  # API Key Management
+  keys:
+    list: GET /api/keys
+    create: POST /api/keys
+    get: GET /api/keys/{key_id}
+    update: PUT /api/keys/{key_id}
+    delete: DELETE /api/keys/{key_id}
+    rotate: POST /api/keys/{key_id}/rotate
+
+  # MCP Integration
+  mcp:
+    sync: POST /api/mcp/sync
+    update_claude: POST /api/mcp/update-claude
+    update_ccxt: POST /api/mcp/update-ccxt
+    test_connection: GET /api/mcp/test/{exchange}
+
+integrations:
+  - service: claude-mcp
+    type: configuration
+    path: ~/Library/Application Support/Claude/claude_desktop_config.json
+
+  - service: ccxt-mcp
+    type: configuration
+    path: /Users/dansidanutz/Desktop/ZmartBot/ccxt-exchanges-config.json
+
+  - service: binance-mcp
+    type: api
+    env_vars:
+      - BINANCE_API_KEY
+      - BINANCE_API_SECRET
+
+  - service: multi-exchange
+    exchanges:
+      - binance
+      - bybit
+      - kucoin
+      - okx
+      - bitget
+      - kraken
+      - coinbase
+
+monitoring:
+  metrics_port: 8007
+  health_check_interval: 30s
+  readiness_timeout: 5s
+  liveness_timeout: 10s
+
+security:
+  encryption: AES-256
+  key_rotation_days: 90
+  audit_logging: enabled
+  access_control: role-based
+
+features:
+  - Secure API key storage with encryption
+  - Automatic key rotation
+  - Multi-exchange support
+  - MCP server integration
+  - Claude Desktop configuration sync
+  - CCXT configuration management
+  - Audit logging
+  - Health monitoring

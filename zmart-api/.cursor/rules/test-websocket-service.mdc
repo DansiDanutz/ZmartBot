@@ -2,45 +2,6 @@
 > Type: service | Version: 1.0.0 | Owner: zmartbot | Status: ACTIVE | Level: 2 | Port: 8004
 Core service component of the ZmartBot ecosystem providing essential functionality.
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - Test WebSocket Service MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered test WebSocket service optimization and analysis
-- **Memory Gateway**: Persistent test WebSocket service state and metadata
-- **UI Automation**: Automated test WebSocket service monitoring and health checks
-- **Figma Integration**: Test WebSocket service dashboard design and UI management
-- **Supabase Integration**: Cloud-based test WebSocket service analytics and reporting
-
-### **MCP Integration Benefits**
-- **Enhanced WebSocket**: AI-powered test WebSocket service optimization and analysis
-- **Persistent State**: Cross-session test WebSocket service state and configuration management
-- **Automated Monitoring**: Real-time test WebSocket service health and performance tracking
-- **Visual Dashboard**: Interactive test WebSocket service management and testing interface
-- **Cloud Analytics**: Comprehensive test WebSocket service usage and performance analytics
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8004/health"
-
-# Test WebSocket service operation via MCP
-curl -X POST "http://127.0.0.1:8004/websocket" -d '{"action": "test_connection"}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered test WebSocket service optimization
-- **ByteRover**: ✅ Active - Persistent test WebSocket service state management
-- **UI TARS**: ✅ Active - Automated test WebSocket service monitoring
-- **Figma**: ✅ Active - Test WebSocket service dashboard design
-- **Supabase**: ✅ Active - Cloud-based test WebSocket service analytics
-
----
 
 # test-websocket-service.mdc
 > Type: backend | Version: 1.0.0 | Owner: zmartbot | Port: 8004

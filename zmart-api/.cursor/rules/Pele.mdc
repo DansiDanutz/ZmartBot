@@ -2,45 +2,6 @@
 ## Description
 Core service component of the ZmartBot ecosystem providing essential functionality.
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - Pele Alerts MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered Pele alerts analysis and optimization
-- **Memory Gateway**: Persistent Pele alerts state and pattern metadata
-- **UI Automation**: Automated Pele alerts monitoring and health checks
-- **Figma Integration**: Pele alerts dashboard design and UI management
-- **Supabase Integration**: Cloud-based Pele alerts analytics and reporting
-
-### **MCP Integration Benefits**
-- **Enhanced Analysis**: AI-powered Pele alerts pattern recognition and optimization
-- **Persistent State**: Cross-session Pele alerts state and configuration management
-- **Automated Monitoring**: Real-time Pele alerts health and performance tracking
-- **Visual Dashboard**: Interactive Pele alerts management and testing interface
-- **Cloud Analytics**: Comprehensive Pele alerts usage and performance analytics
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8000/pele/health"
-
-# Pele alerts analysis via MCP
-curl -X POST "http://127.0.0.1:8000/pele/analyze" -d '{"symbol": "BTCUSDT", "pattern": "trend_continuation"}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered Pele alerts analysis
-- **ByteRover**: ✅ Active - Persistent Pele alerts state management
-- **UI TARS**: ✅ Active - Automated Pele alerts monitoring
-- **Figma**: ✅ Active - Pele alerts dashboard design
-- **Supabase**: ✅ Active - Cloud-based Pele alerts analytics
-
----
 
 # Pele Alerts - Trend Continuation Pattern System
 

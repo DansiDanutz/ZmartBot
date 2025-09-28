@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Slide Test - ZmartyBrain v5.2.0</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            background: #f5f5f5;
+        }
+        .test-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 10px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .passed { color: #22c55e; }
+        .failed { color: #ef4444; }
+        .testing { color: #3b82f6; }
+        button {
+            background: #6366f1;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+        button:hover { background: #4f46e5; }
+        .results {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e0f2fe;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Quick Slide Test for ZmartyBrain v5.2.0</h1>
+
+    <div class="test-card">
+        <h3>Instructions:</h3>
+        <ol>
+            <li>Click "Open Site in New Tab"</li>
+            <li>Test each navigation method</li>
+            <li>Come back here and report results</li>
+        </ol>
+        <button onclick="window.open('https://vermillion-paprenjak-67497b.netlify.app/', '_blank')">
+            Open Site in New Tab
+        </button>
+    </div>
+
+    <div class="test-card">
+        <h3>Navigation Tests:</h3>
+        <ul>
+            <li>Press keys 1-9 to jump to slides ✓</li>
+            <li>Use arrow keys (← →) to navigate ✓</li>
+            <li>Click arrow buttons on screen ✓</li>
+            <li>Swipe on mobile/touch devices ✓</li>
+        </ul>
+    </div>
+
+    <div class="test-card">
+        <h3>Test Checklist:</h3>
+        <form id="testForm">
+            <label><input type="checkbox" id="test1"> Slide 1 (Welcome) loads correctly</label><br>
+            <label><input type="checkbox" id="test2"> Keyboard navigation (1-9) works</label><br>
+            <label><input type="checkbox" id="test3"> Arrow keys navigate slides</label><br>
+            <label><input type="checkbox" id="test4"> Arrow buttons on screen work</label><br>
+            <label><input type="checkbox" id="test5"> Progress bar updates correctly</label><br>
+            <label><input type="checkbox" id="test6"> Slide transitions are smooth</label><br>
+            <label><input type="checkbox" id="test7"> Can't skip authentication (slide 2)</label><br>
+            <label><input type="checkbox" id="test8"> State persists on reload</label><br>
+            <label><input type="checkbox" id="test9"> All 9 slides accessible</label><br>
+        </form>
+        <button onclick="generateReport()">Generate Report</button>
+    </div>
+
+    <div id="results" class="results" style="display:none;"></div>
+
+    <script>
+        function generateReport() {
+            const checks = [];
+            const issues = [];
+
+            for (let i = 1; i <= 9; i++) {
+                const checkbox = document.getElementById(`test${i}`);
+                if (checkbox.checked) {
+                    checks.push(`✅ Test ${i} passed`);
+                } else {
+                    issues.push(`❌ Test ${i} failed`);
+                }
+            }
+
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.style.display = 'block';
+
+            const passRate = (checks.length / 9 * 100).toFixed(0);
+
+            resultsDiv.innerHTML = `
+                <h3>Test Results for v5.2.0</h3>
+                <p><strong>Pass Rate: ${passRate}%</strong></p>
+                <h4>Passed Tests:</h4>
+                <ul>${checks.map(c => `<li>${c}</li>`).join('')}</ul>
+                ${issues.length > 0 ? `
+                    <h4>Failed Tests:</h4>
+                    <ul>${issues.map(i => `<li>${i}</li>`).join('')}</ul>
+                ` : ''}
+                <p>Timestamp: ${new Date().toISOString()}</p>
+            `;
+
+            // Copy report to clipboard
+            const reportText = `
+ZmartyBrain v5.2.0 Slide Test Report
+=====================================
+Pass Rate: ${passRate}%
+
+Passed: ${checks.length}/9
+Failed: ${issues.length}/9
+
+${checks.join('\n')}
+${issues.join('\n')}
+
+Tested: ${new Date().toISOString()}
+            `.trim();
+
+            navigator.clipboard.writeText(reportText).then(() => {
+                alert('Report copied to clipboard!');
+            });
+        }
+    </script>
+</body>
+</html>

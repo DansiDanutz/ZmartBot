@@ -2,45 +2,6 @@
 ## Description
 Core service component of the ZmartBot ecosystem providing essential functionality.
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - Registration Certificate MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered registration certificate management and optimization
-- **Memory Gateway**: Persistent registration certificate state and metadata
-- **UI Automation**: Automated registration certificate monitoring and health checks
-- **Figma Integration**: Registration certificate dashboard design and UI management
-- **Supabase Integration**: Cloud-based registration certificate analytics and reporting
-
-### **MCP Integration Benefits**
-- **Enhanced Certificate**: AI-powered registration certificate management and optimization
-- **Persistent State**: Cross-session registration certificate state and configuration management
-- **Automated Monitoring**: Real-time registration certificate health and performance tracking
-- **Visual Dashboard**: Interactive registration certificate management and testing interface
-- **Cloud Analytics**: Comprehensive registration certificate usage and performance analytics
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8000/registration-certificate/health"
-
-# Registration certificate operation via MCP
-curl -X POST "http://127.0.0.1:8000/registration-certificate/issue" -d '{"service": "example", "action": "certify"}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered registration certificate management
-- **ByteRover**: ✅ Active - Persistent registration certificate state management
-- **UI TARS**: ✅ Active - Automated registration certificate monitoring
-- **Figma**: ✅ Active - Registration certificate dashboard design
-- **Supabase**: ✅ Active - Cloud-based registration certificate analytics
-
----
 
 # RegistrationCertificate.mdc
 > Type: certificate | Version: 2.1.0 | Owner: zmartbot | Services: 3

@@ -1,42 +1,51 @@
 # Orchestration Domain Context
 
-## OrchestrationStart
-**File**: .cursor/rules/OrchestrationStart.mdc
-**Relevance**: 15
-**Size**: 19966 bytes
-
-**Summary**: ## Description | Core orchestration service component of the ZmartBot ecosystem providing essential functionality. | @step: orchestration_flow
-**Key Info**: application | Ensures service is running on port 8000 | 8000, "start_cmd": "python3 run_dev.py"},
-
----
-
-## START_zmartbot
-**File**: .cursor/rules/START_zmartbot.mdc
-**Relevance**: 0
-**Size**: 41625 bytes
-
-**Summary**: # Start_Zmartbot - Merged MDC Configuration | ## 🤖 MCP (Model Context Protocol) Integration | ### **MCP Server Pairing** | - **UI Automation**: Automated startup monitoring and health checks
-**Key Info**: application | application
-
----
-
 ## MasterOrchestrationAgent
 **File**: .cursor/rules/MasterOrchestrationAgent.mdc
-**Relevance**: 0
-**Size**: 543887 bytes
+**Relevance**: 30
+**Size**: 999996 bytes
 
 **Summary**: # Masterorchestrationagent - Merged MDC Configuration | ## 🔗 Merged from 2 duplicate files | - **MANDATORY MDC**: Every .py file MUST have an associated MDC file
 **Key Info**: 8002 | backend | backend | Port 8000 management and monitoring | ACTIVE
 
 ---
 
+## START_zmartbot
+**File**: .cursor/rules/START_zmartbot.mdc
+**Relevance**: 0
+**Size**: 39861 bytes
+
+**Summary**: # Start_Zmartbot - Merged MDC Configuration | ## 🔗 Merged from 2 duplicate files | **Merged Files**: START_zmartbot.mdc, STOP_zmartbot.mdc
+
+---
+
 ## OrchestrationStartWorkflow
 **File**: .cursor/rules/OrchestrationStartWorkflow.mdc
 **Relevance**: 0
-**Size**: 276590 bytes
+**Size**: 274670 bytes
 
-**Summary**: # Orchestrationstartworkflow - Merged MDC Configuration | ## 🤖 MCP (Model Context Protocol) Integration | ### **MCP Server Pairing**
+**Summary**: # Orchestrationstartworkflow - Merged MDC Configuration | ## 🔗 Merged from 2 duplicate files | ```bash | ``` | ```bash | ./orchestrationstart.sh status | ``` | Update `.cursor/rules/MasterOrchestratio...
 **Key Info**: Quick reference for integrating new services into the orchestration system | 1. **Add to SERVICE_STARTUP_ORDER array** (in dependency order) | Ensures service is running on port 8000
+
+---
+
+## OrchestrationStart
+**File**: .cursor/rules/OrchestrationStart.mdc
+**Relevance**: 0
+**Size**: 231 bytes
+
+**Content**: 
+## Description
+Core orchestration service component of the ZmartBot ecosystem providing essential functionality.
+
+@step: orchestration_flow
+
+
+## Triggers
+- **API endpoint requests**
+- **File system changes**
+- **Database events**
+
 
 ---
 

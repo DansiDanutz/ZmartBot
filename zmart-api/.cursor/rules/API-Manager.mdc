@@ -1,47 +1,5 @@
 @agent: APIHandler
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - API Manager MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered API management and optimization
-- **Memory Gateway**: Persistent API state and metadata
-- **UI Automation**: Automated API monitoring and health checks
-- **Figma Integration**: API management dashboard design and UI management
-- **Supabase Integration**: Cloud-based API analytics and reporting
-
-### **MCP Integration Benefits**
-- **AI-Powered API Management**: Intelligent API optimization and analysis
-- **Persistent State**: API state and metadata storage
-- **Automated Monitoring**: Real-time API health and performance monitoring
-- **Visual Dashboard**: API process visualization and status tracking
-- **Cloud Analytics**: API performance metrics and optimization insights
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8000/health" \
-  -H "Content-Type: application/json"
-
-# API management via MCP
-curl -X POST "http://127.0.0.1:8000/api/manager" \
-  -H "Content-Type: application/json" \
-  -d '{"action": "optimize", "service": "kucoin"}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered API management
-- **ByteRover**: ✅ Active - Persistent API state management
-- **UI TARS**: ✅ Active - Automated API monitoring
-- **Figma**: ✅ Active - API management dashboard design
-- **Supabase**: ✅ Active - Cloud-based API analytics
-
----
 
 # API Manager - External Service Integration System
 

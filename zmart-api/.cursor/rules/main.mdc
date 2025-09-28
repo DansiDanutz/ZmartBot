@@ -2,45 +2,6 @@
 > Type: service | Version: 1.0.0 | Owner: zmartbot | Status: Discovery | Level: 1
 Core service component of the ZmartBot ecosystem providing essential functionality.
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - Main Service MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered main service orchestration and optimization
-- **Memory Gateway**: Persistent main service state and metadata
-- **UI Automation**: Automated main service monitoring and health checks
-- **Figma Integration**: Main service dashboard design and UI management
-- **Supabase Integration**: Cloud-based main service analytics and reporting
-
-### **MCP Integration Benefits**
-- **Enhanced Orchestration**: AI-powered main service management and optimization
-- **Persistent State**: Cross-session main service state and configuration management
-- **Automated Monitoring**: Real-time main service health and performance tracking
-- **Visual Dashboard**: Interactive main service management and testing interface
-- **Cloud Analytics**: Comprehensive main service usage and performance analytics
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8000/main/health"
-
-# Main service orchestration via MCP
-curl -X POST "http://127.0.0.1:8000/main/orchestrate" -d '{"action": "start_all"}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered main service orchestration
-- **ByteRover**: ✅ Active - Persistent main service state management
-- **UI TARS**: ✅ Active - Automated main service monitoring
-- **Figma**: ✅ Active - Main service dashboard design
-- **Supabase**: ✅ Active - Cloud-based main service analytics
-
----
 
 
 

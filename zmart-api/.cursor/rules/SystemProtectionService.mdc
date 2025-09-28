@@ -1,45 +1,6 @@
 # 🛡️ System Protection Service - Service Deletion Prevention
 > Type: backend | Version: 1.0.0 | Owner: zmartbot | Port: 8640
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - System Protection Service MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered system protection and optimization
-- **Memory Gateway**: Persistent system protection state and metadata
-- **UI Automation**: Automated system protection monitoring and health checks
-- **Figma Integration**: System protection dashboard design and UI management
-- **Supabase Integration**: Cloud-based system protection analytics and reporting
-
-### **MCP Integration Benefits**
-- **Enhanced Protection**: AI-powered system protection and optimization
-- **Persistent State**: Cross-session system protection state and configuration management
-- **Automated Monitoring**: Real-time system protection health and performance tracking
-- **Visual Dashboard**: Interactive system protection management and testing interface
-- **Cloud Analytics**: Comprehensive system protection usage and performance analytics
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8640/health"
-
-# System protection operation via MCP
-curl -X POST "http://127.0.0.1:8640/protect" -d '{"service": "all", "action": "protect"}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered system protection
-- **ByteRover**: ✅ Active - Persistent system protection state management
-- **UI TARS**: ✅ Active - Automated system protection monitoring
-- **Figma**: ✅ Active - System protection dashboard design
-- **Supabase**: ✅ Active - Cloud-based system protection analytics
-
----
 
 ## Purpose
 System Protection Service prevents registered services from being deleted, ensuring system architecture integrity and protecting critical services from accidental removal.

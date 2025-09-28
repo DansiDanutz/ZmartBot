@@ -1,47 +1,5 @@
 # Achievements_Service - Merged MDC Configuration
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - Achievements Service MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered achievements management and optimization
-- **Memory Gateway**: Persistent achievements state and metadata
-- **UI Automation**: Automated achievements monitoring and health checks
-- **Figma Integration**: Achievements dashboard design and UI management
-- **Supabase Integration**: Cloud-based achievements analytics and reporting
-
-### **MCP Integration Benefits**
-- **AI-Powered Achievements Management**: Intelligent achievements tracking and optimization
-- **Persistent State**: Achievements state and metadata storage
-- **Automated Monitoring**: Real-time achievements health and performance monitoring
-- **Visual Dashboard**: Achievements process visualization and status tracking
-- **Cloud Analytics**: Achievements performance metrics and optimization insights
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8000/health" \
-  -H "Content-Type: application/json"
-
-# Achievements management via MCP
-curl -X POST "http://127.0.0.1:8000/achievements/update" \
-  -H "Content-Type: application/json" \
-  -d '{"action": "track", "achievement": "first_trade"}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered achievements management
-- **ByteRover**: ✅ Active - Persistent achievements state management
-- **UI TARS**: ✅ Active - Automated achievements monitoring
-- **Figma**: ✅ Active - Achievements dashboard design
-- **Supabase**: ✅ Active - Cloud-based achievements analytics
-
----
 
 ## 🔗 Merged from 2 duplicate files
 **Merged Files**: achievements_service.mdc, achievements.mdc

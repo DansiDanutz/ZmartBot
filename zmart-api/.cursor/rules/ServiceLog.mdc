@@ -1,45 +1,6 @@
 # 📊 ServiceLog - ZmartBot Intelligent Log Analysis & Advice System
 > Type: backend | Version: 1.0.0 | Owner: zmartbot | Port: 8750
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - Service Log MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered log analysis and optimization
-- **Memory Gateway**: Persistent log analysis state and metadata
-- **UI Automation**: Automated log analysis monitoring and health checks
-- **Figma Integration**: Log analysis dashboard design and UI management
-- **Supabase Integration**: Cloud-based log analysis analytics and reporting
-
-### **MCP Integration Benefits**
-- **Enhanced Log Analysis**: AI-powered log analysis and optimization
-- **Persistent State**: Cross-session log analysis state and configuration management
-- **Automated Monitoring**: Real-time log analysis health and performance tracking
-- **Visual Dashboard**: Interactive log analysis management and testing interface
-- **Cloud Analytics**: Comprehensive log analysis usage and performance analytics
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8750/health"
-
-# Log analysis via MCP
-curl -X POST "http://127.0.0.1:8750/analyze" -d '{"logs": "all", "action": "analyze"}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered log analysis
-- **ByteRover**: ✅ Active - Persistent log analysis state management
-- **UI TARS**: ✅ Active - Automated log analysis monitoring
-- **Figma**: ✅ Active - Log analysis dashboard design
-- **Supabase**: ✅ Active - Cloud-based log analysis analytics
-
----
 
 ## Purpose
 Advanced log analysis and advice generation system for ZmartBot ecosystem, providing intelligent pattern detection, automated issue diagnosis, priority-based advice queue, and comprehensive service health monitoring with real-time actionable insights.

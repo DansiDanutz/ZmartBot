@@ -13,48 +13,6 @@ alwaysApply: true
 - ✅ **Health endpoint implementation**
 - ✅ **Master Orchestration integration**
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - ZmartBot Methodology MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered methodology development and optimization
-- **Memory Gateway**: Persistent methodology state and learning metadata
-- **UI Automation**: Automated methodology monitoring and health checks
-- **Figma Integration**: Methodology dashboard design and UI management
-- **Supabase Integration**: Cloud-based methodology analytics and reporting
-
-### **MCP Pairing Benefits**
-- **Enhanced Methodology**: AI-powered methodology development and optimization
-- **Persistent Learning**: Memory persistence for methodology workflows and learning
-- **Automated Monitoring**: Automated methodology health monitoring and management
-- **Design Integration**: Seamless integration with UI design workflows
-- **Cloud Analytics**: Advanced methodology analytics and reporting monitoring
-
-### **MCP Usage Examples**
-```bash
-# Test ZmartBot Methodology MCP connection
-curl -X GET http://127.0.0.1:8000/health
-
-# Execute methodology update via MCP
-curl -X POST http://127.0.0.1:8000/methodology/update \
-  -H "Content-Type: application/json" \
-  -d '{"action": "optimize_workflow", "component": "orchestration"}'
-```
-
-### **MCP Integration Status**
-- **Connection**: ✅ Active and responsive
-- **Health Check**: ✅ All MCP servers healthy
-- **Memory Sync**: ✅ Real-time memory synchronization
-- **UI Automation**: ✅ Automated monitoring active
-- **Cloud Sync**: ✅ Supabase integration active
-
-
----
 # ZmartBot Methodology - Automation & System Management
 
 ## Overview

@@ -2,45 +2,6 @@
 ## Description
 Core service component of the ZmartBot ecosystem providing essential functionality.
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - Service Enrollment Automation MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered service enrollment automation and optimization
-- **Memory Gateway**: Persistent service enrollment state and metadata
-- **UI Automation**: Automated service enrollment monitoring and health checks
-- **Figma Integration**: Service enrollment dashboard design and UI management
-- **Supabase Integration**: Cloud-based service enrollment analytics and reporting
-
-### **MCP Integration Benefits**
-- **Enhanced Automation**: AI-powered service enrollment automation and optimization
-- **Persistent State**: Cross-session service enrollment state and configuration management
-- **Automated Monitoring**: Real-time service enrollment health and performance tracking
-- **Visual Dashboard**: Interactive service enrollment management and testing interface
-- **Cloud Analytics**: Comprehensive service enrollment usage and performance analytics
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8000/service-enrollment/health"
-
-# Service enrollment automation via MCP
-curl -X POST "http://127.0.0.1:8000/service-enrollment/automate" -d '{"service": "example", "action": "enroll"}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered service enrollment automation
-- **ByteRover**: ✅ Active - Persistent service enrollment state management
-- **UI TARS**: ✅ Active - Automated service enrollment monitoring
-- **Figma**: ✅ Active - Service enrollment dashboard design
-- **Supabase**: ✅ Active - Cloud-based service enrollment analytics
-
----
 
 # ServiceEnrollmentAutomation.mdc
 > Type: rule | Version: 1.1.0 | Owner: zmartbot | Purpose: Prevent Service Enrollment Issues

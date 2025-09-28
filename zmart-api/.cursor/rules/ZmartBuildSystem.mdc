@@ -1,47 +1,5 @@
 # ZmartBuildSystem.mdc
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - ZmartBuildSystem MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered build system orchestration and automation
-- **Memory Gateway**: Persistent build system state and metadata
-- **UI Automation**: Automated build system monitoring and health checks
-- **Figma Integration**: Build system dashboard design and UI management
-- **Supabase Integration**: Cloud-based build system analytics and reporting
-
-### **MCP Integration Benefits**
-- **AI-Powered Build System**: Intelligent build orchestration and automation
-- **Persistent State**: Build system process state and metadata storage
-- **Automated Monitoring**: Real-time build system progress and error detection
-- **Visual Dashboard**: Build system process visualization and status tracking
-- **Cloud Analytics**: Build system performance metrics and optimization insights
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8000/health" \
-  -H "Content-Type: application/json"
-
-# Build system orchestration via MCP
-curl -X POST "http://127.0.0.1:8000/build-system" \
-  -H "Content-Type: application/json" \
-  -d '{"command": "diana-up", "services": ["all"]}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered build system orchestration
-- **ByteRover**: ✅ Active - Persistent build system state management
-- **UI TARS**: ✅ Active - Automated build system monitoring
-- **Figma**: ✅ Active - Build system dashboard design
-- **Supabase**: ✅ Active - Cloud-based build system analytics
-
----
 
 ## Summary
 ZmartBot Makefile-based build system providing comprehensive development, deployment, and maintenance commands including DIANA platform infrastructure, security scanning, and context management automation.

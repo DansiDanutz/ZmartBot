@@ -1,44 +1,5 @@
 # RiskManagementServer.mdc
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - Risk Management Server MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered risk management and optimization
-- **Memory Gateway**: Persistent risk management state and metadata
-- **UI Automation**: Automated risk management monitoring and health checks
-- **Figma Integration**: Risk management dashboard design and UI management
-- **Supabase Integration**: Cloud-based risk management analytics and reporting
-
-### **MCP Integration Benefits**
-- **Enhanced Risk Management**: AI-powered risk analysis and optimization
-- **Persistent State**: Cross-session risk management state and configuration management
-- **Automated Monitoring**: Real-time risk management health and performance tracking
-- **Visual Dashboard**: Interactive risk management and testing interface
-- **Cloud Analytics**: Comprehensive risk management usage and performance analytics
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8000/risk-management/health"
-
-# Risk management operation via MCP
-curl -X POST "http://127.0.0.1:8000/risk-management/assess" -d '{"portfolio": "all", "action": "analyze"}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered risk management
-- **ByteRover**: ✅ Active - Persistent risk management state management
-- **UI TARS**: ✅ Active - Automated risk management monitoring
-- **Figma**: ✅ Active - Risk management dashboard design
-- **Supabase**: ✅ Active - Cloud-based risk management analytics
-
----
 
 ## Summary
 ZmartBot Risk Management Service - Comprehensive risk assessment and management system providing portfolio risk analysis, position risk evaluation, and risk-based trading recommendations.

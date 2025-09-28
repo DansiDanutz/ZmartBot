@@ -2,45 +2,6 @@
 > Type: service | Version: 1.0.0 | Owner: zmartbot | Status: ACTIVE | Level: 2 | Port: 8610
 Core service component of the ZmartBot ecosystem providing essential functionality.
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - Port Manager Service MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered port management and optimization
-- **Memory Gateway**: Persistent port management state and metadata
-- **UI Automation**: Automated port management monitoring and health checks
-- **Figma Integration**: Port management dashboard design and UI management
-- **Supabase Integration**: Cloud-based port management analytics and reporting
-
-### **MCP Integration Benefits**
-- **Enhanced Management**: AI-powered port management and optimization
-- **Persistent State**: Cross-session port management state and configuration management
-- **Automated Monitoring**: Real-time port management health and performance tracking
-- **Visual Dashboard**: Interactive port management and testing interface
-- **Cloud Analytics**: Comprehensive port management usage and performance analytics
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8610/health"
-
-# Port management via MCP
-curl -X POST "http://127.0.0.1:8610/ports/assign" -d '{"service": "example", "port": 8000}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered port management
-- **ByteRover**: ✅ Active - Persistent port management state management
-- **UI TARS**: ✅ Active - Automated port management monitoring
-- **Figma**: ✅ Active - Port management dashboard design
-- **Supabase**: ✅ Active - Cloud-based port management analytics
-
----
 
 # Port Manager Service
 

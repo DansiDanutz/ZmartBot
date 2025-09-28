@@ -1,0 +1,23 @@
+# Robots.txt for ZmartyBrain Onboarding
+# https://vermillion-paprenjak-67497b.netlify.app
+
+# Allow all bots to crawl the site
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /.netlify/
+
+# Sitemap location
+Sitemap: https://vermillion-paprenjak-67497b.netlify.app/sitemap.xml
+
+# Crawl delay (in seconds)
+Crawl-delay: 1
+
+# Specific bot rules
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1

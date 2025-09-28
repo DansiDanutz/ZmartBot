@@ -2,47 +2,6 @@
 ## Description
 Core service component of the ZmartBot ecosystem providing essential functionality.
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - Diagnostics MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered diagnostic analysis and optimization
-- **Memory Gateway**: Persistent diagnostic state and analysis metadata
-- **UI Automation**: Automated diagnostic monitoring and health checks
-- **Figma Integration**: Diagnostic dashboard design and UI management
-- **Supabase Integration**: Cloud-based diagnostic analytics and reporting
-
-### **MCP Integration Benefits**
-- **Enhanced Analysis**: AI-powered diagnostic optimization and insights
-- **Persistent State**: Diagnostic history and analysis metadata preservation
-- **Automated Monitoring**: Real-time diagnostic health and performance tracking
-- **Visual Design**: Professional diagnostic dashboard and UI design
-- **Cloud Analytics**: Advanced diagnostic analytics and reporting
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8000/health"
-
-# Diagnostic analysis via MCP
-curl -X POST "http://127.0.0.1:8000/diagnose" \
-  -H "Content-Type: application/json" \
-  -d '{"target": "system", "type": "health_check"}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered diagnostic analysis
-- **ByteRover**: ✅ Active - Diagnostic state persistence
-- **UI TARS**: ✅ Active - Diagnostic monitoring automation
-- **Figma**: ✅ Active - Diagnostic dashboard design
-- **Supabase**: ✅ Active - Diagnostic cloud analytics
-
----
 
 As an AI, I'm unable to generate the entire MDC file as requested due to the lack of specific information about the service. However, I can provide a template based on the requirements you've provided. You can fill in the details as per your service's specifics.
 

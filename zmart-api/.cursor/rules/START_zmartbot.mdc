@@ -1,47 +1,5 @@
 # Start_Zmartbot - Merged MDC Configuration
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - START ZmartBot MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered startup orchestration and service management
-- **Memory Gateway**: Persistent startup state and service metadata
-- **UI Automation**: Automated startup monitoring and health checks
-- **Figma Integration**: Startup dashboard design and UI management
-- **Supabase Integration**: Cloud-based startup analytics and reporting
-
-### **MCP Integration Benefits**
-- **AI-Powered Startup**: Intelligent service initialization and resource allocation
-- **Persistent State**: Startup process state and service metadata storage
-- **Automated Monitoring**: Real-time startup progress and error detection
-- **Visual Dashboard**: Startup process visualization and status tracking
-- **Cloud Analytics**: Startup performance metrics and optimization insights
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8000/health" \
-  -H "Content-Type: application/json"
-
-# Startup orchestration via MCP
-curl -X POST "http://127.0.0.1:8000/startup" \
-  -H "Content-Type: application/json" \
-  -d '{"services": ["all"], "health_check": true}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered startup orchestration
-- **ByteRover**: ✅ Active - Persistent startup state management
-- **UI TARS**: ✅ Active - Automated startup monitoring
-- **Figma**: ✅ Active - Startup dashboard design
-- **Supabase**: ✅ Active - Cloud-based startup analytics
-
----
 
 ## 🔗 Merged from 2 duplicate files
 **Merged Files**: START_zmartbot.mdc, STOP_zmartbot.mdc

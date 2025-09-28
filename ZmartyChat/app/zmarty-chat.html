@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Zmarty Chat - Your AI Trading Assistant</title>
+
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            background: #111b21;
+        }
+
+        /* Main Layout */
+        .app-container {
+            display: flex;
+            height: 100vh;
+            background: #111b21;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 400px;
+            background: #111b21;
+            border-right: 1px solid #2a3942;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .header {
+            background: #202c33;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 60px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .profile-pic {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 20px;
+        }
+
+        .header-btn {
+            background: none;
+            border: none;
+            color: #aebac1;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: background 0.2s;
+        }
+
+        .header-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Search Bar */
+        .search-container {
+            background: #111b21;
+            padding: 8px 12px;
+            border-bottom: 1px solid #2a3942;
+        }
+
+        .search-bar {
+            background: #202c33;
+            border-radius: 8px;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .search-bar input {
+            flex: 1;
+            background: none;
+            border: none;
+            color: #e9edef;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .search-bar input::placeholder {
+            color: #8696a0;
+        }
+
+        /* Chat List */
+        .chat-list {
+            flex: 1;
+            overflow-y: auto;
+            background: #111b21;
+        }
+
+        .chat-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: background 0.2s;
+            border-bottom: 1px solid #2a3942;
+        }
+
+        .chat-item:hover {
+            background: #202c33;
+        }
+
+        .chat-item.active {
+            background: #2a3942;
+        }
+
+        .chat-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 24px;
+        }
+
+        .chat-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .chat-name {
+            color: #e9edef;
+            font-size: 16px;
+            font-weight: 400;
+            margin-bottom: 3px;
+        }
+
+        .chat-preview {
+            color: #8696a0;
+            font-size: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .chat-meta {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
+        }
+
+        .chat-time {
+            color: #8696a0;
+            font-size: 12px;
+        }
+
+        .unread-badge {
+            background: #00a884;
+            color: white;
+            font-size: 12px;
+            padding: 2px 6px;
+            border-radius: 10px;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        /* Chat Area */
+        .chat-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #0b141a;
+        }
+
+        .chat-header {
+            background: #202c33;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 60px;
+            border-left: 1px solid #2a3942;
+        }
+
+        .chat-header-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chat-header-name {
+            color: #e9edef;
+            font-size: 16px;
+        }
+
+        .chat-status {
+            color: #8696a0;
+            font-size: 13px;
+        }
+
+        /* Messages Area */
+        .messages-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAPklEQVQYlWNgYGD4z0ABYBw1kL6Gzjt3/j+DgiIFA2XA6N+/f/8fPXqUgpWVFV5DGRgYGBgYGBgYAAAA///DABBqI2mZAAAAAElFTkSuQmCC');
+            background-size: 200px;
+            background-repeat: repeat;
+            opacity: 0.06;
+        }
+
+        .messages-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-height: 100%;
+        }
+
+        .message {
+            max-width: 65%;
+            padding: 8px 12px;
+            border-radius: 8px;
+            position: relative;
+            word-wrap: break-word;
+        }
+
+        .message.sent {
+            background: #005c4b;
+            color: #e9edef;
+            align-self: flex-end;
+            border-top-right-radius: 0;
+        }
+
+        .message.received {
+            background: #202c33;
+            color: #e9edef;
+            align-self: flex-start;
+            border-top-left-radius: 0;
+        }
+
+        .message-content {
+            font-size: 14.5px;
+            line-height: 1.4;
+        }
+
+        .message-time {
+            font-size: 11px;
+            color: #8696a0;
+            margin-top: 4px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            justify-content: flex-end;
+        }
+
+        .message.received .message-time {
+            justify-content: flex-start;
+        }
+
+        /* Typing Indicator */
+        .typing-indicator {
+            display: none;
+            padding: 8px 12px;
+            background: #202c33;
+            border-radius: 8px;
+            align-self: flex-start;
+            max-width: 80px;
+        }
+
+        .typing-indicator.active {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: #8696a0;
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0%, 60%, 100% {
+                opacity: 0.3;
+                transform: translateY(0);
+            }
+            30% {
+                opacity: 1;
+                transform: translateY(-10px);
+            }
+        }
+
+        /* Input Area */
+        .input-area {
+            background: #202c33;
+            padding: 10px 16px;
+            display: flex;
+            align-items: flex-end;
+            gap: 12px;
+            border-top: 1px solid #2a3942;
+        }
+
+        .input-wrapper {
+            flex: 1;
+            background: #2a3942;
+            border-radius: 8px;
+            padding: 10px 12px;
+            display: flex;
+            align-items: flex-end;
+            gap: 12px;
+        }
+
+        .message-input {
+            flex: 1;
+            background: none;
+            border: none;
+            color: #e9edef;
+            outline: none;
+            font-size: 15px;
+            resize: none;
+            max-height: 100px;
+            line-height: 1.4;
+        }
+
+        .message-input::placeholder {
+            color: #8696a0;
+        }
+
+        .attach-btn, .send-btn {
+            background: none;
+            border: none;
+            color: #8696a0;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .send-btn {
+            background: #00a884;
+            color: white;
+            width: 40px;
+            height: 40px;
+        }
+
+        .send-btn:hover {
+            background: #00c897;
+        }
+
+        /* Welcome Screen */
+        .welcome-screen {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #0b141a;
+            color: #8696a0;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .welcome-logo {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+            font-size: 80px;
+            color: white;
+        }
+
+        .welcome-title {
+            color: #e9edef;
+            font-size: 32px;
+            font-weight: 300;
+            margin-bottom: 10px;
+        }
+
+        .welcome-subtitle {
+            font-size: 16px;
+            margin-bottom: 30px;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .quick-action {
+            background: #202c33;
+            color: #00a884;
+            border: 1px solid #00a884;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .quick-action:hover {
+            background: #00a884;
+            color: white;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                display: none;
+            }
+
+            .sidebar.mobile-active {
+                display: flex;
+            }
+
+            .chat-area {
+                display: none;
+            }
+
+            .chat-area.mobile-active {
+                display: flex;
+            }
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #394a53;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4a5f6e;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <!-- Sidebar Header -->
+            <div class="header">
+                <div class="header-left">
+                    <div class="profile-pic" id="userAvatar">U</div>
+                </div>
+                <div class="header-actions">
+                    <button class="header-btn" title="New Chat">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                        </svg>
+                    </button>
+                    <button class="header-btn" title="Menu">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <circle cx="12" cy="12" r="1.5"/>
+                            <circle cx="12" cy="5" r="1.5"/>
+                            <circle cx="12" cy="19" r="1.5"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="search-container">
+                <div class="search-bar">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="#8696a0">
+                        <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                    </svg>
+                    <input type="text" placeholder="Search or start new chat" id="searchInput">
+                </div>
+            </div>
+
+            <!-- Chat List -->
+            <div class="chat-list" id="chatList">
+                <!-- Zmarty AI Assistant -->
+                <div class="chat-item active" data-chat="zmarty">
+                    <div class="chat-avatar">🤖</div>
+                    <div class="chat-info">
+                        <div class="chat-name">Zmarty AI Assistant</div>
+                        <div class="chat-preview">Ask me about crypto trading...</div>
+                    </div>
+                    <div class="chat-meta">
+                        <div class="chat-time">now</div>
+                    </div>
+                </div>
+
+                <!-- Market Updates -->
+                <div class="chat-item" data-chat="market">
+                    <div class="chat-avatar">📊</div>
+                    <div class="chat-info">
+                        <div class="chat-name">Market Updates</div>
+                        <div class="chat-preview">BTC: $65,432 (+2.3%)</div>
+                    </div>
+                    <div class="chat-meta">
+                        <div class="chat-time">2m</div>
+                        <div class="unread-badge">3</div>
+                    </div>
+                </div>
+
+                <!-- Trading Signals -->
+                <div class="chat-item" data-chat="signals">
+                    <div class="chat-avatar">📈</div>
+                    <div class="chat-info">
+                        <div class="chat-name">Trading Signals</div>
+                        <div class="chat-preview">New signal: ETH/USDT</div>
+                    </div>
+                    <div class="chat-meta">
+                        <div class="chat-time">15m</div>
+                        <div class="unread-badge">1</div>
+                    </div>
+                </div>
+
+                <!-- Portfolio -->
+                <div class="chat-item" data-chat="portfolio">
+                    <div class="chat-avatar">💼</div>
+                    <div class="chat-info">
+                        <div class="chat-name">Portfolio Manager</div>
+                        <div class="chat-preview">Total value: $12,450</div>
+                    </div>
+                    <div class="chat-meta">
+                        <div class="chat-time">1h</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Area -->
+        <div class="chat-area" id="chatArea">
+            <!-- Chat Header -->
+            <div class="chat-header">
+                <div class="chat-header-info">
+                    <button class="header-btn" id="backBtn" style="display: none;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+                        </svg>
+                    </button>
+                    <div class="chat-avatar">🤖</div>
+                    <div>
+                        <div class="chat-header-name">Zmarty AI Assistant</div>
+                        <div class="chat-status">Always online</div>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button class="header-btn" title="Search">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                        </svg>
+                    </button>
+                    <button class="header-btn" title="Menu">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <circle cx="12" cy="12" r="1.5"/>
+                            <circle cx="12" cy="5" r="1.5"/>
+                            <circle cx="12" cy="19" r="1.5"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Messages Container -->
+            <div class="messages-container">
+                <div class="messages-wrapper" id="messagesWrapper">
+                    <!-- Welcome Message -->
+                    <div class="message received">
+                        <div class="message-content">
+                            Hi! I'm Zmarty, your AI-powered crypto trading assistant. How can I help you today?
+                        </div>
+                        <div class="message-time">now</div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="message received">
+                        <div class="message-content">
+                            Here are some things I can help you with:
+                            <div class="quick-actions">
+                                <button class="quick-action" onclick="sendQuickMessage('Show me BTC price')">📊 BTC Price</button>
+                                <button class="quick-action" onclick="sendQuickMessage('Analyze market trends')">📈 Market Trends</button>
+                                <button class="quick-action" onclick="sendQuickMessage('Show my portfolio')">💼 Portfolio</button>
+                                <button class="quick-action" onclick="sendQuickMessage('Trading signals')">🎯 Signals</button>
+                            </div>
+                        </div>
+                        <div class="message-time">now</div>
+                    </div>
+
+                    <!-- Typing Indicator -->
+                    <div class="typing-indicator" id="typingIndicator">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Input Area -->
+            <div class="input-area">
+                <div class="input-wrapper">
+                    <button class="attach-btn" title="Attach">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M16.5 6v11.5c0 2.21-1.79 4-4 4s-4-1.79-4-4V5c0-1.38 1.12-2.5 2.5-2.5s2.5 1.12 2.5 2.5v10.5c0 .55-.45 1-1 1s-1-.45-1-1V6H10v9.5c0 1.38 1.12 2.5 2.5 2.5s2.5-1.12 2.5-2.5V5c0-2.21-1.79-4-4-4S7 2.79 7 5v12.5c0 3.04 2.46 5.5 5.5 5.5s5.5-2.46 5.5-5.5V6h-1.5z"/>
+                        </svg>
+                    </button>
+                    <textarea class="message-input" id="messageInput" placeholder="Type a message" rows="1"></textarea>
+                </div>
+                <button class="send-btn" id="sendBtn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Supabase Configuration
+        const SUPABASE_URL = 'https://xhskmqsgtdhehzlvtuns.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhoc2ttcXNndGRlaGVzbHZ0dW5zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjQ1MjU0NzEsImV4cCI6MjA0MDEwMTQ3MX0.PPLsZ0K6-VqJqwH9BdaZRKTF2vHpIRN5uNWEH3gNaRo';
+
+        let supabase;
+        let currentUser = null;
+        let currentChat = 'zmarty';
+
+        // Initialize Supabase
+        function initSupabase() {
+            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            checkAuth();
+        }
+
+        // Check Authentication
+        async function checkAuth() {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user) {
+                currentUser = user;
+                updateUserProfile();
+            }
+        }
+
+        // Update User Profile
+        function updateUserProfile() {
+            if (currentUser) {
+                const avatar = document.getElementById('userAvatar');
+                const name = currentUser.email ? currentUser.email.charAt(0).toUpperCase() : 'U';
+                avatar.textContent = name;
+            }
+        }
+
+        // Send Message
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+
+            if (!message) return;
+
+            // Add user message
+            addMessage(message, 'sent');
+
+            // Clear input
+            input.value = '';
+            input.style.height = 'auto';
+
+            // Show typing indicator
+            showTyping();
+
+            // Simulate AI response
+            setTimeout(() => {
+                hideTyping();
+                const response = getAIResponse(message);
+                addMessage(response, 'received');
+            }, 1500);
+        }
+
+        // Add Message to Chat
+        function addMessage(text, type) {
+            const wrapper = document.getElementById('messagesWrapper');
+            const typingIndicator = document.getElementById('typingIndicator');
+
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+
+            const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+            messageDiv.innerHTML = `
+                <div class="message-content">${text}</div>
+                <div class="message-time">${time}</div>
+            `;
+
+            wrapper.insertBefore(messageDiv, typingIndicator);
+
+            // Scroll to bottom
+            const container = wrapper.parentElement;
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // Show/Hide Typing Indicator
+        function showTyping() {
+            document.getElementById('typingIndicator').classList.add('active');
+        }
+
+        function hideTyping() {
+            document.getElementById('typingIndicator').classList.remove('active');
+        }
+
+        // Get AI Response (Simulated)
+        function getAIResponse(message) {
+            const lowerMessage = message.toLowerCase();
+
+            if (lowerMessage.includes('btc') || lowerMessage.includes('bitcoin')) {
+                return 'Bitcoin is currently trading at $65,432, up 2.3% in the last 24 hours. The RSI indicates neutral momentum at 52, with strong support at $64,000.';
+            }
+
+            if (lowerMessage.includes('portfolio')) {
+                return 'Your portfolio is valued at $12,450:\n• BTC: 0.15 ($9,815)\n• ETH: 1.2 ($2,160)\n• USDT: $475\n\nTotal gain: +15.3% this month';
+            }
+
+            if (lowerMessage.includes('signal') || lowerMessage.includes('trade')) {
+                return '🎯 New Trading Signal:\n\nPair: ETH/USDT\nAction: BUY\nEntry: $1,800\nTarget 1: $1,850\nTarget 2: $1,900\nStop Loss: $1,750\n\nConfidence: 78%';
+            }
+
+            if (lowerMessage.includes('trend') || lowerMessage.includes('market')) {
+                return 'Market Analysis:\n\n📈 Bullish momentum building\n• BTC breaking resistance at $65k\n• ETH showing strength above $1,800\n• Altcoins following with 5-10% gains\n\nRecommendation: Consider DCA positions';
+            }
+
+            return `I understand you're asking about "${message}". I can help you with:\n• Real-time crypto prices\n• Trading signals and analysis\n• Portfolio management\n• Market trends and news\n\nWhat specific information would you like?`;
+        }
+
+        // Send Quick Message
+        function sendQuickMessage(text) {
+            document.getElementById('messageInput').value = text;
+            sendMessage();
+        }
+
+        // Event Listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            initSupabase();
+
+            // Send button
+            document.getElementById('sendBtn').addEventListener('click', sendMessage);
+
+            // Enter key to send
+            document.getElementById('messageInput').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                }
+            });
+
+            // Auto-resize textarea
+            document.getElementById('messageInput').addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = this.scrollHeight + 'px';
+            });
+
+            // Chat selection
+            document.querySelectorAll('.chat-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    document.querySelectorAll('.chat-item').forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+
+                    // Mobile: show chat area
+                    if (window.innerWidth <= 768) {
+                        document.getElementById('sidebar').classList.remove('mobile-active');
+                        document.getElementById('chatArea').classList.add('mobile-active');
+                        document.getElementById('backBtn').style.display = 'block';
+                    }
+                });
+            });
+
+            // Back button for mobile
+            document.getElementById('backBtn').addEventListener('click', () => {
+                document.getElementById('sidebar').classList.add('mobile-active');
+                document.getElementById('chatArea').classList.remove('mobile-active');
+            });
+
+            // Check mobile on load
+            if (window.innerWidth <= 768) {
+                document.getElementById('sidebar').classList.add('mobile-active');
+            }
+        });
+    </script>
+</body>
+</html>

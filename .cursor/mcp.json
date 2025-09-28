@@ -7,23 +7,6 @@
         "mcp"
       ]
     },
-    "supabase": {
-      "command": "npx",
-      "args": [
-        "@supabase/mcp-server-supabase",
-        "--read-only",
-        "--project-ref=asjtxrmftmutcsnqgidy"
-      ]
-    },
-    "Ref": {
-      "command": "npx",
-      "args": [
-        "ref-tools-mcp@latest"
-      ],
-      "env": {
-        "REF_API_KEY": "ref-5c535e98df41fa8ef0f9"
-      }
-    },
     "browsermcp": {
       "command": "npx",
       "args": [

@@ -3,39 +3,65 @@
 ## ServiceRegistry
 **File**: .cursor/rules/ServiceRegistry.mdc
 **Relevance**: 0
-**Size**: 5842 bytes
+**Size**: 4005 bytes
 
-**Summary**: ## Description | Core service component of the ZmartBot ecosystem providing essential functionality. | @agent: ServiceRegistryAgent | ```bash | ``` | ---
-**Compressed**: 
+**Content**: 
+## Description
+Core service component of the ZmartBot ecosystem providing essential functionality.
+
+@agent: ServiceRegistryAgent
+
+
+# Service Registry – Control Plane
+Manages dynamic service discovery, unique ports, SAVE/UNDO profiles, and dependency-ordered startup.
+
+## ...
 
 ---
 
 ## PortManager
 **File**: .cursor/rules/PortManager.mdc
 **Relevance**: 0
-**Size**: 18937 bytes
+**Size**: 117 bytes
 
-**Summary**: @datasource: PortRegistry | ## 🤖 MCP (Model Context Protocol) Integration | ### **MCP Server Pairing** | - **Design Integration**: Seamless integration with UI design workflows | ```bash
-**Key Info**: application | str | (8200, 8299), | (8100, 8199),
+**Content**: @datasource: PortRegistry
+
+
+## Triggers
+- **API endpoint requests**
+- **Database events**
+- **Workflow transitions**
+
 
 ---
 
 ## ServiceDiscovery
 **File**: .cursor/rules/ServiceDiscovery.mdc
 **Relevance**: 0
-**Size**: 27121 bytes
+**Size**: 222 bytes
 
-**Summary**: ## Description | Core service component of the ZmartBot ecosystem providing essential functionality. | @agent: ServiceDiscoveryAgent
-**Key Info**: application | - **`/api/analyzer-pairs`**: View all 15-minute analysis results | Access Winners Database | COMPLETE | ACTIVE
+**Content**: 
+## Description
+Core service component of the ZmartBot ecosystem providing essential functionality.
+
+@agent: ServiceDiscoveryAgent
+
+
+
+## Triggers
+- **API endpoint requests**
+- **File system changes**
+- **Database events**
+
 
 ---
 
 ## NewService
 **File**: .cursor/rules/NewService.mdc
 **Relevance**: 0
-**Size**: 26340 bytes
+**Size**: 24590 bytes
 
-**Summary**: ## Description | Core service component of the ZmartBot ecosystem providing essential functionality. | ```bash | ``` | --- | - **MANDATORY MDC**: Every .py file MUST have an associated MDC file
+**Summary**: ## Description | Core service component of the ZmartBot ecosystem providing essential functionality. | # NewService.mdc | - **MANDATORY MDC**: Every .py file MUST have an associated MDC file
 **Key Info**: application | Single source of truth to integrate any new service into ZmartBot — deterministically, safely, and repeatably. | 8200–8299 | API Services (MainAPIServer, API-Manager, etc.)
 
 ---
@@ -43,9 +69,9 @@
 ## PortManagerDatabase
 **File**: .cursor/rules/PortManagerDatabase.mdc
 **Relevance**: 0
-**Size**: 17983 bytes
+**Size**: 16223 bytes
 
-**Summary**: ## Description | Core service component of the ZmartBot ecosystem providing essential functionality. | @datasource: PortRegistry | ```bash | ``` | --- | - **Type**: SQLite database | ```sql | id INTEG...
+**Summary**: ## Description | Core service component of the ZmartBot ecosystem providing essential functionality. | @datasource: PortRegistry | - **Type**: SQLite database | ```sql | id INTEGER PRIMARY KEY, | pid ...
 **Key Info**: str | Service | Port 8000 - FastAPI server
 
 ---

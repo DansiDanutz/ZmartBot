@@ -1,46 +1,5 @@
 @agent: DiscoveryDatabaseAgent
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - Discovery Database Service MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered service discovery and database optimization
-- **Memory Gateway**: Persistent discovery database state and metadata
-- **UI Automation**: Automated discovery database monitoring and health checks
-- **Figma Integration**: Discovery database dashboard design and UI management
-- **Supabase Integration**: Cloud-based discovery database analytics and reporting
-
-### **MCP Integration Benefits**
-- **Enhanced Discovery**: AI-powered service discovery optimization and analysis
-- **Persistent State**: Discovery database history and metadata preservation
-- **Automated Monitoring**: Real-time discovery database health and performance tracking
-- **Visual Design**: Professional discovery database dashboard and UI design
-- **Cloud Analytics**: Advanced discovery database analytics and reporting
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8780/health"
-
-# Service discovery via MCP
-curl -X POST "http://127.0.0.1:8780/discover" \
-  -H "Content-Type: application/json" \
-  -d '{"path": "/services", "type": "python"}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered service discovery
-- **ByteRover**: ✅ Active - Discovery database state persistence
-- **UI TARS**: ✅ Active - Discovery database monitoring automation
-- **Figma**: ✅ Active - Discovery database dashboard design
-- **Supabase**: ✅ Active - Discovery database cloud analytics
-
----
 
 # Discovery Database Service – Level 1 Service Lifecycle Management
 > Type: backend | Version: 1.0.0 | Owner: zmartbot | Port: 8780

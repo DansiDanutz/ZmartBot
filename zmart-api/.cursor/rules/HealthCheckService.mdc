@@ -1,46 +1,5 @@
 # 📈 Health Check Service - System Health Monitoring
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - Health Check Service MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered health monitoring and analysis
-- **Memory Gateway**: Persistent health monitoring state and metrics metadata
-- **UI Automation**: Automated health monitoring and alerting
-- **Figma Integration**: Health monitoring dashboard design and UI management
-- **Supabase Integration**: Cloud-based health monitoring analytics and reporting
-
-### **MCP Integration Benefits**
-- **Enhanced Monitoring**: AI-powered health analysis and optimization
-- **Persistent State**: Health monitoring history and metrics preservation
-- **Automated Alerting**: Real-time health monitoring and alert management
-- **Visual Design**: Professional health monitoring dashboard and UI design
-- **Cloud Analytics**: Advanced health monitoring analytics and reporting
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8000/health"
-
-# Health monitoring via MCP
-curl -X POST "http://127.0.0.1:8000/monitor" \
-  -H "Content-Type: application/json" \
-  -d '{"service": "all", "action": "check"}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered health monitoring
-- **ByteRover**: ✅ Active - Health monitoring state persistence
-- **UI TARS**: ✅ Active - Health monitoring automation
-- **Figma**: ✅ Active - Health monitoring dashboard design
-- **Supabase**: ✅ Active - Health monitoring cloud analytics
-
----
 
 ## Purpose
 Comprehensive health monitoring service for ZmartBot system, providing real-time health checks, performance monitoring, and automated alerting.

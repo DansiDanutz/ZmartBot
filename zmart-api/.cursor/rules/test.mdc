@@ -2,45 +2,6 @@
 ## Description
 Core service component of the ZmartBot ecosystem providing essential functionality.
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - Test Service MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered test service optimization and analysis
-- **Memory Gateway**: Persistent test service state and metadata
-- **UI Automation**: Automated test service monitoring and health checks
-- **Figma Integration**: Test service dashboard design and UI management
-- **Supabase Integration**: Cloud-based test service analytics and reporting
-
-### **MCP Integration Benefits**
-- **Enhanced Testing**: AI-powered test service optimization and analysis
-- **Persistent State**: Cross-session test service state and configuration management
-- **Automated Monitoring**: Real-time test service health and performance tracking
-- **Visual Dashboard**: Interactive test service management and testing interface
-- **Cloud Analytics**: Comprehensive test service usage and performance analytics
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8080/health"
-
-# Test service operation via MCP
-curl -X POST "http://127.0.0.1:8080/test" -d '{"test": "all", "action": "run"}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered test service optimization
-- **ByteRover**: ✅ Active - Persistent test service state management
-- **UI TARS**: ✅ Active - Automated test service monitoring
-- **Figma**: ✅ Active - Test service dashboard design
-- **Supabase**: ✅ Active - Cloud-based test service analytics
-
----
 
 # test.mdc
 > Purpose: Test

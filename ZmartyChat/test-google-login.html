@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Google Login - Zmarty</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .btn-google {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 12px 20px;
+            margin: 20px 0;
+            background: white;
+            border: 1px solid #dadce0;
+            border-radius: 8px;
+            font-size: 16px;
+            color: #3c4043;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-google:hover {
+            background: #f8f9fa;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+        }
+        .status {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        #userInfo {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+        .logout-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .logout-btn:hover {
+            background: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Zmarty Google Login Test</h1>
+
+        <div id="status" class="status"></div>
+
+        <button id="googleLogin" class="btn-google">
+            <svg width="18" height="18" xmlns="http://www.w3.org/2000/svg">
+                <g fill="none" fill-rule="evenodd">
+                    <path d="M17.64 9.205c0-.639-.057-1.252-.164-1.841H9v3.481h4.844a4.14 4.14 0 01-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4"/>
+                    <path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 009 18z" fill="#34A853"/>
+                    <path d="M3.964 10.71A5.41 5.41 0 013.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 000 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/>
+                    <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 00.957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z" fill="#EA4335"/>
+                </g>
+            </svg>
+            Sign in with Google
+        </button>
+
+        <div id="userInfo" style="display: none;">
+            <h3>User Information:</h3>
+            <div id="userDetails"></div>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+
+        <div style="margin-top: 30px; padding: 15px; background: #f8f9fa; border-radius: 5px;">
+            <h3>Configuration:</h3>
+            <p><strong>Supabase URL:</strong> https://xhskmqsgtdhehzlvtuns.supabase.co</p>
+            <p><strong>Client ID:</strong> 966065216838-...apps.googleusercontent.com</p>
+            <p><strong>Status:</strong> <span id="configStatus">Checking...</span></p>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Supabase client
+        const supabaseUrl = 'https://xhskmqsgtdhehzlvtuns.supabase.co';
+        const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhoc2ttcXNndGRoZWh6bHZ0dW5zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgxNDkzNTQsImV4cCI6MjA3MzcyNTM1NH0.ULAf9vNHS4nasSnv9UOKS2MCKsSxcMtV3C-R7Wm6qMw';
+
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
+
+        // Check if user is already logged in
+        checkUser();
+
+        async function checkUser() {
+            const { data: { user } } = await supabase.auth.getUser();
+
+            if (user) {
+                showUserInfo(user);
+                document.getElementById('googleLogin').style.display = 'none';
+            }
+
+            document.getElementById('configStatus').textContent = '✅ Connected to Supabase';
+        }
+
+        // Google Sign In
+        document.getElementById('googleLogin').addEventListener('click', async () => {
+            showStatus('info', 'Redirecting to Google...');
+
+            try {
+                const { data, error } = await supabase.auth.signInWithOAuth({
+                    provider: 'google',
+                    options: {
+                        redirectTo: window.location.origin + window.location.pathname,
+                        queryParams: {
+                            access_type: 'offline',
+                            prompt: 'consent'
+                        }
+                    }
+                });
+
+                if (error) {
+                    showStatus('error', 'Error: ' + error.message);
+                    console.error('OAuth error:', error);
+                }
+            } catch (err) {
+                showStatus('error', 'Failed to initiate Google login: ' + err.message);
+                console.error('Error:', err);
+            }
+        });
+
+        // Handle OAuth callback
+        supabase.auth.onAuthStateChange((event, session) => {
+            console.log('Auth event:', event, session);
+
+            if (event === 'SIGNED_IN') {
+                showStatus('success', '✅ Successfully signed in with Google!');
+                if (session?.user) {
+                    showUserInfo(session.user);
+                    document.getElementById('googleLogin').style.display = 'none';
+                }
+            } else if (event === 'SIGNED_OUT') {
+                showStatus('info', 'Signed out successfully');
+                document.getElementById('userInfo').style.display = 'none';
+                document.getElementById('googleLogin').style.display = 'flex';
+            }
+        });
+
+        function showUserInfo(user) {
+            const userInfo = document.getElementById('userInfo');
+            const userDetails = document.getElementById('userDetails');
+
+            userDetails.innerHTML = `
+                <p><strong>Email:</strong> ${user.email}</p>
+                <p><strong>Provider:</strong> ${user.app_metadata?.provider || 'google'}</p>
+                <p><strong>User ID:</strong> ${user.id}</p>
+                <p><strong>Created:</strong> ${new Date(user.created_at).toLocaleDateString()}</p>
+                ${user.user_metadata?.full_name ? `<p><strong>Name:</strong> ${user.user_metadata.full_name}</p>` : ''}
+                ${user.user_metadata?.avatar_url ? `<img src="${user.user_metadata.avatar_url}" alt="Avatar" style="width: 50px; height: 50px; border-radius: 50%; margin-top: 10px;">` : ''}
+            `;
+
+            userInfo.style.display = 'block';
+        }
+
+        async function logout() {
+            const { error } = await supabase.auth.signOut();
+            if (error) {
+                showStatus('error', 'Logout failed: ' + error.message);
+            }
+        }
+
+        function showStatus(type, message) {
+            const status = document.getElementById('status');
+            status.className = 'status ' + type;
+            status.textContent = message;
+            status.style.display = 'block';
+
+            if (type !== 'error') {
+                setTimeout(() => {
+                    status.style.display = 'none';
+                }, 5000);
+            }
+        }
+    </script>
+</body>
+</html>

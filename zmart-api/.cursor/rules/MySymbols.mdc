@@ -4,45 +4,6 @@ Core service component of the ZmartBot ecosystem providing essential functionali
 
 @agent: SymbolValidator
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - MySymbols MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered symbol management and optimization
-- **Memory Gateway**: Persistent symbol state and metadata
-- **UI Automation**: Automated symbol monitoring and health checks
-- **Figma Integration**: Symbol dashboard design and UI management
-- **Supabase Integration**: Cloud-based symbol analytics and reporting
-
-### **MCP Integration Benefits**
-- **Enhanced Management**: AI-powered symbol management and optimization
-- **Persistent State**: Cross-session symbol state and configuration management
-- **Automated Monitoring**: Real-time symbol health and performance tracking
-- **Visual Dashboard**: Interactive symbol management and testing interface
-- **Cloud Analytics**: Comprehensive symbol usage and performance analytics
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8000/symbols/health"
-
-# Symbol management via MCP
-curl -X POST "http://127.0.0.1:8000/symbols/manage" -d '{"action": "update_portfolio"}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered symbol management
-- **ByteRover**: ✅ Active - Persistent symbol state management
-- **UI TARS**: ✅ Active - Automated symbol monitoring
-- **Figma**: ✅ Active - Symbol dashboard design
-- **Supabase**: ✅ Active - Cloud-based symbol analytics
-
----
 
 # MySymbols - Trading Symbol Management System
 

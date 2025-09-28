@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Supabase Auth</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <h1>Testing Supabase Registration</h1>
+    <div id="result"></div>
+
+    <script>
+        // Initialize Supabase
+        const supabaseUrl = 'https://asjtxrmftmutcsnqgidy.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFzanR4cm1mdG11dGNzbnFnaWR5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk1Nzc4NjgsImV4cCI6MjA2NTE1Mzg2OH0.w_S6VaAqJ6xYv0LXBBb5gfOJbKXV3r9EfGwGGxGHOcE';
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+        async function testRegistration() {
+            const testEmail = 'test' + Date.now() + '@example.com';
+            const testPassword = 'Test123!@#';
+
+            console.log('Testing registration with:', testEmail);
+            document.getElementById('result').innerHTML = 'Testing registration with: ' + testEmail + '<br>';
+
+            try {
+                const { data, error } = await supabase.auth.signUp({
+                    email: testEmail,
+                    password: testPassword,
+                    options: {
+                        data: {
+                            full_name: 'Test User'
+                        }
+                    }
+                });
+
+                if (error) {
+                    console.error('Registration error:', error);
+                    document.getElementById('result').innerHTML += '<span style="color:red">ERROR: ' + error.message + '</span>';
+                } else {
+                    console.log('Registration success:', data);
+                    document.getElementById('result').innerHTML += '<span style="color:green">SUCCESS! User created: ' + JSON.stringify(data.user?.email) + '</span>';
+                }
+            } catch (err) {
+                console.error('Unexpected error:', err);
+                document.getElementById('result').innerHTML += '<span style="color:red">UNEXPECTED ERROR: ' + err.message + '</span>';
+            }
+        }
+
+        // Run test immediately
+        testRegistration();
+    </script>
+</body>
+</html>

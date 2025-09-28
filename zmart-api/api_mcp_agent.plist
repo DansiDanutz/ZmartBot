@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.zmartbot.api-mcp-agent</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/bin/python3</string>
+        <string>/Users/dansidanutz/Desktop/ZmartBot/zmart-api/api_mcp_background_agent.py</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>/Users/dansidanutz/Desktop/ZmartBot/zmart-api</string>
+
+    <key>StandardOutPath</key>
+    <string>/Users/dansidanutz/Desktop/ZmartBot/zmart-api/logs/api_mcp_agent_stdout.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>/Users/dansidanutz/Desktop/ZmartBot/zmart-api/logs/api_mcp_agent_stderr.log</string>
+
+    <key>RunAtLoad</key>
+    <true/>
+
+    <key>KeepAlive</key>
+    <dict>
+        <key>SuccessfulExit</key>
+        <false/>
+        <key>Crashed</key>
+        <true/>
+    </dict>
+
+    <key>ThrottleInterval</key>
+    <integer>30</integer>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+        <key>PYTHONPATH</key>
+        <string>/Users/dansidanutz/Desktop/ZmartBot/zmart-api</string>
+    </dict>
+
+    <key>StartInterval</key>
+    <integer>300</integer>
+</dict>
+</plist>

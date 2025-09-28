@@ -2,45 +2,6 @@
 ## Description
 Core service component of the ZmartBot ecosystem providing essential functionality.
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - Market Data Aggregator MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered data aggregation and optimization
-- **Memory Gateway**: Persistent data aggregation state and metadata
-- **UI Automation**: Automated data monitoring and health checks
-- **Figma Integration**: Data dashboard design and UI management
-- **Supabase Integration**: Cloud-based data analytics and reporting
-
-### **MCP Integration Benefits**
-- **Enhanced Aggregation**: AI-powered data processing and optimization
-- **Persistent State**: Cross-session data state and configuration management
-- **Automated Monitoring**: Real-time data health and performance tracking
-- **Visual Dashboard**: Interactive data management and testing interface
-- **Cloud Analytics**: Comprehensive data usage and performance analytics
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8000/aggregator/health"
-
-# Data aggregation via MCP
-curl -X POST "http://127.0.0.1:8000/aggregator/process" -d '{"symbols": ["BTCUSDT", "ETHUSDT"]}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered data aggregation
-- **ByteRover**: ✅ Active - Persistent data state management
-- **UI TARS**: ✅ Active - Automated data monitoring
-- **Figma**: ✅ Active - Data dashboard design
-- **Supabase**: ✅ Active - Cloud-based data analytics
-
----
 
 # Market Data Aggregator Service - Complete Master MDC File
 

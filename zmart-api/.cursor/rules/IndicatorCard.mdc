@@ -4,47 +4,6 @@ Core service component of the ZmartBot ecosystem providing essential functionali
 
 @agent: IndicatorEngine
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - Indicator Card MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered indicator analysis and optimization
-- **Memory Gateway**: Persistent indicator state and analysis metadata
-- **UI Automation**: Automated indicator monitoring and health checks
-- **Figma Integration**: Indicator card design and UI management
-- **Supabase Integration**: Cloud-based indicator analytics and reporting
-
-### **MCP Integration Benefits**
-- **Enhanced Analysis**: AI-powered indicator optimization and insights
-- **Persistent State**: Indicator analysis history and metadata preservation
-- **Automated Monitoring**: Real-time indicator health and performance tracking
-- **Visual Design**: Professional indicator card design and UI management
-- **Cloud Analytics**: Advanced indicator analytics and performance reporting
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:8000/health"
-
-# Indicator analysis via MCP
-curl -X POST "http://127.0.0.1:8000/analyze" \
-  -H "Content-Type: application/json" \
-  -d '{"symbol": "BTCUSDT", "indicators": "all"}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered indicator analysis
-- **ByteRover**: ✅ Active - Indicator state persistence
-- **UI TARS**: ✅ Active - Indicator monitoring automation
-- **Figma**: ✅ Active - Indicator card design
-- **Supabase**: ✅ Active - Indicator cloud analytics
-
----
 
 # Indicator Card - Technical Analysis Display System
 

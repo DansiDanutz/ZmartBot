@@ -1,44 +1,5 @@
 # ProfessionalDashboardApp.mdc
 
-## 🤖 MCP (Model Context Protocol) Integration
-
-### **MCP Server Pairing**
-**Status**: ✅ **ACTIVE** - Professional Dashboard App MCP Integration
-**MCP Servers**: `claude-code`, `byterover`, `ui-tars`, `figma`, `supabase`
-**Configuration**: `/Users/dansidanutz/.cursor/mcp.json`
-**Integration Type**: Multi-MCP Service Integration
-
-### **MCP Integration Features**
-- **Claude Code Integration**: AI-powered dashboard app development and optimization
-- **Memory Gateway**: Persistent dashboard app state and metadata
-- **UI Automation**: Automated dashboard app monitoring and health checks
-- **Figma Integration**: Dashboard app design and UI management
-- **Supabase Integration**: Cloud-based dashboard app analytics and reporting
-
-### **MCP Integration Benefits**
-- **Enhanced App**: AI-powered dashboard app development and optimization
-- **Persistent State**: Cross-session dashboard app state and configuration management
-- **Automated Monitoring**: Real-time dashboard app health and performance tracking
-- **Visual Design**: Interactive dashboard app management and testing interface
-- **Cloud Analytics**: Comprehensive dashboard app usage and performance analytics
-
-### **MCP Usage Examples**
-```bash
-# Health check via MCP
-curl -X GET "http://127.0.0.1:3400/health"
-
-# Dashboard app operation via MCP
-curl -X POST "http://127.0.0.1:3400/dashboard/update" -d '{"action": "refresh_components"}'
-```
-
-### **MCP Status**
-- **Claude Code**: ✅ Active - AI-powered dashboard app development
-- **ByteRover**: ✅ Active - Persistent dashboard app state management
-- **UI TARS**: ✅ Active - Automated dashboard app monitoring
-- **Figma**: ✅ Active - Dashboard app design
-- **Supabase**: ✅ Active - Cloud-based dashboard app analytics
-
----
 
 ## Summary
 React-based professional trading dashboard application serving as the main UI entry point for ZmartBot, featuring routing, sidebar navigation, real-time components, and comprehensive trading interface with symbol management, chart visualization, and alert systems.
