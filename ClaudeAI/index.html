@@ -1872,8 +1872,10 @@
 
         // Deployment notification system with bug tracking
         function showDeploymentMessage() {
+            console.log('🚀 DEPLOYMENT NOTIFICATION: Attempting to show banner...');
             // Get current bug fix info from document or localStorage
             const bugInfo = getBugFixInfo();
+            console.log('Bug info:', bugInfo);
 
             const deploymentBanner = document.createElement('div');
             deploymentBanner.id = 'deployment-banner';
@@ -1976,10 +1978,9 @@
             const deploymentAge = currentTime - (lastDeployment || 0);
 
             // Show notification if deployment is less than 30 seconds old or first load
-            if (!lastDeployment || deploymentAge < 30000) {
-                setTimeout(showDeploymentMessage, 500);
-                localStorage.setItem('last_deployment_time', currentTime.toString());
-            }
+            // Force show for testing Bug #4 notification
+            setTimeout(showDeploymentMessage, 500);
+            localStorage.setItem('last_deployment_time', currentTime.toString());
         });
     </script>
 </body>
