@@ -2002,20 +2002,86 @@
                     description: "Fixed plan selection not visually restored when navigating back",
                     details: "✅ State restoration ✅ Visual feedback ✅ Button state management",
                     severity: "Medium"
+                },
+                6: {
+                    bugNumber: 6,
+                    title: "Google OAuth Callback Missing",
+                    description: "Added missing callback handler for Google authentication",
+                    details: "✅ Session detection ✅ URL cleanup ✅ Auto-advance to plan selection",
+                    severity: "Critical"
                 }
             };
 
-            // Check localStorage for latest bug fix or default to Bug #5
-            const storedBugNumber = localStorage.getItem('latest_bug_number') || '5';
+            // Check localStorage for latest bug fix or default to Bug #6
+            const storedBugNumber = localStorage.getItem('latest_bug_number') || '6';
             const bugNumber = parseInt(storedBugNumber);
 
-            return bugFixHistory[bugNumber] || bugFixHistory[5];
+            return bugFixHistory[bugNumber] || bugFixHistory[6];
+        }
+
+        // Handle Google OAuth callback
+        async function handleGoogleCallback() {
+            try {
+                console.log('🔍 Processing Google OAuth callback...');
+
+                // Get current session from Supabase
+                const { data: { session }, error } = await supabaseClient.auth.getSession();
+
+                if (error) {
+                    console.error('Session error:', error);
+                    showAlert('authAlert', 'Authentication failed. Please try again.');
+                    return;
+                }
+
+                if (session && session.user) {
+                    console.log('✅ Google authentication successful:', session.user.email);
+
+                    // Store user in state
+                    state.user = {
+                        id: session.user.id,
+                        email: session.user.email,
+                        provider: 'google',
+                        verified: true
+                    };
+
+                    // Clean up URL
+                    const url = new URL(window.location);
+                    url.searchParams.delete('google');
+                    window.history.replaceState({}, document.title, url.toString());
+
+                    // Save state and advance to plan selection
+                    state.saveToStorage();
+
+                    // Show success message and advance to step 7 (plan selection)
+                    showAlert('authAlert', `Welcome ${session.user.email}! Authentication successful.`, 'success');
+
+                    setTimeout(() => {
+                        state.goToStep(7, 'forward', true);
+                    }, 1500);
+
+                } else {
+                    console.log('❌ No valid session found');
+                    showAlert('authAlert', 'Authentication incomplete. Please try again.');
+                }
+
+            } catch (error) {
+                console.error('Google OAuth callback error:', error);
+                showAlert('authAlert', 'Authentication failed. Please try again.');
+            }
         }
 
         // Initialize on page load
-        window.addEventListener('load', () => {
+        window.addEventListener('load', async () => {
             // Check for URL parameters indicating email verification or other callbacks
             const urlParams = new URLSearchParams(window.location.search);
+
+            // Handle Google OAuth callback
+            if (urlParams.get('google') === 'true') {
+                console.log('🔍 Google OAuth callback detected');
+                await handleGoogleCallback();
+                return;
+            }
+
             if (urlParams.get('verified') === 'true') {
                 state.goToStep(7, 'forward', true);
             }
@@ -2026,9 +2092,9 @@
             const deploymentAge = currentTime - (lastDeployment || 0);
 
             // Show notification if deployment is less than 30 seconds old or first load
-            // Force show Bug #5 notification and update localStorage
-            localStorage.setItem('latest_bug_number', '5');
-            console.log('🚀 Forcing Bug #5 notification display');
+            // Force show Bug #6 notification and update localStorage
+            localStorage.setItem('latest_bug_number', '6');
+            console.log('🚀 Forcing Bug #6 notification display');
             setTimeout(showDeploymentMessage, 500);
             localStorage.setItem('last_deployment_time', currentTime.toString());
         });
