@@ -890,14 +890,18 @@
                         Check your email for a 6-digit code and enter it below.
                     </p>
 
-                    <!-- 6-Digit Code Input -->
-                    <div style="display: flex; gap: 8px; justify-content: center; margin: 20px 0;">
-                        <input type="text" id="code1" maxlength="6" inputmode="numeric" pattern="[0-9]*" style="width: 40px; height: 50px; text-align: center; font-size: 20px; font-weight: bold; border: 2px solid #e5e7eb; border-radius: 8px;" oninput="handleCodeInput(this, 'code2')" onkeydown="moveToPrev(event, this, null)" onpaste="handlePaste(event, this)">
-                        <input type="text" id="code2" maxlength="1" inputmode="numeric" pattern="[0-9]*" style="width: 40px; height: 50px; text-align: center; font-size: 20px; font-weight: bold; border: 2px solid #e5e7eb; border-radius: 8px;" oninput="handleCodeInput(this, 'code3')" onkeydown="moveToPrev(event, this, 'code1')">
-                        <input type="text" id="code3" maxlength="1" inputmode="numeric" pattern="[0-9]*" style="width: 40px; height: 50px; text-align: center; font-size: 20px; font-weight: bold; border: 2px solid #e5e7eb; border-radius: 8px;" oninput="handleCodeInput(this, 'code4')" onkeydown="moveToPrev(event, this, 'code2')">
-                        <input type="text" id="code4" maxlength="1" inputmode="numeric" pattern="[0-9]*" style="width: 40px; height: 50px; text-align: center; font-size: 20px; font-weight: bold; border: 2px solid #e5e7eb; border-radius: 8px;" oninput="handleCodeInput(this, 'code5')" onkeydown="moveToPrev(event, this, 'code3')">
-                        <input type="text" id="code5" maxlength="1" inputmode="numeric" pattern="[0-9]*" style="width: 40px; height: 50px; text-align: center; font-size: 20px; font-weight: bold; border: 2px solid #e5e7eb; border-radius: 8px;" oninput="handleCodeInput(this, 'code6')" onkeydown="moveToPrev(event, this, 'code4')">
-                        <input type="text" id="code6" maxlength="1" inputmode="numeric" pattern="[0-9]*" style="width: 40px; height: 50px; text-align: center; font-size: 20px; font-weight: bold; border: 2px solid #e5e7eb; border-radius: 8px;" oninput="handleCodeInput(this, null)" onkeydown="moveToPrev(event, this, 'code5')">
+                    <!-- Bug #29 Fix: Enhanced 6-Digit Code Input with Better UX -->
+                    <div style="display: flex; gap: 8px; justify-content: center; margin: 20px 0;" class="code-input-container">
+                        <input type="text" id="code1" maxlength="1" inputmode="numeric" pattern="[0-9]*" style="width: 50px; height: 60px; text-align: center; font-size: 24px; font-weight: bold; border: 2px solid #e5e7eb; border-radius: 12px; transition: all 0.2s; background: #f8fafc;" oninput="handleCodeInput(this, 'code2')" onkeydown="moveToPrev(event, this, null)" onpaste="handlePaste(event, this)" onfocus="this.style.borderColor='#3b82f6'; this.style.background='white';" onblur="this.style.borderColor='#e5e7eb'; this.style.background='#f8fafc';" placeholder="•" aria-label="First digit of verification code">
+                        <input type="text" id="code2" maxlength="1" inputmode="numeric" pattern="[0-9]*" style="width: 50px; height: 60px; text-align: center; font-size: 24px; font-weight: bold; border: 2px solid #e5e7eb; border-radius: 12px; transition: all 0.2s; background: #f8fafc;" oninput="handleCodeInput(this, 'code3')" onkeydown="moveToPrev(event, this, 'code1')" onfocus="this.style.borderColor='#3b82f6'; this.style.background='white';" onblur="this.style.borderColor='#e5e7eb'; this.style.background='#f8fafc';" placeholder="•" aria-label="Second digit of verification code">
+                        <input type="text" id="code3" maxlength="1" inputmode="numeric" pattern="[0-9]*" style="width: 50px; height: 60px; text-align: center; font-size: 24px; font-weight: bold; border: 2px solid #e5e7eb; border-radius: 12px; transition: all 0.2s; background: #f8fafc;" oninput="handleCodeInput(this, 'code4')" onkeydown="moveToPrev(event, this, 'code2')" onfocus="this.style.borderColor='#3b82f6'; this.style.background='white';" onblur="this.style.borderColor='#e5e7eb'; this.style.background='#f8fafc';" placeholder="•" aria-label="Third digit of verification code">
+                        <input type="text" id="code4" maxlength="1" inputmode="numeric" pattern="[0-9]*" style="width: 50px; height: 60px; text-align: center; font-size: 24px; font-weight: bold; border: 2px solid #e5e7eb; border-radius: 12px; transition: all 0.2s; background: #f8fafc;" oninput="handleCodeInput(this, 'code5')" onkeydown="moveToPrev(event, this, 'code3')" onfocus="this.style.borderColor='#3b82f6'; this.style.background='white';" onblur="this.style.borderColor='#e5e7eb'; this.style.background='#f8fafc';" placeholder="•" aria-label="Fourth digit of verification code">
+                        <input type="text" id="code5" maxlength="1" inputmode="numeric" pattern="[0-9]*" style="width: 50px; height: 60px; text-align: center; font-size: 24px; font-weight: bold; border: 2px solid #e5e7eb; border-radius: 12px; transition: all 0.2s; background: #f8fafc;" oninput="handleCodeInput(this, 'code6')" onkeydown="moveToPrev(event, this, 'code4')" onfocus="this.style.borderColor='#3b82f6'; this.style.background='white';" onblur="this.style.borderColor='#e5e7eb'; this.style.background='#f8fafc';" placeholder="•" aria-label="Fifth digit of verification code">
+                        <input type="text" id="code6" maxlength="1" inputmode="numeric" pattern="[0-9]*" style="width: 50px; height: 60px; text-align: center; font-size: 24px; font-weight: bold; border: 2px solid #e5e7eb; border-radius: 12px; transition: all 0.2s; background: #f8fafc;" oninput="handleCodeInput(this, null)" onkeydown="moveToPrev(event, this, 'code5')" onfocus="this.style.borderColor='#3b82f6'; this.style.background='white';" onblur="this.style.borderColor='#e5e7eb'; this.style.background='#f8fafc';" placeholder="•" aria-label="Sixth digit of verification code">
+                    </div>
+
+                    <div style="text-align: center; margin: 12px 0;">
+                        <p style="font-size: 13px; color: #6b7280;">💡 Tip: You can paste your 6-digit code directly</p>
                     </div>
 
                     <div style="background: white; padding: 16px; border-radius: 8px; margin-top: 16px;">
@@ -1587,6 +1591,7 @@
         }
 
         // Enhanced Password Validation (Bug #7 Fix)
+        // Bug #28 Fix: Enhanced Password Validation with Better UX
         function validatePassword(password) {
             const requirements = {
                 length: password.length >= 8,
@@ -1596,20 +1601,30 @@
                 special: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)
             };
 
-            const missingRequirements = [];
-            if (!requirements.length) missingRequirements.push('8+ characters');
-            if (!requirements.uppercase) missingRequirements.push('uppercase letter');
-            if (!requirements.lowercase) missingRequirements.push('lowercase letter');
-            if (!requirements.number) missingRequirements.push('number');
-            if (!requirements.special) missingRequirements.push('special character');
+            const suggestions = [];
+            if (!requirements.length) suggestions.push('🔢 Use 8+ characters');
+            if (!requirements.uppercase) suggestions.push('🔤 Add uppercase letter (A-Z)');
+            if (!requirements.lowercase) suggestions.push('🔡 Add lowercase letter (a-z)');
+            if (!requirements.number) suggestions.push('🔢 Add number (0-9)');
+            if (!requirements.special) suggestions.push('🔣 Add special character (!@#$%^&*)');
+
+            const strength = Object.values(requirements).filter(req => req).length;
+            const strengthLabels = ['Very Weak 😰', 'Weak 😕', 'Fair 😐', 'Good 😊', 'Strong 💪'];
+            const strengthColors = ['#ef4444', '#f97316', '#eab308', '#22c55e', '#16a34a'];
 
             const isValid = Object.values(requirements).every(req => req);
 
             return {
                 isValid,
+                strength,
+                strengthLabel: strengthLabels[strength] || 'Very Weak 😰',
+                strengthColor: strengthColors[strength] || '#ef4444',
                 message: isValid
-                    ? 'Password meets security requirements'
-                    : `Password must include: ${missingRequirements.join(', ')}`
+                    ? '✅ Strong password! Your account is secure.'
+                    : suggestions.length === 1
+                        ? `Almost there! ${suggestions[0]}`
+                        : `Strengthen your password:\n${suggestions.join('\n')}`,
+                suggestions
             };
         }
 
@@ -1731,18 +1746,19 @@
             }
         }
 
-        // Google Authentication with real Supabase OAuth
+        // Bug #27 Fix: Simplified Google OAuth Flow
         async function signInWithGoogle() {
             try {
-                setButtonLoading('googleLoginBtn', true);
+                setButtonLoading('googleLoginBtn', true, 'Connecting to Google...');
                 hideAlert('authAlert');
 
-                console.log('Attempting Google authentication...');
+                console.log('🔗 Starting Google authentication...');
 
+                // Enhanced OAuth with better UX
                 const { data, error } = await supabaseClient.auth.signInWithOAuth({
                     provider: 'google',
                     options: {
-                        redirectTo: `${window.location.origin}${window.location.pathname}?google=true`,
+                        redirectTo: window.location.origin + window.location.pathname,
                         queryParams: {
                             access_type: 'offline',
                             prompt: 'consent',
@@ -2239,15 +2255,47 @@
             state.goToStep(2, 'backward', true);
         }
 
+        // Bug #30 Fix: Complete Password Reset Flow
         async function sendPasswordReset() {
-            const email = document.getElementById('resetEmail').value;
+            try {
+                const email = sanitizeEmail(document.getElementById('resetEmail').value);
 
-            if (!email) {
-                showAlert('resetAlert', 'Please enter your email address');
-                return;
+                if (!email) {
+                    showAlert('resetAlert', 'Please enter a valid email address', 'error');
+                    return;
+                }
+
+                setButtonLoading('sendResetBtn', true, 'Sending reset link...');
+                hideAlert('resetAlert');
+
+                console.log('🔄 Sending password reset to:', email);
+
+                // Send password reset via Supabase
+                const { data, error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+                    redirectTo: `${window.location.origin}${window.location.pathname}?reset=true`
+                });
+
+                setButtonLoading('sendResetBtn', false);
+
+                if (error) {
+                    console.error('Password reset error:', error);
+                    // Generic error message for security (prevent email enumeration)
+                    showAlert('resetAlert', 'If an account with this email exists, you will receive a reset link shortly.', 'info');
+                } else {
+                    console.log('Password reset sent successfully');
+                    showAlert('resetAlert', '📧 Password reset link sent! Check your email and follow the instructions to reset your password.', 'success');
+
+                    // Auto-return to auth after successful reset
+                    setTimeout(() => {
+                        goToAuth();
+                    }, 3000);
+                }
+
+            } catch (error) {
+                console.error('Password reset error:', error);
+                setButtonLoading('sendResetBtn', false);
+                showAlert('resetAlert', 'If an account with this email exists, you will receive a reset link shortly.', 'info');
             }
-
-            showAlert('resetAlert', 'Password reset link sent!', 'success');
         }
 
         async function updatePassword() {
