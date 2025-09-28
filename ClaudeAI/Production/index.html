@@ -1636,20 +1636,65 @@
             return code.join('');
         }
 
-        function verifyCode() {
-            const code = getVerificationCode();
-            if (!code || code.length !== 6) {
-                showAlert('tierAlert', 'Please enter all 6 digits of the verification code.', 'warning');
-                return;
-            }
+        async function verifyCode() {
+            try {
+                const code = getVerificationCode();
+                if (!code || code.length !== 6) {
+                    showAlert('tierAlert', 'Please enter all 6 digits of the verification code.', 'warning');
+                    return;
+                }
 
-            // Demo verification
-            setTimeout(() => {
-                showAlert('tierAlert', 'Email verified successfully!', 'success');
+                // Validate that code contains only numbers
+                if (!/^\d{6}$/.test(code)) {
+                    showAlert('tierAlert', 'Please enter a valid 6-digit numeric code.', 'error');
+                    return;
+                }
+
+                setButtonLoading('verifyCodeBtn', true);
+                hideAlert('tierAlert');
+
+                console.log('Attempting to verify OTP code:', code);
+
+                const { data, error } = await supabaseClient.auth.verifyOtp({
+                    email: state.userData.email,
+                    token: code,
+                    type: 'signup'
+                });
+
+                if (error) throw error;
+
+                console.log('OTP verification successful:', data);
+
+                // Update user state with verified session
+                if (data.user) {
+                    state.user = data.user;
+                    state.user.email_confirmed_at = data.user.email_confirmed_at || new Date().toISOString();
+                }
+
+                showAlert('tierAlert', 'Email verified successfully! 🎉', 'success');
+                setButtonLoading('verifyCodeBtn', false);
+
                 setTimeout(() => {
                     state.goToStep(7, 'forward', true);
                 }, 1500);
-            }, 1000);
+
+            } catch (error) {
+                console.error('OTP Verification Error:', error);
+                setButtonLoading('verifyCodeBtn', false);
+
+                let errorMessage = error.message;
+                if (error.message.includes('Token has expired')) {
+                    errorMessage = 'Verification code has expired. Please request a new one.';
+                } else if (error.message.includes('Invalid token')) {
+                    errorMessage = 'Invalid verification code. Please check and try again.';
+                } else if (error.message.includes('Token hash not found')) {
+                    errorMessage = 'Verification session expired. Please start registration again.';
+                } else if (error.message.includes('Email not confirmed')) {
+                    errorMessage = 'Email verification failed. Please try again.';
+                }
+
+                showAlert('tierAlert', errorMessage, 'error');
+            }
         }
 
         async function verifyEmailCode() {
@@ -1664,7 +1709,44 @@
         }
 
         async function resendVerificationEmail() {
-            showAlert('tierAlert', 'Verification email sent again!', 'success');
+            try {
+                if (!state.userData.email) {
+                    showAlert('tierAlert', 'No email address found. Please restart registration.', 'error');
+                    return;
+                }
+
+                setButtonLoading('resendBtn', true);
+                hideAlert('tierAlert');
+
+                console.log('Resending verification email to:', state.userData.email);
+
+                const { data, error } = await supabaseClient.auth.resend({
+                    type: 'signup',
+                    email: state.userData.email,
+                    options: {
+                        emailRedirectTo: `${window.location.origin}${window.location.pathname}?verified=true`
+                    }
+                });
+
+                if (error) throw error;
+
+                console.log('Resend successful:', data);
+                showAlert('tierAlert', 'New verification email sent! Check your inbox and spam folder.', 'success');
+                setButtonLoading('resendBtn', false);
+
+            } catch (error) {
+                console.error('Resend Error:', error);
+                setButtonLoading('resendBtn', false);
+
+                let errorMessage = error.message;
+                if (error.message.includes('Email rate limit')) {
+                    errorMessage = 'Too many emails sent. Please wait 60 seconds before requesting another.';
+                } else if (error.message.includes('For security purposes')) {
+                    errorMessage = 'For security, please wait before requesting another verification email.';
+                }
+
+                showAlert('tierAlert', errorMessage, 'warning');
+            }
         }
 
         function changeEmail() {
@@ -1863,14 +1945,21 @@
                     description: "Enhanced 6-digit code input with paste support",
                     details: "✅ Smart paste handling ✅ Numeric validation ✅ Mobile experience",
                     severity: "Medium"
+                },
+                4: {
+                    bugNumber: 4,
+                    title: "Fake Email Verification",
+                    description: "Replaced demo verification with real Supabase OTP verification",
+                    details: "✅ Real OTP verification ✅ Error handling ✅ Resend functionality",
+                    severity: "Critical"
                 }
             };
 
-            // Check localStorage for latest bug fix or default to Bug #3
-            const storedBugNumber = localStorage.getItem('latest_bug_number') || '3';
+            // Check localStorage for latest bug fix or default to Bug #4
+            const storedBugNumber = localStorage.getItem('latest_bug_number') || '4';
             const bugNumber = parseInt(storedBugNumber);
 
-            return bugFixHistory[bugNumber] || bugFixHistory[3];
+            return bugFixHistory[bugNumber] || bugFixHistory[4];
         }
 
         // Initialize on page load
