@@ -1566,13 +1566,27 @@
         }
 
         // Input Sanitization Functions (Bug #11 Fix)
+        // Bug Fix #33: Enhanced input sanitization against XSS
         function sanitizeInput(input) {
             if (typeof input !== 'string') return '';
 
-            return input
+            // Create a text node to escape HTML entities
+            const div = document.createElement('div');
+            div.textContent = input;
+            let sanitized = div.innerHTML;
+
+            // Additional sanitization layers
+            sanitized = sanitized
                 .trim()
+                .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '') // Remove scripts
+                .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '') // Remove iframes
+                .replace(/javascript:/gi, '') // Remove javascript: protocol
+                .replace(/on\w+\s*=/gi, '') // Remove event handlers
+                .replace(/<[^>]+>/g, '') // Remove all HTML tags
                 .replace(/[<>'"]/g, '') // Remove potential XSS characters
                 .substring(0, 1000); // Limit length
+
+            return sanitized;
         }
 
         function sanitizeEmail(email) {
@@ -1857,35 +1871,81 @@
             document.addEventListener('keydown', handleKeyboardNavigation);
         }
 
+        // Bug Fix #34: Enhanced keyboard navigation with full accessibility
         function handleKeyboardNavigation(e) {
             // ESC key to show help
             if (e.key === 'Escape') {
-                showAlert('tierAlert', 'Keyboard shortcuts: Tab/Shift+Tab to navigate, Enter to activate, Arrow keys in steps', 'info');
+                showAccessibilityHelp();
+                return;
+            }
+
+            // F1 for help
+            if (e.key === 'F1') {
+                e.preventDefault();
+                showAccessibilityHelp();
                 return;
             }
 
             // Arrow key navigation between steps
-            if (e.key === 'ArrowLeft' && !e.target.matches('input')) {
+            if (e.key === 'ArrowLeft' && !e.target.matches('input, textarea, select')) {
                 e.preventDefault();
                 if (state.canNavigateTo(state.currentStep - 1)) {
                     state.goToStep(state.currentStep - 1, 'backward');
+                    announceStepChange(state.currentStep);
                 }
                 return;
             }
 
-            if (e.key === 'ArrowRight' && !e.target.matches('input')) {
+            if (e.key === 'ArrowRight' && !e.target.matches('input, textarea, select')) {
                 e.preventDefault();
                 if (state.canNavigateTo(state.currentStep + 1)) {
                     state.goToStep(state.currentStep + 1, 'forward');
+                    announceStepChange(state.currentStep);
                 }
                 return;
             }
 
-            // Enter key activation for focused elements
-            if (e.key === 'Enter' && e.target.matches('button')) {
+            // Enter and Space key activation
+            if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('button, [role="button"]')) {
+                e.preventDefault();
                 e.target.click();
                 return;
             }
+
+            // Number keys for quick step navigation (1-9)
+            if (e.key >= '1' && e.key <= '9' && !e.target.matches('input, textarea')) {
+                const targetStep = parseInt(e.key);
+                if (targetStep <= state.totalSteps && state.canNavigateTo(targetStep)) {
+                    state.goToStep(targetStep, targetStep > state.currentStep ? 'forward' : 'backward');
+                    announceStepChange(targetStep);
+                }
+                return;
+            }
+        }
+
+        function showAccessibilityHelp() {
+            const helpMessage = `
+                Keyboard Shortcuts:
+                • Tab/Shift+Tab: Navigate between elements
+                • Enter/Space: Activate buttons
+                • Arrow Left/Right: Navigate between steps
+                • Numbers 1-9: Jump to specific step
+                • ESC/F1: Show this help
+                • Alt+S: Skip to main content
+            `;
+            showAlert('tierAlert', helpMessage, 'info');
+        }
+
+        function announceStepChange(step) {
+            // Create screen reader announcement
+            const announcement = document.createElement('div');
+            announcement.setAttribute('role', 'status');
+            announcement.setAttribute('aria-live', 'polite');
+            announcement.setAttribute('aria-atomic', 'true');
+            announcement.className = 'sr-only';
+            announcement.textContent = `Now on step ${step} of ${state.totalSteps}`;
+            document.body.appendChild(announcement);
+            setTimeout(() => announcement.remove(), 1000);
         }
 
         // Bug #15, #16, #17: Comprehensive Polish Fixes (AUTO-ACCEPT OPTION 1)
@@ -2089,30 +2149,86 @@
             return code.join('');
         }
 
-        // Rate limiting for OTP verification (Bug #10 Fix)
+        // Bug Fix #32: Enhanced Rate limiting with fingerprinting protection
         const otpRateLimit = {
             attempts: 0,
             lastAttempt: 0,
             maxAttempts: 5,
             cooldownMs: 60000,
+            blockUntil: 0,
+            fingerprint: null,
+
+            init() {
+                // Generate browser fingerprint for persistent rate limiting
+                this.fingerprint = this.generateFingerprint();
+                this.loadFromStorage();
+            },
+
+            generateFingerprint() {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                ctx.textBaseline = 'top';
+                ctx.font = '14px Arial';
+                ctx.fillText('fingerprint', 2, 2);
+                return canvas.toDataURL().slice(-50);
+            },
+
+            loadFromStorage() {
+                const stored = localStorage.getItem(`otp_rate_${this.fingerprint}`);
+                if (stored) {
+                    const data = JSON.parse(stored);
+                    this.attempts = data.attempts || 0;
+                    this.lastAttempt = data.lastAttempt || 0;
+                    this.blockUntil = data.blockUntil || 0;
+                }
+            },
+
+            saveToStorage() {
+                localStorage.setItem(`otp_rate_${this.fingerprint}`, JSON.stringify({
+                    attempts: this.attempts,
+                    lastAttempt: this.lastAttempt,
+                    blockUntil: this.blockUntil
+                }));
+            },
+
             isBlocked() {
                 const now = Date.now();
+
+                // Check permanent block
+                if (this.blockUntil > now) return true;
+
+                // Check cooldown
                 if (this.attempts >= this.maxAttempts) {
                     const timeSinceLastAttempt = now - this.lastAttempt;
-                    if (timeSinceLastAttempt < this.cooldownMs) return true;
+                    if (timeSinceLastAttempt < this.cooldownMs) {
+                        this.blockUntil = this.lastAttempt + this.cooldownMs;
+                        this.saveToStorage();
+                        return true;
+                    }
                     this.attempts = 0; // Reset after cooldown
+                    this.saveToStorage();
                 }
                 return false;
             },
+
             recordAttempt() {
                 this.attempts++;
                 this.lastAttempt = Date.now();
+                this.saveToStorage();
             },
+
             getRemainingTime() {
-                const elapsed = Date.now() - this.lastAttempt;
+                const now = Date.now();
+                if (this.blockUntil > now) {
+                    return Math.ceil((this.blockUntil - now) / 1000);
+                }
+                const elapsed = now - this.lastAttempt;
                 return Math.ceil((this.cooldownMs - elapsed) / 1000);
             }
         };
+
+        // Initialize rate limiting on load
+        otpRateLimit.init();
 
         async function verifyCode() {
             try {
@@ -2545,13 +2661,36 @@
             return bugFixHistory[bugNumber] || bugFixHistory[12];
         }
 
-        // Handle Google OAuth callback
+        // Bug Fix #31: Handle Google OAuth callback with race condition protection
+        let isProcessingOAuth = false;
         async function handleGoogleCallback() {
+            // Prevent race conditions with mutex
+            if (isProcessingOAuth) {
+                console.log('⏳ OAuth already processing, skipping duplicate...');
+                return;
+            }
+            isProcessingOAuth = true;
+
             try {
                 console.log('🔍 Processing Google OAuth callback...');
 
-                // Get current session from Supabase
-                const { data: { session }, error } = await supabaseClient.auth.getSession();
+                // Add retry logic for session retrieval
+                let retries = 3;
+                let session = null;
+                let error = null;
+
+                while (retries > 0 && !session) {
+                    const result = await supabaseClient.auth.getSession();
+                    session = result.data?.session;
+                    error = result.error;
+
+                    if (!session && retries > 1) {
+                        await new Promise(resolve => setTimeout(resolve, 1000));
+                        retries--;
+                    } else {
+                        break;
+                    }
+                }
 
                 if (error) {
                     console.error('Session error:', error);
