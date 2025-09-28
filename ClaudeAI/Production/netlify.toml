@@ -1,0 +1,34 @@
+[build]
+  # Build command - not needed for static site
+  command = ""
+
+  # Publish directory - the folder with our index.html
+  publish = "."
+
+  # Base directory for the build
+  base = "ClaudeAI/Production"
+
+[build.environment]
+  # Node version (if needed)
+  NODE_VERSION = "18"
+
+[[redirects]]
+  # Redirect all routes to index.html for SPA behavior
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[context.production]
+  # Production-specific settings
+  command = ""
+  publish = "."
+
+[context.deploy-preview]
+  # Deploy preview settings
+  command = ""
+  publish = "."
+
+[context.branch-deploy]
+  # Branch deploy settings
+  command = ""
+  publish = "."
