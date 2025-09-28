@@ -165,14 +165,15 @@
             left: 50%;
             transform: translateX(-50%);
             font-size: 12px;
-            color: #94a3b8;
+            color: #1e293b;
             display: none;
             align-items: center;
             gap: 4px;
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             padding: 8px 12px;
             border-radius: 20px;
             backdrop-filter: blur(10px);
+            border: 1px solid rgba(30, 41, 59, 0.1);
         }
 
         .logo {
@@ -1910,14 +1911,15 @@
                 };
             }
 
-            // Bug #16: Memory Management
+            // Bug #16: Memory Management (Fixed Illegal Invocation)
             setupMemoryManagement() {
-                // Track event listeners for cleanup
-                const originalAddEventListener = EventTarget.prototype.addEventListener;
-                EventTarget.prototype.addEventListener = (type, listener, options) => {
+                // Track event listeners for cleanup without overriding prototype
+                const self = this;
+                window.addTrackedEventListener = function(target, type, listener, options) {
                     const key = `${type}_${Date.now()}_${Math.random()}`;
-                    this.eventListeners.set(key, { target: this, type, listener, options });
-                    return originalAddEventListener.call(this, type, listener, options);
+                    self.eventListeners.set(key, { target, type, listener, options });
+                    target.addEventListener(type, listener, options);
+                    return key;
                 };
 
                 // Track timers for cleanup
