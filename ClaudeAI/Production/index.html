@@ -1455,6 +1455,33 @@
             }
         }
 
+        // Enhanced Password Validation (Bug #7 Fix)
+        function validatePassword(password) {
+            const requirements = {
+                length: password.length >= 8,
+                uppercase: /[A-Z]/.test(password),
+                lowercase: /[a-z]/.test(password),
+                number: /[0-9]/.test(password),
+                special: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)
+            };
+
+            const missingRequirements = [];
+            if (!requirements.length) missingRequirements.push('8+ characters');
+            if (!requirements.uppercase) missingRequirements.push('uppercase letter');
+            if (!requirements.lowercase) missingRequirements.push('lowercase letter');
+            if (!requirements.number) missingRequirements.push('number');
+            if (!requirements.special) missingRequirements.push('special character');
+
+            const isValid = Object.values(requirements).every(req => req);
+
+            return {
+                isValid,
+                message: isValid
+                    ? 'Password meets security requirements'
+                    : `Password must include: ${missingRequirements.join(', ')}`
+            };
+        }
+
         // Authentication Method Switching
         function switchAuthMethod(method) {
             state.authMethod = method;
@@ -1496,8 +1523,10 @@
                     return;
                 }
 
-                if (password.length < 8) {
-                    showAlert('authAlert', 'Password must be at least 8 characters long');
+                // Enhanced password validation for security
+                const passwordValidation = validatePassword(password);
+                if (!passwordValidation.isValid) {
+                    showAlert('authAlert', passwordValidation.message);
                     return;
                 }
 
@@ -1517,7 +1546,13 @@
                     }
                 });
 
-                if (error) throw error;
+                if (error) {
+                    console.error('Registration error:', error);
+                    // Generic error message to prevent email enumeration (Bug #8 Fix)
+                    showAlert('authAlert', 'Registration failed. Please check your details and try again.');
+                    setButtonLoading('regEmailBtn', false);
+                    return;
+                }
 
                 state.user = data.user;
                 state.userData.email = email;
@@ -1591,14 +1626,33 @@
                 console.error('Google OAuth Error:', error);
                 setButtonLoading('googleLoginBtn', false);
 
-                let errorMessage = error.message;
+                // Enhanced OAuth error handling (Bug #9 Fix)
+                let errorMessage = 'Authentication failed. Please try again.';
+                let showRetry = true;
+
                 if (error.message.includes('provider not enabled')) {
-                    errorMessage = 'Google authentication is not enabled. Please contact support.';
-                } else if (error.message.includes('Invalid login credentials')) {
-                    errorMessage = 'Authentication failed. Please try again.';
+                    errorMessage = 'Google authentication is temporarily unavailable. Please try email registration or contact support.';
+                    showRetry = false;
+                } else if (error.message.includes('popup_blocked')) {
+                    errorMessage = 'Pop-up blocked. Please allow pop-ups and try again.';
+                } else if (error.message.includes('network')) {
+                    errorMessage = 'Network error. Please check your connection and try again.';
+                } else if (error.message.includes('cancelled')) {
+                    errorMessage = 'Authentication cancelled. You can try again when ready.';
+                    showRetry = false;
                 }
 
-                showAlert('authAlert', `Google authentication failed: ${errorMessage}`);
+                showAlert('authAlert', errorMessage);
+
+                // Add retry button for recoverable errors
+                if (showRetry) {
+                    setTimeout(() => {
+                        const alertElement = document.getElementById('authAlert');
+                        if (alertElement && alertElement.style.display !== 'none') {
+                            alertElement.innerHTML += '<br><button onclick="signInWithGoogle()" class="btn btn-secondary" style="margin-top: 10px;">Try Again</button>';
+                        }
+                    }, 1000);
+                }
             }
         }
 
@@ -2009,14 +2063,35 @@
                     description: "Added missing callback handler for Google authentication",
                     details: "✅ Session detection ✅ URL cleanup ✅ Auto-advance to plan selection",
                     severity: "Critical"
+                },
+                7: {
+                    bugNumber: 7,
+                    title: "Weak Password Validation",
+                    description: "Enhanced password security with complexity requirements",
+                    details: "✅ Length + complexity ✅ Uppercase/lowercase ✅ Numbers + special chars",
+                    severity: "Critical"
+                },
+                8: {
+                    bugNumber: 8,
+                    title: "Email Enumeration Risk",
+                    description: "Generic error messages prevent account enumeration",
+                    details: "✅ Security hardening ✅ Generic auth errors ✅ Privacy protection",
+                    severity: "Critical"
+                },
+                9: {
+                    bugNumber: 9,
+                    title: "OAuth Error Handling",
+                    description: "Comprehensive error handling with recovery options",
+                    details: "✅ Error categorization ✅ Retry mechanisms ✅ User guidance",
+                    severity: "Critical"
                 }
             };
 
-            // Check localStorage for latest bug fix or default to Bug #6
-            const storedBugNumber = localStorage.getItem('latest_bug_number') || '6';
+            // Check localStorage for latest bug fix or default to Bug #9
+            const storedBugNumber = localStorage.getItem('latest_bug_number') || '9';
             const bugNumber = parseInt(storedBugNumber);
 
-            return bugFixHistory[bugNumber] || bugFixHistory[6];
+            return bugFixHistory[bugNumber] || bugFixHistory[9];
         }
 
         // Handle Google OAuth callback
@@ -2092,9 +2167,9 @@
             const deploymentAge = currentTime - (lastDeployment || 0);
 
             // Show notification if deployment is less than 30 seconds old or first load
-            // Force show Bug #6 notification and update localStorage
-            localStorage.setItem('latest_bug_number', '6');
-            console.log('🚀 Forcing Bug #6 notification display');
+            // Force show Bug #9 notification and update localStorage
+            localStorage.setItem('latest_bug_number', '9');
+            console.log('🚀 Forcing Bug #7-9 BATCH 1 CRITICAL SECURITY FIXES notification display');
             setTimeout(showDeploymentMessage, 500);
             localStorage.setItem('last_deployment_time', currentTime.toString());
         });
