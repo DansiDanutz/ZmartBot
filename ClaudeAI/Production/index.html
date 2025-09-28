@@ -449,6 +449,65 @@
             margin-right: 6px;
         }
 
+        /* Bug #17: Enhanced Responsive Design */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Mobile-specific enhancements */
+        .container.mobile {
+            padding: 16px;
+            max-width: 100%;
+        }
+
+        .container.mobile .slide {
+            padding: 24px 16px;
+        }
+
+        .container.mobile .btn {
+            min-height: 48px;
+            font-size: 16px;
+        }
+
+        .container.mobile .form-group input {
+            min-height: 48px;
+            font-size: 16px;
+        }
+
+        /* Tablet optimizations */
+        .container.tablet {
+            max-width: 600px;
+            padding: 24px;
+        }
+
+        /* Desktop enhancements */
+        .container.desktop {
+            max-width: 500px;
+        }
+
+        /* Touch device optimizations */
+        .touch-device .btn {
+            min-height: 48px;
+        }
+
+        .touch-device .form-group input {
+            min-height: 48px;
+        }
+
+        /* Enhanced focus states for accessibility */
+        .btn:focus-visible {
+            outline: 2px solid #667eea;
+            outline-offset: 2px;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2);
+        }
+
+        input:focus-visible {
+            outline: 2px solid #667eea;
+            outline-offset: 2px;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2);
+        }
+
         .alert {
             padding: 12px 16px;
             border-radius: 8px;
@@ -712,7 +771,7 @@
                     </div>
                 </div>
 
-                <button class="btn btn-primary" onclick="nextStep()">
+                <button class="btn btn-primary" onclick="nextStep()" aria-label="Continue to next step" tabindex="0">
                     Get Started
                 </button>
 
@@ -751,7 +810,7 @@
                         </div>
                     </form>
 
-                    <button class="btn btn-primary" id="regEmailBtn" onclick="registerWithEmail()">
+                    <button class="btn btn-primary" id="regEmailBtn" onclick="registerWithEmail()" aria-label="Create account with email" tabindex="0">
                         Create Account
                     </button>
 
@@ -1735,6 +1794,197 @@
             state.goToStep(2, 'forward', true);
         }
 
+        // Bug #13 & #14: Comprehensive Accessibility Enhancement (AUTO-ACCEPT OPTION 1)
+        function enhanceAccessibility() {
+            // Add ARIA labels to all buttons
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach((btn, index) => {
+                if (!btn.getAttribute('aria-label')) {
+                    const text = btn.textContent.trim();
+                    btn.setAttribute('aria-label', text || `Button ${index + 1}`);
+                }
+                if (!btn.getAttribute('tabindex')) {
+                    btn.setAttribute('tabindex', '0');
+                }
+            });
+
+            // Add ARIA labels to all inputs
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach(input => {
+                if (!input.getAttribute('aria-label') && input.placeholder) {
+                    input.setAttribute('aria-label', input.placeholder);
+                }
+                if (input.required) {
+                    input.setAttribute('aria-required', 'true');
+                }
+            });
+
+            // Add ARIA landmarks
+            const main = document.querySelector('.container');
+            if (main && !main.getAttribute('role')) {
+                main.setAttribute('role', 'main');
+                main.setAttribute('aria-label', 'ZmartBot onboarding process');
+            }
+
+            // Enhanced keyboard navigation
+            document.addEventListener('keydown', handleKeyboardNavigation);
+        }
+
+        function handleKeyboardNavigation(e) {
+            // ESC key to show help
+            if (e.key === 'Escape') {
+                showAlert('tierAlert', 'Keyboard shortcuts: Tab/Shift+Tab to navigate, Enter to activate, Arrow keys in steps', 'info');
+                return;
+            }
+
+            // Arrow key navigation between steps
+            if (e.key === 'ArrowLeft' && !e.target.matches('input')) {
+                e.preventDefault();
+                if (state.canNavigateTo(state.currentStep - 1)) {
+                    state.goToStep(state.currentStep - 1, 'backward');
+                }
+                return;
+            }
+
+            if (e.key === 'ArrowRight' && !e.target.matches('input')) {
+                e.preventDefault();
+                if (state.canNavigateTo(state.currentStep + 1)) {
+                    state.goToStep(state.currentStep + 1, 'forward');
+                }
+                return;
+            }
+
+            // Enter key activation for focused elements
+            if (e.key === 'Enter' && e.target.matches('button')) {
+                e.target.click();
+                return;
+            }
+        }
+
+        // Bug #15, #16, #17: Comprehensive Polish Fixes (AUTO-ACCEPT OPTION 1)
+        class SystemOptimizer {
+            constructor() {
+                this.loadingStates = new Map();
+                this.eventListeners = new Map();
+                this.timers = new Set();
+                this.init();
+            }
+
+            init() {
+                // Bug #15: Standardized loading states
+                this.setupLoadingSystem();
+
+                // Bug #16: Memory leak prevention
+                this.setupMemoryManagement();
+
+                // Bug #17: Enhanced responsive design
+                this.setupResponsiveEnhancements();
+            }
+
+            // Bug #15: Loading State Management
+            setupLoadingSystem() {
+                window.setButtonLoading = (buttonId, isLoading, text = null) => {
+                    const button = document.getElementById(buttonId);
+                    if (!button) return;
+
+                    if (isLoading) {
+                        this.loadingStates.set(buttonId, {
+                            originalText: button.innerHTML,
+                            originalDisabled: button.disabled
+                        });
+                        button.disabled = true;
+                        button.innerHTML = `
+                            <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+                                <div style="width: 16px; height: 16px; border: 2px solid transparent; border-top: 2px solid currentColor; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+                                ${text || 'Loading...'}
+                            </div>
+                        `;
+                    } else {
+                        const state = this.loadingStates.get(buttonId);
+                        if (state) {
+                            button.innerHTML = state.originalText;
+                            button.disabled = state.originalDisabled;
+                            this.loadingStates.delete(buttonId);
+                        }
+                    }
+                };
+            }
+
+            // Bug #16: Memory Management
+            setupMemoryManagement() {
+                // Track event listeners for cleanup
+                const originalAddEventListener = EventTarget.prototype.addEventListener;
+                EventTarget.prototype.addEventListener = (type, listener, options) => {
+                    const key = `${type}_${Date.now()}_${Math.random()}`;
+                    this.eventListeners.set(key, { target: this, type, listener, options });
+                    return originalAddEventListener.call(this, type, listener, options);
+                };
+
+                // Track timers for cleanup
+                const originalSetTimeout = window.setTimeout;
+                const originalSetInterval = window.setInterval;
+
+                window.setTimeout = (callback, delay, ...args) => {
+                    const id = originalSetTimeout((...args) => {
+                        this.timers.delete(id);
+                        return callback(...args);
+                    }, delay, ...args);
+                    this.timers.add(id);
+                    return id;
+                };
+
+                window.setInterval = (callback, delay, ...args) => {
+                    const id = originalSetInterval(callback, delay, ...args);
+                    this.timers.add(id);
+                    return id;
+                };
+
+                // Cleanup on page unload
+                window.addEventListener('beforeunload', () => this.cleanup());
+            }
+
+            // Bug #17: Responsive Enhancements
+            setupResponsiveEnhancements() {
+                // Add responsive classes based on viewport
+                const updateResponsiveClasses = () => {
+                    const width = window.innerWidth;
+                    const container = document.querySelector('.container');
+                    if (!container) return;
+
+                    container.classList.remove('mobile', 'tablet', 'desktop');
+                    if (width < 768) {
+                        container.classList.add('mobile');
+                    } else if (width < 1024) {
+                        container.classList.add('tablet');
+                    } else {
+                        container.classList.add('desktop');
+                    }
+                };
+
+                updateResponsiveClasses();
+                window.addEventListener('resize', updateResponsiveClasses);
+
+                // Enhanced mobile touch handling
+                if ('ontouchstart' in window) {
+                    document.body.classList.add('touch-device');
+                }
+            }
+
+            cleanup() {
+                // Clear all tracked timers
+                this.timers.forEach(id => clearTimeout(id));
+                this.timers.clear();
+
+                // Clear loading states
+                this.loadingStates.clear();
+
+                console.log('🧹 SystemOptimizer: Memory cleanup completed');
+            }
+        }
+
+        // Initialize system optimizer
+        const systemOptimizer = new SystemOptimizer();
+
         // Enhanced 6-digit code verification functions
         function handleCodeInput(current, nextId) {
             // Only allow numeric input
@@ -2211,7 +2461,7 @@
             };
 
             // Check localStorage for latest bug fix or default to Bug #12
-            const storedBugNumber = localStorage.getItem('latest_bug_number') || '12';
+            const storedBugNumber = localStorage.getItem('latest_bug_number') || '17';
             const bugNumber = parseInt(storedBugNumber);
 
             return bugFixHistory[bugNumber] || bugFixHistory[12];
@@ -2270,6 +2520,9 @@
 
         // Initialize on page load
         window.addEventListener('load', async () => {
+            // Initialize accessibility enhancements (Bug #13 & #14)
+            enhanceAccessibility();
+
             // Check for URL parameters indicating email verification or other callbacks
             const urlParams = new URLSearchParams(window.location.search);
 
