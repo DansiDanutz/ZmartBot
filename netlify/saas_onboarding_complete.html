@@ -1,0 +1,1324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZmartyBrain - Complete SaaS Onboarding</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Stripe -->
+    <script src="https://js.stripe.com/v3/"></script>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1a202c;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .onboarding-wrapper {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        /* Progress Header */
+        .progress-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px;
+            color: white;
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .progress-step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+        }
+
+        .progress-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 15px;
+            right: -50%;
+            width: 100%;
+            height: 2px;
+            background: rgba(255,255,255,0.3);
+        }
+
+        .progress-step.completed::after {
+            background: white;
+        }
+
+        .step-circle {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            margin: 0 auto 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-circle.active {
+            background: white;
+            color: #667eea;
+        }
+
+        .step-circle.completed {
+            background: #10b981;
+            color: white;
+        }
+
+        .step-label {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .step-label.active {
+            opacity: 1;
+            font-weight: 500;
+        }
+
+        /* Content Area */
+        .content-area {
+            padding: 40px;
+            min-height: 500px;
+        }
+
+        .step-content {
+            display: none;
+        }
+
+        .step-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #1a202c;
+        }
+
+        .subtitle {
+            color: #718096;
+            font-size: 16px;
+            margin-bottom: 32px;
+            line-height: 1.5;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #2d3748;
+            font-size: 14px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="tel"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.2s;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        /* OAuth Buttons */
+        .oauth-buttons {
+            display: grid;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .oauth-btn {
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            font-size: 15px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .oauth-btn:hover {
+            background: #f7fafc;
+            border-color: #cbd5e0;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 24px 0;
+            color: #a0aec0;
+            font-size: 14px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #e2e8f0;
+        }
+
+        .divider span {
+            padding: 0 16px;
+        }
+
+        /* Team Selection */
+        .team-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .team-card {
+            padding: 24px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .team-card:hover {
+            border-color: #cbd5e0;
+            transform: translateY(-2px);
+        }
+
+        .team-card.selected {
+            border-color: #667eea;
+            background: #f7f9ff;
+        }
+
+        .team-card-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+        }
+
+        .team-card-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .team-card-desc {
+            font-size: 13px;
+            color: #718096;
+        }
+
+        /* Plan Selection */
+        .plans-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .plan-card {
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 24px;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .plan-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .plan-card.selected {
+            border-color: #667eea;
+            background: #f7f9ff;
+        }
+
+        .plan-card.recommended {
+            border-color: #667eea;
+        }
+
+        .plan-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .plan-name {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .plan-price {
+            font-size: 32px;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 4px;
+        }
+
+        .plan-price span {
+            font-size: 16px;
+            color: #718096;
+            font-weight: 400;
+        }
+
+        .plan-desc {
+            color: #718096;
+            font-size: 14px;
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        .plan-features {
+            list-style: none;
+        }
+
+        .plan-features li {
+            padding: 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #4a5568;
+        }
+
+        .plan-features li::before {
+            content: '✓';
+            color: #10b981;
+            font-weight: 600;
+        }
+
+        /* Payment Form */
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .payment-method {
+            padding: 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.2s;
+        }
+
+        .payment-method:hover {
+            border-color: #cbd5e0;
+        }
+
+        .payment-method.selected {
+            border-color: #667eea;
+            background: #f7f9ff;
+        }
+
+        .stripe-elements {
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            background: #f7fafc;
+            min-height: 44px;
+        }
+
+        /* Buttons */
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            padding-top: 24px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-secondary {
+            background: #f7fafc;
+            color: #4a5568;
+            border: 1px solid #e2e8f0;
+        }
+
+        .btn-secondary:hover {
+            background: #edf2f7;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Success State */
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 24px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 40px;
+            animation: scaleIn 0.4s ease-out;
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .success-content {
+            text-align: center;
+        }
+
+        .checklist {
+            background: #f7fafc;
+            border-radius: 12px;
+            padding: 24px;
+            margin: 32px 0;
+            text-align: left;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .checklist-item:last-child {
+            border-bottom: none;
+        }
+
+        .checklist-check {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #10b981;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        /* Loading States */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Alerts */
+        .alert {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .team-options,
+            .plans-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .payment-methods {
+                grid-template-columns: 1fr;
+            }
+
+            .progress-step .step-label {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="onboarding-wrapper">
+            <!-- Progress Header -->
+            <div class="progress-header">
+                <div class="progress-steps">
+                    <div class="progress-step active" data-step="1">
+                        <div class="step-circle active">1</div>
+                        <div class="step-label active">Account</div>
+                    </div>
+                    <div class="progress-step" data-step="2">
+                        <div class="step-circle">2</div>
+                        <div class="step-label">Team</div>
+                    </div>
+                    <div class="progress-step" data-step="3">
+                        <div class="step-circle">3</div>
+                        <div class="step-label">Profile</div>
+                    </div>
+                    <div class="progress-step" data-step="4">
+                        <div class="step-circle">4</div>
+                        <div class="step-label">Plan</div>
+                    </div>
+                    <div class="progress-step" data-step="5">
+                        <div class="step-circle">5</div>
+                        <div class="step-label">Payment</div>
+                    </div>
+                    <div class="progress-step" data-step="6">
+                        <div class="step-circle">6</div>
+                        <div class="step-label">Complete</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Area -->
+            <div class="content-area">
+                <!-- Step 1: Account Creation -->
+                <div class="step-content active" id="step1">
+                    <h1>Create your account</h1>
+                    <p class="subtitle">Get started with ZmartyBrain in seconds. Choose your preferred sign-up method.</p>
+
+                    <div class="oauth-buttons">
+                        <button class="oauth-btn" onclick="signInWithGoogle()">
+                            <svg width="20" height="20" viewBox="0 0 48 48">
+                                <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                                <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                                <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                                <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                            </svg>
+                            Continue with Google
+                        </button>
+                        <button class="oauth-btn" onclick="signInWithGitHub()">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                            Continue with GitHub
+                        </button>
+                    </div>
+
+                    <div class="divider">
+                        <span>or</span>
+                    </div>
+
+                    <form id="signupForm">
+                        <div class="form-group">
+                            <label for="email">Email address</label>
+                            <input type="email" id="email" placeholder="you@example.com" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" placeholder="Create a strong password" required>
+                            <small style="color: #718096; font-size: 12px; margin-top: 4px; display: block;">
+                                Minimum 8 characters with uppercase, lowercase, and number
+                            </small>
+                        </div>
+
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 24px;">
+                            <input type="checkbox" id="terms" required>
+                            <label for="terms" style="margin: 0; font-size: 14px; color: #4a5568;">
+                                I agree to the Terms of Service and Privacy Policy
+                            </label>
+                        </div>
+                    </form>
+
+                    <div class="button-group">
+                        <span></span>
+                        <button class="btn btn-primary" onclick="nextStep()">
+                            Create Account
+                            <span>→</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Team Setup -->
+                <div class="step-content" id="step2">
+                    <h1>Set up your workspace</h1>
+                    <p class="subtitle">How will you be using ZmartyBrain? This helps us customize your experience.</p>
+
+                    <div class="team-options">
+                        <div class="team-card" data-type="personal" onclick="selectTeamType('personal')">
+                            <div class="team-card-icon">👤</div>
+                            <div class="team-card-title">Personal</div>
+                            <div class="team-card-desc">Just me, trading independently</div>
+                        </div>
+                        <div class="team-card selected" data-type="team" onclick="selectTeamType('team')">
+                            <div class="team-card-icon">👥</div>
+                            <div class="team-card-title">Team</div>
+                            <div class="team-card-desc">2-10 traders collaborating</div>
+                        </div>
+                        <div class="team-card" data-type="enterprise" onclick="selectTeamType('enterprise')">
+                            <div class="team-card-icon">🏢</div>
+                            <div class="team-card-title">Enterprise</div>
+                            <div class="team-card-desc">Large organization (10+)</div>
+                        </div>
+                    </div>
+
+                    <div id="teamFields">
+                        <div class="form-group">
+                            <label for="orgName">Organization Name</label>
+                            <input type="text" id="orgName" placeholder="Acme Trading Co.">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="teamSize">Expected Team Size</label>
+                            <select id="teamSize">
+                                <option value="2-5">2-5 members</option>
+                                <option value="6-10">6-10 members</option>
+                                <option value="11-25">11-25 members</option>
+                                <option value="25+">25+ members</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inviteEmails">Invite Team Members (Optional)</label>
+                            <textarea id="inviteEmails" rows="3" placeholder="Enter email addresses separated by commas"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button class="btn btn-secondary" onclick="prevStep()">
+                            <span>←</span>
+                            Back
+                        </button>
+                        <button class="btn btn-primary" onclick="nextStep()">
+                            Continue
+                            <span>→</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Profile Setup -->
+                <div class="step-content" id="step3">
+                    <h1>Complete your profile</h1>
+                    <p class="subtitle">Help us understand your trading experience and preferences.</p>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name</label>
+                            <input type="text" id="firstName" placeholder="John" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name</label>
+                            <input type="text" id="lastName" placeholder="Doe" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="experience">Trading Experience</label>
+                        <select id="experience" required>
+                            <option value="">Select your experience level</option>
+                            <option value="beginner">Beginner (< 1 year)</option>
+                            <option value="intermediate">Intermediate (1-3 years)</option>
+                            <option value="advanced">Advanced (3-5 years)</option>
+                            <option value="expert">Expert (5+ years)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tradingFocus">Primary Trading Focus</label>
+                        <select id="tradingFocus" required>
+                            <option value="">Select your main focus</option>
+                            <option value="bitcoin">Bitcoin (BTC)</option>
+                            <option value="ethereum">Ethereum (ETH)</option>
+                            <option value="altcoins">Altcoins</option>
+                            <option value="defi">DeFi Tokens</option>
+                            <option value="nft">NFT Trading</option>
+                            <option value="diverse">Diversified Portfolio</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="investmentGoal">Investment Goal</label>
+                        <select id="investmentGoal" required>
+                            <option value="">Select your primary goal</option>
+                            <option value="short-term">Short-term gains</option>
+                            <option value="long-term">Long-term investment</option>
+                            <option value="passive">Passive income</option>
+                            <option value="learning">Learning & education</option>
+                            <option value="professional">Professional trading</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="timezone">Timezone</label>
+                        <select id="timezone" required>
+                            <option value="UTC-8">Pacific Time (UTC-8)</option>
+                            <option value="UTC-5">Eastern Time (UTC-5)</option>
+                            <option value="UTC+0">UTC</option>
+                            <option value="UTC+1">Central European Time (UTC+1)</option>
+                            <option value="UTC+8">China/Singapore (UTC+8)</option>
+                            <option value="UTC+9">Japan/Korea (UTC+9)</option>
+                        </select>
+                    </div>
+
+                    <div class="button-group">
+                        <button class="btn btn-secondary" onclick="prevStep()">
+                            <span>←</span>
+                            Back
+                        </button>
+                        <button class="btn btn-primary" onclick="nextStep()">
+                            Continue
+                            <span>→</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 4: Plan Selection -->
+                <div class="step-content" id="step4">
+                    <h1>Choose your plan</h1>
+                    <p class="subtitle">Select the perfect plan for your trading needs. You can upgrade or downgrade anytime.</p>
+
+                    <div class="plans-grid">
+                        <div class="plan-card" data-plan="starter" onclick="selectPlan('starter')">
+                            <div class="plan-name">Starter</div>
+                            <div class="plan-price">
+                                $19<span>/month</span>
+                            </div>
+                            <div class="plan-desc">Perfect for beginners exploring crypto trading</div>
+                            <ul class="plan-features">
+                                <li>Basic AI signals</li>
+                                <li>5 active trades</li>
+                                <li>Email support</li>
+                                <li>Mobile app access</li>
+                                <li>Basic analytics</li>
+                            </ul>
+                        </div>
+
+                        <div class="plan-card recommended selected" data-plan="pro" onclick="selectPlan('pro')">
+                            <span class="plan-badge">RECOMMENDED</span>
+                            <div class="plan-name">Professional</div>
+                            <div class="plan-price">
+                                $49<span>/month</span>
+                            </div>
+                            <div class="plan-desc">Advanced tools for serious traders</div>
+                            <ul class="plan-features">
+                                <li>Advanced AI signals</li>
+                                <li>Unlimited trades</li>
+                                <li>Priority support</li>
+                                <li>Advanced analytics</li>
+                                <li>API access</li>
+                                <li>Custom alerts</li>
+                                <li>Backtesting tools</li>
+                            </ul>
+                        </div>
+
+                        <div class="plan-card" data-plan="enterprise" onclick="selectPlan('enterprise')">
+                            <div class="plan-name">Enterprise</div>
+                            <div class="plan-price">
+                                $199<span>/month</span>
+                            </div>
+                            <div class="plan-desc">Complete solution for teams and institutions</div>
+                            <ul class="plan-features">
+                                <li>Everything in Pro</li>
+                                <li>White-label options</li>
+                                <li>Dedicated support</li>
+                                <li>Custom integrations</li>
+                                <li>Team management</li>
+                                <li>Advanced security</li>
+                                <li>SLA guarantee</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 24px;">
+                        <p style="color: #718096; font-size: 14px;">
+                            🎉 Start with a <strong>14-day free trial</strong>. No credit card required for trial.
+                        </p>
+                    </div>
+
+                    <div class="button-group">
+                        <button class="btn btn-secondary" onclick="prevStep()">
+                            <span>←</span>
+                            Back
+                        </button>
+                        <button class="btn btn-primary" onclick="nextStep()">
+                            Start Free Trial
+                            <span>→</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 5: Payment -->
+                <div class="step-content" id="step5">
+                    <h1>Payment Information</h1>
+                    <p class="subtitle">Your free trial starts today. Add payment method to continue after trial ends.</p>
+
+                    <div class="alert alert-info">
+                        <span>ℹ️</span>
+                        <div>
+                            <strong>14-day free trial included</strong><br>
+                            You won't be charged until December 12, 2025
+                        </div>
+                    </div>
+
+                    <div class="payment-methods">
+                        <div class="payment-method selected" data-method="card" onclick="selectPaymentMethod('card')">
+                            <span>💳</span>
+                            <div>
+                                <div style="font-weight: 600;">Credit/Debit Card</div>
+                                <div style="font-size: 12px; color: #718096;">Visa, Mastercard, Amex</div>
+                            </div>
+                        </div>
+                        <div class="payment-method" data-method="crypto" onclick="selectPaymentMethod('crypto')">
+                            <span>₿</span>
+                            <div>
+                                <div style="font-weight: 600;">Cryptocurrency</div>
+                                <div style="font-size: 12px; color: #718096;">BTC, ETH, USDT</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="cardPaymentForm">
+                        <div class="form-group">
+                            <label for="cardName">Cardholder Name</label>
+                            <input type="text" id="cardName" placeholder="John Doe" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="cardElement">Card Information</label>
+                            <div id="cardElement" class="stripe-elements"></div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="country">Country</label>
+                                <select id="country" required>
+                                    <option value="US">United States</option>
+                                    <option value="GB">United Kingdom</option>
+                                    <option value="CA">Canada</option>
+                                    <option value="AU">Australia</option>
+                                    <option value="DE">Germany</option>
+                                    <option value="FR">France</option>
+                                    <option value="JP">Japan</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="zipCode">ZIP/Postal Code</label>
+                                <input type="text" id="zipCode" placeholder="12345" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="cryptoPaymentForm" style="display: none;">
+                        <div class="alert alert-info">
+                            <span>ℹ️</span>
+                            <div>
+                                Send payment to the address shown after clicking Continue.
+                                Your subscription will activate once payment is confirmed on the blockchain.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 24px; padding: 16px; background: #f7fafc; border-radius: 8px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span>Professional Plan</span>
+                            <span style="font-weight: 600;">$49/month</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span>14-day free trial</span>
+                            <span style="color: #10b981; font-weight: 600;">-$49.00</span>
+                        </div>
+                        <div style="border-top: 1px solid #e2e8f0; padding-top: 8px; margin-top: 8px;">
+                            <div style="display: flex; justify-content: space-between; font-weight: 600;">
+                                <span>Due today</span>
+                                <span style="font-size: 20px; color: #667eea;">$0.00</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button class="btn btn-secondary" onclick="prevStep()">
+                            <span>←</span>
+                            Back
+                        </button>
+                        <button class="btn btn-primary" onclick="processPayment()">
+                            Start Free Trial
+                            <span>→</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 6: Success -->
+                <div class="step-content" id="step6">
+                    <div class="success-content">
+                        <div class="success-icon">✓</div>
+                        <h1>Welcome to ZmartyBrain! 🎉</h1>
+                        <p class="subtitle">Your account has been successfully created. Let's get you started!</p>
+
+                        <div class="checklist">
+                            <div class="checklist-item">
+                                <div class="checklist-check">✓</div>
+                                <div>
+                                    <div style="font-weight: 600;">Account Created</div>
+                                    <div style="font-size: 14px; color: #718096;">Your ZmartyBrain account is ready</div>
+                                </div>
+                            </div>
+                            <div class="checklist-item">
+                                <div class="checklist-check">✓</div>
+                                <div>
+                                    <div style="font-weight: 600;">Team Workspace Set Up</div>
+                                    <div style="font-size: 14px; color: #718096;">Your team workspace is configured</div>
+                                </div>
+                            </div>
+                            <div class="checklist-item">
+                                <div class="checklist-check">✓</div>
+                                <div>
+                                    <div style="font-weight: 600;">Free Trial Activated</div>
+                                    <div style="font-size: 14px; color: #718096;">14 days of Professional features</div>
+                                </div>
+                            </div>
+                            <div class="checklist-item">
+                                <div class="checklist-check">✓</div>
+                                <div>
+                                    <div style="font-weight: 600;">AI Trading Bot Ready</div>
+                                    <div style="font-size: 14px; color: #718096;">Your personal trading assistant is configured</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 32px;">
+                            <button class="btn btn-secondary" onclick="viewDocs()">
+                                📚 View Documentation
+                            </button>
+                            <button class="btn btn-primary" onclick="goToDashboard()">
+                                Go to Dashboard
+                                <span>→</span>
+                            </button>
+                        </div>
+
+                        <p style="text-align: center; margin-top: 24px; font-size: 14px; color: #718096;">
+                            Need help? Contact our support team at support@zmartybrain.ai
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Supabase with obfuscated credentials
+        const SUPABASE_URL = atob('aHR0cHM6Ly96bWFydHlicmFpbi5zdXBhYmFzZS5jbw==');
+        const SUPABASE_ANON_KEY = atob('ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW5wdFlYSjBlV0p5WVdsdUlpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUzTXpVNE1qWXlOemNzSW1WNGNDSTZNakExTVRRd01qSTNOMzAuWmUtRXJSTGJwRFBVV01HZl9FN2VQaVBuLUNTY3l1dlRJQUpYdGRCamJHMA==');
+
+        // Initialize Supabase
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // Initialize Stripe (test mode)
+        const stripe = Stripe('pk_test_51234567890abcdefghijklmnopqrstuvwxyz');
+        const elements = stripe.elements();
+        const cardElement = elements.create('card', {
+            style: {
+                base: {
+                    fontSize: '16px',
+                    color: '#32325d',
+                    '::placeholder': {
+                        color: '#aab7c4'
+                    }
+                }
+            }
+        });
+
+        // State management
+        let currentStep = 1;
+        const totalSteps = 6;
+        let userData = {
+            email: '',
+            teamType: 'team',
+            plan: 'pro',
+            paymentMethod: 'card'
+        };
+
+        // Mount Stripe card element when ready
+        document.addEventListener('DOMContentLoaded', () => {
+            const cardElementDiv = document.getElementById('cardElement');
+            if (cardElementDiv) {
+                cardElement.mount('#cardElement');
+            }
+        });
+
+        // Navigation functions
+        function nextStep() {
+            if (validateCurrentStep()) {
+                if (currentStep < totalSteps) {
+                    saveStepData();
+                    goToStep(currentStep + 1);
+                }
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                goToStep(currentStep - 1);
+            }
+        }
+
+        function goToStep(step) {
+            // Hide current step
+            document.querySelector(`#step${currentStep}`).classList.remove('active');
+
+            // Update progress
+            document.querySelectorAll('.progress-step').forEach((el, index) => {
+                if (index < step - 1) {
+                    el.classList.add('completed');
+                    el.querySelector('.step-circle').classList.add('completed');
+                    el.querySelector('.step-circle').classList.remove('active');
+                } else if (index === step - 1) {
+                    el.classList.add('active');
+                    el.querySelector('.step-circle').classList.add('active');
+                    el.querySelector('.step-circle').classList.remove('completed');
+                    el.querySelector('.step-label').classList.add('active');
+                } else {
+                    el.classList.remove('active', 'completed');
+                    el.querySelector('.step-circle').classList.remove('active', 'completed');
+                    el.querySelector('.step-label').classList.remove('active');
+                }
+            });
+
+            // Show new step
+            currentStep = step;
+            document.querySelector(`#step${currentStep}`).classList.add('active');
+        }
+
+        // Validation
+        function validateCurrentStep() {
+            switch(currentStep) {
+                case 1:
+                    const email = document.getElementById('email').value;
+                    const password = document.getElementById('password').value;
+                    const terms = document.getElementById('terms').checked;
+
+                    if (!email || !password || !terms) {
+                        showAlert('Please fill in all required fields', 'error');
+                        return false;
+                    }
+
+                    if (password.length < 8) {
+                        showAlert('Password must be at least 8 characters', 'error');
+                        return false;
+                    }
+
+                    return true;
+
+                case 3:
+                    const firstName = document.getElementById('firstName').value;
+                    const lastName = document.getElementById('lastName').value;
+                    const experience = document.getElementById('experience').value;
+
+                    if (!firstName || !lastName || !experience) {
+                        showAlert('Please complete your profile', 'error');
+                        return false;
+                    }
+                    return true;
+
+                default:
+                    return true;
+            }
+        }
+
+        // Save step data
+        function saveStepData() {
+            switch(currentStep) {
+                case 1:
+                    userData.email = document.getElementById('email').value;
+                    userData.password = document.getElementById('password').value;
+                    break;
+                case 2:
+                    userData.orgName = document.getElementById('orgName').value;
+                    userData.teamSize = document.getElementById('teamSize').value;
+                    break;
+                case 3:
+                    userData.firstName = document.getElementById('firstName').value;
+                    userData.lastName = document.getElementById('lastName').value;
+                    userData.experience = document.getElementById('experience').value;
+                    break;
+            }
+
+            // Save to localStorage
+            localStorage.setItem('onboardingData', JSON.stringify(userData));
+        }
+
+        // OAuth functions
+        async function signInWithGoogle() {
+            try {
+                const { data, error } = await supabase.auth.signInWithOAuth({
+                    provider: 'google',
+                    options: {
+                        redirectTo: window.location.origin + '/dashboard'
+                    }
+                });
+
+                if (error) throw error;
+
+            } catch (error) {
+                console.error('Error with Google sign in:', error);
+                showAlert('Google sign-in is being configured', 'info');
+            }
+        }
+
+        async function signInWithGitHub() {
+            try {
+                const { data, error } = await supabase.auth.signInWithOAuth({
+                    provider: 'github',
+                    options: {
+                        redirectTo: window.location.origin + '/dashboard'
+                    }
+                });
+
+                if (error) throw error;
+
+            } catch (error) {
+                console.error('Error with GitHub sign in:', error);
+                showAlert('GitHub sign-in is being configured', 'info');
+            }
+        }
+
+        // Team type selection
+        function selectTeamType(type) {
+            document.querySelectorAll('.team-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            document.querySelector(`[data-type="${type}"]`).classList.add('selected');
+            userData.teamType = type;
+
+            // Show/hide team fields
+            const teamFields = document.getElementById('teamFields');
+            if (type === 'personal') {
+                teamFields.style.display = 'none';
+            } else {
+                teamFields.style.display = 'block';
+            }
+        }
+
+        // Plan selection
+        function selectPlan(plan) {
+            document.querySelectorAll('.plan-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            document.querySelector(`[data-plan="${plan}"]`).classList.add('selected');
+            userData.plan = plan;
+        }
+
+        // Payment method selection
+        function selectPaymentMethod(method) {
+            document.querySelectorAll('.payment-method').forEach(m => {
+                m.classList.remove('selected');
+            });
+            document.querySelector(`[data-method="${method}"]`).classList.add('selected');
+            userData.paymentMethod = method;
+
+            // Show/hide payment forms
+            if (method === 'card') {
+                document.getElementById('cardPaymentForm').style.display = 'block';
+                document.getElementById('cryptoPaymentForm').style.display = 'none';
+            } else {
+                document.getElementById('cardPaymentForm').style.display = 'none';
+                document.getElementById('cryptoPaymentForm').style.display = 'block';
+            }
+        }
+
+        // Process payment
+        async function processPayment() {
+            // Show loading state
+            const btn = event.target;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<span class="loading"></span> Processing...';
+            btn.disabled = true;
+
+            // Simulate payment processing
+            setTimeout(() => {
+                goToStep(6);
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }, 2000);
+        }
+
+        // Success page actions
+        function viewDocs() {
+            window.open('https://docs.zmartybrain.ai', '_blank');
+        }
+
+        function goToDashboard() {
+            window.location.href = '/dashboard';
+        }
+
+        // Alert system
+        function showAlert(message, type = 'info') {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type}`;
+            alertDiv.innerHTML = `
+                <span>${type === 'success' ? '✓' : type === 'error' ? '✗' : 'ℹ️'}</span>
+                <span>${message}</span>
+            `;
+
+            const contentArea = document.querySelector('.content-area');
+            const firstChild = contentArea.firstChild;
+            contentArea.insertBefore(alertDiv, firstChild);
+
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 5000);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            // Load saved data if exists
+            const savedData = localStorage.getItem('onboardingData');
+            if (savedData) {
+                userData = JSON.parse(savedData);
+            }
+
+            // Add keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && e.ctrlKey) {
+                    nextStep();
+                } else if (e.key === 'Escape') {
+                    prevStep();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
