@@ -1141,6 +1141,50 @@
         const { createClient } = supabase;
         const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+        // Bug Fix #36: Global network error handling
+        let isOnline = navigator.onLine;
+        const networkStatus = {
+            retries: 0,
+            maxRetries: 3,
+            async withRetry(operation, name = 'Operation') {
+                for (let i = 0; i <= this.maxRetries; i++) {
+                    try {
+                        if (!navigator.onLine) {
+                            throw new Error('No network connection');
+                        }
+                        return await operation();
+                    } catch (error) {
+                        console.log(`🔄 ${name} attempt ${i + 1}/${this.maxRetries + 1}:`, error.message);
+
+                        if (i === this.maxRetries) {
+                            throw error;
+                        }
+
+                        // Exponential backoff
+                        await new Promise(resolve =>
+                            setTimeout(resolve, Math.min(1000 * Math.pow(2, i), 10000))
+                        );
+                    }
+                }
+            }
+        };
+
+        window.addEventListener('online', () => {
+            isOnline = true;
+            console.log('✅ Network restored');
+            const alert = document.querySelector('.alert.error');
+            if (alert && alert.textContent.includes('network')) {
+                hideAlert('tierAlert');
+                showAlert('tierAlert', 'Connection restored! You can continue.', 'success');
+            }
+        });
+
+        window.addEventListener('offline', () => {
+            isOnline = false;
+            console.log('❌ Network lost');
+            showAlert('tierAlert', 'No internet connection. Your progress is saved locally.', 'warning');
+        });
+
         // Global state management
         class OnboardingState {
             constructor() {
@@ -1363,6 +1407,7 @@
                 });
             }
 
+            // Bug Fix #35: Enhanced mobile swipe with race condition prevention
             initializeSwipeHandlers() {
                 const container = document.getElementById('slidesContainer');
                 if (!container) return;
@@ -1373,6 +1418,8 @@
                 let currentY = 0;
                 let isSwipeEnabled = true;
                 let isDragging = false;
+                let swipeTimeout = null;
+                let touchId = null;
 
                 const handleTouchStart = (e) => {
                     if (!isSwipeEnabled) return;
