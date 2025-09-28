@@ -1,34 +1,52 @@
 [build]
-  # Build command - not needed for static site
+  # Build command - not needed for static HTML site
   command = ""
 
-  # Publish directory - the folder with our index.html
+  # Publish directory - current directory contains index.html
   publish = "."
 
-  # Base directory for the build
+  # Base directory - ClaudeAI/Production folder in repository
   base = "ClaudeAI/Production"
 
 [build.environment]
-  # Node version (if needed)
+  # Node version for any potential build tools
   NODE_VERSION = "18"
 
+# SPA redirect rules
 [[redirects]]
-  # Redirect all routes to index.html for SPA behavior
   from = "/*"
   to = "/index.html"
   status = 200
 
+# Production context settings
 [context.production]
-  # Production-specific settings
   command = ""
   publish = "."
 
+# Deploy preview settings for testing
 [context.deploy-preview]
-  # Deploy preview settings
   command = ""
   publish = "."
 
+# Branch deploy settings
 [context.branch-deploy]
-  # Branch deploy settings
   command = ""
   publish = "."
+
+# Build processing settings
+[build.processing]
+  skip_processing = false
+
+[build.processing.css]
+  bundle = true
+  minify = true
+
+[build.processing.js]
+  bundle = true
+  minify = true
+
+[build.processing.html]
+  pretty_urls = true
+
+[build.processing.images]
+  compress = true
