@@ -84,7 +84,7 @@ class ClaudeMaxOrchestrator:
         self.db_path = self.project_root / "zmart-api" / "claude_max_database.db"
         
         # Claude Max Plan Configuration
-        self.claude_api_key = "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"
+        self.claude_api_key=os.getenv("API_KEY")
         self.claude_endpoint = "https://api.anthropic.com/v1/messages"
         self.claude_model = "claude-3-5-sonnet-20241022"
         self.max_tokens = 200000  # Max Plan limit

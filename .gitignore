@@ -1,5 +1,26 @@
 # ZmartBot Project .gitignore
 
+# CRITICAL - Environment Files (NEVER COMMIT THESE!)
+.env
+.env.*
+!.env.example
+*.env
+env.local
+.env.local
+.env.production
+.env.development
+.env.test
+
+# API Keys and Secrets
+*_api_key*
+*_secret*
+*.key
+*.pem
+*.cert
+credentials.json
+secrets.json
+config.secret.json
+
 # Python
 __pycache__/
 *.py[cod]

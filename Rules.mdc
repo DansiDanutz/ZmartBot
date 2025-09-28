@@ -19,7 +19,7 @@
   "command": "npx",
   "args": ["-y", "@anthropic-ai/claude-code"],
   "env": {
-    "ANTHROPIC_API_KEY": "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"
+    "ANTHROPIC_API_KEY": "OPENAI_API_KEY"
   },
   "description": "Anthropic Claude Code integration for enhanced code analysis and generation"
 }

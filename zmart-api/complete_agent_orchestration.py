@@ -49,8 +49,8 @@ class CompleteAgentOrchestration:
         # API Keys
         self.api_keys = {
             'cryptometer': '1n3PBsjVq4GdxH1lZZQO5371H5H81v7agEO9I7u9',
-            'grok': 'xai-20qlkmpVbIfgZkcFo6o13irMR9hcSmGDb8rooqIG6E5ao7b9dopPYg5Yra0qAEVvMB9Q8EQlr8cer4bl',
-            'manus': 'sk-L06OClgUTdEIGsoxU1R129DKOBuXoTOjFGkWD_w3mrEbH_c74_yQ6b_2oWImeQjFNmKIhj7lHgpYojuG'
+            'grok': 'XAI_API_KEY',
+            'manus': 'OPENAI_API_KEY'
         }
 
     async def get_real_market_price(self, symbol: str) -> float:
