@@ -14,7 +14,7 @@
     <meta name="twitter:title" content="ZmartyBrain - Professional AI Trading Platform">
     <meta name="twitter:description" content="Join the future of trading with AI-powered insights and professional tools.">
     <title>ZmartyBrain - Professional Onboarding</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" async></script>
     <style>
         * {
             margin: 0;
@@ -1994,8 +1994,26 @@
             }
         }
 
-        // Initialize system optimizer
-        const systemOptimizer = new SystemOptimizer();
+        // Initialize system optimizer (Bug #22 Fix - Safe initialization)
+        let systemOptimizer = null;
+        try {
+            systemOptimizer = new SystemOptimizer();
+        } catch (error) {
+            console.warn('SystemOptimizer initialization skipped due to compatibility:', error.message);
+            // Provide fallback loading function
+            window.setButtonLoading = function(buttonId, isLoading, text = null) {
+                const button = document.getElementById(buttonId);
+                if (!button) return;
+
+                if (isLoading) {
+                    button.disabled = true;
+                    button.innerHTML = `<div style="display: flex; align-items: center; justify-content: center; gap: 8px;"><div style="width: 16px; height: 16px; border: 2px solid transparent; border-top: 2px solid currentColor; border-radius: 50%; animation: spin 1s linear infinite;"></div>${text || 'Loading...'}</div>`;
+                } else {
+                    button.disabled = false;
+                    button.innerHTML = button.getAttribute('data-original-text') || 'Submit';
+                }
+            };
+        }
 
         // Enhanced 6-digit code verification functions
         function handleCodeInput(current, nextId) {
@@ -2530,10 +2548,31 @@
             }
         }
 
+        // Wait for Supabase to load (Bug #23 - Performance optimization)
+        function waitForSupabase() {
+            return new Promise((resolve) => {
+                if (window.supabase) {
+                    resolve();
+                } else {
+                    const checkSupabase = () => {
+                        if (window.supabase) {
+                            resolve();
+                        } else {
+                            setTimeout(checkSupabase, 50);
+                        }
+                    };
+                    checkSupabase();
+                }
+            });
+        }
+
         // Initialize on page load
         window.addEventListener('load', async () => {
             // Initialize accessibility enhancements (Bug #13 & #14)
             enhanceAccessibility();
+
+            // Wait for Supabase library to load before initializing
+            await waitForSupabase();
 
             // Check for URL parameters indicating email verification or other callbacks
             const urlParams = new URLSearchParams(window.location.search);
