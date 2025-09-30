@@ -6,6 +6,28 @@ Zmart Bot V1 is a sophisticated cryptocurrency trading bot system that combines 
 
 ## 🏗️ Architecture
 
+### Project Structure (Reorganized)
+```
+ZmartBot/
+├── src/                    # Source code
+│   ├── backend/           # Backend services
+│   │   ├── api/           # Main API server
+│   │   └── kingfisher/    # KingFisher analysis module
+│   ├── frontend/          # Frontend applications
+│   │   └── dashboard/     # Trading dashboard
+│   └── modules/           # Additional modules
+│       ├── simulation-agent/
+│       └── trade-strategy/
+├── config/                # Configuration files
+│   └── docker-compose.yml
+├── deployments/           # Deployment assets
+├── docs/                  # Documentation
+├── scripts/               # Utility scripts
+│   └── database/         # Database scripts
+├── tests/                 # Test files
+└── README.md             # This file
+```
+
 ### Core Technologies
 - **Backend**: FastAPI (Python 3.11+), PostgreSQL, Redis, InfluxDB, Prometheus
 - **Frontend**: React 18, TypeScript, Vite, Tailwind CSS
@@ -46,7 +68,7 @@ Zmart Bot V1 is a sophisticated cryptocurrency trading bot system that combines 
 
 ### Backend Setup
 ```bash
-cd backend/zmart-api
+cd src/backend/api
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
@@ -54,7 +76,7 @@ pip install -r requirements.txt
 
 ### Frontend Setup
 ```bash
-cd zmart-platform/frontend/zmart-dashboard
+cd src/frontend/dashboard
 npm install --legacy-peer-deps
 ```
 
@@ -75,23 +97,23 @@ REDIS_URL=redis://localhost:6379
 ### Starting Development Environment
 ```bash
 # Start all services
-./start_dev.sh
+./scripts/start_dev.sh
 
 # Start individual services
-./start_dev.sh backend
-./start_dev.sh frontend
+./scripts/start_dev.sh backend
+./scripts/start_dev.sh frontend
 ```
 
 ### Backend Development
 ```bash
-cd backend/zmart-api
+cd src/backend/api
 source venv/bin/activate
 python run_dev.py
 ```
 
 ### Frontend Development
 ```bash
-cd zmart-platform/frontend/zmart-dashboard
+cd src/frontend/dashboard
 npm run dev
 ```
 
@@ -135,13 +157,13 @@ npm run dev
 
 ### Backend Testing
 ```bash
-cd backend/zmart-api
+cd src/backend/api
 pytest tests/
 ```
 
 ### Frontend Testing
 ```bash
-cd zmart-platform/frontend/zmart-dashboard
+cd src/frontend/dashboard
 npm test
 ```
 
@@ -149,18 +171,18 @@ npm test
 
 ### Production Deployment
 ```bash
-./deploy.sh
+./scripts/deploy.sh
 ```
 
 ### Docker Deployment
 ```bash
-docker-compose up -d
+docker-compose -f config/docker-compose.yml up -d
 ```
 
 ## 📚 Documentation
 
-- [Architecture Guide](Zmart_Bot_Architecture_Guide.md)
-- [Technical Guide](Zmart_Trading_Bot_Platform_Master_Technical_Guide.pdf)
+- [Architecture Guide](docs/architecture.md)
+- [Technical Guide](docs/Zmart_Trading_Bot_Platform_Master_Technical_Guide.pdf)
 - [API Documentation](docs/api.md)
 - [Trading Strategy](docs/strategy.md)
 
@@ -206,4 +228,4 @@ For support and questions:
 
 ---
 
-**⚠️ Disclaimer**: This is a sophisticated trading system. Use at your own risk. Past performance does not guarantee future results. Always test thoroughly before live trading. 
+**⚠️ Disclaimer**: This is a sophisticated trading system. Use at your own risk. Past performance does not guarantee future results. Always test thoroughly before live trading.

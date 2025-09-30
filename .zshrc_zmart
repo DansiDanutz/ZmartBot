@@ -1,25 +1,27 @@
-# Zmart Trading Bot Platform - Development Aliases
+# Zmart Trading Bot Platform - Development Aliases (Updated for Reorganized Structure)
 
 # Frontend aliases
-alias zmart-frontend='cd /Users/dansidanutz/Desktop/ZmartBot/zmart-platform/frontend/zmart-dashboard && npm run dev'
-alias zmart-frontend-install='cd /Users/dansidanutz/Desktop/ZmartBot/zmart-platform/frontend/zmart-dashboard && npm install --legacy-peer-deps'
+alias zmart-frontend='cd src/frontend/dashboard && npm run dev'
+alias zmart-frontend-install='cd src/frontend/dashboard && npm install --legacy-peer-deps'
 
 # Backend aliases
-alias zmart-backend='cd /Users/dansidanutz/Desktop/ZmartBot/backend/zmart-api && source venv/bin/activate && python run_dev.py'
-alias zmart-backend-install='cd /Users/dansidanutz/Desktop/ZmartBot/backend/zmart-api && source venv/bin/activate && pip install -r requirements.txt'
+alias zmart-backend='cd src/backend/api && source venv/bin/activate && python run_dev.py'
+alias zmart-backend-install='cd src/backend/api && source venv/bin/activate && pip install -r requirements.txt'
 
 # Development startup aliases
-alias zmart-start='./start_dev.sh both'
-alias zmart-start-frontend='./start_dev.sh frontend'
-alias zmart-start-backend='./start_dev.sh backend'
+alias zmart-start='./scripts/start_dev.sh both'
+alias zmart-start-frontend='./scripts/start_dev.sh frontend'
+alias zmart-start-backend='./scripts/start_dev.sh backend'
 
 # Status aliases
 alias zmart-status='echo "Frontend: http://localhost:5173" && echo "Backend: http://localhost:8000" && echo "API Docs: http://localhost:8000/docs"'
 
 # Quick navigation aliases
-alias zmart='cd /Users/dansidanutz/Desktop/ZmartBot'
-alias zmart-frontend-dir='cd /Users/dansidanutz/Desktop/ZmartBot/zmart-platform/frontend/zmart-dashboard'
-alias zmart-backend-dir='cd /Users/dansidanutz/Desktop/ZmartBot/backend/zmart-api'
+alias zmart='cd .'
+alias zmart-frontend-dir='cd src/frontend/dashboard'
+alias zmart-backend-dir='cd src/backend/api'
+alias zmart-kingfisher-dir='cd src/backend/kingfisher'
+alias zmart-modules-dir='cd src/modules'
 
 echo "🚀 Zmart Trading Bot Platform aliases loaded!"
 echo "Available commands:"
@@ -28,4 +30,6 @@ echo "  zmart-backend      - Start backend development server"
 echo "  zmart-start        - Start both frontend and backend"
 echo "  zmart-status       - Show development URLs"
 echo "  zmart-frontend-dir - Navigate to frontend directory"
-echo "  zmart-backend-dir  - Navigate to backend directory" 
+echo "  zmart-backend-dir  - Navigate to backend directory"
+echo "  zmart-kingfisher-dir - Navigate to kingfisher module"
+echo "  zmart-modules-dir  - Navigate to modules directory"
