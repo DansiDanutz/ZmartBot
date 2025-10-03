@@ -1,4 +1,0 @@
-ZmartBot State Snapshot - Mon Aug 25 05:33:51 EEST 2025
-Services: 17
-MDC Files:       67
-Backup created: backups/zmartbot_backup_20250825_053229.tar.gz

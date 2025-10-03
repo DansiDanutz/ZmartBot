@@ -1,6 +1,6 @@
-import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { buildMobileServiceUrl, validateConfig, PORTS } from '../config/ZmartBotConfig';
+import axios from 'axios';
+import { buildMobileServiceUrl, validateConfig } from '../config/ZmartBotConfig';
 
 export interface ZmartBotConfig {
   mobileServiceUrl: string;
@@ -33,11 +33,18 @@ export interface MarketData {
 export interface PortfolioPosition {
   symbol: string;
   quantity: number;
+  size: number; // Same as quantity
   averagePrice: number;
+  entryPrice: number; // Same as averagePrice
   currentPrice: number;
   unrealizedPnL: number;
+  pnl: number; // Same as unrealizedPnL
+  pnlPercent: number; // Same as unrealizedPnLPercent
   unrealizedPnLPercent: number;
   marketValue: number;
+  side: 'LONG' | 'SHORT';
+  margin: number;
+  leverage: number;
 }
 
 export interface TradingSignal {

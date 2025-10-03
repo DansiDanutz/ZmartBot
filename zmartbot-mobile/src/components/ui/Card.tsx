@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, ViewProps } from 'react-native';
 
 interface CardProps extends ViewProps {
   children: React.ReactNode;
+  variant?: string;
+  className?: string;
 }
 
 export const Card: React.FC<CardProps> = ({ children, style, ...props }) => {

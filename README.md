@@ -45,6 +45,7 @@ Zmart Bot V1 is a sophisticated cryptocurrency trading bot system that combines 
 - Docker (optional)
 
 ### Backend Setup
+
 ```bash
 cd backend/zmart-api
 python -m venv venv
@@ -53,13 +54,16 @@ pip install -r requirements.txt
 ```
 
 ### Frontend Setup
+
 ```bash
 cd zmart-platform/frontend/zmart-dashboard
 npm install --legacy-peer-deps
 ```
 
 ### Environment Configuration
+
 Create `.env` files with your API credentials:
+
 ```bash
 # Backend .env
 CRYPTOMETER_API_KEY=your_cryptometer_key
@@ -73,6 +77,7 @@ REDIS_URL=redis://localhost:6379
 ## 🚀 Development
 
 ### Starting Development Environment
+
 ```bash
 # Start all services
 ./start_dev.sh
@@ -83,6 +88,7 @@ REDIS_URL=redis://localhost:6379
 ```
 
 ### Backend Development
+
 ```bash
 cd backend/zmart-api
 source venv/bin/activate
@@ -90,6 +96,7 @@ python run_dev.py
 ```
 
 ### Frontend Development
+
 ```bash
 cd zmart-platform/frontend/zmart-dashboard
 npm run dev
@@ -134,12 +141,14 @@ npm run dev
 ## 🧪 Testing
 
 ### Backend Testing
+
 ```bash
 cd backend/zmart-api
 pytest tests/
 ```
 
 ### Frontend Testing
+
 ```bash
 cd zmart-platform/frontend/zmart-dashboard
 npm test
@@ -148,11 +157,13 @@ npm test
 ## 🚀 Deployment
 
 ### Production Deployment
+
 ```bash
 ./deploy.sh
 ```
 
 ### Docker Deployment
+
 ```bash
 docker-compose up -d
 ```
@@ -191,6 +202,7 @@ This project is proprietary software. All rights reserved.
 ## 🆘 Support
 
 For support and questions:
+
 - Create an issue in the repository
 - Contact the development team
 - Check the documentation
@@ -206,4 +218,4 @@ For support and questions:
 
 ---
 
-**⚠️ Disclaimer**: This is a sophisticated trading system. Use at your own risk. Past performance does not guarantee future results. Always test thoroughly before live trading. 
+**⚠️ Disclaimer**: This is a sophisticated trading system. Use at your own risk. Past performance does not guarantee future results. Always test thoroughly before live trading.

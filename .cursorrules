@@ -1,0 +1,152 @@
+# Cursor AI Rules & Claude Integration Optimization
+
+## Performance Optimizations
+
+### Memory Management
+- Limit context window to relevant files only
+- Use incremental parsing for large files
+- Enable smart caching for frequently accessed code
+- Reduce token usage by focusing on changed sections
+
+### Response Quality
+- Prioritize concise, actionable responses
+- Include code references with file:line format
+- Batch related changes together
+- Use streaming responses for better UX
+
+### Context Awareness
+- Respect .gitignore patterns
+- Exclude node_modules, dist, build directories
+- Focus on project-specific files
+- Maintain conversation context across sessions
+
+## Claude Integration Settings
+
+### Model Configuration
+- Model: claude-sonnet-4-5-20250929
+- Max tokens: 8192
+- Temperature: 0.7
+- Streaming: enabled
+- Timeout: 60s
+
+### Request Optimization
+- Debounce requests: 300ms
+- Max concurrent requests: 3
+- Enable response caching
+- Use parallel processing where possible
+
+### Code Completion
+- Enable inline suggestions
+- Suggestion debounce: 400ms
+- Max suggestions: 3
+- Context-aware completions
+
+## Best Practices
+
+### For Large Codebases
+1. Use workspace-specific configurations
+2. Limit file watchers to relevant directories
+3. Enable lazy loading for large files
+4. Use .cursorignore for excluded paths
+
+### For Better Performance
+1. Close unused editor tabs
+2. Limit terminal sessions
+3. Disable unnecessary extensions
+4. Clear cache regularly
+
+### For Debugging
+1. Check Cursor output logs
+2. Monitor network requests
+3. Watch memory usage
+4. Review error messages in console
+
+## Integration Rules
+
+### When to Use Claude
+- Code generation and refactoring
+- Bug fixing and debugging
+- Documentation generation
+- Code review and suggestions
+- Architectural decisions
+
+### When NOT to Use Claude
+- Simple text edits
+- File renaming/moving
+- Routine git operations
+- Binary file operations
+- Bulk find/replace
+
+## Error Handling
+
+### Common Issues
+- **Timeout errors**: Reduce context size or increase timeout
+- **Rate limiting**: Enable request throttling
+- **Memory issues**: Restart Cursor, clear cache
+- **Context overflow**: Focus on specific files/sections
+- **Freezing/hanging**: Check terminal mode settings
+
+### Solutions
+1. Restart Cursor if freezing occurs
+2. Clear cache: ~/.cache/Cursor
+3. Check system resources (CPU/RAM)
+4. Verify network connectivity
+5. Update to latest Cursor version
+
+## Custom Commands
+
+### Quick Optimizations
+```bash
+# Clean cache
+rm -rf ~/Library/Caches/Cursor/*
+
+# Optimize databases
+find ~/Library/Application\ Support/Cursor -name "*.db" -exec sqlite3 {} "VACUUM;" \;
+
+# Check resource usage
+top -l 1 | grep Cursor
+```
+
+### Monitoring
+```bash
+# Watch memory usage
+watch -n 5 'ps aux | grep Cursor | grep -v grep'
+
+# Check open files
+lsof -c Cursor | wc -l
+
+# Monitor CPU
+top -l 1 -stats pid,command,cpu | grep Cursor
+```
+
+## Project-Specific Settings
+
+### File Exclusions
+- node_modules/**
+- dist/**
+- build/**
+- .git/**
+- tmp/**
+- *.log
+- .trunk/**
+
+### Priority Files
+- *.ts, *.tsx, *.js, *.jsx
+- *.py
+- *.md (documentation)
+- *.json (config files)
+- *.sql (database schemas)
+
+## Security & Privacy
+
+### Data Handling
+- Don't send API keys to Claude
+- Exclude .env files from context
+- Review code before committing
+- Use local processing when possible
+
+### Best Practices
+- Keep sensitive data in .env
+- Use .gitignore properly
+- Review AI suggestions carefully
+- Maintain code ownership

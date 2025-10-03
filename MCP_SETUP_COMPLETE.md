@@ -20,6 +20,7 @@ All MCP servers have been successfully installed and configured:
 ### 🔑 Required API Keys
 
 Update the following keys in `.env` file with your actual values:
+
 - `SUPABASE_URL` - Your Supabase project URL
 - `SUPABASE_SERVICE_ROLE_KEY` - Your Supabase service role key
 - `FIRECRAWL_API_KEY` - Your Firecrawl API key (if using cloud version)

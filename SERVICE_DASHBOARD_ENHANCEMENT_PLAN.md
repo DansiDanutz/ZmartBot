@@ -1,13 +1,14 @@
 # 🚀 Service Dashboard Enhancement Plan - Advanced Features
 
-**Current Status**: ✅ Basic functionality complete  
-**Next Phase**: Advanced monitoring, management, and analytics capabilities  
+**Current Status**: ✅ Basic functionality complete
+**Next Phase**: Advanced monitoring, management, and analytics capabilities
 
 ## 🔍 Current Issues to Optimize
 
 ### 1. **Connection Check Optimization**
 **Issue**: Dashboard makes 2 requests per service (root + health), causing unnecessary 404s
 **Solution**: Skip root check, go directly to health endpoint
+
 ```javascript
 // Instead of checking root first, optimize to:
 const healthResponse = await fetch(`http://localhost:${service.port}/health`, {
@@ -24,16 +25,17 @@ const healthResponse = await fetch(`http://localhost:${service.port}/health`, {
 ### 📊 **Performance Monitoring Dashboard**
 
 #### A. Response Time Tracking
+
 ```javascript
 class PerformanceMonitor {
     async checkServicePerformance(service) {
         const start = performance.now();
         const response = await fetch(`http://localhost:${service.port}/health`);
         const responseTime = performance.now() - start;
-        
+
         service.responseTime = responseTime;
         service.uptimePercentage = this.calculateUptime(service);
-        
+
         return { responseTime, status: response.status };
     }
 }
@@ -48,6 +50,7 @@ class PerformanceMonitor {
 ### 🎮 **Service Management Console**
 
 #### A. Service Control Actions
+
 ```javascript
 // Add service control buttons
 <div class="service-management">
@@ -72,6 +75,7 @@ class PerformanceMonitor {
 ### 📈 **Real-Time Analytics**
 
 #### A. Live Charts with Chart.js
+
 ```javascript
 // Add live performance charts
 class ServiceCharts {
@@ -101,6 +105,7 @@ class ServiceCharts {
 ### 🔔 **Advanced Notification System**
 
 #### A. Alert Rules Engine
+
 ```javascript
 class AlertManager {
     checkAlertRules(service) {
@@ -109,7 +114,7 @@ class AlertManager {
             { condition: 'uptime < 95', action: 'warning', message: 'Low uptime detected' },
             { condition: 'errorRate > 10', action: 'error', message: 'High error rate' }
         ];
-        
+
         rules.forEach(rule => {
             if (this.evaluateCondition(rule.condition, service)) {
                 this.triggerAlert(rule, service);
@@ -128,6 +133,7 @@ class AlertManager {
 ### 🔍 **Service Discovery & Dependencies**
 
 #### A. Service Dependency Mapping
+
 ```javascript
 // Visualize service relationships
 const serviceDependencies = {
@@ -145,6 +151,7 @@ const serviceDependencies = {
 ### 🛠️ **Diagnostic Tools**
 
 #### A. Built-in API Testing
+
 ```javascript
 // Add API testing interface
 class APITester {
@@ -181,24 +188,28 @@ class APITester {
 ## 🔧 **Implementation Priority**
 
 ### **Phase 2A: Core Improvements** (1-2 days)
+
 1. ✅ Optimize connection checking (remove root endpoint check)
 2. ✅ Add response time tracking
 3. ✅ Implement service restart/stop functionality
 4. ✅ Add real-time log viewer
 
 ### **Phase 2B: Analytics** (2-3 days)
+
 1. ✅ Performance charts with Chart.js
 2. ✅ Uptime percentage tracking
 3. ✅ Service dependency visualization
 4. ✅ Historical data storage
 
 ### **Phase 2C: Advanced Features** (3-4 days)
+
 1. ✅ Alert rules engine
 2. ✅ Multi-channel notifications
 3. ✅ Configuration management interface
 4. ✅ Mobile PWA conversion
 
 ### **Phase 2D: Enterprise Features** (4-5 days)
+
 1. ✅ Resource usage monitoring
 2. ✅ Security audit trail
 3. ✅ Backup/restore management
@@ -207,6 +218,7 @@ class APITester {
 ## 🎨 **UI/UX Enhancements**
 
 ### **Enhanced Cards**
+
 ```html
 <div class="service-card enhanced">
     <div class="service-header">
@@ -219,7 +231,7 @@ class APITester {
             <div class="status-light ${service.status}"></div>
         </div>
     </div>
-    
+
     <div class="service-metrics">
         <div class="metric-chart">
             <canvas id="chart-${service.name}"></canvas>
@@ -247,6 +259,7 @@ class APITester {
 ## 📊 **Data Storage & Analytics**
 
 ### **Local Storage Enhancement**
+
 ```javascript
 class DashboardStorage {
     saveMetrics(service, metrics) {
@@ -255,11 +268,11 @@ class DashboardStorage {
             timestamp: Date.now(),
             ...metrics
         });
-        
+
         // Keep last 24 hours of data
         const cutoff = Date.now() - (24 * 60 * 60 * 1000);
         const filtered = history.filter(entry => entry.timestamp > cutoff);
-        
+
         localStorage.setItem(`service_${service.name}`, JSON.stringify(filtered));
     }
 }
@@ -281,6 +294,7 @@ class DashboardStorage {
 5. **🏆 Advanced Alerts** - Smart notification rules
 
 **Quick Wins:**
+
 1. Remove unnecessary root endpoint checks (5 minutes)
 2. Add response time display (30 minutes)
 3. Service restart buttons (1 hour)

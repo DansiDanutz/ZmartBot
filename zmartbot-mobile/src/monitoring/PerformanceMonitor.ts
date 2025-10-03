@@ -3,7 +3,7 @@ import * as Sentry from 'sentry-expo';
 export class PerformanceMonitor {
   private static instance: PerformanceMonitor;
   private metrics: Map<string, number> = new Map();
-  private traces: Map<string, Sentry.Span> = new Map();
+  private traces: Map<string, any> = new Map();
 
   static getInstance(): PerformanceMonitor {
     if (!PerformanceMonitor.instance) {
@@ -15,15 +15,9 @@ export class PerformanceMonitor {
   // Start performance measurement
   startTrace(name: string, operation: string): void {
     try {
-      const span = Sentry.startSpan({
-        op: operation,
-        name: name,
-      });
-      
-      if (span) {
-        this.traces.set(name, span);
-        console.log(`🚀 Performance trace started: ${name}`);
-      }
+      // Store trace information for performance tracking
+      this.traces.set(name, { name, operation, startTime: Date.now() });
+      console.log(`🚀 Performance trace started: ${name}`);
     } catch (error) {
       console.warn('Performance monitoring not available:', error);
     }
@@ -32,12 +26,12 @@ export class PerformanceMonitor {
   // End performance measurement
   endTrace(name: string, status: 'ok' | 'error' = 'ok'): void {
     try {
-      const span = this.traces.get(name);
-      if (span) {
-        span.setStatus(status);
-        span.finish();
+      const trace = this.traces.get(name);
+      if (trace) {
+        const duration = Date.now() - trace.startTime;
+        this.metrics.set(name, duration);
         this.traces.delete(name);
-        console.log(`✅ Performance trace ended: ${name}`);
+        console.log(`✅ Performance trace ended: ${name} (${duration}ms)`);
       }
     } catch (error) {
       console.warn('Performance monitoring not available:', error);
@@ -62,12 +56,6 @@ export class PerformanceMonitor {
       // Log performance metrics
       if (duration > 1000) {
         console.warn(`⚠️ Slow operation detected: ${name} took ${duration}ms`);
-        Sentry.addBreadcrumb({
-          category: 'performance',
-          message: `Slow operation: ${name}`,
-          level: 'warning',
-          data: { duration, operation: operationName },
-        });
       }
       
       return result;
@@ -77,12 +65,7 @@ export class PerformanceMonitor {
       this.endTrace(name, 'error');
       
       // Report performance errors
-      Sentry.addBreadcrumb({
-        category: 'performance',
-        message: `Operation failed: ${name}`,
-        level: 'error',
-        data: { duration, operation: operationName, error: error.message },
-      });
+      console.error(`❌ Operation failed: ${name}`, error);
       
       throw error;
     }
@@ -106,12 +89,6 @@ export class PerformanceMonitor {
       // Log performance metrics
       if (duration > 100) {
         console.warn(`⚠️ Slow sync operation: ${name} took ${duration}ms`);
-        Sentry.addBreadcrumb({
-          category: 'performance',
-          message: `Slow sync operation: ${name}`,
-          level: 'warning',
-          data: { duration, operation: operationName },
-        });
       }
       
       return result;
@@ -121,12 +98,7 @@ export class PerformanceMonitor {
       this.endTrace(name, 'error');
       
       // Report performance errors
-      Sentry.addBreadcrumb({
-        category: 'performance',
-        message: `Sync operation failed: ${name}`,
-        level: 'error',
-        data: { duration, operation: operationName, error: error.message },
-      });
+      console.error(`❌ Sync operation failed: ${name}`, error);
       
       throw error;
     }
@@ -166,8 +138,8 @@ export class PerformanceMonitor {
   // Report custom metric
   reportMetric(name: string, value: number, tags?: Record<string, string>): void {
     try {
-      Sentry.metrics.increment(name, value, tags);
       this.metrics.set(name, value);
+      console.log(`📊 Metric reported: ${name} = ${value}`, tags);
     } catch (error) {
       console.warn('Metrics reporting not available:', error);
     }

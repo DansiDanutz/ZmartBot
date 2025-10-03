@@ -1,0 +1,80 @@
+{
+  "mcpServers": {
+    "claude-code": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@anthropic-ai/claude-code@latest"
+      ],
+      "env": {
+        "ANTHROPIC_API_KEY": "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",
+        "ANTHROPIC_MODEL": "claude-3-5-sonnet-20241022",
+        "ANTHROPIC_MAX_TOKENS": "4000",
+        "ANTHROPIC_TEMPERATURE": "0.7"
+      },
+      "description": "Optimized Claude Code integration with latest model and performance settings"
+    },
+    "byterover-mcp": {
+      "url": "https://mcp.byterover.dev/mcp?machineId=1f099876-d1f7-6c20-8c84-d9827e525833",
+      "description": "ByteRover Memory Gateway - Optimized for performance"
+    },
+    "supabase": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@supabase/mcp-server-supabase@latest",
+        "--read-only",
+        "--project-ref=asjtxrmftmutcsnqgidy"
+      ],
+      "env": {
+        "SUPABASE_ACCESS_TOKEN": "sbp_2fde16944ca746cd956911a6f083b09dd9a9a7a9"
+      },
+      "description": "Supabase MCP Server - Optimized for database operations"
+    },
+    "Ref": {
+      "type": "http",
+      "url": "https://api.ref.tools/mcp?apiKey=ref-5c535e98df41fa8ef0f9",
+      "headers": {
+        "User-Agent": "Cursor-Optimized/1.0"
+      },
+      "description": "Ref documentation server - Optimized for performance"
+    },
+    "browser": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@playwright/mcp@latest"
+      ],
+      "env": {
+        "PLAYWRIGHT_BROWSERS_PATH": "0"
+      },
+      "description": "Browser automation - Optimized Playwright integration"
+    }
+  },
+  "performance": {
+    "maxConcurrentServers": 5,
+    "serverTimeout": 30000,
+    "retryAttempts": 3,
+    "enableCaching": true,
+    "cacheTimeout": 300000
+  },
+  "optimization": {
+    "enableCompression": true,
+    "enableKeepAlive": true,
+    "maxConnections": 10,
+    "connectionTimeout": 10000
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StatusBar } from 'react-native';
 import MainApp from './src/screens/MainApp';
 import AuthScreen from './src/screens/AuthScreen';
-import { PrefsProvider } from './src/assistant/store/prefs';
+import { usePrefs } from './src/assistant/store/prefs';
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -35,13 +35,13 @@ export default function App() {
   }
 
   return (
-    <PrefsProvider>
+    <>
       <StatusBar barStyle="light-content" backgroundColor="#0A0E1B" />
       {isAuthenticated ? (
         <MainApp />
       ) : (
         <AuthScreen onLogin={handleLogin} />
       )}
-    </PrefsProvider>
+    </>
   );
 }

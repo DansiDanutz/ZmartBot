@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 interface MarketDataCardProps {
   symbol: string;
@@ -43,10 +43,34 @@ export const MarketDataCard: React.FC<MarketDataCardProps> = ({
   );
 };
 
-export const MarketDataGrid: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+interface MarketData {
+  symbol: string;
+  price: number;
+  change24h: number;
+  changePercent24h: number;
+  volume24h: number;
+  high24h: number;
+  low24h: number;
+  lastUpdated: string;
+}
+
+interface MarketDataGridProps {
+  data: MarketData[];
+}
+
+export const MarketDataGrid: React.FC<MarketDataGridProps> = ({ data }) => {
   return (
     <View style={styles.grid}>
-      {children}
+      {data.map((item, index) => (
+        <MarketDataCard
+          key={index}
+          symbol={item.symbol}
+          price={item.price}
+          change={item.change24h}
+          changePercent={item.changePercent24h}
+          volume={item.volume24h.toLocaleString()}
+        />
+      ))}
     </View>
   );
 };

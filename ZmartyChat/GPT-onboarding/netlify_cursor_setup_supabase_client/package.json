@@ -1,0 +1,14 @@
+{
+  "name": "onboarding-app",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "vite": "^5.0.0",
+    "@supabase/supabase-js": "^2.39.3"
+  }
+}

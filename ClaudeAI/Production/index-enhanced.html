@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZmartyBrain - Complete Onboarding System</title>
+    <meta name="description" content="Professional AI-powered cryptocurrency trading platform with complete onboarding">
+
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="ZmartyBrain">
+
+    <!-- Icons -->
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico">
+
+    <!-- Google Fonts with display=swap for faster rendering -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Preconnect to external resources -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+
+    <!-- Performance Optimizations CSS -->
+    <link rel="stylesheet" href="/performance-optimizations.css">
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #667eea;
+            --primary-dark: #764ba2;
+            --success: #10b981;
+            --error: #ef4444;
+            --warning: #f59e0b;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            max-width: 500px;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .header {
+            padding: 24px;
+            background: linear-gradient(to bottom, white, var(--gray-50));
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: var(--gray-200);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+            border-radius: 3px;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .progress-text {
+            text-align: center;
+            color: var(--gray-600);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .slides-container {
+            position: relative;
+            min-height: 500px;
+            overflow: hidden;
+        }
+
+        .slide {
+            position: absolute;
+            width: 100%;
+            padding: 40px 30px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(100%);
+            transition: all 0.4s ease;
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(0);
+            position: relative;
+        }
+
+        .slide-icon {
+            font-size: 64px;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--gray-900);
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: var(--gray-600);
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--gray-700);
+            border: 2px solid var(--gray-200);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 15px;
+            border: 2px solid var(--gray-200);
+            border-radius: 10px;
+            margin-bottom: 16px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-bottom: 8px;
+        }
+
+        .navigation {
+            display: flex;
+            gap: 12px;
+            padding: 20px 30px;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .nav-btn {
+            flex: 1;
+            padding: 12px 20px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 10px;
+            border: 2px solid var(--gray-200);
+            background: white;
+            color: var(--gray-700);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .auth-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 8px;
+            border: none;
+            background: var(--gray-100);
+            color: var(--gray-600);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .auth-tab.active {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        .otp-container {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 30px 0;
+        }
+
+        .otp-input {
+            width: 50px;
+            height: 60px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: 700;
+            border: 2px solid var(--gray-300);
+            border-radius: 12px;
+        }
+
+        .alert {
+            padding: 12px 20px;
+            margin: 16px 0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .alert-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .alert-error {
+            background: var(--error);
+            color: white;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 24px; }
+            .container { margin: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Progress Header -->
+        <div class="header">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar" style="width: 11%"></div>
+            </div>
+            <div class="progress-text" id="progressText">Step 1 of 9</div>
+        </div>
+
+        <!-- Slides Container -->
+        <div class="slides-container">
+            <!-- Step 1: Welcome -->
+            <div class="slide active" id="step1">
+                <div class="slide-icon">👋</div>
+                <h1>Welcome to ZmartyBrain</h1>
+                <p class="subtitle">Your AI-powered cryptocurrency trading companion</p>
+                <button class="btn btn-primary" onclick="App.nextStep()">
+                    Get Started
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Step 2: Authentication -->
+            <div class="slide" id="step2">
+                <h1>Create Your Account</h1>
+                <p class="subtitle">Join thousands of smart traders</p>
+
+                <div class="auth-tabs">
+                    <button class="auth-tab active" data-tab="signup" onclick="App.switchAuthTab('signup')">Sign Up</button>
+                    <button class="auth-tab" data-tab="login" onclick="App.switchAuthTab('login')">Log In</button>
+                </div>
+
+                <!-- Sign Up Form -->
+                <form class="auth-form active" id="signupForm" onsubmit="App.signup(event)">
+                    <label>Email Address</label>
+                    <input type="email" id="signupEmail" placeholder="you@example.com" required>
+
+                    <label>Password</label>
+                    <div style="position: relative;">
+                        <input type="password" id="signupPassword" placeholder="Min. 8 characters" required>
+                        <button type="button"
+                                class="password-toggle"
+                                aria-label="Toggle password visibility"
+                                onclick="App.togglePassword('signupPassword')"
+                                style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #6b7280; font-size: 20px;">
+                            👁️
+                        </button>
+                    </div>
+
+                    <label>Confirm Password</label>
+                    <div style="position: relative;">
+                        <input type="password" id="confirmPassword" placeholder="Confirm password" required>
+                        <button type="button"
+                                class="password-toggle"
+                                aria-label="Toggle confirm password visibility"
+                                onclick="App.togglePassword('confirmPassword')"
+                                style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #6b7280; font-size: 20px;">
+                            👁️
+                        </button>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Create Account</button>
+
+                    <div style="text-align: center; margin: 16px 0; color: var(--gray-500);">or</div>
+
+                    <button type="button" class="btn btn-secondary" onclick="App.googleSignIn()">
+                        <svg width="20" height="20" viewBox="0 0 24 24">
+                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                        </svg>
+                        Continue with Google
+                    </button>
+                </form>
+
+                <!-- Log In Form -->
+                <form class="auth-form" id="loginForm" onsubmit="App.login(event)">
+                    <label>Email Address</label>
+                    <input type="email" id="loginEmail" placeholder="you@example.com" required>
+
+                    <label>Password</label>
+                    <div style="position: relative;">
+                        <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                        <button type="button"
+                                class="password-toggle"
+                                aria-label="Toggle password visibility"
+                                onclick="App.togglePassword('loginPassword')"
+                                style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #6b7280; font-size: 20px;">
+                            👁️
+                        </button>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Log In</button>
+
+                    <div style="text-align: center; margin: 16px 0; color: var(--gray-500);">or</div>
+
+                    <button type="button" class="btn btn-secondary" onclick="App.googleSignIn()">
+                        Continue with Google
+                    </button>
+                </form>
+            </div>
+
+            <!-- Step 3: Email Verification -->
+            <div class="slide" id="step3">
+                <div class="slide-icon">📧</div>
+                <h1>Verify Your Email</h1>
+                <p class="subtitle">Enter the 6-digit code sent to your email</p>
+
+                <form onsubmit="App.verifyOTP(event)">
+                    <div class="otp-container">
+                        <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" onkeyup="App.handleOTPInput(event, 0)" required>
+                        <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" onkeyup="App.handleOTPInput(event, 1)" required>
+                        <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" onkeyup="App.handleOTPInput(event, 2)" required>
+                        <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" onkeyup="App.handleOTPInput(event, 3)" required>
+                        <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" onkeyup="App.handleOTPInput(event, 4)" required>
+                        <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" onkeyup="App.handleOTPInput(event, 5)" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Verify</button>
+                    <button type="button" class="btn btn-secondary" onclick="App.resendOTP()">Resend Code</button>
+                </form>
+            </div>
+
+            <!-- Step 4: Profile Setup -->
+            <div class="slide" id="step4">
+                <div class="slide-icon">👤</div>
+                <h1>Complete Your Profile</h1>
+                <p class="subtitle">Tell us a bit about yourself</p>
+
+                <form onsubmit="App.saveProfile(event)">
+                    <label>Full Name</label>
+                    <input type="text" id="fullName" placeholder="John Doe" required>
+
+                    <label>Username</label>
+                    <input type="text" id="username" placeholder="trader123" required>
+
+                    <label>Phone Number (Optional)</label>
+                    <input type="tel" id="phoneNumber" placeholder="+1 (555) 000-0000">
+
+                    <button type="submit" class="btn btn-primary">Continue</button>
+                </form>
+            </div>
+
+            <!-- Step 5: Trading Preferences -->
+            <div class="slide" id="step5">
+                <div class="slide-icon">⚙️</div>
+                <h1>Trading Preferences</h1>
+                <p class="subtitle">Help us personalize your experience</p>
+
+                <form onsubmit="App.savePreferences(event)">
+                    <label>Experience Level</label>
+                    <select id="experience" required>
+                        <option value="">Select...</option>
+                        <option value="beginner">Beginner</option>
+                        <option value="intermediate">Intermediate</option>
+                        <option value="advanced">Advanced</option>
+                        <option value="expert">Expert</option>
+                    </select>
+
+                    <label>Risk Tolerance</label>
+                    <select id="riskTolerance" required>
+                        <option value="">Select...</option>
+                        <option value="conservative">Conservative</option>
+                        <option value="moderate">Moderate</option>
+                        <option value="aggressive">Aggressive</option>
+                    </select>
+
+                    <label>Trading Style</label>
+                    <select id="tradingStyle" required>
+                        <option value="">Select...</option>
+                        <option value="day-trading">Day Trading</option>
+                        <option value="swing-trading">Swing Trading</option>
+                        <option value="long-term">Long-term Investing</option>
+                        <option value="automated">Automated/Bot Trading</option>
+                    </select>
+
+                    <button type="submit" class="btn btn-primary">Continue</button>
+                </form>
+            </div>
+
+            <!-- Step 6: Plan Selection -->
+            <div class="slide" id="step6">
+                <div class="slide-icon">💎</div>
+                <h1>Choose Your Plan</h1>
+                <p class="subtitle">Select the plan that fits your needs</p>
+
+                <div style="margin: 24px 0;">
+                    <button class="btn btn-secondary" style="margin-bottom: 12px;" data-plan="basic" onclick="App.selectPlan('basic')">
+                        Basic - $29/mo
+                    </button>
+                    <button class="btn btn-primary" style="margin-bottom: 12px;" data-plan="professional" onclick="App.selectPlan('professional')">
+                        Professional - $99/mo (Popular)
+                    </button>
+                    <button class="btn btn-secondary" data-plan="enterprise" onclick="App.selectPlan('enterprise')">
+                        Enterprise - Custom
+                    </button>
+                </div>
+
+                <button class="btn btn-primary" onclick="App.confirmPlan()">
+                    Confirm <span id="selectedPlanText">Professional</span> Plan
+                </button>
+            </div>
+
+            <!-- Step 7: Review -->
+            <div class="slide" id="step7">
+                <div class="slide-icon">✨</div>
+                <h1>Review Your Setup</h1>
+                <p class="subtitle">Everything looks good?</p>
+
+                <div style="background: var(--gray-50); padding: 20px; border-radius: 12px; margin: 20px 0;">
+                    <div style="margin-bottom: 16px;">
+                        <strong style="color: var(--gray-600);">Email:</strong>
+                        <div id="summaryEmail" style="font-size: 16px; color: var(--gray-900);">user@example.com</div>
+                    </div>
+                    <div>
+                        <strong style="color: var(--gray-600);">Plan:</strong>
+                        <div id="summaryPlan" style="font-size: 16px; color: var(--gray-900);">Professional ($99/mo)</div>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" onclick="App.completeOnboarding()">Complete Setup</button>
+            </div>
+
+            <!-- Step 8: Processing -->
+            <div class="slide" id="step8">
+                <div class="slide-icon">⏳</div>
+                <h1>Setting Up Your Account</h1>
+                <p class="subtitle">This will only take a moment...</p>
+
+                <div style="margin: 40px 0; text-align: center;">
+                    <div style="font-size: 48px; animation: spin 2s linear infinite;">🔄</div>
+                </div>
+
+                <style>
+                    @keyframes spin {
+                        from { transform: rotate(0deg); }
+                        to { transform: rotate(360deg); }
+                    }
+                </style>
+            </div>
+
+            <!-- Step 9: Success -->
+            <div class="slide" id="step9">
+                <div class="slide-icon">✅</div>
+                <h1>Welcome Aboard!</h1>
+                <p class="subtitle">Your account is ready. Let's start your trading journey!</p>
+
+                <div style="background: var(--gray-50); padding: 20px; border-radius: 12px; margin: 30px 0;">
+                    <h3 style="font-size: 16px; margin-bottom: 12px;">Quick Start Guide</h3>
+                    <ol style="text-align: left; color: var(--gray-600); line-height: 1.8; padding-left: 20px;">
+                        <li>Deposit funds to your trading account</li>
+                        <li>Review AI-generated trading signals</li>
+                        <li>Enable automated trading when ready</li>
+                        <li>Monitor your portfolio performance</li>
+                    </ol>
+                </div>
+
+                <button class="btn btn-primary" onclick="App.goToDashboard()">
+                    Go to Dashboard
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="navigation">
+            <button class="nav-btn" id="prevBtn" onclick="App.prevStep()" disabled>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M15 18l-6-6 6-6"/>
+                </svg>
+                Back
+            </button>
+
+            <button class="nav-btn" id="nextBtn" onclick="App.nextStep()">
+                Next
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 18l6-6-6-6"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Configuration -->
+    <script src="config.js"></script>
+
+    <!-- Enhanced Application Logic -->
+    <script src="app-enhanced.js"></script>
+
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registered:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('ServiceWorker registration failed:', error);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>

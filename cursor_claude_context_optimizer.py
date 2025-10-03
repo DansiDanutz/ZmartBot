@@ -701,6 +701,10 @@ class CursorClaudeContextOptimizer:
             # Calculate optimization score
             optimization_score = self._calculate_optimization_score(snapshot)
             
+            # Convert snapshot to dict and handle datetime serialization
+            snapshot_dict = asdict(snapshot)
+            snapshot_dict['timestamp'] = snapshot.timestamp.isoformat()
+            
             cursor.execute('''
                 INSERT INTO context_snapshots (timestamp, project_path, active_files, context_data, optimization_score)
                 VALUES (?, ?, ?, ?, ?)
@@ -708,7 +712,7 @@ class CursorClaudeContextOptimizer:
                 snapshot.timestamp.isoformat(),
                 snapshot.project_path,
                 json.dumps(snapshot.active_files),
-                json.dumps(asdict(snapshot)),
+                json.dumps(snapshot_dict),
                 optimization_score
             ))
             

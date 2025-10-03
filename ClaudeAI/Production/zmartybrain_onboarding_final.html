@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZmartyBrain - Professional AI Trading Platform Onboarding</title>
+    <meta name="description" content="Join ZmartyBrain - Your AI-powered cryptocurrency trading assistant with professional onboarding">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Main Container */
+        .onboarding-container {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            max-width: 480px;
+            width: 100%;
+            min-height: 650px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Progress Header */
+        .progress-header {
+            padding: 24px 24px 20px;
+            background: linear-gradient(to bottom, #ffffff, #fafbfc);
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #e5e7eb;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 3px;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 11.11%;
+        }
+
+        .progress-text {
+            text-align: center;
+            color: #6b7280;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* Slides Container */
+        .slides-wrapper {
+            position: relative;
+            height: 500px;
+            overflow: hidden;
+        }
+
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            padding: 40px 30px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(100%);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(0);
+        }
+
+        .slide.prev {
+            transform: translateX(-100%);
+        }
+
+        /* Slide Content */
+        .slide-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            height: 100%;
+        }
+
+        .slide-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            font-size: 36px;
+        }
+
+        .slide h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+
+        .slide p {
+            font-size: 16px;
+            color: #6b7280;
+            line-height: 1.6;
+            margin-bottom: 32px;
+            max-width: 360px;
+        }
+
+        /* Form Elements */
+        .form-group {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 8px;
+            text-align: left;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 12px 32px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #4b5563;
+        }
+
+        .btn-secondary:hover {
+            background: #e5e7eb;
+        }
+
+        /* Navigation */
+        .navigation {
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            padding: 0 30px;
+        }
+
+        .nav-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: white;
+            border: 2px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .nav-btn:hover:not(.disabled) {
+            border-color: #667eea;
+            background: #f9fafb;
+        }
+
+        .nav-btn.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .nav-btn svg {
+            width: 20px;
+            height: 20px;
+            stroke: #4b5563;
+        }
+
+        /* Dots Indicator */
+        .dots-container {
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #d1d5db;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .dot.active {
+            background: #667eea;
+            transform: scale(1.3);
+        }
+
+        /* Plans Grid */
+        .plans-grid {
+            display: grid;
+            gap: 16px;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .plan-card {
+            padding: 20px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+        }
+
+        .plan-card:hover {
+            border-color: #667eea;
+            background: #f9fafb;
+        }
+
+        .plan-card.selected {
+            border-color: #667eea;
+            background: linear-gradient(to bottom, #f0f4ff, #ffffff);
+        }
+
+        .plan-name {
+            font-weight: 600;
+            font-size: 18px;
+            color: #1f2937;
+            margin-bottom: 4px;
+        }
+
+        .plan-price {
+            font-size: 24px;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 8px;
+        }
+
+        .plan-features {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        /* Success Animation */
+        @keyframes successPulse {
+            0% { transform: scale(0.8); opacity: 0; }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .success-icon {
+            animation: successPulse 0.6s ease;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .onboarding-container {
+                border-radius: 0;
+                min-height: 100vh;
+                max-width: 100%;
+            }
+
+            .slide h1 {
+                font-size: 24px;
+            }
+
+            .navigation {
+                bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="onboarding-container">
+        <!-- Progress Header -->
+        <div class="progress-header">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar"></div>
+            </div>
+            <div class="progress-text" id="progressText">Step 1 of 9</div>
+        </div>
+
+        <!-- Slides Container -->
+        <div class="slides-wrapper">
+            <!-- Slide 1: Welcome -->
+            <div class="slide active" id="slide1">
+                <div class="slide-content">
+                    <div class="slide-icon">🚀</div>
+                    <h1>Welcome to ZmartyBrain</h1>
+                    <p>Your AI-powered cryptocurrency trading assistant. Let's get you started on your journey to smarter, automated trading.</p>
+                    <div style="flex: 1;"></div>
+                    <button class="btn btn-primary" onclick="goToSlide(2)">
+                        Get Started
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Slide 2: Sign Up -->
+            <div class="slide" id="slide2">
+                <div class="slide-content">
+                    <div class="slide-icon">👤</div>
+                    <h1>Create Your Account</h1>
+                    <p>Join thousands of traders using AI to optimize their strategies</p>
+
+                    <div style="width: 100%; max-width: 320px;">
+                        <div class="form-group">
+                            <label class="form-label">Email Address</label>
+                            <input type="email" class="form-input" placeholder="you@example.com" id="emailInput">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Password</label>
+                            <input type="password" class="form-input" placeholder="Create a strong password" id="passwordInput">
+                        </div>
+                        <button class="btn btn-primary" style="width: 100%;" onclick="goToSlide(3)">
+                            Continue
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 3: Verify Email -->
+            <div class="slide" id="slide3">
+                <div class="slide-content">
+                    <div class="slide-icon">✉️</div>
+                    <h1>Verify Your Email</h1>
+                    <p>We've sent a verification code to your email. Please check your inbox.</p>
+
+                    <div style="width: 100%; max-width: 320px;">
+                        <div class="form-group">
+                            <label class="form-label">Verification Code</label>
+                            <input type="text" class="form-input" placeholder="Enter 6-digit code" maxlength="6">
+                        </div>
+                        <button class="btn btn-primary" style="width: 100%;" onclick="goToSlide(4)">
+                            Verify & Continue
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 4: Profile Setup -->
+            <div class="slide" id="slide4">
+                <div class="slide-content">
+                    <div class="slide-icon">📊</div>
+                    <h1>Set Up Your Profile</h1>
+                    <p>Tell us about your trading experience to personalize your dashboard</p>
+
+                    <div style="width: 100%; max-width: 320px;">
+                        <div class="form-group">
+                            <label class="form-label">Trading Experience</label>
+                            <select class="form-input">
+                                <option>Beginner (< 1 year)</option>
+                                <option>Intermediate (1-3 years)</option>
+                                <option>Advanced (3+ years)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Primary Trading Goal</label>
+                            <select class="form-input">
+                                <option>Long-term investment</option>
+                                <option>Day trading</option>
+                                <option>Automated strategies</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary" style="width: 100%;" onclick="goToSlide(5)">
+                            Next
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 5: Connect Exchange -->
+            <div class="slide" id="slide5">
+                <div class="slide-content">
+                    <div class="slide-icon">🔗</div>
+                    <h1>Connect Your Exchange</h1>
+                    <p>Link your cryptocurrency exchange for real-time trading capabilities</p>
+
+                    <div style="width: 100%; max-width: 320px;">
+                        <button class="btn btn-secondary" style="width: 100%; margin-bottom: 12px;">
+                            Connect Binance
+                        </button>
+                        <button class="btn btn-secondary" style="width: 100%; margin-bottom: 12px;">
+                            Connect Coinbase
+                        </button>
+                        <button class="btn btn-secondary" style="width: 100%; margin-bottom: 20px;">
+                            Connect Kraken
+                        </button>
+                        <button class="btn btn-primary" style="width: 100%;" onclick="goToSlide(6)">
+                            Skip for Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 6: Configure Settings -->
+            <div class="slide" id="slide6">
+                <div class="slide-content">
+                    <div class="slide-icon">⚙️</div>
+                    <h1>Configure Trading Settings</h1>
+                    <p>Set your risk tolerance and trading preferences</p>
+
+                    <div style="width: 100%; max-width: 320px;">
+                        <div class="form-group">
+                            <label class="form-label">Risk Tolerance</label>
+                            <select class="form-input">
+                                <option>Conservative (Low Risk)</option>
+                                <option>Moderate (Medium Risk)</option>
+                                <option>Aggressive (High Risk)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Trading Amount Limit</label>
+                            <input type="text" class="form-input" placeholder="$1,000">
+                        </div>
+                        <button class="btn btn-primary" style="width: 100%;" onclick="goToSlide(7)">
+                            Continue
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 7: Choose Plan -->
+            <div class="slide" id="slide7">
+                <div class="slide-content">
+                    <div class="slide-icon">💎</div>
+                    <h1>Choose Your Plan</h1>
+                    <p>Select the plan that best fits your trading needs</p>
+
+                    <div class="plans-grid">
+                        <div class="plan-card" onclick="selectPlan(this, 'starter')">
+                            <div class="plan-name">Starter</div>
+                            <div class="plan-price">$29/mo</div>
+                            <div class="plan-features">Basic features • 100 trades/month</div>
+                        </div>
+                        <div class="plan-card selected" onclick="selectPlan(this, 'pro')">
+                            <div class="plan-name">Professional</div>
+                            <div class="plan-price">$99/mo</div>
+                            <div class="plan-features">All features • Unlimited trades</div>
+                        </div>
+                        <div class="plan-card" onclick="selectPlan(this, 'enterprise')">
+                            <div class="plan-name">Enterprise</div>
+                            <div class="plan-price">Custom</div>
+                            <div class="plan-features">Custom solutions • Priority support</div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary" style="margin-top: 20px;" onclick="goToSlide(8)">
+                        Continue with Pro Plan
+                    </button>
+                </div>
+            </div>
+
+            <!-- Slide 8: Review -->
+            <div class="slide" id="slide8">
+                <div class="slide-content">
+                    <div class="slide-icon">📋</div>
+                    <h1>Review & Confirm</h1>
+                    <p>Almost there! Review your settings and confirm to start trading</p>
+
+                    <div style="width: 100%; max-width: 320px; text-align: left;">
+                        <div style="padding: 16px; background: #f9fafb; border-radius: 8px; margin-bottom: 20px;">
+                            <div style="margin-bottom: 12px;">
+                                <div style="font-size: 12px; color: #6b7280;">Account</div>
+                                <div style="font-weight: 600; color: #1f2937;">user@example.com</div>
+                            </div>
+                            <div style="margin-bottom: 12px;">
+                                <div style="font-size: 12px; color: #6b7280;">Plan</div>
+                                <div style="font-weight: 600; color: #1f2937;">Professional - $99/mo</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 12px; color: #6b7280;">Risk Level</div>
+                                <div style="font-weight: 600; color: #1f2937;">Moderate</div>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary" style="width: 100%;" onclick="goToSlide(9)">
+                            Confirm & Start Trading
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 9: Success -->
+            <div class="slide" id="slide9">
+                <div class="slide-content">
+                    <div class="slide-icon success-icon">✅</div>
+                    <h1>Welcome Aboard!</h1>
+                    <p>Your account is all set up. You're ready to start trading smarter with AI-powered insights.</p>
+
+                    <div style="flex: 1;"></div>
+
+                    <button class="btn btn-primary" onclick="alert('Redirecting to dashboard...')">
+                        Go to Dashboard
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="navigation">
+            <div class="nav-btn disabled" id="prevBtn" onclick="navigate('prev')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+
+            <div class="dots-container" id="dotsContainer">
+                <!-- Dots will be generated by JavaScript -->
+            </div>
+
+            <div class="nav-btn" id="nextBtn" onclick="navigate('next')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Navigation System
+        const Navigation = {
+            currentSlide: 1,
+            totalSlides: 9,
+            isAnimating: false,
+
+            init() {
+                console.log('Initializing navigation system...');
+                this.createDots();
+                this.updateUI();
+                this.setupKeyboardNavigation();
+                this.setupTouchNavigation();
+                console.log('Navigation ready!');
+            },
+
+            createDots() {
+                const container = document.getElementById('dotsContainer');
+                container.innerHTML = '';
+
+                for (let i = 1; i <= this.totalSlides; i++) {
+                    const dot = document.createElement('div');
+                    dot.className = 'dot';
+                    if (i === 1) dot.classList.add('active');
+                    dot.onclick = () => this.goToSlide(i);
+                    container.appendChild(dot);
+                }
+            },
+
+            goToSlide(slideNumber) {
+                if (this.isAnimating) return;
+                if (slideNumber < 1 || slideNumber > this.totalSlides) return;
+                if (slideNumber === this.currentSlide) return;
+
+                this.isAnimating = true;
+                console.log(`Navigating from slide ${this.currentSlide} to slide ${slideNumber}`);
+
+                // Hide current slide
+                const currentSlideEl = document.getElementById(`slide${this.currentSlide}`);
+                currentSlideEl.classList.remove('active');
+
+                if (slideNumber < this.currentSlide) {
+                    currentSlideEl.classList.add('next');
+                } else {
+                    currentSlideEl.classList.add('prev');
+                }
+
+                // Show new slide
+                const newSlideEl = document.getElementById(`slide${slideNumber}`);
+                newSlideEl.classList.remove('prev', 'next');
+                newSlideEl.classList.add('active');
+
+                // Update state
+                this.currentSlide = slideNumber;
+                this.updateUI();
+
+                // Clear animation flag
+                setTimeout(() => {
+                    this.isAnimating = false;
+                    // Clean up classes
+                    document.querySelectorAll('.slide').forEach(slide => {
+                        if (!slide.classList.contains('active')) {
+                            slide.classList.remove('prev', 'next');
+                        }
+                    });
+                }, 400);
+            },
+
+            navigate(direction) {
+                if (direction === 'next' && this.currentSlide < this.totalSlides) {
+                    this.goToSlide(this.currentSlide + 1);
+                } else if (direction === 'prev' && this.currentSlide > 1) {
+                    this.goToSlide(this.currentSlide - 1);
+                }
+            },
+
+            updateUI() {
+                // Update progress bar
+                const progress = (this.currentSlide / this.totalSlides) * 100;
+                document.getElementById('progressBar').style.width = `${progress}%`;
+                document.getElementById('progressText').textContent = `Step ${this.currentSlide} of ${this.totalSlides}`;
+
+                // Update navigation buttons
+                const prevBtn = document.getElementById('prevBtn');
+                const nextBtn = document.getElementById('nextBtn');
+
+                if (this.currentSlide === 1) {
+                    prevBtn.classList.add('disabled');
+                } else {
+                    prevBtn.classList.remove('disabled');
+                }
+
+                if (this.currentSlide === this.totalSlides) {
+                    nextBtn.classList.add('disabled');
+                } else {
+                    nextBtn.classList.remove('disabled');
+                }
+
+                // Update dots
+                document.querySelectorAll('.dot').forEach((dot, index) => {
+                    if (index + 1 === this.currentSlide) {
+                        dot.classList.add('active');
+                    } else {
+                        dot.classList.remove('active');
+                    }
+                });
+            },
+
+            setupKeyboardNavigation() {
+                document.addEventListener('keydown', (e) => {
+                    if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+
+                    if (e.key === 'ArrowRight') {
+                        e.preventDefault();
+                        this.navigate('next');
+                    } else if (e.key === 'ArrowLeft') {
+                        e.preventDefault();
+                        this.navigate('prev');
+                    } else if (e.key >= '1' && e.key <= '9') {
+                        const slideNum = parseInt(e.key);
+                        if (slideNum <= this.totalSlides) {
+                            this.goToSlide(slideNum);
+                        }
+                    }
+                });
+            },
+
+            setupTouchNavigation() {
+                let touchStartX = 0;
+                let touchEndX = 0;
+
+                const container = document.querySelector('.slides-wrapper');
+
+                container.addEventListener('touchstart', (e) => {
+                    touchStartX = e.touches[0].clientX;
+                });
+
+                container.addEventListener('touchend', (e) => {
+                    touchEndX = e.changedTouches[0].clientX;
+                    const diff = touchStartX - touchEndX;
+
+                    if (Math.abs(diff) > 50) {
+                        if (diff > 0) {
+                            this.navigate('next');
+                        } else {
+                            this.navigate('prev');
+                        }
+                    }
+                });
+            }
+        };
+
+        // Helper functions
+        function goToSlide(slideNumber) {
+            Navigation.goToSlide(slideNumber);
+        }
+
+        function navigate(direction) {
+            Navigation.navigate(direction);
+        }
+
+        function selectPlan(element, plan) {
+            document.querySelectorAll('.plan-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            console.log(`Selected plan: ${plan}`);
+        }
+
+        // Initialize when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            Navigation.init();
+            console.log('ZmartyBrain Onboarding initialized successfully!');
+        });
+
+        // Prevent form submission on Enter key
+        document.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && e.target.tagName === 'INPUT') {
+                e.preventDefault();
+                Navigation.navigate('next');
+            }
+        });
+    </script>
+</body>
+</html>

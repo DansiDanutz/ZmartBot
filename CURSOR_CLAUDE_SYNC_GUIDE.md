@@ -7,6 +7,7 @@ This system optimizes the collaboration between Claude and Cursor IDE by providi
 ## 🚀 Quick Start
 
 ### 1. Start the Context Optimizer
+
 ```bash
 # Start the optimizer (runs in background)
 ./start_cursor_optimizer.sh
@@ -19,6 +20,7 @@ python3 cursor_claude_context_optimizer.py --context
 ```
 
 ### 2. Use the Integration Helper
+
 ```bash
 # Get project context
 python3 cursor_claude_integration.py --context
@@ -55,6 +57,7 @@ python3 cursor_claude_integration.py --session
 ### Main Configuration File: `.cursor_claude_optimizer.yaml`
 
 Key settings:
+
 ```yaml
 # Analysis intervals
 context_analysis_interval: 30  # seconds
@@ -82,6 +85,7 @@ project_settings:
 ### For Claude in Cursor
 
 1. **Get Project Context**:
+
    ```python
    from cursor_claude_integration import get_project_context
    context = get_project_context()
@@ -89,6 +93,7 @@ project_settings:
    ```
 
 2. **Get Optimization Suggestions**:
+
    ```python
    from cursor_claude_context_optimizer import CursorClaudeContextOptimizer
    optimizer = CursorClaudeContextOptimizer()
@@ -96,6 +101,7 @@ project_settings:
    ```
 
 3. **Monitor Project Changes**:
+
    ```python
    optimizer = CursorClaudeContextOptimizer()
    optimizer.start_monitoring()
@@ -105,24 +111,27 @@ project_settings:
 ### For Development Workflow
 
 1. **Start Development Session**:
+
    ```bash
    # Start ZmartBot system
    ./START_ZMARTBOT.sh
-   
+
    # Start context optimizer
    ./start_cursor_optimizer.sh
    ```
 
 2. **Check System Status**:
+
    ```bash
    # Check ZmartBot services
    curl http://localhost:8000/health
-   
+
    # Check context optimizer
    python3 cursor_claude_context_optimizer.py --status
    ```
 
 3. **Get Optimized Context**:
+
    ```bash
    # Get context for Claude
    python3 cursor_claude_context_optimizer.py --context --max-tokens 150000
@@ -131,6 +140,7 @@ project_settings:
 ## 🔍 Monitoring and Analytics
 
 ### Status Reports
+
 ```bash
 # Get comprehensive status
 python3 cursor_claude_context_optimizer.py --status
@@ -175,33 +185,37 @@ python3 cursor_claude_context_optimizer.py --status
 ### Common Issues
 
 1. **Optimizer Not Starting**:
+
    ```bash
    # Check dependencies
    pip3 install pyyaml psutil watchdog aiofiles aiohttp
-   
+
    # Check permissions
    chmod +x start_cursor_optimizer.sh
    ```
 
 2. **Context Too Large**:
+
    ```bash
    # Reduce max tokens
    python3 cursor_claude_context_optimizer.py --context --max-tokens 100000
-   
+
    # Check configuration
    cat .cursor_claude_optimizer.yaml
    ```
 
 3. **Performance Issues**:
+
    ```bash
    # Check system resources
    python3 cursor_claude_context_optimizer.py --status
-   
+
    # Adjust intervals in config
    # context_analysis_interval: 60  # Increase to reduce CPU usage
    ```
 
 ### Logs and Debugging
+
 ```bash
 # View optimizer logs
 tail -f cursor_claude_optimizer.log
@@ -213,6 +227,7 @@ sqlite3 .cursor_claude_context.db "SELECT * FROM context_snapshots ORDER BY time
 ## 🔄 Integration with ZmartBot
 
 ### Automatic Integration
+
 The system automatically detects ZmartBot projects and applies specialized optimizations:
 
 - **Trading API Focus**: Prioritizes exchange integration files
@@ -221,6 +236,7 @@ The system automatically detects ZmartBot projects and applies specialized optim
 - **Portfolio Management**: Highlights portfolio and position management code
 
 ### Manual Integration
+
 ```python
 # In your ZmartBot services
 from cursor_claude_integration import update_claude_session
@@ -236,12 +252,14 @@ update_claude_session('trading_decision', {
 ## 📈 Best Practices
 
 ### For Claude in Cursor
+
 1. **Use Context Optimization**: Always get optimized context before complex tasks
 2. **Follow Project Patterns**: Adhere to existing code patterns and architecture
 3. **Consider Performance**: Think about real-time trading requirements
 4. **Security First**: Always consider security implications for trading operations
 
 ### For Development
+
 1. **Regular Monitoring**: Check optimization status regularly
 2. **Incremental Improvements**: Apply optimization suggestions gradually
 3. **Documentation**: Keep project documentation up to date
@@ -264,6 +282,7 @@ update_claude_session('trading_decision', {
 ## 📞 Support
 
 ### Getting Help
+
 1. **Check Logs**: Review `cursor_claude_optimizer.log` for errors
 2. **Status Reports**: Use `--status` flag to diagnose issues
 3. **Configuration**: Verify `.cursor_claude_optimizer.yaml` settings

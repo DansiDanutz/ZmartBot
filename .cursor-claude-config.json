@@ -1,0 +1,57 @@
+{
+  "claude": {
+    "version": "2.0.1",
+    "model": "claude-sonnet-4-5-20250929",
+    "maxTokens": 8192,
+    "temperature": 0.7,
+    "streaming": true,
+    "timeout": 60000,
+    "retries": 3,
+    "features": {
+      "codeCompletion": true,
+      "inlineChat": true,
+      "terminalIntegration": true,
+      "fileAnalysis": true,
+      "contextAwareness": true
+    },
+    "performance": {
+      "cacheResponses": true,
+      "parallelProcessing": true,
+      "memoryOptimization": true,
+      "lazyLoading": true,
+      "throttleRequests": true,
+      "requestDebounce": 300,
+      "maxConcurrentRequests": 3,
+      "contextWindowOptimization": true
+    },
+    "cursor": {
+      "integration": "native",
+      "autoComplete": true,
+      "suggestions": true,
+      "errorDetection": true,
+      "refactoring": true,
+      "documentation": true,
+      "inlineSuggestions": {
+        "enabled": true,
+        "debounceMs": 400,
+        "maxSuggestions": 3
+      }
+    },
+    "optimizations": {
+      "rawModeFix": "nonInteractive",
+      "terminalMode": "prompt",
+      "interactiveFallback": "web",
+      "errorHandling": "graceful",
+      "reduceContextOverhead": true,
+      "smartCaching": true,
+      "backgroundProcessing": true
+    },
+    "resources": {
+      "maxMemoryMB": 2048,
+      "cpuThrottling": false,
+      "gpuAcceleration": true
+    }
+  }
+}
+
+

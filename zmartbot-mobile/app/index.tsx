@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, StatusBar, RefreshControl } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
-import { Card, CardContent, CardHeader } from '../src/components/ui/Card';
+import { LinearGradient } from 'expo-linear-gradient';
+import React, { useState } from 'react';
+import { RefreshControl, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { MarketDataGrid } from '../src/components/MarketDataCard';
 import { PortfolioCard } from '../src/components/PortfolioCard';
-import { MarketDataCard, MarketDataGrid } from '../src/components/MarketDataCard';
 import { TradingSignalCard } from '../src/components/TradingSignalCard';
+import { Card, CardContent } from '../src/components/ui/Card';
 
 export default function IndexScreen() {
   const [refreshing, setRefreshing] = useState(false);
@@ -54,26 +54,26 @@ export default function IndexScreen() {
     {
       id: '1',
       symbol: 'BTCUSDT',
-      signal: 'BUY',
+      signal: 'BUY' as const,
       confidence: 85,
-      price: '43250.50',
-      targetPrice: '44500.00',
-      stopLoss: '42500.00',
+      price: 43250.50,
+      targetPrice: 44500.00,
+      stopLoss: 42500.00,
       timeframe: '4H',
       reasoning: 'Strong support at 42.5k, bullish momentum building',
-      timestamp: Date.now()
+      timestamp: new Date().toISOString()
     },
     {
       id: '2',
       symbol: 'ETHUSDT',
-      signal: 'HOLD',
+      signal: 'HOLD' as const,
       confidence: 65,
-      price: '2650.25',
-      targetPrice: '2700.00',
-      stopLoss: '2600.00',
+      price: 2650.25,
+      targetPrice: 2700.00,
+      stopLoss: 2600.00,
       timeframe: '1H',
       reasoning: 'Consolidating above key support, waiting for breakout',
-      timestamp: Date.now()
+      timestamp: new Date().toISOString()
     }
   ]);
 

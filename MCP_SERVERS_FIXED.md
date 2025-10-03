@@ -1,6 +1,7 @@
 # ✅ MCP Servers - FIXED
 
 ## Summary
+
 All 3 failing MCP servers have been fixed and are now working with Claude Code.
 
 ## Changes Made

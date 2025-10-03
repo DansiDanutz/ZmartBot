@@ -1,0 +1,113 @@
+# Cursor Ignore File - Optimize Performance by Excluding These Paths
+
+# Dependencies
+node_modules/
+bower_components/
+vendor/
+venv/
+env/
+.venv/
+
+# Build outputs
+dist/
+build/
+out/
+target/
+*.egg-info/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# IDE & Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+*.log
+logs/
+*.log.*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Cache directories
+.cache/
+.npm/
+.yarn/
+.sass-cache/
+*.cache
+
+# Testing
+coverage/
+.nyc_output/
+.pytest_cache/
+htmlcov/
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# OS files
+Thumbs.db
+Desktop.ini
+
+# Git
+.git/
+
+# Trunk
+.trunk/
+
+# Large media files
+*.mp4
+*.avi
+*.mov
+*.wmv
+*.flv
+*.mkv
+*.webm
+
+# Binary files
+*.exe
+*.dll
+*.so
+*.dylib
+*.bin
+
+# Archives
+*.zip
+*.tar
+*.tar.gz
+*.rar
+*.7z
+
+# Package files
+*.deb
+*.rpm
+*.pkg
+*.dmg
+
+# Python specific
+*.egg
+*.whl
+pip-log.txt
+pip-delete-this-directory.txt
+
+# JavaScript specific
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Large node_modules subdirectories
+**/node_modules/**/.bin/
+**/node_modules/**/.cache/

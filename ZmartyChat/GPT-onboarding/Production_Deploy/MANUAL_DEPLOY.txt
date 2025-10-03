@@ -1,0 +1,88 @@
+====================================
+SIMPLE MANUAL DEPLOYMENT - NO TOOLS NEEDED
+====================================
+
+METHOD 1: DRAG & DROP (EASIEST - 30 SECONDS)
+--------------------------------------------
+
+1. Open your web browser
+
+2. Go to this exact URL:
+   https://app.netlify.com/drop
+
+3. Open Finder and navigate to this Production folder
+
+4. Select ALL files in this folder:
+   - Press Cmd+A to select all
+   - You should see these files selected:
+     * index.html
+     * assets folder
+     * test.html
+     * debug.html
+     * _headers
+     * _redirects
+
+5. Drag ALL selected files onto the browser window
+
+6. Netlify will automatically deploy
+
+7. Your site will be live in seconds!
+
+
+METHOD 2: EXISTING SITE DEPLOY
+-------------------------------
+
+1. Go to: https://app.netlify.com/projects/vermillion-paprenjak-67497b/deploys
+
+2. Look for "Need to update your site?"
+
+3. Drag this entire Production folder there
+
+4. Done!
+
+
+METHOD 3: ZIP FILE UPLOAD
+-------------------------
+
+1. Select all files in this Production folder
+
+2. Right-click → "Compress" to create a ZIP
+
+3. Go to: https://app.netlify.com
+
+4. Click your site: vermillion-paprenjak-67497b
+
+5. Go to "Deploys" tab
+
+6. Upload the ZIP file
+
+7. Done!
+
+
+WHAT'S IN THIS FOLDER?
+----------------------
+✓ index.html - Your app
+✓ assets/ - JavaScript and CSS
+✓ test.html - Test page
+✓ debug.html - Debug page
+✓ _headers - Cache settings
+✓ _redirects - Routing
+
+Everything is ready to deploy!
+No building needed!
+No commands needed!
+Just drag and drop!
+
+
+VERIFY IT WORKED
+----------------
+After deploying, check:
+https://vermillion-paprenjak-67497b.netlify.app
+
+
+IMPORTANT
+---------
+• Use Chrome or Firefox browser
+• Make sure to select ALL files
+• Don't modify any files
+• If asked, choose "Production" deploy

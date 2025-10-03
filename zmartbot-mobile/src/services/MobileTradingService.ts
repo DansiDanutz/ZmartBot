@@ -1,4 +1,4 @@
-import { zmartBotAPI, MarketData, PortfolioPosition, TradingSignal } from './ZmartBotAPIGateway';
+import { MarketData, PortfolioPosition, TradingSignal, zmartBotAPI } from './ZmartBotAPIGateway';
 
 // Mobile Trading Service - Integrates with ZmartBot Ecosystem
 // This service provides mobile-optimized trading functionality
@@ -54,17 +54,17 @@ export class MobileTradingService {
   }
 
   // Initialize the mobile trading service
-  public async initialize(): Promise<boolean> {
+  public async initialize(apiKey?: string): Promise<boolean> {
     try {
       // Connect to ZmartBot ecosystem
-      const connected = await zmartBotAPI.initialize();
-      if (connected) {
+      await zmartBotAPI.initialize({ apiKey: apiKey || 'demo-key' });
+      if (apiKey) {
         this.isInitialized = true;
         console.log('✅ Mobile Trading Service initialized');
-        
+
         // Start real-time updates
         this.startRealTimeUpdates();
-        
+
         return true;
       } else {
         console.error('❌ Failed to connect to ZmartBot ecosystem');
@@ -76,6 +76,29 @@ export class MobileTradingService {
     }
   }
 
+  // Get health status
+  public async getHealthStatus(): Promise<any> {
+    try {
+      if (!this.isInitialized) {
+        throw new Error('Mobile Trading Service not initialized');
+      }
+      return await zmartBotAPI.getHealthStatus();
+    } catch (error) {
+      console.error('Failed to fetch health status:', error);
+      throw error;
+    }
+  }
+
+  // Get market data (alias for mobile)
+  public async getMarketData(symbols?: string[]): Promise<MarketData[]> {
+    return this.getMobileMarketData(symbols);
+  }
+
+  // Get portfolio (alias for mobile)
+  public async getPortfolio(): Promise<MobilePortfolio> {
+    return this.getMobilePortfolio();
+  }
+
   // Get real-time market data for mobile display
   public async getMobileMarketData(symbols: string[] = ['BTCUSDT', 'ETHUSDT', 'BNBUSDT']): Promise<MarketData[]> {
     try {
@@ -83,7 +106,7 @@ export class MobileTradingService {
         throw new Error('Mobile Trading Service not initialized');
       }
 
-      const marketData = await zmartBotAPI.getMarketData(symbols);
+      const marketData = await zmartBotAPI.getMarketData();
       this.lastUpdate = Date.now();
       
       return marketData;
@@ -100,11 +123,11 @@ export class MobileTradingService {
         throw new Error('Mobile Trading Service not initialized');
       }
 
-      const positions = await zmartBotAPI.getPortfolioPositions();
+      const positions = await zmartBotAPI.getPortfolio();
       
       // Calculate portfolio metrics
-      const totalValue = positions.reduce((sum, pos) => sum + (pos.size * pos.currentPrice), 0);
-      const totalPnL = positions.reduce((sum, pos) => sum + pos.pnl, 0);
+      const totalValue = positions.reduce((sum: number, pos: PortfolioPosition) => sum + (pos.size * pos.currentPrice), 0);
+      const totalPnL = positions.reduce((sum: number, pos: PortfolioPosition) => sum + pos.pnl, 0);
       const totalPnLPercent = totalValue > 0 ? (totalPnL / totalValue) * 100 : 0;
       
       const portfolio: MobilePortfolio = {
@@ -113,7 +136,7 @@ export class MobileTradingService {
         totalPnLPercent,
         positions,
         availableBalance: 0, // Will be fetched from ZmartBot
-        marginUsed: positions.reduce((sum, pos) => sum + pos.margin, 0),
+        marginUsed: positions.reduce((sum: number, pos: PortfolioPosition) => sum + pos.margin, 0),
         freeMargin: 0, // Will be calculated
         lastUpdated: Date.now(),
       };
@@ -132,7 +155,7 @@ export class MobileTradingService {
         throw new Error('Mobile Trading Service not initialized');
       }
 
-      const signals = await zmartBotAPI.getTradingSignals(symbol);
+      const signals = await zmartBotAPI.getTradingSignals();
       
       // Filter and sort signals for mobile display
       const mobileSignals = signals
@@ -191,7 +214,7 @@ export class MobileTradingService {
         throw new Error('Mobile Trading Service not initialized');
       }
 
-      const iotStatus = await zmartBotAPI.getIoTStatus();
+      const iotStatus = await zmartBotAPI.getZmartIntegrationStatus();
       return iotStatus;
     } catch (error) {
       console.error('Failed to fetch mobile IoT status:', error);
@@ -206,7 +229,8 @@ export class MobileTradingService {
         throw new Error('Mobile Trading Service not initialized');
       }
 
-      const alerts = await zmartBotAPI.getAlerts();
+      // Mock alerts for now - replace with actual API call when available
+      const alerts: any[] = [];
       
       // Convert to mobile alert format
       const mobileAlerts: MobileAlert[] = alerts.map(alert => ({
@@ -231,7 +255,7 @@ export class MobileTradingService {
   private startRealTimeUpdates(): void {
     setInterval(async () => {
       try {
-        if (this.isInitialized && zmartBotAPI.isEcosystemConnected()) {
+        if (this.isInitialized) {
           // Update market data every 5 seconds
           await this.getMobileMarketData();
           

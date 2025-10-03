@@ -17,18 +17,21 @@
 ## 🛑 BEFORE STARTING ANY SERVICE
 
 1. Check what's running:
+
 ```bash
 lsof -i :3000  # Check if port 3000 is in use
 lsof -i :8080  # Check if port 8080 is in use
 ```
 
 2. Kill existing service if needed:
+
 ```bash
 kill -9 $(lsof -t -i:3000)  # Kill whatever is on port 3000
 kill -9 $(lsof -t -i:8080)  # Kill whatever is on port 8080
 ```
 
 3. Start with the ASSIGNED port:
+
 ```bash
 cd /path/to/project
 npm start  # Will use the configured port
@@ -44,6 +47,7 @@ npm start  # Will use the configured port
 ## 🔧 SERVICE MANAGEMENT COMMANDS
 
 ### Start All Services (Organized)
+
 ```bash
 # 1. Kill all existing services
 pkill -f "node"
@@ -58,12 +62,14 @@ npm start &  # Will use port 3001
 ```
 
 ### Check All Running Services
+
 ```bash
 # See all services and their ports
 lsof -i -P | grep LISTEN | grep -E '3000|3001|3002|8000|8080|8081'
 ```
 
 ### Stop All Services
+
 ```bash
 # Stop everything cleanly
 pkill -f "node"
@@ -82,6 +88,7 @@ pkill -f "webpack"
 ## 📊 Current Status (Update Daily)
 
 Last Updated: 2024-09-18
+
 - [ ] Port 3000: FREE
 - [ ] Port 3001: FREE
 - [x] Port 3002: RUNNING - ZmartyChat Mobile

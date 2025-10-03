@@ -1,5 +1,5 @@
 export interface EvidenceItem {
-  source: 'Cryptometer' | 'Binance' | 'KuCoin' | 'KingFisher' | 'RiskMetric';
+  source: 'Cryptometer' | 'Binance' | 'KuCoin' | 'KingFisher' | 'RiskMetric' | 'Demo';
   text: string;
 }
 

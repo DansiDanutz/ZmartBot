@@ -15,7 +15,7 @@ The unified integration system consists of several key components that work toge
 
 ## 📁 File Structure
 
-```
+```text
 zmart-api/
 ├── src/services/
 │   ├── unified_analytics_service.py          # Cross-project analytics
@@ -192,7 +192,7 @@ curl -X POST "http://localhost:8900/orchestration/sync/queue" \
 
 ### 1. User Registration Flow
 
-```
+```text
 1. User registers in ZmartyBrain
 2. Enhanced client creates trading profile in ZmartBot
 3. Orchestration service syncs user data
@@ -202,7 +202,7 @@ curl -X POST "http://localhost:8900/orchestration/sync/queue" \
 
 ### 2. Trading Activity Flow
 
-```
+```text
 1. User executes trade in ZmartBot
 2. Real-time notification sent to user
 3. Analytics service updates performance metrics
@@ -212,7 +212,7 @@ curl -X POST "http://localhost:8900/orchestration/sync/queue" \
 
 ### 3. Cross-Project Synchronization
 
-```
+```text
 1. Change detected in ZmartyBrain (user profile update)
 2. Orchestration service queues sync task
 3. Data synchronized to ZmartBot
@@ -472,6 +472,23 @@ For questions or issues with the unified integration system:
 - Unified analytics service
 - Supabase orchestration integration
 - Comprehensive API endpoints
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

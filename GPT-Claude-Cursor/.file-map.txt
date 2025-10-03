@@ -1,0 +1,35 @@
+GPT-Claude-Cursor Blueprint System
+===================================
+
+📁 Root Directory
+├── 📄 README.md              ⭐ Start here - Overview & setup
+├── 📄 INDEX.md               📚 Complete file index & lookup
+├── 📄 QUICK-START.md         🚀 5-minute getting started guide
+│
+├── 🏗️  Architecture & Planning
+│   ├── 00-OVERVIEW.md        🎯 System architecture diagram
+│   └── 10-TASKLIST.md        ✅ 3-day implementation checklist
+│
+├── 🗄️  Database Schemas
+│   ├── 20-SCHEMA-SUPABASE-A.sql   💬 Chat/Auth database
+│   └── 21-SCHEMA-SUPABASE-B.sql   📊 Trading database
+│
+├── ⚙️  Service Implementations
+│   ├── 30-EDGE-FUNCTION-watchers-upsert.md  🔗 Webhook handler
+│   ├── 40-ORCHESTRATOR-API.md               🌐 Web API service
+│   └── 41-ORCHESTRATOR-WORKER.md            🔄 Background worker
+│
+├── 🔧 Configuration
+│   ├── 50-ENV.sample          🔑 Environment variables
+│   └── 60-CREDITS-PRICING.md  💳 Pricing model
+│
+├── 📋 Specifications
+│   └── specs/
+│       └── API-CONTRACTS.md   📡 API formats & contracts
+│
+└── 🛠️  Operations
+    └── runbooks/
+        └── ONCALL.md          🚨 Production troubleshooting
+
+Total: 14 files (~125 KB)
+Status: ✅ Complete & Production Ready

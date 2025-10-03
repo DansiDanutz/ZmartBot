@@ -4,9 +4,9 @@
 
 The ZmartBot platform employs a sophisticated multi-agent architecture for autonomous cryptocurrency trading, market analysis, and system orchestration. This document provides comprehensive documentation of all AI agents, their capabilities, interactions, and management within the ZmartBot ecosystem.
 
-**Last Updated**: 2025-09-09  
-**System Version**: 2.0.0  
-**Total Agents**: 25+  
+**Last Updated**: 2025-09-09
+**System Version**: 2.0.0
+**Total Agents**: 25+
 **Architecture**: Microservice-based Agent Orchestration
 
 ---
@@ -14,15 +14,17 @@ The ZmartBot platform employs a sophisticated multi-agent architecture for auton
 ## 🏗️ Agent Architecture
 
 ### System Architecture Levels
-```
+
+```bash
 Level 1: Discovery Service (Agent Detection & MDC Generation)
-Level 2: Passport Service (Agent Validation & Authentication) 
+Level 2: Passport Service (Agent Validation & Authentication)
 Level 3: Registration Service (Agent Registry & Lifecycle Management)
 Level 4: Certification Service (Agent Certification & Quality Assurance)
 ```
 
 ### Agent Communication Flow
-```
+
+```text
 Event Bus ← → Master Orchestration Agent
     ↓                    ↓
 Service Discovery ← → Trading Agents
@@ -35,36 +37,40 @@ MDC System      ← → Analysis Agents
 ## 🤖 Core Orchestration Agents
 
 ### Master Orchestration Agent
-**File**: `master_orchestration_agent.py`  
-**Port**: 8950  
-**Type**: Orchestration  
+**File**: `master_orchestration_agent.py`
+**Port**: 8950
+**Type**: Orchestration
 **Status**: Production
 
 **Purpose**: Central control system for all ZmartBot operations
+
 - **Service Coordination**: Manages lifecycle of all microservices
 - **Resource Allocation**: Dynamic resource distribution across agents
 - **Health Monitoring**: System-wide health checks and recovery
 - **Event Orchestration**: Coordinates complex multi-agent workflows
 
 **Key Features**:
+
 - Multi-service dependency management
 - Automatic failure recovery and restart mechanisms
 - Load balancing across agent instances
 - Real-time performance monitoring
 
 ### MDC Orchestration Agent
-**File**: `mdc_orchestration_agent.py`  
-**Port**: 8951  
-**Type**: Documentation  
+**File**: `mdc_orchestration_agent.py`
+**Port**: 8951
+**Type**: Documentation
 **Status**: Production
 
 **Purpose**: Automated MDC (Microservice Documentation Configuration) management
+
 - **Auto-Discovery**: Detects new Python services in the system
 - **Documentation Generation**: Creates professional MDC files automatically
 - **Service Registration**: Registers services in the Discovery database
 - **Quality Assurance**: Validates MDC completeness and accuracy
 
 **Workflow Integration**:
+
 1. File Watcher → New .py file detected
 2. Service Analysis → AI-powered capability detection
 3. MDC Generation → Professional documentation creation
@@ -75,44 +81,48 @@ MDC System      ← → Analysis Agents
 ## 🧠 AI Analysis Agents
 
 ### Enhanced AI Analysis Agent
-**File**: `src/services/enhanced_ai_analysis_agent.py`  
-**Type**: AI Analysis  
+**File**: `src/services/enhanced_ai_analysis_agent.py`
+**Type**: AI Analysis
 **Capabilities**: Advanced market sentiment, technical indicators, risk assessment
 
 **Features**:
+
 - Multi-model AI ensemble for market prediction
 - Real-time sentiment analysis from multiple sources
 - Advanced technical indicator computation
 - Risk-adjusted position sizing recommendations
 
 ### Multi-Model AI Agent
-**File**: `src/services/multi_model_ai_agent.py`  
-**Type**: AI Analysis  
+**File**: `src/services/multi_model_ai_agent.py`
+**Type**: AI Analysis
 **Capabilities**: Ensemble learning, model fusion, prediction aggregation
 
 **Models Supported**:
+
 - Transformer models for sequence prediction
 - LSTM networks for time series analysis
 - Random Forest for pattern recognition
 - Gradient Boosting for risk assessment
 
 ### Historical AI Analysis Agent
-**File**: `src/services/historical_ai_analysis_agent.py`  
-**Type**: AI Analysis  
+**File**: `src/services/historical_ai_analysis_agent.py`
+**Type**: AI Analysis
 **Capabilities**: Historical pattern recognition, backtesting, strategy validation
 
 **Functions**:
+
 - Historical market data analysis
 - Pattern recognition across multiple timeframes
 - Strategy backtesting and validation
 - Performance metric calculation and reporting
 
 ### Unified Analysis Agent
-**File**: `src/services/unified_analysis_agent.py`  
-**Type**: AI Analysis  
+**File**: `src/services/unified_analysis_agent.py`
+**Type**: AI Analysis
 **Capabilities**: Consolidated analysis, decision synthesis, unified recommendations
 
 **Integration Points**:
+
 - Aggregates insights from all analysis agents
 - Provides unified trading recommendations
 - Risk-weighted decision making
@@ -123,33 +133,36 @@ MDC System      ← → Analysis Agents
 ## 📈 Trading & Learning Agents
 
 ### Enhanced Learning Agent
-**File**: `src/services/enhanced_learning_agent.py`  
-**Type**: Machine Learning  
+**File**: `src/services/enhanced_learning_agent.py`
+**Type**: Machine Learning
 **Capabilities**: Adaptive learning, strategy optimization, performance improvement
 
 **Learning Methods**:
+
 - Reinforcement learning for strategy adaptation
 - Online learning for real-time market changes
 - Transfer learning for new market conditions
 - Meta-learning for rapid strategy deployment
 
 ### Advanced Learning Agent
-**File**: `src/services/advanced_learning_agent.py`  
-**Type**: Machine Learning  
+**File**: `src/services/advanced_learning_agent.py`
+**Type**: Machine Learning
 **Capabilities**: Deep learning, neural network training, advanced pattern recognition
 
 **Architecture**:
+
 - Deep neural networks for complex pattern detection
 - Convolutional networks for chart pattern analysis
 - Attention mechanisms for market focus
 - Generative models for scenario simulation
 
 ### Trading Orchestration Agent
-**File**: `trading_orchestration_agent.py`  
-**Type**: Trading  
+**File**: `trading_orchestration_agent.py`
+**Type**: Trading
 **Capabilities**: Trade execution, portfolio management, risk control
 
 **Functions**:
+
 - Multi-exchange trade execution
 - Portfolio rebalancing and optimization
 - Real-time risk monitoring and control
@@ -160,22 +173,24 @@ MDC System      ← → Analysis Agents
 ## ⛓️ Blockchain & Integration Agents
 
 ### Blockchain Agent
-**File**: `src/services/blockchain_agent.py`  
-**Type**: Blockchain  
+**File**: `src/services/blockchain_agent.py`
+**Type**: Blockchain
 **Capabilities**: On-chain analysis, DeFi integration, blockchain monitoring
 
 **Features**:
+
 - On-chain transaction analysis
 - Smart contract interaction
 - DeFi protocol monitoring
 - Cross-chain bridge management
 
 ### Kingfisher AI
-**File**: Referenced in `KINGFISHER_AI.mdc`  
-**Type**: Advanced Analysis  
+**File**: Referenced in `KINGFISHER_AI.mdc`
+**Type**: Advanced Analysis
 **Capabilities**: Professional market analysis, whale tracking, institutional insights
 
 **Specialized Functions**:
+
 - Whale wallet monitoring and analysis
 - Institutional trading pattern recognition
 - Market manipulation detection
@@ -186,29 +201,30 @@ MDC System      ← → Analysis Agents
 ## 🛠️ System & Utility Agents
 
 ### Background MDC Agent
-**File**: `background_mdc_agent.py`  
-**Type**: Utility  
+**File**: `background_mdc_agent.py`
+**Type**: Utility
 **Capabilities**: Continuous documentation updates, system monitoring
 
 **Operations**:
+
 - Continuous file system monitoring
 - Automatic MDC file updates
 - Service health documentation
 - System state tracking
 
 ### Cursor Sync Agent
-**File**: `cursor_sync_agent.py`  
-**Type**: Development  
+**File**: `cursor_sync_agent.py`
+**Type**: Development
 **Capabilities**: Development environment synchronization
 
 ### Ziva Agent
-**File**: `ziva_agent.py`  
-**Type**: Assistant  
+**File**: `ziva_agent.py`
+**Type**: Assistant
 **Capabilities**: Intelligent assistant, query processing, user interaction
 
 ### GPT MDS Agent
-**File**: `gpt_mds_agent.py`  
-**Type**: AI Documentation  
+**File**: `gpt_mds_agent.py`
+**Type**: AI Documentation
 **Capabilities**: AI-powered documentation generation, service analysis
 
 ---
@@ -216,11 +232,12 @@ MDC System      ← → Analysis Agents
 ## 🔄 Agent Management & Communication
 
 ### Agent Routes API
-**File**: `src/routes/agents.py`  
-**Port**: 8000 (Main API)  
+**File**: `src/routes/agents.py`
+**Port**: 8000 (Main API)
 **Type**: API Management
 
 **Endpoints**:
+
 - `GET /agents` - List all agents and their status
 - `POST /agents` - Register new agent
 - `PUT /agents/{agent_id}` - Update agent configuration
@@ -229,6 +246,7 @@ MDC System      ← → Analysis Agents
 - `GET /agents/{agent_id}/status` - Get agent health status
 
 **Agent Status Types**:
+
 - `idle` - Agent available for tasks
 - `active` - Agent currently processing
 - `busy` - Agent at capacity
@@ -236,6 +254,7 @@ MDC System      ← → Analysis Agents
 - `maintenance` - Agent under maintenance
 
 ### Event Bus System
+
 All agents communicate through a centralized event bus:
 
 ```python
@@ -252,7 +271,9 @@ EventType.HEALTH_CHECK
 ## 📊 Agent Monitoring & Metrics
 
 ### Health Monitoring
+
 Each agent provides:
+
 - **Heartbeat**: Regular status updates
 - **Performance Metrics**: Execution time, success rate, error count
 - **Resource Usage**: CPU, memory, network utilization
@@ -269,6 +290,7 @@ Each agent provides:
 ## 🚀 Agent Deployment & Lifecycle
 
 ### Startup Sequence
+
 1. **System Initialization**: Master Orchestration Agent starts first
 2. **Core Services**: MDC Agent, Service Discovery, Health Monitor
 3. **Analysis Agents**: AI analysis and learning agents
@@ -276,7 +298,9 @@ Each agent provides:
 5. **Utility Agents**: Background services and utilities
 
 ### Configuration Management
+
 Agents are configured through:
+
 - **Environment Variables**: Runtime configuration
 - **MDC Files**: Service documentation and metadata
 - **YAML Configuration**: Service-specific settings
@@ -308,6 +332,7 @@ Agents are configured through:
 ## 📚 Integration with MDC System
 
 ### MDC Documentation Workflow
+
 1. **Discovery**: Agent files detected by file watchers
 2. **Analysis**: AI-powered service capability analysis
 3. **Documentation**: Professional MDC file generation
@@ -326,6 +351,7 @@ Agents are configured through:
 ## 🔧 Development & Testing
 
 ### Agent Development Guidelines
+
 1. **Follow MDC Standards**: All agents must have proper MDC documentation
 2. **Implement Health Checks**: Liveness and readiness probes required
 3. **Error Handling**: Comprehensive error handling and recovery
@@ -360,6 +386,7 @@ Agents are configured through:
 ## 🚨 Troubleshooting & Maintenance
 
 ### Common Issues
+
 1. **Agent Unresponsive**: Check health endpoints, restart if necessary
 2. **High Memory Usage**: Monitor for memory leaks, implement cleanup
 3. **Communication Failures**: Verify network connectivity and certificates
@@ -376,6 +403,7 @@ Agents are configured through:
 ## 📞 Support & Contact
 
 For agent-related issues or questions:
+
 - **System Logs**: Check centralized logging system
 - **Health Dashboard**: Monitor agent status through web interface
 - **Documentation**: Refer to individual MDC files for detailed service information
@@ -383,6 +411,6 @@ For agent-related issues or questions:
 
 ---
 
-**Document Version**: 1.0.0  
-**Last Updated**: 2025-09-09  
+**Document Version**: 1.0.0
+**Last Updated**: 2025-09-09
 **Next Review**: 2025-10-09

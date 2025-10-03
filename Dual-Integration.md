@@ -17,7 +17,7 @@
 
 ## 🎯 System Overview
 
-The Dual-Integration System is a comprehensive solution that optimizes the dual Supabase setup between **ZmartyBrain** (user management) and **ZmartBot** (trading platform). It provides real-time synchronization, intelligent analytics, and advanced trading features.
+The Dual-Integration System is a comprehensive solution that optimizes the dual Supabase setup between **ZmartyBrain**(user management) and**ZmartBot** (trading platform). It provides real-time synchronization, intelligent analytics, and advanced trading features.
 
 ### Key Features
 
@@ -36,6 +36,7 @@ The Dual-Integration System is a comprehensive solution that optimizes the dual 
 **Purpose**: Provides a unified interface for both Supabase projects with automatic synchronization.
 
 **Key Features**:
+
 - Real-time sync between ZmartyBrain and ZmartBot
 - Enhanced user profile creation
 - Automatic trading profile setup
@@ -45,6 +46,7 @@ The Dual-Integration System is a comprehensive solution that optimizes the dual 
 **Purpose**: Aggregates and analyzes data from both projects for comprehensive insights.
 
 **Key Features**:
+
 - User engagement analytics
 - Trading performance metrics
 - Cross-project correlation analysis
@@ -54,6 +56,7 @@ The Dual-Integration System is a comprehensive solution that optimizes the dual 
 **Purpose**: Manages data synchronization and coordination between projects.
 
 **Key Features**:
+
 - Task queuing and processing
 - Background synchronization
 - Sync history tracking
@@ -63,6 +66,7 @@ The Dual-Integration System is a comprehensive solution that optimizes the dual 
 **Purpose**: Provides live updates and notifications across the system.
 
 **Key Features**:
+
 - WebSocket connections
 - Real-time event handling
 - Browser notifications
@@ -72,6 +76,7 @@ The Dual-Integration System is a comprehensive solution that optimizes the dual 
 **Purpose**: Analyzes market data and identifies trading patterns.
 
 **Key Features**:
+
 - Pattern recognition algorithms
 - Technical indicator calculations
 - Support/resistance level identification
@@ -81,6 +86,7 @@ The Dual-Integration System is a comprehensive solution that optimizes the dual 
 **Purpose**: Provides a single API interface for all services.
 
 **Key Features**:
+
 - RESTful API endpoints
 - WebSocket support
 - Health checks
@@ -90,7 +96,7 @@ The Dual-Integration System is a comprehensive solution that optimizes the dual 
 
 ## 📁 File Structure
 
-```
+```bash
 zmart-api/
 ├── src/services/
 │   ├── unified_analytics_service.py          # Cross-project analytics
@@ -127,26 +133,26 @@ const ZmartyService = {
             // Auto-create trading profile in ZmartBot
             // Enable real-time sync
         },
-        
+
         async login(email, password) {
             // Login to ZmartyBrain
             // Sync trading profile
             // Load user data
         }
     },
-    
+
     // Trading operations (ZmartBot)
     trading: {
         async getMarketData(symbol, limit) {
             // Get market data with caching
         },
-        
+
         async executeTrade(userId, tradeData) {
             // Execute trade with validation
             // Update user engagement
         }
     },
-    
+
     // Dashboard data (Combined)
     dashboard: {
         async loadDashboardData() {
@@ -167,7 +173,7 @@ class RealTimeSyncService {
         this.brainChannel = brainClient.channel('user-updates');
         this.botChannel = botClient.channel('trading-updates');
     }
-    
+
     async handleUserUpdate(payload) {
         // Sync user profile changes to trading profile
         const { id, subscription_tier, credits_balance } = payload.new;
@@ -176,7 +182,7 @@ class RealTimeSyncService {
             credits_balance: credits_balance
         }).eq('user_id', id);
     }
-    
+
     async handleTradeEvent(payload) {
         // Update user engagement based on trading activity
         const { user_id, profit_loss } = payload.new;
@@ -197,22 +203,22 @@ class AdvancedTradingIntelligence:
     async def analyze_market_intelligence(self, symbol: str, timeframe: str):
         # Get market data
         market_data = await self._get_market_data(symbol, timeframe)
-        
+
         # Calculate technical indicators
         technical_indicators = self._calculate_technical_indicators(market_data)
-        
+
         # Identify patterns
         patterns = await self._identify_patterns(symbol, market_data, timeframe)
-        
+
         # Analyze trend
         trend_direction, trend_strength = self._analyze_trend(market_data)
-        
+
         # Calculate volatility
         volatility = self._calculate_volatility(market_data)
-        
+
         # Identify support/resistance levels
         support_levels, resistance_levels = self._identify_support_resistance(market_data)
-        
+
         return MarketIntelligence(
             symbol=symbol,
             trend_direction=trend_direction,
@@ -231,7 +237,7 @@ class AdvancedTradingIntelligence:
 
 ### 1. User Registration Flow
 
-```
+```bash
 1. User registers in ZmartyBrain
    ↓
 2. Enhanced client creates trading profile in ZmartBot
@@ -245,7 +251,7 @@ class AdvancedTradingIntelligence:
 
 ### 2. Trading Activity Flow
 
-```
+```bash
 1. User executes trade in ZmartBot
    ↓
 2. Real-time notification sent to user
@@ -259,7 +265,7 @@ class AdvancedTradingIntelligence:
 
 ### 3. Cross-Project Synchronization
 
-```
+```sql
 1. Change detected in ZmartyBrain (user profile update)
    ↓
 2. Orchestration service queues sync task
@@ -346,10 +352,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     const userResult = await ZmartyService.auth.getCurrentUser();
     if (userResult.success && userResult.data) {
         const userId = userResult.data.id;
-        
+
         // Initialize real-time notifications
         await initializeRealtimeNotifications(userId);
-        
+
         // Load dashboard data
         const dashboardData = await ZmartyService.dashboard.loadDashboardData();
         updateDashboard(dashboardData);

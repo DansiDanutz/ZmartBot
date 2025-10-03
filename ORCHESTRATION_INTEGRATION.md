@@ -7,7 +7,8 @@ This integration connects the ZmartBot Foundation API (port 8000) with the Zmart
 ## 🏗️ Architecture
 
 ### Service Layout
-```
+
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │                 ZmartBot Orchestration                      │
 ├─────────────────────────────────────────────────────────────┤
@@ -58,12 +59,14 @@ This integration connects the ZmartBot Foundation API (port 8000) with the Zmart
 ## 🚀 Quick Start
 
 ### 1. Start Complete System
+
 ```bash
 # Start orchestrated system (recommended)
 python3 /Users/dansidanutz/Desktop/ZmartBot/service_orchestration.py
 ```
 
 ### 2. Manual Service Start
+
 ```bash
 # Terminal 1: Start Foundation API
 cd /Users/dansidanutz/Desktop/ZmartBot/zmart-foundation
@@ -75,6 +78,7 @@ python3 engagement_startup.py
 ```
 
 ### 3. Test Integration
+
 ```bash
 # Run comprehensive integration tests
 python3 /Users/dansidanutz/Desktop/ZmartBot/test_orchestration_integration.py
@@ -83,28 +87,31 @@ python3 /Users/dansidanutz/Desktop/ZmartBot/test_orchestration_integration.py
 ## 🔗 Unified API Usage
 
 ### Chat with AI Mentor (via Foundation API)
+
 ```bash
 curl -X POST http://localhost:8000/v1/engagement/interact \
   -H "Content-Type: application/json" \
   -d '{
-    "user_id": "trader123", 
-    "message": "What do you think about BTC right now?", 
+    "user_id": "trader123",
+    "message": "What do you think about BTC right now?",
     "asset": "BTC"
   }'
 ```
 
 ### Check MCP Data Sources
+
 ```bash
 curl http://localhost:8000/v1/engagement/mcp-status
 ```
 
 ### Send Market Alert
+
 ```bash
 curl -X POST http://localhost:8000/v1/engagement/market-alert \
   -H "Content-Type: application/json" \
   -d '{
     "asset": "BTC",
-    "alert_type": "whale_movement", 
+    "alert_type": "whale_movement",
     "urgency": 8,
     "message": "Large BTC whale transaction detected"
   }'
@@ -115,17 +122,21 @@ curl -X POST http://localhost:8000/v1/engagement/market-alert \
 The system automatically forwards relevant events between services:
 
 ### Trading Signals → Engagement Alerts
+
 When a trading signal is created via `/v1/signals`, it automatically triggers a personalized alert in the engagement system.
 
-### Pool Updates → User Notifications  
+### Pool Updates → User Notifications
+
 Pool status changes (expired, liquidated, closed) are automatically communicated to relevant users through the engagement system.
 
 ### Market Alerts → AI Analysis
+
 Market alerts trigger AI analysis and personalized responses based on user profiles and preferences.
 
 ## 📊 Monitoring & Health
 
 ### Service Status
+
 ```bash
 # Check all service health
 curl http://localhost:8000/v1/health
@@ -172,6 +183,7 @@ curl http://localhost:8350/health
 - Health Scheduler depends on both services
 
 ### Environment Variables
+
 ```env
 # Foundation API Database
 DATABASE_URL=sqlite:///./zmart.db
@@ -187,17 +199,19 @@ LOG_LEVEL=INFO
 ## 🧪 Testing
 
 ### Automated Test Suite
+
 The `test_orchestration_integration.py` script provides comprehensive testing:
 
 1. **Service Health**: Verifies all services are running
-2. **Engagement Proxy**: Tests Foundation API → Engagement System communication  
+2. **Engagement Proxy**: Tests Foundation API → Engagement System communication
 3. **MCP Integration**: Validates MCP data flow through proxy
 4. **Chat Interaction**: Tests AI mentor functionality via proxy
 5. **Market Alerts**: Verifies alert integration
 6. **Signal Integration**: Tests trading signal → engagement system flow
 
 ### Expected Test Results
-```
+
+```bash
 📊 INTEGRATION TEST RESULTS: 6/6 tests passed
 🎉 ALL INTEGRATION TESTS PASSED!
 🔗 Orchestration integration is working correctly!
@@ -208,6 +222,7 @@ The `test_orchestration_integration.py` script provides comprehensive testing:
 ### Common Issues
 
 #### Service Startup Failures
+
 ```bash
 # Check service logs
 tail -f /Users/dansidanutz/Desktop/ZmartBot/health_scheduler.log
@@ -218,6 +233,7 @@ curl http://localhost:8350/health
 ```
 
 #### MCP Integration Issues
+
 ```bash
 # Check MCP server status
 curl http://localhost:8350/mcp-status
@@ -228,6 +244,7 @@ python3 /Users/dansidanutz/Desktop/ZmartBot/engagement-system/engagement_startup
 ```
 
 #### Database Issues
+
 ```bash
 # Check database connection
 sqlite3 /Users/dansidanutz/Desktop/ZmartBot/zmart-foundation/zmart.db ".schema"
@@ -257,7 +274,7 @@ rm /Users/dansidanutz/Desktop/ZmartBot/zmart-foundation/zmart.db
 ## 🎯 Next Steps
 
 1. **Production Deployment**: Docker containerization and Kubernetes orchestration
-2. **Advanced Analytics**: Integration with time-series databases for historical analysis  
+2. **Advanced Analytics**: Integration with time-series databases for historical analysis
 3. **WebSocket Support**: Real-time bidirectional communication
 4. **Mobile API**: Optimized endpoints for mobile applications
 5. **Advanced AI**: Enhanced personality system with machine learning

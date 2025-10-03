@@ -1,0 +1,106 @@
+/* Performance Optimizations for ZmartyBrain */
+
+/* Use composited animations - transform and opacity only */
+.animated-gradient {
+    will-change: transform;
+}
+
+/* Fix for gradient animations - use transform instead of background-position */
+@keyframes gradientFlow {
+    0% {
+        transform: translate(0, 0) scale(1);
+    }
+    50% {
+        transform: translate(-5%, -5%) scale(1.05);
+    }
+    100% {
+        transform: translate(0, 0) scale(1);
+    }
+}
+
+@keyframes particlesFloat {
+    0%, 100% {
+        transform: translate(0, 0);
+        opacity: 0.5;
+    }
+    50% {
+        transform: translate(10px, -10px);
+        opacity: 1;
+    }
+}
+
+/* Optimize background gradients for performance */
+.gradient-blue {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background-attachment: fixed;
+    transform: translateZ(0);
+    will-change: transform;
+}
+
+/* Use GPU acceleration for smooth animations */
+.slide {
+    transform: translate3d(100%, 0, 0);
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+.slide.active {
+    transform: translate3d(0, 0, 0);
+}
+
+/* Optimize button transitions */
+.btn {
+    transform: translateZ(0);
+    will-change: transform;
+    backface-visibility: hidden;
+}
+
+.btn:hover {
+    transform: translateY(-2px) translateZ(0);
+}
+
+/* Optimize progress bar animation */
+.progress-fill {
+    will-change: width;
+    transform: translateZ(0);
+}
+
+/* Reduce repaints for input focus */
+input:focus,
+select:focus {
+    transform: translateZ(0);
+}
+
+/* Optimize OTP input transitions */
+.otp-input {
+    will-change: border-color;
+    transform: translateZ(0);
+}
+
+/* Debounce expensive operations */
+.container {
+    contain: layout style paint;
+}
+
+/* Use containment for isolated sections */
+.slide {
+    contain: layout style;
+}
+
+/* Optimize font rendering */
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+/* Defer non-critical rendering */
+.slide:not(.active) {
+    content-visibility: hidden;
+}
+
+/* Optimize image loading (if images are added) */
+img {
+    content-visibility: auto;
+}

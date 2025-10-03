@@ -2,15 +2,46 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 interface PortfolioCardProps {
-  position: {
+  position?: {
     symbol: string;
     amount: number;
     value: number;
     profit?: number;
   };
+  totalValue?: number;
+  totalPnL?: number;
+  totalPnLPercent?: number;
+  availableBalance?: number;
+  marginUsed?: number;
+  onPress?: () => void;
 }
 
-export const PortfolioCard: React.FC<PortfolioCardProps> = ({ position }) => {
+export const PortfolioCard: React.FC<PortfolioCardProps> = ({ position, totalValue, totalPnL, totalPnLPercent }) => {
+  // If rendering portfolio summary
+  if (totalValue !== undefined) {
+    const isPositive = (totalPnL || 0) >= 0;
+    return (
+      <View style={styles.card}>
+        <View style={styles.header}>
+          <Text style={styles.symbol}>Total Portfolio</Text>
+        </View>
+
+        <Text style={styles.value}>${totalValue.toLocaleString()}</Text>
+
+        {totalPnLPercent !== undefined && (
+          <View style={[styles.profitBadge, isPositive ? styles.positive : styles.negative]}>
+            <Text style={styles.profitText}>
+              {isPositive ? '↑' : '↓'} {Math.abs(totalPnLPercent).toFixed(2)}%
+            </Text>
+          </View>
+        )}
+      </View>
+    );
+  }
+
+  // If rendering position
+  if (!position) return null;
+
   const profitPercent = position.profit || 0;
   const isPositive = profitPercent >= 0;
 

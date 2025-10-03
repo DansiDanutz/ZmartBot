@@ -1,0 +1,38 @@
+# Type: rules | Version: 1.0.0 | Owner: onboarding-app | Status: ACTIVE
+# Purpose: Ensure Cursor manages Netlify deployment cleanly
+
+## 🎯 Rule: Build & Deploy
+- Always ensure `netlify.toml` exists in the repo root.
+- Default `command` is `"npm run build"`.
+- Default `publish` is `"dist"`.
+- If `"build"` script is not found in `package.json`, try `"yarn build"` or `"pnpm build"`.
+- For Create React App projects:
+  - Set `publish = "build"`.
+- For static HTML/CSS projects:
+  - Remove `command` entirely.
+  - Keep `publish = "."`.
+
+## 🎯 Rule: Redirects
+- Always append:
+  ```toml
+  [[redirects]]
+    from = "/*"
+    to = "/index.html"
+    status = 200
+  ```
+- This guarantees SPA routing works.
+
+## 🎯 Rule: Validation
+- Before commit, Cursor must validate `netlify.toml` with a TOML parser.
+- If invalid, stop and auto-fix syntax.
+
+## 🎯 Rule: Developer Handoff
+- When generating `netlify.toml`, Cursor must comment inline which framework is detected:
+  - Example: `# Detected: Vite project → publish = "dist"`
+  - Example: `# Detected: React CRA → publish = "build"`
+
+## ✅ Output Expectation
+- On every deploy setup, Cursor provides:
+  - Valid `netlify.toml`
+  - Confirmation of build command + publish folder
+  - Logs summary ready for Netlify

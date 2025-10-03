@@ -1,6 +1,7 @@
 # 🔑 How to Get Your Figma API Key - Step by Step
 
 ## Step 1: Open Figma in Your Browser
+
 Go to: https://www.figma.com
 
 ## Step 2: Sign In
@@ -9,6 +10,7 @@ Go to: https://www.figma.com
 - Complete any 2FA if enabled
 
 ## Step 3: Access Your Account Settings
+
 Once logged in, click on your **profile picture** in the top-right corner of the page
 
 From the dropdown menu, click on **"Settings"**
@@ -16,6 +18,7 @@ From the dropdown menu, click on **"Settings"**
 OR directly go to: https://www.figma.com/settings
 
 ## Step 4: Navigate to Personal Access Tokens
+
 In the Settings page, look at the left sidebar menu
 
 Find and click on **"Personal access tokens"**
@@ -23,6 +26,7 @@ Find and click on **"Personal access tokens"**
 The direct URL is: https://www.figma.com/settings/account#personal-access-tokens
 
 ## Step 5: Generate a New Token
+
 1. Click the **"Generate new token"** button (usually blue)
 
 2. A dialog will appear asking for:
@@ -39,6 +43,7 @@ The direct URL is: https://www.figma.com/settings/account#personal-access-tokens
 3. Click **"Generate token"**
 
 ## Step 6: Copy Your Token
+
 ⚠️ **IMPORTANT**: The token will only be shown ONCE!
 
 1. A new screen will show your token (starts with `figd_`)
@@ -51,6 +56,7 @@ The direct URL is: https://www.figma.com/settings/account#personal-access-tokens
 - **Never commit it to Git repositories**
 
 ## Step 8: Add to MCP Configuration
+
 1. Open `.cursor/mcp.json`
 2. Find the Figma section
 3. Replace `YOUR-FIGMA-API-KEY` with your actual token:
@@ -68,7 +74,9 @@ The direct URL is: https://www.figma.com/settings/account#personal-access-tokens
 ```
 
 ## Step 9: Test Your Token
+
 Run this command to verify it works:
+
 ```bash
 npx figma-developer-mcp --figma-api-key=YOUR_TOKEN_HERE --version
 ```
@@ -87,6 +95,7 @@ npx figma-developer-mcp --figma-api-key=YOUR_TOKEN_HERE --version
 - Ensure you copied the entire token
 
 ### Need to regenerate?
+
 1. Go back to Personal Access Tokens
 2. Find your token in the list
 3. Click "Revoke" to delete it
@@ -99,7 +108,9 @@ npx figma-developer-mcp --figma-api-key=YOUR_TOKEN_HERE --version
 - Use different tokens for different applications
 
 ## What Can You Do With the Token?
+
 Once configured in MCP:
+
 - Access Figma designs directly in Claude/Cursor
 - Extract design specifications
 - Get layout information

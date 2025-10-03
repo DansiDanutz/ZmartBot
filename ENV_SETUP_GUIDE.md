@@ -3,6 +3,7 @@
 ## ✅ **API Keys Have Been Secured!**
 
 ### **What We Did:**
+
 1. ✅ Removed all API keys from source code files
 2. ✅ Created `.env.example` template file
 3. ✅ Updated `.gitignore` to exclude all env files
@@ -24,12 +25,15 @@
 ## 🔧 **How to Set Up Your Environment:**
 
 ### **Step 1: Copy the Example File**
+
 ```bash
 cp .env.example .env
 ```
 
 ### **Step 2: Get Your API Keys from Backups**
+
 Check the backup files for your actual API keys:
+
 ```bash
 # View API keys from backups
 grep -h "sk-ant-api" *.backup
@@ -38,7 +42,9 @@ grep -h "sk-" *.backup
 ```
 
 ### **Step 3: Add Keys to .env File**
+
 Edit `.env` and add your actual API keys:
+
 ```bash
 # Edit the .env file
 nano .env
@@ -47,7 +53,9 @@ code .env
 ```
 
 ### **Step 4: Verify Files Load Environment Variables**
+
 The cleaned files now use:
+
 ```python
 import os
 
@@ -62,6 +70,7 @@ openai_key = os.getenv('OPENAI_API_KEY')
 ## 📦 **For Deployment (Netlify/Production):**
 
 ### **Add Environment Variables in Netlify Dashboard:**
+
 1. Go to: https://app.netlify.com/sites/vermillion-paprenjak-67497b/settings/env
 2. Add each environment variable:
    - SUPABASE_URL
@@ -69,7 +78,9 @@ openai_key = os.getenv('OPENAI_API_KEY')
    - (Any other needed keys)
 
 ### **For Local Development:**
+
 Always load from `.env` file:
+
 ```python
 from dotenv import load_dotenv
 load_dotenv()
@@ -83,6 +94,7 @@ api_key = os.getenv('YOUR_API_KEY')
 ## 🚀 **How to Push to GitHub Now:**
 
 ### **1. Add and Commit the Cleaned Files:**
+
 ```bash
 # Add cleaned files
 git add Rules.mdc
@@ -105,6 +117,7 @@ BREAKING CHANGE: Requires .env file setup for API keys"
 ```
 
 ### **2. Push to GitHub:**
+
 ```bash
 git push origin simple-setup
 ```
@@ -132,7 +145,9 @@ git push origin simple-setup
 GitHub might still detect keys in git history. Options:
 
 ### **Option 1: Force Push (Rewrite History)**
+
 ⚠️ WARNING: This rewrites git history!
+
 ```bash
 # Remove sensitive files from all history
 git filter-branch --force --index-filter \
@@ -144,9 +159,11 @@ git push --force origin simple-setup
 ```
 
 ### **Option 2: Allow Through GitHub**
+
 Use the URLs provided in the error message to allow specific keys (if they're already rotated/invalid)
 
 ### **Option 3: Create New Branch**
+
 ```bash
 # Create clean branch
 git checkout -b secure-deploy

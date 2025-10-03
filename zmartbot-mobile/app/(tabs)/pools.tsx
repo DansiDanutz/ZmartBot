@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, RefreshControl, Alert, ActivityIndicator } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { StatusBar } from 'expo-status-bar';
 import { Ionicons } from '@expo/vector-icons';
-import { Card, CardContent, CardHeader } from '../../src/components/ui/Card';
+import { StatusBar } from 'expo-status-bar';
+import React, { useEffect, useState } from 'react';
+import { Alert, RefreshControl, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { PortfolioCard } from '../../src/components/PortfolioCard';
+import { Card, CardContent, CardHeader } from '../../src/components/ui/Card';
+import { formatCurrency, formatPercentage } from '../../src/lib/utils';
 import { mobileTradingService } from '../../src/services/MobileTradingService';
 import { PortfolioPosition } from '../../src/services/ZmartBotAPIGateway';
-import { formatCurrency, formatPercentage } from '../../src/lib/utils';
 
 export default function PortfolioScreen() {
   const [portfolio, setPortfolio] = useState({
@@ -71,10 +71,15 @@ export default function PortfolioScreen() {
       {
         symbol: 'BTCUSDT',
         quantity: 2.5,
+        size: 2.5,
+        averagePrice: 42000,
         entryPrice: 42000,
         currentPrice: 43250,
+        unrealizedPnL: 3125,
         pnl: 3125,
         pnlPercent: 7.44,
+        unrealizedPnLPercent: 7.44,
+        marketValue: 108125,
         margin: 50000,
         leverage: 20,
         side: 'LONG'
@@ -82,10 +87,15 @@ export default function PortfolioScreen() {
       {
         symbol: 'ETHUSDT',
         quantity: 15.8,
+        size: 15.8,
+        averagePrice: 2580,
         entryPrice: 2580,
         currentPrice: 2650,
+        unrealizedPnL: 1106,
         pnl: 1106,
         pnlPercent: 4.29,
+        unrealizedPnLPercent: 4.29,
+        marketValue: 41870,
         margin: 30000,
         leverage: 15,
         side: 'LONG'
@@ -93,10 +103,15 @@ export default function PortfolioScreen() {
       {
         symbol: 'BNBUSDT',
         quantity: 120,
+        size: 120,
+        averagePrice: 305,
         entryPrice: 305,
         currentPrice: 312.75,
+        unrealizedPnL: 930,
         pnl: 930,
         pnlPercent: 3.05,
+        unrealizedPnLPercent: 3.05,
+        marketValue: 37530,
         margin: 20000,
         leverage: 10,
         side: 'LONG'

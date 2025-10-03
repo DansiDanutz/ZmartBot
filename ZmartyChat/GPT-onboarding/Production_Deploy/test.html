@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Test Page</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .container {
+            text-align: center;
+            padding: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+        h1 {
+            margin: 0 0 20px 0;
+            font-size: 2.5em;
+        }
+        .timestamp {
+            background: rgba(255,255,255,0.2);
+            padding: 10px 20px;
+            border-radius: 10px;
+            display: inline-block;
+            margin: 10px 0;
+        }
+        .device-info {
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+            text-align: left;
+        }
+        .info-row {
+            margin: 10px 0;
+            display: flex;
+            justify-content: space-between;
+        }
+        .info-label {
+            font-weight: bold;
+            opacity: 0.8;
+        }
+        .info-value {
+            font-family: monospace;
+        }
+        button {
+            background: white;
+            color: #667eea;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 10px;
+            transition: transform 0.2s;
+        }
+        button:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Test Page Working!</h1>
+
+        <div class="timestamp">
+            Deploy Time: <strong>2024-09-29 04:30 UTC</strong>
+        </div>
+
+        <div class="timestamp">
+            Current Time: <strong id="currentTime"></strong>
+        </div>
+
+        <div class="device-info">
+            <div class="info-row">
+                <span class="info-label">Device:</span>
+                <span class="info-value" id="device"></span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Browser:</span>
+                <span class="info-value" id="browser"></span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Screen:</span>
+                <span class="info-value" id="screen"></span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">URL:</span>
+                <span class="info-value" id="url"></span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Cache:</span>
+                <span class="info-value" id="cache"></span>
+            </div>
+        </div>
+
+        <button onclick="clearCacheAndReload()">Clear Cache & Reload</button>
+        <button onclick="goToApp()">Go to Main App</button>
+    </div>
+
+    <script>
+        // Update current time
+        function updateTime() {
+            document.getElementById('currentTime').textContent = new Date().toISOString().replace('T', ' ').slice(0, 19) + ' UTC';
+        }
+        updateTime();
+        setInterval(updateTime, 1000);
+
+        // Device detection
+        function detectDevice() {
+            const ua = navigator.userAgent;
+            if (/iPhone|iPad|iPod/.test(ua)) return 'iOS Device';
+            if (/Android/.test(ua)) return 'Android Device';
+            if (/Mac/.test(ua)) return 'Mac';
+            if (/Windows/.test(ua)) return 'Windows';
+            return 'Unknown Device';
+        }
+
+        // Browser detection
+        function detectBrowser() {
+            const ua = navigator.userAgent;
+            if (/Chrome/.test(ua) && !/Edge/.test(ua)) return 'Chrome';
+            if (/Safari/.test(ua) && !/Chrome/.test(ua)) return 'Safari';
+            if (/Firefox/.test(ua)) return 'Firefox';
+            if (/Edge/.test(ua)) return 'Edge';
+            return 'Unknown Browser';
+        }
+
+        // Set device info
+        document.getElementById('device').textContent = detectDevice();
+        document.getElementById('browser').textContent = detectBrowser();
+        document.getElementById('screen').textContent = `${window.innerWidth}x${window.innerHeight}`;
+        document.getElementById('url').textContent = window.location.href;
+        document.getElementById('cache').textContent =
+            performance.navigation.type === 2 ? 'From Cache' : 'Fresh Load';
+
+        // Functions for buttons
+        function clearCacheAndReload() {
+            // Add timestamp to force fresh load
+            window.location.href = window.location.pathname + '?t=' + Date.now();
+        }
+
+        function goToApp() {
+            window.location.href = '/';
+        }
+
+        // Log to console
+        console.log('Test page loaded successfully at:', new Date().toISOString());
+        console.log('Device:', detectDevice());
+        console.log('Browser:', detectBrowser());
+    </script>
+</body>
+</html>

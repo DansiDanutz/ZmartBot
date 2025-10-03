@@ -1,0 +1,271 @@
+# ============================================================================
+# Environment Variables Template
+# Copy this file and fill in your actual values
+# ============================================================================
+
+# General Settings
+NODE_ENV=production
+PORT=8080
+
+# ============================================================================
+# Supabase A (Chat / Authentication)
+# ============================================================================
+
+SUPABASE_A_URL=https://<your-project-ref>.supabase.co
+SUPABASE_A_SERVICE_KEY=<your-service-role-key>
+SUPABASE_A_ANON_KEY=<your-anon-key>
+
+# Frontend (public keys only)
+VITE_SUPABASE_A_URL=https://<your-project-ref>.supabase.co
+VITE_SUPABASE_A_ANON_KEY=<your-anon-key>
+
+# ============================================================================
+# Supabase B (Trading Data)
+# ============================================================================
+
+SUPABASE_B_URL=https://<your-project-ref>.supabase.co
+SUPABASE_B_SERVICE_KEY=<your-service-role-key>
+
+# ============================================================================
+# Webhook Security
+# ============================================================================
+
+# Shared secret for HMAC verification (A → B webhook)
+WEBHOOK_SECRET=<generate-random-secret>
+
+# Generate with: openssl rand -hex 32
+
+# ============================================================================
+# LLM Providers
+# ============================================================================
+
+# XAI (Grok) - Default provider
+XAI_API_KEY=<your-xai-api-key>
+XAI_BASE_URL=https://api.x.ai/v1
+
+# OpenAI (GPT) - Fallback/tool use
+OPENAI_API_KEY=<your-openai-api-key>
+OPENAI_ORG_ID=<your-org-id>  # Optional
+
+# Anthropic (Claude) - Advanced reasoning
+ANTHROPIC_API_KEY=<your-anthropic-api-key>
+
+# ============================================================================
+# Voice Synthesis
+# ============================================================================
+
+ELEVENLABS_API_KEY=<your-elevenlabs-api-key>
+ELEVENLABS_VOICE_ID=<voice-id>  # Optional, defaults to Zmarty voice
+
+# ============================================================================
+# External Trading APIs
+# ============================================================================
+
+# Cryptometer (Technical Indicators)
+CRYPTOMETER_API_KEY=<your-cryptometer-api-key>
+CRYPTOMETER_BASE_URL=https://api.cryptometer.io/v1
+
+# KingFisher (Liquidation Clusters)
+KINGFISHER_API_KEY=<your-kingfisher-api-key>
+KINGFISHER_BASE_URL=https://api.kingfisher.io/v1
+
+# ============================================================================
+# Security & Authentication
+# ============================================================================
+
+# JWT Secret (for your own session management if needed)
+JWT_SECRET=<generate-random-secret>
+
+# Generate with: openssl rand -base64 32
+
+# CORS Allowed Origins (comma-separated)
+CORS_ORIGINS=https://your-frontend-domain.netlify.app,http://localhost:3000
+
+# ============================================================================
+# Position Doubling Guardrails
+# ============================================================================
+
+# Max position size as % of portfolio (0.1 = 10%)
+MAX_POSITION_PCT=0.1
+
+# Cooldown between position increases (seconds)
+COOLDOWN_SECONDS=3600
+
+# Max volatility threshold (0.05 = 5%)
+VOLATILITY_THRESHOLD=0.05
+
+# Minimum score delta required for doubling
+SCORE_DELTA_THRESHOLD=0.1
+
+# ============================================================================
+# Rate Limiting
+# ============================================================================
+
+# Requests per minute per user
+RATE_LIMIT_PER_MINUTE=60
+
+# Max concurrent requests per user
+MAX_CONCURRENT_REQUESTS=5
+
+# ============================================================================
+# User Tier Limits
+# ============================================================================
+
+# Free tier
+FREE_TIER_MAX_TOKENS=1024
+FREE_TIER_MAX_REQUESTS=10
+
+# Pro tier
+PRO_TIER_MAX_TOKENS=4096
+PRO_TIER_MAX_REQUESTS=100
+
+# Enterprise tier
+ENTERPRISE_TIER_MAX_TOKENS=8192
+ENTERPRISE_TIER_MAX_REQUESTS=1000
+
+# ============================================================================
+# Credits Pricing (per 1K tokens)
+# ============================================================================
+
+# Grok
+GROK_INPUT_PER_1K=1
+GROK_OUTPUT_PER_1K=4
+GROK_MIN_CALL=1
+
+# GPT
+GPT_INPUT_PER_1K=3
+GPT_OUTPUT_PER_1K=10
+GPT_MIN_CALL=2
+
+# Claude
+CLAUDE_INPUT_PER_1K=3
+CLAUDE_OUTPUT_PER_1K=10
+CLAUDE_MIN_CALL=2
+
+# Data ingestion
+DATA_COST_PER_SYMBOL=1
+
+# ============================================================================
+# Monitoring & Observability
+# ============================================================================
+
+# Logging level: debug | info | warn | error
+LOG_LEVEL=info
+
+# Sentry DSN (error tracking)
+SENTRY_DSN=<your-sentry-dsn>  # Optional
+
+# Datadog API Key (metrics)
+DATADOG_API_KEY=<your-datadog-key>  # Optional
+
+# New Relic License Key (APM)
+NEW_RELIC_LICENSE_KEY=<your-newrelic-key>  # Optional
+
+# ============================================================================
+# Queue Configuration
+# ============================================================================
+
+# Queue names (pgmq)
+QUEUE_INGEST_INDICATORS=ingest_indicators
+QUEUE_COMPUTE_SIGNALS=compute_signals
+QUEUE_COMPUTE_WINRATE=compute_winrate
+
+# Visibility timeout (seconds)
+QUEUE_VISIBILITY_TIMEOUT=30
+
+# Max retries per job
+QUEUE_MAX_RETRIES=3
+
+# ============================================================================
+# Worker Configuration
+# ============================================================================
+
+# Number of concurrent consumers per queue
+WORKER_CONCURRENCY=5
+
+# Poll interval when queue is empty (ms)
+WORKER_POLL_INTERVAL=1000
+
+# Backoff on error (ms)
+WORKER_ERROR_BACKOFF=5000
+
+# ============================================================================
+# Database Configuration
+# ============================================================================
+
+# Connection pool size
+DB_POOL_SIZE=10
+
+# Connection timeout (ms)
+DB_CONNECT_TIMEOUT=10000
+
+# Query timeout (ms)
+DB_QUERY_TIMEOUT=30000
+
+# ============================================================================
+# Frontend Configuration
+# ============================================================================
+
+# Orchestrator API URL (for frontend)
+VITE_ORCHESTRATOR_API_URL=https://orchestrator-api.onrender.com
+
+# WebSocket URL (if using WebSockets)
+VITE_WS_URL=wss://orchestrator-api.onrender.com
+
+# Feature flags
+VITE_ENABLE_VOICE=true
+VITE_ENABLE_MULTI_SYMBOL=true
+VITE_ENABLE_BACKTESTING=false
+
+# ============================================================================
+# Deployment Configuration
+# ============================================================================
+
+# Render
+RENDER_SERVICE_ID=<your-service-id>
+
+# Netlify
+NETLIFY_SITE_ID=<your-site-id>
+NETLIFY_AUTH_TOKEN=<your-auth-token>
+
+# ============================================================================
+# Testing & Development
+# ============================================================================
+
+# Enable debug mode
+DEBUG=false
+
+# Enable test mode (uses mock data)
+TEST_MODE=false
+
+# Seed database with sample data
+SEED_DB=false
+
+# ============================================================================
+# Backup & Recovery
+# ============================================================================
+
+# Backup S3 bucket (optional)
+BACKUP_S3_BUCKET=zmarty-backups
+BACKUP_S3_REGION=us-east-1
+BACKUP_S3_ACCESS_KEY=<your-access-key>
+BACKUP_S3_SECRET_KEY=<your-secret-key>
+
+# Backup schedule (cron format)
+BACKUP_SCHEDULE=0 2 * * *  # Daily at 2 AM
+
+# ============================================================================
+# Notes
+# ============================================================================
+
+# 1. Never commit this file with real values to git
+# 2. Use a secrets manager (e.g., 1Password, AWS Secrets Manager) in production
+# 3. Rotate API keys regularly (every 90 days recommended)
+# 4. Use different keys for dev/staging/production environments
+# 5. Ensure WEBHOOK_SECRET matches between Supabase A and B
+# 6. Keep JWT_SECRET secure and never expose to frontend
+# 7. Use environment-specific CORS_ORIGINS
+# 8. Monitor API usage to avoid rate limits
+
+
+

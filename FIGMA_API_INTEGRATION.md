@@ -28,6 +28,7 @@
 ## Available APIs
 
 ### From MCP Server (Claude/Cursor)
+
 ```javascript
 // The Figma MCP server provides direct access to:
 - Design files
@@ -38,6 +39,7 @@
 ```
 
 ### From API Manager (Python Services)
+
 ```python
 from src.config.api_keys_manager import APIKeysManager
 
@@ -54,11 +56,13 @@ client_id = figma_config['passphrase']  # OAuth client ID
 ## Testing
 
 ### Test MCP Server
+
 ```bash
 npx figma-developer-mcp --figma-api-key=figd_5pmO9I1vXoLF5gfw3OdPiQIaakuTRCJut6doJn09 --version
 ```
 
 ### Test API Manager
+
 ```bash
 cd zmart-api
 python3 -c "
@@ -75,6 +79,7 @@ print(api_manager.get_service_health())
 - ✅ Centralized credential management
 
 ## Next Steps
+
 1. Restart Claude/Cursor to activate Figma MCP server
 2. Use Figma designs directly in your AI coding workflow
 3. Access Figma API programmatically through API manager

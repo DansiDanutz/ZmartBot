@@ -1,4 +1,5 @@
 # 🏢 ZMARTBOT PROJECT INVENTORY - COMPREHENSIVE FILE REFERENCE
+
 *Last Updated: 2025-09-18 (MAJOR UPDATE: Complete ZmartyChat UI/UX Implementation)*
 *Total Files Documented: 243+ files (32 NEW UI/UX files added)*
 
@@ -38,6 +39,7 @@
 **BEFORE starting any work, you MUST understand the ZmartBot system methodology:**
 
 #### **📖 Read the Complete Methodology**
+
 ```bash
 # Location: .cursor/rules/ZmartBotMethodology.mdc
 # This document contains the complete system architecture and methodology
@@ -74,12 +76,14 @@
 **This is the ONLY way to start the ZmartBot system. Follow this EXACTLY:**
 
 #### **Option 1: Use Official Orchestration Script (RECOMMENDED)**
+
 ```bash
 # From project root directory
 ./START_ZMARTBOT.sh
 ```
 
 #### **Option 2: Manual Startup (Advanced Users)**
+
 ```bash
 # 1. Navigate to the backend directory
 cd /Users/dansidanutz/Desktop/ZmartBot/zmart-api
@@ -106,12 +110,14 @@ lsof -i :5173  # Should be EMPTY (no processes)
 **This is the ONLY way to stop the ZmartBot system:**
 
 #### **Option 1: Use Official Stop Script (RECOMMENDED)**
+
 ```bash
 # From project root directory
 ./stop_zmartbot_official.sh
 ```
 
 #### **Option 2: Manual Shutdown (Advanced Users)**
+
 ```bash
 # Kill processes on specific ports
 lsof -ti :8000 | xargs kill -9 2>/dev/null || true
@@ -120,6 +126,7 @@ lsof -ti :5173 | xargs kill -9 2>/dev/null || true
 ```
 
 ### **✅ VERIFICATION COMMANDS**
+
 ```bash
 # Test Backend API
 curl -s http://localhost:8000/api/v1/alerts/status | jq '.success'
@@ -294,6 +301,7 @@ lsof -i :3400 && echo "---" && lsof -i :8000 && echo "---" && lsof -i :5173
 - **Route Registration**: Added to `zmart-api/src/main.py`
 
 #### **API Endpoints**:
+
 ```bash
 # Generate trading advice
 POST /api/v1/openai/trading-advice
@@ -335,6 +343,7 @@ GET /api/v1/openai/status
   - **Smart Positioning**: Displays right after each symbol ticker for instant overview
 
 #### **Sentiment Calculation Logic**:
+
 ```javascript
 // Analyzes all 21 indicators and calculates percentages
 const calculateSentimentPercentages = (symbol, timeframe) => {
@@ -431,6 +440,7 @@ const calculateSentimentPercentages = (symbol, timeframe) => {
   - Last updated timestamps
 
 #### **Caching Logic**:
+
 ```javascript
 // Cache duration: 5 minutes
 const CACHE_DURATION = 5 * 60 * 1000;
@@ -456,6 +466,7 @@ fetchTechnicalAnalysis(symbol, forceRefresh = false) {
 - **`my_symbols_v2.db`**: Contains all 21 technical indicator data tables
 
 #### **Data Flow**:
+
 1. **Real-time monitoring** of all 21 indicators
 2. **Alert generation** when conditions are met
 3. **Database storage** with precise trigger prices
@@ -522,6 +533,7 @@ fetchTechnicalAnalysis(symbol, forceRefresh = false) {
 - **Configurable Cache Duration**: Adjustable based on user preferences
 - **Advanced Filtering**: Filter by indicator type, severity, timeframe
 - **Batch Operations**: Bulk alert management
+
 *Total Files Documented: 160+ files with exact paths*
 
 ## 📊 OFFICIAL DATABASES
@@ -530,7 +542,7 @@ fetchTechnicalAnalysis(symbol, forceRefresh = false) {
 - **Name**: `my_symbols_v2.db`
 - **Location**: `/Users/dansidanutz/Desktop/ZmartBot/zmart-api/my_symbols_v2.db`
 - **Purpose**: Main portfolio and symbol management database
-- **Tables**: 
+- **Tables**:
   - `symbols` - All available trading symbols
   - `portfolio_composition` - Active portfolio symbols (max 10)
   - `portfolio_history` - Historical portfolio changes
@@ -1263,7 +1275,8 @@ fetchTechnicalAnalysis(symbol, forceRefresh = false) {
 - ✅ **Service Count Accuracy**: Updated counts to 211 MDC files without deletion
 
 #### **📄 Comprehensive MDC Documentation Updates**
-**Locations**: 
+**Locations**:
+
 - `/Users/dansidanutz/Desktop/ZmartBot/.cursor/rules/smart_context_optimizer.mdc` (Version 2.0.0)
 - `/Users/dansidanutz/Desktop/ZmartBot/.cursor/rules/enhanced_smart_context_optimizer.mdc` (Version 3.0.0)
 - `/Users/dansidanutz/Desktop/ZmartBot/.cursor/rules/rules.mdc` (Updated with achievements)
@@ -1319,7 +1332,8 @@ fetchTechnicalAnalysis(symbol, forceRefresh = false) {
 **Location**: `/Users/dansidanutz/Desktop/ZmartBot/zmart-api/dashboard/Service-Dashboard/`
 
 #### **📁 Complete File Structure:**
-```
+
+```bash
 Service-Dashboard/
 ├── index.html          # Main dashboard interface (comprehensive UI)
 ├── styles.css          # Dark theme styling (1400+ lines)
@@ -1340,6 +1354,7 @@ Service-Dashboard/
 - ✅ **Modal System**: Detailed service information and doctor responses
 
 #### **🔧 Service Dashboard Startup:**
+
 ```bash
 # From project root
 ./start_service_dashboard.sh
@@ -1349,7 +1364,8 @@ Service-Dashboard/
 ```
 
 #### **🛡️ Service Dashboard Integration Flow:**
-```
+
+```text
 Service Problem → Auto-Fix Attempt → Doctor Service → AI Analysis → Solution
 ```
 
@@ -1358,7 +1374,8 @@ Service Problem → Auto-Fix Attempt → Doctor Service → AI Analysis → Solu
 **Location**: `/Users/dansidanutz/Desktop/ZmartBot/services/doctor-service/`
 
 #### **📁 Complete File Structure:**
-```
+
+```bash
 doctor-service/
 ├── doctor_service.py           # Main FastAPI service (1000+ lines)
 ├── requirements.txt           # Full production dependencies
@@ -1381,9 +1398,10 @@ doctor-service/
 - ✅ **Service Dashboard Integration**: Seamless workflow integration
 
 #### **🔌 Doctor Service API Endpoints:**
-```
+
+```text
 POST /api/doctor/diagnose        # AI-powered problem analysis
-GET  /api/doctor/diagnosis/{id}  # Get specific diagnosis details  
+GET  /api/doctor/diagnosis/{id}  # Get specific diagnosis details
 POST /api/doctor/execute-solution # Execute recommended solution
 GET  /api/doctor/history        # Get diagnostic history
 POST /api/doctor/feedback       # Provide solution feedback
@@ -1393,6 +1411,7 @@ GET  /docs                      # FastAPI documentation
 ```
 
 #### **🚀 Doctor Service Startup:**
+
 ```bash
 # From project root
 cd services/doctor-service
@@ -1404,32 +1423,36 @@ cd services/doctor-service
 ```
 
 #### **📊 Doctor Service Dependencies (42 Production Libraries):**
-```
-FastAPI, Uvicorn, Pydantic, OpenAI, SQLAlchemy, aiosqlite, 
+
+```bash
+FastAPI, Uvicorn, Pydantic, OpenAI, SQLAlchemy, aiosqlite,
 structlog, aiohttp, requests, python-dotenv, and 32+ more
 ```
 
 #### **🗄️ Doctor Service Database Schema:**
+
 ```sql
 # Location: /Users/dansidanutz/Desktop/ZmartBot/data/doctor_service.db
 
 Tables:
 - diagnoses    # AI diagnosis results and problem analysis
-- solutions    # Generated solutions with success tracking  
+- solutions    # Generated solutions with success tracking
 - feedback     # User feedback for learning system
 - statistics   # Performance metrics and analytics
 ```
 
 #### **🎯 Doctor Service AI Integration:**
+
 ```python
 # ChatGPT Analysis Pipeline:
-Problem → Context Enrichment → AI Analysis → Solution Generation 
+Problem → Context Enrichment → AI Analysis → Solution Generation
 → Safety Validation → Response Formatting → Database Storage
 ```
 
 ### 🔄 **COMPLETE WORKFLOW: DASHBOARD ↔ DOCTOR SERVICE**
 
 #### **Problem Resolution Flow:**
+
 1. **Service Dashboard** detects service problems
 2. **Auto-Fix** attempts common solutions (restart, cache clear, dependency check)
 3. **Doctor Service** receives complex problems for AI analysis
@@ -1440,7 +1463,7 @@ Problem → Context Enrichment → AI Analysis → Solution Generation
 #### **🌐 Service URLs & Registration:**
 - **Service Dashboard**: http://localhost:3401 (Dark theme, real-time monitoring)
   - **Passport ID**: ZMBT-FRE-20250826-D347BE (Frontend Service)
-- **Doctor Service API**: http://localhost:8700 (AI-powered diagnostics)  
+- **Doctor Service API**: http://localhost:8700 (AI-powered diagnostics)
   - **Passport ID**: ZMBT-SRV-20250826-51B6B9 (Backend Service)
 - **Doctor Service Docs**: http://localhost:8700/docs (FastAPI documentation)
 - **Passport Service Registry**: http://localhost:8620 (Identity management)
@@ -1465,12 +1488,12 @@ Problem → Context Enrichment → AI Analysis → Solution Generation
 
 Today's implementation represents a **major system enhancement** with:
 
-✅ **Complete Service Monitoring Solution**: Real-time dashboard with intelligent problem resolution  
-✅ **AI-Powered Diagnostics**: ChatGPT integration for intelligent system analysis  
-✅ **Production-Ready Services**: Two new services with comprehensive functionality  
-✅ **Seamless Integration**: Perfect workflow between dashboard, auto-fix, and AI diagnosis  
-✅ **Enterprise-Grade Features**: Learning systems, safety validation, comprehensive logging  
-✅ **User Experience**: Beautiful dark theme dashboard with intuitive problem resolution  
+✅ **Complete Service Monitoring Solution**: Real-time dashboard with intelligent problem resolution
+✅ **AI-Powered Diagnostics**: ChatGPT integration for intelligent system analysis
+✅ **Production-Ready Services**: Two new services with comprehensive functionality
+✅ **Seamless Integration**: Perfect workflow between dashboard, auto-fix, and AI diagnosis
+✅ **Enterprise-Grade Features**: Learning systems, safety validation, comprehensive logging
+✅ **User Experience**: Beautiful dark theme dashboard with intuitive problem resolution
 
 **Status**: Both Service Dashboard and Doctor Service are **OPERATIONAL**, **PRODUCTION-READY**, and **PASSPORT REGISTERED** 🚀
 
@@ -1545,12 +1568,14 @@ The official dashboard uses a **two-server architecture** that was causing confu
 ### 🔧 **WHY THE CONFUSION HAPPENED**
 
 #### **❌ The Problem:**
+
 1. **Frontend** (port 3400) was trying to call APIs directly
 2. **Backend** (port 8000) has all the APIs but no frontend
 3. **API Proxy** was broken, so frontend couldn't reach backend
 4. **Result**: "Load failed" and CORS errors everywhere
 
 #### **✅ The Solution:**
+
 1. **Keep both servers** - they serve different purposes
 2. **Fix API proxy** - redirect 3400 → 8000 correctly
 3. **Clear separation** - frontend serves UI, backend serves data
@@ -1574,6 +1599,7 @@ The official dashboard uses a **two-server architecture** that was causing confu
 ### **📊 Real-Time Data Endpoints - TESTED & VERIFIED**
 
 **🎯 PRIMARY PRICE DATA (✅ WORKING - Used by My Symbols & Live Alerts):**
+
 ```bash
 GET /api/v1/binance/ticker/24hr?symbol={symbol}
 # Example: curl "http://localhost:3400/api/v1/binance/ticker/24hr?symbol=BTCUSDT"
@@ -1581,13 +1607,14 @@ GET /api/v1/binance/ticker/24hr?symbol={symbol}
 ```
 
 **📊 PORTFOLIO & SYMBOLS (✅ WORKING):**
+
 ```bash
 # Legacy symbols endpoint
 GET /api/futures-symbols/my-symbols/current
 # Returns: Portfolio symbols array with validation
 
 # ✅ MY SYMBOLS API - CORRECT ENDPOINTS (ISSUE RESOLVED):
-GET /api/v1/portfolio              # Get current portfolio  
+GET /api/v1/portfolio              # Get current portfolio
 GET /api/v1/health                 # Health check
 GET /api/v1/scores                 # Get symbol scores
 GET /api/v1/status                 # Get status
@@ -1602,23 +1629,27 @@ DELETE /api/v1/portfolio/remove/{symbol}  # Remove symbol from portfolio
 ```
 
 **🔧 HEALTH CHECKS (✅ WORKING):**
+
 ```bash
 GET http://localhost:8000/health     # Backend API health
 GET http://localhost:3400/health     # Dashboard server health
 ```
 
 **🔍 TECHNICAL ANALYSIS (✅ MAY WORK - Try First):**
+
 ```bash
 GET /api/v1/cryptometer/analyze/{symbol}?timeframe=1h
 GET /api/enhanced-alerts/events/{symbol}?tf={timeframe}&limit=50
 ```
 
 **⚠️ DEPRECATED/BROKEN ENDPOINTS (❌ DON'T USE):**
+
 ```bash
 GET /api/v1/binance/price/{symbol}  # Session closed errors
 ```
 
 **📈 ADDITIONAL DATA:**
+
 - **Candlestick Data**: `GET /api/v1/binance/klines?symbol={symbol}&interval={interval}&limit={limit}`
 - **Alert Refresh**: `POST /api/v1/alerts/refresh`
 - **System Status**: `GET /api/v1/alerts/status`
@@ -1632,10 +1663,11 @@ GET /api/v1/binance/price/{symbol}  # Session closed errors
 - **Dashboard Loading Issues** ✅ - RESOLVED with correct API integration
 
 ### **📋 COMPLETE MY SYMBOLS API REFERENCE:**
+
 ```bash
 # ✅ ALL WORKING ENDPOINTS (Updated 2025-08-21):
 GET    /api/v1/portfolio                    # Get current portfolio
-GET    /api/v1/health                       # Health check  
+GET    /api/v1/health                       # Health check
 GET    /api/v1/test                         # Test endpoint
 GET    /api/v1/scores                       # Get symbol scores
 POST   /api/v1/scores/calculate             # Calculate scores
@@ -1648,6 +1680,7 @@ DELETE /api/v1/portfolio/remove/{symbol}    # Remove symbol from portfolio
 GET    /api/v1/configuration                # Get configuration
 GET    /api/v1/status                       # Get status
 ```
+
 - **Manual refresh button** ✅
 - **Current price display** ✅
 - **Exact market data from Binance API** ✅
@@ -1710,7 +1743,7 @@ GET    /api/v1/status                       # Get status
 - **Dynamic Sync**: Automatically syncs with My Symbols portfolio
 - **API Connection**: Working perfectly
 - **Bollinger Bands**: 4 timeframes (15m, 1h, 4h, 1d) with position and bandwidth analysis
-- **Database Tables**: 
+- **Database Tables**:
   - `bollinger_bands` table with 40 data points (10 symbols × 4 timeframes)
   - `macd_data` table with 40 data points (10 symbols × 4 timeframes)
   - `rsi_data` table with 40 data points (10 symbols × 4 timeframes)
@@ -1738,6 +1771,7 @@ GET    /api/v1/status                       # Get status
 ### 🚨 **CRITICAL RULES FOR DASHBOARD OPERATION**
 
 #### **✅ What to Start:**
+
 ```bash
 # Start the main backend API server (port 8000)
 cd /Users/dansidanutz/Desktop/ZmartBot/zmart-api
@@ -1755,6 +1789,7 @@ python3 professional_dashboard_server.py
 - **NEVER** assume one server can do everything
 
 #### **✅ How to Verify Everything is Working:**
+
 ```bash
 # Check both servers are running
 lsof -i :8000  # Should show run_dev.py
@@ -1780,23 +1815,27 @@ curl -s "http://localhost:3400/api/v1/alerts/status" | jq '.success'
 - **Real Market Data**: Binance API integration ✅ WORKING
 
 #### **✅ System Architecture:**
-```
+
+```text
 User Browser → Port 3400 (Frontend) → API Proxy → Port 8000 (Backend) → Real APIs
 ```
 
 ### 🔄 **TROUBLESHOOTING GUIDE**
 
 #### **If Frontend Won't Load:**
+
 1. Check port 3400: `lsof -i :3400`
 2. Start frontend: `python3 professional_dashboard_server.py`
 3. Check logs for errors
 
 #### **If APIs Won't Work:**
+
 1. Check port 8000: `lsof -i :8000`
 2. Start backend: `python3 run_dev.py`
 3. Test API directly: `curl http://localhost:8000/api/v1/alerts/status`
 
 #### **If API Proxy Fails:**
+
 1. Check api-proxy.js configuration
 2. Verify redirects are set to port 8000
 3. Rebuild frontend: `cd professional_dashboard && npm run build`
@@ -1818,7 +1857,7 @@ User Browser → Port 3400 (Frontend) → API Proxy → Port 8000 (Backend) → 
 - **API Server**: `src/main.py` (Port 8000)
 - **Dashboard Server**: `professional_dashboard_server.py` (Port 3400)
 
-### 🎨 **OFFICIAL FRONTEND** (THE ONLY ONE)  
+### 🎨 **OFFICIAL FRONTEND** (THE ONLY ONE)
 - **Location**: `/Users/dansidanutz/Desktop/ZmartBot/zmart-api/professional_dashboard/`
 - **Status**: ✅ ACTIVE - SINGLE OFFICIAL FRONTEND
 - **Served by**: `/Users/dansidanutz/Desktop/ZmartBot/zmart-api/professional_dashboard_server.py`
@@ -1939,7 +1978,7 @@ User Browser → Port 3400 (Frontend) → API Proxy → Port 8000 (Backend) → 
   - **Status**: ✅ NEW - Prevents API overheating from 840 potential alert requests
   - **Last Updated**: 2025-08-21
 
-- **IndicatorRankingSystem.jsx**: `/Users/dansidanutz/Desktop/ZmartBot/zmart-api/professional_dashboard/components/IndicatorRankingSystem.jsx`  
+- **IndicatorRankingSystem.jsx**: `/Users/dansidanutz/Desktop/ZmartBot/zmart-api/professional_dashboard/components/IndicatorRankingSystem.jsx`
   - **Purpose**: Professional S/A/B/C/D ranking system for 21 technical indicators
   - **Features**: Priority tiers, weight distribution, loading strategies, critical indicator identification
   - **Status**: ✅ NEW - Optimizes indicator loading based on importance and system health
@@ -2007,7 +2046,7 @@ User Browser → Port 3400 (Frontend) → API Proxy → Port 8000 (Backend) → 
 #### Live Data Button (Critical Component)
 - **Location**: Right side of chart controls in SymbolsManager.jsx
 - **Code Lines**: 1747-1765
-- **Functionality**: 
+- **Functionality**:
   - Shows "Loading..." with orange pulsing dot when loading
   - Shows "Live Data" with green dot when active
   - Positioned on the right side as requested
@@ -2251,7 +2290,7 @@ User Browser → Port 3400 (Frontend) → API Proxy → Port 8000 (Backend) → 
 
 #### **Key Features**:
 - **🔒 Encryption**: All API keys encrypted at rest using Fernet symmetric encryption
-- **🗂️ Centralized**: Single source of truth for all external service credentials  
+- **🗂️ Centralized**: Single source of truth for all external service credentials
 - **📊 Usage Tracking**: Monitors API usage, rate limits, last used timestamps
 - **🔧 Service Management**: Activate/deactivate services, health monitoring
 - **💾 Persistent Storage**: Configuration saved to encrypted YAML files
@@ -2259,7 +2298,7 @@ User Browser → Port 3400 (Frontend) → API Proxy → Port 8000 (Backend) → 
 #### **Supported Services**:
 - **✅ openai**: OpenAI API for ChatGPT-5/GPT-4 trading analysis
 - **✅ binance**: Binance Exchange API
-- **✅ kucoin**: KuCoin Exchange API  
+- **✅ kucoin**: KuCoin Exchange API
 - **✅ cryptometer**: Cryptometer Analysis API
 - **✅ coinmarketcap**: CoinMarketCap API
 - **✅ coingecko**: CoinGecko API
@@ -2271,16 +2310,17 @@ User Browser → Port 3400 (Frontend) → API Proxy → Port 8000 (Backend) → 
 #### **Integration Points**:
 - **All Routes**: Every external API call goes through API keys manager
 - **OpenAI Trading Advice**: ChatGPT-5 integration uses manager for credentials
-- **Exchange APIs**: KuCoin, Binance authentication via manager  
+- **Exchange APIs**: KuCoin, Binance authentication via manager
 - **Data Sources**: Cryptometer, CoinGecko, etc. all use centralized credentials
 
 #### **Setup Commands**:
+
 ```bash
 # Setup OpenAI API key
 cd /Users/dansidanutz/Desktop/ZmartBot/zmart-api
 python setup_openai_key.py
 
-# Check all configured services  
+# Check all configured services
 python -c "from src.config.api_keys_manager import api_keys_manager; print(api_keys_manager.list_services())"
 ```
 
@@ -2410,6 +2450,7 @@ python -c "from src.config.api_keys_manager import api_keys_manager; print(api_k
 - **Database Integration**: Direct connection to `my_symbols_v2.db`
 
 ### Alerts Data Structure
+
 ```json
 {
   "id": "1",
@@ -2516,6 +2557,7 @@ python -c "from src.config.api_keys_manager import api_keys_manager; print(api_k
 - **Encryption**: ⚠️ Partial (5/10) - TLS recommended for production
 
 ### Alerts Verification Commands
+
 ```bash
 # Check alerts status
 curl -s "http://localhost:3400/api/v1/alerts/status" | jq .
@@ -2542,6 +2584,7 @@ curl -s "http://localhost:3400/api/v1/alerts/list" | jq '.data[] | select(.symbo
 ## 🚀 ROBUST SERVER MANAGEMENT SYSTEM (2025-08-17)
 
 ### Overview
+
 Enterprise-grade server management system with automatic monitoring, health checks, auto-restart capabilities, and comprehensive conflict prevention. Ensures 24/7 operational reliability.
 
 ### Core Scripts
@@ -2553,6 +2596,7 @@ Enterprise-grade server management system with automatic monitoring, health chec
 ## 📊 HISTORYMYSYMBOLS DATABASE SYSTEM (2025-08-18)
 
 ### Overview
+
 Comprehensive historical data storage system for pattern analysis and historical trend analysis. Stores hourly snapshots of all 21 technical indicators for all 10 active symbols across 4 timeframes (15m, 1h, 4h, 1d).
 
 ### Core Database Files
@@ -2565,6 +2609,7 @@ Comprehensive historical data storage system for pattern analysis and historical
 - **`README_HISTORICAL_DATABASE.md`** - Complete documentation
 
 ### Database Schema (10 Tables)
+
 1. **`historical_rsi_data`** - RSI values and signals with timestamps
 2. **`historical_ema_data`** - EMA crossovers and trends with timestamps
 3. **`historical_macd_data`** - MACD signals and histograms with timestamps
@@ -2605,6 +2650,7 @@ Comprehensive historical data storage system for pattern analysis and historical
 - **Manual Database Creation**: `python create_history_database.py`
 
 ### Pattern Agent Integration
+
 ```python
 from historical_data_service import historical_data_service
 
@@ -2638,9 +2684,11 @@ patterns = historical_data_service.get_pattern_analysis_data('ETHUSDT', '1h', 7)
 ## 📊 21 TECHNICAL INDICATORS DATABASE SYSTEM (2025-08-18)
 
 ### Overview
+
 Comprehensive database system storing all 21 technical indicators for all 10 active symbols across 4 timeframes (15m, 1h, 4h, 1d). Updated daily with real-time data from Binance API and integrated with the Enhanced Alerts System.
 
 ### Database Tables (21 Total)
+
 1. **`rsi_data`** - Relative Strength Index (RSI) values and signals
 2. **`ema_data`** - Exponential Moving Average (EMA) crossovers and trends
 3. **`macd_data`** - Moving Average Convergence Divergence (MACD) signals
@@ -2674,7 +2722,9 @@ Comprehensive database system storing all 21 technical indicators for all 10 act
 - **Timeframe Coverage**: 15m, 1h, 4h, 1d for each symbol
 
 ### Data Structure per Table
+
 Each table contains:
+
 - **`id`** - Primary key
 - **`symbol_id`** - Foreign key to symbols table
 - **`symbol`** - Symbol name (BTCUSDT, ETHUSDT, etc.)
@@ -2692,6 +2742,7 @@ Each table contains:
 - **Historical Storage**: ✅ ACTIVE - 328 records in historical database
 
 ### Update Process
+
 1. **Daily Trigger**: Automated script runs daily
 2. **Symbol Fetching**: Gets all 10 active symbols from portfolio
 3. **API Calls**: Fetches real-time data from Binance API
@@ -2710,6 +2761,7 @@ Each table contains:
 ## 🚨 ENHANCED ALERTS SYSTEM - COMPLETE SETUP (2025-08-18)
 
 ### System Overview
+
 The Enhanced Alerts System is a comprehensive real-time monitoring and alerting system that tracks all 21 technical indicators across 4 timeframes for all 10 active symbols. It provides real-time alerts, historical analysis, and pattern recognition capabilities.
 
 ### Core Components
@@ -2772,6 +2824,7 @@ The Enhanced Alerts System is a comprehensive real-time monitoring and alerting 
 ### Technical Indicators Displayed (21 Total)
 
 #### Momentum Indicators
+
 1. **RSI (Relative Strength Index)** - Oversold/overbought detection
 2. **Stochastic Oscillator** - Momentum and overbought/oversold
 3. **Williams %R** - Momentum oscillator
@@ -2779,6 +2832,7 @@ The Enhanced Alerts System is a comprehensive real-time monitoring and alerting 
 5. **Stochastic RSI** - Momentum analysis
 
 #### Trend Indicators
+
 6. **EMA (Exponential Moving Average)** - Trend following and crossovers
 7. **MACD (Moving Average Convergence Divergence)** - Signal crosses and momentum
 8. **ADX (Average Directional Index)** - Trend strength measurement
@@ -2786,24 +2840,29 @@ The Enhanced Alerts System is a comprehensive real-time monitoring and alerting 
 10. **Moving Average Convergence** - Golden/death cross detection
 
 #### Volatility Indicators
+
 11. **ATR (Average True Range)** - Volatility analysis
 12. **Bollinger Bands** - Volatility and price position
 13. **Bollinger Band Squeeze** - Volatility squeeze detection
 
 #### Support/Resistance Indicators
+
 14. **Support/Resistance Levels** - Dynamic level detection
 15. **Fibonacci Retracement** - Support/resistance levels
 16. **Price Channels (Donchian)** - Channel breakout detection
 
 #### Pattern Recognition
+
 17. **RSI Divergence** - Divergence pattern recognition
 18. **Price Action Patterns** - Chart pattern recognition
 19. **MACD Histogram** - Histogram analysis and trends
 
 #### Volume Analysis
+
 20. **Volume Analysis** - Volume confirmation and divergence
 
 #### Advanced Analysis
+
 21. **Ichimoku Cloud** - Trend and momentum analysis
 22. **Momentum Indicators** - ROC, momentum, and trend alignment
 
@@ -2832,6 +2891,7 @@ The Enhanced Alerts System is a comprehensive real-time monitoring and alerting 
 ### Setup and Configuration
 
 #### 1. Database Setup
+
 ```bash
 # Create all 21 indicator tables
 python create_technical_indicators_tables.py
@@ -2844,6 +2904,7 @@ python manage_historical_data.py stats
 ```
 
 #### 2. Backend Setup
+
 ```bash
 # Start backend API server
 python run_dev.py
@@ -2853,6 +2914,7 @@ curl -s "http://localhost:8000/api/v1/alerts/status" | jq .
 ```
 
 #### 3. Frontend Setup
+
 ```bash
 # Start frontend dashboard
 python professional_dashboard_server.py
@@ -2862,6 +2924,7 @@ http://localhost:3400/alerts
 ```
 
 #### 4. Continuous Updates
+
 ```bash
 # Start daily updates
 ./start_comprehensive_updater.sh
@@ -2959,6 +3022,7 @@ tail -f comprehensive_update.log
 ## 📊 PRICE DATA CARD SYSTEM - REAL-TIME OVERVIEW (2025-08-18)
 
 ### Overview
+
 Comprehensive real-time price data display system for all 10 active symbols. Shows current prices, 24h changes, highs, lows, volume, and market statistics with live updates every 15 seconds.
 
 ### Core Components
@@ -3045,32 +3109,38 @@ Comprehensive real-time price data display system for all 10 active symbols. Sho
 - **Scalability**: Ready for additional symbols and features
 
 ### Key Features
+
 ✅ **Automatic Conflict Prevention**
+
 - Port conflict detection and resolution
 - Process cleanup with graceful shutdown
 - Retry logic with exponential backoff
 - PID management and tracking
 
 ✅ **Health Monitoring**
+
 - Real-time health checks every 30 seconds
 - Auto-restart of failed servers
 - Response time monitoring
 - Uptime tracking and stability metrics
 
 ✅ **Comprehensive Logging**
+
 - Structured logging with severity levels
 - Multiple log files for different components
 - Error tracking and debugging information
 - Performance metrics and analytics
 
 ✅ **Robust Error Handling**
+
 - Signal handling for proper cleanup
 - Configurable timeouts for all operations
 - Fallback mechanisms for process management
 - Resource cleanup and memory management
 
 ### File Structure
-```
+
+```bash
 ZmartBot/
 ├── start_servers_robust.sh      # Main startup script with monitoring
 ├── stop_servers_robust.sh       # Graceful shutdown script
@@ -3088,6 +3158,7 @@ ZmartBot/
 ```
 
 ### Quick Commands
+
 ```bash
 # Start servers with monitoring
 ./start_servers_robust.sh
@@ -3110,6 +3181,7 @@ ZmartBot/
 - **Health Check Timeout**: 10 seconds
 
 ### Auto-Restart Scenarios
+
 1. **Health Check Failure**: Server doesn't respond to health check
 2. **Process Death**: Server process terminates unexpectedly
 3. **Port Conflict**: Another process takes over the port
@@ -3124,6 +3196,7 @@ ZmartBot/
   - Critical: > 2s
 
 ### Status Monitoring Options
+
 ```bash
 ./status_servers.sh              # Quick status
 ./status_servers.sh --detailed   # Detailed server info
@@ -3134,6 +3207,7 @@ ZmartBot/
 ```
 
 ### Troubleshooting
+
 ```bash
 # Port conflicts
 ./stop_servers_robust.sh
@@ -3148,6 +3222,7 @@ rm -rf server_pids/*
 ```
 
 ### Benefits
+
 ✅ **Zero Downtime**: Automatic restart prevents service interruptions
 ✅ **Self-Healing**: System automatically recovers from failures
 ✅ **Comprehensive Monitoring**: Real-time visibility into system health
@@ -3178,6 +3253,7 @@ rm -rf server_pids/*
 ## 🔧 CURRENT ACTIVE SYMBOLS (2025-08-16)
 
 ### Portfolio Composition (10 symbols max)
+
 1. **BTCUSDT** (Bitcoin) - Position 1
 2. **ETHUSDT** (Ethereum) - Position 2
 3. **SOLUSDT** (Solana) - Position 3
@@ -3192,24 +3268,28 @@ rm -rf server_pids/*
 ## 🚨 IMPORTANT RULES
 
 ### Database Rules
+
 1. **NEVER** use any database other than `my_symbols_v2.db` for symbol management
 2. **NEVER** delete or modify the main database without backup
 3. **ALWAYS** verify database location before making changes
 4. **ALWAYS** backup before major changes
 
 ### Dashboard Rules
+
 1. **NEVER** start any dashboard other than `professional_dashboard_server.py`
 2. **NEVER** use deprecated dashboard files
 3. **ALWAYS** check port 3400 is available before starting
 4. **ALWAYS** verify the correct dashboard is running
 
 ### Development Rules
+
 1. **NEVER** start from scratch - always check this inventory first
 2. **ALWAYS** update this file when making changes
 3. **ALWAYS** test changes before declaring them complete
 4. **ALWAYS** verify file locations before editing
 
 ### Server Management Rules
+
 1. **ALWAYS** use `./start_servers_robust.sh` for starting servers
 2. **ALWAYS** use `./stop_servers_robust.sh` for stopping servers
 3. **NEVER** manually kill processes - use the robust scripts
@@ -3217,12 +3297,14 @@ rm -rf server_pids/*
 5. **ALWAYS** monitor logs for any issues or warnings
 
 ### Alerts System Rules
+
 1. **NEVER** use mock data - all alerts use real Binance API prices
 2. **ALWAYS** sync with My Symbols - alerts automatically follow portfolio changes
 3. **NEVER** modify alerts manually - use the API endpoints
 4. **ALWAYS** verify real prices are being used before deployment
 
 ### Passport Protection Rules (CRITICAL)
+
 1. **NEVER DELETE** a service with passport and any file that is close to it
 2. **ALWAYS** check passport registry before any deletion operation
 3. **NEVER DELETE** services with active Passport IDs
@@ -3230,11 +3312,12 @@ rm -rf server_pids/*
 5. **NEVER DELETE** service files with passport associations
 6. **NEVER DELETE** MDC files for passport-protected services
 7. **NEVER DELETE** configuration files for passport services
-8. **ONLY UPDATE** or **MODIFY** existing passport-protected services
+8. **ONLY UPDATE**or**MODIFY** existing passport-protected services
 9. **ALWAYS** create backup before any passport-related operations
 10. **ALWAYS** log all passport-related operations for audit purposes
 
 **Required Passport Check Before Any Deletion:**
+
 ```bash
 # Check passport registry before any deletion
 sqlite3 /Users/dansidanutz/Desktop/ZmartBot/data/passport_registry.db "SELECT * FROM passport_registry WHERE service_name = '{SERVICE_NAME}';"
@@ -3249,6 +3332,7 @@ find .cursor/rules -name "*{SERVICE_NAME}*" -exec grep -l "passport\|Passport" {
 ```
 
 ### Automated Service Registration Rules (CRITICAL)
+
 1. **ALWAYS USE** the automated service registration system - NEVER manually edit orchestrationstart.sh
 2. **NEVER manually edit** orchestrationstart.sh - Always use the automated system
 3. **ALWAYS use** the automated registration process as defined in NewService.mdc and StopStartCycle.mdc
@@ -3262,6 +3346,7 @@ find .cursor/rules -name "*{SERVICE_NAME}*" -exec grep -l "passport\|Passport" {
 7. **ALWAYS follow** the complete StopStartCycle.mdc and NewService.mdc patterns
 
 **Required Automated Registration Process:**
+
 ```bash
 # MANDATORY: Use automated system for orchestration integration
 python3 zmart-api/service_registration_automation.py register {SERVICE_NAME} {PORT} {SERVICE_TYPE}
@@ -3279,6 +3364,7 @@ bash infra/orchestration/orchestrationstart.sh status | grep "{SERVICE_NAME}"
 ## 📋 VERIFICATION COMMANDS
 
 ### Check Server Status (Robust System)
+
 ```bash
 # Quick status check
 ./status_servers.sh
@@ -3297,22 +3383,26 @@ curl -s "http://localhost:3400" | head -1
 ```
 
 ### Check Active Dashboard
+
 ```bash
 lsof -i :3400
 curl -s http://localhost:3400/health
 ```
 
 ### Check Database
+
 ```bash
 sqlite3 /Users/dansidanutz/Desktop/ZmartBot/zmart-api/my_symbols_v2.db "SELECT COUNT(*) FROM portfolio_composition WHERE status = 'Active';"
 ```
 
 ### Check Symbols
+
 ```bash
 curl -s "http://localhost:3400/api/futures-symbols/my-symbols/current" | jq .
 ```
 
 ### Check Alerts System
+
 ```bash
 # Check alerts status
 curl -s "http://localhost:3400/api/v1/alerts/status" | jq .
@@ -3327,11 +3417,13 @@ curl -s "http://localhost:3400/api/v1/alerts/list" | jq '.data[] | select(.symbo
 ## 🔄 BACKUP PROCEDURE
 
 ### Database Backup
+
 ```bash
 cp /Users/dansidanutz/Desktop/ZmartBot/zmart-api/my_symbols_v2.db /Users/dansidanutz/Desktop/ZmartBot/zmart-api/my_symbols_v2_backup_$(date +%Y%m%d_%H%M%S).db
 ```
 
 ### Project Backup
+
 ```bash
 cd /Users/dansidanutz/Desktop/ZmartBot
 tar -czf ZmartBot_backup_$(date +%Y%m%d_%H%M%S).tar.gz backend/zmart-api/
@@ -3340,23 +3432,27 @@ tar -czf ZmartBot_backup_$(date +%Y%m%d_%H%M%S).tar.gz backend/zmart-api/
 ## 📞 EMERGENCY CONTACTS
 
 ### If Database is Lost
+
 1. Check for backup files in `/Users/dansidanutz/Desktop/ZmartBot/zmart-api/`
 2. Look for files named `my_symbols_v2_backup_*.db`
 3. Restore from most recent backup
 
 ### If Dashboard Won't Start
+
 1. Use robust system: `./stop_servers_robust.sh`
 2. Check status: `./status_servers.sh --detailed`
 3. Restart with monitoring: `./start_servers_robust.sh`
 4. If issues persist, check logs: `tail -f server_startup.log`
 
 ### If Servers Won't Start (Robust System)
+
 1. Force cleanup: `rm -rf server_pids/* && pkill -f uvicorn && pkill -f professional_dashboard_server`
 2. Check ports: `lsof -i :8000 && lsof -i :3400`
 3. Restart robust system: `./start_servers_robust.sh`
 4. Monitor logs: `tail -f server_startup.log server_monitor.log`
 
 ### If Health Check Shows "Unhealthy" (Fixed 2025-08-17)
+
 1. **Issue**: API server running but status shows "Unhealthy"
 2. **Root Cause**: Health check logic in `status_servers.sh` was working correctly
 3. **Solution**: API server was actually healthy, status script now shows correct status
@@ -3364,9 +3460,10 @@ tar -czf ZmartBot_backup_$(date +%Y%m%d_%H%M%S).tar.gz backend/zmart-api/
 5. **Status**: ✅ **RESOLVED** - All health checks now working correctly
 
 ### If Console Shows 200+ Messages (Fixed 2025-08-17)
+
 1. **Issue**: Console flooded with 200+ API request/response messages
 2. **Root Cause**: LoggingMiddleware logging every single API call including health checks
-3. **Solution**: 
+3. **Solution**:
    - Optimized LoggingMiddleware to skip frequent health check endpoints
    - Reduced general logging level from INFO to WARNING
    - Increased monitoring interval from 30s to 60s
@@ -3376,11 +3473,13 @@ tar -czf ZmartBot_backup_$(date +%Y%m%d_%H%M%S).tar.gz backend/zmart-api/
 ---
 
 **⚠️ REMEMBER: This inventory is the source of truth. Always check this file before making any changes to the project!**
+
 ## 🚨 ALERTS SYSTEM WITH EXPAND FUNCTIONALITY (ENHANCED - 2025-08-17)
 
 ### ✅ **IMPLEMENTATION COMPLETE - ALL 21 TECHNICAL INDICATORS WITH SMART CACHING**
 
 **🎯 MAJOR ACHIEVEMENT: Complete Technical Analysis Display with Smart Caching**
+
 - **Status**: ✅ **FULLY IMPLEMENTED & PRODUCTION READY**
 - **Date**: 2025-08-17
 - **Achievement**: All 21 technical indicators now display real data with intelligent caching system
@@ -3391,6 +3490,7 @@ tar -czf ZmartBot_backup_$(date +%Y%m%d_%H%M%S).tar.gz backend/zmart-api/
 - **Caching**: 5-minute cache with intelligent invalidation for optimal performance
 
 **🔧 Technical Fixes Applied (2025-08-17):**
+
 1. **RSI Data Fix**: Corrected column mapping from `rsi_signal` to `signal_status`
 2. **MACD Data Fix**: Corrected column mapping from `macd_signal` to `signal_line`
 3. **Williams %R Fix**: Corrected column mapping from `williams_r` to `williams_r_value`
@@ -3410,6 +3510,7 @@ tar -czf ZmartBot_backup_$(date +%Y%m%d_%H%M%S).tar.gz backend/zmart-api/
 17. **API Response**: Comprehensive technical analysis endpoint returning all data
 
 **📊 Indicators Now Displaying Real Data:**
+
 - ✅ RSI Analysis (Value, Signal, Divergence)
 - ✅ EMA Analysis (9, 12, 20, 50 periods, Cross Signals)
 - ✅ MACD Analysis (Line, Signal, Histogram, Crossovers)
@@ -3429,6 +3530,7 @@ tar -czf ZmartBot_backup_$(date +%Y%m%d_%H%M%S).tar.gz backend/zmart-api/
 - ✅ Plus existing: Momentum, Price Channels, Support/Resistance, MA Convergence
 
 **🎯 User Experience:**
+
 - **Expand Button**: Each symbol card has professional expand/collapse functionality
 - **Timeframe Filter**: Users can filter indicators by timeframe (15m, 1h, 4h, 1d)
 - **Real Data**: All indicators show actual calculated values, not placeholders
@@ -3439,11 +3541,13 @@ tar -czf ZmartBot_backup_$(date +%Y%m%d_%H%M%S).tar.gz backend/zmart-api/
 **✅ **IMPLEMENTATION COMPLETE**
 
 **🎯 New Feature: Expand Button for Each Alert Symbol**
+
 - **Status**: ✅ **FULLY IMPLEMENTED & ACTIVE**
 - **Location**: `frontend/zmart-dashboard/src/components/AlertsSystem.tsx`
 - **Integration**: Added to ProfessionalDashboard as "Alerts" tab
 
 **🔧 Technical Implementation:**
+
 - **Component**: `AlertsSystem.tsx` - New React component with TypeScript
 - **Expand Functionality**: Each alert has a "📈 Expand" / "📉 Collapse" button
 - **Technical Analysis**: When expanded, shows comprehensive technical analysis
@@ -3451,6 +3555,7 @@ tar -czf ZmartBot_backup_$(date +%Y%m%d_%H%M%S).tar.gz backend/zmart-api/
 - **Auto-refresh**: Updates every 60 seconds
 
 **📊 Features Implemented:**
+
 - ✅ **Expand/Collapse Buttons**: Each alert symbol has expand functionality
 - ✅ **Technical Analysis Display**: Shows when alert is expanded
 - ✅ **Real-time Price Data**: Current price, 24h change, volume, high/low
@@ -3461,6 +3566,7 @@ tar -czf ZmartBot_backup_$(date +%Y%m%d_%H%M%S).tar.gz backend/zmart-api/
 - ✅ **Error Handling**: Graceful error display
 
 **🎨 UI/UX Features:**
+
 - **Modern Design**: Gradient backgrounds, smooth transitions
 - **Responsive Layout**: Works on all screen sizes
 - **Color-coded Severity**: Visual severity indicators
@@ -3468,18 +3574,21 @@ tar -czf ZmartBot_backup_$(date +%Y%m%d_%H%M%S).tar.gz backend/zmart-api/
 - **Professional Styling**: Consistent with dashboard theme
 
 **🔗 API Integration:**
+
 - **Alerts Endpoint**: `GET /api/v1/alerts/technical-indicators/recent`
 - **Analysis Endpoint**: `GET /api/v1/alerts/analysis/{symbol}`
 - **Real-time Updates**: Automatic refresh every minute
 - **Error Recovery**: Graceful handling of API failures
 
 **📱 Dashboard Integration:**
+
 - **Tab Location**: "Alerts" tab in ProfessionalDashboard
 - **Navigation**: Added to main dashboard navigation
 - **Component**: `AlertsSystem` component imported and integrated
 - **State Management**: React hooks for alerts and expansion state
 
 **🎯 User Experience:**
+
 1. **View Alerts**: See all technical indicator alerts in a clean list
 2. **Expand Details**: Click "📈 Expand" to see detailed technical analysis
 3. **Technical Data**: View current price, indicators, and market data
@@ -3487,6 +3596,7 @@ tar -czf ZmartBot_backup_$(date +%Y%m%d_%H%M%S).tar.gz backend/zmart-api/
 5. **Auto-refresh**: Alerts update automatically every minute
 
 **🔍 Current Status:**
+
 - ✅ **API Working**: Technical alerts endpoint responding correctly
 - ✅ **Dashboard Running**: Frontend accessible at localhost:3400
 - ✅ **Expand Functionality**: Each alert symbol has expand button
@@ -3494,7 +3604,8 @@ tar -czf ZmartBot_backup_$(date +%Y%m%d_%H%M%S).tar.gz backend/zmart-api/
 - ✅ **Real-time Data**: Connected to live technical indicators system
 
 **📈 Example Alert Display:**
-```
+
+```bash
 🚨 Technical Alerts System
 ├── 📊 BTCUSDT [MEDIUM] [15m] - RSI Overbought Alert
 │   ├── 📈 Expand Button
@@ -3519,6 +3630,7 @@ The expand functionality is now fully implemented and ready for your 1-hour test
 ### **📅 Last Updated: 2025-08-21**
 
 ### **🎯 Overview**
+
 The orchestration agent has been **fully integrated** into the existing system architecture to fix all database update issues. This integration ensures continuous database updates without creating duplicate orchestration systems.
 
 ### **✅ Integration Status: COMPLETE**
@@ -3610,9 +3722,11 @@ The orchestration agent has been **fully integrated** into the existing system a
 - **Health Checks**: Integrated into main startup verification
 
 #### **✅ Result: ALL DATABASE UPDATE ISSUES RESOLVED**
+
 The orchestration agent is now fully integrated into the project lifecycle and automatically handles all database update issues without requiring manual intervention.
 
 **Key Features:**
+
 - 🎯 **Automatic startup** with main project
 - 🔄 **Continuous operation** in background
 - 📊 **Real-time updates** for all database components
@@ -3621,15 +3735,15 @@ The orchestration agent is now fully integrated into the project lifecycle and a
 
 **The orchestration agent integration is complete and all database update issues have been resolved!**
 
-
-
 ---
 
 ## 🎨 **MDC DASHBOARD - COMPLETE SOLUTION**
+
 *Last Updated: 2025-08-26 (NEW: Professional MDC Management Interface)*
 
 ### **📂 File Structure:**
-```
+
+```bash
 Dashboard/MDC-Dashboard/
 ├── index.html          # Main dashboard interface
 ├── styles.css          # Dark theme styling
@@ -3638,6 +3752,7 @@ Dashboard/MDC-Dashboard/
 ```
 
 ### **🚀 Quick Start:**
+
 ```bash
 # Install dependencies and start the dashboard
 ./start_mdc_dashboard.sh install-deps
@@ -3717,6 +3832,7 @@ Dashboard/MDC-Dashboard/
 - **Main ZmartBot System** - Complete ecosystem integration
 
 ### **🛠 Management Commands:**
+
 ```bash
 # Dashboard Management
 ./start_mdc_dashboard.sh start        # Start dashboard server
