@@ -59,7 +59,7 @@ class GrokXProductionService:
         self.db_path = db_path
         self.x_api_key = "NYQjjs8z71qXBXQd9VlhIMVwe"
         self.x_bearer_token = "AAAAAAAAAAAAAAAAAAAAADijzQEAAAAA1dxLcD8JDxLD640WmcRIbSib%2BDY%3DepaYbHCEaHzItD9aqTwD7Dd2gYAT5V78UoH4qevsmMFna7H7sq"
-        self.grok_api_key = "xai-8dDS88EczSjvKVUcqsofiFQQjYU1xlP1yoXBSS2j8VevhArgeWET1xDsbdzPhHvedCpGF78AeVD5MVLY"
+        self.grok_api_key = os.getenv("XAI_API_KEY", "")
         self.grok_base_url = "https://api.x.ai/v1"
         
         # Initialize database

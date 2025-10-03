@@ -5,7 +5,7 @@
 ### 1. ✅ MCP Server Configuration
 - **Location**: `.cursor/mcp.json`
 - **Package**: `figma-developer-mcp` v0.6.0
-- **API Key**: `figd_5pmO9I1vXoLF5gfw3OdPiQIaakuTRCJut6doJn09`
+- **API Key**: `YOUR_FIGMA_API_KEY` (stored in environment variables)
 - **Status**: Ready for use in Claude/Cursor
 
 ### 2. ✅ API Manager Integration
@@ -58,7 +58,7 @@ client_id = figma_config['passphrase']  # OAuth client ID
 ### Test MCP Server
 
 ```bash
-npx figma-developer-mcp --figma-api-key=figd_5pmO9I1vXoLF5gfw3OdPiQIaakuTRCJut6doJn09 --version
+npx figma-developer-mcp --figma-api-key=$FIGMA_API_KEY --version
 ```
 
 ### Test API Manager
