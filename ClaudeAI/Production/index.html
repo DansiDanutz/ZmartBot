@@ -35,9 +35,18 @@
                     <a href="#features">Features</a>
                     <a href="#how-it-works">How It Works</a>
                     <a href="#agents">AI Agents</a>
-                    <a href="/reports/btc-analysis.html" style="color: #10b981; font-weight: 600;">Live Report</a>
+                    <a href='/reports/btc-analysis' style='color: #10b981; font-weight: 600;'>Live Report</a>
                     <a href="#blog">Blog</a>
                     <a href="#pricing">Pricing</a>
+                    <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">
+                        <svg class="theme-icon sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="5"/>
+                            <path d="m12 1 1.28 3.72L17 6l-1.28 1.28L17 11l-3.72 1.28L12 16l-1.28-3.72L7 11l1.28-1.28L7 6l3.72-1.28L12 1z"/>
+                        </svg>
+                        <svg class="theme-icon moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                        </svg>
+                    </button>
                     <a href="#contact" class="btn-primary">Get Started</a>
                 </div>
                 <button class="mobile-menu-toggle" aria-label="Toggle menu">
@@ -55,6 +64,7 @@
             <div class="gradient-orb orb-1"></div>
             <div class="gradient-orb orb-2"></div>
             <div class="gradient-orb orb-3"></div>
+            <div class="gradient-orb orb-4"></div>
         </div>
         <div class="container">
             <div class="hero-content">
@@ -64,18 +74,18 @@
                 </div>
                 <h1 class="hero-title">
                     Meet <span class="gradient-text">Zmarty</span><br>
-                    Your Friendly AI Trading Companion
+                    Your Intelligent Trading Companion
                 </h1>
                 <p class="hero-subtitle">
-                    Navigate cryptocurrency markets with confidence. Zmarty delivers real-time market data, AI-powered pattern recognition based on historical analysis, and precise Win Rate Ratios for Long/Short positions across all major exchanges.
+                    Never trade alone again. Zmarty is your dedicated AI companion that watches the markets 24/7, delivering real-time insights, pattern recognition, and Win Rate analytics. Like having a team of expert traders by your side, always ready to help you make informed decisions.
                 </p>
                 <div class="hero-cta">
-                    <a href="#contact" class="btn-hero-primary">Start Trading Smarter</a>
+                    <a href="#contact" class="btn-hero-primary">Meet Your Trading Companion</a>
                     <a href="#how-it-works" class="btn-hero-secondary">
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
                             <path d="M10 0C4.477 0 0 4.477 0 10s4.477 10 10 10 10-4.477 10-10S15.523 0 10 0zm1 14.414V13h-2v1.414l-3.707-3.707 1.414-1.414L9 11.586V6h2v5.586l2.293-2.293 1.414 1.414L11 14.414z"/>
                         </svg>
-                        Watch Demo
+                        See How Zmarty Helps
                     </a>
                 </div>
                 <div class="hero-stats">
@@ -245,7 +255,17 @@
             <div class="providers-grid">
                 <div class="provider-card">
                     <div class="provider-logo">
-                        <div class="provider-avatar gradient-purple">C</div>
+                        <!-- Claude Logo - Anthropic Orange/Brown -->
+                        <div class="provider-avatar" style="background: linear-gradient(135deg, #CC9B7A 0%, #D4A574 100%); width: 60px; height: 60px; border-radius: 16px; display: flex; align-items: center; justify-content: center;">
+                            <svg width="32" height="32" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                <!-- Claude's distinctive wave pattern -->
+                                <path d="M25 70 Q40 40 50 50 Q60 40 75 70" stroke="#ffffff" stroke-width="8" fill="none" stroke-linecap="round"/>
+                                <circle cx="50" cy="45" r="4" fill="#ffffff"/>
+                                <!-- Additional styling curves -->
+                                <path d="M20 60 Q35 35 45 45" stroke="rgba(255,255,255,0.6)" stroke-width="3" fill="none" stroke-linecap="round"/>
+                                <path d="M55 45 Q65 35 80 60" stroke="rgba(255,255,255,0.6)" stroke-width="3" fill="none" stroke-linecap="round"/>
+                            </svg>
+                        </div>
                     </div>
                     <h4>Claude 4.5</h4>
                     <p class="provider-company">Anthropic</p>
@@ -254,7 +274,23 @@
 
                 <div class="provider-card">
                     <div class="provider-logo">
-                        <div class="provider-avatar gradient-green">GPT</div>
+                        <!-- OpenAI GPT Logo - OpenAI Green -->
+                        <div class="provider-avatar" style="background: linear-gradient(135deg, #10a37f 0%, #1a9c7f 100%); width: 60px; height: 60px; border-radius: 16px; display: flex; align-items: center; justify-content: center;">
+                            <svg width="32" height="32" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                <!-- OpenAI's circular pattern -->
+                                <g stroke="#ffffff" stroke-width="6" fill="none">
+                                    <circle cx="25" cy="50" r="8"/>
+                                    <circle cx="50" cy="50" r="8"/>
+                                    <circle cx="75" cy="50" r="8"/>
+                                </g>
+                                <!-- Connecting lines -->
+                                <line x1="33" y1="50" x2="42" y2="50" stroke="#ffffff" stroke-width="4" stroke-linecap="round"/>
+                                <line x1="58" y1="50" x2="67" y2="50" stroke="#ffffff" stroke-width="4" stroke-linecap="round"/>
+                                <!-- Central dot -->
+                                <circle cx="50" cy="30" r="3" fill="#ffffff"/>
+                                <circle cx="50" cy="70" r="3" fill="#ffffff"/>
+                            </svg>
+                        </div>
                     </div>
                     <h4>GPT-5</h4>
                     <p class="provider-company">OpenAI</p>
@@ -263,7 +299,26 @@
 
                 <div class="provider-card">
                     <div class="provider-logo">
-                        <div class="provider-avatar gradient-blue">G</div>
+                        <!-- Google Gemini Logo - Google Colors Gradient -->
+                        <div class="provider-avatar" style="background: linear-gradient(135deg, #4285f4 0%, #34a853 25%, #fbbc04 75%, #ea4335 100%); width: 60px; height: 60px; border-radius: 16px; display: flex; align-items: center; justify-content: center;">
+                            <svg width="32" height="32" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                <!-- Gemini Twin Stars -->
+                                <g fill="#ffffff">
+                                    <path d="M35 25 L45 45 L25 45 Z"/>
+                                    <path d="M65 25 L75 45 L55 45 Z"/>
+                                </g>
+                                <!-- Connecting bridge -->
+                                <rect x="40" y="42" width="20" height="6" rx="3" fill="rgba(255,255,255,0.8)"/>
+                                <!-- Base elements -->
+                                <g fill="rgba(255,255,255,0.9)">
+                                    <circle cx="35" cy="55" r="4"/>
+                                    <circle cx="65" cy="55" r="4"/>
+                                </g>
+                                <!-- Constellation lines -->
+                                <line x1="35" y1="45" x2="35" y2="51" stroke="rgba(255,255,255,0.7)" stroke-width="2"/>
+                                <line x1="65" y1="45" x2="65" y2="51" stroke="rgba(255,255,255,0.7)" stroke-width="2"/>
+                            </svg>
+                        </div>
                     </div>
                     <h4>Gemini</h4>
                     <p class="provider-company">Google</p>
@@ -272,7 +327,23 @@
 
                 <div class="provider-card">
                     <div class="provider-logo">
-                        <div class="provider-avatar gradient-orange">X</div>
+                        <!-- xAI Grok Logo - Black with X -->
+                        <div class="provider-avatar" style="background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%); width: 60px; height: 60px; border-radius: 16px; display: flex; align-items: center; justify-content: center; border: 2px solid #333;">
+                            <svg width="32" height="32" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                <!-- X pattern for xAI -->
+                                <g stroke="#ffffff" stroke-width="8" stroke-linecap="round">
+                                    <line x1="25" y1="25" x2="75" y2="75"/>
+                                    <line x1="75" y1="25" x2="25" y2="75"/>
+                                </g>
+                                <!-- Additional stylistic elements -->
+                                <g stroke="rgba(255,255,255,0.5)" stroke-width="3" stroke-linecap="round">
+                                    <line x1="50" y1="15" x2="50" y2="25"/>
+                                    <line x1="50" y1="75" x2="50" y2="85"/>
+                                    <line x1="15" y1="50" x2="25" y2="50"/>
+                                    <line x1="75" y1="50" x2="85" y2="50"/>
+                                </g>
+                            </svg>
+                        </div>
                     </div>
                     <h4>Grok</h4>
                     <p class="provider-company">xAI</p>
@@ -896,163 +967,482 @@
                 <p>Real feedback from real traders using Zmarty every day</p>
             </div>
 
-            <div class="reviews-grid">
-                <!-- Review 1 -->
-                <div class="review-card">
-                    <div class="review-header">
-                        <div class="reviewer-info">
+            <div class="reviews-scroll-container">
+                <div class="reviews-scroll">
+                    <!-- First set of reviews -->
+                    <div class="review-card">
+                        <div class="review-header">
                             <div class="reviewer-avatar">JM</div>
-                            <div>
-                                <h4 class="reviewer-name">John Martinez</h4>
-                                <p class="reviewer-title">Day Trader</p>
+                            <div class="reviewer-info">
+                                <h4>John Martinez</h4>
+                                <div class="review-stars">★★★★★</div>
                             </div>
                         </div>
-                        <div class="review-rating">
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                        </div>
+                        <p class="review-text">"The Win Rate Ratios changed my trading game. I went from guessing to making data-driven decisions. Best $50/month I've ever spent."</p>
+                        <div class="review-date">Premium User • 2 days ago</div>
                     </div>
-                    <p class="review-text">"The Win Rate Ratios changed my trading game. I went from guessing to making data-driven decisions. Best $50/month I've ever spent on trading tools."</p>
-                    <div class="review-footer">
-                        <span class="review-date">2 days ago</span>
-                        <span class="review-tier">Premium User</span>
-                    </div>
-                </div>
 
-                <!-- Review 2 -->
-                <div class="review-card featured-review">
-                    <div class="verified-badge">✓ Verified Trader</div>
-                    <div class="review-header">
-                        <div class="reviewer-info">
+                    <div class="review-card">
+                        <div class="review-header">
                             <div class="reviewer-avatar">SK</div>
-                            <div>
-                                <h4 class="reviewer-name">Sarah Kim</h4>
-                                <p class="reviewer-title">Crypto Investor</p>
+                            <div class="reviewer-info">
+                                <h4>Sarah Kim</h4>
+                                <div class="review-stars">★★★★★</div>
                             </div>
                         </div>
-                        <div class="review-rating">
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                        </div>
+                        <p class="review-text">"Liquidation Clusters feature is incredible. I can see exactly where mass liquidations happened and avoid those zones. It's like having x-ray vision for the market."</p>
+                        <div class="review-date">Premium User • 1 week ago</div>
                     </div>
-                    <p class="review-text">"Liquidation Clusters feature is incredible. I can see exactly where mass liquidations happened and avoid those zones. It's like having x-ray vision for the market."</p>
-                    <div class="review-footer">
-                        <span class="review-date">1 week ago</span>
-                        <span class="review-tier">Premium User</span>
-                    </div>
-                </div>
 
-                <!-- Review 3 -->
-                <div class="review-card">
-                    <div class="review-header">
-                        <div class="reviewer-info">
+                    <div class="review-card">
+                        <div class="review-header">
                             <div class="reviewer-avatar">MC</div>
-                            <div>
-                                <h4 class="reviewer-name">Mike Chen</h4>
-                                <p class="reviewer-title">Swing Trader</p>
+                            <div class="reviewer-info">
+                                <h4>Mike Chen</h4>
+                                <div class="review-stars">★★★★★</div>
                             </div>
                         </div>
-                        <div class="review-rating">
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                        </div>
+                        <p class="review-text">"Started with free Starter plan, upgraded to Gold within a week. The multi-AI analysis gives me insights I couldn't get anywhere else."</p>
+                        <div class="review-date">Gold User • 3 days ago</div>
                     </div>
-                    <p class="review-text">"I started with the free Starter plan just to test it out. Within a week I upgraded to Gold. The multi-AI analysis gives me insights I couldn't get anywhere else."</p>
-                    <div class="review-footer">
-                        <span class="review-date">3 days ago</span>
-                        <span class="review-tier">Gold User</span>
-                    </div>
-                </div>
 
-                <!-- Review 4 -->
-                <div class="review-card">
-                    <div class="review-header">
-                        <div class="reviewer-info">
+                    <div class="review-card">
+                        <div class="review-header">
                             <div class="reviewer-avatar">AP</div>
-                            <div>
-                                <h4 class="reviewer-name">Alex Patel</h4>
-                                <p class="reviewer-title">Full-Time Trader</p>
+                            <div class="reviewer-info">
+                                <h4>Alex Patel</h4>
+                                <div class="review-stars">★★★★★</div>
                             </div>
                         </div>
-                        <div class="review-rating">
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                        </div>
+                        <p class="review-text">"No more guessing! Zmarty gives me exact data, historical patterns, and statistical probabilities. It's like having a research team working for me 24/7."</p>
+                        <div class="review-date">Premium User • 5 days ago</div>
                     </div>
-                    <p class="review-text">"No more guessing! Zmarty gives me exact data, historical patterns, and statistical probabilities. It's like having a research team working for me 24/7."</p>
-                    <div class="review-footer">
-                        <span class="review-date">5 days ago</span>
-                        <span class="review-tier">Premium User</span>
-                    </div>
-                </div>
 
-                <!-- Review 5 -->
-                <div class="review-card">
-                    <div class="review-header">
-                        <div class="reviewer-info">
+                    <div class="review-card">
+                        <div class="review-header">
                             <div class="reviewer-avatar">LR</div>
-                            <div>
-                                <h4 class="reviewer-name">Lisa Rodriguez</h4>
-                                <p class="reviewer-title">Position Trader</p>
+                            <div class="reviewer-info">
+                                <h4>Lisa Rodriguez</h4>
+                                <div class="review-stars">★★★★★</div>
                             </div>
                         </div>
-                        <div class="review-rating">
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                        </div>
+                        <p class="review-text">"The referral program is genius! I've referred 8 friends and earned enough credits to basically trade for free. Everyone wins."</p>
+                        <div class="review-date">Gold User • 1 week ago</div>
                     </div>
-                    <p class="review-text">"The referral program is genius! I've referred 8 friends and earned enough credits to basically trade for free. Everyone wins."</p>
-                    <div class="review-footer">
-                        <span class="review-date">1 week ago</span>
-                        <span class="review-tier">Gold User</span>
-                    </div>
-                </div>
 
-                <!-- Review 6 -->
-                <div class="review-card">
-                    <div class="review-header">
-                        <div class="reviewer-info">
+                    <div class="review-card">
+                        <div class="review-header">
                             <div class="reviewer-avatar">DW</div>
-                            <div>
-                                <h4 class="reviewer-name">David Wilson</h4>
-                                <p class="reviewer-title">Algo Trader</p>
+                            <div class="reviewer-info">
+                                <h4>David Wilson</h4>
+                                <div class="review-stars">★★★★★</div>
                             </div>
                         </div>
-                        <div class="review-rating">
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                        </div>
+                        <p class="review-text">"Having Claude, GPT-5, Gemini, and Grok analyze my questions is like having 4 expert advisors. The consensus insights are incredibly valuable."</p>
+                        <div class="review-date">Premium User • 4 days ago</div>
                     </div>
-                    <p class="review-text">"Having Claude, GPT-5, Gemini, and Grok analyze my questions is like having 4 expert advisors. The consensus insights are incredibly valuable."</p>
-                    <div class="review-footer">
-                        <span class="review-date">4 days ago</span>
-                        <span class="review-tier">Premium User</span>
+
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="reviewer-avatar">EM</div>
+                            <div class="reviewer-info">
+                                <h4>Emma Thompson</h4>
+                                <div class="review-stars">★★★★★</div>
+                            </div>
+                        </div>
+                        <p class="review-text">"Pattern Recognition helped me spot a huge breakout 3 days early. Made my best trade ever thanks to Zmarty's AI agents working together."</p>
+                        <div class="review-date">Premium User • 6 days ago</div>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="reviewer-avatar">RJ</div>
+                            <div class="reviewer-info">
+                                <h4>Ryan Johnson</h4>
+                                <div class="review-stars">★★★★★</div>
+                            </div>
+                        </div>
+                        <p class="review-text">"Real-time alerts saved me from a massive liquidation event. I was about to enter a position right before BTC dumped. Zmarty warned me 10 minutes before."</p>
+                        <div class="review-date">Gold User • 2 days ago</div>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="reviewer-avatar">TC</div>
+                            <div class="reviewer-info">
+                                <h4>Tracy Chen</h4>
+                                <div class="review-stars">★★★★★</div>
+                            </div>
+                        </div>
+                        <p class="review-text">"The multi-exchange coverage is unmatched. I can see opportunities across Binance, Coinbase, and Kraken all in one place. Saves me hours daily."</p>
+                        <div class="review-date">Premium User • 3 days ago</div>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="reviewer-avatar">BL</div>
+                            <div class="reviewer-info">
+                                <h4>Brian Lee</h4>
+                                <div class="review-stars">★★★★★</div>
+                            </div>
+                        </div>
+                        <p class="review-text">"Been trading for 8 years, tried every tool. Nothing comes close to Zmarty's accuracy. The Win Rate Ratios are consistently spot-on."</p>
+                        <div class="review-date">Premium User • 1 week ago</div>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="reviewer-avatar">KT</div>
+                            <div class="reviewer-info">
+                                <h4>Kevin Taylor</h4>
+                                <div class="review-stars">★★★★★</div>
+                            </div>
+                        </div>
+                        <p class="review-text">"The AI alerts feature literally saved me thousands. Got a warning about a flash crash 5 minutes before it happened. Pure gold!"</p>
+                        <div class="review-date">Premium User • 12 hours ago</div>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="reviewer-avatar">NH</div>
+                            <div class="reviewer-info">
+                                <h4>Nina Hassan</h4>
+                                <div class="review-stars">★★★★★</div>
+                            </div>
+                        </div>
+                        <p class="review-text">"Multi-exchange coverage is incredible. I track positions across 5 different exchanges and Zmarty gives me unified insights. Game-changer for my portfolio."</p>
+                        <div class="review-date">Gold User • 18 hours ago</div>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="reviewer-avatar">JD</div>
+                            <div class="reviewer-info">
+                                <h4>James Davis</h4>
+                                <div class="review-stars">★★★★★</div>
+                            </div>
+                        </div>
+                        <p class="review-text">"Volume Analysis Agent helped me spot unusual whale activity before major price moves. Zmarty's data depth is unmatched in the industry."</p>
+                        <div class="review-date">Premium User • 2 days ago</div>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="reviewer-avatar">MG</div>
+                            <div class="reviewer-info">
+                                <h4>Maria Gonzalez</h4>
+                                <div class="review-stars">★★★★★</div>
+                            </div>
+                        </div>
+                        <p class="review-text">"Risk-Reward calculations are precise to the decimal. I used to guess at position sizes, now Zmarty calculates optimal sizing based on historical volatility."</p>
+                        <div class="review-date">Premium User • 22 hours ago</div>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="reviewer-avatar">CW</div>
+                            <div class="reviewer-info">
+                                <h4>Carlos Wright</h4>
+                                <div class="review-stars">★★★★★</div>
+                            </div>
+                        </div>
+                        <p class="review-text">"Technical Analysis Agent calculates 50+ indicators simultaneously. RSI, MACD, Bollinger Bands - all updated in real-time with surgical precision."</p>
+                        <div class="review-date">Gold User • 8 hours ago</div>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="reviewer-avatar">SB</div>
+                            <div class="reviewer-info">
+                                <h4>Sophia Brown</h4>
+                                <div class="review-stars">★★★★★</div>
+                            </div>
+                        </div>
+                        <p class="review-text">"Predictive accuracy on support/resistance levels is scary good. Zmarty called exact reversal points 3 times this week. It's like magic."</p>
+                        <div class="review-date">Premium User • 4 hours ago</div>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="reviewer-avatar">TM</div>
+                            <div class="reviewer-info">
+                                <h4>Tyler Morgan</h4>
+                                <div class="review-stars">★★★★★</div>
+                            </div>
+                        </div>
+                        <p class="review-text">"Best investment I've made in years. The referral rewards alone paid for my subscription twice over. Smart business model!"</p>
+                        <div class="review-date">Gold User • 16 hours ago</div>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="reviewer-avatar">AK</div>
+                            <div class="reviewer-info">
+                                <h4>Amanda Kim</h4>
+                                <div class="review-stars">★★★★★</div>
+                            </div>
+                        </div>
+                        <p class="review-text">"Pattern Recognition spotted a rare inverse head-and-shoulders formation 2 days before the breakout. Historical success rate was 87% - it hit perfectly."</p>
+                        <div class="review-date">Premium User • 6 hours ago</div>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="reviewer-avatar">RH</div>
+                            <div class="reviewer-info">
+                                <h4>Robert Hall</h4>
+                                <div class="review-stars">★★★★★</div>
+                            </div>
+                        </div>
+                        <p class="review-text">"Social sentiment analysis from multiple AI models gives me edge over manual traders. When all 4 AIs agree, the signal is almost always right."</p>
+                        <div class="review-date">Premium User • 1 day ago</div>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="reviewer-avatar">JL</div>
+                            <div class="reviewer-info">
+                                <h4>Jessica Lewis</h4>
+                                <div class="review-stars">★★★★★</div>
+                            </div>
+                        </div>
+                        <p class="review-text">"24/7 market monitoring means I never miss opportunities. Zmarty watches while I sleep and wakes me up for the really important moves."</p>
+                        <div class="review-date">Gold User • 14 hours ago</div>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="reviewer-avatar">DN</div>
+                            <div class="reviewer-info">
+                                <h4>Daniel Nguyen</h4>
+                                <div class="review-stars">★★★★★</div>
+                            </div>
+                        </div>
+                        <p class="review-text">"Backtesting capabilities are incredible. I can validate strategies against years of historical data before risking real money. Scientific approach to trading."</p>
+                        <div class="review-date">Premium User • 10 hours ago</div>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="reviewer-avatar">IA</div>
+                            <div class="reviewer-info">
+                                <h4>Isabella Adams</h4>
+                                <div class="review-stars">★★★★★</div>
+                            </div>
+                        </div>
+                        <p class="review-text">"Order book depth analysis revealed hidden whale walls that others missed. Zmarty gives me institutional-level market intelligence at retail prices."</p>
+                        <div class="review-date">Premium User • 20 hours ago</div>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="reviewer-avatar">PT</div>
+                            <div class="reviewer-info">
+                                <h4>Paul Thompson</h4>
+                                <div class="review-stars">★★★★★</div>
+                            </div>
+                        </div>
+                        <p class="review-text">"Free tier convinced me immediately. Upgraded to Premium within 3 days and haven't looked back. The value proposition is unbeatable."</p>
+                        <div class="review-date">Premium User • 2 days ago</div>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="reviewer-avatar">ZX</div>
+                            <div class="reviewer-info">
+                                <h4>Zoe Xu</h4>
+                                <div class="review-stars">★★★★★</div>
+                            </div>
+                        </div>
+                        <p class="review-text">"Cross-exchange arbitrage opportunities identified by Zmarty generated extra profits I never knew existed. The AI finds edge cases humans miss."</p>
+                        <div class="review-date">Gold User • 1 day ago</div>
+                    </div>
+
+                    <!-- Duplicate set for infinite scroll -->
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="reviewer-avatar">JM</div>
+                            <div class="reviewer-info">
+                                <h4>John Martinez</h4>
+                                <div class="review-stars">★★★★★</div>
+                            </div>
+                        </div>
+                        <p class="review-text">"The Win Rate Ratios changed my trading game. I went from guessing to making data-driven decisions. Best $50/month I've ever spent."</p>
+                        <div class="review-date">Premium User • 2 days ago</div>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="reviewer-avatar">SK</div>
+                            <div class="reviewer-info">
+                                <h4>Sarah Kim</h4>
+                                <div class="review-stars">★★★★★</div>
+                            </div>
+                        </div>
+                        <p class="review-text">"Liquidation Clusters feature is incredible. I can see exactly where mass liquidations happened and avoid those zones. It's like having x-ray vision for the market."</p>
+                        <div class="review-date">Premium User • 1 week ago</div>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="reviewer-avatar">MC</div>
+                            <div class="reviewer-info">
+                                <h4>Mike Chen</h4>
+                                <div class="review-stars">★★★★★</div>
+                            </div>
+                        </div>
+                        <p class="review-text">"Started with free Starter plan, upgraded to Gold within a week. The multi-AI analysis gives me insights I couldn't get anywhere else."</p>
+                        <div class="review-date">Gold User • 3 days ago</div>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="reviewer-avatar">AP</div>
+                            <div class="reviewer-info">
+                                <h4>Alex Patel</h4>
+                                <div class="review-stars">★★★★★</div>
+                            </div>
+                        </div>
+                        <p class="review-text">"No more guessing! Zmarty gives me exact data, historical patterns, and statistical probabilities. It's like having a research team working for me 24/7."</p>
+                        <div class="review-date">Premium User • 5 days ago</div>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="reviewer-avatar">LR</div>
+                            <div class="reviewer-info">
+                                <h4>Lisa Rodriguez</h4>
+                                <div class="review-stars">★★★★★</div>
+                            </div>
+                        </div>
+                        <p class="review-text">"The referral program is genius! I've referred 8 friends and earned enough credits to basically trade for free. Everyone wins."</p>
+                        <div class="review-date">Gold User • 1 week ago</div>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="reviewer-avatar">DW</div>
+                            <div class="reviewer-info">
+                                <h4>David Wilson</h4>
+                                <div class="review-stars">★★★★★</div>
+                            </div>
+                        </div>
+                        <p class="review-text">"Having Claude, GPT-5, Gemini, and Grok analyze my questions is like having 4 expert advisors. The consensus insights are incredibly valuable."</p>
+                        <div class="review-date">Premium User • 4 days ago</div>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="reviewer-avatar">EM</div>
+                            <div class="reviewer-info">
+                                <h4>Emma Thompson</h4>
+                                <div class="review-stars">★★★★★</div>
+                            </div>
+                        </div>
+                        <p class="review-text">"Pattern Recognition helped me spot a huge breakout 3 days early. Made my best trade ever thanks to Zmarty's AI agents working together."</p>
+                        <div class="review-date">Premium User • 6 days ago</div>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="reviewer-avatar">RJ</div>
+                            <div class="reviewer-info">
+                                <h4>Ryan Johnson</h4>
+                                <div class="review-stars">★★★★★</div>
+                            </div>
+                        </div>
+                        <p class="review-text">"Real-time alerts saved me from a massive liquidation event. I was about to enter a position right before BTC dumped. Zmarty warned me 10 minutes before."</p>
+                        <div class="review-date">Gold User • 2 days ago</div>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="reviewer-avatar">TC</div>
+                            <div class="reviewer-info">
+                                <h4>Tracy Chen</h4>
+                                <div class="review-stars">★★★★★</div>
+                            </div>
+                        </div>
+                        <p class="review-text">"The multi-exchange coverage is unmatched. I can see opportunities across Binance, Coinbase, and Kraken all in one place. Saves me hours daily."</p>
+                        <div class="review-date">Premium User • 3 days ago</div>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="reviewer-avatar">BL</div>
+                            <div class="reviewer-info">
+                                <h4>Brian Lee</h4>
+                                <div class="review-stars">★★★★★</div>
+                            </div>
+                        </div>
+                        <p class="review-text">"Been trading for 8 years, tried every tool. Nothing comes close to Zmarty's accuracy. The Win Rate Ratios are consistently spot-on."</p>
+                        <div class="review-date">Premium User • 1 week ago</div>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="reviewer-avatar">KT</div>
+                            <div class="reviewer-info">
+                                <h4>Kevin Taylor</h4>
+                                <div class="review-stars">★★★★★</div>
+                            </div>
+                        </div>
+                        <p class="review-text">"The AI alerts feature literally saved me thousands. Got a warning about a flash crash 5 minutes before it happened. Pure gold!"</p>
+                        <div class="review-date">Premium User • 12 hours ago</div>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="reviewer-avatar">NH</div>
+                            <div class="reviewer-info">
+                                <h4>Nina Hassan</h4>
+                                <div class="review-stars">★★★★★</div>
+                            </div>
+                        </div>
+                        <p class="review-text">"Multi-exchange coverage is incredible. I track positions across 5 different exchanges and Zmarty gives me unified insights. Game-changer for my portfolio."</p>
+                        <div class="review-date">Gold User • 18 hours ago</div>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="reviewer-avatar">JD</div>
+                            <div class="reviewer-info">
+                                <h4>James Davis</h4>
+                                <div class="review-stars">★★★★★</div>
+                            </div>
+                        </div>
+                        <p class="review-text">"Volume Analysis Agent helped me spot unusual whale activity before major price moves. Zmarty's data depth is unmatched in the industry."</p>
+                        <div class="review-date">Premium User • 2 days ago</div>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="reviewer-avatar">MG</div>
+                            <div class="reviewer-info">
+                                <h4>Maria Gonzalez</h4>
+                                <div class="review-stars">★★★★★</div>
+                            </div>
+                        </div>
+                        <p class="review-text">"Risk-Reward calculations are precise to the decimal. I used to guess at position sizes, now Zmarty calculates optimal sizing based on historical volatility."</p>
+                        <div class="review-date">Premium User • 22 hours ago</div>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="reviewer-avatar">CW</div>
+                            <div class="reviewer-info">
+                                <h4>Carlos Wright</h4>
+                                <div class="review-stars">★★★★★</div>
+                            </div>
+                        </div>
+                        <p class="review-text">"Technical Analysis Agent calculates 50+ indicators simultaneously. RSI, MACD, Bollinger Bands - all updated in real-time with surgical precision."</p>
+                        <div class="review-date">Gold User • 8 hours ago</div>
                     </div>
                 </div>
             </div>
 
-            <div class="reviews-cta">
-                <h3>Join 10,000+ Traders Using Zmarty</h3>
-                <p>Start free and see why traders love Zmarty</p>
-                <button class="btn btn-primary">Start Free Today</button>
+            <div class="review-cta">
+                <p>Join 10,000+ traders who never trade alone with Zmarty</p>
             </div>
         </div>
     </section>
@@ -1066,7 +1456,9 @@
             </div>
             <div class="blog-grid">
                 <article class="blog-card">
-                    <div class="blog-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
+                    <div class="blog-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
+                        <span style="color: white; font-size: 48px; font-weight: bold; font-family: 'Inter', sans-serif;">Intelligence</span>
+                    </div>
                     <div class="blog-content">
                         <div class="blog-meta">
                             <span class="blog-category">Product Update</span>
@@ -1074,12 +1466,14 @@
                         </div>
                         <h3>Introducing Zmarty 2.0: Multi-AI Intelligence</h3>
                         <p>We're excited to announce Zmarty 2.0 with enhanced multi-provider AI orchestration, now featuring Claude, GPT-5, Gemini, and Grok working together...</p>
-                        <a href="blog/zmarty-2.0-launch.html" class="blog-link">Read More →</a>
+                        <a class='blog-link' href='/blog/zmarty-2.0-launch'>Read More →</a>
                     </div>
                 </article>
 
                 <article class="blog-card">
-                    <div class="blog-image" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);"></div>
+                    <div class="blog-image" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
+                        <span style="color: white; font-size: 48px; font-weight: bold; font-family: 'Inter', sans-serif;">Achievement</span>
+                    </div>
                     <div class="blog-content">
                         <div class="blog-meta">
                             <span class="blog-category">Achievement</span>
@@ -1087,12 +1481,14 @@
                         </div>
                         <h3>Zmarty Achieves 95% Risk Prediction Accuracy</h3>
                         <p>Our RiskMetric agent has reached a new milestone, accurately predicting risk events with 95% precision across 10,000+ trades...</p>
-                        <a href="blog/risk-prediction-milestone.html" class="blog-link">Read More →</a>
+                        <a class='blog-link' href='/blog/risk-prediction-milestone'>Read More →</a>
                     </div>
                 </article>
 
                 <article class="blog-card">
-                    <div class="blog-image" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);"></div>
+                    <div class="blog-image" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
+                        <span style="color: white; font-size: 48px; font-weight: bold; font-family: 'Inter', sans-serif;">Prediction</span>
+                    </div>
                     <div class="blog-content">
                         <div class="blog-meta">
                             <span class="blog-category">Market Insights</span>
@@ -1100,12 +1496,12 @@
                         </div>
                         <h3>How AI Detected the September Rally 3 Days Early</h3>
                         <p>Kingfisher AI's pattern recognition spotted early signals of the September crypto rally. Here's how our algorithms work...</p>
-                        <a href="blog/ai-rally-prediction.html" class="blog-link">Read More →</a>
+                        <a class='blog-link' href='/blog/ai-rally-prediction'>Read More →</a>
                     </div>
                 </article>
             </div>
             <div class="blog-cta">
-                <a href="blog/index.html" class="btn-secondary">View All Articles</a>
+                <a class='btn-secondary' href='/blog/'>View All Articles</a>
             </div>
         </div>
     </section>
@@ -1114,8 +1510,8 @@
     <section id="contact" class="cta">
         <div class="container">
             <div class="cta-content">
-                <h2>Ready to Unlock Your Trading Genie?</h2>
-                <p>Join thousands of traders who rely on Zmarty's real-time data, pattern recognition, and Win Rate analytics to make informed trading decisions. No tips, no guesses - just pure data intelligence.</p>
+                <h2>Ready to Meet Your Trading Companion?</h2>
+                <p>Join thousands of traders who never trade alone. Zmarty is your dedicated AI companion, providing real-time insights, pattern recognition, and Win Rate analytics. Transform your trading journey with an intelligent partner who's always by your side.</p>
                 <div class="cta-buttons">
                     <button class="btn-hero-primary">Start Free Trial</button>
                     <button class="btn-hero-secondary">Schedule Demo</button>
@@ -1146,7 +1542,7 @@
                         </svg>
                         <span class="logo-text">Zmarty</span>
                     </div>
-                    <p class="footer-description">Your friendly AI companion for smarter cryptocurrency trading. Powered by wisdom, knowledge, and advanced intelligence.</p>
+                    <p class="footer-description">Your dedicated AI companion for smarter cryptocurrency trading. Zmarty combines advanced intelligence with friendly guidance to help you navigate markets with confidence.</p>
                 </div>
                 <div class="footer-column">
                     <h4>Product</h4>
@@ -1160,7 +1556,7 @@
                 <div class="footer-column">
                     <h4>Resources</h4>
                     <ul class="footer-links">
-                        <li><a href="blog/index.html">Blog</a></li>
+                        <li><a href='/blog/'>Blog</a></li>
                         <li><a href="#">Documentation</a></li>
                         <li><a href="#">API Reference</a></li>
                         <li><a href="#">Support</a></li>
